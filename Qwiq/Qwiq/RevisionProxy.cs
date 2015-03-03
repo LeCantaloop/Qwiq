@@ -46,9 +46,9 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>
-        public Tfs.LinkCollection Links
+        public IEnumerable<ILink> Links
         {
-            get { return _rev.Links; }
+            get { return _rev.Links.Cast<Tfs.Link>().Select(item => new LinkProxy(item)); }
         }
 
         /// <summary>

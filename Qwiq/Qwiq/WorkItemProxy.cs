@@ -152,9 +152,12 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the collection of the links in this work item.
         /// </summary>
-        public Tfs.LinkCollection Links
+        /// <summary>
+        /// Gets the links of the work item in this revision.
+        /// </summary>
+        public IEnumerable<ILink> Links
         {
-            get { return _item.Links; }
+            get { return _item.Links.Cast<Tfs.Link>().Select(item => new LinkProxy(item)); }
         }
 
         /// <summary>

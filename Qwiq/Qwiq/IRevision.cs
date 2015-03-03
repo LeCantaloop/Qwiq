@@ -23,7 +23,7 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>
-        Tfs.LinkCollection Links { get; }
+        IEnumerable<ILink> Links { get; }
 
         /// <summary>
         /// Gets the work item that is stored in this revision.

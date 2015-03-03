@@ -183,8 +183,9 @@ namespace Microsoft.IE.Qwiq
         /// </returns>
         ArrayList Validate();
 
-        void AddParent(IWorkItem item);
-
-        IEnumerable<int> ChildrenIds();
+        /// <summary>
+        /// Gets the links of the work item in this revision.
+        /// </summary>
+        IEnumerable<ILink> Links { get; }
     }
 }
