@@ -14,6 +14,6 @@ namespace Microsoft.IE.Qwiq
         IEnumerable<IWorkItem> Query(IEnumerable<int> ids);
         IWorkItem Query(int id);
         IWorkItem Create(string type, string projectName);
-        TeamFoundation.Client.TfsTeamProjectCollection TeamProjectCollection { get; }
+        ITfsTeamProjectCollection TeamProjectCollection { get; }
     }
 }

@@ -17,9 +17,9 @@ namespace Microsoft.IE.Qwiq
         private readonly Tfs.WorkItemStore _workItemStore;
 
         // To do: stub out the following
-        public TeamFoundation.Client.TfsTeamProjectCollection TeamProjectCollection
+        public ITfsTeamProjectCollection TeamProjectCollection
         {
-            get { return _workItemStore.TeamProjectCollection; }
+            get { return new TfsTeamProjectCollectionProxy(_workItemStore.TeamProjectCollection); }
         }
 
         #region IDisposable
