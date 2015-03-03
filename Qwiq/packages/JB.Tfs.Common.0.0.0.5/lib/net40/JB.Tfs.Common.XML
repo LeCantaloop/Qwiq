@@ -1,0 +1,434 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JB.Tfs.Common</name>
+    </assembly>
+    <members>
+        <member name="T:JB.Tfs.Common.WorkItemStoreConnectionPool">
+            <summary>
+            A pool of WorkItemStore connections
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.IWorkItemStoreConnectionPool.IncreasePoolSize(System.Int32)">
+            <summary>
+            Increases the size of the pool.
+            </summary>
+            <param name="increaseBy">The amount of stores to increase the pool by.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.IWorkItemStoreConnectionPool.DecreasePoolSize(System.Int32)">
+            <summary>
+            Decreases the size of the pool.
+            </summary>
+            <param name="decreaseBy">The amount of stores to decrease the pool by.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.IWorkItemStoreConnectionPool.TryGetWorkItemStore">
+            <summary>
+            Tries to get and reserve an avalable, pooled <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore"/>.
+            Important: Use the using(..) construct or call .Dispose() when done to release the work item store back to the pool.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.IWorkItemStoreConnectionPool.GetUsedWorkItemStoresCount">
+            <summary>
+            Gets the used work item stores count.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.IWorkItemStoreConnectionPool.GetAvailableWorkItemStoresCount">
+            <summary>
+            Gets the available work item stores count.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.#ctor(Microsoft.TeamFoundation.Client.TfsTeamProjectCollection,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JB.Tfs.Common.WorkItemStoreConnectionPool"/> class.
+            </summary>
+            <param name="tfsTeamProjectCollection">The TFS team project collection.</param>
+            <param name="amountOfPooledConnections">The amount of pooled connections.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.IsDisposing">
+            <summary>
+            Determines whether this instance is disposing.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is disposing; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.IncreasePoolSize(System.Int32)">
+            <summary>
+            Increases the size of the pool.
+            </summary>
+            <param name="increaseBy">The amount of stores to increase the pool by.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.DecreasePoolSize(System.Int32)">
+            <summary>
+            Decreases the size of the pool.
+            </summary>
+            <param name="decreaseBy">The amount of stores to decrease the pool by.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.TryGetWorkItemStore">
+            <summary>
+            Tries to get and reserve an avalable, pooled <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore"/>.
+            Important: Use the using(..) construct or call .Dispose() when done to release the work item store back to the pool.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.TryReleaseWorkItemStore(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.Int32)">
+            <summary>
+            Tries the release.
+            </summary>
+            <param name="workItemStore">The <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore"/>.</param>
+            <param name="retryAttempts">if set to <c>true</c> [retry attempts].</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.GetUsedWorkItemStoresCount">
+            <summary>
+            Gets the used work item stores count.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.GetAvailableWorkItemStoresCount">
+            <summary>
+            Gets the available work item stores count.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreConnectionPool.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the
+            <see cref="T:JB.Tfs.Common.PooledWorkItemStore"/> is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.IGlobalListCollection.Save(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Saves the data to the team foundation server.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.IGlobalListCollection.Refresh(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Refreshes the data from the team foundation server.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.IGlobalList.GetGlobalListItemValues(System.Xml.XmlElement)">
+            <summary>
+            Gets the global list item values.
+            </summary>
+            <param name="globalListXmlElement">The global list XML element.</param>
+            <returns></returns>
+        </member>
+        <member name="P:JB.Tfs.Common.IGlobalList.Name">
+            <summary>
+            Gets the name.
+            </summary>
+        </member>
+        <member name="P:JB.Tfs.Common.IGlobalList.Values">
+            <summary>
+            Gets the values.
+            </summary>
+        </member>
+        <member name="F:JB.Tfs.Common.GlobalList._values">
+            <summary>
+            Internal list of values
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalList.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:JB.Tfs.Common.GlobalList"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="values">The values.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalList.#ctor(System.Xml.XmlElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JB.Tfs.Common.GlobalList"/> class.
+            </summary>
+            <param name="globalListXmlElement">The XML element.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalList.GetGlobalListItemValues(System.Xml.XmlElement)">
+            <summary>
+            Gets the global list item values.
+            </summary>
+            <param name="globalListXmlElement">The global list XML element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalList.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:JB.Tfs.Common.GlobalList.Name">
+            <summary>
+            Gets the name.
+            </summary>
+        </member>
+        <member name="P:JB.Tfs.Common.GlobalList.Values">
+            <summary>
+            Gets the values.
+            </summary>
+        </member>
+        <member name="T:JB.Tfs.Common.WorkItemStoreExtensions">
+            <summary>
+            Extension Methods for <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore"/>
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.GetGlobalLists(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Gets the global lists.
+            </summary>
+            <param name="workItemStore">The workItemStore.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.GetGlobalListValues(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String)">
+            <summary>
+            Gets the global list values.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="globalListName">Name of the global list.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query to execute.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,Microsoft.TeamFoundation.WorkItemTracking.Client.BatchReadParameterCollection,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query string to execute.</param>
+            <param name="batchReadParameters">A collection of WorkItem ID and revision pairs.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Int32[],System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query string to execute.</param>
+            <param name="ids">An array of WorkItem IDs.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Int32[],System.Int32[],System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query string to execute.</param>
+            <param name="ids">An array of WorkItem IDs.</param>
+            <param name="revs">An array of WorkItem revisions.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Collections.IDictionary,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query to execute.</param>
+            <param name="context">A dictionary of macros and values.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Collections.IDictionary,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query to execute.</param>
+            <param name="context">A dictionary of macros and values.</param>
+            <param name="dayPrevision">True to ignore time values so that DateTime objects are treated as dates; otherwise, false.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryCountAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Count Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query to execute.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.WorkItemStoreExtensions.QueryCountAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore,System.String,System.Collections.IDictionary,System.Threading.CancellationToken)">
+            <summary>
+            Performs the Count Query asynchronously.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+            <param name="wiql">The query to execute.</param>
+            <param name="context">The context.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.IPooledWorkItemStore.TryRelease(System.Int32)">
+            <summary>
+            Tries to release the underlying WorkItemStore back to pool. Cannot be used safely anymore afterwards.
+            </summary>
+            <param name="retryAttempts">The retry attempts.</param>
+            <returns>True if successful, otherwise false.</returns>
+        </member>
+        <member name="P:JB.Tfs.Common.IPooledWorkItemStore.WorkItemStore">
+            <summary>
+            Gets the work item store.
+            </summary>
+        </member>
+        <member name="P:JB.Tfs.Common.IPooledWorkItemStore.WorkItemStoreConnectionPool">
+            <summary>
+            Gets the parent work item store connection pool.
+            </summary>
+        </member>
+        <member name="T:JB.Tfs.Common.PooledWorkItemStore">
+            <summary>
+            A <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore"/> retrieved from the <see cref="T:JB.Tfs.Common.WorkItemStoreConnectionPool"/>
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.PooledWorkItemStore.IsDisposing">
+            <summary>
+            Determines whether this instance is disposing.
+            </summary>
+            <returns>
+              <c>true</c> if this instance is disposing; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:JB.Tfs.Common.PooledWorkItemStore.#ctor(JB.Tfs.Common.WorkItemStoreConnectionPool,Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JB.Tfs.Common.PooledWorkItemStore"/> class.
+            </summary>
+            <param name="workItemStoreConnectionPool">The work item store connection pool.</param>
+            <param name="workItemStore">The work item store.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.PooledWorkItemStore.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the
+            <see cref="T:JB.Tfs.Common.PooledWorkItemStore"/> is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.PooledWorkItemStore.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:JB.Tfs.Common.PooledWorkItemStore.TryRelease(System.Int32)">
+            <summary>
+            Tries to release the underlying WorkItemStore back to pool. Cannot be used safely anymore afterwards.
+            </summary>
+            <param name="retryAttempts">The retry attempts.</param>
+            <returns>True if successful, otherwise false.</returns>
+        </member>
+        <member name="P:JB.Tfs.Common.PooledWorkItemStore.WorkItemStore">
+            <summary>
+            Gets the work item store.
+            </summary>
+        </member>
+        <member name="P:JB.Tfs.Common.PooledWorkItemStore.WorkItemStoreConnectionPool">
+            <summary>
+            Gets the parent work item store connection pool.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.#ctor(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Initializes a new instance of the <see cref="T:JB.Tfs.Common.GlobalListCollection"/> class.
+            </summary>
+            <param name="workItemStore">The WorkItemStore to query.</param>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.FetchDataFromTeamFoundationServer(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Fetches the data from team foundation server.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.GetGlobalListXmlElements(System.Xml.XmlDocument)">
+            <summary>
+            Gets the global list XML elements.
+            </summary>
+            <param name="xmlDocument">The XML document.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.GetGlobalListsXmlElement(System.Xml.XmlDocument)">
+            <summary>
+            Gets the global lists XML element.
+            </summary>
+            <param name="xmlDocument">The XML document.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.GetOrCreateGlobalListsXmlDocument(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Gets or creates the global lists document.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.Save(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Saves the data to the team foundation server.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.Refresh(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStore)">
+            <summary>
+            Refreshes the data from the team foundation server.
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:JB.Tfs.Common.GlobalListCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:JB.Tfs.Common.QueryExtensions">
+            <summary>
+            Extension Methods for <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Query"/>
+            </summary>
+        </member>
+        <member name="M:JB.Tfs.Common.QueryExtensions.RunQueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.Query,System.Threading.CancellationToken)">
+            <summary>
+            Runs the query asynchronously.
+            </summary>
+            <param name="query">The <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Query"/> to execute.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.QueryExtensions.RunQueryCountAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.Query,System.Threading.CancellationToken)">
+            <summary>
+            Runs the count query asynchronously.
+            </summary>
+            <param name="query">The <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Query"/> to execute.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+        <member name="M:JB.Tfs.Common.QueryExtensions.RunLinkQueryAsync(Microsoft.TeamFoundation.WorkItemTracking.Client.Query,System.Threading.CancellationToken)">
+            <summary>
+            Runs the link query asynchronously.
+            </summary>
+            <param name="query">The <see cref="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Query"/> to execute.</param>
+            <param name="cancellationToken">The cancellation token.</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
