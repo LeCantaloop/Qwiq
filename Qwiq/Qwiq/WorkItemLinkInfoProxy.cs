@@ -1,10 +1,12 @@
-﻿namespace Microsoft.IE.Qwiq
+﻿using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+
+namespace Microsoft.IE.Qwiq
 {
     public class WorkItemLinkInfoProxy : IWorkItemLinkInfo
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.WorkItemLinkInfo _item;
+        private readonly Tfs.WorkItemLinkInfo _item;
 
-        public WorkItemLinkInfoProxy(TeamFoundation.WorkItemTracking.Client.WorkItemLinkInfo item)
+        public WorkItemLinkInfoProxy(Tfs.WorkItemLinkInfo item)
         {
             _item = item;
         }

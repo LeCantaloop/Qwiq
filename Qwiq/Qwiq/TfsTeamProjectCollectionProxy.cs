@@ -1,12 +1,12 @@
-﻿using Tfs = Microsoft.TeamFoundation.Client;
+﻿using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq
 {
     public class TfsTeamProjectCollectionProxy : ITfsTeamProjectCollection
     {
-        private readonly Tfs.TfsTeamProjectCollection _tfs;
+        private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
 
-        public TfsTeamProjectCollectionProxy(Tfs.TfsTeamProjectCollection tfs)
+        public TfsTeamProjectCollectionProxy(Tfs.Client.TfsTeamProjectCollection tfs)
         {
             _tfs = tfs;
         }
@@ -14,7 +14,7 @@ namespace Microsoft.IE.Qwiq
         // To do: we should not assume T will be Microsoft.IE.Qwiq.IIdentityManagementService2 all the time
         public IIdentityManagementService2 GetService<T>()
         {
-            return new IdentityManagementService2Proxy(_tfs.GetService<TeamFoundation.Framework.Client.IIdentityManagementService2>());
+            return new IdentityManagementService2Proxy(_tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>());
         }
     }
 }
