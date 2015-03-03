@@ -6,7 +6,7 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
 
-        public TfsTeamProjectCollectionProxy(Tfs.Client.TfsTeamProjectCollection tfs)
+        internal TfsTeamProjectCollectionProxy(Tfs.Client.TfsTeamProjectCollection tfs)
         {
             _tfs = tfs;
         }

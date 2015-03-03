@@ -19,9 +19,9 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the attachments of the work item in this revision.
         /// </summary>
-        public Tfs.AttachmentCollection Attachments
+        public IEnumerable<IAttachment> Attachments
         {
-            get { return _rev.Attachments; }
+            get { return _rev.Attachments.Cast<Tfs.Attachment>().Select(item => new AttachmentProxy(item)); }
         }
 
         /// <summary>

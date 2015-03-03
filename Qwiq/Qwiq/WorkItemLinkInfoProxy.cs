@@ -6,7 +6,7 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.WorkItemLinkInfo _item;
 
-        public WorkItemLinkInfoProxy(Tfs.WorkItemLinkInfo item)
+        internal WorkItemLinkInfoProxy(Tfs.WorkItemLinkInfo item)
         {
             _item = item;
         }

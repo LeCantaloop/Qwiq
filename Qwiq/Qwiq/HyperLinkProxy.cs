@@ -6,7 +6,7 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.Hyperlink _hyperLink;
 
-        public HyperLinkProxy(Tfs.Hyperlink hyperLink)
+        internal HyperLinkProxy(Tfs.Hyperlink hyperLink)
         {
             _hyperLink = hyperLink;
         }

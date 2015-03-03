@@ -8,7 +8,7 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the attachments of the work item in this revision.
         /// </summary>
-        Tfs.AttachmentCollection Attachments { get; }
+        IEnumerable<IAttachment> Attachments { get; }
 
         /// <summary>
         /// Gets the fields of the work item in this revision.
