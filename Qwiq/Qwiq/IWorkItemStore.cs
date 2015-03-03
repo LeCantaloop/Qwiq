@@ -10,6 +10,7 @@ namespace Microsoft.IE.Qwiq
     public interface IWorkItemStore : IDisposable
     {
         IEnumerable<IWorkItem> Query(string wiql);
+        IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql);
         IEnumerable<IWorkItem> Query(IEnumerable<int> ids);
         IWorkItem Query(int id);
         IWorkItem Create(string type, string projectName);

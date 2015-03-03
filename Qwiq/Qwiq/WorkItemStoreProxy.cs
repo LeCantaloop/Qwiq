@@ -43,6 +43,12 @@ namespace Microsoft.IE.Qwiq
             _workItemStore = _tfs.GetService<Tfs.WorkItemStore>();
         }
 
+        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql)
+        {
+            var query = new Tfs.Query(_workItemStore, wiql);
+            return query.RunLinkQuery().Select(item => new WorkItemLinkInfoProxy(item));
+        }
+
         public IEnumerable<IWorkItem> Query(string wiql)
         {
             return _workItemStore.Query(wiql).Cast<Tfs.WorkItem>().Select(item => new WorkItemProxy(item));
