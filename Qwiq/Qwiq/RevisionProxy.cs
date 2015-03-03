@@ -5,13 +5,13 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 namespace Microsoft.IE.Qwiq
 {
     /// <summary>
-    /// Wrapper around the TFS Revision. This exists so that every agent doesn't need to reference
+    /// Wrapper around the TFS RevisionProxy. This exists so that every agent doesn't need to reference
     /// all the TFS libraries.
     /// </summary>
-    public class Revision : IRevision
+    public class RevisionProxy : IRevision
     {
         private readonly Tfs.Revision _rev;
-        internal Revision(Tfs.Revision revision)
+        internal RevisionProxy(Tfs.Revision revision)
         {
             _rev = revision;
         }
@@ -54,9 +54,9 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the work item that is stored in this revision.
         /// </summary>
-        public WorkItem WorkItem
+        public WorkItemProxy WorkItemProxy
         {
-            get { return new WorkItem(_rev.WorkItem); }
+            get { return new WorkItemProxy(_rev.WorkItem); }
         }
 
         /// <summary>

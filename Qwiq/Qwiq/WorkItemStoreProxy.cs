@@ -11,7 +11,7 @@ namespace Microsoft.IE.Qwiq
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
     /// all the TFS libraries.
     /// </summary>
-    public class WorkItemStore : IWorkItemStore
+    public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly TeamFoundation.Client.TfsTeamProjectCollection _tfs;
         private readonly Tfs.WorkItemStore _workItemStore;
@@ -37,7 +37,7 @@ namespace Microsoft.IE.Qwiq
         }
         #endregion
 
-        public WorkItemStore(Uri endpoint, TfsClientCredentials credentials)
+        public WorkItemStoreProxy(Uri endpoint, TfsClientCredentials credentials)
         {
             _tfs = new TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
             _workItemStore = _tfs.GetService<Tfs.WorkItemStore>();
@@ -45,7 +45,7 @@ namespace Microsoft.IE.Qwiq
 
         public IEnumerable<IWorkItem> Query(string wiql)
         {
-            return _workItemStore.Query(wiql).Cast<Tfs.WorkItem>().Select(item => new WorkItem(item));
+            return _workItemStore.Query(wiql).Cast<Tfs.WorkItem>().Select(item => new WorkItemProxy(item));
         }
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids)
@@ -64,7 +64,7 @@ namespace Microsoft.IE.Qwiq
         public IWorkItem Create(string type, string projectName)
         {
             var wits = _workItemStore.Projects[projectName].WorkItemTypes;
-            return new WorkItem(new Tfs.WorkItem(wits[type]));
+            return new WorkItemProxy(new Tfs.WorkItem(wits[type]));
         }
     }
 }

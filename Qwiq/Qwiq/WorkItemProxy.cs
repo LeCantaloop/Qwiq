@@ -10,11 +10,11 @@ namespace Microsoft.IE.Qwiq
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
     /// all the TFS libraries.
     /// </summary>
-    public class WorkItem : IWorkItem
+    public class WorkItemProxy : IWorkItem
     {
         private readonly Tfs.WorkItem _item;
 
-        internal WorkItem(Tfs.WorkItem item)
+        internal WorkItemProxy(Tfs.WorkItem item)
         {
             _item = item;
         }
@@ -187,9 +187,9 @@ namespace Microsoft.IE.Qwiq
         /// Gets an object that represents a collection of valid revision numbers for this work
         /// item.
         /// </summary>
-        public IEnumerable<Revision> Revisions
+        public IEnumerable<RevisionProxy> Revisions
         {
-            get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => new Revision(r)); }
+            get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => new RevisionProxy(r)); }
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace Microsoft.IE.Qwiq
         /// <returns>A new WorkItem instance that is a copy of this WorkItem instance.</returns>
         public IWorkItem Copy()
         {
-            return new WorkItem(_item.Copy());
+            return new WorkItemProxy(_item.Copy());
         }
 
         /// <summary>
@@ -299,9 +299,9 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItem Copy(Tfs.WorkItemType targetType)
+        public WorkItemProxy Copy(Tfs.WorkItemType targetType)
         {
-            return new WorkItem(_item.Copy(targetType));
+            return new WorkItemProxy(_item.Copy(targetType));
         }
 
         /// <summary>
@@ -316,9 +316,9 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItem Copy(Tfs.WorkItemType targetType, Tfs.WorkItemCopyFlags flags)
+        public WorkItemProxy Copy(Tfs.WorkItemType targetType, Tfs.WorkItemCopyFlags flags)
         {
-            return new WorkItem(_item.Copy(targetType, flags));
+            return new WorkItemProxy(_item.Copy(targetType, flags));
         }
 
         /// <summary>

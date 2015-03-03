@@ -61,17 +61,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IdentityManagementService2.cs" />
+    <Compile Include="IdentityManagementService2Proxy.cs" />
     <Compile Include="IIdentityManagementService2.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItemStore.cs" />
-    <Compile Include="Revision.cs" />
-    <Compile Include="TfsTeamProjectCollection.cs" />
-    <Compile Include="WorkItem.cs" />
+    <Compile Include="RevisionProxy.cs" />
+    <Compile Include="TfsTeamProjectCollectionProxy.cs" />
+    <Compile Include="WorkItemProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkItemStore.cs" />
+    <Compile Include="WorkItemStoreProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

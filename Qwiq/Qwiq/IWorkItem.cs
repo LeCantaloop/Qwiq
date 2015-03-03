@@ -133,7 +133,7 @@ namespace Microsoft.IE.Qwiq
         /// Gets an object that represents a collection of valid revision numbers for this work
         /// item.
         /// </summary>
-        IEnumerable<Revision> Revisions { get; }
+        IEnumerable<RevisionProxy> Revisions { get; }
 
         /// <summary>
         /// Saves any pending changes on this work item.
