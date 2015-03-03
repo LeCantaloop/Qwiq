@@ -65,6 +65,8 @@
     <Compile Include="ILink.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="LinkProxy.cs" />
+    <Compile Include="AttachmentProxy.cs" />
+    <Compile Include="IAttachment.cs" />
     <Compile Include="IdentityManagementService2Proxy.cs" />
     <Compile Include="IHyperlink.cs" />
     <Compile Include="IIdentityManagementService2.cs" />
