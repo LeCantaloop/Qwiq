@@ -13,11 +13,12 @@ namespace Microsoft.IE.Qwiq
     /// </summary>
     public class WorkItemStoreProxy : IWorkItemStore
     {
-        private readonly TeamFoundation.Client.TfsTeamProjectCollection _tfs;
+        private readonly TfsTeamProjectCollection _tfs;
         private readonly Tfs.WorkItemStore _workItemStore;
 
         // To do: stub out the following
-        public TeamFoundation.Client.TfsTeamProjectCollection TeamProjectCollection {
+        public TeamFoundation.Client.TfsTeamProjectCollection TeamProjectCollection
+        {
             get { return _workItemStore.TeamProjectCollection; }
         }
 
@@ -39,7 +40,7 @@ namespace Microsoft.IE.Qwiq
 
         public WorkItemStoreProxy(Uri endpoint, TfsClientCredentials credentials)
         {
-            _tfs = new TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
+            _tfs = new TfsTeamProjectCollection(endpoint, credentials);
             _workItemStore = _tfs.GetService<Tfs.WorkItemStore>();
         }
 
@@ -56,8 +57,8 @@ namespace Microsoft.IE.Qwiq
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids)
         {
-            const string WIQL = "SELECT * FROM WorkItems WHERE [System.ID] IN ({0})";
-            var query = string.Format(CultureInfo.InvariantCulture, WIQL, string.Join(",", ids));
+            const string wiql = "SELECT * FROM WorkItems WHERE [System.ID] IN ({0})";
+            var query = string.Format(CultureInfo.InvariantCulture, wiql, string.Join(",", ids));
 
             return Query(query);
         }
