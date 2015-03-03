@@ -6,7 +6,7 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.RelatedLink _relatedLink;
 
-        public RelatedLinkProxy(Tfs.RelatedLink relatedLink)
+        internal RelatedLinkProxy(Tfs.RelatedLink relatedLink)
         {
             _relatedLink = relatedLink;
         }

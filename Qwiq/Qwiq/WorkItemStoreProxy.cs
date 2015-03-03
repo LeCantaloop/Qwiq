@@ -37,7 +37,7 @@ namespace Microsoft.IE.Qwiq
         }
         #endregion
 
-        public WorkItemStoreProxy(Uri endpoint, Tfs.Client.TfsClientCredentials credentials)
+        internal WorkItemStoreProxy(Uri endpoint, Tfs.Client.TfsClientCredentials credentials)
         {
             _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials);
             _workItemStore = _tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
