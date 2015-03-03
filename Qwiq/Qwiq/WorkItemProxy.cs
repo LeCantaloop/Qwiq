@@ -187,7 +187,7 @@ namespace Microsoft.IE.Qwiq
         /// Gets an object that represents a collection of valid revision numbers for this work
         /// item.
         /// </summary>
-        public IEnumerable<RevisionProxy> Revisions
+        public IEnumerable<IRevision> Revisions
         {
             get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => new RevisionProxy(r)); }
         }
