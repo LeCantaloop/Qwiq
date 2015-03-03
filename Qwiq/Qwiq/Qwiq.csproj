@@ -61,12 +61,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HyperLinkProxy.cs" />
+    <Compile Include="ILink.cs" />
+    <Compile Include="IRelatedLink.cs" />
+    <Compile Include="LinkProxy.cs" />
     <Compile Include="IdentityManagementService2Proxy.cs" />
+    <Compile Include="IHyperlink.cs" />
     <Compile Include="IIdentityManagementService2.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="RelatedLinkProxy.cs" />
     <Compile Include="RevisionProxy.cs" />
     <Compile Include="TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="WorkItemProxy.cs" />
