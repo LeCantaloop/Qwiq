@@ -79,5 +79,15 @@ namespace Microsoft.IE.Qwiq
                         .Select(item => new ProjectProxy(item));
             }
         }
+
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        {
+            get
+            {
+                return
+                    _workItemStore.WorkItemLinkTypes
+                        .Select(item => new WorkItemLinkTypeProxy(item));
+            }
+        }
     }
 }
