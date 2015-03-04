@@ -14,6 +14,12 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.WorkItem _item;
 
+        public WorkItemProxy(IWorkItemType type)
+        {
+            var realType = GetWorkItemType(type);
+            _item = new Tfs.WorkItem(realType);
+        }
+
         internal WorkItemProxy(Tfs.WorkItem item)
         {
             _item = item;
@@ -302,9 +308,16 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItemProxy Copy(Tfs.WorkItemType targetType)
+        public WorkItemProxy Copy(IWorkItemType targetType)
         {
-            return new WorkItemProxy(_item.Copy(targetType));
+            var type = GetWorkItemType(targetType);
+            return new WorkItemProxy(_item.Copy(type));
+        }
+
+        private Tfs.WorkItemType GetWorkItemType(IWorkItemType type)
+        {
+            var workItemTypes = _item.Project.WorkItemTypes.Cast<Tfs.WorkItemType>();
+            return workItemTypes.Single(item => item.Name == type.Name);
         }
 
         /// <summary>
@@ -319,9 +332,11 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItemProxy Copy(Tfs.WorkItemType targetType, Tfs.WorkItemCopyFlags flags)
+        public WorkItemProxy Copy(IWorkItemType targetType, Tfs.WorkItemCopyFlags flags)
         {
-            return new WorkItemProxy(_item.Copy(targetType, flags));
+            var type = GetWorkItemType(targetType);
+
+            return new WorkItemProxy(_item.Copy(type, flags));
         }
 
         /// <summary>

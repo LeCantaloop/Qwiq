@@ -16,9 +16,10 @@ namespace Microsoft.IE.Qwiq
         private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
         private readonly Tfs.WorkItemTracking.Client.WorkItemStore _workItemStore;
 
-        public ITfsTeamProjectCollection TeamProjectCollection
+        public WorkItemStoreProxy(Uri endpoint, TfsCredentials credentials)
         {
-            get { return new TfsTeamProjectCollectionProxy(_workItemStore.TeamProjectCollection); }
+            _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials);
+            _workItemStore = _tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
         }
 
         #region IDisposable
@@ -37,10 +38,9 @@ namespace Microsoft.IE.Qwiq
         }
         #endregion
 
-        public WorkItemStoreProxy(Uri endpoint, TfsCredentials credentials)
+        public ITfsTeamProjectCollection TeamProjectCollection
         {
-            _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials);
-            _workItemStore = _tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
+            get { return new TfsTeamProjectCollectionProxy(_workItemStore.TeamProjectCollection); }
         }
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql)
@@ -78,12 +78,6 @@ namespace Microsoft.IE.Qwiq
                     _workItemStore.Projects.Cast<Tfs.WorkItemTracking.Client.Project>()
                         .Select(item => new ProjectProxy(item));
             }
-        }
-
-        public IWorkItem Create(string type, string projectName)
-        {
-            var wits = _workItemStore.Projects[projectName].WorkItemTypes;
-            return new WorkItemProxy(new Tfs.WorkItemTracking.Client.WorkItem(wits[type]));
         }
     }
 }
