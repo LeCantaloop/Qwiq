@@ -187,5 +187,7 @@ namespace Microsoft.IE.Qwiq
         /// Gets the links of the work item in this revision.
         /// </summary>
         IEnumerable<ILink> Links { get; }
+
+        IEnumerable<IAttachment> Attachments { get; }
     }
 }

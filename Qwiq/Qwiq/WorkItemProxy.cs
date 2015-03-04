@@ -57,9 +57,9 @@ namespace Microsoft.IE.Qwiq
         /// Gets the Microsoft.TeamFoundation.WorkItemTracking.Client.AttachmentCollection
         /// object that represents the attachments that belong to this work item.
         /// </summary>
-        public Tfs.AttachmentCollection Attachments
+        public IEnumerable<IAttachment> Attachments
         {
-            get { return _item.Attachments; }
+            get { return _item.Attachments.Cast<Tfs.Attachment>().Select(item => new AttachmentProxy(item)); }
         }
 
         /// <summary>
