@@ -33,9 +33,9 @@ namespace Microsoft.IE.Qwiq
             set { _link.ChangedDate = value; }
         }
 
-        public TeamFoundation.WorkItemTracking.Client.WorkItemLinkTypeEnd LinkTypeEnd
+        public IWorkItemLinkTypeEnd LinkTypeEnd
         {
-            get { return _link.LinkTypeEnd; }
+            get { return new WorkItemLinkTypeEndProxy(_link.LinkTypeEnd); }
         }
 
         public int SourceId

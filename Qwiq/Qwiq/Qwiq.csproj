@@ -71,6 +71,8 @@
     <Compile Include="IProject.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IWorkItemLink.cs" />
+    <Compile Include="IWorkItemLinkType.cs" />
+    <Compile Include="IWorkItemLinkTypeEnd.cs" />
     <Compile Include="IWorkItemType.cs" />
     <Compile Include="LinkCollectionProxy.cs" />
     <Compile Include="LinkProxy.cs" />
@@ -88,9 +90,13 @@
     <Compile Include="ProjectProxy.cs" />
     <Compile Include="RelatedLinkProxy.cs" />
     <Compile Include="RevisionProxy.cs" />
+    <Compile Include="SaveFlags.cs" />
     <Compile Include="TfsTeamProjectCollectionProxy.cs" />
+    <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemLinkInfoProxy.cs" />
     <Compile Include="WorkItemLinkProxy.cs" />
+    <Compile Include="WorkItemLinkTypeEndProxy.cs" />
+    <Compile Include="WorkItemLinkTypeProxy.cs" />
     <Compile Include="WorkItemProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkItemStoreProxy.cs" />

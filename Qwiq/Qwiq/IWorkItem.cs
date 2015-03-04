@@ -197,5 +197,7 @@ namespace Microsoft.IE.Qwiq
         /// The Type property is null.
         /// </exception>
          IWorkItemType Type { get; }
+
+         IEnumerable<IWorkItemLink> WorkItemLinks { get; }
     }
 }

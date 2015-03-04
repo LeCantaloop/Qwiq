@@ -261,9 +261,9 @@ namespace Microsoft.IE.Qwiq
         /// object that represents a collection of the Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemLinks
         /// that currently link to this work item.
         /// </summary>
-        public Tfs.WorkItemLinkCollection WorkItemLinks
+        public IEnumerable<IWorkItemLink> WorkItemLinks
         {
-            get { return _item.WorkItemLinks; }
+            get { return _item.WorkItemLinks.Cast<Tfs.WorkItemLink>().Select(item => new WorkItemLinkProxy(item)); }
         }
 
         /// <summary>
