@@ -156,9 +156,9 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>
-        public IEnumerable<ILink> Links
+        public ICollection<ILink> Links
         {
-            get { return _item.Links.Cast<Tfs.Link>().Select(item => new LinkProxy(item)); }
+            get { return new LinkCollectionProxy(_item); }
         }
 
         /// <summary>
@@ -389,24 +389,6 @@ namespace Microsoft.IE.Qwiq
         public ArrayList Validate()
         {
             return _item.Validate();
-        }
-
-        public void AddParent(IWorkItem parent)
-        {
-            var linkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds["System.LinkTypes.Hierarchy-Reverse"];
-            _item.Links.Add(new Tfs.RelatedLink(linkTypeEnd, parent.Id));
-        }
-
-        public IEnumerable<int> ChildrenIds()
-        {
-            var linkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds["System.LinkTypes.Hierarchy-Forward"];
-            foreach (Tfs.WorkItemLink link in WorkItemLinks)
-            {
-                if (link.LinkTypeEnd == linkTypeEnd)
-                {
-                    yield return link.TargetId;
-                }
-            }
         }
 
         /// <summary>

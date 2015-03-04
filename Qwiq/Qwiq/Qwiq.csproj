@@ -72,6 +72,7 @@
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IWorkItemLink.cs" />
     <Compile Include="IWorkItemType.cs" />
+    <Compile Include="LinkCollectionProxy.cs" />
     <Compile Include="LinkProxy.cs" />
     <Compile Include="AttachmentProxy.cs" />
     <Compile Include="IAttachment.cs" />

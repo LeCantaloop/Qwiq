@@ -4,16 +4,16 @@ namespace Microsoft.IE.Qwiq
 {
     public class LinkProxy : ILink
     {
-        private readonly Tfs.Link _link;
+        internal readonly Tfs.Link Link;
 
         internal LinkProxy(Tfs.Link link)
         {
-            _link = link;
+            Link = link;
         }
 
         public string Comment
         {
-            get { return _link.Comment; }
+            get { return Link.Comment; }
         }
     }
 }
