@@ -10,7 +10,7 @@ namespace Microsoft.IE.Qwiq.Credentials
         {
         }
 
-        public CredentialsFactory GetInstance()
+        public static CredentialsFactory GetInstance()
         {
             return new CredentialsFactory();
         }
