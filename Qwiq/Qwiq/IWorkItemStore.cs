@@ -15,5 +15,7 @@ namespace Microsoft.IE.Qwiq
         IWorkItem Query(int id);
         IWorkItem Create(string type, string projectName);
         ITfsTeamProjectCollection TeamProjectCollection { get; }
+        IEnumerable<IProject> Projects { get; }
+
     }
 }

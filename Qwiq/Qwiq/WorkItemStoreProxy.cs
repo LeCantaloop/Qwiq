@@ -70,6 +70,16 @@ namespace Microsoft.IE.Qwiq
             return Query(new[] { id }).SingleOrDefault();
         }
 
+        public IEnumerable<IProject> Projects
+        {
+            get
+            {
+                return
+                    _workItemStore.Projects.Cast<Tfs.WorkItemTracking.Client.Project>()
+                        .Select(item => new ProjectProxy(item));
+            }
+        }
+
         public IWorkItem Create(string type, string projectName)
         {
             var wits = _workItemStore.Projects[projectName].WorkItemTypes;
