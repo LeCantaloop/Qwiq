@@ -327,11 +327,11 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItemProxy Copy(IWorkItemType targetType, Tfs.WorkItemCopyFlags flags)
+        public WorkItemProxy Copy(IWorkItemType targetType, WorkItemCopyFlags flags)
         {
             var type = GetWorkItemType(targetType);
 
-            return new WorkItemProxy(_item.Copy(type, flags));
+            return new WorkItemProxy(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags));
         }
 
         /// <summary>
