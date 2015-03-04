@@ -39,9 +39,9 @@ namespace Microsoft.IE.Qwiq
             get { return _project.Uri; }
         }
 
-        public Tfs.WorkItemTypeCollection WorkItemTypes
+        public IEnumerable<IWorkItemType> WorkItemTypes
         {
-            get { return _project.WorkItemTypes; }
+            get { return _project.WorkItemTypes.Cast<Tfs.WorkItemType>().Select(item => new WorkItemTypeProxy(item)); }
         }
     }
 }

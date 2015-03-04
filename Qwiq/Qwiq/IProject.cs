@@ -11,6 +11,6 @@ namespace Microsoft.IE.Qwiq
         IEnumerable<INode> IterationRootNodes { get; }
         string Name { get; }
         Uri Uri { get; }
-        WorkItemTypeCollection WorkItemTypes { get; }
+        IEnumerable<IWorkItemType> WorkItemTypes { get; }
     }
 }
