@@ -407,9 +407,9 @@ namespace Microsoft.IE.Qwiq
         /// does not return errors if the link that is being added already exists or
         /// the link that is being removed was already removed.
         /// </param>
-        public void Save(Tfs.SaveFlags saveFlags)
+        public void Save(SaveFlags saveFlags)
         {
-            _item.Save(saveFlags);
+            _item.Save((Tfs.SaveFlags)saveFlags);
         }
     }
 }
