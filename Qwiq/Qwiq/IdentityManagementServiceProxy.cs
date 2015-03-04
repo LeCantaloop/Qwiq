@@ -2,11 +2,11 @@
 
 namespace Microsoft.IE.Qwiq
 {
-    public class IdentityManagementService2Proxy : IIdentityManagementService2
+    public class IdentityManagementServiceProxy : IIdentityManagementService
     {
         private readonly Tfs.IIdentityManagementService2 _identityManagementService2;
 
-        internal IdentityManagementService2Proxy(Tfs.IIdentityManagementService2 identityManagementService2)
+        internal IdentityManagementServiceProxy(Tfs.IIdentityManagementService2 identityManagementService2)
         {
             _identityManagementService2 = identityManagementService2;
         }

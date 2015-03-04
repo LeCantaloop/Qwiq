@@ -11,10 +11,13 @@ namespace Microsoft.IE.Qwiq
             _tfs = tfs;
         }
 
-        // To do: we should not assume T will be Microsoft.IE.Qwiq.IIdentityManagementService2 all the time
-        public IIdentityManagementService2 GetService<T>()
+        public IIdentityManagementService IdentityManagementService
         {
-            return new IdentityManagementService2Proxy(_tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>());
+            get
+            {
+                return new IdentityManagementServiceProxy(
+                        _tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>());
+            }
         }
     }
 }

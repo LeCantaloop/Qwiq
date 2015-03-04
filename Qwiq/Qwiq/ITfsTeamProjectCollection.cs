@@ -2,6 +2,6 @@
 {
     public interface ITfsTeamProjectCollection
     {
-        IIdentityManagementService2 GetService<T>();
+        IIdentityManagementService IdentityManagementService { get; }
     }
 }
