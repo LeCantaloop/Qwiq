@@ -31,11 +31,6 @@ namespace Microsoft.IE.Qwiq
             set { _item["Assigned To"] = value; }
         }
 
-        public string WorkItemType
-        {
-            get { return _item.Type.Name; }
-        }
-
         /// <summary>
         /// Gets or sets the string value of the AreaPath field for this work item.
         /// </summary>
@@ -238,9 +233,9 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
         /// The Type property is null.
         /// </exception>
-        public Tfs.WorkItemType Type
+        public IWorkItemType Type
         {
-            get { return _item.Type; }
+            get { return new WorkItemTypeProxy(_item.Type); }
         }
 
         /// <summary>

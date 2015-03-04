@@ -10,7 +10,6 @@ namespace Microsoft.IE.Qwiq
     /// </summary>
     public interface IWorkItem
     {
-        string WorkItemType { get; }
         string AssignedTo { get; set; }
 
         /// <summary>
@@ -189,5 +188,14 @@ namespace Microsoft.IE.Qwiq
         IEnumerable<ILink> Links { get; }
 
         IEnumerable<IAttachment> Attachments { get; }
+
+        /// <summary>
+        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object
+        /// that represents the type of this work item.
+        /// </summary>
+        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
+        /// The Type property is null.
+        /// </exception>
+         IWorkItemType Type { get; }
     }
 }
