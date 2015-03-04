@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Credentials\CredentialsFactory.cs" />
+    <Compile Include="Credentials\TfsCredentials.cs" />
     <Compile Include="HyperLinkProxy.cs" />
     <Compile Include="ILink.cs" />
     <Compile Include="IRelatedLink.cs" />

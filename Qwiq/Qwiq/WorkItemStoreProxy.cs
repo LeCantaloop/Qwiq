@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Microsoft.IE.Qwiq.Credentials;
 using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq
@@ -15,7 +16,6 @@ namespace Microsoft.IE.Qwiq
         private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
         private readonly Tfs.WorkItemTracking.Client.WorkItemStore _workItemStore;
 
-        // To do: stub out the following
         public ITfsTeamProjectCollection TeamProjectCollection
         {
             get { return new TfsTeamProjectCollectionProxy(_workItemStore.TeamProjectCollection); }
@@ -37,9 +37,9 @@ namespace Microsoft.IE.Qwiq
         }
         #endregion
 
-        internal WorkItemStoreProxy(Uri endpoint, Tfs.Client.TfsClientCredentials credentials)
+        public WorkItemStoreProxy(Uri endpoint, TfsCredentials credentials)
         {
-            _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials);
+            _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials);
             _workItemStore = _tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
         }
 
