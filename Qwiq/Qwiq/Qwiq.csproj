@@ -70,6 +70,7 @@
     <Compile Include="INode.cs" />
     <Compile Include="IProject.cs" />
     <Compile Include="IRelatedLink.cs" />
+    <Compile Include="IWorkItemLink.cs" />
     <Compile Include="IWorkItemType.cs" />
     <Compile Include="LinkProxy.cs" />
     <Compile Include="AttachmentProxy.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="RevisionProxy.cs" />
     <Compile Include="TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="WorkItemLinkInfoProxy.cs" />
+    <Compile Include="WorkItemLinkProxy.cs" />
     <Compile Include="WorkItemProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkItemStoreProxy.cs" />
