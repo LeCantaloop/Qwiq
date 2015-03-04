@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq
 {
     public interface IProject
     {
-        NodeCollection AreaRootNodes { get; }
+        IEnumerable<INode> AreaRootNodes { get; }
         int Id { get; }
-        NodeCollection IterationRootNodes { get; }
+        IEnumerable<INode> IterationRootNodes { get; }
         string Name { get; }
         Uri Uri { get; }
         WorkItemTypeCollection WorkItemTypes { get; }

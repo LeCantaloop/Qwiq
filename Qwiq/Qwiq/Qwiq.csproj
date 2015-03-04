@@ -67,6 +67,8 @@
     <Compile Include="HyperLinkProxy.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="ILink.cs" />
+    <Compile Include="INode.cs" />
+    <Compile Include="IProject.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="LinkProxy.cs" />
     <Compile Include="AttachmentProxy.cs" />
@@ -79,6 +81,8 @@
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="NodeProxy.cs" />
+    <Compile Include="ProjectProxy.cs" />
     <Compile Include="RelatedLinkProxy.cs" />
     <Compile Include="RevisionProxy.cs" />
     <Compile Include="TfsTeamProjectCollectionProxy.cs" />
