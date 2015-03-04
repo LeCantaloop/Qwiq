@@ -61,9 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
     <Compile Include="HyperLinkProxy.cs" />
+    <Compile Include="ICommonStructureService.cs" />
     <Compile Include="ILink.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="LinkProxy.cs" />

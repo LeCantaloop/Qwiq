@@ -19,5 +19,10 @@ namespace Microsoft.IE.Qwiq
                         _tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>());
             }
         }
+
+        public ICommonStructureService ICommonStructureService
+        {
+            get { return new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>()); }
+        }
     }
 }
