@@ -1,10 +1,12 @@
-﻿namespace Microsoft.IE.Qwiq
+﻿using Tfs = Microsoft.TeamFoundation.Server;
+
+namespace Microsoft.IE.Qwiq
 {
     public class NodeInfoProxy : INodeInfo
     {
-        private readonly TeamFoundation.Server.NodeInfo _nodeInfo;
+        private readonly Tfs.NodeInfo _nodeInfo;
 
-        public NodeInfoProxy(TeamFoundation.Server.NodeInfo nodeInfo)
+        internal NodeInfoProxy(Tfs.NodeInfo nodeInfo)
         {
             _nodeInfo = nodeInfo;
         }

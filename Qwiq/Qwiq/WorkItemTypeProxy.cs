@@ -1,10 +1,12 @@
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+
 namespace Microsoft.IE.Qwiq
 {
     public class WorkItemTypeProxy : IWorkItemType
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.WorkItemType _type;
+        private readonly Tfs.WorkItemType _type;
 
-        internal WorkItemTypeProxy(TeamFoundation.WorkItemTracking.Client.WorkItemType type)
+        internal WorkItemTypeProxy(Tfs.WorkItemType type)
         {
             _type = type;
         }

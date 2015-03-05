@@ -1,10 +1,12 @@
-﻿namespace Microsoft.IE.Qwiq
+﻿using Tfs = Microsoft.TeamFoundation.Server;
+
+namespace Microsoft.IE.Qwiq
 {
     public class ProjectInfoProxy : IProjectInfo
     {
-        private readonly TeamFoundation.Server.ProjectInfo _projectInfo;
+        private readonly Tfs.ProjectInfo _projectInfo;
 
-        internal ProjectInfoProxy(TeamFoundation.Server.ProjectInfo projectInfo)
+        internal ProjectInfoProxy(Tfs.ProjectInfo projectInfo)
         {
             _projectInfo = projectInfo;
         }
