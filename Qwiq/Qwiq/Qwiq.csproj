@@ -65,6 +65,7 @@
     <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
+    <Compile Include="Proxies\FieldConflictProxy.cs" />
     <Compile Include="Proxies\FieldProxy.cs" />
     <Compile Include="Proxies\HyperlinkProxy.cs" />
     <Compile Include="Interfaces\ICommonStructureService.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Interfaces\IWorkItemLinkType.cs" />
     <Compile Include="Interfaces\IWorkItemLinkTypeEnd.cs" />
     <Compile Include="Interfaces\IWorkItemType.cs" />
+    <Compile Include="Interfaces\IFieldConflict.cs" />
     <Compile Include="Proxies\LinkCollectionProxy.cs" />
     <Compile Include="Proxies\LinkProxy.cs" />
     <Compile Include="Proxies\AttachmentProxy.cs" />
