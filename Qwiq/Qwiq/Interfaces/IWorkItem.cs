@@ -180,7 +180,7 @@ namespace Microsoft.IE.Qwiq
         /// <returns>
         /// An ArrayList of the fields in this work item that are not valid.
         /// </returns>
-        ArrayList Validate();
+        IEnumerable<IField> Validate();
 
         /// <summary>
         /// Gets the links of the work item in this revision.

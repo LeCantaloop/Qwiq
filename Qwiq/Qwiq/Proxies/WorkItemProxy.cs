@@ -391,9 +391,9 @@ namespace Microsoft.IE.Qwiq
         /// <returns>
         /// An ArrayList of the fields in this work item that are not valid.
         /// </returns>
-        public ArrayList Validate()
+        public IEnumerable<IField> Validate()
         {
-            return _item.Validate();
+            return _item.Validate().Cast<Tfs.Field>().Select(field => new FieldProxy(field));
         }
 
         /// <summary>
