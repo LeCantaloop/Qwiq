@@ -20,7 +20,7 @@ namespace Microsoft.IE.Qwiq
             }
         }
 
-        public ICommonStructureService ICommonStructureService
+        public ICommonStructureService CommonStructureService
         {
             get { return new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>()); }
         }
