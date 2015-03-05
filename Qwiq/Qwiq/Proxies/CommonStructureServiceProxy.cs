@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Microsoft.TeamFoundation.Server;
+using Tfs = Microsoft.TeamFoundation.Server;
 
 namespace Microsoft.IE.Qwiq
 {
     public class CommonStructureServiceProxy : ICommonStructureService
     {
-        private readonly ICommonStructureService4 _service;
+        private readonly Tfs.ICommonStructureService4 _service;
 
-        public CommonStructureServiceProxy(ICommonStructureService4 service)
+        internal CommonStructureServiceProxy(Tfs.ICommonStructureService4 service)
         {
             _service = service;
         }

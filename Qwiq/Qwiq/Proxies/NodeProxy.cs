@@ -1,21 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq
 {
     public class NodeProxy : INode
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.Node _node;
+        private readonly Tfs.Node _node;
 
-        internal NodeProxy(TeamFoundation.WorkItemTracking.Client.Node node)
+        internal NodeProxy(Tfs.Node node)
         {
             _node = node;
         }
 
         public IEnumerable<INode> ChildNodes
         {
-            get { return _node.ChildNodes.Cast<TeamFoundation.WorkItemTracking.Client.Node>().Select(item => new NodeProxy(item)); }
+            get { return _node.ChildNodes.Cast<Tfs.Node>().Select(item => new NodeProxy(item)); }
         }
 
         public bool HasChildNodes

@@ -23,7 +23,7 @@ namespace Microsoft.IE.Qwiq
 
         public IWorkItemLinkTypeEnd LinkTypeEnd
         {
-            get { return new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd);  }
+            get { return new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd); }
         }
 
         public string Comment
