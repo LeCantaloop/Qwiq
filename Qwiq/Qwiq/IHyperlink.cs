@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.IE.Qwiq
 {
-    public interface IHyperLink
+    public interface IHyperlink : ILink
     {
         string Location { get; }
     }

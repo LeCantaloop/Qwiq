@@ -20,7 +20,12 @@ namespace Microsoft.IE.Qwiq
         {
             get { return _relatedLink.RelatedWorkItemId; }
         }
-        
+
+        public IWorkItemLinkTypeEnd LinkTypeEnd
+        {
+            get { return new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd);  }
+        }
+
         public string Comment
         {
             get { return _relatedLink.Comment; }

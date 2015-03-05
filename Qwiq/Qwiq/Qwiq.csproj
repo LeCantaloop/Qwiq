@@ -64,11 +64,14 @@
     <Compile Include="CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
-    <Compile Include="HyperLinkProxy.cs" />
+    <Compile Include="HyperlinkProxy.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="ILink.cs" />
     <Compile Include="INode.cs" />
+    <Compile Include="INodeInfo.cs" />
     <Compile Include="IProject.cs" />
+    <Compile Include="IProjectInfo.cs" />
+    <Compile Include="IProjectProperty.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IWorkItemLink.cs" />
     <Compile Include="IWorkItemLinkType.cs" />
@@ -86,7 +89,10 @@
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="NodeInfoProxy.cs" />
     <Compile Include="NodeProxy.cs" />
+    <Compile Include="ProjectInfoProxy.cs" />
+    <Compile Include="ProjectPropertyProxy.cs" />
     <Compile Include="ProjectProxy.cs" />
     <Compile Include="RelatedLinkProxy.cs" />
     <Compile Include="RevisionProxy.cs" />

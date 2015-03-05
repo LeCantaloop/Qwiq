@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -47,6 +48,18 @@ namespace Microsoft.IE.Qwiq
         {
             var query = new Tfs.WorkItemTracking.Client.Query(_workItemStore, wiql);
             return query.RunLinkQuery().Select(item => new WorkItemLinkInfoProxy(item));
+        }
+
+        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, IDictionary context, bool dayPrecision)
+        {
+            var query = new Tfs.WorkItemTracking.Client.Query(_workItemStore, wiql, context, dayPrecision);
+            return query.RunLinkQuery().Select(item => new WorkItemLinkInfoProxy(item));
+        }
+
+        public IEnumerable<IWorkItem> Query(string wiql, IDictionary context, bool dayPrecision)
+        {
+            var query = new Tfs.WorkItemTracking.Client.Query(_workItemStore, wiql, context, dayPrecision);
+            return query.RunQuery().Cast<Tfs.WorkItemTracking.Client.WorkItem>().Select(item => new WorkItemProxy(item));
         }
 
         public IEnumerable<IWorkItem> Query(string wiql)

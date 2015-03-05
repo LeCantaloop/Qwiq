@@ -266,6 +266,11 @@ namespace Microsoft.IE.Qwiq
             get { return _item.WorkItemLinks.Cast<Tfs.WorkItemLink>().Select(item => new WorkItemLinkProxy(item)); }
         }
 
+        public int Rev
+        {
+            get { return _item.Rev; }
+        }
+
         /// <summary>
         /// Gets or sets the value of a field in this work item that is specified by
         /// the field name.

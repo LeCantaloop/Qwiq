@@ -1,8 +1,8 @@
 namespace Microsoft.IE.Qwiq
 {
-    public interface IRelatedLink
+    public interface IRelatedLink : ILink
     {
         int RelatedWorkItemId { get; }
-        string Comment { get; }
+        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
     }
 }

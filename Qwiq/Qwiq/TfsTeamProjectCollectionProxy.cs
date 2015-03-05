@@ -1,4 +1,5 @@
-﻿using Tfs = Microsoft.TeamFoundation;
+﻿using System;
+using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq
 {
@@ -23,6 +24,23 @@ namespace Microsoft.IE.Qwiq
         public ICommonStructureService CommonStructureService
         {
             get { return new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>()); }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_tfs != null)
+                {
+                    _tfs.Dispose();
+                }
+            }
         }
     }
 }

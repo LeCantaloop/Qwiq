@@ -199,5 +199,7 @@ namespace Microsoft.IE.Qwiq
          IWorkItemType Type { get; }
 
          IEnumerable<IWorkItemLink> WorkItemLinks { get; }
+
+         int Rev { get; }
     }
 }
