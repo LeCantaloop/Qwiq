@@ -414,7 +414,18 @@ namespace Microsoft.IE.Qwiq
         /// </param>
         public void Save(SaveFlags saveFlags)
         {
-            _item.Save((Tfs.SaveFlags)saveFlags);
+            try
+            {
+                _item.Save((Tfs.SaveFlags) saveFlags);
+            }
+            catch (Tfs.ItemAlreadyUpdatedOnServerException ex)
+            {
+                throw new ItemAlreadyUpdatedOnServerException(ex);
+            }
+            catch (Tfs.ServerRejectedChangesException ex)
+            {
+                throw new ServerRejectedChangesException();
+            }
         }
     }
 }
