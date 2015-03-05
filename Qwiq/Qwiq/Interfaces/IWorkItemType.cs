@@ -4,5 +4,6 @@ namespace Microsoft.IE.Qwiq
     {
         string Description { get; }
         string Name { get; }
+        IWorkItem NewWorkItem();
     }
 }

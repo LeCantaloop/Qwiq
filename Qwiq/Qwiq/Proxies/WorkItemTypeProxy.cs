@@ -20,5 +20,10 @@ namespace Microsoft.IE.Qwiq
         {
             get { return _type.Name; }
         }
+
+        public IWorkItem NewWorkItem()
+        {
+            return new WorkItemProxy(_type.NewWorkItem());
+        }
     }
 }

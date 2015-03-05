@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
@@ -13,12 +12,6 @@ namespace Microsoft.IE.Qwiq
     public class WorkItemProxy : IWorkItem
     {
         private readonly Tfs.WorkItem _item;
-
-        public WorkItemProxy(IWorkItemType type)
-        {
-            var realType = GetWorkItemType(type);
-            _item = new Tfs.WorkItem(realType);
-        }
 
         internal WorkItemProxy(Tfs.WorkItem item)
         {
