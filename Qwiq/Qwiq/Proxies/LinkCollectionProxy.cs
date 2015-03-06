@@ -9,7 +9,7 @@ namespace Microsoft.IE.Qwiq
     public class LinkCollectionProxy : ICollection<ILink>
     {
         private readonly Tfs.WorkItem _item;
-        private LinkMapper _linkMapper;
+        private readonly LinkMapper _linkMapper;
 
         internal LinkCollectionProxy(Tfs.WorkItem item)
         {
@@ -69,28 +69,6 @@ namespace Microsoft.IE.Qwiq
         public bool IsReadOnly
         {
             get { return ((IList) _item.Links).IsReadOnly; }
-        }
-
-
-        private class LinkMapper
-        {
-            public Tfs.Link Map(ILink link, Tfs.WorkItem item)
-            {
-                var relatedLink = link as IRelatedLink;
-                if (relatedLink != null)
-                {
-                    var linkTypeEnd = item.Store.WorkItemLinkTypes.LinkTypeEnds[relatedLink.LinkTypeEnd.ImmutableName];
-                    return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
-                }
-
-                var hyperlink = link as IHyperlink;
-                if (hyperlink != null)
-                {
-                    return new Tfs.Hyperlink(hyperlink.Location);
-                }
-
-                throw new ArgumentException("Unknown link type", "link");
-            }
         }
     }
 }

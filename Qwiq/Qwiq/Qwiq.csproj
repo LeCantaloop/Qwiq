@@ -83,6 +83,7 @@
     <Compile Include="Interfaces\IFieldConflict.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
     <Compile Include="Proxies\LinkCollectionProxy.cs" />
+    <Compile Include="LinkMapper.cs" />
     <Compile Include="Proxies\LinkProxy.cs" />
     <Compile Include="Proxies\AttachmentProxy.cs" />
     <Compile Include="Interfaces\IAttachment.cs" />
