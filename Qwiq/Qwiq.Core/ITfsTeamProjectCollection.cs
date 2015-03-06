@@ -2,7 +2,7 @@
 
 namespace Microsoft.IE.Qwiq
 {
-    public interface ITfsTeamProjectCollection : IDisposable
+    public interface ITfsTeamProjectCollection
     {
         IIdentityManagementService IdentityManagementService { get; }
         ICommonStructureService CommonStructureService { get; }
