@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.IE.Qwiq.Proxies;
 using Microsoft.IE.Qwiq.Credentials;
 
 namespace Microsoft.IE.Qwiq

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     /// <summary>
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference

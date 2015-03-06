@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.IE.Qwiq.Credentials;
 using Tfs = Microsoft.TeamFoundation;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     /// <summary>
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
