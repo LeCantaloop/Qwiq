@@ -4,7 +4,7 @@ namespace Microsoft.IE.Qwiq
 {
     public class LinkProxy : ILink
     {
-        internal readonly Tfs.Link Link;
+        private readonly Tfs.Link Link;
 
         internal LinkProxy(Tfs.Link link)
         {

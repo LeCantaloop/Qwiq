@@ -9,9 +9,12 @@ namespace Microsoft.IE.Qwiq
     public class LinkCollectionProxy : ICollection<ILink>
     {
         private readonly Tfs.WorkItem _item;
+        private LinkMapper _linkMapper;
+
         internal LinkCollectionProxy(Tfs.WorkItem item)
         {
             _item = item;
+            _linkMapper = new LinkMapper();
         }
 
         public IEnumerator<ILink> GetEnumerator()
@@ -26,7 +29,8 @@ namespace Microsoft.IE.Qwiq
 
         public void Add(ILink item)
         {
-            _item.Links.Add((item as LinkProxy).Link);
+            var concreteLink = _linkMapper.Map(item, _item);
+            _item.Links.Add(concreteLink);
         }
 
         public void Clear()
@@ -36,7 +40,8 @@ namespace Microsoft.IE.Qwiq
 
         public bool Contains(ILink item)
         {
-            return _item.Links.Contains((item as LinkProxy).Link);
+            var concreteLink = _linkMapper.Map(item, _item);
+            return _item.Links.Contains(concreteLink);
         }
 
         public void CopyTo(ILink[] array, int arrayIndex)
@@ -46,9 +51,14 @@ namespace Microsoft.IE.Qwiq
 
         public bool Remove(ILink item)
         {
-            var realLink = _item.Links.Cast<Tfs.Link>().Single(link => link == (item as LinkProxy).Link);
-            _item.Links.Remove(realLink);
-            return true;
+            var concreteLink = _linkMapper.Map(item, _item);
+
+            var wasFound = Contains(item);
+            if (wasFound)
+            {
+                _item.Links.Remove(concreteLink);
+            }
+            return wasFound;
         }
 
         public int Count
@@ -58,7 +68,29 @@ namespace Microsoft.IE.Qwiq
 
         public bool IsReadOnly
         {
-            get { return ((IList)_item.Links).IsReadOnly; }
+            get { return ((IList) _item.Links).IsReadOnly; }
+        }
+
+
+        private class LinkMapper
+        {
+            public Tfs.Link Map(ILink link, Tfs.WorkItem item)
+            {
+                var relatedLink = link as IRelatedLink;
+                if (relatedLink != null)
+                {
+                    var linkTypeEnd = item.Store.WorkItemLinkTypes.LinkTypeEnds[relatedLink.LinkTypeEnd.ImmutableName];
+                    return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
+                }
+
+                var hyperlink = link as IHyperlink;
+                if (hyperlink != null)
+                {
+                    return new Tfs.Hyperlink(hyperlink.Location);
+                }
+
+                throw new ArgumentException("Unknown link type", "link");
+            }
         }
     }
 }
