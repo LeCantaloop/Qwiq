@@ -40,7 +40,7 @@ namespace Microsoft.IE.Qwiq
 
         public bool Contains(ILink item)
         {
-            return _linkHelper.FindLink(_item, item) != null;
+            return _linkHelper.FindEquivalentLink(_item, item) != null;
         }
 
         public void CopyTo(ILink[] array, int arrayIndex)
@@ -50,7 +50,7 @@ namespace Microsoft.IE.Qwiq
 
         public bool Remove(ILink item)
         {
-            var link = _linkHelper.FindLink(_item, item);
+            var link = _linkHelper.FindEquivalentLink(_item, item);
 
             var wasFound = _item.Links.Contains(link);
             if (wasFound)

@@ -31,7 +31,7 @@ namespace Microsoft.IE.Qwiq
             throw new ArgumentException("Unknown link type", "link");
         }
 
-        public Tfs.Link FindLink(Tfs.WorkItem item, ILink link)
+        public Tfs.Link FindEquivalentLink(Tfs.WorkItem item, ILink link)
         {
             var relatedLink = link as IRelatedLink;
             if (relatedLink != null)
