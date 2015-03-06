@@ -1,7 +1,7 @@
 ﻿using System;
 using Tfs = Microsoft.TeamFoundation;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     public class TfsTeamProjectCollectionProxy : ITfsTeamProjectCollection
     {

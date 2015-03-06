@@ -1,6 +1,6 @@
 ﻿using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     public class IdentityManagementServiceProxy : IIdentityManagementService
     {

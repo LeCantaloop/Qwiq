@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     public class NodeProxy : INode
     {

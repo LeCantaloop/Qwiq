@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml;
 using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     public class CommonStructureServiceProxy : ICommonStructureService
     {

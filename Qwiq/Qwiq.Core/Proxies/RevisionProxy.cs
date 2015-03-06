@@ -2,7 +2,7 @@
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     /// <summary>
     /// Wrapper around the TFS RevisionProxy. This exists so that every agent doesn't need to reference

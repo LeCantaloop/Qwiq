@@ -1,6 +1,6 @@
 ﻿using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.IE.Qwiq.Proxies
 {
     public class ProjectInfoProxy : IProjectInfo
     {
