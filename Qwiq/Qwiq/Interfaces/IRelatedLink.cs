@@ -3,6 +3,7 @@ namespace Microsoft.IE.Qwiq
     public interface IRelatedLink : ILink
     {
         int RelatedWorkItemId { get; }
-        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
+        WorkItemLinkDirection LinkDirection { get; }
+        string LinkSubType { get; }
     }
 }

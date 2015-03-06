@@ -265,12 +265,8 @@ namespace Microsoft.IE.Qwiq
 
         public IRelatedLink CreateRelatedLink(WorkItemLinkDirection linkDirection, IWorkItem relatedWorkItem)
         {
-            var linkType = _item.Store.WorkItemLinkTypes.Single(type => type.ReferenceName == "System.LinkTypes.Hierarchy");
-            var linkTypeEnd = linkDirection == WorkItemLinkDirection.Forward ? linkType.ForwardEnd : linkType.ReverseEnd;
-            var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
-            var link = new Tfs.RelatedLink(concreteLinkTypeEnd, relatedWorkItem.Id);
-
-            return new RelatedLinkProxy(link);
+            var linkTypeEnd = LinkDirectionMapper.Map(_item.Store, linkDirection);
+            return new RelatedLinkProxy(new Tfs.RelatedLink(linkTypeEnd, relatedWorkItem.Id));
         }
 
         public IHyperlink CreateHyperlink(string location)
@@ -280,13 +276,8 @@ namespace Microsoft.IE.Qwiq
 
         public IWorkItemLink CreateWorkItemLink(WorkItemLinkDirection linkDirection, IWorkItem targetWorkItem)
         {
-            var linkType = _item.Store.WorkItemLinkTypes.Single(type => type.ReferenceName == "System.LinkTypes.Hierarchy");
-            var linkTypeEnd = linkDirection == WorkItemLinkDirection.Forward ? linkType.ForwardEnd : linkType.ReverseEnd;
-            var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
-
-            var link = new Tfs.WorkItemLink(concreteLinkTypeEnd, _item.Id, targetWorkItem.Id);
-
-            return new WorkItemLinkProxy(link);
+            var linkTypeEnd = LinkDirectionMapper.Map(_item.Store, linkDirection);
+            return new WorkItemLinkProxy(new Tfs.WorkItemLink(linkTypeEnd, _item.Id, targetWorkItem.Id));
         }
 
         /// <summary>

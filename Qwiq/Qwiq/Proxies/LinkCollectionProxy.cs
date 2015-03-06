@@ -9,12 +9,12 @@ namespace Microsoft.IE.Qwiq
     public class LinkCollectionProxy : ICollection<ILink>
     {
         private readonly Tfs.WorkItem _item;
-        private readonly LinkMapper _linkMapper;
+        private readonly LinkHelper _linkHelper;
 
         internal LinkCollectionProxy(Tfs.WorkItem item)
         {
             _item = item;
-            _linkMapper = new LinkMapper();
+            _linkHelper = new LinkHelper();
         }
 
         public IEnumerator<ILink> GetEnumerator()
@@ -29,7 +29,7 @@ namespace Microsoft.IE.Qwiq
 
         public void Add(ILink item)
         {
-            var concreteLink = _linkMapper.Map(item, _item);
+            var concreteLink = _linkHelper.Map(item, _item);
             _item.Links.Add(concreteLink);
         }
 
@@ -40,8 +40,7 @@ namespace Microsoft.IE.Qwiq
 
         public bool Contains(ILink item)
         {
-            var concreteLink = _linkMapper.Map(item, _item);
-            return _item.Links.Contains(concreteLink);
+            return _linkHelper.FindLink(_item, item) != null;
         }
 
         public void CopyTo(ILink[] array, int arrayIndex)
@@ -51,13 +50,14 @@ namespace Microsoft.IE.Qwiq
 
         public bool Remove(ILink item)
         {
-            var concreteLink = _linkMapper.Map(item, _item);
+            var link = _linkHelper.FindLink(_item, item);
 
-            var wasFound = Contains(item);
+            var wasFound = _item.Links.Contains(link);
             if (wasFound)
             {
-                _item.Links.Remove(concreteLink);
+                _item.Links.Remove(link);
             }
+
             return wasFound;
         }
 

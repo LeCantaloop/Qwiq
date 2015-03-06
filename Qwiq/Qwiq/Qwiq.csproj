@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IField.cs" />
+    <Compile Include="LinkDirectionMapper.cs" />
     <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Interfaces\IFieldConflict.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
     <Compile Include="Proxies\LinkCollectionProxy.cs" />
-    <Compile Include="LinkMapper.cs" />
+    <Compile Include="LinkHelper.cs" />
     <Compile Include="Proxies\LinkProxy.cs" />
     <Compile Include="Proxies\AttachmentProxy.cs" />
     <Compile Include="Interfaces\IAttachment.cs" />
