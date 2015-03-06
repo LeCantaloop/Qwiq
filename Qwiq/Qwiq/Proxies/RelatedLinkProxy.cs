@@ -6,11 +6,6 @@ namespace Microsoft.IE.Qwiq
     {
         private readonly Tfs.RelatedLink _relatedLink;
 
-        public RelatedLinkProxy(IWorkItemLinkTypeEnd linkTypeEnd, int relatedWorkItemId)
-        {
-            _relatedLink = new Tfs.RelatedLink((linkTypeEnd as WorkItemLinkTypeEndProxy).End ,relatedWorkItemId);
-        }
-
         internal RelatedLinkProxy(Tfs.RelatedLink relatedLink)
         {
             _relatedLink = relatedLink;

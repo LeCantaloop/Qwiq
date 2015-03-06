@@ -19,5 +19,6 @@ namespace Microsoft.IE.Qwiq
         ITfsTeamProjectCollection TeamProjectCollection { get; }
         IEnumerable<IProject> Projects { get; }
         IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get; }
+        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
     }
 }

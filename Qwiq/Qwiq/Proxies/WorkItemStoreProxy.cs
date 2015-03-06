@@ -102,5 +102,13 @@ namespace Microsoft.IE.Qwiq
                         .Select(item => new WorkItemLinkTypeProxy(item));
             }
         }
+
+        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        {
+            var concreteLinkTypeEnd = _workItemStore.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
+            var link = new Tfs.WorkItemTracking.Client.RelatedLink(concreteLinkTypeEnd, relatedWorkItem.Id);
+
+            return new RelatedLinkProxy(link);
+        }
     }
 }
