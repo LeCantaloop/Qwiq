@@ -202,10 +202,10 @@ namespace Microsoft.IE.Qwiq
 
          int Rev { get; }
 
-        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
+        IRelatedLink CreateRelatedLink(WorkItemLinkDirection linkDirection, IWorkItem relatedWorkItem);
 
         IHyperlink CreateHyperlink(string location);
 
-        IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem);
+        IWorkItemLink CreateWorkItemLink(WorkItemLinkDirection linkDirection, IWorkItem targetWorkItem);
     }
 }

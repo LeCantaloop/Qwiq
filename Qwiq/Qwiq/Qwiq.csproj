@@ -102,6 +102,7 @@
     <Compile Include="Proxies\ProjectProxy.cs" />
     <Compile Include="Proxies\RelatedLinkProxy.cs" />
     <Compile Include="Proxies\RevisionProxy.cs" />
+    <Compile Include="WorkItemLinkDirection.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />

@@ -263,8 +263,10 @@ namespace Microsoft.IE.Qwiq
             get { return _item.Rev; }
         }
 
-        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        public IRelatedLink CreateRelatedLink(WorkItemLinkDirection linkDirection, IWorkItem relatedWorkItem)
         {
+            var linkType = _item.Store.WorkItemLinkTypes.Single(type => type.ReferenceName == "System.LinkTypes.Hierarchy");
+            var linkTypeEnd = linkDirection == WorkItemLinkDirection.Forward ? linkType.ForwardEnd : linkType.ReverseEnd;
             var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
             var link = new Tfs.RelatedLink(concreteLinkTypeEnd, relatedWorkItem.Id);
 
@@ -276,9 +278,12 @@ namespace Microsoft.IE.Qwiq
             return new HyperlinkProxy(new Tfs.Hyperlink(location));
         }
 
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem)
+        public IWorkItemLink CreateWorkItemLink(WorkItemLinkDirection linkDirection, IWorkItem targetWorkItem)
         {
+            var linkType = _item.Store.WorkItemLinkTypes.Single(type => type.ReferenceName == "System.LinkTypes.Hierarchy");
+            var linkTypeEnd = linkDirection == WorkItemLinkDirection.Forward ? linkType.ForwardEnd : linkType.ReverseEnd;
             var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
+
             var link = new Tfs.WorkItemLink(concreteLinkTypeEnd, _item.Id, targetWorkItem.Id);
 
             return new WorkItemLinkProxy(link);

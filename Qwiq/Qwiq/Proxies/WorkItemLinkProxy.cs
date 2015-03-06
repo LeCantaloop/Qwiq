@@ -33,9 +33,9 @@ namespace Microsoft.IE.Qwiq
             set { _link.ChangedDate = value; }
         }
 
-        public IWorkItemLinkTypeEnd LinkTypeEnd
+        public WorkItemLinkDirection LinkDirection
         {
-            get { return new WorkItemLinkTypeEndProxy(_link.LinkTypeEnd); }
+            get { return _link.LinkTypeEnd.IsForwardLink ? WorkItemLinkDirection.Forward : WorkItemLinkDirection.Reverse; }
         }
 
         public int SourceId
