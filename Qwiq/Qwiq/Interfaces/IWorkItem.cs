@@ -110,7 +110,7 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the number of related links of this work item.
         /// </summary>
-        int RelatedLinkCount { get; set; }
+        int RelatedLinkCount { get; }
 
         /// <summary>
         /// Reverts all changes that were made since the last save.

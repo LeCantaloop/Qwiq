@@ -160,7 +160,6 @@ namespace Microsoft.IE.Qwiq
         public int RelatedLinkCount
         {
             get { return _item.RelatedLinkCount; }
-            set { }
         }
 
         /// <summary>
