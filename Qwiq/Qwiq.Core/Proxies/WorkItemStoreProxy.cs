@@ -41,7 +41,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public ITfsTeamProjectCollection TeamProjectCollection
         {
-            get { return new TfsTeamProjectCollectionProxy(_workItemStore.TeamProjectCollection); }
+            get { return new TfsTeamProjectCollectionProxy(_tfs); }
         }
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql)
