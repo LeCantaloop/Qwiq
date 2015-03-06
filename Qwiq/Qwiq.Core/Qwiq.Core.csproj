@@ -61,7 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
+    <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IField.cs" />
+    <Compile Include="IIdentityDescriptor.cs" />
     <Compile Include="LinkDirectionMapper.cs" />
     <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
@@ -83,6 +86,7 @@
     <Compile Include="IWorkItemType.cs" />
     <Compile Include="IFieldConflict.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
+    <Compile Include="ITeamFoundationIdentity.cs" />
     <Compile Include="Proxies\LinkCollectionProxy.cs" />
     <Compile Include="LinkHelper.cs" />
     <Compile Include="Proxies\LinkProxy.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Proxies\ProjectProxy.cs" />
     <Compile Include="Proxies\RelatedLinkProxy.cs" />
     <Compile Include="Proxies\RevisionProxy.cs" />
+    <Compile Include="Proxies\TeamFoundationIdentityProxy.cs" />
     <Compile Include="WorkItemLinkDirection.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="SaveFlags.cs" />
