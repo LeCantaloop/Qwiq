@@ -17,7 +17,7 @@ namespace Microsoft.IE.Qwiq.UnitTests
         {
             var credentials = CredentialsFactory.GetInstance().CreateAadCredentials(VisualStudioResourceString, TFSClientId, Authority);
             var connectionUri = new Uri("https://microsoft.visualstudio.com/DefaultCollection");
-            WorkItemStore = new WorkItemStoreProxy(connectionUri, credentials);
+            WorkItemStore = WorkItemStoreFactory.GetInstance().Create(connectionUri, credentials);
         }
     }
 

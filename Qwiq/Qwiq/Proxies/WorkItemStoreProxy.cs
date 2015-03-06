@@ -17,7 +17,7 @@ namespace Microsoft.IE.Qwiq
         private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
         private readonly Tfs.WorkItemTracking.Client.WorkItemStore _workItemStore;
 
-        public WorkItemStoreProxy(Uri endpoint, TfsCredentials credentials)
+        internal WorkItemStoreProxy(Uri endpoint, TfsCredentials credentials)
         {
             _tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials);
             _workItemStore = _tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
