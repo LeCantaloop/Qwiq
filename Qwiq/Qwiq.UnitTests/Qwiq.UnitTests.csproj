@@ -60,9 +60,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Qwiq\Qwiq.csproj">
+    <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
       <Project>{8ac61b6e-bec1-482d-a043-c65d2d343b35}</Project>
-      <Name>Qwiq</Name>
+      <Name>Qwiq.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

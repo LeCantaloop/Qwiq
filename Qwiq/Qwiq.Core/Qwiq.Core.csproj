@@ -7,8 +7,8 @@
     <ProjectGuid>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.IE.Qwiq</RootNamespace>
-    <AssemblyName>Microsoft.IE.Qwiq</AssemblyName>
+    <RootNamespace>Microsoft.IE.Qwiq.Core</RootNamespace>
+    <AssemblyName>Microsoft.IE.Qwiq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
