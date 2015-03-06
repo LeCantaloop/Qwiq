@@ -263,6 +263,27 @@ namespace Microsoft.IE.Qwiq
             get { return _item.Rev; }
         }
 
+        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        {
+            var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
+            var link = new Tfs.RelatedLink(concreteLinkTypeEnd, relatedWorkItem.Id);
+
+            return new RelatedLinkProxy(link);
+        }
+
+        public IHyperlink CreateHyperlink(string location)
+        {
+            return new HyperlinkProxy(new Tfs.Hyperlink(location));
+        }
+
+        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem)
+        {
+            var concreteLinkTypeEnd = _item.Store.WorkItemLinkTypes.LinkTypeEnds[linkTypeEnd.ImmutableName];
+            var link = new Tfs.WorkItemLink(concreteLinkTypeEnd, _item.Id, targetWorkItem.Id);
+
+            return new WorkItemLinkProxy(link);
+        }
+
         /// <summary>
         /// Gets or sets the value of a field in this work item that is specified by
         /// the field name.

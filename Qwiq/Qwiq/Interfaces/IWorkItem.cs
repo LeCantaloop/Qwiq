@@ -201,5 +201,11 @@ namespace Microsoft.IE.Qwiq
          IEnumerable<IWorkItemLink> WorkItemLinks { get; }
 
          int Rev { get; }
+
+        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
+
+        IHyperlink CreateHyperlink(string location);
+
+        IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem);
     }
 }
