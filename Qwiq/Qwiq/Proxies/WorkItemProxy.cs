@@ -415,7 +415,7 @@ namespace Microsoft.IE.Qwiq
             {
                 throw new ItemAlreadyUpdatedOnServerException(ex);
             }
-            catch (Tfs.ServerRejectedChangesException ex)
+            catch (Tfs.ServerRejectedChangesException)
             {
                 throw new ServerRejectedChangesException();
             }
