@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
@@ -17,7 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\Microsoft.*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="build" />
+    <file src="bin\$configuration$\Microsoft.*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll;bin\$configuration$\Microsoft.ServiceBus.dll" target="build" />
     <file src="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="lib\net45" />
     <file src="build\microsoft.ie.qwiq.core.targets" target="build" />
   </files>
