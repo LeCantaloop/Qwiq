@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <TfsBinaries Include="$(MSBuildThisFileDirectory)\*" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PrepareForRunDependsOn>
+      $(PrepareForRunDependsOn);
+      CopyTfsBinaries
+    </PrepareForRunDependsOn>
+  </PropertyGroup>
+  <Target Name="CopyTfsBinaries" DependsOnTargets="CopyFilesToOutputDirectory">
+    <Copy SourceFiles="@(TfsBinaries)" DestinationFiles="$(OutDir)">
+      <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+    </Copy>
+  </Target>
+</Project>
