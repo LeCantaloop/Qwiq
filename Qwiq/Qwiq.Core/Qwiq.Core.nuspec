@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
@@ -17,7 +17,7 @@
       <dependency id="System.Net.Http"/>
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45,net451" />
     </frameworkAssemblies>
   </metadata>
   <files>
