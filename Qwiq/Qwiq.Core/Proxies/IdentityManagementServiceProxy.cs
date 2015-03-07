@@ -21,7 +21,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             var identities = _identityManagementService2.ReadIdentities(rawDescriptors, Tfs.Common.MembershipQuery.None,
                 Tfs.Common.ReadIdentityOptions.None);
 
-            return identities.Select(item => new TeamFoundationIdentityProxy(item));
+            return identities.Select(identity => identity == null ? null : new TeamFoundationIdentityProxy(identity));
         }
 
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues)
@@ -30,7 +30,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             var identities = _identityManagementService2.ReadIdentities(factor, searchFactorValues,
                 Tfs.Common.MembershipQuery.None, Tfs.Common.ReadIdentityOptions.None)[0];
 
-            return identities.Select(item => new TeamFoundationIdentityProxy(item));
+            return identities.Select(identity => identity == null ? null : new TeamFoundationIdentityProxy(identity));
         }
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
