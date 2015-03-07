@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
@@ -14,7 +14,6 @@
     <dependencies>
       <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
       <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,)"/>
-      <dependency id="System.Net.Http"/>
     </dependencies>
   </metadata>
   <files>
