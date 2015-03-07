@@ -2,17 +2,23 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
     <projectUrl>https://github.com/InternetExplorer/IEPortal.Qwiq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides Quick Workitem Queries to TFS and Visual Studio Online</description>
-    <copyright>Copyright 2014</copyright>
+    <copyright>Copyright Microsoft 2015</copyright>
     <tags>IE IEPortal MS Internal Only</tags>
+    <dependencies>
+      <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,)"/>
+    </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\*.dll" target="lib\net45" />
+    <file src="bin\$configuration$\Microsoft.*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="build" />
+    <file src="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="lib\net45" />
+    <file src="build\microsoft.ie.qwiq.core.targets" target="build" />
   </files>
 </package>

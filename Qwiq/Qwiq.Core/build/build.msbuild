@@ -3,8 +3,8 @@
     <PropertyGroup>
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
-      <ProjectFile>..\Qwiq\Qwiq.Core\Qwiq.Core.csproj</ProjectFile>
-      <NuspecFile>..\Qwiq\Qwiq.Core\Qwiq.Core.nuspec</NuspecFile>
+      <ProjectFile>..\Qwiq.Core.csproj</ProjectFile>
+      <NuspecFile>..\Qwiq.Core.nuspec</NuspecFile>
     </PropertyGroup>
     
     <Target Name="Clean">
