@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
@@ -13,12 +13,11 @@
     <tags>IE IEPortal MS Internal Only</tags>
     <dependencies>
       <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
-      <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,)"/>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\Microsoft.*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll;bin\$configuration$\Microsoft.ServiceBus.dll" target="build" />
-    <file src="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="lib\net45" />
+    <file src="bin\$configuration$\*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll;bin\$configuration$\JB.Tfs.Common.dll" target="build" />
     <file src="build\microsoft.ie.qwiq.core.targets" target="build" />
+    <file src="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="lib\net45" />
   </files>
 </package>
