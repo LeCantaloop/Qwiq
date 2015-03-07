@@ -11,7 +11,7 @@
     <AssemblyName>Microsoft.IE.Qwiq.Identity</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>2abb2a7f</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>820e1299</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,21 +39,13 @@
     <Reference Include="JB.Tfs.Common">
       <HintPath>..\packages\JB.Tfs.Common.0.0.0.5\lib\net40\JB.Tfs.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Core, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.IE.Qwiq.Core, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.1.0.9\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.1.0.10\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,12 +61,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.IE.Qwiq.Core.1.0.9\build\microsoft.ie.qwiq.core.targets" Condition="Exists('..\packages\Microsoft.IE.Qwiq.Core.1.0.9\build\microsoft.ie.qwiq.core.targets')" />
+  <Import Project="..\packages\Microsoft.IE.Qwiq.Core.1.0.10\build\microsoft.ie.qwiq.core.targets" Condition="Exists('..\packages\Microsoft.IE.Qwiq.Core.1.0.10\build\microsoft.ie.qwiq.core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.1.0.9\build\microsoft.ie.qwiq.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.1.0.9\build\microsoft.ie.qwiq.core.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.1.0.10\build\microsoft.ie.qwiq.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.1.0.10\build\microsoft.ie.qwiq.core.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
