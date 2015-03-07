@@ -10,7 +10,7 @@
     </PrepareForRunDependsOn>
   </PropertyGroup>
   <Target Name="CopyTfsBinaries" DependsOnTargets="CopyFilesToOutputDirectory">
-    <Copy SourceFiles="@(TfsBinaries)" DestinationFiles="@(TfsBinaries->'$(OutDir)\%(Filename).%(Extension)')">
+    <Copy SourceFiles="@(TfsBinaries)" DestinationFiles="@(TfsBinaries->'$(OutDir)\%(Filename)%(Extension)')">
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
   </Target>
