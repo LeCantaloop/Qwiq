@@ -41,6 +41,16 @@
     <Reference Include="Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools">
       <HintPath>..\packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.0.0.0\lib\net451\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Client, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.TeamFoundation.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.TeamFoundation.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -56,7 +66,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IdentityManagementServiceProxyTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
+    <Compile Include="Mocks\MockIdentityManagementService2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
