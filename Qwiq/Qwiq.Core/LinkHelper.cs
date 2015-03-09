@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.IE.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq
@@ -26,6 +27,29 @@ namespace Microsoft.IE.Qwiq
             {
                 var linkTypeEnd = LinkDirectionMapper.Map(item.Store, workItemLink.LinkDirection);
                 return new Tfs.WorkItemLink(linkTypeEnd, workItemLink.SourceId, workItemLink.TargetId);
+            }
+
+            throw new ArgumentException("Unknown link type", "link");
+        }
+
+        public ILink Map(Tfs.Link link, Tfs.WorkItem item)
+        {
+            var relatedLink = link as Tfs.RelatedLink;
+            if (relatedLink != null)
+            {
+                return new RelatedLinkProxy(relatedLink);
+            }
+
+            var hyperlink = link as Tfs.Hyperlink;
+            if (hyperlink != null)
+            {
+                return new HyperlinkProxy(hyperlink);
+            }
+
+            var workItemLink = link as Tfs.WorkItemLink;
+            if (workItemLink != null)
+            {
+                return new WorkItemLinkProxy(workItemLink);
             }
 
             throw new ArgumentException("Unknown link type", "link");
