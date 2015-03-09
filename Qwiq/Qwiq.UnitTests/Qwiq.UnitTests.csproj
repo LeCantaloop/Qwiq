@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
+    <Compile Include="Mocks\MockIdentityDescriptor.cs" />
     <Compile Include="Mocks\MockIdentityManagementService2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
