@@ -19,7 +19,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerator<ILink> GetEnumerator()
         {
-            return _item.Links.Cast<Tfs.Link>().Select(link => new LinkProxy(link)).Cast<ILink>().GetEnumerator();
+            return _item.Links.Cast<Tfs.Link>().Select(link => _linkHelper.Map(link, _item)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
