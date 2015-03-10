@@ -60,6 +60,13 @@
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.14.0.0.0.Fakes">
       <HintPath>FakesAssemblies\Microsoft.TeamFoundation.WorkItemTracking.Client.14.0.0.0.Fakes.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.TeamFoundation.WorkItemTracking.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common.14.0.0.0.Fakes">
+      <HintPath>FakesAssemblies\Microsoft.TeamFoundation.WorkItemTracking.Common.14.0.0.0.Fakes.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -76,6 +83,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
+    <Compile Include="LinkCollectionTests.cs" />
     <Compile Include="LinkMapperTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
     <Compile Include="Mocks\MockIdentityDescriptor.cs" />
@@ -90,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Client.fakes" />
+    <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Common.fakes" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
