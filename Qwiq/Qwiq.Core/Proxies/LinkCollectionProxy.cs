@@ -10,16 +10,18 @@ namespace Microsoft.IE.Qwiq.Proxies
     {
         private readonly Tfs.WorkItem _item;
         private readonly LinkHelper _linkHelper;
+        private readonly LinkMapper _linkMapper;
 
         internal LinkCollectionProxy(Tfs.WorkItem item)
         {
             _item = item;
             _linkHelper = new LinkHelper();
+            _linkMapper = new LinkMapper();
         }
 
         public IEnumerator<ILink> GetEnumerator()
         {
-            return _item.Links.Cast<Tfs.Link>().Select(link => _linkHelper.Map(link, _item)).GetEnumerator();
+            return _item.Links.Cast<Tfs.Link>().Select(link => _linkMapper.Map(link)).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -29,7 +31,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public void Add(ILink item)
         {
-            var concreteLink = _linkHelper.Map(item, _item);
+            var concreteLink = _linkMapper.Map(item, _item);
             _item.Links.Add(concreteLink);
         }
 
