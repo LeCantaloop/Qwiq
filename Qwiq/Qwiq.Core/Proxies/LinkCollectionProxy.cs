@@ -47,7 +47,13 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public void CopyTo(ILink[] array, int arrayIndex)
         {
-            throw new NotSupportedException();
+            var j = 0;
+            for (var i = arrayIndex; i < _item.Links.Count && j < array.Length; i++)
+            {
+                var link = _item.Links[i];
+                array[j] = _linkMapper.Map(link);
+                j++;
+            }
         }
 
         public bool Remove(ILink item)
