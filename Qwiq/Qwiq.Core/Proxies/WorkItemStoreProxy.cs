@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.IE.Qwiq.Credentials;
-using Tfs = Microsoft.TeamFoundation;
+using TfsClient = Microsoft.TeamFoundation.Client;
+using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
@@ -15,10 +14,10 @@ namespace Microsoft.IE.Qwiq.Proxies
     public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly IQueryFactory _queryFactory;
-        private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
-        private readonly Tfs.WorkItemTracking.Client.WorkItemStore _workItemStore;
+        private readonly TfsClient.TfsTeamProjectCollection _tfs;
+        private readonly TfsWorkItem.WorkItemStore _workItemStore;
 
-        internal WorkItemStoreProxy(Tfs.Client.TfsTeamProjectCollection tfs, Tfs.WorkItemTracking.Client.WorkItemStore workItemStore, IQueryFactory queryFactory)
+        internal WorkItemStoreProxy(TfsClient.TfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
         {
             _tfs = tfs;
             _workItemStore = workItemStore;
@@ -49,14 +48,28 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
-            var query = _queryFactory.Create(wiql, dayPrecision);
-            return query.RunLinkQuery();
+            try
+            {
+                var query = _queryFactory.Create(wiql, dayPrecision);
+                return query.RunLinkQuery();
+            }
+            catch (TfsWorkItem.ValidationException ex)
+            {
+                throw new ValidationException(ex);
+            }
         }
 
         public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
         {
-            var query = _queryFactory.Create(wiql, dayPrecision);
-            return query.RunQuery();
+            try
+            {
+                var query = _queryFactory.Create(wiql, dayPrecision);
+                return query.RunQuery();
+            }
+            catch (TfsWorkItem.ValidationException ex)
+            {
+                throw new ValidationException(ex);
+            }
         }
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
@@ -87,7 +100,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             get
             {
                 return
-                    _workItemStore.Projects.Cast<Tfs.WorkItemTracking.Client.Project>()
+                    _workItemStore.Projects.Cast<TfsWorkItem.Project>()
                         .Select(item => new ProjectProxy(item));
             }
         }
