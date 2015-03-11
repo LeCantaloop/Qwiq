@@ -10,12 +10,10 @@ namespace Microsoft.IE.Qwiq
     /// </summary>
     public interface IWorkItemStore : IDisposable
     {
-        IEnumerable<IWorkItem> Query(string wiql);
-        IEnumerable<IWorkItem> Query(string wiql, IDictionary context, bool dayPrecision);
-        IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql);
-        IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, IDictionary context, bool dayPrecision);
-        IEnumerable<IWorkItem> Query(IEnumerable<int> ids);
-        IWorkItem Query(int id);
+        IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false);
+        IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false);
+        IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null);
+        IWorkItem Query(int id, DateTime? asOf = null);
         ITfsTeamProjectCollection TeamProjectCollection { get; }
         IEnumerable<IProject> Projects { get; }
         IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get; }

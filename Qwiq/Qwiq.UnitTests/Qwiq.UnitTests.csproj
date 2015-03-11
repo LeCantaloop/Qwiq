@@ -88,7 +88,10 @@
     <Compile Include="LocalOnlyUnitTests.cs" />
     <Compile Include="Mocks\MockIdentityDescriptor.cs" />
     <Compile Include="Mocks\MockIdentityManagementService2.cs" />
+    <Compile Include="Mocks\MockQuery.cs" />
+    <Compile Include="Mocks\MockQueryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkItemStoreTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
