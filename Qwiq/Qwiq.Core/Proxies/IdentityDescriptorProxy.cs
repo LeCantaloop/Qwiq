@@ -18,7 +18,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public string IdentityType
         {
-            get { return _descriptor.Identifier; }
+            get { return _descriptor.IdentityType; }
         }
     }
 }
