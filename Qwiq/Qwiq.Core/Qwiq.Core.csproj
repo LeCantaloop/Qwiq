@@ -7,7 +7,7 @@
     <ProjectGuid>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.IE.Qwiq.Core</RootNamespace>
+    <RootNamespace>Microsoft.IE.Qwiq</RootNamespace>
     <AssemblyName>Microsoft.IE.Qwiq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -67,7 +67,7 @@
     <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IIdentityDescriptor.cs" />
-    <Compile Include="LinkDirectionMapper.cs" />
+    <Compile Include="LinkTypeEndMapper.cs" />
     <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
@@ -113,7 +113,6 @@
     <Compile Include="Proxies\RevisionProxy.cs" />
     <Compile Include="Proxies\TeamFoundationIdentityProxy.cs" />
     <Compile Include="ValidationException.cs" />
-    <Compile Include="WorkItemLinkDirection.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />

@@ -31,9 +31,11 @@ namespace Microsoft.IE.Qwiq.UnitTests
         public override void Given()
         {
             base.Given();
+            var end =
+                WorkItemStore.WorkItemLinkTypes.Single(linkType => linkType.ReferenceName == "System.LinkTypes.Hierarchy").ForwardEnd;
             IWorkItem wi = WorkItemStore.Query("SELECT * FROM WorkItems WHERE [System.ID] IN (1542232)").Single();
             TargetWorkItem = WorkItemStore.Query("SELECT * FROM WorkItems WHERE [System.ID] IN (1523767)").Single();
-            TargetLink = TargetWorkItem.CreateRelatedLink(WorkItemLinkDirection.Forward, wi);
+            TargetLink = TargetWorkItem.CreateRelatedLink(end, wi);
         }
 
         public override void When()

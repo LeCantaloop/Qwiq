@@ -16,9 +16,12 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _relatedLink.RelatedWorkItemId; }
         }
 
-        public WorkItemLinkDirection LinkDirection
+        public IWorkItemLinkTypeEnd LinkTypeEnd
         {
-            get { return _relatedLink.LinkTypeEnd.IsForwardLink ? WorkItemLinkDirection.Forward : WorkItemLinkDirection.Reverse; }
+            get
+            {
+                return new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd);
+            }
         }
 
         public string LinkSubType

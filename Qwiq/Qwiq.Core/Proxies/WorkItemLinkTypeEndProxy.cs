@@ -4,41 +4,41 @@ namespace Microsoft.IE.Qwiq.Proxies
 {
     public class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
     {
-        internal readonly Tfs.WorkItemLinkTypeEnd End;
+        private readonly Tfs.WorkItemLinkTypeEnd _end;
 
         internal WorkItemLinkTypeEndProxy(Tfs.WorkItemLinkTypeEnd end)
         {
-            End = end;
+            _end = end;
         }
 
         public int Id
         {
-            get { return End.Id; }
+            get { return _end.Id; }
         }
 
         public string ImmutableName
         {
-            get { return End.ImmutableName; }
+            get { return _end.ImmutableName; }
         }
 
         public bool IsForwardLink
         {
-            get { return End.IsForwardLink; }
+            get { return _end.IsForwardLink; }
         }
 
         public IWorkItemLinkType LinkType
         {
-            get { return new WorkItemLinkTypeProxy(End.LinkType); }
+            get { return new WorkItemLinkTypeProxy(_end.LinkType); }
         }
 
         public string Name
         {
-            get { return End.Name; }
+            get { return _end.Name; }
         }
 
         public IWorkItemLinkTypeEnd OppositeEnd
         {
-            get { return new WorkItemLinkTypeEndProxy(End.OppositeEnd); }
+            get { return new WorkItemLinkTypeEndProxy(_end.OppositeEnd); }
         }
     }
 }
