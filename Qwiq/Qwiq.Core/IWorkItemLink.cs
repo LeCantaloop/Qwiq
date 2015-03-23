@@ -7,7 +7,7 @@ namespace Microsoft.IE.Qwiq
         string AddedBy { get; }
         DateTime AddedDate { get; }
         DateTime? ChangedDate { get; set; }
-        WorkItemLinkDirection LinkDirection { get; }
+        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
         int SourceId { get; set; }
         int TargetId { get; set; }
     }

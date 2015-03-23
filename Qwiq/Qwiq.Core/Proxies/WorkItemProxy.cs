@@ -263,10 +263,10 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _item.Rev; }
         }
 
-        public IRelatedLink CreateRelatedLink(WorkItemLinkDirection linkDirection, IWorkItem relatedWorkItem)
+        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
         {
-            var linkTypeEnd = LinkDirectionMapper.Map(_item.Store, linkDirection);
-            return new RelatedLinkProxy(new Tfs.RelatedLink(linkTypeEnd, relatedWorkItem.Id));
+            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
+            return new RelatedLinkProxy(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id));
         }
 
         public IHyperlink CreateHyperlink(string location)
@@ -274,10 +274,10 @@ namespace Microsoft.IE.Qwiq.Proxies
             return new HyperlinkProxy(new Tfs.Hyperlink(location));
         }
 
-        public IWorkItemLink CreateWorkItemLink(WorkItemLinkDirection linkDirection, IWorkItem targetWorkItem)
+        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem)
         {
-            var linkTypeEnd = LinkDirectionMapper.Map(_item.Store, linkDirection);
-            return new WorkItemLinkProxy(new Tfs.WorkItemLink(linkTypeEnd, _item.Id, targetWorkItem.Id));
+            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
+            return new WorkItemLinkProxy(new Tfs.WorkItemLink(rawLinkTypeEnd, _item.Id, targetWorkItem.Id));
         }
 
         /// <summary>

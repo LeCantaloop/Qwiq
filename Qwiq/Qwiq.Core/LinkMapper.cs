@@ -11,7 +11,7 @@ namespace Microsoft.IE.Qwiq
             var relatedLink = link as IRelatedLink;
             if (relatedLink != null)
             {
-                var linkTypeEnd = LinkDirectionMapper.Map(item.Store, relatedLink.LinkDirection);
+                var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, relatedLink.LinkTypeEnd);
                 return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
             }
 
@@ -24,7 +24,7 @@ namespace Microsoft.IE.Qwiq
             var workItemLink = link as IWorkItemLink;
             if (workItemLink != null)
             {
-                var linkTypeEnd = LinkDirectionMapper.Map(item.Store, workItemLink.LinkDirection);
+                var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, workItemLink.LinkTypeEnd);
                 return new Tfs.WorkItemLink(linkTypeEnd, workItemLink.SourceId, workItemLink.TargetId);
             }
 
