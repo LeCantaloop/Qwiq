@@ -27,13 +27,15 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// <summary>
         /// Gets the fields of the work item in this revision.
         /// </summary>
-        public IDictionary<string, object> Fields
+        public IDictionary<string, IField> Fields
         {
             get
             {
-                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => field.Value);
+                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => new FieldProxy(field) as IField);
             }
         }
+
+
 
         /// <summary>
         /// Gets the index of this revision.
