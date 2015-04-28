@@ -7,5 +7,6 @@
         bool IsValid { get; }
         string Name { get; }
         object Value { get; set; }
+        object OriginalValue { get; set; }
     }
 }

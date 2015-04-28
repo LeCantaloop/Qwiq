@@ -36,5 +36,11 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _field.Value; }
             set { _field.Value = value; }
         }
+
+        public object OriginalValue
+        {
+            get { return _field.OriginalValue; }
+            set { _field.Value = value; }
+        }
     }
 }
