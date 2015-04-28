@@ -14,7 +14,7 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the fields of the work item in this revision.
         /// </summary>
-        IDictionary<string, object> Fields { get; }
+        IDictionary<string, IField> Fields { get; }
 
         /// <summary>
         /// Gets the index of this revision.
