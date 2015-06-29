@@ -140,6 +140,15 @@ namespace Microsoft.IE.Qwiq
         void Save();
 
         /// <summary>
+        /// Saves any pending changes on this work item.
+        /// </summary>
+        /// <param name="saveFlags">
+        /// If set to <see cref="SaveFlags.MergeLinks"/>, does not return errors if the link that
+        /// is being added already exists or the link that is being removed was already removed.
+        /// </param>
+        void Save(SaveFlags saveFlags);
+
+        /// <summary>
         /// Gets or sets a string that describes the state of this work item.
         /// </summary>
         string State { get; set; }
@@ -196,11 +205,11 @@ namespace Microsoft.IE.Qwiq
         /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
         /// The Type property is null.
         /// </exception>
-         IWorkItemType Type { get; }
+        IWorkItemType Type { get; }
 
-         IEnumerable<IWorkItemLink> WorkItemLinks { get; }
+        IEnumerable<IWorkItemLink> WorkItemLinks { get; }
 
-         int Rev { get; }
+        int Rev { get; }
 
         IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
 
