@@ -10,7 +10,9 @@
     </PrepareForRunDependsOn>
   </PropertyGroup>
   <Target Name="CopyTfsBinaries" DependsOnTargets="CopyFilesToOutputDirectory">
-    <Copy SourceFiles="@(TfsBinaries)" DestinationFiles="@(TfsBinaries->'$(OutDir)\%(Filename)%(Extension)')">
+    <Copy SourceFiles="@(TfsBinaries)"
+            DestinationFiles="@(TfsBinaries->'$(OutDir)\%(Filename)%(Extension)')"
+            Condition="!Exists('$(OutDir)\%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(OutDir)\%(Filename)%(Extension)').Ticks)">
       <Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
     </Copy>
   </Target>
