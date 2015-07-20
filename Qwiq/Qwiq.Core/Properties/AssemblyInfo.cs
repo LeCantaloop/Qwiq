@@ -36,4 +36,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("4.0.1.0")]
 [assembly: AssemblyInformationalVersion("4.0.1")]
 
-[assembly: InternalsVisibleTo("Microsoft.IE.Qwiq.UnitTests")]
+[assembly: InternalsVisibleTo("Microsoft.IE.Qwiq.Core.Tests")]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 
-namespace Microsoft.IE.Qwiq.UnitTests.Mocks
+namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
 {
     public class MockIdentityManagementService2 : IIdentityManagementService2
     {

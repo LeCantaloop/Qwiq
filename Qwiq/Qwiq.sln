@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.UnitTests", "Qwiq.UnitTests\Qwiq.UnitTests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity", "Qwiq.Identity\Qwiq.Identity.csproj", "{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}"
 EndProject

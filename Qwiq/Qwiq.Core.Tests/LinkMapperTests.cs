@@ -5,7 +5,7 @@ using Microsoft.QualityTools.Testing.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.UnitTests
+namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public abstract class LinkMapperTests : ContextSpecification
     {

@@ -3,7 +3,7 @@ using Microsoft.IE.Qwiq.Proxies;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.UnitTests
+namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public abstract class IdentityDescriptorProxyTests : ContextSpecification
     {
