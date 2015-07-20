@@ -8,7 +8,7 @@ using Microsoft.IE.Qwiq.Mapper.Attributes;
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
-    class MockModelSubclass : MockModel
+    public class MockModelSubclass : MockModel
     {
         public override string StringField { get { return "42"; } }
     }

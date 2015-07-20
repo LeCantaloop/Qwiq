@@ -4,7 +4,7 @@ using Microsoft.IE.Qwiq.Mapper.Attributes;
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
-    internal class MockModel
+    public class MockModel
     {
         [FieldDefinition("Id")]
         public virtual int Id { get; internal set; }
