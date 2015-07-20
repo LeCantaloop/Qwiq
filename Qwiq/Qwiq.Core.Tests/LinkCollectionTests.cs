@@ -9,7 +9,7 @@ using Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes;
 using Microsoft.TeamFoundation.WorkItemTracking.Common.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.UnitTests
+namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public abstract class LinkCollectionTests : ContextSpecification
     {
