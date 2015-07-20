@@ -9,23 +9,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Mapper.Tests
 {
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_with_links : ContextSpecification
+    public abstract class WorkItemMapperContext<T> : ContextSpecification where T : MockModel, new()
     {
-        private MockModelWithLinks _dependency;
-        private IEnumerable<IWorkItem> _source;
-        private IWorkItemStore _workItemStore;
-        private IWorkItemMapper _mapper;
-
-        public override void Cleanup()
-        {
-            _workItemStore.Dispose();
-        }
-
-        public override void Given()
-        {
-            var fakeWorkItemBackingStore = new Dictionary<string, object>
+        protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
             {
                 { "DateTimeField" ,  new DateTime(2014, 1, 1) },
                 { "Field with Spaces" ,  "7" },
@@ -37,13 +23,47 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 { "StringField" ,  "sample" }
             };
 
-            var giverWorkItemBackingStore = new Dictionary<string, object>(fakeWorkItemBackingStore);
+        protected IWorkItemStore WorkItemStore;
+        private IWorkItemMapper _workItemMapper;
+        protected IEnumerable<IWorkItem> SourceWorkItems;
+        protected T Actual;
+
+        public override void Given()
+        {
+            var propertyInspector = new PropertyInspector(new PropertyReflector());
+            var typeParser = new TypeParser();
+            var mappingStrategies = new IWorkItemMapperStrategy[]
+            {
+                new AttributeMapperStrategy(propertyInspector, typeParser),
+                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+            };
+            _workItemMapper = new WorkItemMapper(new CachingFieldMapper(new FieldMapper()), mappingStrategies);
+        }
+
+        public override void When()
+        {
+            Actual = _workItemMapper.Create<T>(SourceWorkItems).SingleOrDefault();
+        }
+
+        public override void Cleanup()
+        {
+            WorkItemStore.Dispose();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelWithLinks>
+    {
+        public override void Given()
+        {
+            var giverWorkItemBackingStore = new Dictionary<string, object>(WorkItemBackingStore);
             giverWorkItemBackingStore["Id"] = 233;
 
-            var takerWorkItemBackingStore = new Dictionary<string, object>(fakeWorkItemBackingStore);
+            var takerWorkItemBackingStore = new Dictionary<string, object>(WorkItemBackingStore);
             takerWorkItemBackingStore["Id"] = 144;
 
-            _workItemStore = new MockWorkItemStore(new[]
+            WorkItemStore = new MockWorkItemStore(new[]
             {
                 new MockWorkItem
                 {
@@ -75,11 +95,11 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 }
             };
 
-            _source = new IWorkItem[]
+            SourceWorkItems = new IWorkItem[]
             {
                 new MockWorkItem
                 {
-                    Properties = fakeWorkItemBackingStore,
+                    Properties = WorkItemBackingStore,
                     Type = new MockWorkItemType { Name = "Baz" },
                     WorkItemLinks = new MockLinkCollection
                     {
@@ -89,86 +109,64 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 }
             };
 
-            var propertyInspector = new PropertyInspector(new PropertyReflector());
-            var typeParser = new TypeParser();
-            var mappingStrategies = new IWorkItemMapperStrategy[]
-            {
-                new AttributeMapperStrategy(propertyInspector, typeParser),
-                new WorkItemLinksMapperStrategy(propertyInspector, _workItemStore)
-            };
-            _mapper = new WorkItemMapper(new CachingFieldMapper(new FieldMapper()), mappingStrategies);
-        }
-        public override void When()
-        {
-            _dependency = _mapper.Create<MockModelWithLinks>(_source).SingleOrDefault();
+            base.Given();
         }
 
         [TestMethod]
         public void issue_has_givers()
         {
-            _dependency.Givers.Any().ShouldBeTrue();
+            Actual.Givers.Any().ShouldBeTrue();
         }
 
         [TestMethod]
         public void issue_has_one_giver()
         {
-            _dependency.Givers.Count().ShouldEqual(1);
+            Actual.Givers.Count().ShouldEqual(1);
         }
 
         [TestMethod]
         public void issue_has_takers()
         {
-            _dependency.Takers.Any().ShouldBeTrue();
+            Actual.Takers.Any().ShouldBeTrue();
         }
 
         [TestMethod]
         public void issue_has_one_taker()
         {
-            _dependency.Takers.Count().ShouldEqual(1);
+            Actual.Takers.Count().ShouldEqual(1);
         }
 
         [TestMethod]
         public void issue_giver_is_expected_id()
         {
-            _dependency.Givers.Single().Id.ShouldEqual(144);
+            Actual.Givers.Single().Id.ShouldEqual(144);
         }
 
         [TestMethod]
         public void issue_taker_is_expected_id()
         {
-            _dependency.Takers.Single().Id.ShouldEqual(233);
+            Actual.Takers.Single().Id.ShouldEqual(233);
         }
     }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_without_links : ContextSpecification
+    public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelSubclass>
     {
-        private Dictionary<string, object> _fakeWorkItemBackingStore;
         private MockModelSubclass _expected;
-        private MockModelSubclass _actual;
-        private IWorkItemMapper _mapper;
-
-        private IWorkItem _workItem;
 
         public override void Given()
         {
-            _fakeWorkItemBackingStore = new Dictionary<string, object>
-            {
-                { "DateTimeField" ,  new DateTime(2014, 1, 1) },
-                { "Field with Spaces" ,  "7" },
-                { "Id" ,  7 },
-                { "IntField" ,  1 },
-                { "FieldWithDifferentName" ,  "forty-two" },
-                { "NullableField" ,  null },
-                { "StringField" ,  "sample" }
-            };
+            WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
 
-            _workItem = new MockWorkItem
+            SourceWorkItems = new[]
             {
-                Properties = _fakeWorkItemBackingStore,
-                Type = new MockWorkItemType { Name = "Baz" },
-                WorkItemLinks = new MockLinkCollection()
+                new MockWorkItem
+                {
+                    Properties = WorkItemBackingStore,
+                    Type = new MockWorkItemType {Name = "Baz"},
+                    WorkItemLinks = new MockLinkCollection()
+                }
             };
 
             _expected = new MockModelSubclass
@@ -180,25 +178,13 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 NotTheSameName = "forty-two",
                 NullableField = null,
             };
-            var propertyInspector = new PropertyInspector(new PropertyReflector());
-            var typeParser = new TypeParser();
-            var mappingStrategies = new IWorkItemMapperStrategy[]
-            {
-                new AttributeMapperStrategy(propertyInspector, typeParser),
-                new WorkItemLinksMapperStrategy(propertyInspector, null)
-            };
-            _mapper = new WorkItemMapper(new CachingFieldMapper(new FieldMapper()), mappingStrategies);
-        }
-
-        public override void When()
-        {
-            _actual = _mapper.Create<MockModelSubclass>(new[] { _workItem }).SingleOrDefault();
+            base.Given();
         }
 
         [TestMethod]
         public void the_fields_are_translated_according_to_the_attribute()
         {
-            PropertiesAreEqual(_expected, _actual);
+            PropertiesAreEqual(_expected, Actual);
         }
 
         private static void PropertiesAreEqual<T>(T expected, T actual)

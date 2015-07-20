@@ -5,7 +5,7 @@ using Microsoft.IE.Qwiq.Mapper.Attributes;
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
-    internal class MockModelWithLinks : MockModel
+    public class MockModelWithLinks : MockModel
     {
         public const string ReverseLinkName = "NS.SampleLink-Reverse";
         public const string ForwardLinkName = "NS.SampleLink-Forward";
