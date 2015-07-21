@@ -129,8 +129,11 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
 
             Builder = new WiqlQueryBuilder(new WiqlTranslator(FieldMapper), new PartialEvaluator(), new QueryRewriter());
             Mapper = new WorkItemMapper(FieldMapper, mapperStrategies);
+        }
 
-            QueryProvider = new MockQueryProvider(WorkItemStore, Builder, Mapper);
+        public override void When()
+        {
+            QueryProvider = new TeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
         }
     }
 }

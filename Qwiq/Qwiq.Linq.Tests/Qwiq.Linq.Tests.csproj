@@ -58,7 +58,6 @@
     <Compile Include="MockPropertyReflector.cs" />
     <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
     <Compile Include="Mocks\MockModel.cs" />
-    <Compile Include="Mocks\MockQueryProvider.cs" />
     <Compile Include="Mocks\MockWorkItem.cs" />
     <Compile Include="Mocks\MockWorkItemLinkInfo.cs" />
     <Compile Include="Mocks\MockWorkItemStore.cs" />

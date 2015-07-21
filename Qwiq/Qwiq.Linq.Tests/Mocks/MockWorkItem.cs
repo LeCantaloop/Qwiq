@@ -5,7 +5,6 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
 {
     public class MockWorkItem : IWorkItem
     {
-        //Holds various properties
         public Dictionary<string, object> Properties { get; set; }
 
         public string AssignedTo
