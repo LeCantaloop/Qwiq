@@ -14,9 +14,12 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         public override void Given()
         {
             PropertyReflector = new PropertyReflector();
-
             base.Given();
+        }
 
+        public override void When()
+        {
+            base.When();
             Query = new Query<SimpleMockModel>(QueryProvider, Builder);
         }
     }
@@ -32,6 +35,7 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
     {
         public override void When()
         {
+            base.When();
             Expected = new[] { new { One = 2, Two = 2 }, new { One = 4, Two = 4 }, new { One = 3, Two = 3 }, new { One = 4, Two = 4 }, new { One = 5, Two = 5 } };
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToArray();
         }
@@ -48,6 +52,7 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
     {
         public override void When()
         {
+            base.When();
             Expected = new[] { new { ABC = 2 }, new { ABC = 4 }, new { ABC = 3 }, new { ABC = 4 }, new { ABC = 5 } };
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToArray();
         }
@@ -69,12 +74,13 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         {
             base.Given();
             _workItemStore = new InstrumentedMockWorkItemStore(WorkItemStore);
-            var queryProvider = new InstrumentedMockQueryProvider(new MockQueryProvider(_workItemStore, Builder, Mapper));
+            var queryProvider = new InstrumentedMockQueryProvider(new TeamFoundationServerWorkItemQueryProvider(_workItemStore, Builder, Mapper));
             Query = new Query<SimpleMockModel>(queryProvider, Builder);
         }
 
         public override void When()
         {
+            base.When();
             var list = Enumerable.Empty<int>().ToArray();
             _actual = Query.Where(item => list.Contains(item.IntField)).ToList();
         }
