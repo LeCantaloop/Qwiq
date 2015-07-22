@@ -56,7 +56,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// <summary>
         /// Gets the work item that is stored in this revision.
         /// </summary>
-        public WorkItemProxy WorkItemProxy
+        public IWorkItem WorkItem
         {
             get { return new WorkItemProxy(_rev.WorkItem); }
         }
