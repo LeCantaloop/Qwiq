@@ -2,11 +2,11 @@
 <package >
   <metadata>
     <id>Microsoft.IE.Qwiq.Core</id>
-    <version>4.0.2</version>
+    <version>$version$</version>
     <title>Microsoft.IE.Qwiq.Core</title>
     <authors>Cantaloop@microsoft.com</authors>
     <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
-    <projectUrl>https://github.com/InternetExplorer/IEPortal.Qwiq</projectUrl>
+    <projectUrl>https://github.com/MicrosoftEdge/IEPortal.Qwiq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides Quick Workitem Queries to TFS and Visual Studio Online</description>
     <copyright>Copyright Microsoft 2015</copyright>
