@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using Microsoft.IE.Qwiq.Core.Tests.Mocks;
 using Microsoft.IE.Qwiq.Proxies;
-using Microsoft.IE.Qwiq.UnitTests.Mocks;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.UnitTests
+namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public abstract class IdentityManagementServiceProxyTests : ContextSpecification
     {
