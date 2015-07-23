@@ -4,7 +4,6 @@
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
       <ProjectFile>..\Qwiq.Core.csproj</ProjectFile>
-      <NuspecFile>..\Qwiq.Core.nuspec</NuspecFile>
     </PropertyGroup>
     
     <Target Name="Clean">
@@ -25,7 +24,7 @@
             <NuGetPackages Include="*.nupkg" Exclude="*.symbols.nupkg" />
         </ItemGroup>
         <Delete Files="@(NuGetPackages)" />
-        <Exec Command="nuget pack $(NuspecFile) -Properties Configuration=$(Configuration)" />
+        <Exec Command="nuget pack $(ProjectFile) -Properties Configuration=$(Configuration)" />
     </Target>
     
     <Target Name="Publish" DependsOnTargets="Package">
