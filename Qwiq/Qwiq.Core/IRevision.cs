@@ -29,7 +29,7 @@ namespace Microsoft.IE.Qwiq
         /// <summary>
         /// Gets the work item that is stored in this revision.
         /// </summary>
-        WorkItemProxy WorkItemProxy { get; }
+        IWorkItem WorkItem { get; }
 
         /// <summary>
         /// Gets the value of the specified field in the work item of this revision.
