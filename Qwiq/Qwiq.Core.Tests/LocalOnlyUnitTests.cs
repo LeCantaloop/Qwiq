@@ -4,7 +4,7 @@ using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Credentials;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.UnitTests
+namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public class LocalOnlyTests : ContextSpecification
     {

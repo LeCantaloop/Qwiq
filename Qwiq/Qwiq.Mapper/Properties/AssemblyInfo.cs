@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.IE.Qwiq.Core")]
-[assembly: AssemblyDescription("Provides Quick Workitem Queries to TFS and Visual Studio Online")]
+[assembly: AssemblyTitle("Microsoft.IE.Qwiq.Mapper")]
+[assembly: AssemblyDescription("Adds mapping / translation between the Qwiq work items and your own model types")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ieportal@microsoft.com Cantaloop@microsoft.com")]
 [assembly: AssemblyProduct("Microsoft.IE.Qwiq")]
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1f6293cb-bcca-4038-a696-4358d285b986")]
+[assembly: Guid("6ee68fb3-44b3-40e5-ae64-5630cf246948")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,8 +31,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.0.1.0")]
-[assembly: AssemblyFileVersion("4.0.1.0")]
-[assembly: AssemblyInformationalVersion("4.0.1")]
-
-[assembly: InternalsVisibleTo("Microsoft.IE.Qwiq.Core.Tests")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0")]
