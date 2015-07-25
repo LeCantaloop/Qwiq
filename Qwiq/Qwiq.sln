@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper", "Qwiq.Mapper\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Tests", "Qwiq.Mapper.Tests\Qwiq.Mapper.Tests.csproj", "{BECF2066-A6C5-475A-BA14-12890F284A12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq", "Qwiq.Linq\Qwiq.Linq.csproj", "{1EDEB333-3084-42BD-B273-4009B4B18541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
+EndProject
 Global
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 266ca4a8-d6b3-475b-9e56-372945ef2a6b
@@ -42,6 +46,14 @@ Global
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
