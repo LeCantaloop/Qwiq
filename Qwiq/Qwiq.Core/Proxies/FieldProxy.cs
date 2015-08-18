@@ -16,6 +16,16 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _field.Id; }
         }
 
+        public bool IsDirty
+        {
+            get { return _field.IsDirty; }
+        }
+
+        public bool IsEditable
+        {
+            get { return _field.IsEditable; }
+        }
+
         public bool IsRequired
         {
             get { return _field.IsRequired; }
@@ -29,6 +39,14 @@ namespace Microsoft.IE.Qwiq.Proxies
         public string Name
         {
             get { return _field.Name; }
+        }
+
+        public ValidationState ValidationState
+        {
+            get
+            {
+                return (ValidationState)((int)_field.Status);
+            }
         }
 
         public object Value

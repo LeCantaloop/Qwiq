@@ -1,12 +1,17 @@
-﻿namespace Microsoft.IE.Qwiq
+﻿using Microsoft.IE.Qwiq.Proxies;
+
+namespace Microsoft.IE.Qwiq
 {
     public interface IField
     {
         int Id { get; }
+        bool IsDirty { get; }
+        bool IsEditable { get; }
         bool IsRequired { get; }
         bool IsValid { get; }
         string Name { get; }
-        object Value { get; set; }
         object OriginalValue { get; set; }
+        ValidationState ValidationState { get; }
+        object Value { get; set; }
     }
 }
