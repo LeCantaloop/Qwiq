@@ -108,7 +108,7 @@
     <Compile Include="Proxies\ProjectPropertyProxy.cs" />
     <Compile Include="Proxies\ProjectProxy.cs" />
     <Compile Include="Proxies\QueryProxy.cs" />
-    <Compile Include="Proxies\ValidationState.cs" />
+    <Compile Include="ValidationState.cs" />
     <Compile Include="QueryFactory.cs" />
     <Compile Include="Proxies\RelatedLinkProxy.cs" />
     <Compile Include="Proxies\RevisionProxy.cs" />

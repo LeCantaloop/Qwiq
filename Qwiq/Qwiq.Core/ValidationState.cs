@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq.Proxies
+﻿namespace Microsoft.IE.Qwiq
 {
     /// <summary>
     ///
