@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.IE.Qwiq
@@ -10,17 +9,19 @@ namespace Microsoft.IE.Qwiq
     /// </summary>
     public interface IWorkItem
     {
-        string AssignedTo { get; set; }
-
         /// <summary>
         /// Gets or sets the string value of the AreaPath field for this work item.
         /// </summary>
         string AreaPath { get; set; }
 
+        string AssignedTo { get; set; }
+
         /// <summary>
         /// Gets the number of attached files for this work item.
         /// </summary>
         int AttachedFileCount { get; }
+
+        IEnumerable<IAttachment> Attachments { get; }
 
         /// <summary>
         /// Gets the string value of the ChangedBy field for this work item.
@@ -32,17 +33,6 @@ namespace Microsoft.IE.Qwiq
         /// work item was last changed.
         /// </summary>
         DateTime ChangedDate { get; }
-
-        /// <summary>
-        /// Closes this WorkItem instance and frees memory that is associated with it.
-        /// </summary>
-        void Close();
-
-        /// <summary>
-        /// Creates a copy of this WorkItem instance.
-        /// </summary>
-        /// <returns>A new WorkItem instance that is a copy of this WorkItem instance.</returns>
-        IWorkItem Copy();
 
         /// <summary>
         /// Gets the string value of the CreatedBy field for this work item.
@@ -80,14 +70,6 @@ namespace Microsoft.IE.Qwiq
         /// </summary>
         int Id { get; }
 
-        /// <summary>
-        /// Validates the fields of this work item.
-        /// </summary>
-        /// <returns>
-        /// True if all fields are valid. False if at least one field is not valid.
-        /// </returns>
-        bool IsValid();
-
         bool IsDirty { get; }
 
         /// <summary>
@@ -95,27 +77,19 @@ namespace Microsoft.IE.Qwiq
         /// </summary>
         string IterationPath { get; set; }
 
-        /// <summary>
-        /// Opens this work item for modification.
-        /// </summary>
-        void Open();
+        string Keywords { get; set; }
 
         /// <summary>
-        /// Opens this work item for modification when transmitting minimal amounts of data over the network.
+        /// Gets the links of the work item in this revision.
         /// </summary>
-        /// This WorkItem instance does not belong to a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemCollection.
-        /// This WorkItem instance could not be opened for edit correctly.
-        void PartialOpen();
+        ICollection<ILink> Links { get; }
 
         /// <summary>
         /// Gets the number of related links of this work item.
         /// </summary>
         int RelatedLinkCount { get; }
 
-        /// <summary>
-        /// Reverts all changes that were made since the last save.
-        /// </summary>
-        void Reset();
+        int Rev { get; }
 
         /// <summary>
         /// Gets a System.DateTime object that represents the revision date and time
@@ -135,20 +109,6 @@ namespace Microsoft.IE.Qwiq
         IEnumerable<IRevision> Revisions { get; }
 
         /// <summary>
-        /// Saves any pending changes on this work item.
-        /// </summary>
-        void Save();
-
-        /// <summary>
-        /// Saves any pending changes on this work item.
-        /// </summary>
-        /// <param name="saveFlags">
-        /// If set to <see cref="SaveFlags.MergeLinks"/>, does not return errors if the link that
-        /// is being added already exists or the link that is being removed was already removed.
-        /// </param>
-        void Save(SaveFlags saveFlags);
-
-        /// <summary>
         /// Gets or sets a string that describes the state of this work item.
         /// </summary>
         string State { get; set; }
@@ -158,7 +118,26 @@ namespace Microsoft.IE.Qwiq
         /// </summary>
         string Tags { get; set; }
 
-        string Keywords { get; set; }
+        /// <summary>
+        /// Gets or sets a string that describes the title of this work item.
+        /// </summary>
+        string Title { get; set; }
+
+        /// <summary>
+        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object
+        /// that represents the type of this work item.
+        /// </summary>
+        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
+        /// The Type property is null.
+        /// </exception>
+        IWorkItemType Type { get; }
+
+        /// <summary>
+        /// Gets the uniform resource identifier (System.Uri) of this work item.
+        /// </summary>
+        Uri Uri { get; }
+
+        IEnumerable<IWorkItemLink> WorkItemLinks { get; }
 
         /// <summary>
         /// Gets or sets the value of a field in this work item that is specified by
@@ -174,14 +153,59 @@ namespace Microsoft.IE.Qwiq
         object this[string name] { get; set; }
 
         /// <summary>
-        /// Gets or sets a string that describes the title of this work item.
+        /// Closes this WorkItem instance and frees memory that is associated with it.
         /// </summary>
-        string Title { get; set; }
+        void Close();
 
         /// <summary>
-        /// Gets the uniform resource identifier (System.Uri) of this work item.
+        /// Creates a copy of this WorkItem instance.
         /// </summary>
-        Uri Uri { get; }
+        /// <returns>A new WorkItem instance that is a copy of this WorkItem instance.</returns>
+        IWorkItem Copy();
+        IHyperlink CreateHyperlink(string location);
+
+        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
+
+        IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem);
+
+        /// <summary>
+        /// Validates the fields of this work item.
+        /// </summary>
+        /// <returns>
+        /// True if all fields are valid. False if at least one field is not valid.
+        /// </returns>
+        bool IsValid();
+
+        /// <summary>
+        /// Opens this work item for modification.
+        /// </summary>
+        void Open();
+
+        /// <summary>
+        /// Opens this work item for modification when transmitting minimal amounts of data over the network.
+        /// </summary>
+        /// This WorkItem instance does not belong to a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemCollection.
+        /// This WorkItem instance could not be opened for edit correctly.
+        void PartialOpen();
+
+        /// <summary>
+        /// Reverts all changes that were made since the last save.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
+        /// Saves any pending changes on this work item.
+        /// </summary>
+        void Save();
+
+        /// <summary>
+        /// Saves any pending changes on this work item.
+        /// </summary>
+        /// <param name="saveFlags">
+        /// If set to <see cref="SaveFlags.MergeLinks"/>, does not return errors if the link that
+        /// is being added already exists or the link that is being removed was already removed.
+        /// </param>
+        void Save(SaveFlags saveFlags);
 
         /// <summary>
         /// Gets an ArrayList of fields in this work item that are not valid.
@@ -190,31 +214,5 @@ namespace Microsoft.IE.Qwiq
         /// An ArrayList of the fields in this work item that are not valid.
         /// </returns>
         IEnumerable<IField> Validate();
-
-        /// <summary>
-        /// Gets the links of the work item in this revision.
-        /// </summary>
-        ICollection<ILink> Links { get; }
-
-        IEnumerable<IAttachment> Attachments { get; }
-
-        /// <summary>
-        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object
-        /// that represents the type of this work item.
-        /// </summary>
-        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
-        /// The Type property is null.
-        /// </exception>
-        IWorkItemType Type { get; }
-
-        IEnumerable<IWorkItemLink> WorkItemLinks { get; }
-
-        int Rev { get; }
-
-        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
-
-        IHyperlink CreateHyperlink(string location);
-
-        IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem);
     }
 }
