@@ -65,6 +65,11 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
+        public IEnumerable<IField> Fields
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public string History
         {
             get { throw new NotImplementedException(); }
