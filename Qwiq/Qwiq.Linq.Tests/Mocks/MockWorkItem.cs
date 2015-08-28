@@ -65,6 +65,11 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
+        public IEnumerable<IField> Fields
+        {
+            get { throw new NotImplementedException(); }
+        }
+
         public string History
         {
             get { throw new NotImplementedException(); }
