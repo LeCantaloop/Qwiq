@@ -109,6 +109,11 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _item.ExternalLinkCount; }
         }
 
+        public IEnumerable<IField> Fields
+        {
+            get { return _item.Fields.Cast<Tfs.Field>().Select(field => new FieldProxy(field)); }
+        }
+
         /// <summary>
         /// Gets or sets the string value of the History field for this work item.
         /// </summary>
