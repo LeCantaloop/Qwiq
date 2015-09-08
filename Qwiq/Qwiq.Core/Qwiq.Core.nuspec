@@ -14,6 +14,7 @@
     <dependencies>
       <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
       <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,)"/>
+      <dependency id="Microsoft.IdentityModel.Clients.ActiveDirectory" version="2.16.204221202" />
     </dependencies>
   </metadata>
   <files>
