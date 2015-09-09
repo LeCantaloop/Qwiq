@@ -38,7 +38,7 @@ var creds = CredentialsFactory
                 .CreateAadCredentials(
                     "***REMOVED***", // Visual Studio Resource String
                     "***REMOVED***", // TFS Client Id
-                    "https://login.microsoftonline.com");   // Identity Authority
+                    "https://login.microsoftonline.com/common/");   // Identity Authority
 
 var uri = new Uri("***REMOVED***");
 
@@ -61,7 +61,7 @@ $credsFactory = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::GetInstance(
 $creds = $credsFactory.CreateAadCredentials(
             "***REMOVED***",
             "***REMOVED***",
-            "https://login.microsoftonline.com")
+            "https://login.microsoftonline.com/common/")
 
 $uri = [Uri]"***REMOVED***"
 
