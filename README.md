@@ -38,7 +38,7 @@ var creds = CredentialsFactory
                 .CreateAadCredentials(
                     "499b84ac-1321-427f-aa17-267ca6975798", // Visual Studio Resource String
                     "872cd9fa-d31f-45e0-9eab-6e460a02d1f1", // TFS Client Id
-                    "https://login.microsoftonline.com");   // Identity Authority
+                    "https://login.microsoftonline.com/common/");   // Identity Authority
 
 var uri = new Uri("https://microsoft.visualstudio.com/DefaultCollection");
 
@@ -61,7 +61,7 @@ $credsFactory = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::GetInstance(
 $creds = $credsFactory.CreateAadCredentials(
             "499b84ac-1321-427f-aa17-267ca6975798",
             "872cd9fa-d31f-45e0-9eab-6e460a02d1f1",
-            "https://login.microsoftonline.com")
+            "https://login.microsoftonline.com/common/")
 
 $uri = [Uri]"https://microsoft.visualstudio.com/DefaultCollection"
 
