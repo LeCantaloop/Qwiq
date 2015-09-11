@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props" Condition="Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -19,6 +20,8 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,11 +41,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JB.Tfs.Common, Version=0.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JB.Tfs.Common.0.0.0.5\lib\net40\JB.Tfs.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.0.0.0\lib\net451\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.IE.Qwiq.Core, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.1.0.0\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -76,17 +100,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
-      <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
-      <Name>Qwiq.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Linq\Qwiq.Linq.csproj">
       <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
       <Name>Qwiq.Linq</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
-      <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
-      <Name>Qwiq.Mapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
@@ -115,7 +131,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets" Condition="Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
