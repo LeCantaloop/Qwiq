@@ -23,33 +23,27 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : new()
         {
-            return from workItem in collection
-                   where workItem.Type.Name == _fieldMapper.GetWorkItemType(typeof(T)) // Only create the item if the type we're trying to make matches the TFS type. Otherwise, the fields won't map correctly and we'll throw an exception
-                   select ParseWorkItem<T>(workItem);
+            return ParseWorkItems(typeof(T), collection).Cast<T>();
         }
 
         public IEnumerable Create(Type type, IEnumerable<IWorkItem> collection)
         {
-            return from workItem in collection
-                   where workItem.Type.Name == _fieldMapper.GetWorkItemType(type) // Only create the item if the type we're trying to make matches the TFS type. Otherwise, the fields won't map correctly and we'll throw an exception
-                   select ParseWorkItem(type, workItem);
+            return ParseWorkItems(type, collection);
         }
 
-        private T ParseWorkItem<T>(IWorkItem workItem) where T : new()
+        private IEnumerable ParseWorkItems(Type type, IEnumerable<IWorkItem> collection)
         {
-            return (T)ParseWorkItem(typeof(T), workItem);
-        }
-
-        private object ParseWorkItem(Type type, IWorkItem workItem)
-        {
-            var issue = Activator.CreateInstance(type);
+            var expectedWorkItemType = _fieldMapper.GetWorkItemType(type);
+            var workItemsToMap =
+                collection.Where(wi => wi.Type.Name == expectedWorkItemType)
+                    .Select(wi => new KeyValuePair<IWorkItem, object>(wi, Activator.CreateInstance(type))).ToList();
 
             foreach (var strategy in _mapperStrategies)
             {
-                strategy.Map(type, workItem, issue, this);
+                strategy.Map(type, workItemsToMap, this);
             }
 
-            return issue;
+            return workItemsToMap.Select(wi => wi.Value);
         }
     }
 }
