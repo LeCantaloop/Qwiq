@@ -36,14 +36,14 @@ namespace Microsoft.IE.Qwiq.Mapper
             var expectedWorkItemType = _fieldMapper.GetWorkItemType(type);
             var workItemsToMap =
                 collection.Where(wi => wi.Type.Name == expectedWorkItemType)
-                    .Select(wi => new WorkItemMapping(wi, Activator.CreateInstance(type))).ToList();
+                    .Select(wi => new KeyValuePair<IWorkItem, object>(wi, Activator.CreateInstance(type))).ToList();
 
             foreach (var strategy in _mapperStrategies)
             {
                 strategy.Map(type, workItemsToMap, this);
             }
 
-            return workItemsToMap.Select(wi => wi.MappedWorkItem);
+            return workItemsToMap.Select(wi => wi.Value);
         }
     }
 }

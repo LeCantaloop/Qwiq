@@ -82,7 +82,6 @@
     <Compile Include="IndividualWorkItemMapperBase.cs" />
     <Compile Include="WorkItemMapper.cs" />
     <Compile Include="TypeParser.cs" />
-    <Compile Include="WorkItemMapping.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
