@@ -16,9 +16,9 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
             _store = store;
         }
 
-        protected override void Map(Type targeWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
+        protected override void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
         {
-            var linkProperties = _inspector.GetAnnotatedProperties(targeWorkItemType, typeof(WorkItemLinkAttribute));
+            var linkProperties = _inspector.GetAnnotatedProperties(targetWorkItemType, typeof(WorkItemLinkAttribute));
             foreach (var property in linkProperties)
             {
                 var def = _inspector.GetAttribute<WorkItemLinkAttribute>(property);
