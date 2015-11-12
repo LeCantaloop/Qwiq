@@ -5,11 +5,11 @@ namespace Microsoft.IE.Qwiq.Mapper
 {
     public abstract class IndividualWorkItemMapperBase : IWorkItemMapperStrategy
     {
-        public void Map(Type targetWorkItemType, IEnumerable<WorkItemMapping> workItemMappings, IWorkItemMapper workItemMapper)
+        public void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             foreach (var workItemMapping in workItemMappings)
             {
-                Map(targetWorkItemType, workItemMapping.WorkItem, workItemMapping.MappedWorkItem, workItemMapper);
+                Map(targetWorkItemType, workItemMapping.Key, workItemMapping.Value, workItemMapper);
             }
         }
 

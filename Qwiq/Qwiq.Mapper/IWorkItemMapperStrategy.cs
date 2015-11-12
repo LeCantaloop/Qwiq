@@ -5,6 +5,6 @@ namespace Microsoft.IE.Qwiq.Mapper
 {
     public interface IWorkItemMapperStrategy
     {
-        void Map(Type targetWorkItemType, IEnumerable<WorkItemMapping> workItemMappings, IWorkItemMapper workItemMapper);
+        void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper);
     }
 }
