@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    public class AttributeMapperStrategy : IWorkItemMapperStrategy
+    public class AttributeMapperStrategy : IndividualWorkItemMapperBase
     {
         private readonly IPropertyInspector _inspector;
         private readonly ITypeParser _typeParser;
@@ -14,7 +14,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
             _typeParser = typeParser;
         }
 
-        public void Map(Type targeWorkItemType, Qwiq.IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
+        protected override void Map(Type targeWorkItemType, Qwiq.IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
         {
             var properties = _inspector.GetAnnotatedProperties(targeWorkItemType, typeof(FieldDefinitionAttribute));
             foreach (var property in properties)
