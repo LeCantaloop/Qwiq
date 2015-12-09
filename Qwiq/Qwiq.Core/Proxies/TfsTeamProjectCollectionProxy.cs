@@ -1,9 +1,10 @@
-﻿using Microsoft.IE.Qwiq.Exceptions;
+﻿using System;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
-    public class TfsTeamProjectCollectionProxy : ITfsTeamProjectCollection
+    public class TfsTeamProjectCollectionProxy : IInternalTfsTeamProjectCollection
     {
         private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
 
@@ -23,6 +24,25 @@ namespace Microsoft.IE.Qwiq.Proxies
         public ICommonStructureService CommonStructureService
         {
             get { return ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>())); }
+        }
+
+        public T GetService<T>()
+        {
+            return _tfs.GetService<T>();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _tfs.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
