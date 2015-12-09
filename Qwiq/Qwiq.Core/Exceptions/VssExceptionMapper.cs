@@ -4,12 +4,12 @@ using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.IE.Qwiq.Exceptions
 {
-    internal class VssExceptionMapper : IExceptionMapper
+    internal abstract class VssExceptionMapper : IExceptionMapper
     {
         private readonly int[] _handledErrorCodes;
         private readonly Func<string, Exception, Exception> _newExceptionCreator;
 
-        public VssExceptionMapper(int[] handledErrorCodes, Func<string, Exception, Exception> newExceptionCreator)
+        protected VssExceptionMapper(int[] handledErrorCodes, Func<string, Exception, Exception> newExceptionCreator)
         {
             _handledErrorCodes = handledErrorCodes;
             _newExceptionCreator = newExceptionCreator;
