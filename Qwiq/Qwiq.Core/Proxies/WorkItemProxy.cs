@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -47,7 +48,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<IAttachment> Attachments
         {
-            get { return _item.Attachments.Cast<Tfs.Attachment>().Select(item => new AttachmentProxy(item)); }
+            get { return _item.Attachments.Cast<Tfs.Attachment>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IAttachment>(new AttachmentProxy(item))); }
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<IField> Fields
         {
-            get { return _item.Fields.Cast<Tfs.Field>().Select(field => new FieldProxy(field)); }
+            get { return _item.Fields.Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field))); }
         }
 
         /// <summary>
@@ -156,7 +157,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public ICollection<ILink> Links
         {
-            get { return new LinkCollectionProxy(_item); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<ICollection<ILink>>(new LinkCollectionProxy(_item)); }
         }
 
         /// <summary>
@@ -190,7 +191,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<IRevision> Revisions
         {
-            get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => new RevisionProxy(r)); }
+            get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => ExceptionHandlingDynamicProxyFactory.Create<IRevision>(new RevisionProxy(r))); }
         }
 
         /// <summary>
@@ -232,7 +233,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </exception>
         public IWorkItemType Type
         {
-            get { return new WorkItemTypeProxy(_item.Type); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemTypeProxy(_item.Type)); }
         }
 
         /// <summary>
@@ -250,7 +251,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<IWorkItemLink> WorkItemLinkHistory
         {
-            get { return _item.WorkItemLinkHistory.Cast<Tfs.WorkItemLink>().Select(item => new WorkItemLinkProxy(item)); }
+            get { return _item.WorkItemLinkHistory.Cast<Tfs.WorkItemLink>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(item))); }
         }
 
         /// <summary>
@@ -260,7 +261,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<IWorkItemLink> WorkItemLinks
         {
-            get { return _item.WorkItemLinks.Cast<Tfs.WorkItemLink>().Select(item => new WorkItemLinkProxy(item)); }
+            get { return _item.WorkItemLinks.Cast<Tfs.WorkItemLink>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(item))); }
         }
 
         public int Rev
@@ -271,18 +272,18 @@ namespace Microsoft.IE.Qwiq.Proxies
         public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
         {
             var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
-            return new RelatedLinkProxy(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id));
+            return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLinkProxy(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id)));
         }
 
         public IHyperlink CreateHyperlink(string location)
         {
-            return new HyperlinkProxy(new Tfs.Hyperlink(location));
+            return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(new Tfs.Hyperlink(location)));
         }
 
         public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem)
         {
             var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
-            return new WorkItemLinkProxy(new Tfs.WorkItemLink(rawLinkTypeEnd, _item.Id, targetWorkItem.Id));
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(new Tfs.WorkItemLink(rawLinkTypeEnd, _item.Id, targetWorkItem.Id)));
         }
 
         /// <summary>
@@ -308,7 +309,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// <returns>A new WorkItem instance that is a copy of this WorkItem instance.</returns>
         public IWorkItem Copy()
         {
-            return new WorkItemProxy(_item.Copy());
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_item.Copy()));
         }
 
         /// <summary>
@@ -322,10 +323,10 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItemProxy Copy(IWorkItemType targetType)
+        public IWorkItem Copy(IWorkItemType targetType)
         {
             var type = GetWorkItemType(targetType);
-            return new WorkItemProxy(_item.Copy(type));
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_item.Copy(type)));
         }
 
         private Tfs.WorkItemType GetWorkItemType(IWorkItemType type)
@@ -346,11 +347,11 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// <exception cref="System.ArgumentNullException">
         /// Thrown when targetType is null.
         /// </exception>
-        public WorkItemProxy Copy(IWorkItemType targetType, WorkItemCopyFlags flags)
+        public IWorkItem Copy(IWorkItemType targetType, WorkItemCopyFlags flags)
         {
             var type = GetWorkItemType(targetType);
 
-            return new WorkItemProxy(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags));
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags)));
         }
 
         /// <summary>
@@ -407,7 +408,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </returns>
         public IEnumerable<IField> Validate()
         {
-            return _item.Validate().Cast<Tfs.Field>().Select(field => new FieldProxy(field));
+            return _item.Validate().Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field)));
         }
 
         /// <summary>

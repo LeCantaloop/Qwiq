@@ -1,4 +1,5 @@
-﻿using Tfs = Microsoft.TeamFoundation;
+﻿using Microsoft.IE.Qwiq.Exceptions;
+using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
@@ -15,13 +16,13 @@ namespace Microsoft.IE.Qwiq.Proxies
         {
             get
             {
-                return new IdentityManagementServiceProxy(_tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>());
+                return ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(new IdentityManagementServiceProxy(_tfs.GetService<Tfs.Framework.Client.IIdentityManagementService2>()));
             }
         }
 
         public ICommonStructureService CommonStructureService
         {
-            get { return new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>()); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(new CommonStructureServiceProxy(_tfs.GetService<Tfs.Server.ICommonStructureService4>())); }
         }
     }
 }

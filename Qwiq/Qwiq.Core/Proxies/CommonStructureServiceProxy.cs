@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Server;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -27,12 +28,12 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IProjectInfo GetProjectFromName(string projectName)
         {
-            return new ProjectInfoProxy(_service.GetProjectFromName(projectName));
+            return ExceptionHandlingDynamicProxyFactory.Create<IProjectInfo>(new ProjectInfoProxy(_service.GetProjectFromName(projectName)));
         }
 
         public IEnumerable<INodeInfo> ListStructures(string projectUri)
         {
-            return _service.ListStructures(projectUri).Select(i => new NodeInfoProxy(i));
+            return _service.ListStructures(projectUri).Select(i => ExceptionHandlingDynamicProxyFactory.Create<INodeInfo>(new NodeInfoProxy(i)));
         }
 
         public XmlElement GetNodesXml(string[] nodeUris, bool childNodes)
@@ -42,7 +43,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<IProjectInfo> ListAllProjects()
         {
-            return _service.ListAllProjects().Select(p => new ProjectInfoProxy(p));
+            return _service.ListAllProjects().Select(p => ExceptionHandlingDynamicProxyFactory.Create<IProjectInfo>(new ProjectInfoProxy(p)));
         }
     }
 }

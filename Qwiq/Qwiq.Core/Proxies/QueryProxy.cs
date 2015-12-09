@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
@@ -14,12 +15,12 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<IWorkItem> RunQuery()
         {
-            return _query.RunQuery().Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>().Select(item => new WorkItemProxy(item));
+            return _query.RunQuery().Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(item)));
         }
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
-            return _query.RunLinkQuery().Select(item => new WorkItemLinkInfoProxy(item));
+            return _query.RunLinkQuery().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkInfo>(new WorkItemLinkInfoProxy(item)));
         }
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -13,7 +14,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IWorkItemLinkTypeEnd ForwardEnd
         {
-            get { return new WorkItemLinkTypeEndProxy(_linkType.ForwardEnd); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_linkType.ForwardEnd)); }
         }
 
         public bool IsActive
@@ -28,7 +29,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IWorkItemLinkTypeEnd ReverseEnd
         {
-            get { return new WorkItemLinkTypeEndProxy(_linkType.ReverseEnd); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_linkType.ReverseEnd)); }
         }
     }
 }

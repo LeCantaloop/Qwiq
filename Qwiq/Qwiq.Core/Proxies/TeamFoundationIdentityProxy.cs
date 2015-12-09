@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -16,7 +17,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IIdentityDescriptor Descriptor
         {
-            get { return new IdentityDescriptorProxy(_identity.Descriptor); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptorProxy(_identity.Descriptor)); }
         }
 
         public string DisplayName
@@ -36,12 +37,12 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<IIdentityDescriptor> MemberOf
         {
-            get { return _identity.MemberOf.Select(item => new IdentityDescriptorProxy(item)); }
+            get { return _identity.MemberOf.Select(item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptorProxy(item))); }
         }
 
         public IEnumerable<IIdentityDescriptor> Members
         {
-            get { return _identity.Members.Select(item => new IdentityDescriptorProxy(item)); }
+            get { return _identity.Members.Select(item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptorProxy(item))); }
         }
 
         public Guid TeamFoundationId
