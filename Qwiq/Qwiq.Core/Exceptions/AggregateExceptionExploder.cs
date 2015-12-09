@@ -8,7 +8,7 @@ namespace Microsoft.IE.Qwiq.Exceptions
     {
         public IEnumerable<Exception> Explode(Exception exception)
         {
-            return new [] {exception}.OfType<AggregateException>().SelectMany(ae => ae.InnerExceptions);
+            return new [] {exception}.OfType<AggregateException>().Select(ae => ae.Flatten()).SelectMany(ae => ae.InnerExceptions);
         }
     }
 }
