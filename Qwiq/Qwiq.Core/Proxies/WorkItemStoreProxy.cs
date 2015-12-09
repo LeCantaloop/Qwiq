@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Microsoft.IE.Qwiq.Exceptions;
-using TfsClient = Microsoft.TeamFoundation.Client;
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -15,10 +14,10 @@ namespace Microsoft.IE.Qwiq.Proxies
     public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly IQueryFactory _queryFactory;
-        private readonly TfsClient.TfsTeamProjectCollection _tfs;
+        private readonly IInternalTfsTeamProjectCollection _tfs;
         private readonly TfsWorkItem.WorkItemStore _workItemStore;
 
-        internal WorkItemStoreProxy(TfsClient.TfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
+        internal WorkItemStoreProxy(IInternalTfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
         {
             _tfs = tfs;
             _workItemStore = workItemStore;
@@ -44,7 +43,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public ITfsTeamProjectCollection TeamProjectCollection
         {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<ITfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(_tfs)); }
+            get { return _tfs; }
         }
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
@@ -117,5 +116,5 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 
-    
+
 }
