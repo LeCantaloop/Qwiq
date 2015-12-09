@@ -436,9 +436,9 @@ namespace Microsoft.IE.Qwiq.Proxies
             {
                 throw new ItemAlreadyUpdatedOnServerException(ex);
             }
-            catch (Tfs.ServerRejectedChangesException)
+            catch (Tfs.ServerRejectedChangesException ex)
             {
-                throw new ServerRejectedChangesException();
+                throw new ServerRejectedChangesException(ex);
             }
         }
     }
