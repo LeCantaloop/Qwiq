@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.IE.Qwiq.Exceptions
 {
     internal abstract class VssExceptionMapper : IExceptionMapper
     {
+        private const string ErrorCode = "ErrorCode";
+        private readonly Regex _extractTfsErrorCodeRegex = new Regex("TF(?<" + ErrorCode + ">[0-9]*)", RegexOptions.Compiled);
         private readonly int[] _handledErrorCodes;
         private readonly Func<string, Exception, Exception> _newExceptionCreator;
 
@@ -18,7 +21,21 @@ namespace Microsoft.IE.Qwiq.Exceptions
         public Exception Map(Exception ex)
         {
             var vssException = ex as VssException;
-            return (vssException != null && _handledErrorCodes.Contains(vssException.ErrorCode)) ? _newExceptionCreator(vssException.Message, vssException) : null;
+
+            if (vssException == null)
+            {
+                return null;
+            }
+
+            var regexMatch = _extractTfsErrorCodeRegex.Match(ex.Message);
+            if (!regexMatch.Success)
+            {
+                return null;
+            }
+
+            var errorCode = int.Parse(regexMatch.Groups[ErrorCode].Value);
+
+            return _handledErrorCodes.Contains(errorCode) ? _newExceptionCreator(vssException.Message, vssException) : null;
         }
     }
 }
