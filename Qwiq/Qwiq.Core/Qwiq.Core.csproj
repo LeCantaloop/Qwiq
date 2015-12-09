@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
+    <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
     <Compile Include="Exceptions\IExceptionExploder.cs" />
     <Compile Include="Exceptions\IExceptionMapper.cs" />
