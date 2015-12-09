@@ -1,4 +1,5 @@
-﻿using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+﻿using Microsoft.IE.Qwiq.Exceptions;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
@@ -20,7 +21,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         {
             get
             {
-                return new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd);
+                return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd));
             }
         }
 

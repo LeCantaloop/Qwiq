@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.IE.Qwiq.Exceptions;
 using Microsoft.IE.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -36,19 +37,19 @@ namespace Microsoft.IE.Qwiq
             var relatedLink = link as Tfs.RelatedLink;
             if (relatedLink != null)
             {
-                return new RelatedLinkProxy(relatedLink);
+                return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLinkProxy(relatedLink));
             }
 
             var hyperlink = link as Tfs.Hyperlink;
             if (hyperlink != null)
             {
-                return new HyperlinkProxy(hyperlink);
+                return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(hyperlink));
             }
 
             var workItemLink = link as Tfs.WorkItemLink;
             if (workItemLink != null)
             {
-                return new WorkItemLinkProxy(workItemLink);
+                return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(workItemLink));
             }
 
             throw new ArgumentException("Unknown link type", "link");

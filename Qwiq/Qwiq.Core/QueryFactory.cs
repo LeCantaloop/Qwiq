@@ -1,4 +1,5 @@
-﻿using Microsoft.IE.Qwiq.Proxies;
+﻿using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.IE.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq
@@ -24,7 +25,7 @@ namespace Microsoft.IE.Qwiq
 
         public IQuery Create(string wiql, bool dayPrecision)
         {
-            return new QueryProxy(new Tfs.Query(_store, wiql, null, dayPrecision));
+            return ExceptionHandlingDynamicProxyFactory.Create<IQuery>(new QueryProxy(new Tfs.Query(_store, wiql, null, dayPrecision)));
         }
     }
 }

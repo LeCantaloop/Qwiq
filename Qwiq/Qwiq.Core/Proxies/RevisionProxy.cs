@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -21,7 +22,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<IAttachment> Attachments
         {
-            get { return _rev.Attachments.Cast<Tfs.Attachment>().Select(item => new AttachmentProxy(item)); }
+            get { return _rev.Attachments.Cast<Tfs.Attachment>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IAttachment>(new AttachmentProxy(item))); }
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         {
             get
             {
-                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => new FieldProxy(field) as IField);
+                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field)) as IField);
             }
         }
 
@@ -50,7 +51,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IEnumerable<ILink> Links
         {
-            get { return _rev.Links.Cast<Tfs.Link>().Select(item => new LinkProxy(item)); }
+            get { return _rev.Links.Cast<Tfs.Link>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<ILink>(new LinkProxy(item))); }
         }
 
         /// <summary>
@@ -58,7 +59,7 @@ namespace Microsoft.IE.Qwiq.Proxies
         /// </summary>
         public IWorkItem WorkItem
         {
-            get { return new WorkItemProxy(_rev.WorkItem); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_rev.WorkItem)); }
         }
 
         /// <summary>
