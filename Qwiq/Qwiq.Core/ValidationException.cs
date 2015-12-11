@@ -3,9 +3,9 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq
 {
-    public class ValidationException : Exception
+    public class ValidationException : InvalidOperationException
     {
-        internal ValidationException(Tfs.ValidationException ex) : base(ex.Message)
+        internal ValidationException(Tfs.ValidationException ex) : base(ex.Message, ex)
         {
         }
     }

@@ -7,4 +7,9 @@ namespace Microsoft.IE.Qwiq
         IIdentityManagementService IdentityManagementService { get; }
         ICommonStructureService CommonStructureService { get; }
     }
+
+    internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable
+    {
+        T GetService<T>();
+    }
 }

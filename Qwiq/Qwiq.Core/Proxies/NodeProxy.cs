@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -16,7 +17,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IEnumerable<INode> ChildNodes
         {
-            get { return _node.ChildNodes.Cast<Tfs.Node>().Select(item => new NodeProxy(item)); }
+            get { return _node.ChildNodes.Cast<Tfs.Node>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(item))); }
         }
 
         public bool HasChildNodes
@@ -46,7 +47,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public INode ParentNode
         {
-            get { return new NodeProxy(_node.ParentNode); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(_node.ParentNode)); }
         }
 
         public string Path

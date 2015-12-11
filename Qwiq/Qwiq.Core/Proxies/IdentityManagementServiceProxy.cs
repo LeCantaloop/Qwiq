@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Framework;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -21,7 +22,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             var identities = _identityManagementService2.ReadIdentities(rawDescriptors, Tfs.Common.MembershipQuery.None,
                 Tfs.Common.ReadIdentityOptions.None);
 
-            return identities.Select(identity => identity == null ? null : new TeamFoundationIdentityProxy(identity));
+            return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
         }
 
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues)
@@ -30,12 +31,12 @@ namespace Microsoft.IE.Qwiq.Proxies
             var identities = _identityManagementService2.ReadIdentities(factor, searchFactorValues,
                 Tfs.Common.MembershipQuery.None, Tfs.Common.ReadIdentityOptions.None)[0];
 
-            return identities.Select(identity => identity == null ? null : new TeamFoundationIdentityProxy(identity));
+            return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
         }
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
-            return new IdentityDescriptorProxy(new Tfs.Client.IdentityDescriptor(identityType, identifier));
+            return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptorProxy(new Tfs.Client.IdentityDescriptor(identityType, identifier)));
         }
     }
 }
