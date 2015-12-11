@@ -1,3 +1,4 @@
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -23,7 +24,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public IWorkItem NewWorkItem()
         {
-            return new WorkItemProxy(_type.NewWorkItem());
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_type.NewWorkItem()));
         }
     }
 }
