@@ -82,6 +82,7 @@
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="LinkMapper.cs" />
+    <Compile Include="MembershipQuery.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IField.cs" />
