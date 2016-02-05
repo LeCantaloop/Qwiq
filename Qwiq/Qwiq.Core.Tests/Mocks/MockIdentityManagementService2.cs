@@ -15,43 +15,31 @@ namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
             };
         }
 
-        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, MembershipQuery queryMembership,
+        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return GetNullIdentities();
         }
 
-        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, MembershipQuery queryMembership,
+        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotImplementedException();
         }
 
-        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, MembershipQuery queryMembership)
+        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, TeamFoundation.Framework.Common.MembershipQuery queryMembership)
         {
             throw new NotImplementedException();
         }
 
         public TeamFoundationIdentity[][] ReadIdentities(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership, ReadIdentityOptions readOptions)
         {
             return new []{ GetNullIdentities() };
         }
 
         public TeamFoundationIdentity ReadIdentity(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership, ReadIdentityOptions readOptions)
         {
             throw new NotImplementedException();
         }
@@ -162,8 +150,33 @@ namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TeamFoundationIdentity[][] ReadIdentities(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string[] searchFactorValues,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotImplementedException();
+        }
+
         public TeamFoundationIdentity ReadIdentity(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
         {
             throw new NotImplementedException();
@@ -171,45 +184,6 @@ namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
 
         public TeamFoundationIdentity[] ListApplicationGroups(string scopeId, ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
         {
             throw new NotImplementedException();
         }
