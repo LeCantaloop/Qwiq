@@ -27,7 +27,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
     {
         public override void When()
         {
-            Actual = Service.ReadIdentities(IdentitySearchFactor.AccountName, new[] {"I Do Not Exist"});
+            Actual = Service.ReadIdentities(IdentitySearchFactor.AccountName, new[] {"I Do Not Exist"}, MembershipQuery.None);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
     {
         public override void When()
         {
-            Actual = Service.ReadIdentities(new [] { new MockIdentityDescriptor() });
+            Actual = Service.ReadIdentities(new [] { new MockIdentityDescriptor() }, MembershipQuery.None);
         }
 
         [TestMethod]
