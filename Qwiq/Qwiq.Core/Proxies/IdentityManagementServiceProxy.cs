@@ -14,25 +14,22 @@ namespace Microsoft.IE.Qwiq.Proxies
             _identityManagementService2 = identityManagementService2;
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors, MembershipQuery membershipQuery)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
         {
             var rawDescriptors = descriptors.Select(descriptor =>
                 new Tfs.Client.IdentityDescriptor(descriptor.IdentityType, descriptor.Identifier)).ToArray();
-            var membership = (Tfs.Common.MembershipQuery) membershipQuery;
 
-            var identities = _identityManagementService2.ReadIdentities(rawDescriptors, membership,
+            var identities = _identityManagementService2.ReadIdentities(rawDescriptors, Tfs.Common.MembershipQuery.None,
                 Tfs.Common.ReadIdentityOptions.None);
 
             return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues, MembershipQuery membershipQuery)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues)
         {
             var factor = (Tfs.Common.IdentitySearchFactor) searchFactor;
-            var membership = (Tfs.Common.MembershipQuery) membershipQuery;
-
             var identities = _identityManagementService2.ReadIdentities(factor, searchFactorValues,
-                membership, Tfs.Common.ReadIdentityOptions.None)[0];
+                Tfs.Common.MembershipQuery.None, Tfs.Common.ReadIdentityOptions.None)[0];
 
             return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
         }
