@@ -1,0 +1,4 @@
+assembly-versioning-scheme: MajorMinorPatchTag
+mode: ContinuousDeployment
+next-version: 4.3.0
+branches: {}
