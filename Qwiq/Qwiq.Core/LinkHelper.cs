@@ -23,10 +23,16 @@ namespace Microsoft.IE.Qwiq
             var workItemLink = link as IWorkItemLink;
             if (workItemLink != null)
             {
-                return item.Links.Cast<Tfs.Link>().OfType<Tfs.WorkItemLink>().SingleOrDefault(wil => wil.SourceId == workItemLink.SourceId && wil.TargetId == workItemLink.TargetId);
+                return item
+                        .Links
+                        .Cast<Tfs.Link>()
+                        .OfType<Tfs.WorkItemLink>()
+                        .SingleOrDefault(wil => wil.LinkTypeEnd.ImmutableName.Equals(workItemLink.LinkTypeEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
+                                                    && wil.SourceId == workItemLink.SourceId
+                                                    && wil.TargetId == workItemLink.TargetId);
             }
-        
+
             throw new ArgumentException("Unknown link type", "link");
-        } 
+        }
     }
 }
