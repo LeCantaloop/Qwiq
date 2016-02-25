@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.IE.Qwiq.Proxies;
 using Microsoft.IE.Qwiq.Credentials;
+using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.IE.Qwiq
@@ -30,11 +31,11 @@ namespace Microsoft.IE.Qwiq
         internal IWorkItemStore Create(Uri endpoint, TfsCredentials credentials,
             Func<Tfs.WorkItemTracking.Client.WorkItemStore, IQueryFactory> queryFactoryFunc)
         {
-            var tfs = new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials);
+            var tfs = ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(new Tfs.Client.TfsTeamProjectCollection(endpoint, credentials.Credentials)));
             var workItemStore = tfs.GetService<Tfs.WorkItemTracking.Client.WorkItemStore>();
             var queryFactory = queryFactoryFunc.Invoke(workItemStore);
 
-            return new WorkItemStoreProxy(tfs, workItemStore, queryFactory);
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemStore>(new WorkItemStoreProxy(tfs, workItemStore, queryFactory));
         }
     }
 }

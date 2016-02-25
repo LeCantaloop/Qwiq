@@ -86,16 +86,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AggregateExceptionExploderTests.cs" />
+    <Compile Include="ExceptionMapperTests.cs" />
+    <Compile Include="Mocks\ExceptionThrower.cs" />
     <Compile Include="IdentityDescriptorProxyTests.cs" />
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
     <Compile Include="LinkCollectionTests.cs" />
     <Compile Include="LinkMapperTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
+    <Compile Include="Mocks\MockArgumentExceptionMapper.cs" />
+    <Compile Include="Mocks\MockException.cs" />
     <Compile Include="Mocks\MockIdentityDescriptor.cs" />
     <Compile Include="Mocks\MockIdentityManagementService2.cs" />
     <Compile Include="Mocks\MockQuery.cs" />
     <Compile Include="Mocks\MockQueryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExceptionHandlingDynamicProxyTests.cs" />
     <Compile Include="WorkItemStoreTests.cs" />
   </ItemGroup>
   <ItemGroup>

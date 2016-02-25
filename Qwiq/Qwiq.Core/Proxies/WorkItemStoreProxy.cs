@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using TfsClient = Microsoft.TeamFoundation.Client;
+using Microsoft.IE.Qwiq.Exceptions;
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
@@ -14,10 +14,10 @@ namespace Microsoft.IE.Qwiq.Proxies
     public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly IQueryFactory _queryFactory;
-        private readonly TfsClient.TfsTeamProjectCollection _tfs;
+        private readonly IInternalTfsTeamProjectCollection _tfs;
         private readonly TfsWorkItem.WorkItemStore _workItemStore;
 
-        internal WorkItemStoreProxy(TfsClient.TfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
+        internal WorkItemStoreProxy(IInternalTfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
         {
             _tfs = tfs;
             _workItemStore = workItemStore;
@@ -43,7 +43,7 @@ namespace Microsoft.IE.Qwiq.Proxies
 
         public ITfsTeamProjectCollection TeamProjectCollection
         {
-            get { return new TfsTeamProjectCollectionProxy(_tfs); }
+            get { return _tfs; }
         }
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
@@ -101,7 +101,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             {
                 return
                     _workItemStore.Projects.Cast<TfsWorkItem.Project>()
-                        .Select(item => new ProjectProxy(item));
+                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new ProjectProxy(item)));
             }
         }
 
@@ -111,10 +111,10 @@ namespace Microsoft.IE.Qwiq.Proxies
             {
                 return
                     _workItemStore.WorkItemLinkTypes
-                        .Select(item => new WorkItemLinkTypeProxy(item));
+                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(item)));
             }
         }
     }
 
-    
+
 }

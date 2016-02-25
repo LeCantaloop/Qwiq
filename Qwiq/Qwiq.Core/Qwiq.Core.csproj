@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,6 +71,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
+    <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
+    <Compile Include="Exceptions\ExceptionMapper.cs" />
+    <Compile Include="Exceptions\IExceptionExploder.cs" />
+    <Compile Include="Exceptions\IExceptionMapper.cs" />
+    <Compile Include="Exceptions\InnerExceptionExploder.cs" />
+    <Compile Include="Exceptions\InvalidOperationExceptionMapper.cs" />
+    <Compile Include="Exceptions\TransientException.cs" />
+    <Compile Include="Exceptions\TransientExceptionMapper.cs" />
+    <Compile Include="Exceptions\VssExceptionMapper.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="LinkMapper.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
@@ -117,6 +128,7 @@
     <Compile Include="Proxies\ProjectPropertyProxy.cs" />
     <Compile Include="Proxies\ProjectProxy.cs" />
     <Compile Include="Proxies\QueryProxy.cs" />
+    <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="QueryFactory.cs" />
     <Compile Include="Proxies\RelatedLinkProxy.cs" />
