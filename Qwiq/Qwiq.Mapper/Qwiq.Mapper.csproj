@@ -12,8 +12,7 @@
     <AssemblyName>Microsoft.IE.Qwiq.Mapper</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>f430b6bf</NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -42,6 +41,18 @@
     <Reference Include="Microsoft.IE.Qwiq.Core, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.TeamFoundation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Services.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\TFS\Microsoft.VisualStudio.Services.Common.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -94,9 +105,11 @@
     <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets" Condition="Exists('..\packages\Microsoft.IE.Qwiq.Core.4.0.1.1\build\microsoft.ie.qwiq.core.targets')" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.3.4.1\Build\portable-net+sl+win+wpa+wp\GitVersionTask.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
