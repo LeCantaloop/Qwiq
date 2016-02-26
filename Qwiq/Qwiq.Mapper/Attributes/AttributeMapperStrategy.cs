@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
+
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
@@ -30,7 +30,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                         var value = ParseValue(property, sourceWorkItem[fieldName]);
                         property.SetValue(targetWorkItem, value);
                     }
-                    catch (FieldDefinitionNotExistException e)
+                    catch (Exception e)
                     {
                         System.Diagnostics.Trace.TraceWarning("Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
                             fieldName,
