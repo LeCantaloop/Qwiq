@@ -55,6 +55,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.CreationTimeUtcGet">
             <summary>Sets the shim of Attachment.get_CreationTimeUtc()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.EqualsAttachmentInfo">
+            <summary>Sets the shim of Attachment.Equals(AttachmentInfo attachmentInfo)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.ExtensionGet">
             <summary>Sets the shim of Attachment.get_Extension()</summary>
         </member>
@@ -114,6 +117,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.AllInstances.CreationTimeUtcGet">
             <summary>Sets the shim of Attachment.get_CreationTimeUtc()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.AllInstances.EqualsAttachmentInfo">
+            <summary>Sets the shim of Attachment.Equals(AttachmentInfo attachmentInfo)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachment.AllInstances.ExtensionGet">
             <summary>Sets the shim of Attachment.get_Extension()</summary>
@@ -288,6 +294,54 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentCollection.AllInstances.WorkItemGet">
             <summary>Sets the shim of AttachmentCollection.get_WorkItem()</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference">
+            <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.AttachmentReference</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.#ctor(Microsoft.TeamFoundation.WorkItemTracking.Client.AttachmentReference)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.Constructor">
+            <summary>Sets the shim of AttachmentReference.AttachmentReference()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.IdGet">
+            <summary>Sets the shim of AttachmentReference.get_Id()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.IdSetGuid">
+            <summary>Sets the shim of AttachmentReference.set_Id(Guid value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.UrlGet">
+            <summary>Sets the shim of AttachmentReference.get_Url()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.UrlSetString">
+            <summary>Sets the shim of AttachmentReference.set_Url(String value)</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.AllInstances.IdGet">
+            <summary>Sets the shim of AttachmentReference.get_Id()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.AllInstances.IdSetGuid">
+            <summary>Sets the shim of AttachmentReference.set_Id(Guid value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.AllInstances.UrlGet">
+            <summary>Sets the shim of AttachmentReference.get_Url()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimAttachmentReference.AllInstances.UrlSetString">
+            <summary>Sets the shim of AttachmentReference.set_Url(String value)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimBatchReadParameter">
             <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.BatchReadParameter</summary>
@@ -820,9 +874,6 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategory.WorkItemTypesGet">
             <summary>Sets the shim of Category.get_WorkItemTypes()</summary>
         </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategory._SyncMembersb__5WorkItemTypeWorkItemType">
-            <summary>Sets the shim of Category.&lt;SyncMembers&gt;b__5(WorkItemType x, WorkItemType y)</summary>
-        </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategory.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
@@ -930,21 +981,6 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection.SystemCollectionsIEnumerableGetEnumerator">
             <summary>Sets the shim of CategoryCollection.System.Collections.IEnumerable.GetEnumerator()</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection._Exportb__0Category">
-            <summary>Sets the shim of CategoryCollection.&lt;Export&gt;b__0(Category c)</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection._Exportb__2Category">
-            <summary>Sets the shim of CategoryCollection.&lt;Export&gt;b__2(Category c)</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection._Exportb__4Category">
-            <summary>Sets the shim of CategoryCollection.&lt;Export&gt;b__4(Category c)</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection._Exportb__6Category">
-            <summary>Sets the shim of CategoryCollection.&lt;Export&gt;b__6(Category c)</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection._Exportb__7WorkItemType">
-            <summary>Sets the shim of CategoryCollection.&lt;Export&gt;b__7(WorkItemType type)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimCategoryCollection.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -1132,6 +1168,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.GetTreeIDStringTreeStructureType">
             <summary>Sets the shim of ClientWiqlAdapterHelper.GetTreeID(String path, TreeStructureType type)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.GetVariableValueString">
+            <summary>Sets the shim of ClientWiqlAdapterHelper.GetVariableValue(String name)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.HasLinkTypeString">
             <summary>Sets the shim of ClientWiqlAdapterHelper.HasLinkType(String linkTypeName)</summary>
         </member>
@@ -1218,6 +1257,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.AllInstances.GetTreeIDStringTreeStructureType">
             <summary>Sets the shim of ClientWiqlAdapterHelper.GetTreeID(String path, TreeStructureType type)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.AllInstances.GetVariableValueString">
+            <summary>Sets the shim of ClientWiqlAdapterHelper.GetVariableValue(String name)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimClientWiqlAdapterHelper.AllInstances.HasLinkTypeString">
             <summary>Sets the shim of ClientWiqlAdapterHelper.HasLinkType(String linkTypeName)</summary>
@@ -1621,6 +1663,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.IdGet">
             <summary>Sets the shim of Field.get_Id()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.IdentityFieldAllowedValuesGet">
+            <summary>Sets the shim of Field.get_IdentityFieldAllowedValues()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.IsChangedByUserGet">
             <summary>Sets the shim of Field.get_IsChangedByUser()</summary>
         </member>
@@ -1701,6 +1746,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.AllInstances.IdGet">
             <summary>Sets the shim of Field.get_Id()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.AllInstances.IdentityFieldAllowedValuesGet">
+            <summary>Sets the shim of Field.get_IdentityFieldAllowedValues()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimField.AllInstances.IsChangedByUserGet">
             <summary>Sets the shim of Field.get_IsChangedByUser()</summary>
@@ -1972,6 +2020,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IdGet">
             <summary>Sets the shim of FieldDefinition.get_Id()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IdentityFieldAllowedValuesGet">
+            <summary>Sets the shim of FieldDefinition.get_IdentityFieldAllowedValues()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.InternalTypeGet">
             <summary>Sets the shim of FieldDefinition.get_InternalType()</summary>
         </member>
@@ -1986,6 +2037,12 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IsEditableGet">
             <summary>Sets the shim of FieldDefinition.get_IsEditable()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IsIdentityGet">
+            <summary>Sets the shim of FieldDefinition.get_IsIdentity()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IsIdentitySetBoolean">
+            <summary>Sets the shim of FieldDefinition.set_IsIdentity(Boolean value)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.IsIgnoredGet">
             <summary>Sets the shim of FieldDefinition.get_IsIgnored()</summary>
@@ -2095,6 +2152,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IdGet">
             <summary>Sets the shim of FieldDefinition.get_Id()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IdentityFieldAllowedValuesGet">
+            <summary>Sets the shim of FieldDefinition.get_IdentityFieldAllowedValues()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.InternalTypeGet">
             <summary>Sets the shim of FieldDefinition.get_InternalType()</summary>
         </member>
@@ -2109,6 +2169,12 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IsEditableGet">
             <summary>Sets the shim of FieldDefinition.get_IsEditable()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IsIdentityGet">
+            <summary>Sets the shim of FieldDefinition.get_IsIdentity()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IsIdentitySetBoolean">
+            <summary>Sets the shim of FieldDefinition.set_IsIdentity(Boolean value)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimFieldDefinition.AllInstances.IsIgnoredGet">
             <summary>Sets the shim of FieldDefinition.get_IsIgnored()</summary>
@@ -2496,6 +2562,144 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimHyperlink.AllInstances.LocationGet">
             <summary>Sets the shim of Hyperlink.get_Location()</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue">
+            <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.IdentityFieldValue</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.#ctor(Microsoft.TeamFoundation.WorkItemTracking.Client.IdentityFieldValue)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AliasGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Alias()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AliasSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Alias(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.ConstantIdGet">
+            <summary>Sets the shim of IdentityFieldValue.get_ConstantId()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.ConstantIdSetInt32">
+            <summary>Sets the shim of IdentityFieldValue.set_ConstantId(Int32 value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.ConstructorString">
+            <summary>Sets the shim of IdentityFieldValue.IdentityFieldValue(String displayName)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.DisplayNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_DisplayName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.DisplayPartGet">
+            <summary>Sets the shim of IdentityFieldValue.get_DisplayPart()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.DisplayPartSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_DisplayPart(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.DomainGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Domain()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.DomainSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Domain(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.EmailGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Email()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.EmailSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Email(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.FullNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_FullName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.FullNameSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_FullName(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.IdentityNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IdentityName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.IsGroupGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IsGroup()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.IsIdentityGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IsIdentity()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.IsIdentitySetBoolean">
+            <summary>Sets the shim of IdentityFieldValue.set_IsIdentity(Boolean value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.SidGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Sid()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.SidSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Sid(String value)</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.AliasGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Alias()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.AliasSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Alias(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.ConstantIdGet">
+            <summary>Sets the shim of IdentityFieldValue.get_ConstantId()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.ConstantIdSetInt32">
+            <summary>Sets the shim of IdentityFieldValue.set_ConstantId(Int32 value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.DisplayNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_DisplayName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.DisplayPartGet">
+            <summary>Sets the shim of IdentityFieldValue.get_DisplayPart()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.DisplayPartSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_DisplayPart(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.DomainGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Domain()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.DomainSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Domain(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.EmailGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Email()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.EmailSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Email(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.FullNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_FullName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.FullNameSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_FullName(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.IdentityNameGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IdentityName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.IsGroupGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IsGroup()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.IsIdentityGet">
+            <summary>Sets the shim of IdentityFieldValue.get_IsIdentity()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.IsIdentitySetBoolean">
+            <summary>Sets the shim of IdentityFieldValue.set_IsIdentity(Boolean value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.SidGet">
+            <summary>Sets the shim of IdentityFieldValue.get_Sid()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityFieldValue.AllInstances.SidSetString">
+            <summary>Sets the shim of IdentityFieldValue.set_Sid(String value)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimIdentityNotExistException">
             <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.IdentityNotExistException</summary>
@@ -3211,6 +3415,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.ConstructorWorkItemStore">
             <summary>Sets the shim of ProjectCollection.ProjectCollection(WorkItemStore store)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.ContainsGuid">
+            <summary>Sets the shim of ProjectCollection.Contains(Guid projectGuid)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.ContainsProject">
             <summary>Sets the shim of ProjectCollection.Contains(Project value)</summary>
         </member>
@@ -3229,6 +3436,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.IndexOfProject">
             <summary>Sets the shim of ProjectCollection.IndexOf(Project value)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.ItemGetGuid">
+            <summary>Sets the shim of ProjectCollection.get_Item(Guid projectGuid)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.ItemGetInt32">
             <summary>Sets the shim of ProjectCollection.get_Item(Int32 index)</summary>
         </member>
@@ -3237,6 +3447,9 @@
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances.ContainsGuid">
+            <summary>Sets the shim of ProjectCollection.Contains(Guid projectGuid)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances.ContainsProject">
             <summary>Sets the shim of ProjectCollection.Contains(Project value)</summary>
@@ -3255,6 +3468,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances.IndexOfProject">
             <summary>Sets the shim of ProjectCollection.IndexOf(Project value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances.ItemGetGuid">
+            <summary>Sets the shim of ProjectCollection.get_Item(Guid projectGuid)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimProjectCollection.AllInstances.ItemGetInt32">
             <summary>Sets the shim of ProjectCollection.get_Item(Int32 index)</summary>
@@ -4036,6 +4252,9 @@
         <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.BehaveAsNotImplemented">
             <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AddSupportedFeaturesWorkItemServerVersion">
+            <summary>Sets the shim of ServerInfo.AddSupportedFeatures(WorkItemServerVersion ver)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
@@ -4048,6 +4267,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.IsSupportedString">
             <summary>Sets the shim of ServerInfo.IsSupported(String feature)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.RemoveUnSupportedFeatuersWorkItemServerVersion">
+            <summary>Sets the shim of ServerInfo.RemoveUnSupportedFeatuers(WorkItemServerVersion ver)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.SetStateStringBoolean">
             <summary>Sets the shim of ServerInfo.SetState(String feature, Boolean isEnabled)</summary>
         </member>
@@ -4057,11 +4279,17 @@
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances.AddSupportedFeaturesWorkItemServerVersion">
+            <summary>Sets the shim of ServerInfo.AddSupportedFeatures(WorkItemServerVersion ver)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances.FeaturesGet">
             <summary>Sets the shim of ServerInfo.get_Features()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances.IsSupportedString">
             <summary>Sets the shim of ServerInfo.IsSupported(String feature)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances.RemoveUnSupportedFeatuersWorkItemServerVersion">
+            <summary>Sets the shim of ServerInfo.RemoveUnSupportedFeatuers(WorkItemServerVersion ver)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimServerInfo.AllInstances.SetStateStringBoolean">
             <summary>Sets the shim of ServerInfo.SetState(String feature, Boolean isEnabled)</summary>
@@ -4468,11 +4696,26 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.ConstructorStringException">
             <summary>Sets the shim of VerbatimMessageException.VerbatimMessageException(String message, Exception innerException)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.ConstructorStringExceptionString">
+            <summary>Sets the shim of VerbatimMessageException.VerbatimMessageException(String message, Exception innerException, String fieldName)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.FieldReferenceNameGet">
+            <summary>Sets the shim of VerbatimMessageException.get_FieldReferenceName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.FieldReferenceNameSetString">
+            <summary>Sets the shim of VerbatimMessageException.set_FieldReferenceName(String value)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.GetObjectDataSerializationInfoStreamingContext">
             <summary>Sets the shim of VerbatimMessageException.GetObjectData(SerializationInfo info, StreamingContext context)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.AllInstances.FieldReferenceNameGet">
+            <summary>Sets the shim of VerbatimMessageException.get_FieldReferenceName()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.AllInstances.FieldReferenceNameSetString">
+            <summary>Sets the shim of VerbatimMessageException.set_FieldReferenceName(String value)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimVerbatimMessageException.AllInstances.GetObjectDataSerializationInfoStreamingContext">
             <summary>Sets the shim of VerbatimMessageException.GetObjectData(SerializationInfo info, StreamingContext context)</summary>
@@ -4966,6 +5209,15 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.TypeGet">
             <summary>Sets the shim of WorkItem.get_Type()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UploadAttachmentAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UploadAttachment(AttachmentInfo fi)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UploadAttachmentInternalUsingRESTAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UploadAttachmentInternalUsingREST(AttachmentInfo attachmentInfo)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UploadAttachmentInternalUsingSOAPAttachmentInfoStringString">
+            <summary>Sets the shim of WorkItem.UploadAttachmentInternalUsingSOAP(AttachmentInfo attachmentInfo, String areaNodeUri, String projectNodeUri)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UploadAttachments">
             <summary>Sets the shim of WorkItem.UploadAttachments()</summary>
         </member>
@@ -4974,6 +5226,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UriGet">
             <summary>Sets the shim of WorkItem.get_Uri()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.UseChunkedUploadAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UseChunkedUpload(AttachmentInfo attachmentInfo)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.Validate">
             <summary>Sets the shim of WorkItem.Validate()</summary>
@@ -4990,11 +5245,8 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.WorkItemMicrosoftTeamFoundationWorkItemTrackingClientIRevisionInternalget">
             <summary>Sets the shim of WorkItem.Microsoft.TeamFoundation.WorkItemTracking.Client.IRevisionInternal.get_WorkItem()</summary>
         </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem._SyncAndMergeToLatestb__0Int32">
-            <summary>Sets the shim of WorkItem.&lt;SyncAndMergeToLatest&gt;b__0(Int32 fldId)</summary>
-        </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem._SyncAndMergeToLatestb__2Int32">
-            <summary>Sets the shim of WorkItem.&lt;SyncAndMergeToLatest&gt;b__2(Int32 fldId)</summary>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem._SyncAndMergeToLatestb__152_1Int32">
+            <summary>Sets the shim of WorkItem.&lt;SyncAndMergeToLatest&gt;b__152_1(Int32 fldId)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -5440,6 +5692,15 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.TypeGet">
             <summary>Sets the shim of WorkItem.get_Type()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UploadAttachmentAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UploadAttachment(AttachmentInfo fi)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UploadAttachmentInternalUsingRESTAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UploadAttachmentInternalUsingREST(AttachmentInfo attachmentInfo)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UploadAttachmentInternalUsingSOAPAttachmentInfoStringString">
+            <summary>Sets the shim of WorkItem.UploadAttachmentInternalUsingSOAP(AttachmentInfo attachmentInfo, String areaNodeUri, String projectNodeUri)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UploadAttachments">
             <summary>Sets the shim of WorkItem.UploadAttachments()</summary>
         </member>
@@ -5448,6 +5709,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UriGet">
             <summary>Sets the shim of WorkItem.get_Uri()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.UseChunkedUploadAttachmentInfo">
+            <summary>Sets the shim of WorkItem.UseChunkedUpload(AttachmentInfo attachmentInfo)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.Validate">
             <summary>Sets the shim of WorkItem.Validate()</summary>
@@ -5464,8 +5728,8 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances.WorkItemMicrosoftTeamFoundationWorkItemTrackingClientIRevisionInternalget">
             <summary>Sets the shim of WorkItem.Microsoft.TeamFoundation.WorkItemTracking.Client.IRevisionInternal.get_WorkItem()</summary>
         </member>
-        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances._SyncAndMergeToLatestb__2Int32">
-            <summary>Sets the shim of WorkItem.&lt;SyncAndMergeToLatest&gt;b__2(Int32 fldId)</summary>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItem.AllInstances._SyncAndMergeToLatestb__152_1Int32">
+            <summary>Sets the shim of WorkItem.&lt;SyncAndMergeToLatest&gt;b__152_1(Int32 fldId)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemAsyncEventArgs">
             <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemAsyncEventArgs</summary>
@@ -6700,6 +6964,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.CallingProcessIdentitySetString">
             <summary>Sets the shim of WorkItemStore.set_CallingProcessIdentity(String value)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.ClearIdentityFieldCache">
+            <summary>Sets the shim of WorkItemStore.ClearIdentityFieldCache()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.ClientServiceGet">
             <summary>Sets the shim of WorkItemStore.get_ClientService()</summary>
         </member>
@@ -6751,11 +7018,17 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetDefaultCacheDirectory">
             <summary>Sets the shim of WorkItemStore.GetDefaultCacheDirectory()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetGlobalAndProjectGroupsGuidBoolean">
+            <summary>Sets the shim of WorkItemStore.GetGlobalAndProjectGroups(Guid projectGuid, Boolean includeGlobal)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetGlobalAndProjectGroupsInt32Boolean">
             <summary>Sets the shim of WorkItemStore.GetGlobalAndProjectGroups(Int32 projectId, Boolean includeGlobal)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetInstanceIdentifier">
             <summary>Sets the shim of WorkItemStore.GetInstanceIdentifier()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetLatestIdentityFieldCacheStampMetadataTableHaveEntryArray">
+            <summary>Sets the shim of WorkItemStore.GetLatestIdentityFieldCacheStamp(MetadataTableHaveEntry[] metadataHaveEntries)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetLatestTableStampMetadataTableHaveEntryArray">
             <summary>Sets the shim of WorkItemStore.GetLatestTableStamp(MetadataTableHaveEntry[] metadataHaveEntries)</summary>
@@ -6790,6 +7063,12 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetStoredQueryGuid">
             <summary>Sets the shim of WorkItemStore.GetStoredQuery(Guid guid)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetValidDisplayNameStringString">
+            <summary>Sets the shim of WorkItemStore.GetValidDisplayName(String displayName, String uniqueName)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetValidDisplayNameTeamFoundationIdentity">
+            <summary>Sets the shim of WorkItemStore.GetValidDisplayName(TeamFoundationIdentity identity)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetWorkItemIdsForArtifactUrisStringArrayDateTime">
             <summary>Sets the shim of WorkItemStore.GetWorkItemIdsForArtifactUris(String[] artifactUriList, DateTime asOfDate)</summary>
         </member>
@@ -6811,6 +7090,18 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.GetWorkItemUriInt32">
             <summary>Sets the shim of WorkItemStore.GetWorkItem(Uri uri, Int32 revision)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IdentityFieldCacheFileGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheFile()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IdentityFieldCacheHeaderFileGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheHeaderFile()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IdentityFieldCacheLocationGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheLocation()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IdentityValueCacheGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityValueCache()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.ImportEventHandlerAddImportEventHandler">
             <summary>Sets the shim of WorkItemStore.add_ImportEventHandler(ImportEventHandler value)</summary>
         </member>
@@ -6831,6 +7122,12 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IsCachingConstantStringsGet">
             <summary>Sets the shim of WorkItemStore.get_IsCachingConstantStrings()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IsIdentityFieldCacheLatest">
+            <summary>Sets the shim of WorkItemStore.IsIdentityFieldCacheLatest()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.IsIdentityFieldSupportedGet">
+            <summary>Sets the shim of WorkItemStore.get_IsIdentityFieldSupported()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.LoadWorkItemInt32Int32NullableOfDateTimeIWorkItemRowSetsOut">
             <summary>Sets the shim of WorkItemStore.LoadWorkItem(Int32 id, Int32 rev, Nullable`1&lt;DateTime&gt; asof, IWorkItemRowSets&amp; witem)</summary>
@@ -6934,6 +7231,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.ResetConstantStringCache">
             <summary>Sets the shim of WorkItemStore.ResetConstantStringCache()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.SaveIdentityFieldCacheDictionaryOfInt32Boolean">
+            <summary>Sets the shim of WorkItemStore.SaveIdentityFieldCache(Dictionary`2&lt;Int32,Boolean&gt; identityFields)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.SaveWorkItemsWorkItemArrayBooleanSaveFlags">
             <summary>Sets the shim of WorkItemStore.SaveWorkItems(WorkItem[] workitems, Boolean bulk, SaveFlags saveFlags)</summary>
         </member>
@@ -6979,6 +7279,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TryBatchMergeWorkItemWorkItemArraySaveFlagsExceptionArray">
             <summary>Sets the shim of WorkItemStore.TryBatchMergeWorkItem(WorkItem[] workItems, SaveFlags saveFlags, Exception[] workItemExceptions)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TryFindIdentityStringIdentityFieldValueOut">
+            <summary>Sets the shim of WorkItemStore.TryFindIdentity(String displayPart, IdentityFieldValue&amp; fieldValue)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TryGetNodeFromSnapshotSnapshotInt32">
             <summary>Sets the shim of WorkItemStore.TryGetNodeFromSnapshot(Snapshot snapshot, Int32 id)</summary>
         </member>
@@ -6987,6 +7290,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TryMergeWorkItemWorkItemSaveFlagsException">
             <summary>Sets the shim of WorkItemStore.TryMergeWorkItem(WorkItem wi, SaveFlags saveFlags, Exception originalException)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TryReadIdentityFieldCacheDictionaryOfInt32BooleanOut">
+            <summary>Sets the shim of WorkItemStore.TryReadIdentityFieldCache(Dictionary`2&lt;Int32,Boolean&gt;&amp; identityFieldCache)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.TypeToNamePsMetadataTypeMask">
             <summary>Sets the shim of WorkItemStore.TypeToName(PsMetadataTypeMask t)</summary>
@@ -7003,6 +7309,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.UserFriendlyNameGet">
             <summary>Sets the shim of WorkItemStore.get_UserFriendlyName()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.UserIdentityNameGet">
+            <summary>Sets the shim of WorkItemStore.get_UserIdentityName()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.UserSidGet">
             <summary>Sets the shim of WorkItemStore.get_UserSid()</summary>
         </member>
@@ -7014,6 +7323,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.WorkItemLinkTypesGet">
             <summary>Sets the shim of WorkItemStore.get_WorkItemLinkTypes()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore._get_UserIdentityNameb__120_0KeyValuePairOfStringIdentityFieldValue">
+            <summary>Sets the shim of WorkItemStore.&lt;get_UserIdentityName&gt;b__120_0(KeyValuePair`2&lt;String,IdentityFieldValue&gt; x)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -7041,6 +7353,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.CallingProcessIdentitySetString">
             <summary>Sets the shim of WorkItemStore.set_CallingProcessIdentity(String value)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.ClearIdentityFieldCache">
+            <summary>Sets the shim of WorkItemStore.ClearIdentityFieldCache()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.ClientServiceGet">
             <summary>Sets the shim of WorkItemStore.get_ClientService()</summary>
@@ -7075,11 +7390,17 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetDefaultCacheDirectory">
             <summary>Sets the shim of WorkItemStore.GetDefaultCacheDirectory()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetGlobalAndProjectGroupsGuidBoolean">
+            <summary>Sets the shim of WorkItemStore.GetGlobalAndProjectGroups(Guid projectGuid, Boolean includeGlobal)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetGlobalAndProjectGroupsInt32Boolean">
             <summary>Sets the shim of WorkItemStore.GetGlobalAndProjectGroups(Int32 projectId, Boolean includeGlobal)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetInstanceIdentifier">
             <summary>Sets the shim of WorkItemStore.GetInstanceIdentifier()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetLatestIdentityFieldCacheStampMetadataTableHaveEntryArray">
+            <summary>Sets the shim of WorkItemStore.GetLatestIdentityFieldCacheStamp(MetadataTableHaveEntry[] metadataHaveEntries)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetLatestTableStampMetadataTableHaveEntryArray">
             <summary>Sets the shim of WorkItemStore.GetLatestTableStamp(MetadataTableHaveEntry[] metadataHaveEntries)</summary>
@@ -7111,6 +7432,12 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetStoredQueryGuid">
             <summary>Sets the shim of WorkItemStore.GetStoredQuery(Guid guid)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetValidDisplayNameStringString">
+            <summary>Sets the shim of WorkItemStore.GetValidDisplayName(String displayName, String uniqueName)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetValidDisplayNameTeamFoundationIdentity">
+            <summary>Sets the shim of WorkItemStore.GetValidDisplayName(TeamFoundationIdentity identity)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetWorkItemIdsForArtifactUrisStringArrayDateTime">
             <summary>Sets the shim of WorkItemStore.GetWorkItemIdsForArtifactUris(String[] artifactUriList, DateTime asOfDate)</summary>
         </member>
@@ -7132,6 +7459,18 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.GetWorkItemUriInt32">
             <summary>Sets the shim of WorkItemStore.GetWorkItem(Uri uri, Int32 revision)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IdentityFieldCacheFileGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheFile()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IdentityFieldCacheHeaderFileGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheHeaderFile()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IdentityFieldCacheLocationGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityFieldCacheLocation()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IdentityValueCacheGet">
+            <summary>Sets the shim of WorkItemStore.get_IdentityValueCache()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.ImportEventHandlerAddImportEventHandler">
             <summary>Sets the shim of WorkItemStore.add_ImportEventHandler(ImportEventHandler value)</summary>
         </member>
@@ -7152,6 +7491,12 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IsCachingConstantStringsGet">
             <summary>Sets the shim of WorkItemStore.get_IsCachingConstantStrings()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IsIdentityFieldCacheLatest">
+            <summary>Sets the shim of WorkItemStore.IsIdentityFieldCacheLatest()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.IsIdentityFieldSupportedGet">
+            <summary>Sets the shim of WorkItemStore.get_IsIdentityFieldSupported()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.LoadWorkItemInt32Int32NullableOfDateTimeIWorkItemRowSetsOut">
             <summary>Sets the shim of WorkItemStore.LoadWorkItem(Int32 id, Int32 rev, Nullable`1&lt;DateTime&gt; asof, IWorkItemRowSets&amp; witem)</summary>
@@ -7258,6 +7603,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.ResetConstantStringCache">
             <summary>Sets the shim of WorkItemStore.ResetConstantStringCache()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.SaveIdentityFieldCacheDictionaryOfInt32Boolean">
+            <summary>Sets the shim of WorkItemStore.SaveIdentityFieldCache(Dictionary`2&lt;Int32,Boolean&gt; identityFields)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.SaveWorkItemsWorkItemArrayBooleanSaveFlags">
             <summary>Sets the shim of WorkItemStore.SaveWorkItems(WorkItem[] workitems, Boolean bulk, SaveFlags saveFlags)</summary>
         </member>
@@ -7303,11 +7651,17 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TryBatchMergeWorkItemWorkItemArraySaveFlagsExceptionArray">
             <summary>Sets the shim of WorkItemStore.TryBatchMergeWorkItem(WorkItem[] workItems, SaveFlags saveFlags, Exception[] workItemExceptions)</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TryFindIdentityStringIdentityFieldValueOut">
+            <summary>Sets the shim of WorkItemStore.TryFindIdentity(String displayPart, IdentityFieldValue&amp; fieldValue)</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TryGetNodeInt32">
             <summary>Sets the shim of WorkItemStore.TryGetNode(Int32 id)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TryMergeWorkItemWorkItemSaveFlagsException">
             <summary>Sets the shim of WorkItemStore.TryMergeWorkItem(WorkItem wi, SaveFlags saveFlags, Exception originalException)</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TryReadIdentityFieldCacheDictionaryOfInt32BooleanOut">
+            <summary>Sets the shim of WorkItemStore.TryReadIdentityFieldCache(Dictionary`2&lt;Int32,Boolean&gt;&amp; identityFieldCache)</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.TypeToNamePsMetadataTypeMask">
             <summary>Sets the shim of WorkItemStore.TypeToName(PsMetadataTypeMask t)</summary>
@@ -7324,6 +7678,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.UserFriendlyNameGet">
             <summary>Sets the shim of WorkItemStore.get_UserFriendlyName()</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.UserIdentityNameGet">
+            <summary>Sets the shim of WorkItemStore.get_UserIdentityName()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.UserSidGet">
             <summary>Sets the shim of WorkItemStore.get_UserSid()</summary>
         </member>
@@ -7335,6 +7692,9 @@
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances.WorkItemLinkTypesGet">
             <summary>Sets the shim of WorkItemStore.get_WorkItemLinkTypes()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStore.AllInstances._get_UserIdentityNameb__120_0KeyValuePairOfStringIdentityFieldValue">
+            <summary>Sets the shim of WorkItemStore.&lt;get_UserIdentityName&gt;b__120_0(KeyValuePair`2&lt;String,IdentityFieldValue&gt; x)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemStoreDiagnostics">
             <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemStoreDiagnostics</summary>
@@ -7450,6 +7810,9 @@
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.CacheMonikerGet">
+            <summary>Sets the shim of WorkItemType.get_CacheMoniker()</summary>
+        </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.DescriptionGet">
             <summary>Sets the shim of WorkItemType.get_Description()</summary>
         </member>
@@ -7503,6 +7866,9 @@
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.AllInstances.CacheMonikerGet">
+            <summary>Sets the shim of WorkItemType.get_CacheMoniker()</summary>
         </member>
         <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemType.AllInstances.DescriptionGet">
             <summary>Sets the shim of WorkItemType.get_Description()</summary>
@@ -7692,6 +8058,42 @@
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeDeniedOrNotExistException.AllInstances">
             <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate">
+            <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeTemplate</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.#ctor(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeTemplate)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.Constructor">
+            <summary>Sets the shim of WorkItemTypeTemplate.WorkItemTypeTemplate()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.TemplateGet">
+            <summary>Sets the shim of WorkItemTypeTemplate.get_Template()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.TemplateSetString">
+            <summary>Sets the shim of WorkItemTypeTemplate.set_Template(String value)</summary>
+        </member>
+        <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.AllInstances.TemplateGet">
+            <summary>Sets the shim of WorkItemTypeTemplate.get_Template()</summary>
+        </member>
+        <member name="P:Microsoft.TeamFoundation.WorkItemTracking.Client.Fakes.ShimWorkItemTypeTemplate.AllInstances.TemplateSetString">
+            <summary>Sets the shim of WorkItemTypeTemplate.set_Template(String value)</summary>
         </member>
         <member name="T:Microsoft.TeamFoundation.WorkItemTracking.Client.Internal.Fakes.ShimResourceStrings">
             <summary>Shim type of Microsoft.TeamFoundation.WorkItemTracking.Client.Internal.ResourceStrings</summary>
