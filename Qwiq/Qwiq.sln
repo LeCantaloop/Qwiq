@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
 EndProject
@@ -17,11 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq", "Qwiq.Linq\Qwiq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D6406EBA-1C2D-4CDE-A292-5CD2524B0A86}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B0760DB0-ABDA-4579-938D-1625C7EB1810}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
+		NuGet.Config = NuGet.Config
 	EndProjectSection
 EndProject
 Global
