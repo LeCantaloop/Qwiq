@@ -1,0 +1,24 @@
+approve_by_comment: true
+approve_regex: '^(:\+1:|:shipit:|:beer:|:beers:|Approved)'
+reject_regex: '^(:-1:|Rejected)'
+reset_on_push: true
+author_approval: ignored
+reviewers:
+    -
+        name: maintainers
+        required: 1
+        members:
+            - MattKotsenas
+            - pelavall
+            - rjmurillo
+        conditions:
+            branches:
+                - master
+    -
+        name: productowners
+        required: 1
+        members:
+            - pelavall
+        conditions:
+            branches:
+                - master
