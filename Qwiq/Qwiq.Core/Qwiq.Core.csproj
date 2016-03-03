@@ -226,6 +226,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IIdentityManagementServiceExtensions.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="ITeamFoundationIdentityExtensions.cs" />
     <Compile Include="LinkMapper.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
