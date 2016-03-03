@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Microsoft.IE.Qwiq.Core")]
 [assembly: AssemblyDescription("Provides Quick Workitem Queries to TFS and Visual Studio Online")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ieportal@microsoft.com Cantaloop@microsoft.com")]
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Microsoft.IE.Qwiq")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
 [assembly: AssemblyTrademark("")]
@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("4.3.0.0")]
-[assembly: AssemblyFileVersion("4.3.0.0")]
-[assembly: AssemblyInformationalVersion("4.3.0")]
+[assembly: AssemblyVersion("4.4.2.0")]
+[assembly: AssemblyFileVersion("4.4.2.0")]
+[assembly: AssemblyInformationalVersion("4.4.2")]
 
 [assembly: InternalsVisibleTo("Microsoft.IE.Qwiq.Core.Tests")]

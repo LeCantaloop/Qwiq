@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
 EndProject
@@ -23,6 +23,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D6406E
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives", "Qwiq.Relatives\Qwiq.Relatives.csproj", "{B6001D84-9BFC-40AB-A29C-3FAEF3154456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives.Tests", "Qwiq.Relatives.Tests\Qwiq.Relatives.Tests.csproj", "{92D314BC-B178-413D-8A38-A54DC0BD0261}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Tests", "Qwiq.Identity.Tests\Qwiq.Identity.Tests.csproj", "{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +64,18 @@ Global
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

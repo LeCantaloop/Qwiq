@@ -1,0 +1,2 @@
+Qwiq.Core	../Qwiq.Core/Qwiq.Core.csproj	../packages/Microsoft.IE.Qwiq.Core.4.4.1/lib/net45/Microsoft.IE.Qwiq.Core.dll
+Qwiq.Mapper	../Qwiq.Mapper/Qwiq.Mapper.csproj	../packages/Microsoft.IE.Qwiq.Mapper.2.1.1/lib/net45/Microsoft.IE.Qwiq.Mapper.dll
