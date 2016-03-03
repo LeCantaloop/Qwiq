@@ -230,6 +230,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachingFieldMapper.cs" />
+    <Compile Include="FieldMapper.cs" />
     <Compile Include="Fragments\CompoundFragment.cs" />
     <Compile Include="Fragments\ConstantFragment.cs" />
     <Compile Include="Fragments\ConstantListFragment.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Fragments\SelectFragment.cs" />
     <Compile Include="Fragments\StringFragment.cs" />
     <Compile Include="Fragments\TypeRestrictionFragment.cs" />
+    <Compile Include="IFieldMapper.cs" />
     <Compile Include="IWiqlQueryBuilder.cs" />
     <Compile Include="IWiqlTranslator.cs" />
     <Compile Include="Projector.cs" />
