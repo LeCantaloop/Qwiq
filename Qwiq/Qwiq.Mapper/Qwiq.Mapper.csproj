@@ -229,10 +229,7 @@
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\WorkItemLinksMapperStrategy.cs" />
-    <Compile Include="CachingFieldMapper.cs" />
     <Compile Include="Attributes\CachingPropertyReflector.cs" />
-    <Compile Include="FieldMapper.cs" />
-    <Compile Include="IFieldMapper.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />
     <Compile Include="Attributes\IPropertyReflector.cs" />
     <Compile Include="Attributes\PropertyInspector.cs" />
