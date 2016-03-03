@@ -46,7 +46,7 @@ namespace Microsoft.IE.Qwiq.Mapper
             return fieldName;
         }
 
-        private T GetFieldAttribute<T>(Type type, string propertyName)
+        private static T GetFieldAttribute<T>(Type type, string propertyName)
         {
             var property = type.GetProperty(propertyName);
 

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Microsoft.IE.Qwiq.Core</id>
+    <id>$id$</id>
     <version>$version$</version>
-    <title>Microsoft.IE.Qwiq.Core</title>
-    <authors>Cantaloop@microsoft.com</authors>
-    <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <projectUrl>https://github.com/MicrosoftEdge/IEPortal.Qwiq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Provides Quick Workitem Queries to TFS and Visual Studio Online</description>
-    <copyright>Copyright Microsoft 2015</copyright>
+    <description>$description$</description>
+    <copyright>$copyright$</copyright>
     <tags>IE IEPortal MS Internal Only</tags>
     <dependencies>
       <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
@@ -17,10 +17,4 @@
       <dependency id="Microsoft.IdentityModel.Clients.ActiveDirectory" version="2.16.204221202" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="bin\$configuration$\Microsoft.*.dll" exclude="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll;bin\$configuration$\Microsoft.ServiceBus.dll" target="build" />
-    <file src="bin\$configuration$\Microsoft.IE.Qwiq.Core.dll" target="lib\net45" />
-    <file src="build\microsoft.ie.qwiq.core.targets" target="build" />
-    <file src="build\microsoft.ie.qwiq.core.props" target="build" />
-  </files>
 </package>
