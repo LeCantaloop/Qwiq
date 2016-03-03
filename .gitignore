@@ -191,4 +191,7 @@ ModelManifest.xml
 # nCrunch
 *.ncrunchsolution
 *.ncrunchproject
+
+# NuGet
 *.nupkg
+*.nugetreferenceswitcher

@@ -3,25 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity", "Qwiq.Identity\Qwiq.Identity.csproj", "{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper", "Qwiq.Mapper\Qwiq.Mapper.csproj", "{016E8D93-4195-4639-BCD5-77633E8E1681}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Tests", "Qwiq.Mapper.Tests\Qwiq.Mapper.Tests.csproj", "{BECF2066-A6C5-475A-BA14-12890F284A12}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq", "Qwiq.Linq\Qwiq.Linq.csproj", "{1EDEB333-3084-42BD-B273-4009B4B18541}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D6406EBA-1C2D-4CDE-A292-5CD2524B0A86}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives", "Qwiq.Relatives\Qwiq.Relatives.csproj", "{B6001D84-9BFC-40AB-A29C-3FAEF3154456}"
@@ -30,36 +20,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives.Tests", "Qwi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Tests", "Qwiq.Identity.Tests\Qwiq.Identity.Tests.csproj", "{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity", "Qwiq.Identity\Qwiq.Identity.csproj", "{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq", "Qwiq.Linq\Qwiq.Linq.csproj", "{1EDEB333-3084-42BD-B273-4009B4B18541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper", "Qwiq.Mapper\Qwiq.Mapper.csproj", "{016E8D93-4195-4639-BCD5-77633E8E1681}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Release|Any CPU.Build.0 = Release|Any CPU
 		{57407CCA-8444-4713-95E9-CFC1168D846B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57407CCA-8444-4713-95E9-CFC1168D846B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57407CCA-8444-4713-95E9-CFC1168D846B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57407CCA-8444-4713-95E9-CFC1168D846B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{016E8D93-4195-4639-BCD5-77633E8E1681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{016E8D93-4195-4639-BCD5-77633E8E1681}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BECF2066-A6C5-475A-BA14-12890F284A12}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,6 +58,22 @@ Global
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC61B6E-BEC1-482D-A043-C65D2D343B35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EDEB333-3084-42BD-B273-4009B4B18541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016E8D93-4195-4639-BCD5-77633E8E1681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016E8D93-4195-4639-BCD5-77633E8E1681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,3 +82,4 @@ Global
 		SolutionGuid = 266ca4a8-d6b3-475b-9e56-372945ef2a6b
 	EndGlobalSection
 EndGlobal
+
