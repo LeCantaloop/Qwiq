@@ -248,6 +248,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CachingPropertyReflectorTests.cs" />
+    <Compile Include="Mocks\MockModelWithNoType.cs" />
     <Compile Include="Mocks\MockModel.cs" />
     <Compile Include="Mocks\MockModelSubclass.cs" />
     <Compile Include="Mocks\MockModelWithLinks.cs" />

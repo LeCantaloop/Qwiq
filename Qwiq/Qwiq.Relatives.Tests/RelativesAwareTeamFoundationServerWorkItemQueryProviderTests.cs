@@ -33,7 +33,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     new WorkItemLinksMapperStrategy(propertyInspector, workItemStore),
                     new ParentIdMapperStrategy(workItemStore)
             };
-            var mapper = new WorkItemMapper(fieldMapper, mapperStrategies);
+            var mapper = new WorkItemMapper(mapperStrategies);
             var queryProvider = new RelativesAwareTeamFoundationServerWorkItemQueryProvider(workItemStore, builder, mapper, fieldMapper);
 
             Query = new Query<SimpleMockModel>(queryProvider, builder);
