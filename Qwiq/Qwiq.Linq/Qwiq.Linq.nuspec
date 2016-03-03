@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
-<package >
-    <metadata>
-        <id>$id$</id>
-        <version>$version$</version>
-        <title>$title$</title>
-        <authors>$author$</authors>
-        <owners>$author$</owners>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>$description$</description>
-    </metadata>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>$copyright$</copyright>
+    <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
+  </metadata>
 </package>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
-    <id>$id$</id>
+        <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
@@ -11,10 +11,6 @@
     <description>$description$</description>
     <copyright>$copyright$</copyright>
     <tags>IE IEPortal MS Internal Only</tags>
-    <dependencies>
-      <dependency id="JB.Tfs.Common" version="[0.0.0.5,)"/>
-      <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.2,)"/>
-      <dependency id="Microsoft.IdentityModel.Clients.ActiveDirectory" version="2.16.204221202" />
-    </dependencies>
+    <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
   </metadata>
 </package>

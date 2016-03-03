@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
+
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : IndividualWorkItemMapperBase
@@ -22,8 +23,21 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                 var field = _inspector.GetAttribute<FieldDefinitionAttribute>(property);
                 if (field != null)
                 {
-                    var value = ParseValue(property, sourceWorkItem[field.GetFieldName()]);
-                    property.SetValue(targetWorkItem, value);
+                    var fieldName = field.GetFieldName();
+
+                    try
+                    {
+                        var value = ParseValue(property, sourceWorkItem[fieldName]);
+                        property.SetValue(targetWorkItem, value);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Trace.TraceWarning("Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
+                            fieldName,
+                            sourceWorkItem.Type.Name,
+                            targetWorkItemType.Name,
+                            e.Message);
+                    }
                 }
             }
         }

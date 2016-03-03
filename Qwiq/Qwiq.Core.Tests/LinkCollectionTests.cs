@@ -14,7 +14,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
     public abstract class LinkCollectionTests : ContextSpecification
     {
         protected LinkCollectionProxy LinkCollection;
-        protected IList<Hyperlink> Links;
+        protected IList<Link> Links = new List<Link>();
 
         private IDisposable _shimsContext;
 
@@ -26,7 +26,12 @@ namespace Microsoft.IE.Qwiq.Core.Tests
             {
                 CountGet = () => Links.Count(),
                 GetItemInt32 = index => Links[index],
-                ItemGetInt32 = index => Links[index]
+                ItemGetInt32 = index => Links[index],
+                AddLink = link =>
+                {
+                    Links.Add(link);
+                    return Links.Count;
+                }
             };
             new ShimVariableSizeList(linksCollection)
             {
@@ -34,7 +39,42 @@ namespace Microsoft.IE.Qwiq.Core.Tests
             };
             var workItem = new ShimWorkItem
             {
-                LinksGet = () => linksCollection
+                LinksGet = () => linksCollection,
+                StoreGet = () => new ShimWorkItemStore
+                {
+                    WorkItemLinkTypesGet = () =>
+                    {
+                        var kvp = new[]
+                        {
+                            new KeyValuePair<string, ShimWorkItemLinkTypeEnd>("System.LinkTypes.Hierarchy-Reverse",new ShimWorkItemLinkTypeEnd {IdGet = ()=>1, ImmutableNameGet = () => "System.LinkTypes.Hierarchy-Reverse" }),
+                            new KeyValuePair<string, ShimWorkItemLinkTypeEnd>("System.LinkTypes.Hierarchy-Reverse2",new ShimWorkItemLinkTypeEnd {IdGet = ()=>2, ImmutableNameGet = () => "System.LinkTypes.Hierarchy-Reverse2"})
+                        };
+
+                        var col = new ShimWorkItemLinkTypeCollection
+                        {
+                            CountGet = () => kvp.Length,
+                            SystemCollectionsGenericIEnumerableMicrosoftTeamFoundationWorkItemTrackingClientWorkItemLinkTypeGetEnumerator =
+                                () =>
+                                {
+                                    var aggregate = new List<WorkItemLinkType>();
+
+                                    foreach (var v in kvp)
+                                    {
+                                        aggregate.Add(new ShimWorkItemLinkType
+                                        {
+                                            ReferenceNameGet = () => v.Key,
+                                            ForwardEndGet = () => v.Value,
+                                            ReverseEndGet = () => v.Value
+                                        });
+                                    }
+
+                                    return aggregate.GetEnumerator();
+                                }
+                        };
+
+                        return col;
+                    }
+                }
             };
             LinkCollection = new LinkCollectionProxy(workItem);
         }
@@ -42,6 +82,72 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         public override void Cleanup()
         {
             _shimsContext.Dispose();
+        }
+    }
+
+    [TestClass]
+    public class givan_a_LinkCollectionProxy_with_two_items_of_the_same_target_but_different_link_types :
+        LinkCollectionTests
+    {
+        private bool _found;
+
+        public override void Given()
+        {
+            base.Given();
+
+            LinkCollection.Add(
+                new WorkItemLinkProxy(new ShimWorkItemLink
+                {
+                    LinkTypeEndGet = () => new ShimWorkItemLinkTypeEnd
+                    {
+                        LinkTypeGet = () => new ShimWorkItemLinkType
+                        {
+                            ReferenceNameGet = () => "System.LinkTypes.Hierarchy-Reverse",
+                            ReverseEndGet = () => new ShimWorkItemLinkTypeEnd
+                            {
+                                ImmutableNameGet = () => "System.LinkTypes.Hierarchy-Reverse"
+                            }
+                        },
+                        IsForwardLinkGet = () => false,
+                        IdGet = () => 1
+                    },
+                    SourceIdGet = () => 2,
+                    TargetIdGet = () => 1
+                })
+                );
+
+            LinkCollection.Add(
+               new WorkItemLinkProxy(new ShimWorkItemLink
+               {
+                   LinkTypeEndGet = () => new ShimWorkItemLinkTypeEnd
+                   {
+                       LinkTypeGet = () => new ShimWorkItemLinkType
+                       {
+                           ReferenceNameGet = () => "System.LinkTypes.Hierarchy-Reverse2",
+                           ReverseEndGet = () => new ShimWorkItemLinkTypeEnd
+                           {
+                               ImmutableNameGet = () => "System.LinkTypes.Hierarchy-Reverse2"
+                           }
+                       },
+                       IsForwardLinkGet = () => false,
+                       IdGet = () => 2
+                   },
+                   SourceIdGet = () => 2,
+                   TargetIdGet = () => 1
+               })
+               );
+        }
+
+        public override void When()
+        {
+            var l = LinkCollection.First();
+            _found = LinkCollection.Contains(l);
+        }
+
+        [TestMethod]
+        public void Specific_Link_Is_Found()
+        {
+            _found.ShouldBeTrue();
         }
     }
 
