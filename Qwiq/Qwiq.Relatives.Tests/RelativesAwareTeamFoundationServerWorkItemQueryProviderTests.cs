@@ -14,12 +14,37 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
 {
     public abstract class RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification : ContextSpecification
     {
+        protected IEnumerable<IWorkItem> WorkItemStoreWorkItems;
+        protected IEnumerable<IWorkItemLinkInfo> WorkItemStoreWorkItemLinks;
         protected Query<SimpleMockModel> Query;
         protected IEnumerable<KeyValuePair<SimpleMockModel, IEnumerable<SimpleMockModel>>> Actual;
 
         public override void Given()
         {
-            var workItems = new List<IWorkItem>
+            var workItemStore = new MockWorkItemStore(WorkItemStoreWorkItems, WorkItemStoreWorkItemLinks);
+            var fieldMapper = new CachingFieldMapper(new FieldMapper());
+            var propertyReflector = new PropertyReflector();
+            var propertyInspector = new PropertyInspector(propertyReflector);
+            var builder = new WiqlQueryBuilder(new RelativesAwareWiqlTranslator(fieldMapper), new PartialEvaluator(), new RelativesAwareQueryRewriter());
+            var mapperStrategies = new IWorkItemMapperStrategy[]
+            {
+                new AttributeMapperStrategy(propertyInspector,
+                    new TypeParser()),
+                    new WorkItemLinksMapperStrategy(propertyInspector, workItemStore),
+                    new ParentIdMapperStrategy(workItemStore)
+            };
+            var mapper = new WorkItemMapper(fieldMapper, mapperStrategies);
+            var queryProvider = new RelativesAwareTeamFoundationServerWorkItemQueryProvider(workItemStore, builder, mapper, fieldMapper);
+
+            Query = new Query<SimpleMockModel>(queryProvider, builder);
+        }
+    }
+
+    public abstract class QueryReturnsResults : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    {
+        public override void Given()
+        {
+            WorkItemStoreWorkItems = new List<IWorkItem>
             {
                 new MockWorkItem
                 {
@@ -88,7 +113,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                 }
             };
 
-            var links = new[] {
+            WorkItemStoreWorkItemLinks = new[] {
                 new MockWorkItemLinkInfo
                 {
                     SourceId = 0,
@@ -116,27 +141,22 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                 }
             };
 
-            var workItemStore = new MockWorkItemStore(workItems, links);
-            var fieldMapper = new CachingFieldMapper(new FieldMapper());
-            var propertyReflector = new PropertyReflector();
-            var propertyInspector = new PropertyInspector(propertyReflector);
-            var builder = new WiqlQueryBuilder(new RelativesAwareWiqlTranslator(fieldMapper), new PartialEvaluator(), new RelativesAwareQueryRewriter());
-            var mapperStrategies = new IWorkItemMapperStrategy[]
-            {
-                new AttributeMapperStrategy(propertyInspector,
-                    new TypeParser()),
-                    new WorkItemLinksMapperStrategy(propertyInspector, workItemStore),
-                    new ParentIdMapperStrategy(workItemStore)
-            };
-            var mapper = new WorkItemMapper(fieldMapper, mapperStrategies);
-            var queryProvider = new RelativesAwareTeamFoundationServerWorkItemQueryProvider(workItemStore, builder, mapper, fieldMapper);
+            base.Given();
+        }
+    }
 
-            Query = new Query<SimpleMockModel>(queryProvider, builder);
+    public abstract class QueryDoesNotReturnResults : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    {
+        public override void Given()
+        {
+            WorkItemStoreWorkItems = Enumerable.Empty<IWorkItem>();
+            WorkItemStoreWorkItemLinks = Enumerable.Empty<IWorkItemLinkInfo>();
+            base.Given();
         }
     }
 
     [TestClass]
-    public class given_a_query_provider_when_a_parents_clause_is_used : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    public class given_a_query_provider_when_a_parents_clause_is_used : QueryReturnsResults
     {
         public override void When()
         {
@@ -157,7 +177,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
     }
 
     [TestClass]
-    public class given_a_query_provider_when_a_children_clause_is_used : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    public class given_a_query_provider_when_a_children_clause_is_used : QueryReturnsResults
     {
         public override void When()
         {
@@ -179,13 +199,11 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
 
 
     [TestClass]
-    public class when_a_parents_clause_is_used_on_a_query_with_no_results : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    public class when_a_parents_clause_is_used_on_a_query_with_no_results : QueryDoesNotReturnResults
     {
         public override void When()
         {
-            Actual = Query
-                        .Where(item => item.ID == -1)
-                        .Parents<SimpleMockModel, SimpleMockModel>();
+            Actual = Query.Parents<SimpleMockModel, SimpleMockModel>();
         }
 
         [TestMethod]
@@ -196,13 +214,11 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
     }
 
     [TestClass]
-    public class when_a_children_clause_is_used_on_a_query_with_no_results : RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification
+    public class when_a_children_clause_is_used_on_a_query_with_no_results : QueryDoesNotReturnResults
     {
         public override void When()
         {
-            Actual = Query
-                        .Where(item => item.ID == -1)
-                        .Children<SimpleMockModel, SimpleMockModel>();
+            Actual = Query.Children<SimpleMockModel, SimpleMockModel>();
         }
 
         [TestMethod]
