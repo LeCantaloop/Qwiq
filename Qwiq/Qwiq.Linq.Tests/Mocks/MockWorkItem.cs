@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
 {
@@ -67,7 +68,7 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
 
         public IEnumerable<IField> Fields
         {
-            get { throw new NotImplementedException(); }
+            get { return Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }); }
         }
 
         public string History
