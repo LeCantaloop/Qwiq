@@ -9,15 +9,8 @@ namespace Microsoft.IE.Qwiq.Linq
     {
         public string GetWorkItemType(Type type)
         {
-            var customAttributes =
-                type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
-
-            if (!customAttributes.Any())
-            {
-                throw new ArgumentException(String.Format("No work item type found for class '{0}'. Please specify a work " +
-                                                          "item type using the WorkItemTypeAttribute.", type.Name), "type");
-            }
-            return customAttributes.Single().GetTypeName();
+            var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
+            return customAttributes.Any() ? customAttributes.Single().GetTypeName() : null;
         }
 
         public IEnumerable<string> GetFieldNames(Type type)
