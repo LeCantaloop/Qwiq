@@ -38,8 +38,8 @@ namespace Microsoft.IE.Qwiq.Linq
 
             var query = translator.Query;
 
-            query.Select = new SelectFragment(FieldMapper);
             query.UnderlyingQueryType = query.UnderlyingQueryType ?? TypeSystem.GetElementType(expression.Type);
+            query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType));
 
             var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType);
             if (!string.IsNullOrEmpty(workItemTypeRestriction))
