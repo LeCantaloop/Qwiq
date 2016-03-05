@@ -207,6 +207,48 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             }
         }
 
+
+        [TestClass]
+        // ReSharper disable once InconsistentNaming
+        public class when_an_issue_is_mapped_without_a_workitemtype : WorkItemMapperContext<MockModelWithNoType>
+        {
+            private MockModelWithNoType _expected;
+
+            public override void Given()
+            {
+                WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
+
+                SourceWorkItems = new[]
+                {
+                    new MockWorkItem
+                    {
+                        Properties = WorkItemBackingStore,
+                        Type = new MockWorkItemType {Name = "Baz"}
+                    }
+                };
+
+                _expected = new MockModelWithNoType
+                {
+                    Id = int.Parse(WorkItemBackingStore["Id"].ToString()),
+                    IntField = int.Parse(WorkItemBackingStore["IntField"].ToString())
+                };
+                base.Given();
+            }
+
+            [TestMethod]
+            public void the_Id_field_is_populated_correctly()
+            {
+                _expected.Id.ShouldEqual(Actual.Id);
+            }
+
+            [TestMethod]
+            public void the_IntField_field_is_populated_correctly()
+            {
+                _expected.IntField.ShouldEqual(Actual.IntField);
+            }
+        }
+    }
+
     [TestClass]
     // ReSharper disable once InconsistentNaming
     public class when_an_issue_is_mapped_without_a_workitemtype : WorkItemMapperContext<MockModelWithNoBacking>
