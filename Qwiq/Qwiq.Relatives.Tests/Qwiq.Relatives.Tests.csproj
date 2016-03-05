@@ -257,6 +257,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mocks\MockField.cs" />
     <Compile Include="Mocks\MockIdentityMapper.cs" />
     <Compile Include="Mocks\MockParentIdIssue.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
