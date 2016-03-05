@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.IE.Qwiq.Linq.Fragments;
 using Microsoft.IE.Qwiq.Linq.WiqlExpressions;
-using Microsoft.IE.Qwiq.Mapper;
 
 namespace Microsoft.IE.Qwiq.Linq
 {
@@ -42,8 +41,12 @@ namespace Microsoft.IE.Qwiq.Linq
             query.Select = new SelectFragment(FieldMapper);
             query.UnderlyingQueryType = query.UnderlyingQueryType ?? TypeSystem.GetElementType(expression.Type);
 
-            // Filter to just the type of issue the user is querying against
-            query.WhereClauses.Enqueue(new TypeRestrictionFragment(FieldMapper));
+            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType);
+            if (!string.IsNullOrEmpty(workItemTypeRestriction))
+            {
+                query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
+            }
+
             return query;
         }
 

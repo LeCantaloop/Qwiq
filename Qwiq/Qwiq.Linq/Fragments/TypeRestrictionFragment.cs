@@ -1,20 +1,19 @@
 ﻿using System;
-using Microsoft.IE.Qwiq.Mapper;
 
 namespace Microsoft.IE.Qwiq.Linq.Fragments
 {
     internal class TypeRestrictionFragment : IFragment
     {
-        private readonly IFieldMapper _fieldMapper;
+        private readonly string _workItemType;
 
-        public TypeRestrictionFragment(IFieldMapper fieldMapper)
+        public TypeRestrictionFragment(string workItemType)
         {
-            _fieldMapper = fieldMapper;
+            _workItemType = workItemType;
         }
 
         public string Get(Type queryType)
         {
-            return "([Work Item Type] = '" + _fieldMapper.GetWorkItemType(queryType) + "')";
+            return string.Format("([Work Item Type] = '{0}')", _workItemType);
         }
 
         public bool IsValid()
