@@ -448,4 +448,22 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
             Actual.ShouldEqual(Expected);
         }
     }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_is_against_a_type_with_multiple_workitemtype_attributes : GenericQueryBuilderTestsBase<MockModelMultipleTypes>
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Fizz', 'Baz', 'Buzz')))";
+            Actual = Query.Where(item => item.IntField > 1).ToString();
+        }
+
+        [TestMethod]
+        public void it_is_translated_to_a_where_with_multiple_type_restriction()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
 }

@@ -42,7 +42,7 @@ namespace Microsoft.IE.Qwiq.Linq
             query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType));
 
             var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType);
-            if (!string.IsNullOrEmpty(workItemTypeRestriction))
+            if (workItemTypeRestriction.Any())
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
             }
