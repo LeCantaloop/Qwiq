@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
-
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
@@ -15,7 +15,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
             _typeParser = typeParser;
         }
 
-        protected override void Map(Type targetWorkItemType, Qwiq.IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
+        protected override void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
         {
             var properties = _inspector.GetAnnotatedProperties(targetWorkItemType, typeof(FieldDefinitionAttribute));
             foreach (var property in properties)
@@ -24,11 +24,14 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                 if (field != null)
                 {
                     var fieldName = field.GetFieldName();
-
                     try
                     {
-                        var value = ParseValue(property, sourceWorkItem[fieldName]);
-                        property.SetValue(targetWorkItem, value);
+                        //TODO: We might want to add caching in some form around this call
+                        if (sourceWorkItem.Fields.Any(x => x.Name == fieldName))
+                        {
+                            var value = ParseValue(property, sourceWorkItem[fieldName]);
+                            property.SetValue(targetWorkItem, value);
+                        }
                     }
                     catch (Exception e)
                     {

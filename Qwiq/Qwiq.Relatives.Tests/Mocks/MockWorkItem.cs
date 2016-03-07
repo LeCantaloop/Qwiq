@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 {
@@ -216,7 +217,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 
         public IEnumerable<IField> Fields
         {
-            get { throw new NotImplementedException(); }
+            get { return Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }); }
         }
     }
 }

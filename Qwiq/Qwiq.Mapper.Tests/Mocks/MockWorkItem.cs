@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.IE.Qwiq.Proxies;
 
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
@@ -67,7 +69,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 
         public IEnumerable<IField> Fields
         {
-            get { throw new NotImplementedException(); }
+            get { return Properties.Select(p => new MockField {Name = p.Key, Value = p.Value}); }
         }
 
         public string History

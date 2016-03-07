@@ -46,8 +46,8 @@
       <HintPath>..\packages\Microsoft.IE.Qwiq.Core.5.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.2.1.1-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -230,6 +230,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachingFieldMapper.cs" />
+    <Compile Include="FieldMapper.cs" />
     <Compile Include="Fragments\CompoundFragment.cs" />
     <Compile Include="Fragments\ConstantFragment.cs" />
     <Compile Include="Fragments\ConstantListFragment.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Fragments\SelectFragment.cs" />
     <Compile Include="Fragments\StringFragment.cs" />
     <Compile Include="Fragments\TypeRestrictionFragment.cs" />
+    <Compile Include="IFieldMapper.cs" />
     <Compile Include="IWiqlQueryBuilder.cs" />
     <Compile Include="IWiqlTranslator.cs" />
     <Compile Include="Projector.cs" />

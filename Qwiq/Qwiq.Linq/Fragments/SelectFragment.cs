@@ -1,20 +1,20 @@
 ﻿using System;
-using Microsoft.IE.Qwiq.Mapper;
+using System.Collections.Generic;
 
 namespace Microsoft.IE.Qwiq.Linq.Fragments
 {
     internal class SelectFragment : IFragment
     {
-        private readonly IFieldMapper _fieldMapper;
+        private readonly IEnumerable<string> _fields;
 
-        public SelectFragment(IFieldMapper fieldMapper)
+        public SelectFragment(IEnumerable<string> fields)
         {
-            _fieldMapper = fieldMapper;
+            _fields = fields;
         }
 
         public string Get(Type queryType)
         {
-            return "SELECT " + String.Join(", ", _fieldMapper.GetFieldNames(queryType)) + " FROM WorkItems";
+            return "SELECT " + string.Join(", ", _fields) + " FROM WorkItems";
         }
 
         public bool IsValid()
