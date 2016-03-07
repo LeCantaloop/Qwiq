@@ -21,7 +21,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         public override void Given()
         {
             ParentIdStrategy = new ParentIdMapperStrategy(WorkItemStore);
-            Instance = new WorkItemMapper(new FieldMapper(), new[] { ParentIdStrategy });
+            Instance = new WorkItemMapper(new[] { ParentIdStrategy });
         }
 
         public override void When()

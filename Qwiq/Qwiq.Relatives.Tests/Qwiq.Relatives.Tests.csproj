@@ -58,12 +58,12 @@
     <Reference Include="Microsoft.IE.Qwiq.Identity">
       <HintPath>$(SolutionDir)packages\Microsoft.IE.Qwiq.Identity.1.0.5\lib\net45\Microsoft.IE.Qwiq.Identity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Linq, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.1.0.2-alpha\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Linq, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.2.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.2.1.1-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -257,7 +257,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mocks\MockField.cs" />
     <Compile Include="Mocks\MockIdentityMapper.cs" />
+    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
+    <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockParentIdIssue.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
     <Compile Include="Mocks\MockQueryProvider.cs" />
