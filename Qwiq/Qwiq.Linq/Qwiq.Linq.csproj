@@ -46,8 +46,8 @@
       <HintPath>..\packages\Microsoft.IE.Qwiq.Core.5.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.2.1.1-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
