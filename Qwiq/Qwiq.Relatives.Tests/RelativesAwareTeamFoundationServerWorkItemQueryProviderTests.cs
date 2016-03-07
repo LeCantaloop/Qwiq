@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Linq;
@@ -225,6 +226,42 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         public void an_empty_set_is_returned()
         {
             Actual.ShouldBeEmpty();
+        }
+    }
+
+    [TestClass]
+    public class given_a_query_provider_when_a_relatives_clause_is_used_with_a_type_with_no_workitemtype : QueryReturnsResults
+    {
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void children_clause_causes_InvalidOperationException()
+        {
+            var result = Query.Children<SimpleMockModel, MockModelNoType>().ToList();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void parents_clause_causes_InvalidOperationException()
+        {
+            var result = Query.Parents<MockModelNoType, SimpleMockModel> ().ToList();
+        }
+    }
+
+    [TestClass]
+    public class given_a_query_provider_when_a_relatives_clause_is_used_with_a_type_with_multiple_workitemtypes : QueryReturnsResults
+    {
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void children_clause_causes_InvalidOperationException()
+        {
+            var result = Query.Children<SimpleMockModel, MockModelMultipleTypes>().ToList();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void parents_clause_causes_InvalidOperationException()
+        {
+            var result = Query.Parents<MockModelMultipleTypes, SimpleMockModel>().ToList();
         }
     }
 }

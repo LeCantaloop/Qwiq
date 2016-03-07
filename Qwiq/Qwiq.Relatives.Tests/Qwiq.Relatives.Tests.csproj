@@ -259,6 +259,8 @@
   <ItemGroup>
     <Compile Include="Mocks\MockField.cs" />
     <Compile Include="Mocks\MockIdentityMapper.cs" />
+    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
+    <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockParentIdIssue.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
     <Compile Include="Mocks\MockQueryProvider.cs" />
