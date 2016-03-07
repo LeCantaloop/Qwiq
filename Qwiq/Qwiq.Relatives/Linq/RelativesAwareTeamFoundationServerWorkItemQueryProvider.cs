@@ -131,11 +131,11 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
         {
             var quotedDescendentIds = string.Join(", ", ids.Select(id => "'" + id + "'"));
             var queryString = Constants.WORK_HIERARCHY_QUERY
-                .Replace("#{{Ids}}", quotedDescendentIds)
-                .Replace("#{{AncestorType}}", _fieldMapper.GetWorkItemType(ancestorType))
-                .Replace("#{{DescendentType}}", _fieldMapper.GetWorkItemType(descendentType))
-                .Replace("#{{Direction}}", direction == RelativesQueryDirection.AncestorFromDescendent ? "Target" : "Source")
-                .Replace("#{{AsOf}}", asOf.ToUniversalTime().ToString("u"));
+            .Replace("#{{Ids}}", quotedDescendentIds)
+            .Replace("#{{AncestorType}}", GetWorkItemType(ancestorType))
+            .Replace("#{{DescendentType}}", GetWorkItemType(descendentType))
+            .Replace("#{{Direction}}", direction == RelativesQueryDirection.AncestorFromDescendent ? "Target" : "Source")
+            .Replace("#{{AsOf}}", asOf.ToUniversalTime().ToString("u"));
 
             return queryString;
         }
@@ -149,17 +149,29 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
             }
 
             // Filter out work items that aren't the ancestor nor descendent type
-            var ancestorName = _fieldMapper.GetWorkItemType(tAncestor);
-            var descendentName = _fieldMapper.GetWorkItemType(tDescendent);
+            var ancestorName = GetWorkItemType(tAncestor);
+            var descendentName = GetWorkItemType(tDescendent);
 
             var queryString = Constants.ID_QUERY
-                .Replace("#{{Ids}}", string.Join(", ", ids))
-                .Replace("#{{AsOf}}", asOf.ToUniversalTime().ToString("u"))
-                .Replace("#{{Ancestor}}", ancestorName)
-                .Replace("#{{Descendent}}", descendentName);
+            .Replace("#{{Ids}}", string.Join(", ", ids))
+            .Replace("#{{AsOf}}", asOf.ToUniversalTime().ToString("u"))
+            .Replace("#{{Ancestor}}", ancestorName)
+            .Replace("#{{Descendent}}", descendentName);
             var allWorkItems = ExecuteRawQuery(typeof(IWorkItem), queryString);
 
             return (IEnumerable<IWorkItem>)allWorkItems;
+        }
+
+        private string GetWorkItemType(Type type)
+        {
+            try
+            {
+                return _fieldMapper.GetWorkItemType(type).Single();
+            }
+            catch (InvalidOperationException ioe)
+            {
+                throw new InvalidOperationException("A relatives query is not supported using types which do not have exactly one WorkItemType defined. The invalid type used was " + type.FullName, ioe);
+            }
         }
 
         private IEnumerable<IWorkItemLinkInfo> GetTransitiveLinks(int parentId, IEnumerable<IWorkItemLinkInfo> links)
