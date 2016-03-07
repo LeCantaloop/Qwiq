@@ -255,6 +255,7 @@
     <Compile Include="MockPropertyReflector.cs" />
     <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
     <Compile Include="Mocks\MockField.cs" />
+    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockModel.cs" />
     <Compile Include="Mocks\MockWorkItem.cs" />

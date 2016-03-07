@@ -15,7 +15,7 @@ namespace Microsoft.IE.Qwiq.Linq
             _cache = new ConcurrentDictionary<string, object>();
         }
 
-        public string GetWorkItemType(Type type)
+        public IEnumerable<string> GetWorkItemType(Type type)
         {
             return GetOrAdd(GenerateCacheKey(type, "GetWorkItemType"), () => _innerMapper.GetWorkItemType(type));
         }

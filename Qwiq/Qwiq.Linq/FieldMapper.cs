@@ -7,10 +7,10 @@ namespace Microsoft.IE.Qwiq.Linq
 {
     public class FieldMapper : IFieldMapper
     {
-        public string GetWorkItemType(Type type)
+        public IEnumerable<string> GetWorkItemType(Type type)
         {
             var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
-            return customAttributes.Any() ? customAttributes.Single().GetTypeName() : null;
+            return customAttributes.Select(ca => ca.GetTypeName());
         }
 
         public IEnumerable<string> GetFieldNames(Type type)
