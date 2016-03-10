@@ -3,10 +3,10 @@
 namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 {
     [WorkItemType("SimpleMockWorkItem")]
-    public class SimpleMockModel : MockWorkItem
+    public class SimpleMockModel : IIdentifiable
     {
         [FieldDefinition("ID")]
-        public int ID { get; internal set; }
+        public int Id { get; internal set; }
 
         [FieldDefinition("IntField")]
         public int IntField { get; internal set; }

@@ -167,13 +167,13 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         [TestMethod]
         public void item_with_id_of_1_has_a_parent_of_id_3()
         {
-            Actual.Single(kvp => kvp.Key.ID == 3).Value.Count(wi => wi.ID == 1).ShouldEqual(1);
+            Actual.Single(kvp => kvp.Key.Id == 3).Value.Count(wi => wi.Id == 1).ShouldEqual(1);
         }
 
         [TestMethod]
         public void item_with_id_of_5_has_no_parent()
         {
-            Actual.Single(kvp => kvp.Key.ID == 5).Value.ShouldBeEmpty();
+            Actual.Single(kvp => kvp.Key.Id == 5).Value.ShouldBeEmpty();
         }
     }
 
@@ -188,13 +188,13 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         [TestMethod]
         public void item_with_id_of_3_has_a_child_of_id_2()
         {
-            Actual.Single(kvp => kvp.Key.ID == 3).Value.Count(wi => wi.ID == 2).ShouldEqual(1);
+            Actual.Single(kvp => kvp.Key.Id == 3).Value.Count(wi => wi.Id == 2).ShouldEqual(1);
         }
 
         [TestMethod]
         public void item_with_id_of_5_has_no_children()
         {
-            Actual.Single(kvp => kvp.Key.ID == 5).Value.ShouldBeEmpty();
+            Actual.Single(kvp => kvp.Key.Id == 5).Value.ShouldBeEmpty();
         }
     }
 
