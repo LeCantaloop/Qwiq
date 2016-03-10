@@ -311,8 +311,8 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         [TestMethod]
         public void the_mapped_issues_should_have_default_ID_values()
         {
-            MappedIssues.Select(x => x.ID)
-                .ShouldContainOnly(ExpectedMappedIssues.Select(x => x.ID));
+            MappedIssues.Select(x => x.Id)
+                .ShouldContainOnly(ExpectedMappedIssues.Select(x => x.Id));
         }
 
         [TestMethod]
