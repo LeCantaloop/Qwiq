@@ -21,27 +21,27 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
             {
                 new SimpleMockModel
                 {
-                    ID = 1,
+                    Id = 1,
                     IntField = 2
                 },
                 new SimpleMockModel
                 {
-                    ID = 2,
+                    Id = 2,
                     IntField = 4
                 },
                 new SimpleMockModel
                 {
-                    ID = 3,
+                    Id = 3,
                     IntField = 3
                 },
                 new SimpleMockModel
                 {
-                    ID = 4,
+                    Id = 4,
                     IntField = 4
                 },
                 new SimpleMockModel
                 {
-                    ID = 5,
+                    Id = 5,
                     IntField = 5
                 }
             };

@@ -32,18 +32,12 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
         {
             var workItems = WorkItemStore.Query(queryString);
 
-            if (workItemType == typeof(IWorkItem))
-            {
-                // This is only for GetDescendents. If it is no longer using it we should get rid of it
-                return (workItems);
-            }
-            if (typeof(IWorkItem).IsAssignableFrom(workItemType))
+            if (typeof(IIdentifiable).IsAssignableFrom(workItemType))
             {
                 return WorkItemMapper.Create(workItemType, workItems);
             }
 
-
-            throw new NotSupportedException($"Unknown work item type {workItemType.Name}.");
+            throw new NotSupportedException($"Unsupported type for performing relatives aware queries: {workItemType.Name}. To perform relatives aware queries the types involved must inherit from IIdentifiable.");
         }
 
         protected override object ExecuteImpl(Expression expression, Type itemType)
@@ -57,7 +51,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
             if (query.Relatives != null)
             {
                 var asOf = query.AsOfDateTime ?? DateTime.Now;
-                results = GetRelatives(results.Cast<IWorkItem>(), query.Relatives, itemType, asOf);
+                results = GetRelatives(results.Cast<IIdentifiable>(), query.Relatives, itemType, asOf);
             }
             else if (query.Projections.Count > 0)
             {
@@ -67,7 +61,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
             return results;
         }
 
-        private IEnumerable GetRelatives(IEnumerable<IWorkItem> source, RelativesExpression relativesExpression, Type itemType, DateTime asOf)
+        private IEnumerable GetRelatives(IEnumerable<IIdentifiable> source, RelativesExpression relativesExpression, Type itemType, DateTime asOf)
         {
             var results = Activator
                             .CreateInstance(typeof(List<>)
@@ -157,9 +151,9 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
             .Replace("#{{AsOf}}", asOf.ToUniversalTime().ToString("u"))
             .Replace("#{{Ancestor}}", ancestorName)
             .Replace("#{{Descendent}}", descendentName);
-            var allWorkItems = ExecuteRawQuery(typeof(IWorkItem), queryString);
+            var allWorkItems = WorkItemStore.Query(queryString);
 
-            return (IEnumerable<IWorkItem>)allWorkItems;
+            return allWorkItems;
         }
 
         private string GetWorkItemType(Type type)

@@ -239,6 +239,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IIdentifiable.cs" />
     <Compile Include="Linq\RelativesAwareTeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="Linq\QueryExtensions.cs" />
     <Compile Include="Linq\RelativesAwareQueryRewriter.cs" />
