@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <package>
-    <metadata>
-        <id>$id$</id>
-        <version>$version$</version>
-        <title>$id$</title>
-        <authors>Cantaloop@microsoft.com</authors>
-        <owners>ieportal@microsoft.com Cantaloop@microsoft.com</owners>
-        <projectUrl>https://github.com/MicrosoftEdge/IEPortal.Qwiq</projectUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Provides Quick Workitem Queries to TFS and Visual Studio Online</description>
-        <copyright>$copyright$</copyright>
-        <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
-    </metadata>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <projectUrl>https://github.com/MicrosoftEdge/IEPortal.Qwiq</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>$copyright$</copyright>
+    <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
+  </metadata>
 </package>

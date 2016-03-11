@@ -7,12 +7,10 @@ namespace Microsoft.IE.Qwiq.Mapper
 {
     public class WorkItemMapper : IWorkItemMapper
     {
-        private readonly IFieldMapper _fieldMapper;
         private readonly IEnumerable<IWorkItemMapperStrategy> _mapperStrategies;
 
-        public WorkItemMapper(IFieldMapper fieldMapper, IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
+        public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
-            _fieldMapper = fieldMapper;
             _mapperStrategies = mapperStrategies;
         }
 
@@ -33,10 +31,7 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         private IEnumerable ParseWorkItems(Type type, IEnumerable<IWorkItem> collection)
         {
-            var expectedWorkItemType = _fieldMapper.GetWorkItemType(type);
-            var workItemsToMap =
-                collection.Where(wi => wi.Type.Name == expectedWorkItemType)
-                    .Select(wi => new KeyValuePair<IWorkItem, object>(wi, Activator.CreateInstance(type))).ToList();
+            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, Activator.CreateInstance(type))).ToList();
 
             foreach (var strategy in _mapperStrategies)
             {

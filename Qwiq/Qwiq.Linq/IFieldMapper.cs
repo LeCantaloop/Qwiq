@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.IE.Qwiq.Linq
 {
     /// <summary>
     /// Maps friendly names to and from reference names
@@ -13,7 +13,7 @@ namespace Microsoft.IE.Qwiq.Mapper
         /// </summary>
         /// <param name="type">The type of <see cref="IWorkItem"/> to get the name of.</param>
         /// <returns>The [Work Item Type] name for the sub-type.</returns>
-        string GetWorkItemType(Type type);
+        IEnumerable<string> GetWorkItemType(Type type);
 
         /// <summary>
         /// Given a specific work item sub-type, get the TFS field names needed to populate the type.
