@@ -16,12 +16,9 @@ namespace Microsoft.IE.Qwiq
             var identities = ims.ReadIdentities(IdentitySearchFactor.DisplayName, new[] { displayName });
 
             var aliases = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var identity in identities)
+            foreach (var identity in identities.Where(identity => identity != null && !identity.IsContainer && identity.IsActive))
             {
-                if (identity != null && !identity.IsContainer && identity.IsActive)
-                {
-                    aliases.Add(identity.GetUserAlias());
-                }
+                aliases.Add(identity.GetUserAlias());
             }
 
             return aliases.ToArray();
