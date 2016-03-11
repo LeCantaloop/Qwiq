@@ -2,7 +2,7 @@
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class WorkItemTypeAttribute : Attribute
     {
         private readonly string _type;
