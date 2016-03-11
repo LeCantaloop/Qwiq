@@ -1,9 +1,8 @@
 ﻿using Microsoft.IE.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
+namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
 {
-    [WorkItemType("SimpleMockWorkItem")]
-    public class SimpleMockModel : IIdentifiable
+    public class MockModelNoType
     {
         [FieldDefinition("ID")]
         public int Id { get; internal set; }

@@ -7,9 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Linq.Tests
 {
-    public abstract class QueryBuilderTestsBase : QueryTestsBase
+    public abstract class GenericQueryBuilderTestsBase<T> : QueryTestsBase
     {
-        protected Query<MockModel> Query;
+        protected Query<T> Query;
         protected string Expected;
         protected string Actual;
         protected IEnumerable<string> FieldNames;
@@ -23,9 +23,13 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Query = new Query<MockModel>(QueryProvider, Builder);
-            FieldNames = FieldMapper.GetFieldNames(typeof(MockModel));
+            Query = new Query<T>(QueryProvider, Builder);
+            FieldNames = FieldMapper.GetFieldNames(typeof(T));
         }
+    }
+
+    public abstract class QueryBuilderTestsBase : GenericQueryBuilderTestsBase<MockModel>
+    {
     }
 
     [TestClass]
@@ -422,6 +426,42 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
 
         [TestMethod]
         public void the_where_clause_is_preserved_in_the_query()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_is_against_a_type_with_no_workitemtype_attribute : GenericQueryBuilderTestsBase<MockModelNoType>
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([ID] = 1) AND ([IntField] > 5)))";
+            Actual = Query.Where(item => item.Id == 1 && item.IntField > 5).ToString();
+        }
+
+        [TestMethod]
+        public void it_is_translated_to_a_where_with_no_type_restriction()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_is_against_a_type_with_multiple_workitemtype_attributes : GenericQueryBuilderTestsBase<MockModelMultipleTypes>
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Fizz', 'Baz', 'Buzz')))";
+            Actual = Query.Where(item => item.IntField > 1).ToString();
+        }
+
+        [TestMethod]
+        public void it_is_translated_to_a_where_with_multiple_type_restriction()
         {
             Actual.ShouldEqual(Expected);
         }

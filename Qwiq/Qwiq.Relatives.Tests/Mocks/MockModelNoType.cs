@@ -2,8 +2,7 @@
 
 namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 {
-    [WorkItemType("SimpleMockWorkItem")]
-    public class SimpleMockModel : IIdentifiable
+    public class MockModelNoType
     {
         [FieldDefinition("ID")]
         public int Id { get; internal set; }
