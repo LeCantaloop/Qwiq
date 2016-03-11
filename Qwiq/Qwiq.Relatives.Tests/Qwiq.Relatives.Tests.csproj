@@ -39,12 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.16.204221202\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.23.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.23.302261847\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.16.204221202\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms, Version=2.23.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.23.302261847\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,9 +54,6 @@
     <Reference Include="Microsoft.IE.Qwiq.Core, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Microsoft.IE.Qwiq.Core.5.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Identity">
-      <HintPath>$(SolutionDir)packages\Microsoft.IE.Qwiq.Identity.1.0.5\lib\net45\Microsoft.IE.Qwiq.Identity.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IE.Qwiq.Linq, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.2.0.0-alpha\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
@@ -282,10 +279,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Microsoft.WITDataStore32.dll" />
-    <Content Include="Microsoft.WITDataStore64.dll" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
