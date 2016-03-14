@@ -21,19 +21,22 @@ namespace Microsoft.IE.Qwiq.Identity.Attributes
         {
             value = base.ParseValue(property, value);
             var identityField = _inspector.GetAttribute<IdentityFieldAttribute>(property);
-            if (identityField != null && value != null)
+            if (identityField == null || value == null)
             {
-                var displayName = value.ToString();
-                var alias = _identityMapper
-                                .GetAliasesForDisplayName(displayName)
-                                .FirstOrDefault();
-
-                if (!string.IsNullOrEmpty(alias))
-                {
-                    value = alias;
-                }
+                return value;
             }
-            return value;
+
+            var displayName = value.ToString();
+            if (string.IsNullOrEmpty(displayName))
+            {
+                return value;
+            }
+
+            var alias = _identityMapper
+                .GetAliasesForDisplayName(displayName)
+                .FirstOrDefault();
+
+            return string.IsNullOrEmpty(alias) ? value : alias;
         }
     }
 }
