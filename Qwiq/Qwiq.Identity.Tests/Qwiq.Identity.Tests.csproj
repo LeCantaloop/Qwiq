@@ -245,6 +245,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IdentityAwareAttributeMapperStrategyTests.cs" />
+    <Compile Include="MockIdentityManagementService.cs" />
+    <Compile Include="Mocks\IdentityMockType.cs" />
+    <Compile Include="Mocks\MockField.cs" />
+    <Compile Include="Mocks\MockWorkItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +260,10 @@
     <ProjectReference Include="..\Qwiq.Identity\Qwiq.Identity.csproj">
       <Project>{b3654d2d-b4d4-405c-9aec-fc1859a87e74}</Project>
       <Name>Qwiq.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
+      <Project>{016e8d93-4195-4639-bcd5-77633e8e1681}</Project>
+      <Name>Qwiq.Mapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
