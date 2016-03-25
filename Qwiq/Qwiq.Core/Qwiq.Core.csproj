@@ -313,6 +313,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="microsoft.ie.qwiq.core.props" />
     <None Include="packages.config" />
     <None Include="Qwiq.Core.nuspec" />
   </ItemGroup>
