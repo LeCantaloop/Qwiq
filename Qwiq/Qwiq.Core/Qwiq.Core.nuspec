@@ -12,4 +12,7 @@
     <copyright>$copyright$</copyright>
     <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
   </metadata>
+  <files>
+      <file src="readme.txt" target="" />
+  </files>
 </package>
