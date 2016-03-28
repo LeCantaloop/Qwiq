@@ -314,7 +314,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Qwiq.Core.nuspec" />
+    <None Include="Qwiq.Core.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets" Condition="Exists('..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets')" />
