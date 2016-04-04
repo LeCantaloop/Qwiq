@@ -1,20 +1,25 @@
 ﻿using System;
-using Microsoft.IE.Qwiq.Mapper;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Linq.Fragments
 {
     internal class TypeRestrictionFragment : IFragment
     {
-        private readonly IFieldMapper _fieldMapper;
+        private readonly IEnumerable<string> _workItemTypes;
 
-        public TypeRestrictionFragment(IFieldMapper fieldMapper)
+        public TypeRestrictionFragment(IEnumerable<string> workItemTypes)
         {
-            _fieldMapper = fieldMapper;
+            _workItemTypes = workItemTypes;
         }
 
         public string Get(Type queryType)
         {
-            return "([Work Item Type] = '" + _fieldMapper.GetWorkItemType(queryType) + "')";
+            var numberOfTypesGreaterThanOne = _workItemTypes.Count() > 1;
+
+            var format = numberOfTypesGreaterThanOne ? "([Work Item Type] IN ({0}))" : "([Work Item Type] = {0})";
+            var replacement = string.Join(", ", _workItemTypes.Select(t => "'" + t + "'"));
+            return string.Format(format, replacement);
         }
 
         public bool IsValid()

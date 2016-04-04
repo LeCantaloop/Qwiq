@@ -14,11 +14,3 @@ reviewers:
         conditions:
             branches:
                 - master
-    -
-        name: productowners
-        required: 1
-        members:
-            - pelavall
-        conditions:
-            branches:
-                - master
