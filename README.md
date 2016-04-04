@@ -1,6 +1,9 @@
 # QWIQ
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you! 
 
+[![Build status](https://ci.appveyor.com/api/projects/status/xlgu9t8gq89ovolu/branch/master?svg=true)](https://ci.appveyor.com/project/MicrosoftEdge/ieportal-qwiq/branch/master)
+[![Build Status](http://ieportal-ci:8080/buildStatus/icon?job=IEPortal.Qwiq)](http://ieportal-ci:8080/job/IEPortal.Qwiq)
+
 ## What can it be used for?
 Querying Team Foundation Server, of course! Instead of directly using the TFS Client OM, you could use QWIQ! It comes in two flavors: Qwiq.Core and Qwiq.Identity. Qwiq.Core is the no-frills base package, exposinnng the raw types needed to read and write work items. Qwiq.Identity adds methods to simplify converting between your preferred method of identity (display names, user names) and TFS's identity classes. Why use this over the Client OM? Glad you asked!
 

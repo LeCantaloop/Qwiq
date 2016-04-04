@@ -4,19 +4,14 @@ using Microsoft.TeamFoundation.Common;
 
 namespace Microsoft.IE.Qwiq.Credentials
 {
-    public class CredentialsFactory
+    public static class CredentialsFactory
     {
-        private CredentialsFactory()
-        {
-        }
-
-        public static CredentialsFactory GetInstance()
-        {
-            return new CredentialsFactory();
-        }
-
-        public TfsCredentials CreateAadCredentials(string tfsResourceString, string tfsClientId, string authority,
-            string username = null, string password = null)
+        public static TfsCredentials CreateAadCredentials(
+            string tfsResourceString,
+            string tfsClientId,
+            string authority,
+            string username = null,
+            string password = null)
         {
             if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {
@@ -30,7 +25,7 @@ namespace Microsoft.IE.Qwiq.Credentials
             return new TfsCredentials(new AadCredential(token));
         }
 
-        public TfsCredentials CreateAcsCredentials(string username, string password)
+        public static TfsCredentials CreateAcsCredentials(string username, string password)
         {
             if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
             {

@@ -128,7 +128,7 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
             };
 
             Builder = new WiqlQueryBuilder(new WiqlTranslator(FieldMapper), new PartialEvaluator(), new QueryRewriter());
-            Mapper = new WorkItemMapper(FieldMapper, mapperStrategies);
+            Mapper = new WorkItemMapper(mapperStrategies);
         }
 
         public override void When()
