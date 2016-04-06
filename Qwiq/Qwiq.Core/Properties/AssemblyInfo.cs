@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.0.2.0")]
-[assembly: AssemblyFileVersion("5.0.2.0")]
-[assembly: AssemblyInformationalVersion("5.0.2")]
+[assembly: AssemblyVersion("6.0.0.0")]
+[assembly: AssemblyFileVersion("6.0.0.0")]
+[assembly: AssemblyInformationalVersion("6.0.0-alpha")]
 
 [assembly: InternalsVisibleTo("Microsoft.IE.Qwiq.Core.Tests")]
