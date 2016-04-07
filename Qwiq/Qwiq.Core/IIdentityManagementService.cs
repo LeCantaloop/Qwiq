@@ -4,7 +4,7 @@ namespace Microsoft.IE.Qwiq
 {
     public interface IIdentityManagementService
     {
-        IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors);
+        IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors);
         IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor,
             string[] searchFactorValues);
 
