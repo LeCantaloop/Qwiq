@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Framework;
@@ -14,7 +15,7 @@ namespace Microsoft.IE.Qwiq.Proxies
             _identityManagementService2 = identityManagementService2;
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)
         {
             var rawDescriptors = descriptors.Select(descriptor =>
                 new Tfs.Client.IdentityDescriptor(descriptor.IdentityType, descriptor.Identifier)).ToArray();
