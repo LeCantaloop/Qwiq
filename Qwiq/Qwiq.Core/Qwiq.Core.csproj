@@ -227,9 +227,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IIdentityManagementService.Extensions.cs">
-      <DependentUpon>IIdentityManagementService.cs</DependentUpon>
-    </Compile>
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />

@@ -54,10 +54,6 @@
       <HintPath>$(SolutionDir)packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.1.0.0\lib\net45\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\WindowsAzure.ServiceBus.3.1.4\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -260,8 +256,6 @@
     <Compile Include="Mocks\ExceptionThrower.cs" />
     <Compile Include="IdentityDescriptorProxyTests.cs" />
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
-    <Compile Include="LinkCollectionTests.cs" />
-    <Compile Include="LinkMapperTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
     <Compile Include="Mocks\MockArgumentExceptionMapper.cs" />
     <Compile Include="Mocks\MockException.cs" />
@@ -274,8 +268,6 @@
     <Compile Include="WorkItemStoreTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Client.fakes" />
-    <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Common.fakes" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
