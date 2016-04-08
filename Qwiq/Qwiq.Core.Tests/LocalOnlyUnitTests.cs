@@ -8,14 +8,11 @@ namespace Microsoft.IE.Qwiq.Core.Tests
 {
     public class LocalOnlyTests : ContextSpecification
     {
-        private const string VisualStudioResourceString = "499b84ac-1321-427f-aa17-267ca6975798";
-        private const string TFSClientId = "872cd9fa-d31f-45e0-9eab-6e460a02d1f1";
-        private const string Authority = "https://login.windows.net/common/";
         protected IWorkItemStore WorkItemStore { get; set; }
 
         public override void Given()
         {
-            var credentials = CredentialsFactory.CreateAadCredentials(VisualStudioResourceString, TFSClientId, Authority);
+            var credentials = CredentialsFactory.CreateAadCredentials();
             var connectionUri = new Uri("https://microsoft.visualstudio.com/DefaultCollection");
             WorkItemStore = WorkItemStoreFactory.GetInstance().Create(connectionUri, credentials);
         }
