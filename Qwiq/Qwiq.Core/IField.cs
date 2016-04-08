@@ -12,6 +12,7 @@ namespace Microsoft.IE.Qwiq
         string Name { get; }
         object OriginalValue { get; set; }
         ValidationState ValidationState { get; }
+        bool IsChangedByUser { get; }
         object Value { get; set; }
     }
 }
