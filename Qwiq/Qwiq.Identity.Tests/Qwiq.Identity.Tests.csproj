@@ -54,6 +54,10 @@
       <HintPath>..\packages\Microsoft.IE.Qwiq.Core.5.0.1\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.2\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\WindowsAzure.ServiceBus.3.1.4\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -260,10 +264,6 @@
     <ProjectReference Include="..\Qwiq.Identity\Qwiq.Identity.csproj">
       <Project>{b3654d2d-b4d4-405c-9aec-fc1859a87e74}</Project>
       <Name>Qwiq.Identity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
-      <Project>{016e8d93-4195-4639-bcd5-77633e8e1681}</Project>
-      <Name>Qwiq.Mapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
