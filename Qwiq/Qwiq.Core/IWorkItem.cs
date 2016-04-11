@@ -55,7 +55,7 @@ namespace Microsoft.IE.Qwiq
         /// </summary>
         int ExternalLinkCount { get; }
 
-        IEnumerable<IField> Fields { get; }
+        IFieldCollection Fields { get; }
 
         /// <summary>
         /// Gets or sets the string value of the History field for this work item.

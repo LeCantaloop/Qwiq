@@ -110,9 +110,9 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _item.ExternalLinkCount; }
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return _item.Fields.Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field))); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(new FieldCollectionProxy(_item.Fields)); }
         }
 
         /// <summary>
