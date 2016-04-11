@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
@@ -29,11 +28,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                         // This check is to see if a field exists before attempting to access it. This allows us to
                         // ignore properties which have an attributed field which does not have a backed field in the IWorkItem source
                         // rather than throw an exception.
-                        // The IgnoreCase string comparison is appropriate to use because in the Tfs implementation of
-                        // WorkItem they have a dictionary which backs the fields and uses a StringComparer which ignores
-                        // casing for the keys(Field.Name). This setting is based off of a configuration on the server. If, in the future,
-                        // the server is changed to NOT ignore the cases for the keys, then this will no longer be correct.
-                        if (sourceWorkItem.Fields.Any(f => f.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase)))
+                        if (sourceWorkItem.Fields.Contains(fieldName))
                         {
                             var value = ParseValue(property, sourceWorkItem[fieldName]);
                             property.SetValue(targetWorkItem, value);
