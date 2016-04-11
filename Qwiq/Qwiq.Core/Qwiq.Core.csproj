@@ -237,11 +237,13 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="IFieldCollection.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="ITeamFoundationIdentity.Extensions.cs">
       <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>
     </Compile>
     <Compile Include="LinkMapper.cs" />
+    <Compile Include="Proxies\FieldCollectionProxy.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IField.cs" />
