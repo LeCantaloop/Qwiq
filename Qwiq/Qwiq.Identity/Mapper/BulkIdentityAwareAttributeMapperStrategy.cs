@@ -56,12 +56,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
 
         internal static IDictionary<string, string> GetIdentityMap(IIdentityManagementService ims, ICollection<string> searchTerms)
         {
-            return ims
-                    .ReadIdentities(IdentitySearchFactor.DisplayName, searchTerms)
-                    .ToDictionary(
-                        kvp =>
-                            kvp.Key,
-                            kvp =>  kvp.Value.FirstOrDefault(identity => identity != null && !identity.IsContainer && identity.IsActive)?.GetUserAlias());
+            return ims.GetAliasesForDisplayNames(searchTerms.ToArray()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.FirstOrDefault());
         }
 
         internal static ICollection<WorkItemWithFields> GetWorkItemsWithIdentityFieldValues(IReadOnlyCollection<IWorkItem> workItems, IReadOnlyCollection<string> witFieldNames)

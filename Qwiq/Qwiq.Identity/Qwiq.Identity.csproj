@@ -41,7 +41,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Attributes\IdentityFieldAttribute.cs" />
-    <Compile Include="IIdentityManagementService.Extensions.cs" />
+    <Compile Include="IdentityManagementService.Extensions.cs" />
     <Compile Include="Linq\Visitors\IdentityVisitor.cs" />
     <Compile Include="Mapper\BulkIdentityAwareAttributeMapperStrategy.cs" />
     <Compile Include="Mapper\WorkItemField.cs" />

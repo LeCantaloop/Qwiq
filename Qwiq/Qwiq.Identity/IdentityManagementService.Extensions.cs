@@ -8,20 +8,26 @@ namespace Microsoft.IE.Qwiq.Identity
     {
         private const string TfsLoggedInIdentityType = "Microsoft.IdentityModel.Claims.ClaimsIdentity";
         private const string TfsBindPendingIdentityType = "Microsoft.TeamFoundation.BindPendingIdentity";
+
         public static string[] GetAliasesForDisplayName(this IIdentityManagementService ims, string displayName)
         {
-            if (ims == null) throw new ArgumentNullException("ims");
-            if (string.IsNullOrWhiteSpace(displayName)) throw new ArgumentNullException("displayName");
+            return GetAliasesForDisplayNames(ims, new[] {displayName})[displayName];
+        }
 
-            var identities = ims.ReadIdentities(IdentitySearchFactor.DisplayName, new[] { displayName });
+        public static IDictionary<string, string[]> GetAliasesForDisplayNames(this IIdentityManagementService ims, string[] displayNames)
+        {
+            if (ims == null) throw new ArgumentNullException(nameof(ims));
+            if (displayNames == null) throw new ArgumentNullException(nameof(displayNames));
 
-            var aliases = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var identity in identities.First().Value.Where(identity => identity != null && !identity.IsContainer && identity.IsActive))
-            {
-                aliases.Add(identity.GetUserAlias());
-            }
-
-            return aliases.ToArray();
+            return ims.ReadIdentities(IdentitySearchFactor.DisplayName, displayNames)
+                    .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp =>
+                            kvp.Value
+                                .Where(identity => identity != null && !identity.IsContainer && identity.IsActive)
+                                .Select(i => i.GetUserAlias())
+                                .Distinct(StringComparer.OrdinalIgnoreCase)
+                                .ToArray());
         }
 
         public static ITeamFoundationIdentity GetIdentityForAlias(this IIdentityManagementService ims, string alias,
