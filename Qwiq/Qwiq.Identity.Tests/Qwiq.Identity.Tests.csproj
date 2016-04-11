@@ -249,11 +249,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="IdentityAwareAttributeMapperStrategyTests.cs" />
-    <Compile Include="MockIdentityManagementService.cs" />
     <Compile Include="Mocks\IdentityMockType.cs" />
+    <Compile Include="BulkIdentityAwareAttributeMapperStrategyTests.cs" />
+    <Compile Include="Mocks\MockIdentityDescriptor.cs" />
+    <Compile Include="Mocks\MockIdentityManagementService.cs" />
     <Compile Include="Mocks\MockField.cs" />
+    <Compile Include="Mocks\MockFieldCollection.cs" />
     <Compile Include="Mocks\MockWorkItem.cs" />
+    <Compile Include="Mocks\MockTeamFoundationIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

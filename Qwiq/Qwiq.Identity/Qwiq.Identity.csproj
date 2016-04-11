@@ -40,11 +40,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Attributes\IdentityAwareAttributeMapperStrategy.cs" />
     <Compile Include="Attributes\IdentityFieldAttribute.cs" />
     <Compile Include="IIdentityManagementService.Extensions.cs" />
     <Compile Include="Linq\Visitors\IdentityVisitor.cs" />
-    <Compile Include="Mapper\IdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="Mapper\BulkIdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="Mapper\WorkItemField.cs" />
+    <Compile Include="Mapper\WorkItemKeyComparer.cs" />
+    <Compile Include="Mapper\WorkItemWithFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
