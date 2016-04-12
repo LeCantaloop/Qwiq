@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.IE.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -11,6 +13,11 @@ namespace Microsoft.IE.Qwiq.Proxies
         public FieldCollectionProxy(FieldCollection innerCollection)
         {
             _innerCollection = innerCollection;
+        }
+
+        IEnumerator<IField> IEnumerable<IField>.GetEnumerator()
+        {
+            return _innerCollection.Cast<IField>().GetEnumerator();
         }
 
         public IEnumerator GetEnumerator()
