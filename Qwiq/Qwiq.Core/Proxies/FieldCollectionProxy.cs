@@ -2,27 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
     internal class FieldCollectionProxy : IFieldCollection
     {
-        private readonly FieldCollection _innerCollection;
+        private readonly Tfs.FieldCollection _innerCollection;
 
-        public FieldCollectionProxy(FieldCollection innerCollection)
+        public FieldCollectionProxy(Tfs.FieldCollection innerCollection)
         {
             _innerCollection = innerCollection;
-        }
-
-        IEnumerator<IField> IEnumerable<IField>.GetEnumerator()
-        {
-            return _innerCollection.Cast<IField>().GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return _innerCollection.GetEnumerator();
         }
 
         public IField this[string name]
@@ -37,6 +27,16 @@ namespace Microsoft.IE.Qwiq.Proxies
         public bool Contains(string fieldName)
         {
             return _innerCollection.Contains(fieldName);
+        }
+
+        public IEnumerator<IField> GetEnumerator()
+        {
+            return _innerCollection.Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field))).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
