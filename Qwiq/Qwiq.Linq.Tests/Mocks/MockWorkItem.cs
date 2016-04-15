@@ -66,9 +66,9 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }); }
+            get { return new MockFieldCollection(Properties.Select(p => new MockField { Name = p.Key, Value = p.Value })); }
         }
 
         public string History
