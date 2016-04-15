@@ -227,6 +227,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseLinkType.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
