@@ -11,7 +11,13 @@ namespace Microsoft.IE.Qwiq
             var relatedLink = link as IRelatedLink;
             if (relatedLink != null)
             {
-                return item.Links.Cast<Tfs.Link>().OfType<Tfs.RelatedLink>().SingleOrDefault(rl => rl.RelatedWorkItemId == relatedLink.RelatedWorkItemId);
+                return
+                    item.Links.Cast<Tfs.Link>()
+                        .OfType<Tfs.RelatedLink>()
+                        .SingleOrDefault(
+                            rl =>
+                                rl.LinkTypeEnd.ImmutableName.Equals(relatedLink.LinkTypeEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
+                                && rl.RelatedWorkItemId == relatedLink.RelatedWorkItemId);
             }
 
             var hyperlink = link as IHyperlink;
