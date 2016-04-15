@@ -3,11 +3,11 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
-    public class RelatedLinkProxy : IRelatedLink
+    public class RelatedLinkProxy : LinkProxy, IRelatedLink
     {
         private readonly Tfs.RelatedLink _relatedLink;
 
-        internal RelatedLinkProxy(Tfs.RelatedLink relatedLink)
+        internal RelatedLinkProxy(Tfs.RelatedLink relatedLink) : base(relatedLink)
         {
             _relatedLink = relatedLink;
         }
@@ -28,11 +28,6 @@ namespace Microsoft.IE.Qwiq.Proxies
         public string LinkSubType
         {
             get { return _relatedLink.LinkTypeEnd.Name;  }
-        }
-
-        public string Comment
-        {
-            get { return _relatedLink.Comment; }
         }
     }
 }

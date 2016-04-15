@@ -2,11 +2,11 @@
 
 namespace Microsoft.IE.Qwiq.Proxies
 {
-    public class HyperlinkProxy : IHyperlink
+    public class HyperlinkProxy : LinkProxy, IHyperlink
     {
         private readonly Tfs.Hyperlink _hyperLink;
 
-        internal HyperlinkProxy(Tfs.Hyperlink hyperLink)
+        internal HyperlinkProxy(Tfs.Hyperlink hyperLink) : base(hyperLink)
         {
             _hyperLink = hyperLink;
         }
@@ -14,11 +14,6 @@ namespace Microsoft.IE.Qwiq.Proxies
         public string Location
         {
             get { return _hyperLink.Location; }
-        }
-
-        public string Comment
-        {
-            get { return _hyperLink.Comment; }
         }
     }
 }
