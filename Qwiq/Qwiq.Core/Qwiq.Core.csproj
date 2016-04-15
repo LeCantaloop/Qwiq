@@ -263,7 +263,6 @@
     <Compile Include="IProjectInfo.cs" />
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IRelatedLink.cs" />
-    <Compile Include="IWorkItemLink.cs" />
     <Compile Include="IWorkItemLinkType.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
     <Compile Include="IWorkItemType.cs" />
@@ -301,7 +300,6 @@
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
     <Compile Include="Proxies\WorkItemProxy.cs" />

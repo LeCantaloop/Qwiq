@@ -22,13 +22,6 @@ namespace Microsoft.IE.Qwiq
                 return new Tfs.Hyperlink(hyperlink.Location);
             }
 
-            var workItemLink = link as IWorkItemLink;
-            if (workItemLink != null)
-            {
-                var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, workItemLink.LinkTypeEnd);
-                return new Tfs.WorkItemLink(linkTypeEnd, workItemLink.SourceId, workItemLink.TargetId);
-            }
-
             throw new ArgumentException("Unknown link type", "link");
         }
 
@@ -44,12 +37,6 @@ namespace Microsoft.IE.Qwiq
             if (hyperlink != null)
             {
                 return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(hyperlink));
-            }
-
-            var workItemLink = link as Tfs.WorkItemLink;
-            if (workItemLink != null)
-            {
-                return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(workItemLink));
             }
 
             throw new ArgumentException("Unknown link type", "link");
