@@ -15,5 +15,10 @@ namespace Microsoft.IE.Qwiq.Proxies
         {
             get { return _link.Comment; }
         }
+
+        public BaseLinkType BaseType
+        {
+            get { return (BaseLinkType) _link.BaseType; }
+        }
     }
 }
