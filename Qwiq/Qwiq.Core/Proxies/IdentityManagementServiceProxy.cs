@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Framework;
@@ -14,29 +15,51 @@ namespace Microsoft.IE.Qwiq.Proxies
             _identityManagementService2 = identityManagementService2;
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)
         {
             var rawDescriptors = descriptors.Select(descriptor =>
                 new Tfs.Client.IdentityDescriptor(descriptor.IdentityType, descriptor.Identifier)).ToArray();
 
             var identities = _identityManagementService2.ReadIdentities(rawDescriptors, Tfs.Common.MembershipQuery.None,
-                Tfs.Common.ReadIdentityOptions.None);
+                Tfs.Common.ReadIdentityOptions.IncludeReadFromSource);
 
             return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues)
+        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, ICollection<string> searchFactorValues)
         {
+            var searchFactorArray = searchFactorValues.ToArray();
             var factor = (Tfs.Common.IdentitySearchFactor) searchFactor;
-            var identities = _identityManagementService2.ReadIdentities(factor, searchFactorValues,
-                Tfs.Common.MembershipQuery.None, Tfs.Common.ReadIdentityOptions.None)[0];
+            var identities = _identityManagementService2.ReadIdentities(factor, searchFactorArray,
+                Tfs.Common.MembershipQuery.None, Tfs.Common.ReadIdentityOptions.IncludeReadFromSource);
 
-            return identities.Select(identity => identity == null ? null : ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(new TeamFoundationIdentityProxy(identity)));
+            if (searchFactorArray.Length != identities.Length)
+            {
+                throw new IndexOutOfRangeException("A call to IIdentityManagementService2.ReadIdentities resulted in a return set where there was not a one to one mapping between search terms and search results. This is unexpected behavior and execution cannot continue. Please check if the underlying service implementation has changed and update the consuming code as appropriate.");
+            }
+
+            for (var i = 0; i < searchFactorArray.Length; i++)
+            {
+                var proxiedIdentities = identities[i].Select(TryCreateProxy);
+                yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactorArray[i], proxiedIdentities);
+            }
         }
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptorProxy(new Tfs.Client.IdentityDescriptor(identityType, identifier)));
+        }
+
+        private ITeamFoundationIdentity TryCreateProxy(Tfs.Client.TeamFoundationIdentity identity)
+        {
+            if (identity == null)
+            {
+                return null;
+            }
+
+            return
+                ExceptionHandlingDynamicProxyFactory.Create<ITeamFoundationIdentity>(
+                    new TeamFoundationIdentityProxy(identity));
         }
     }
 }

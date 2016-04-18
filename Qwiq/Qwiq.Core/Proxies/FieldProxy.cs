@@ -49,6 +49,11 @@ namespace Microsoft.IE.Qwiq.Proxies
             }
         }
 
+        public bool IsChangedByUser
+        {
+            get { return _field.IsChangedByUser; }
+        }
+
         public object Value
         {
             get { return _field.Value; }

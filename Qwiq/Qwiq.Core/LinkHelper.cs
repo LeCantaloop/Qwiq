@@ -8,9 +8,9 @@ namespace Microsoft.IE.Qwiq
     {
         public Tfs.Link FindEquivalentLink(Tfs.WorkItem item, ILink link)
         {
-            var relatedLink = link as IRelatedLink;
-            if (relatedLink != null)
+            if (link.BaseType == BaseLinkType.RelatedLink)
             {
+                var relatedLink = (IRelatedLink) link;
                 return
                     item.Links.Cast<Tfs.Link>()
                         .OfType<Tfs.RelatedLink>()
@@ -19,26 +19,16 @@ namespace Microsoft.IE.Qwiq
                                 rl.LinkTypeEnd.ImmutableName.Equals(relatedLink.LinkTypeEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
                                 && rl.RelatedWorkItemId == relatedLink.RelatedWorkItemId);
             }
-
-            var hyperlink = link as IHyperlink;
-            if (hyperlink != null)
+            if (link.BaseType == BaseLinkType.Hyperlink)
             {
-                return item.Links.Cast<Tfs.Link>().OfType<Tfs.Hyperlink>().SingleOrDefault(hl => hl.Location == hyperlink.Location);
+                var hyperlink = (IHyperlink) link;
+                return
+                    item.Links.Cast<Tfs.Link>()
+                        .OfType<Tfs.Hyperlink>()
+                        .SingleOrDefault(hl => hl.Location == hyperlink.Location);
             }
 
-            var workItemLink = link as IWorkItemLink;
-            if (workItemLink != null)
-            {
-                return item
-                        .Links
-                        .Cast<Tfs.Link>()
-                        .OfType<Tfs.WorkItemLink>()
-                        .SingleOrDefault(wil => wil.LinkTypeEnd.ImmutableName.Equals(workItemLink.LinkTypeEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
-                                                    && wil.SourceId == workItemLink.SourceId
-                                                    && wil.TargetId == workItemLink.TargetId);
-            }
-
-            throw new ArgumentException("Unknown link type", "link");
+            throw new ArgumentException("Unknown link type", nameof(link));
         }
     }
 }

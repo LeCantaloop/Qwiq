@@ -70,28 +70,28 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                     Id = 233,
                     Properties = giverWorkItemBackingStore,
                     Type = new MockWorkItemType {Name = "Baz"},
-                    WorkItemLinks = new MockLinkCollection()
+                    Links = new MockLinkCollection()
                 },
                 new MockWorkItem
                 {
                     Id = 144,
                     Properties = takerWorkItemBackingStore,
                     Type = new MockWorkItemType {Name = "Baz"},
-                    WorkItemLinks = new MockLinkCollection()
+                    Links = new MockLinkCollection()
                 }
             });
 
-            var links = new IWorkItemLink[]
+            var links = new ILink[]
             {
                 new MockWorkItemLink
                 {
                     LinkTypeEnd = new MockWorkItemLinkTypeEnd {ImmutableName = MockModelWithLinks.ForwardLinkName},
-                    TargetId = 233
+                    RelatedWorkItemId = 233
                 },
                 new MockWorkItemLink
                 {
                     LinkTypeEnd = new MockWorkItemLinkTypeEnd {ImmutableName = MockModelWithLinks.ReverseLinkName},
-                    TargetId = 144
+                    RelatedWorkItemId = 144
                 }
             };
 
@@ -101,7 +101,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 {
                     Properties = WorkItemBackingStore,
                     Type = new MockWorkItemType { Name = "Baz" },
-                    WorkItemLinks = new MockLinkCollection
+                    Links = new MockLinkCollection
                     {
                         Count = 2,
                         Links = links,
@@ -165,7 +165,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 {
                     Properties = WorkItemBackingStore,
                     Type = new MockWorkItemType {Name = "Baz"},
-                    WorkItemLinks = new MockLinkCollection()
+                    Links = new MockLinkCollection()
                 }
             };
 

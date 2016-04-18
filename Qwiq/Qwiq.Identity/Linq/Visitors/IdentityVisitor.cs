@@ -69,7 +69,7 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
             return expressions.OfType<MemberExpression>().Any(arg => IsIdentityField(arg.Expression.Type, arg.Member.Name));
         }
 
-        private object GetDisplayName(string alias)
+        private string GetDisplayName(string alias)
         {
             try
             {
@@ -85,9 +85,13 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
 
         private object ReplaceValue(object value)
         {
-            return value is string
-                ? GetDisplayName(value.ToString())
-                : ((IEnumerable<string>)value)?.Select(GetDisplayName);
+            if (value is string)
+            {
+                return GetDisplayName(value.ToString());
+            }
+
+            var stringArray = value as IEnumerable<string>;
+            return stringArray?.Select(GetDisplayName) ?? value;
         }
     }
 }

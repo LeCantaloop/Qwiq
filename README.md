@@ -36,12 +36,7 @@ using Microsoft.IE.Qwiq.Credentials;
 
 ...
 
-var creds = CredentialsFactory
-                .GetInstance()
-                .CreateAadCredentials(
-                    "***REMOVED***", // Visual Studio Resource String
-                    "***REMOVED***", // TFS Client Id
-                    "https://login.microsoftonline.com/common/");   // Identity Authority
+var creds = CredentialsFactory.CreateAadCredentials();
 
 var uri = new Uri("***REMOVED***");
 
@@ -58,16 +53,8 @@ var items = store.Query(@"
 ```powershell
 [Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.IE.Qwiq.Core.dll")
 
-$credsFactory = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::GetInstance()
-
-# VS Resource String, TfsClientId, and Authority
-$creds = $credsFactory.CreateAadCredentials(
-            "***REMOVED***",
-            "***REMOVED***",
-            "https://login.microsoftonline.com/common/")
-
+$creds = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::CreateAadCredentials()
 $uri = [Uri]"***REMOVED***"
-
 $store = [Microsoft.IE.Qwiq.WorkItemStoreFactory]::GetInstance().Create($uri, $creds)
 
 $items = $store.Query(@"

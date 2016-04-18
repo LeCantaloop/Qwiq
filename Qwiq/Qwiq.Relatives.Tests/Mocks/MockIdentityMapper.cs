@@ -21,12 +21,12 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
             return NameMap.ContainsKey(displayName) ? NameMap[displayName] : displayName;
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)
         {
             yield break;
         }
 
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues)
+        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, ICollection<string> searchFactorValues)
         {
             yield break;
         }
