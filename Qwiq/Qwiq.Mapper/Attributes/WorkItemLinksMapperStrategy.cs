@@ -26,9 +26,9 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                 {
                     var linkType = def.GetLinkName();
 
-                    var ids = sourceWorkItem.WorkItemLinks
+                    var ids = sourceWorkItem.Links.OfType<IRelatedLink>()
                             .Where(wil => wil.LinkTypeEnd.ImmutableName == linkType)
-                            .Select(wil => wil.TargetId).ToArray();
+                            .Select(wil => wil.RelatedWorkItemId).ToArray();
 
                     if (ids.Any())
                     {

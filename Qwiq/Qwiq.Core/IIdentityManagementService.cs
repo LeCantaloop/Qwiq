@@ -4,9 +4,9 @@ namespace Microsoft.IE.Qwiq
 {
     public interface IIdentityManagementService
     {
-        IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors);
-        IEnumerable<ITeamFoundationIdentity> ReadIdentities(IdentitySearchFactor searchFactor,
-            string[] searchFactorValues);
+        IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors);
+
+        IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, ICollection<string> searchFactorValues);
 
         IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier);
     }

@@ -40,10 +40,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Attributes\IdentityAwareAttributeMapperStrategy.cs" />
     <Compile Include="Attributes\IdentityFieldAttribute.cs" />
+    <Compile Include="IdentityManagementService.Extensions.cs" />
     <Compile Include="Linq\Visitors\IdentityVisitor.cs" />
-    <Compile Include="Mapper\IdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="Mapper\BulkIdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="Mapper\WorkItemField.cs" />
+    <Compile Include="Mapper\WorkItemKeyComparer.cs" />
+    <Compile Include="Mapper\WorkItemWithFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,12 +63,12 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.16.204221202\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Core, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.5.0.1\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Core, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.6.0.6-alpha\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.2\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.4.0.1-alpha\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
