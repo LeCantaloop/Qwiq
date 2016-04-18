@@ -139,8 +139,6 @@ namespace Microsoft.IE.Qwiq
         /// </summary>
         Uri Uri { get; }
 
-        IEnumerable<IWorkItemLink> WorkItemLinks { get; }
-
         /// <summary>
         /// Gets or sets the value of a field in this work item that is specified by
         /// the field name.
@@ -167,8 +165,6 @@ namespace Microsoft.IE.Qwiq
         IHyperlink CreateHyperlink(string location);
 
         IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
-
-        IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem);
 
         /// <summary>
         /// Validates the fields of this work item.
