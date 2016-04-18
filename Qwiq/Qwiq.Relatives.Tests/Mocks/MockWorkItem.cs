@@ -215,9 +215,9 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }); }
+            get { return new MockFieldCollection(Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }).Cast<IField>().ToList()); }
         }
     }
 }

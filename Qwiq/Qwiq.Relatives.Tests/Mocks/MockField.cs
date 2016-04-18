@@ -10,6 +10,7 @@
         public string Name { get; set; }
         public object OriginalValue { get; set; }
         public ValidationState ValidationState { get; set; }
+        public bool IsChangedByUser { get; }
         public object Value { get; set; }
     }
 }
