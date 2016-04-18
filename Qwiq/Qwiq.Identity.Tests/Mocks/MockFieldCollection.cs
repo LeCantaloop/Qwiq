@@ -15,11 +15,6 @@ namespace Qwiq.Identity.Tests.Mocks
             _mockFields = mockFields.ToList();
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return _mockFields.GetEnumerator();
-        }
-
         public bool Contains(string fieldName)
         {
             return _mockFields.Any(f => f.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
@@ -33,6 +28,16 @@ namespace Qwiq.Identity.Tests.Mocks
         public int Count
         {
             get { return _mockFields.Count; }
+        }
+
+        public IEnumerator<IField> GetEnumerator()
+        {
+            return _mockFields.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -190,11 +190,6 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 
         public IWorkItemType Type { get; set; }
 
-        public IEnumerable<IWorkItemLink> WorkItemLinks
-        {
-            get { return new List<IWorkItemLink>(); }
-        }
-
         public int Rev
         {
             get { throw new NotImplementedException(); }
@@ -206,11 +201,6 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         }
 
         public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd end, IWorkItem targetWorkItem)
         {
             throw new NotImplementedException();
         }

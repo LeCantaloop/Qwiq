@@ -198,8 +198,6 @@ namespace Qwiq.Identity.Tests.Mocks
 
         public IWorkItemType Type { get; set; }
 
-        public IEnumerable<IWorkItemLink> WorkItemLinks { get; set; }
-
         public int Rev
         {
             get { throw new NotImplementedException(); }
@@ -211,11 +209,6 @@ namespace Qwiq.Identity.Tests.Mocks
         }
 
         public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd end, IWorkItem targetWorkItem)
         {
             throw new NotImplementedException();
         }
