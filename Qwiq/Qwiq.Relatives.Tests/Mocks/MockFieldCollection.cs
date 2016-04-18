@@ -14,11 +14,6 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
             _fields = fields;
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return _fields.GetEnumerator();
-        }
-
         public bool Contains(string fieldName)
         {
             return _fields.Any(f => f.Name.Equals(fieldName, StringComparison.OrdinalIgnoreCase));
@@ -30,5 +25,14 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         }
 
         public int Count => _fields.Count;
+        public IEnumerator<IField> GetEnumerator()
+        {
+            return _fields.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
