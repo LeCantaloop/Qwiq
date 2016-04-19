@@ -103,7 +103,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         public override void Given()
         {
             HandledErrorCodes = new int[] {};
-            Input = new VssServiceException("TF12345: This is a sample exception");
+            Input = new VssServiceException("TFabcd: This is a sample exception");
             base.Given();
         }
 
