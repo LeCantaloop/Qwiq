@@ -33,7 +33,7 @@ namespace Microsoft.IE.Qwiq.Linq
                 throw new ArgumentException(
                     string.Format(
                         "No field definition found for property '{0}'. Querying on non-mapped fields is not allowed."
-                        + " Either map the '{0}' property or remove it from the query.", propertyName), "propertyName");
+                        + " Either map the '{0}' property or remove it from the query.", propertyName), nameof(propertyName));
             }
 
             var fieldName = "[" + customAttribute.GetFieldName() + "]";
