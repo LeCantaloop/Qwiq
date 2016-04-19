@@ -10,7 +10,8 @@ namespace Microsoft.IE.Qwiq.Linq
         public IEnumerable<string> GetWorkItemType(Type type)
         {
             var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
-            return customAttributes.Select(ca => ca.GetTypeName());
+            return customAttributes.Select(ca => ca.GetTypeName()).OrderBy(name => name);
+            // Order alphabetically so string comparisons work and we don't needlessly permute our queries
         }
 
         public IEnumerable<string> GetFieldNames(Type type)
