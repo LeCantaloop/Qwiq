@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Core.Tests.Mocks;
 using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Core.Tests
@@ -81,6 +82,53 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         public void the_argument_mapper_should_be_called_three_times()
         {
             CountingMapper.ExecutionCount.ShouldEqual(3);
+        }
+    }
+
+    public abstract class VssExceptionMapperTests<T> : ExceptionMapperTests where T : Exception, new()
+    {
+        protected IEnumerable<int> HandledErrorCodes;
+
+        public override void Given()
+        {
+            ExceptionExploders = Enumerable.Empty<IExceptionExploder>();
+            ExceptionMappers = new[] {new MockVssExceptionMapper<T>(HandledErrorCodes.ToArray())};
+            base.Given();
+        }
+    }
+
+    [TestClass]
+    public class given_a_VssExceptionMapper_with_an_exception_with_an_unhandled_error_code : VssExceptionMapperTests<MockException>
+    {
+        public override void Given()
+        {
+            HandledErrorCodes = new int[] {};
+            Input = new VssServiceException("TF12345: This is a sample exception");
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_original_exception_should_be_returned()
+        {
+            ActualResult.ShouldEqual(Input);
+        }
+    }
+
+    [TestClass]
+    public class given_a_VssExceptionMapper_with_an_exception_with_a_handled_error_code : VssExceptionMapperTests<MockException>
+    {
+        private readonly int _errorCode = 12345;
+        public override void Given()
+        {
+            HandledErrorCodes = new[] {_errorCode};
+            Input = new VssServiceException($"TF{_errorCode}: This is a sample exception");
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_exception_should_be_mapped()
+        {
+            ActualResult.ShouldBeOfType<MockException>();
         }
     }
 }
