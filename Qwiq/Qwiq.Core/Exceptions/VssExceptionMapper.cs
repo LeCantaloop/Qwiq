@@ -8,7 +8,7 @@ namespace Microsoft.IE.Qwiq.Exceptions
     internal abstract class VssExceptionMapper : IExceptionMapper
     {
         private const string ErrorCode = "ErrorCode";
-        private readonly Regex _extractTfsErrorCodeRegex = new Regex("TF(?<" + ErrorCode + ">[0-9]*)", RegexOptions.Compiled);
+        private static readonly Regex ExtractTfsErrorCodeRegex = new Regex("TF(?<" + ErrorCode + ">[0-9]*)", RegexOptions.Compiled);
         private readonly int[] _handledErrorCodes;
         private readonly Func<string, Exception, Exception> _newExceptionCreator;
 
@@ -27,7 +27,7 @@ namespace Microsoft.IE.Qwiq.Exceptions
                 return null;
             }
 
-            var regexMatch = _extractTfsErrorCodeRegex.Match(ex.Message);
+            var regexMatch = ExtractTfsErrorCodeRegex.Match(ex.Message);
             if (!regexMatch.Success)
             {
                 return null;
