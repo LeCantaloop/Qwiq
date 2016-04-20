@@ -456,7 +456,7 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Fizz', 'Baz', 'Buzz')))";
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Baz', 'Buzz', 'Fizz')))";
             Actual = Query.Where(item => item.IntField > 1).ToString();
         }
 
