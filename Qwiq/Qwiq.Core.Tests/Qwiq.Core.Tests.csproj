@@ -257,6 +257,7 @@
     <Compile Include="Mocks\MockIdentityManagementService2.cs" />
     <Compile Include="Mocks\MockQuery.cs" />
     <Compile Include="Mocks\MockQueryFactory.cs" />
+    <Compile Include="Mocks\MockVssExceptionMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExceptionHandlingDynamicProxyTests.cs" />
     <Compile Include="WorkItemStoreTests.cs" />
