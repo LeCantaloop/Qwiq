@@ -49,3 +49,5 @@ IF ERRORLEVEL 1 (
 
 :: Package up our .csproj items into packages
 powershell -noprofile -executionpolicy bypass -command "gci -Filter *.csproj -Recurse -Exclude *.Tests.csproj | %% { nuget pack $_.FullName -IncludeReferencedProjects -Symbols -Properties Configuration=Release }"
+
+powershell -noprofile -executionpolicy bypass -command ".\init.ps1;.\scripts\Test.ps1 -repoRoot ."
