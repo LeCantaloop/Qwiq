@@ -22,27 +22,27 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
                 new SimpleMockModel
                 {
                     Id = 1,
-                    IntField = 2
+                    Priority = 2
                 },
                 new SimpleMockModel
                 {
                     Id = 2,
-                    IntField = 4
+                    Priority = 4
                 },
                 new SimpleMockModel
                 {
                     Id = 3,
-                    IntField = 3
+                    Priority = 3
                 },
                 new SimpleMockModel
                 {
                     Id = 4,
-                    IntField = 4
+                    Priority = 4
                 },
                 new SimpleMockModel
                 {
                     Id = 5,
-                    IntField = 5
+                    Priority = 5
                 }
             };
         }
@@ -50,7 +50,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         protected override IEnumerable ExecuteRawQuery(Type workItemType, string queryString)
         {
             if (queryString ==
-                "SELECT [ID], [IntField] FROM WorkItems WHERE (([Work Item Type] = 'SimpleMockWorkItem'))")
+                "SELECT [ID], [Priority] FROM WorkItems WHERE (([Work Item Type] = 'SimpleMockWorkItem'))")
             {
                 return GetMockWorkItems();
             }
@@ -59,7 +59,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
                 return WorkItemStore.Query("");
             }
             if (queryString ==
-                "SELECT [ID], [IntField] FROM WorkItems WHERE (([ID] = -1) AND ([Work Item Type] = 'SimpleMockWorkItem'))")
+                "SELECT [ID], [Priority] FROM WorkItems WHERE (([ID] = -1) AND ([Work Item Type] = 'SimpleMockWorkItem'))")
             {
                 return Enumerable.Empty<SimpleMockModel>();
             }

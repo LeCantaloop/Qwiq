@@ -57,7 +57,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     Properties = new Dictionary<string, object>
                     {
                         {"ID", 1},
-                        {"IntField", 2}
+                        {"Priority", 2}
                     }
                 },
                 new MockWorkItem
@@ -70,7 +70,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     Properties = new Dictionary<string, object>
                     {
                         {"ID", 2},
-                        {"IntField", 4}
+                        {"Priority", 4}
                     }
                 },
                 new MockWorkItem
@@ -83,7 +83,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     Properties = new Dictionary<string, object>
                     {
                         {"ID", 3},
-                        {"IntField", 3}
+                        {"Priority", 3}
                     }
                 },
                 new MockWorkItem
@@ -96,7 +96,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     Properties = new Dictionary<string, object>
                     {
                         {"ID", 4},
-                        {"IntField", 4}
+                        {"Priority", 4}
                     }
                 },
                 new MockWorkItem
@@ -109,7 +109,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
                     Properties = new Dictionary<string, object>
                     {
                         {"ID", 5},
-                        {"IntField", 5}
+                        {"Priority", 5}
                     }
                 }
             };

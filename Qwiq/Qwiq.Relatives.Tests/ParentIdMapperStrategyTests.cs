@@ -316,10 +316,10 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         }
 
         [TestMethod]
-        public void the_mapped_issues_should_have_default_IntField_values()
+        public void the_mapped_issues_should_have_default_Priority_values()
         {
-            MappedIssues.Select(x => x.IntField)
-                .ShouldContainOnly(ExpectedMappedIssues.Select(x => x.IntField));
+            MappedIssues.Select(x => x.Priority)
+                .ShouldContainOnly(ExpectedMappedIssues.Select(x => x.Priority));
         }
 
         [TestMethod]
