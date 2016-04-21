@@ -254,6 +254,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LocalOnlyRelativesQueryTest.cs" />
     <Compile Include="Mocks\MockField.cs" />
     <Compile Include="Mocks\MockFieldCollection.cs" />
     <Compile Include="Mocks\MockIdentityMapper.cs" />
