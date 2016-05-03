@@ -20,7 +20,7 @@ namespace Qwiq.Identity.Tests.Mocks
 
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)
         {
-            throw new NotImplementedException();
+            return descriptors.SelectMany(d => _identities.Where(i => d.Identifier.Contains(i.Key)).SelectMany(i => i.Value));
         }
 
         public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, ICollection<string> searchFactorValues)
@@ -30,7 +30,7 @@ namespace Qwiq.Identity.Tests.Mocks
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
-            throw new NotImplementedException();
+            return new MockIdentityDescriptor {IdentityType = identityType, Identifier = identifier};
         }
     }
 }

@@ -71,27 +71,25 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
 
         private string GetDisplayName(string alias)
         {
-            try
-            {
-                var identity = _identityManagementService.GetIdentityForAlias(alias, _tenantId, _domains);
-                return identity?.DisplayName;
-            }
-            catch (NullReferenceException)
-            {
-                // User is unknown to TFS
-            }
-            return null;
+            var identity = _identityManagementService.GetIdentityForAlias(alias, _tenantId, _domains);
+            return identity?.DisplayName ?? alias;
         }
 
-        private object ReplaceValue(object value)
+        internal object ReplaceValue(object value)
         {
-            if (value is string)
+            var stringValue = value as string;
+            if (stringValue != null)
             {
-                return GetDisplayName(value.ToString());
+                return GetDisplayName(stringValue);
             }
 
             var stringArray = value as IEnumerable<string>;
-            return stringArray?.Select(GetDisplayName) ?? value;
+            if(stringArray != null)
+            {
+                return stringArray.Select(GetDisplayName);
+            }
+
+            return value;
         }
     }
 }
