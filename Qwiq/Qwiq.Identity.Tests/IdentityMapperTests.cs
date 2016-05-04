@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq;
 using Microsoft.IE.Qwiq.Identity.Linq.Visitors;
@@ -8,16 +10,16 @@ using Qwiq.Identity.Tests.Mocks;
 namespace Qwiq.Identity.Tests
 {
     [TestClass]
-    public abstract class IdentityVisitorTests<T> : ContextSpecification
+    public abstract class IdentityMapperTests<T> : ContextSpecification
     {
-        protected IdentityVisitor Instance { get; set; }
+        protected IdentityMapper Instance { get; set; }
         protected T Input { get; set; }
         protected T ActualOutput { get; set; }
         protected T ExpectedOutput { get; set; }
         public override void Given()
         {
             Instance =
-                new IdentityVisitor(
+                new IdentityMapper(
                     new MockIdentityManagementService(new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
                     {
                         {"alias", new[] {new MockTeamFoundationIdentity("alias", "An Alias"),}},
@@ -29,7 +31,7 @@ namespace Qwiq.Identity.Tests
 
         public override void When()
         {
-            ActualOutput = (T)Instance.ReplaceValue(Input);
+            ActualOutput = (T)Instance.Map(Input);
         }
 
         [TestMethod]
@@ -40,7 +42,7 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_a_string_is_visited_with_a_valid_identity : IdentityVisitorTests<string>
+    public class when_a_string_is_mapped_with_a_valid_identity : IdentityMapperTests<string>
     {
         public override void Given()
         {
@@ -51,7 +53,7 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_a_string_is_visited_without_a_valid_identity : IdentityVisitorTests<string>
+    public class when_a_string_is_mapped_without_a_valid_identity : IdentityMapperTests<string>
     {
         public override void Given()
         {
@@ -62,7 +64,7 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_a_stringarray_is_visited_with_valid_identities : IdentityVisitorTests<IEnumerable<string>>
+    public class when_a_stringarray_is_mapped_with_valid_identities : IdentityMapperTests<IEnumerable<string>>
     {
         public override void Given()
         {
@@ -73,7 +75,7 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_a_stringarray_is_visited_with_mixed_identities : IdentityVisitorTests<IEnumerable<string>>
+    public class when_a_stringarray_is_mapped_with_mixed_identities : IdentityMapperTests<IEnumerable<string>>
     {
         public override void Given()
         {
@@ -84,7 +86,7 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_a_non_string_type_is_visited : IdentityVisitorTests<int>
+    public class when_a_non_string_type_is_mapped : IdentityMapperTests<int>
     {
         public override void Given()
         {
