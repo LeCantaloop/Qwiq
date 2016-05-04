@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="Attributes\IdentityFieldAttribute.cs" />
     <Compile Include="IdentityManagementService.Extensions.cs" />
+    <Compile Include="Linq\Visitors\IdentityMapper.cs" />
     <Compile Include="Linq\Visitors\IdentityVisitor.cs" />
+    <Compile Include="Linq\Visitors\IIdentityMapper.cs" />
     <Compile Include="Mapper\BulkIdentityAwareAttributeMapperStrategy.cs" />
     <Compile Include="Mapper\WorkItemField.cs" />
     <Compile Include="Mapper\WorkItemKeyComparer.cs" />
