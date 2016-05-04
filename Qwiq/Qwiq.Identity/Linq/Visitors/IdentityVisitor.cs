@@ -8,16 +8,18 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
 {
     public class IdentityVisitor : ExpressionVisitor
     {
-        private readonly string[] _domains;
-        private readonly IIdentityManagementService _identityManagementService;
-        private readonly string _tenantId;
+        private readonly IIdentityMapper _mapper;
         private bool _needsIdentityMapping;
 
-        public IdentityVisitor(IIdentityManagementService identityManagementService, string tenantId, params string[] domains)
+        public IdentityVisitor(IIdentityMapper mapper)
         {
-            _identityManagementService = identityManagementService;
-            _tenantId = tenantId;
-            _domains = domains;
+            _mapper = mapper;
+        }
+
+        [Obsolete("Use the overload which takes an IIdentityMapper.")]
+        public IdentityVisitor(IIdentityManagementService identityManagementService, string tenantId,
+            params string[] domains) : this(new IdentityMapper(identityManagementService, tenantId, domains))
+        {
         }
 
         protected override Expression VisitBinary(BinaryExpression node)
@@ -37,7 +39,7 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
                 return node;
             }
 
-            var newNode = ReplaceValue(node.Value);
+            var newNode = _mapper.Map(node.Value);
             return Expression.Constant(newNode);
         }
 
@@ -50,6 +52,7 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
 
             return newNode;
         }
+
         private static bool IsIdentityField(Type type, string propertyName)
         {
             var property = type.GetProperty(propertyName);
@@ -67,31 +70,6 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
         private static bool NeedsIdentityMapping(IEnumerable<Expression> expressions)
         {
             return expressions.OfType<MemberExpression>().Any(arg => IsIdentityField(arg.Expression.Type, arg.Member.Name));
-        }
-
-        private string GetDisplayName(string alias)
-        {
-            try
-            {
-                var identity = _identityManagementService.GetIdentityForAlias(alias, _tenantId, _domains);
-                return identity?.DisplayName;
-            }
-            catch (NullReferenceException)
-            {
-                // User is unknown to TFS
-            }
-            return null;
-        }
-
-        private object ReplaceValue(object value)
-        {
-            if (value is string)
-            {
-                return GetDisplayName(value.ToString());
-            }
-
-            var stringArray = value as IEnumerable<string>;
-            return stringArray?.Select(GetDisplayName) ?? value;
         }
     }
 }

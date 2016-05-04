@@ -4,6 +4,10 @@ namespace Qwiq.Identity.Tests.Mocks
 {
     public class MockIdentityDescriptor : IIdentityDescriptor
     {
+        public MockIdentityDescriptor()
+        {
+        }
+
         public MockIdentityDescriptor(string alias) : this(alias, "doesn'tmatter")
         {
         }
@@ -14,7 +18,7 @@ namespace Qwiq.Identity.Tests.Mocks
             IdentityType = identityType;
         }
 
-        public string Identifier { get; }
-        public string IdentityType { get; }
+        public string Identifier { get; set; }
+        public string IdentityType { get; set; }
     }
 }
