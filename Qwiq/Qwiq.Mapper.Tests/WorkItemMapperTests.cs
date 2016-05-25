@@ -5,27 +5,60 @@ using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
 using Microsoft.IE.Qwiq.Mapper.Tests.Mocks;
+using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Mapper.Tests
 {
-    public abstract class WorkItemMapperContext<T> : ContextSpecification where T : new()
+    public abstract class WorkItemMapperContext<T> : ContextSpecification
+        where T : new()
     {
         protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
-            {
-                { "DateTimeField" ,  new DateTime(2014, 1, 1) },
-                { "Field with Spaces" ,  "7" },
-                { "Id" ,  7 },
-                { "IntField" ,  1 },
-                { "Issue Type" ,  "Code Bug" },
-                { "FieldWithDifferentName" ,  "forty-two" },
-                { "NullableField" ,  null },
-                { "StringField" ,  "sample" }
-            };
+                                                                                 {
+                                                                                     {
+                                                                                         "DateTimeField",
+                                                                                         new DateTime
+                                                                                         (
+                                                                                         2014,
+                                                                                         1,
+                                                                                         1)
+                                                                                     },
+                                                                                     {
+                                                                                         "Field with Spaces",
+                                                                                         "7"
+                                                                                     },
+                                                                                     {
+                                                                                         "Id",
+                                                                                         7
+                                                                                     },
+                                                                                     {
+                                                                                         "IntField",
+                                                                                         1
+                                                                                     },
+                                                                                     {
+                                                                                         "Issue Type",
+                                                                                         "Code Bug"
+                                                                                     },
+                                                                                     {
+                                                                                         "FieldWithDifferentName",
+                                                                                         "forty-two"
+                                                                                     },
+                                                                                     {
+                                                                                         "NullableField",
+                                                                                         null
+                                                                                     },
+                                                                                     {
+                                                                                         "StringField",
+                                                                                         "sample"
+                                                                                     }
+                                                                                 };
 
         protected IWorkItemStore WorkItemStore;
+
         private IWorkItemMapper _workItemMapper;
+
         protected IEnumerable<IWorkItem> SourceWorkItems;
+
         protected T Actual;
 
         public override void Given()
@@ -33,10 +66,10 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             var propertyInspector = new PropertyInspector(new PropertyReflector());
             var typeParser = new TypeParser();
             var mappingStrategies = new IWorkItemMapperStrategy[]
-            {
-                new AttributeMapperStrategy(propertyInspector, typeParser),
-                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
-            };
+                                        {
+                                            new AttributeMapperStrategy(propertyInspector, typeParser),
+                                            new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+                                        };
             _workItemMapper = new WorkItemMapper(mappingStrategies);
         }
 
@@ -57,57 +90,46 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
-            var giverWorkItemBackingStore = new Dictionary<string, object>(WorkItemBackingStore);
-            giverWorkItemBackingStore["Id"] = 233;
-
-            var takerWorkItemBackingStore = new Dictionary<string, object>(WorkItemBackingStore);
-            takerWorkItemBackingStore["Id"] = 144;
-
-            WorkItemStore = new MockWorkItemStore(new[]
-            {
-                new MockWorkItem
-                {
-                    Id = 233,
-                    Properties = giverWorkItemBackingStore,
-                    Type = new MockWorkItemType {Name = "Baz"},
-                    Links = new MockLinkCollection()
-                },
-                new MockWorkItem
-                {
-                    Id = 144,
-                    Properties = takerWorkItemBackingStore,
-                    Type = new MockWorkItemType {Name = "Baz"},
-                    Links = new MockLinkCollection()
-                }
-            });
+            WorkItemStore =
+                new MockWorkItemStore(
+                    new[]
+                        {
+                            new MockWorkItem { Id = 233, Type = new MockWorkItemType { Name = "Baz" } },
+                            new MockWorkItem { Id = 144, Type = new MockWorkItemType { Name = "Baz" } }
+                        });
 
             var links = new ILink[]
-            {
-                new MockWorkItemLink
-                {
-                    LinkTypeEnd = new MockWorkItemLinkTypeEnd {ImmutableName = MockModelWithLinks.ForwardLinkName},
-                    RelatedWorkItemId = 233
-                },
-                new MockWorkItemLink
-                {
-                    LinkTypeEnd = new MockWorkItemLinkTypeEnd {ImmutableName = MockModelWithLinks.ReverseLinkName},
-                    RelatedWorkItemId = 144
-                }
-            };
+                            {
+                                new MockWorkItemLink
+                                    {
+                                        LinkTypeEnd =
+                                            new MockWorkItemLinkTypeEnd(
+                                            MockModelWithLinks.ForwardLinkName,
+                                            null),
+                                        RelatedWorkItemId = 233
+                                    },
+                                new MockWorkItemLink
+                                    {
+                                        LinkTypeEnd =
+                                            new MockWorkItemLinkTypeEnd(
+                                            MockModelWithLinks.ReverseLinkName,
+                                            null),
+                                        RelatedWorkItemId = 144
+                                    }
+                            };
 
             SourceWorkItems = new IWorkItem[]
-            {
-                new MockWorkItem
-                {
-                    Properties = WorkItemBackingStore,
-                    Type = new MockWorkItemType { Name = "Baz" },
-                    Links = new MockLinkCollection
-                    {
-                        Count = 2,
-                        Links = links,
-                    }
-                }
-            };
+                                  {
+                                      new MockWorkItem(WorkItemBackingStore)
+                                          {
+                                              Type =
+                                                  new MockWorkItemType
+                                                      {
+                                                          Name = "Baz"
+                                                      },
+                                              Links = new MockLinkCollection(links)
+                                          }
+                                  };
 
             base.Given();
         }
@@ -159,15 +181,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         {
             WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
 
-            SourceWorkItems = new[]
-            {
-                new MockWorkItem
-                {
-                    Properties = WorkItemBackingStore,
-                    Type = new MockWorkItemType {Name = "Baz"},
-                    Links = new MockLinkCollection()
-                }
-            };
+            SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
 
             _expected = new MockModelSubclass
             {
@@ -218,14 +232,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             {
                 WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
 
-                SourceWorkItems = new[]
-                {
-                    new MockWorkItem
-                    {
-                        Properties = WorkItemBackingStore,
-                        Type = new MockWorkItemType {Name = "Baz"}
-                    }
-                };
+                SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
 
                 _expected = new MockModelWithNoType
                 {
@@ -259,19 +266,9 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         {
             WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
 
-            SourceWorkItems = new[]
-            {
-                    new MockWorkItem
-                    {
-                        Properties = WorkItemBackingStore,
-                        Type = new MockWorkItemType {Name = "Baz"}
-                    }
-                };
+            SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
 
-            _expected = new MockModelWithNoBacking
-            {
-                Id = int.Parse(WorkItemBackingStore["Id"].ToString())
-            };
+            _expected = new MockModelWithNoBacking { Id = int.Parse(WorkItemBackingStore["Id"].ToString()) };
             base.Given();
         }
 
