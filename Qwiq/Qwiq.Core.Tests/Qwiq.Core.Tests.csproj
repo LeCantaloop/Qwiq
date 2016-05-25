@@ -54,10 +54,6 @@
       <HintPath>$(SolutionDir)packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.1.0.0\lib\net45\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Microsoft.QualityTools.Testing.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\WindowsAzure.ServiceBus.3.1.4\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -178,9 +174,6 @@
       <HintPath>$(SolutionDir)packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.14.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\Microsoft.TeamFoundation.WorkItemTracking.Client.14.0.0.0.Fakes.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll</HintPath>
       <Private>True</Private>
@@ -192,9 +185,6 @@
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Common.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common.14.0.0.0.Fakes">
-      <HintPath>FakesAssemblies\Microsoft.TeamFoundation.WorkItemTracking.Common.14.0.0.0.Fakes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Proxy, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll</HintPath>
@@ -260,8 +250,6 @@
     <Compile Include="Mocks\ExceptionThrower.cs" />
     <Compile Include="IdentityDescriptorProxyTests.cs" />
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
-    <Compile Include="LinkCollectionTests.cs" />
-    <Compile Include="LinkMapperTests.cs" />
     <Compile Include="LocalOnlyUnitTests.cs" />
     <Compile Include="Mocks\MockArgumentExceptionMapper.cs" />
     <Compile Include="Mocks\MockException.cs" />
@@ -269,13 +257,12 @@
     <Compile Include="Mocks\MockIdentityManagementService2.cs" />
     <Compile Include="Mocks\MockQuery.cs" />
     <Compile Include="Mocks\MockQueryFactory.cs" />
+    <Compile Include="Mocks\MockVssExceptionMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExceptionHandlingDynamicProxyTests.cs" />
     <Compile Include="WorkItemStoreTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Client.fakes" />
-    <Fakes Include="Fakes\Microsoft.TeamFoundation.WorkItemTracking.Common.fakes" />
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

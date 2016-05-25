@@ -12,6 +12,7 @@ namespace Qwiq.Identity.Tests.Mocks
         public string Name { get; set; }
         public object OriginalValue { get; set; }
         public ValidationState ValidationState { get; set; }
+        public bool IsChangedByUser { get; set; }
         public object Value { get; set; }
     }
 }

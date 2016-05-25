@@ -190,11 +190,6 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 
         public IWorkItemType Type { get; set; }
 
-        public IEnumerable<IWorkItemLink> WorkItemLinks
-        {
-            get { return new List<IWorkItemLink>(); }
-        }
-
         public int Rev
         {
             get { throw new NotImplementedException(); }
@@ -210,14 +205,9 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd end, IWorkItem targetWorkItem)
+        public IFieldCollection Fields
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IField> Fields
-        {
-            get { return Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }); }
+            get { return new MockFieldCollection(Properties.Select(p => new MockField { Name = p.Key, Value = p.Value }).Cast<IField>().ToList()); }
         }
     }
 }

@@ -67,9 +67,9 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return Properties.Select(p => new MockField {Name = p.Key, Value = p.Value}); }
+            get { return new MockFieldCollection(Properties.Select(p => new MockField {Name = p.Key, Value = p.Value}).Cast<IField>().ToList()); }
         }
 
         public string History
@@ -186,10 +186,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public ICollection<ILink> Links
-        {
-            get { return new List<ILink>(); }
-        }
+        public ICollection<ILink> Links { get; set; }
 
         public IEnumerable<IAttachment> Attachments
         {
@@ -197,8 +194,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         }
 
         public IWorkItemType Type { get; set; }
-
-        public IEnumerable<IWorkItemLink> WorkItemLinks { get; set; }
 
         public int Rev
         {
@@ -211,11 +206,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         }
 
         public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd end, IWorkItem targetWorkItem)
         {
             throw new NotImplementedException();
         }

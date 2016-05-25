@@ -227,9 +227,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IIdentityManagementService.Extensions.cs">
-      <DependentUpon>IIdentityManagementService.cs</DependentUpon>
-    </Compile>
+    <Compile Include="BaseLinkType.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
@@ -240,11 +238,13 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="IFieldCollection.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="ITeamFoundationIdentity.Extensions.cs">
       <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>
     </Compile>
     <Compile Include="LinkMapper.cs" />
+    <Compile Include="Proxies\FieldCollectionProxy.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IField.cs" />
@@ -264,7 +264,6 @@
     <Compile Include="IProjectInfo.cs" />
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IRelatedLink.cs" />
-    <Compile Include="IWorkItemLink.cs" />
     <Compile Include="IWorkItemLinkType.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
     <Compile Include="IWorkItemType.cs" />
@@ -302,7 +301,6 @@
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
     <Compile Include="Proxies\WorkItemProxy.cs" />
