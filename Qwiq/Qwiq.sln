@@ -9,11 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Tests", "Qwiq.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D6406EBA-1C2D-4CDE-A292-5CD2524B0A86}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives", "Qwiq.Relatives\Qwiq.Relatives.csproj", "{B6001D84-9BFC-40AB-A29C-3FAEF3154456}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives.Tests", "Qwiq.Relatives.Tests\Qwiq.Relatives.Tests.csproj", "{92D314BC-B178-413D-8A38-A54DC0BD0261}"
@@ -82,4 +77,3 @@ Global
 		SolutionGuid = 266ca4a8-d6b3-475b-9e56-372945ef2a6b
 	EndGlobalSection
 EndGlobal
-

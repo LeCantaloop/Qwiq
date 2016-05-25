@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Core.Tests
 {
-    public abstract class IdentityManagementServiceProxyTests : ContextSpecification
+    public abstract class IdentityManagementServiceProxyTests<T> : ContextSpecification
     {
         private IIdentityManagementService2 _identityManagementService2;
         protected IIdentityManagementService Service;
 
-        protected IEnumerable<ITeamFoundationIdentity> Actual;
+        protected IEnumerable<T> Actual;
 
         public override void Given()
         {
@@ -23,7 +23,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class when_ReadIdentities_using_a_search_factor_for_an_identity_that_doesnt_exist : IdentityManagementServiceProxyTests
+    public class when_ReadIdentities_using_a_search_factor_for_an_identity_that_doesnt_exist : IdentityManagementServiceProxyTests<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>>
     {
         public override void When()
         {
@@ -33,13 +33,13 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         [TestMethod]
         public void a_null_is_returned_instead_of_a_TeamFoundationIdentity()
         {
-            Actual.Single().ShouldBeNull();
+            Actual.Single().Value.Single().ShouldBeNull();
         }
     }
 
     [TestClass]
     public class when_ReadIdentities_using_an_IIdentityDescriptor_for_an_identity_that_doesnt_exist :
-        IdentityManagementServiceProxyTests
+        IdentityManagementServiceProxyTests<ITeamFoundationIdentity>
     {
         public override void When()
         {

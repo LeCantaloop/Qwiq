@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
-    public class MockLinkCollection : ICollection<IWorkItemLink>
+    public class MockLinkCollection : ICollection<ILink>
     {
-        public IEnumerator<IWorkItemLink> GetEnumerator()
+        public IEnumerator<ILink> GetEnumerator()
         {
-            return Links.Cast<IWorkItemLink>().GetEnumerator();
+            return Links.Cast<ILink>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -17,7 +17,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             return GetEnumerator();
         }
 
-        public void Add(IWorkItemLink item)
+        public void Add(ILink item)
         {
             throw new NotImplementedException();
         }
@@ -27,17 +27,17 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             throw new NotImplementedException();
         }
 
-        public bool Contains(IWorkItemLink item)
+        public bool Contains(ILink item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(IWorkItemLink[] array, int arrayIndex)
+        public void CopyTo(ILink[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public bool Remove(IWorkItemLink item)
+        public bool Remove(ILink item)
         {
             throw new NotImplementedException();
         }
@@ -49,6 +49,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public IWorkItemLink[] Links { get; set; }
+        public ILink[] Links { get; set; }
     }
 }

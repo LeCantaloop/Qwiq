@@ -10,7 +10,8 @@ namespace Microsoft.IE.Qwiq.Linq
         public IEnumerable<string> GetWorkItemType(Type type)
         {
             var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
-            return customAttributes.Select(ca => ca.GetTypeName());
+            return customAttributes.Select(ca => ca.GetTypeName()).OrderBy(name => name);
+            // Order alphabetically so string comparisons work and we don't needlessly permute our queries
         }
 
         public IEnumerable<string> GetFieldNames(Type type)
@@ -32,7 +33,7 @@ namespace Microsoft.IE.Qwiq.Linq
                 throw new ArgumentException(
                     string.Format(
                         "No field definition found for property '{0}'. Querying on non-mapped fields is not allowed."
-                        + " Either map the '{0}' property or remove it from the query.", propertyName), "propertyName");
+                        + " Either map the '{0}' property or remove it from the query.", propertyName), nameof(propertyName));
             }
 
             var fieldName = "[" + customAttribute.GetFieldName() + "]";

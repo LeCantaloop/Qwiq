@@ -110,9 +110,9 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _item.ExternalLinkCount; }
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return _item.Fields.Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field))); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(new FieldCollectionProxy(_item.Fields)); }
         }
 
         /// <summary>
@@ -244,26 +244,6 @@ namespace Microsoft.IE.Qwiq.Proxies
             get { return _item.Uri; }
         }
 
-        /// <summary>
-        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemLinkCollection
-        /// object that represents a collection of the Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemLinks
-        /// that link to this work item now or linked to it in the past.
-        /// </summary>
-        public IEnumerable<IWorkItemLink> WorkItemLinkHistory
-        {
-            get { return _item.WorkItemLinkHistory.Cast<Tfs.WorkItemLink>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(item))); }
-        }
-
-        /// <summary>
-        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemLinkCollection
-        /// object that represents a collection of the Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemLinks
-        /// that currently link to this work item.
-        /// </summary>
-        public IEnumerable<IWorkItemLink> WorkItemLinks
-        {
-            get { return _item.WorkItemLinks.Cast<Tfs.WorkItemLink>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(item))); }
-        }
-
         public int Rev
         {
             get { return _item.Rev; }
@@ -278,12 +258,6 @@ namespace Microsoft.IE.Qwiq.Proxies
         public IHyperlink CreateHyperlink(string location)
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(new Tfs.Hyperlink(location)));
-        }
-
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem targetWorkItem)
-        {
-            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
-            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLink>(new WorkItemLinkProxy(new Tfs.WorkItemLink(rawLinkTypeEnd, _item.Id, targetWorkItem.Id)));
         }
 
         /// <summary>

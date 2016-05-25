@@ -67,9 +67,9 @@ namespace Qwiq.Identity.Tests.Mocks
             get { throw new NotImplementedException(); }
         }
 
-        public IEnumerable<IField> Fields
+        public IFieldCollection Fields
         {
-            get { return Properties.Select(p => new MockField {Name = p.Key, Value = p.Value}); }
+            get { return new MockFieldCollection(Properties.Select(p => new MockField {Name = p.Key, Value = p.Value})); }
         }
 
         public string History
@@ -198,8 +198,6 @@ namespace Qwiq.Identity.Tests.Mocks
 
         public IWorkItemType Type { get; set; }
 
-        public IEnumerable<IWorkItemLink> WorkItemLinks { get; set; }
-
         public int Rev
         {
             get { throw new NotImplementedException(); }
@@ -211,11 +209,6 @@ namespace Qwiq.Identity.Tests.Mocks
         }
 
         public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWorkItemLink CreateWorkItemLink(IWorkItemLinkTypeEnd end, IWorkItem targetWorkItem)
         {
             throw new NotImplementedException();
         }

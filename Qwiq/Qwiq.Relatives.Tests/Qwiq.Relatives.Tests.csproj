@@ -51,16 +51,16 @@
       <HintPath>$(SolutionDir)packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.1.0.0\lib\net45\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Core, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.5.0.1\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Core, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.6.0.0\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Linq, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.2.0.1\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Linq, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.3.0.0\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.3.0.2\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
+    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.4.0.0\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -254,7 +254,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="LocalOnlyRelativesQueryTest.cs" />
     <Compile Include="Mocks\MockField.cs" />
+    <Compile Include="Mocks\MockFieldCollection.cs" />
     <Compile Include="Mocks\MockIdentityMapper.cs" />
     <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelNoType.cs" />
