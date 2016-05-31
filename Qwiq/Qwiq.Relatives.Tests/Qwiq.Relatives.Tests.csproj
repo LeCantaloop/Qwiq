@@ -255,24 +255,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="LocalOnlyRelativesQueryTest.cs" />
-    <Compile Include="Mocks\MockField.cs" />
-    <Compile Include="Mocks\MockFieldCollection.cs" />
-    <Compile Include="Mocks\MockIdentityMapper.cs" />
     <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockParentIdIssue.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
     <Compile Include="Mocks\MockQueryProvider.cs" />
-    <Compile Include="Mocks\MockWorkItem.cs" />
-    <Compile Include="Mocks\MockWorkItemLinkInfo.cs" />
-    <Compile Include="Mocks\MockWorkItemStore.cs" />
-    <Compile Include="Mocks\MockWorkItemType.cs" />
     <Compile Include="Mocks\SimpleMockModel.cs" />
     <Compile Include="ParentIdMapperStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelativesAwareTeamFoundationServerWorkItemQueryProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{db07e690-4b77-414f-91c7-1a48c9f01f24}</Project>
+      <Name>Qwiq.Mocks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Relatives\Qwiq.Relatives.csproj">
       <Project>{B6001D84-9BFC-40AB-A29C-3FAEF3154456}</Project>
       <Name>Qwiq.Relatives</Name>

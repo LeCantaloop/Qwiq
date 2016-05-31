@@ -7,6 +7,7 @@ using Microsoft.IE.Qwiq;
 using Microsoft.IE.Qwiq.Identity.Mapper;
 using Microsoft.IE.Qwiq.Mapper;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Qwiq.Identity.Tests.Mocks;
 
@@ -28,16 +29,17 @@ namespace Qwiq.Identity.Tests
         public override void Given()
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
-            _strategy = new BulkIdentityAwareAttributeMapperStrategy(propertyInspector, Identities == null ? new MockIdentityManagementService() : new MockIdentityManagementService(Identities));
+            _strategy = new BulkIdentityAwareAttributeMapperStrategy(
+                            propertyInspector, 
+                            Identities == null 
+                                ? new MockIdentityManagementService() 
+                                : new MockIdentityManagementService(Identities));
             var sourceWorkItems = new[]
             {
-                new MockWorkItem
-                {
-                    Properties = new Dictionary<string, object>
+                new MockWorkItem(new Dictionary<string, object>
                     {
                         { MockIdentityType.BackingField, IdentityFieldBackingValue }
-                    }
-                }
+                    })
             };
 
             _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, object>(t, new MockIdentityType())).ToList();
@@ -98,7 +100,7 @@ namespace Qwiq.Identity.Tests
             IdentityFieldBackingValue = identityDisplay;
             Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
             {
-                {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(identityAlias, identityDisplay)}}
+                {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(identityDisplay, identityAlias) }}
             };
             base.Given();
         }
