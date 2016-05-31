@@ -248,20 +248,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CachingPropertyReflectorTests.cs" />
-    <Compile Include="Mocks\MockField.cs" />
-    <Compile Include="Mocks\MockFieldCollection.cs" />
     <Compile Include="Mocks\MockModelWithNoBacking.cs" />
     <Compile Include="Mocks\MockModelWithNoType.cs" />
     <Compile Include="Mocks\MockModel.cs" />
     <Compile Include="Mocks\MockModelSubclass.cs" />
     <Compile Include="Mocks\MockModelWithLinks.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
-    <Compile Include="Mocks\MockWorkItem.cs" />
-    <Compile Include="Mocks\MockWorkItemLinkTypeEnd.cs" />
-    <Compile Include="Mocks\MockWorkItemStore.cs" />
-    <Compile Include="Mocks\MockWorkItemType.cs" />
-    <Compile Include="Mocks\MockWorkItemLinkCollection.cs" />
-    <Compile Include="MockWorkItemLink.cs" />
     <Compile Include="WorkItemMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeParserTests.cs" />
@@ -274,6 +266,10 @@
     <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
       <Project>{016e8d93-4195-4639-bcd5-77633e8e1681}</Project>
       <Name>Qwiq.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{db07e690-4b77-414f-91c7-1a48c9f01f24}</Project>
+      <Name>Qwiq.Mocks</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
