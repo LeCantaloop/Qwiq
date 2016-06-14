@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
+
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq;
 using Microsoft.IE.Qwiq.Identity.Linq.Visitors;
+using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Qwiq.Identity.Tests.Mocks;
 
 namespace Qwiq.Identity.Tests
 {
@@ -20,10 +19,10 @@ namespace Qwiq.Identity.Tests
         {
             Instance =
                 new IdentityMapper(
-                    new MockIdentityManagementService(new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
+                    new MockIdentityManagementService(new Dictionary<string, ITeamFoundationIdentity>
                     {
-                        {"alias", new[] {new MockTeamFoundationIdentity("alias", "An Alias"),}},
-                        {"other", new[] {new MockTeamFoundationIdentity("other", "AnOther Alias"),}}
+                        {"alias", new MockTeamFoundationIdentity("An Alias", "alias")},
+                        {"other", new MockTeamFoundationIdentity("AnOther Alias", "other")}
                     }), "tenant", "domain");
 
             base.Given();
