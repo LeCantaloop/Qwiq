@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Mapper;
+using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.IE.Qwiq.Relatives.Mapper;
 using Microsoft.IE.Qwiq.Relatives.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

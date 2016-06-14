@@ -6,6 +6,7 @@ using Microsoft.IE.Qwiq.Linq;
 using Microsoft.IE.Qwiq.Linq.Visitors;
 using Microsoft.IE.Qwiq.Mapper;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.IE.Qwiq.Relatives.Linq;
 using Microsoft.IE.Qwiq.Relatives.Mapper;
 using Microsoft.IE.Qwiq.Relatives.Tests.Mocks;
@@ -47,71 +48,31 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         {
             WorkItemStoreWorkItems = new List<IWorkItem>
             {
-                new MockWorkItem
-                {
-                    Id = 1,
-                    Type = new MockWorkItemType
-                    {
-                        Name = "SimpleMockWorkItem"
-                    },
-                    Properties = new Dictionary<string, object>
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
                     {
                         {"ID", 1},
                         {"Priority", 2}
-                    }
-                },
-                new MockWorkItem
-                {
-                    Id = 2,
-                    Type = new MockWorkItemType
-                    {
-                        Name = "SimpleMockWorkItem"
-                    },
-                    Properties = new Dictionary<string, object>
+                    }),
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
                     {
                         {"ID", 2},
                         {"Priority", 4}
-                    }
-                },
-                new MockWorkItem
-                {
-                    Id = 3,
-                    Type = new MockWorkItemType
-                    {
-                        Name = "SimpleMockWorkItem"
-                    },
-                    Properties = new Dictionary<string, object>
+                    }),
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
                     {
                         {"ID", 3},
                         {"Priority", 3}
-                    }
-                },
-                new MockWorkItem
-                {
-                    Id = 4,
-                    Type = new MockWorkItemType
-                    {
-                        Name = "SimpleMockWorkItem"
-                    },
-                    Properties = new Dictionary<string, object>
+                    }),
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
                     {
                         {"ID", 4},
                         {"Priority", 4}
-                    }
-                },
-                new MockWorkItem
-                {
-                    Id = 5,
-                    Type = new MockWorkItemType
-                    {
-                        Name = "SimpleMockWorkItem"
-                    },
-                    Properties = new Dictionary<string, object>
+                    }),
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
                     {
                         {"ID", 5},
                         {"Priority", 5}
-                    }
-                }
+                    })
             };
 
             WorkItemStoreWorkItemLinks = new[] {
@@ -243,7 +204,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         [ExpectedException(typeof(InvalidOperationException))]
         public void parents_clause_causes_InvalidOperationException()
         {
-            var result = Query.Parents<MockModelNoType, SimpleMockModel> ().ToList();
+            var result = Query.Parents<MockModelNoType, SimpleMockModel>().ToList();
         }
     }
 
