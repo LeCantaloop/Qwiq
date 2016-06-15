@@ -16,15 +16,13 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         public override void Given()
         {
             ProxiedInstance =
-                new ExceptionHandlingDynamicProxy<IExceptionThrower>(
-                    InstanceToProxy,
-                    new ExceptionMapper(
-                        Enumerable.Empty<IExceptionExploder>(),
-                        new[]
-                        {
-                            new MockArgumentExceptionMapper()
-                        }))
-                .GetTransparentProxy() as IExceptionThrower;
+                ExceptionHandlingDynamicProxyFactory.Create(
+                        InstanceToProxy,
+                            Enumerable.Empty<IExceptionExploder>(),
+                            new[]
+                            {
+                                new MockArgumentExceptionMapper()
+                            });
         }
     }
 
