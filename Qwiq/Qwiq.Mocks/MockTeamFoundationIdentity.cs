@@ -36,7 +36,19 @@ namespace Microsoft.IE.Qwiq.Mocks
 
         public int UniqueUserId
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                // Based on http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
+                var hash = 17;
+
+                if (!string.IsNullOrEmpty(DisplayName)) hash = hash * 23 + DisplayName.GetHashCode();
+                if (!string.IsNullOrEmpty(UniqueName)) hash = hash * 23 + UniqueName.GetHashCode();
+                if (TeamFoundationId != null) hash = hash * 23 + TeamFoundationId.GetHashCode();
+                if (Descriptor != null) hash = hash * 23 + Descriptor.GetHashCode();
+                hash = hash * 23 + IsContainer.GetHashCode();
+
+                return hash;
+            }
         }
     }
 }
