@@ -5,9 +5,9 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
 {
     internal class SelectFragment : IFragment
     {
-        private readonly IEnumerable<string> _fields;
+        private readonly ICollection<string> _fields;
 
-        public SelectFragment(IEnumerable<string> fields)
+        public SelectFragment(ICollection<string> fields)
         {
             _fields = fields;
         }
