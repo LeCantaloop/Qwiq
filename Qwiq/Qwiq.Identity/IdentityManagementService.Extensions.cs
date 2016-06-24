@@ -33,33 +33,81 @@ namespace Microsoft.IE.Qwiq.Identity
         public static ITeamFoundationIdentity GetIdentityForAlias(this IIdentityManagementService ims, string alias,
             string tenantId, params string[] domains)
         {
-            if (ims == null) throw new ArgumentNullException("ims");
-            if (string.IsNullOrWhiteSpace(alias)) throw new ArgumentNullException("alias");
-            if (string.IsNullOrWhiteSpace(tenantId)) throw new ArgumentNullException("tenantId");
-            if (domains == null) throw new ArgumentNullException("domains");
-            if (!domains.Any()) throw new ArgumentException("domains");
+            return GetIdentityForAliases(ims, new[] {alias}, tenantId, domains)[alias];
+        }
 
-            var numEndings = domains.Length;
-            var possibleDescriptors = new List<IIdentityDescriptor>(numEndings * 2);
-            for (var i = 0; i < numEndings; ++i)
+        public static IDictionary<string, ITeamFoundationIdentity> GetIdentityForAliases(
+            this IIdentityManagementService ims, ICollection<string> aliases, string tenantId, params string[] domains)
+        {
+            if (ims == null) throw new ArgumentNullException(nameof(ims));
+            if (string.IsNullOrWhiteSpace(tenantId)) throw new ArgumentNullException(nameof(tenantId));
+            if (domains == null) throw new ArgumentNullException(nameof(domains));
+            if (aliases == null) throw new ArgumentNullException(nameof(aliases));
+            if (!domains.Any()) throw new ArgumentException(nameof(domains));
+            if (!aliases.Any()) throw new ArgumentException(nameof(aliases));
+
+            var descriptorsToAliasLookup = CreatePossibleIdentityDescriptors(ims, aliases, domains, tenantId);
+            var identities = GetIdentitiesForAliases(ims, descriptorsToAliasLookup);
+
+            var aliasesWithMissingIdentities = aliases.Except(identities.Keys);
+            var searchedIdentities = SearchForIdentitiesForAliases(ims, aliasesWithMissingIdentities);
+
+            return identities.Union(searchedIdentities).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        }
+
+        private static IEnumerable<KeyValuePair<string, ITeamFoundationIdentity>> SearchForIdentitiesForAliases(IIdentityManagementService ims, IEnumerable<string> aliases)
+        {
+            var missingIdentitiesList = ims.ReadIdentities(IdentitySearchFactor.AccountName, aliases.ToList());
+            return missingIdentitiesList.Select(mil => new KeyValuePair<string, ITeamFoundationIdentity>(mil.Key, mil.Value.FirstOrDefault()));
+        }
+
+        private static IDictionary<string, ITeamFoundationIdentity> GetIdentitiesForAliases(IIdentityManagementService ims, IDictionary<string, ICollection<IIdentityDescriptor>> aliasDescriptors)
+        {
+            var descriptors = aliasDescriptors.SelectMany(ad => ad.Value).ToList();
+            var descriptorToAliasLookup =
+                aliasDescriptors
+                    .SelectMany(
+                        ad =>
+                            ad.Value.Select(d => new KeyValuePair<string, string>(BuildDescriptorLookupKey(d), ad.Key)))
+                    .ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
+            var validIdentities = new Dictionary<string, ITeamFoundationIdentity>(StringComparer.OrdinalIgnoreCase);
+            var lookupResults = ims.ReadIdentities(descriptors);
+            foreach (var identity in lookupResults.Where(id => id != null))
             {
-                var loggedInAccountString = string.Format("{0}\\{1}@{2}", tenantId, alias, domains[i]);
-
-                possibleDescriptors.Add(ims.CreateIdentityDescriptor(TfsLoggedInIdentityType, loggedInAccountString));
-                possibleDescriptors.Add(ims.CreateIdentityDescriptor(TfsBindPendingIdentityType,
-                    "upn:" + loggedInAccountString));
+                var lookupKey = BuildDescriptorLookupKey(identity.Descriptor);
+                var alias = descriptorToAliasLookup[lookupKey];
+                if (!validIdentities.ContainsKey(alias))
+                {
+                    validIdentities.Add(alias, identity);
+                }
             }
-            var identities = ims.ReadIdentities(possibleDescriptors);
-            var identity = identities.FirstOrDefault(id => id != null);
 
-            if (identity == null)
+            return validIdentities;
+        }
+
+        private static IDictionary<string, ICollection<IIdentityDescriptor>> CreatePossibleIdentityDescriptors(IIdentityManagementService ims, ICollection<string> aliases, ICollection<string> domains, string tenantId)
+        {
+            var descriptors = new Dictionary<string, ICollection<IIdentityDescriptor>>();
+            foreach (var alias in aliases)
             {
-                // Perhaps this is an on-prem instance.  If that's the case, then this should work:
-                var identitiesList = ims.ReadIdentities(IdentitySearchFactor.AccountName, new[] { alias }).ToArray();
-                identity = identitiesList[0].Value.FirstOrDefault();
+                var descriptorsForAlias = new List<IIdentityDescriptor>();
+                foreach (var domain in domains)
+                {
+                    var loggedInAccountString = $"{tenantId}\\{alias}@{domain}";
+
+                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(TfsLoggedInIdentityType, loggedInAccountString));
+                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(TfsBindPendingIdentityType,
+                        "upn:" + loggedInAccountString));
+                }
+
+                descriptors.Add(alias, descriptorsForAlias);
             }
 
-            return identity;
+            return descriptors;
+        }
+        private static string BuildDescriptorLookupKey(IIdentityDescriptor descriptor)
+        {
+            return $"{descriptor.IdentityType}-{descriptor.Identifier}}}";
         }
     }
 }
