@@ -39,9 +39,9 @@ namespace Microsoft.IE.Qwiq.Linq
             var query = translator.Query;
 
             query.UnderlyingQueryType = query.UnderlyingQueryType ?? TypeSystem.GetElementType(expression.Type);
-            query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType));
+            query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
 
-            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType);
+            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
             if (workItemTypeRestriction.Any())
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
