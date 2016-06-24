@@ -249,6 +249,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IdentityManagementService.ExtensionsTests.cs" />
     <Compile Include="IdentityMapperTests.cs" />
     <Compile Include="Mocks\IdentityMockType.cs" />
     <Compile Include="BulkIdentityAwareAttributeMapperStrategyTests.cs" />

@@ -16,10 +16,10 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
             _domains = domains;
         }
 
-        private string GetDisplayName(string alias)
+        private string[] GetDisplayNames(params string[] aliases)
         {
-            var identity = _identityManagementService.GetIdentityForAlias(alias, _tenantId, _domains);
-            return identity?.DisplayName ?? alias;
+            var identities = _identityManagementService.GetIdentityForAliases(aliases.ToList(), _tenantId, _domains);
+            return identities.Select(i => i.Value?.DisplayName ?? i.Key).ToArray();
         }
 
         public object Map(object value)
@@ -27,13 +27,13 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
             var stringValue = value as string;
             if (stringValue != null)
             {
-                return GetDisplayName(stringValue);
+                return GetDisplayNames(stringValue).Single();
             }
 
             var stringArray = value as IEnumerable<string>;
             if (stringArray != null)
             {
-                return stringArray.Select(GetDisplayName);
+                return GetDisplayNames(stringArray.ToArray());
             }
 
             return value;

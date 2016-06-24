@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Mocks
 {
-    public class MockTeamFoundationIdentity : ITeamFoundationIdentity
+    public class MockTeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
         public MockTeamFoundationIdentity(string displayName, string uniqueName)
         {
@@ -49,6 +49,16 @@ namespace Microsoft.IE.Qwiq.Mocks
 
                 return hash;
             }
+        }
+
+        public bool Equals(ITeamFoundationIdentity other)
+        {
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return UniqueUserId == other?.UniqueUserId;
         }
     }
 }
