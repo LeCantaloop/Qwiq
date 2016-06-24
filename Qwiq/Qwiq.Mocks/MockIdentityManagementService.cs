@@ -12,6 +12,32 @@ namespace Microsoft.IE.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
+        public static readonly ITeamFoundationIdentity Danj = new MockTeamFoundationIdentity("Dan Jump", "danj")
+        {
+            TeamFoundationId = Guid.Parse("b7de08a6-8417-491b-be62-85945a538f46")
+        };
+        public static readonly ITeamFoundationIdentity Adamb = new MockTeamFoundationIdentity("Adam Barr", "adamb")
+        {
+            TeamFoundationId = Guid.Parse("7846c22f-d3d8-4e02-8b62-d055d0284783")
+        };
+        public static readonly ITeamFoundationIdentity Chrisj = new MockTeamFoundationIdentity("Chris Johnson", "chrisj")
+        {
+            TeamFoundationId = Guid.Parse("f92c1baa-0038-4247-be68-12043fcc34e3"),
+            IsActive = false
+        };
+        public static readonly ITeamFoundationIdentity Chrisjoh = new MockTeamFoundationIdentity("Chris Johnson (FINANCE)", "chrisjoh")
+        {
+            TeamFoundationId = Guid.Parse("41e97533-89f7-45d7-8246-eaa449b5651d")
+        };
+        public static readonly ITeamFoundationIdentity Chrisjohn = new MockTeamFoundationIdentity("Chris F. Johnson","chrisjohn")
+        {
+            TeamFoundationId = Guid.Parse("b3da460c-6191-4725-b08d-52bba48a574f")
+        };
+        public static readonly ITeamFoundationIdentity Chrisjohns = new MockTeamFoundationIdentity("Chris Johnson <chrisjohns@contoso.com>", "chrisjohns")
+        {
+            TeamFoundationId = Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47")
+        };
+
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;
 
@@ -21,12 +47,12 @@ namespace Microsoft.IE.Qwiq.Mocks
         public MockIdentityManagementService()
             : this(new[]
                        {
-                           new MockTeamFoundationIdentity("Dan Jump", "danj") {TeamFoundationId = Guid.Parse("b7de08a6-8417-491b-be62-85945a538f46")},
-                           new MockTeamFoundationIdentity("Adam Barr", "adamb") {TeamFoundationId = Guid.Parse("7846c22f-d3d8-4e02-8b62-d055d0284783")} ,
-                           new MockTeamFoundationIdentity("Chris Johnson", "chrisj") {TeamFoundationId = Guid.Parse("f92c1baa-0038-4247-be68-12043fcc34e3"), IsActive = false} ,
-                           new MockTeamFoundationIdentity("Chris Johnson (FINANCE)", "chrisjoh") {TeamFoundationId = Guid.Parse("41e97533-89f7-45d7-8246-eaa449b5651d")} ,
-                           new MockTeamFoundationIdentity("Chris F. Johnson", "chrisjohn") {TeamFoundationId = Guid.Parse("b3da460c-6191-4725-b08d-52bba48a574f")} ,
-                           new MockTeamFoundationIdentity("Chris Johnson <chrisjohns@contoso.com>", "chrisjohns") {TeamFoundationId = Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47")}
+                           Danj,
+                           Adamb,
+                           Chrisj,
+                           Chrisjoh,
+                           Chrisjohn,
+                           Chrisjohns,
                         })
         {
         }
