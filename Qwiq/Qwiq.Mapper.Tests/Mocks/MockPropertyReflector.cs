@@ -33,7 +33,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
             return Enumerable.Empty<Attribute>();
         }
 
-        public object GetAttribute(Type type, PropertyInfo property)
+        public Attribute GetAttribute(Type type, PropertyInfo property)
         {
             GetAttributeCallCount += 1;
             return null;

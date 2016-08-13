@@ -247,13 +247,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CachingPropertyReflectorTests.cs" />
     <Compile Include="Mocks\MockModelWithNoBacking.cs" />
     <Compile Include="Mocks\MockModelWithNoType.cs" />
     <Compile Include="Mocks\MockModel.cs" />
     <Compile Include="Mocks\MockModelSubclass.cs" />
     <Compile Include="Mocks\MockModelWithLinks.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />
+    <Compile Include="PerformanceTests.cs" />
     <Compile Include="WorkItemMapperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeParserTests.cs" />
