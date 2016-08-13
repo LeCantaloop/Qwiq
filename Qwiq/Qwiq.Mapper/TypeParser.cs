@@ -10,6 +10,11 @@ namespace Microsoft.IE.Qwiq.Mapper
     {
         public object Parse(Type destinationType, object value, object defaultValue)
         {
+            return ParseImpl(destinationType, value, new Lazy<object>(() => defaultValue));
+        }
+
+        private static object ParseImpl(Type destinationType, object value, Lazy<object> defaultValueFactory)
+        {
             if (destinationType == typeof(object))
             {
                 return value;
@@ -17,7 +22,7 @@ namespace Microsoft.IE.Qwiq.Mapper
 
             if (ValueRepresentsNull(value))
             {
-                return defaultValue;
+                return defaultValueFactory.Value;
             }
 
             if (destinationType.IsInstanceOfType(value))
@@ -32,12 +37,12 @@ namespace Microsoft.IE.Qwiq.Mapper
                 return result;
             }
 
-            if (IsGenericNullable(destinationType) && defaultValue == null)
+            if (IsGenericNullable(destinationType) && defaultValueFactory.Value == null)
             {
                 return null;
             }
 
-            if (TryConvert(destinationType, defaultValue, out result))
+            if (TryConvert(destinationType, defaultValueFactory.Value, out result))
             {
                 return result;
             }
@@ -47,7 +52,7 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         public object Parse(Type destinationType, object input)
         {
-            return Parse(destinationType, input, GetDefaultValueOfType(destinationType));
+            return ParseImpl(destinationType, input, new Lazy<object>(()=> GetDefaultValueOfType(destinationType)));
         }
 
         public T Parse<T>(object value)
@@ -59,6 +64,8 @@ namespace Microsoft.IE.Qwiq.Mapper
         {
             return (T)Parse(typeof(T), value, defaultValue);
         }
+
+
 
         private static object GetDefaultValueOfType(Type type)
         {
