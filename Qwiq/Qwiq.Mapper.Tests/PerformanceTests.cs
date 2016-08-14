@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.IE.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -30,98 +31,19 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                                         { new AttributeMapperStrategy(propertyInspector, typeParser) };
             WorkItemMapper = new WorkItemMapper(mappingStrategies);
 
-            //
-            Func<Type, object> getRandomValue = (propertyType) =>
-                {
-                    const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
-                    var randomizer = Randomizer.Instance;
+            Items = GenerateWorkItems(() => new MockWorkItem("Baz"));
+        }
 
-                    object value;
-                    switch (propertyType.ToString())
-                    {
-                        case "System.Boolean":
-                            value = Randomizer.ShouldEnter();
-                            break;
-                        case "System.Byte":
-                            var @byte = new byte[1];
-                            randomizer.NextBytes(@byte);
-                            value = @byte[0];
-                            break;
-                        case "System.Double":
-                            value = randomizer.NextDouble();
-                            break;
-                        case "System.Int32":
-                            value = randomizer.Next();
-                            break;
-                        case "System.Int64":
-                            value = (long)randomizer.Next();
-                            break;
-                        case "System.SByte":
-                            var @sbyte = new byte[1];
-                            randomizer.NextBytes(@sbyte);
-                            value = (sbyte)@sbyte[0];
-                            break;
-                        case "System.Int16":
-                            value = (short)randomizer.Next(1 << 16);
-                            break;
-                        case "System.Single":
-                            var singleBytes = new byte[8];
-                            randomizer.NextBytes(singleBytes);
-                            value = BitConverter.ToSingle(singleBytes, 0);
-                            break;
-                        case "System.UInt16":
-                            var shortBytes = new byte[2];
-                            randomizer.NextBytes(shortBytes);
-                            value = BitConverter.ToUInt16(shortBytes, 0);
-                            break;
-                        case "System.UInt32":
-                            var bytes = new byte[4];
-                            randomizer.NextBytes(bytes);
-                            value = BitConverter.ToUInt32(bytes, 0);
-                            break;
-                        case "System.UInt64":
-                            var longBytes = new byte[8];
-                            randomizer.NextBytes(longBytes);
-                            value = BitConverter.ToUInt64(longBytes, 0);
-                            break;
-                        case "System.String":
-                            value =
-                                new string(
-                                    Enumerable.Repeat(Chars, randomizer.Next(5, 250))
-                                              .Select(s => s[randomizer.Next(s.Length)])
-                                              .ToArray());
-                            break;
-                        case "System.DateTime":
-                            var range = DateTime.MaxValue - DateTime.MinValue;
-                            var randTimeSpan = new TimeSpan((long)(randomizer.NextDouble() * range.Ticks));
-                            value = DateTime.MinValue + randTimeSpan;
-                            break;
-                        case "System.Guid":
-                            value = Guid.NewGuid();
-                            break;
-                        case "System.TimeSpan":
-                            value = new TimeSpan(randomizer.Next());
-                            break;
-
-                        default:
-                            value = new object();
-                            break;
-                    }
-                    return value;
-
-                };
-
+        protected static IEnumerable<IWorkItem> GenerateWorkItems<T>(Func<T> create) where T : IWorkItem
+        {
             // Create 500 objects to map
             var items = new List<IWorkItem>(500);
-            for (int i = 0; i < 500; i++)
+            for (var i = 0; i < 500; i++)
             {
-                var instance = new MockWorkItem("Baz");
-                foreach (
-                    var property in
-                        typeof(MockWorkItem).GetProperties(
-                            BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
+                var instance = create();
+                foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
                 {
-                    var value = getRandomValue(property.PropertyType);
+                    var value = GetRandomValue(property.PropertyType);
                     try
                     {
                         property.SetValue(instance, value);
@@ -140,8 +62,68 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
                 items.Add(instance);
             }
+            return items;
+        }
 
-            Items = items;
+        private static object GetRandomValue(Type propertyType)
+        {
+            const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
+            var randomizer = Randomizer.Instance;
+
+            object value;
+            switch (propertyType.ToString())
+            {
+                case "System.Boolean":
+                    value = Randomizer.ShouldEnter();
+                    break;
+                case "System.Int32":
+                    value = randomizer.Next();
+                    break;
+                case "System.String":
+                    value = new string(Enumerable.Repeat(Chars, randomizer.Next(5, 250)).Select(s => s[randomizer.Next(s.Length)]).ToArray());
+                    break;
+                case "System.DateTime":
+                    var range = DateTime.MaxValue - DateTime.MinValue;
+                    var randTimeSpan = new TimeSpan((long)(randomizer.NextDouble() * range.Ticks));
+                    value = DateTime.MinValue + randTimeSpan;
+                    break;
+                case "System.Collections.Generic.ICollection`1[Microsoft.IE.Qwiq.ILink]":
+                    var retval = new List<ILink>();
+
+                    for (var i = 0; i < randomizer.Next(0, 10); i++)
+                    {
+                        retval.Add(
+                            new MockWorkItemLink()
+                                {
+                                    LinkTypeEnd =
+                                        new MockWorkItemLinkTypeEnd(
+                                        MockModel.ReverseLinkName,
+                                        "Giver"),
+                                    RelatedWorkItemId = randomizer.Next()
+                                });
+                    }
+
+                    for (var i = 0; i < randomizer.Next(0, 10); i++)
+                    {
+                        retval.Add(
+                            new MockWorkItemLink()
+                            {
+                                LinkTypeEnd =
+                                        new MockWorkItemLinkTypeEnd(
+                                        MockModel.ForwardLinkName,
+                                        "Taker"),
+                                RelatedWorkItemId = randomizer.Next()
+                            });
+                    }
+
+                    value = retval;
+
+                    break;
+                default:
+                    value = new object();
+                    break;
+            }
+            return value;
         }
 
         public override void When()
@@ -169,47 +151,9 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             Console.WriteLine("N = {0}, Mean = {1:F2}ms, SD = {2:F2}ms", results.Length, mean, sd);
             for (int i = 0; i < results.Length; i++)
             {
-                Console.WriteLine("{0}  : {1:F2}", i+1, results[i]);
+                Console.WriteLine("{0}  : {1:F2}", i + 1, results[i]);
             }
 
-        }
-
-
-        protected IEnumerable<IWorkItem> Items { get; set; }
-
-        protected WorkItemMapper WorkItemMapper { get; set; }
-
-        private class Randomizer : Random
-        {
-            private static Randomizer random;
-
-            public static Randomizer Instance => random ?? (random = new Randomizer());
-
-            public static bool ShouldEnter()
-            {
-                return Instance.NextDouble() < 0.5;
-            }
-
-
-            public static int NextInt32()
-            {
-                unchecked
-                {
-                    var firstBits = Instance.Next(0, 1 << 4) << 28;
-                    var lastBits = Instance.Next(0, 1 << 28);
-                    return firstBits | lastBits;
-                }
-            }
-
-            /// <summary>
-            /// Taken from http://stackoverflow.com/questions/609501/generating-a-random-decimal-in-c-sharp Jon Skeet's answer
-            /// </summary>
-            public static decimal NextDecimal()
-            {
-                var scale = (byte)Instance.Next(29);
-                var sign = Instance.Next(2) == 1;
-                return new decimal(NextInt32(), NextInt32(), NextInt32(), sign, scale);
-            }
         }
 
         [WorkItemType("Baz")]
@@ -256,6 +200,26 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             private string _release;
 
             private string _releaseType;
+
+            public const string ReverseLinkName = "NS.SampleLink-Reverse";
+            public const string ForwardLinkName = "NS.SampleLink-Forward";
+
+            private IEnumerable<MockModel> _givers;
+            private IEnumerable<MockModel> _takers;
+
+            [WorkItemLink(typeof(MockModel), ReverseLinkName)]
+            public IEnumerable<MockModel> Givers
+            {
+                get { return (_givers ?? Enumerable.Empty<MockModel>()); }
+                internal set { _givers = value; }
+            }
+
+            [WorkItemLink(typeof(MockModel), ForwardLinkName)]
+            public IEnumerable<MockModel> Takers
+            {
+                get { return (_takers ?? Enumerable.Empty<MockModel>()); }
+                internal set { _takers = value; }
+            }
 
             [JsonIgnore]
             public int Id
@@ -646,8 +610,68 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             }
         }
 
+        protected IEnumerable<IWorkItem> Items { get; set; }
+
+        protected WorkItemMapper WorkItemMapper { get; set; }
+
+        private class Randomizer : Random
+        {
+            private static Randomizer random;
+
+            public static Randomizer Instance => random ?? (random = new Randomizer());
+
+            public static bool ShouldEnter()
+            {
+                return Instance.NextDouble() < 0.5;
+            }
+
+
+            public static int NextInt32()
+            {
+                unchecked
+                {
+                    var firstBits = Instance.Next(0, 1 << 4) << 28;
+                    var lastBits = Instance.Next(0, 1 << 28);
+                    return firstBits | lastBits;
+                }
+            }
+
+            /// <summary>
+            /// Taken from http://stackoverflow.com/questions/609501/generating-a-random-decimal-in-c-sharp Jon Skeet's answer
+            /// </summary>
+            public static decimal NextDecimal()
+            {
+                var scale = (byte)Instance.Next(29);
+                var sign = Instance.Next(2) == 1;
+                return new decimal(NextInt32(), NextInt32(), NextInt32(), sign, scale);
+            }
+        }
+
         [TestMethod]
         public void Execute_Performance()
+        {
+            // Intentionally left blank
+        }
+    }
+
+    [TestClass]
+    public class LinksPerformanceContext : PerformanceContext
+    {
+        protected IWorkItemStore WorkItemStore { get; set; }
+
+        public override void Given()
+        {
+            Items = GenerateWorkItems(() => new MockWorkItem("Baz")); ;
+            WorkItemStore = new MockWorkItemStore(Items);
+
+            var propertyInspector = new PropertyInspector(new PropertyReflector());
+            var mappingStrategies = new IWorkItemMapperStrategy[]
+                                        { new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)  };
+            WorkItemMapper = new WorkItemMapper(mappingStrategies);
+        }
+
+        [TestMethod]
+        public void Execute_Links_Performance()
         {
             // Intentionally left blank
         }
