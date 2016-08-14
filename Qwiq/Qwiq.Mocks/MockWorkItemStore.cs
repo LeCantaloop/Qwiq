@@ -12,6 +12,8 @@ namespace Microsoft.IE.Qwiq.Mocks
 
         private readonly IList<IWorkItem> _workItems;
 
+        private readonly IDictionary<int, IWorkItem> _lookup;
+
         public MockWorkItemStore()
             : this(new MockTfsTeamProjectCollection(), new MockProject())
         {
@@ -29,12 +31,15 @@ namespace Microsoft.IE.Qwiq.Mocks
                 var wi = new MockWorkItem { Id = _workItems.Count + 1, Type = wit };
                 _workItems.Add(wi);
             }
+
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems)
             : this()
         {
             _workItems = new List<IWorkItem>(workItems);
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links )
@@ -47,6 +52,7 @@ namespace Microsoft.IE.Qwiq.Mocks
             : this(teamProjectCollection, new MockProject())
         {
             _workItems = new List<IWorkItem>(workItems);
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public IEnumerable<IProject> Projects { get; set; }
@@ -72,12 +78,12 @@ namespace Microsoft.IE.Qwiq.Mocks
         {
             if (_workItems == null) throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
 
-            return _workItems
-                        .Join(
-                                ids,
-                                workItem => workItem.Id,
-                                id => id,
-                                (workItem, id) => workItem);
+            var h = new HashSet<int>(ids);
+
+            return _lookup
+                    .Where(p => h.Contains(p.Key))
+                    .Select(p => p.Value)
+                    .ToList();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
