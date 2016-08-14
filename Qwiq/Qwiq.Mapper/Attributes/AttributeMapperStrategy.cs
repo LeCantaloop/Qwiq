@@ -1,10 +1,9 @@
-﻿using System;
+﻿using FastMember;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using FastMember;
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
