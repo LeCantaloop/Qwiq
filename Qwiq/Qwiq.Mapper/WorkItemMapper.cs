@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ namespace Microsoft.IE.Qwiq.Mapper
     {
         private readonly IEnumerable<IWorkItemMapperStrategy> _mapperStrategies;
         private delegate object ObjectActivator();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator> OptimizedCtorExpression = new ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator>();
 
         public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
@@ -43,12 +45,8 @@ namespace Microsoft.IE.Qwiq.Mapper
             // Activator.CreateInstance is SLOW
             //  About 0.2 ms per 1,000
             // Compiled expression is 0.04 ms per 1,000
+            var compiled = OptimizedCtorExpressionCache(type);
 
-            // Find default ctor for target type
-            var ctor = type.GetConstructors().First();
-            var newExp = Expression.New(ctor);
-            var lambda = Expression.Lambda(typeof(ObjectActivator), newExp);
-            var compiled = (ObjectActivator)lambda.Compile();
 
             var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, compiled.Invoke())).ToList();
 
@@ -58,6 +56,21 @@ namespace Microsoft.IE.Qwiq.Mapper
             }
 
             return workItemsToMap.Select(wi => wi.Value);
+        }
+
+        private static ObjectActivator OptimizedCtorExpressionCache(Type type)
+        {
+            return OptimizedCtorExpression.GetOrAdd(
+                type.TypeHandle,
+                handle =>
+                    {
+                        // Find default ctor for target type
+                        var ctor = type.GetConstructors().First();
+                        var newExp = Expression.New(ctor);
+                        var lambda = Expression.Lambda(typeof(ObjectActivator), newExp);
+                        var compiled = (ObjectActivator)lambda.Compile();
+                        return compiled;
+                    });
         }
     }
 }
