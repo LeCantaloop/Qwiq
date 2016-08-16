@@ -191,14 +191,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         [WorkItemType("Baz")]
         public class MockModel
         {
-            private DateTime _openedDate;
-
-            private DateTime _changedDate;
-
-            private DateTime _revisedDate;
-
-            private DateTime? _closedDate;
-
             private string _milestone;
 
             private string _title;
@@ -360,24 +352,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             /// The DateTime when this issue was opened in the local timezone.
             /// </summary>
             [FieldDefinition("Created Date")]
-            public virtual DateTime OpenedDate
-            {
-                get
-                {
-                    return _openedDate;
-                }
-                set
-                {
-                    if (value.Kind == DateTimeKind.Unspecified)
-                    {
-                        _openedDate = TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.Local);
-                    }
-                    else
-                    {
-                        _openedDate = value;
-                    }
-                }
-            }
+            public virtual DateTime OpenedDate { get; set; }
 
             /// <summary>
             /// The user that opened this issue.
@@ -418,72 +393,13 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             /// If the revision is the lastest revision, the revised date is 9999/01/01 to avoid NULL values.
             /// </summary>
             [FieldDefinition("Changed Date")]
-            public virtual DateTime ChangedDate
-            {
-                get
-                {
-                    return _changedDate;
-                }
-                set
-                {
-                    if (value.Kind == DateTimeKind.Unspecified)
-                    {
-                        _changedDate = TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.Local);
-                    }
-                    else
-                    {
-                        _changedDate = value;
-                    }
-                }
-            }
+            public virtual DateTime ChangedDate { get; set; }
 
             /// <summary>
             /// The DateTime when this issue was last modified.
             /// </summary>
             [FieldDefinition("Revised Date")]
-            public virtual DateTime RevisedDate
-            {
-                get
-                {
-                    return _revisedDate;
-                }
-                set
-                {
-                    if (value.Kind == DateTimeKind.Unspecified)
-                    {
-                        _revisedDate = TimeZoneInfo.ConvertTimeFromUtc(value, TimeZoneInfo.Local);
-                    }
-                    else
-                    {
-                        _revisedDate = value;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// The database from which this issue comes.
-            /// </summary>
-            public virtual string Database
-            {
-                get
-                {
-                    if (_database == null)
-                    {
-                        _database = Regex.Replace(TreePath, @"\\.*", ""); // Remove everything after the first slash '\'
-
-                        if (_database == "windows blue bugs")
-                        {
-                            _database = "Windows Blue Bugs";
-                        }
-                        else if (_database == "windows blue features")
-                        {
-                            _database = "Windows Blue Features";
-                        }
-                    }
-
-                    return _database;
-                }
-            }
+            public virtual DateTime RevisedDate { get; set; }
 
             /// <summary>
             /// The 'tree path' or 'area path' of the issue (e.g. \IE-Internet Explorer\COMP-Composition and Rendering\).
@@ -540,28 +456,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             /// The DateTime when this issue was closed in the local timezone. Null if the issue is still open.
             /// </summary>
             [FieldDefinition("Closed Date")]
-            public virtual DateTime? ClosedDate
-            {
-                get
-                {
-                    return _closedDate;
-                }
-
-                set
-                {
-                    if (value.HasValue)
-                    {
-                        if (value.Value.Kind == DateTimeKind.Unspecified)
-                        {
-                            _closedDate = TimeZoneInfo.ConvertTimeFromUtc(value.Value, TimeZoneInfo.Local);
-                        }
-                        else
-                        {
-                            _closedDate = value.Value;
-                        }
-                    }
-                }
-            }
+            public virtual DateTime? ClosedDate { get; set; }
 
             [FieldDefinition("Product Family")]
             public virtual string ProductFamily
