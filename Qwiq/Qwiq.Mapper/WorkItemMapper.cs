@@ -2,16 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Microsoft.IE.Qwiq.Mapper
 {
     public class WorkItemMapper : IWorkItemMapper
     {
         private readonly IEnumerable<IWorkItemMapperStrategy> _mapperStrategies;
+        private delegate object ObjectActivator();
 
         public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
-            _mapperStrategies = mapperStrategies;
+            _mapperStrategies = mapperStrategies.ToList();
         }
 
         public T Default<T>() where T : new()
@@ -21,7 +23,14 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : new()
         {
-            return ParseWorkItems(typeof(T), collection).Cast<T>();
+            var type = typeof(T);
+            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, new T())).ToList();
+            foreach (var strategy in _mapperStrategies)
+            {
+                strategy.Map(type, workItemsToMap, this);
+            }
+
+            return workItemsToMap.Select(wi => (T)wi.Value);
         }
 
         public IEnumerable Create(Type type, IEnumerable<IWorkItem> collection)
@@ -31,7 +40,17 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         private IEnumerable ParseWorkItems(Type type, IEnumerable<IWorkItem> collection)
         {
-            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, Activator.CreateInstance(type))).ToList();
+            // Activator.CreateInstance is SLOW
+            //  About 0.2 ms per 1,000
+            // Compiled expression is 0.04 ms per 1,000
+
+            // Find default ctor for target type
+            var ctor = type.GetConstructors().First();
+            var newExp = Expression.New(ctor);
+            var lambda = Expression.Lambda(typeof(ObjectActivator), newExp);
+            var compiled = (ObjectActivator)lambda.Compile();
+
+            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, compiled.Invoke())).ToList();
 
             foreach (var strategy in _mapperStrategies)
             {
