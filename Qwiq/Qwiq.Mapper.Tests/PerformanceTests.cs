@@ -23,6 +23,8 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
     [TestClass]
     public class PerformanceContext : ContextSpecification
     {
+        private readonly HashSet<string> _propertiesToSkip = new HashSet<string>(new[] { "Revisions", "Item" }, StringComparer.OrdinalIgnoreCase);
+
         public override void Given()
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
@@ -34,45 +36,57 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             Items = GenerateWorkItems(() => new MockWorkItem("Baz"));
         }
 
-        protected static IEnumerable<IWorkItem> GenerateWorkItems<T>(Func<T> create) where T : IWorkItem
+        protected IEnumerable<IWorkItem> GenerateWorkItems<T>(Func<T> create) where T : IWorkItem
         {
             // Create 500 objects to map
             var items = new List<IWorkItem>(500);
-            var propertiesToSkip = new HashSet<string>(new[] {"Revisions", "Item"}, StringComparer.OrdinalIgnoreCase);
-
 
             for (var i = 0; i < 500; i++)
             {
                 var instance = create();
-                foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
+                PopulatePropertiesOnInstance(instance);
+                items.Add(instance);
+
+                foreach (var link in instance.Links.OfType<IRelatedLink>())
                 {
-                    // If we can't set the property, don't bother
-                    if (property.GetSetMethod() == null) continue;
-
-                    // If we should skip the source property
-                    if (propertiesToSkip.Contains(property.Name)) continue;
-
-
-                    var value = GetRandomValue(property.PropertyType);
-                    try
-                    {
-                        property.SetValue(instance, value);
-                    }
-                    catch (TargetParameterCountException)
-                    {
-                        // Best effort
-                        // May fail with index properties
-                    }
-                    catch (ArgumentException)
-                    {
-                        // Best effort
-                        // May fail because the setter is not available
-                    }
+                    instance = create();
+                    PopulatePropertiesOnInstance(instance);
+                    instance["Id"] = link.RelatedWorkItemId;
+                    items.Add(instance);
                 }
 
-                items.Add(instance);
+
             }
             return items;
+        }
+
+        protected void PopulatePropertiesOnInstance<T>(T instance) where T : IWorkItem
+        {
+            foreach (
+                var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
+            {
+                // If we can't set the property, don't bother
+                if (property.GetSetMethod() == null) continue;
+
+                // If we should skip the source property
+                if (_propertiesToSkip.Contains(property.Name)) continue;
+
+                var value = GetRandomValue(property.PropertyType);
+                try
+                {
+                    property.SetValue(instance, value);
+                }
+                catch (TargetParameterCountException)
+                {
+                    // Best effort
+                    // May fail with index properties
+                }
+                catch (ArgumentException)
+                {
+                    // Best effort
+                    // May fail because the setter is not available
+                }
+            }
         }
 
         private static object GetRandomValue(Type propertyType)
@@ -679,19 +693,13 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
         public override void Given()
         {
-            Items = GenerateWorkItems(() => new MockWorkItem("Baz")); ;
+            Items = GenerateWorkItems(() => new MockWorkItem("Baz"));
             WorkItemStore = new MockWorkItemStore(Items);
 
             var propertyInspector = new PropertyInspector(new PropertyReflector());
             var mappingStrategies = new IWorkItemMapperStrategy[]
                                         { new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)  };
             WorkItemMapper = new WorkItemMapper(mappingStrategies);
-        }
-
-        [TestMethod]
-        public void Execute_Links_Performance()
-        {
-            // Intentionally left blank
         }
     }
 }
