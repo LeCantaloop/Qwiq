@@ -38,11 +38,21 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         {
             // Create 500 objects to map
             var items = new List<IWorkItem>(500);
+            var propertiesToSkip = new HashSet<string>(new[] {"Revisions", "Item"}, StringComparer.OrdinalIgnoreCase);
+
+
             for (var i = 0; i < 500; i++)
             {
                 var instance = create();
                 foreach (var property in typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
                 {
+                    // If we can't set the property, don't bother
+                    if (property.GetSetMethod() == null) continue;
+
+                    // If we should skip the source property
+                    if (propertiesToSkip.Contains(property.Name)) continue;
+
+
                     var value = GetRandomValue(property.PropertyType);
                     try
                     {
@@ -73,9 +83,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             object value;
             switch (propertyType.ToString())
             {
-                case "System.Boolean":
-                    value = Randomizer.ShouldEnter();
-                    break;
                 case "System.Int32":
                     value = randomizer.Next();
                     break;
@@ -119,7 +126,18 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                     value = retval;
 
                     break;
+                case "System.Uri":
+                    var c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/";
+                    value = new Uri("http://tempuri.org/" + new string(Enumerable.Repeat(c, randomizer.Next(5, 250)).Select(s => s[randomizer.Next(s.Length)]).ToArray()));
+                    break;
+                case "Microsoft.IE.Qwiq.IWorkItemType":
+                    value = new MockWorkItemType("Baz");
+                    break;
+                case "System.Object":
+                    value = new object();
+                    break;
                 default:
+                    Trace.TraceInformation(propertyType.ToString());
                     value = new object();
                     break;
             }
