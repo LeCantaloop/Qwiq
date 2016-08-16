@@ -11,9 +11,8 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
     {
         private readonly IPropertyInspector _inspector;
         private readonly ITypeParser _typeParser;
-
         private static readonly ConcurrentDictionary<PropertyInfo, string> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, string>();
-        private static readonly ConcurrentDictionary<string, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<string, List<PropertyInfo>>();
+        private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
 
         public AttributeMapperStrategy(IPropertyInspector inspector, ITypeParser typeParser)
         {
@@ -23,41 +22,37 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
         private static string PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
         {
-            string field;
-            if (PropertyInfoFields.TryGetValue(property, out field))
-            {
-                return field;
-            }
-
-            var a = inspector.GetAttribute<FieldDefinitionAttribute>(property);
-            if (a != null)
-            {
-                field = a.GetFieldName();
-                PropertyInfoFields[property] = field;
-            }
-
-            return field;
+            return PropertyInfoFields.GetOrAdd(
+                property,
+                info =>
+                    {
+                        var a = inspector.GetAttribute<FieldDefinitionAttribute>(property);
+                        return a?.GetFieldName();
+                    });
         }
 
-        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType)
+        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
         {
+            // Composite key: work item type and target type
+
             var workItemType = workItem.Type.Name;
+            var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
 
-            List<PropertyInfo> pis;
-            if (PropertiesThatExistOnWorkItem.TryGetValue(workItemType, out pis))
-            {
-                return pis;
-            }
-
-            var exists = new List<PropertyInfo>(workItem.Fields.Count);
-            exists.AddRange(
-                inspector.GetAnnotatedProperties(targetType, typeof(FieldDefinitionAttribute))
-                         .Select(property => new { property, fieldName = PropertyInfoFieldCache(inspector, property) })
-                         .Where(@t => !string.IsNullOrEmpty(@t.fieldName) && workItem.Fields.Contains(@t.fieldName))
-                         .Select(@t => @t.property));
-
-            PropertiesThatExistOnWorkItem[workItemType] = exists;
-            return exists;
+            return PropertiesThatExistOnWorkItem.GetOrAdd(
+                key,
+                tuple =>
+                    {
+                        return
+                            inspector.GetAnnotatedProperties(targetType, typeof(FieldDefinitionAttribute))
+                                     .Select(
+                                         property =>
+                                         new { property, fieldName = PropertyInfoFieldCache(inspector, property) })
+                                     .Where(
+                                         @t =>
+                                         !string.IsNullOrEmpty(@t.fieldName) && workItem.Fields.Contains(@t.fieldName))
+                                     .Select(@t => @t.property)
+                                     .ToList();
+                    });
         }
 
         protected override void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
@@ -81,7 +76,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
         private void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, TypeAccessor accessor, object targetWorkItem)
         {
-            foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType))
+            foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType, typeof(FieldDefinitionAttribute)))
             {
                 var fieldName = PropertyInfoFieldCache(_inspector, property);
 
