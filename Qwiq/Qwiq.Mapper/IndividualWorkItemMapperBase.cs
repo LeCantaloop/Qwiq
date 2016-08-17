@@ -13,6 +13,22 @@ namespace Microsoft.IE.Qwiq.Mapper
             }
         }
 
+        public virtual void Map<T>(
+            Type targetWorkItemType,
+            IEnumerable<KeyValuePair<IWorkItem, T>> workItemMappings,
+            IWorkItemMapper workItemMapper) where T : new()
+        {
+            foreach (var workItemMapping in workItemMappings)
+            {
+                Map(targetWorkItemType, workItemMapping.Key, workItemMapping.Value, workItemMapper);
+            }
+        }
+
         protected abstract void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper);
+
+        protected virtual void Map<T>(Type targetWorkItemType, IWorkItem sourceWorkItem, T targetWorkItem, IWorkItemMapper workItemMapper)
+        {
+            Map(targetWorkItemType, sourceWorkItem, (object)targetWorkItem, workItemMapper);
+        }
     }
 }

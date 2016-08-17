@@ -45,44 +45,25 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
         protected override void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
         {
-            var linkProperties = _inspector.GetAnnotatedProperties(targetWorkItemType, typeof(WorkItemLinkAttribute));
-            foreach (var property in linkProperties)
-            {
-                var def = _inspector.GetAttribute<WorkItemLinkAttribute>(property);
-                if (def != null)
-                {
-                    var linkType = def.GetLinkName();
+            Map(
+                targetWorkItemType,
+                new[] { new KeyValuePair<IWorkItem, object>(sourceWorkItem, targetWorkItem) },
+                workItemMapper);
+        }
 
-                    var ids = sourceWorkItem.Links.OfType<IRelatedLink>()
-                            .Where(wil => wil.LinkTypeEnd.ImmutableName == linkType)
-                            .Select(wil => wil.RelatedWorkItemId).ToArray();
+        private class TreeNode
+        {
 
-                    if (ids.Any())
-                    {
-                        var propertyType = def.GetWorkItemType();
-                        var workItems = _store.Query(ids).ToList();
-                        IList results = (IList)typeof(List<>).MakeGenericType(propertyType).GetConstructor(new[] { typeof(int) }).Invoke(new object[] { workItems.Count });
-
-                        var createdItems = workItemMapper.Create(propertyType, workItems);
-                        foreach (var item in createdItems)
-                        {
-                            results.Add(item);
-                        }
-
-                        property.SetValue(targetWorkItem, results);
-                    }
-                }
-            }
         }
 
         public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
-            var lookup = new Dictionary<Tuple<int, string>, List<int>>();
-            var lookup2 = workItemMappings.ToDictionary(k => k.Key.Id, e => e);
+            var linksLookup = new Dictionary<Tuple<int, string>, List<int>>();
+            var idToMapTargetLookup = workItemMappings.ToDictionary(k => k.Key.Id, e => e);
 
             // Aggregate up all the items that need to be loaded from VSO
-            foreach (var workItemMapping in lookup2.Values)
+            foreach (var workItemMapping in idToMapTargetLookup.Values)
             {
                 var sourceWorkItem = workItemMapping.Key;
 
@@ -99,7 +80,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                     var def = PropertyInfoLinkTypeCache(_inspector, property);
                     if (def != null)
                     {
-                        var linkType = def.GetLinkName();
+                        var linkType = def.LinkName;
 
                         var ids = sourceWorkItem
                                     .Links
@@ -110,25 +91,32 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
                         if (!ids.Any()) continue;
                         var key = new Tuple<int, string>(sourceWorkItem.Id, linkType);
-                        lookup[key] = ids;
+                        linksLookup[key] = ids;
                     }
                 }
             }
 
             // If there were no items added to the lookup, don't bother querying VSO
-            if (!lookup.Any()) return;
+            if (!linksLookup.Any()) return;
 
             // Load all the items
             var workItems = _store
-                                .Query(lookup.SelectMany(p => p.Value).Distinct())
+                                .Query(linksLookup.SelectMany(p => p.Value).Distinct())
                                 .ToDictionary(k => k.Id, e => e);
 
+#if DEBUG
+            var instance = Guid.NewGuid().ToString("N");
+#endif
 
             // Enumerate through items requiring a VSO lookup and map the objects
-            foreach (var item in lookup)
+            foreach (var item in linksLookup)
             {
-                var sourceWorkItem = lookup2[item.Key.Item1].Key;
-                var targetWorkItem = lookup2[item.Key.Item1].Value;
+                var sourceWorkItem = idToMapTargetLookup[item.Key.Item1].Key;
+                var targetWorkItem = idToMapTargetLookup[item.Key.Item1].Value;
+
+#if DEBUG && TRACE
+                Trace.TraceInformation("{0} ({1}): Mapping {2}", GetType().Name, instance, sourceWorkItem.Id);
+#endif
 
                 foreach (var property in
                     PropertiesOnWorkItemCache(
@@ -140,12 +128,12 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                     var def = PropertyInfoLinkTypeCache(_inspector, property);
                     if (def != null)
                     {
-                        var propertyType = def.GetWorkItemType();
-                        var linkType = def.GetLinkName();
+                        var propertyType = def.WorkItemType;
+                        var linkType = def.LinkName;
                         var key = new Tuple<int, string>(sourceWorkItem.Id, linkType);
                         List<int> ids;
 
-                        if (!lookup.TryGetValue(key, out ids))
+                        if (!linksLookup.TryGetValue(key, out ids))
                         {
                             // Could not find any IDs for the given ID/LinkType
                             continue;
@@ -153,21 +141,21 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
                         var wi = ids
                             .Select(
-                                s =>
-                                    {
-                                        IWorkItem val;
-                                        workItems.TryGetValue(s, out val);
-                                        return val;
-                                    })
-                             .Where(p=> p != null)
-                             .ToList();
+                            s =>
+                                {
+                                    IWorkItem val;
+                                    workItems.TryGetValue(s, out val);
+                                    return val;
+                                })
+                                .Where(p => p != null)
+                                .ToList();
 
                         // ReSharper disable SuggestVarOrType_SimpleTypes
                         IList results = (IList)typeof(List<>)
-                        // ReSharper restore SuggestVarOrType_SimpleTypes
-                                         .MakeGenericType(propertyType)
-                                         .GetConstructor(new[] { typeof(int) })
-                                         .Invoke(new object[] { wi.Count });
+                                                   // ReSharper restore SuggestVarOrType_SimpleTypes
+                                                   .MakeGenericType(propertyType)
+                                                   .GetConstructor(new[] { typeof(int) })
+                                                   .Invoke(new object[] { wi.Count });
 
                         var createdItems = workItemMapper.Create(propertyType, wi);
                         foreach (var createdItem in createdItems)
