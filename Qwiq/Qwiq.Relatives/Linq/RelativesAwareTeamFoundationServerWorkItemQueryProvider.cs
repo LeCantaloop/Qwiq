@@ -195,7 +195,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
                         .Select(@t => new { @t, witAttribs = @t.type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true) })
                         .Where(@t => (@t.witAttribs.Any()))
                         .Select(@t => @t.@t.type.GetProperties().SelectMany(@p => @p.GetCustomAttributes(typeof(FieldDefinitionAttribute), true)).Cast<FieldDefinitionAttribute>())
-                        .Select(@a => @a.Select(attrib => "[" + attrib.GetFieldName() + "]"));
+                        .Select(@a => @a.Select(attrib => "[" + attrib.FieldName + "]"));
             }
 
             private static IEnumerable<Assembly> GetAssemblies()

@@ -72,10 +72,6 @@
       <HintPath>$(SolutionDir)packages\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.2.1.0.0\lib\net451\Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Core, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.6.0.0\lib\net451\Microsoft.IE.Qwiq.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>$(SolutionDir)packages\WindowsAzure.ServiceBus.3.1.4\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -356,6 +352,10 @@
     <None Include="_TraceEventProgrammersGuide.docx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
+      <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
+      <Name>Qwiq.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
       <Project>{016e8d93-4195-4639-bcd5-77633e8e1681}</Project>
       <Name>Qwiq.Mapper</Name>
