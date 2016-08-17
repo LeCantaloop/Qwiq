@@ -26,13 +26,13 @@ namespace Microsoft.IE.Qwiq.Mapper
         public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : new()
         {
             var type = typeof(T);
-            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, new T())).ToList();
+            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, T>(wi, new T())).ToList();
             foreach (var strategy in _mapperStrategies)
             {
                 strategy.Map(type, workItemsToMap, this);
             }
 
-            return workItemsToMap.Select(wi => (T)wi.Value);
+            return workItemsToMap.Select(wi => wi.Value);
         }
 
         public IEnumerable Create(Type type, IEnumerable<IWorkItem> collection)

@@ -34,17 +34,26 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             WorkItemMapper = new WorkItemMapper(mappingStrategies);
 
             Items = GenerateWorkItems(() => new MockWorkItem("Baz"));
+
+            Trace.TraceInformation("Items generated (including links): {0}", Items.Count());
         }
 
         protected IEnumerable<IWorkItem> GenerateWorkItems<T>(Func<T> create) where T : IWorkItem
         {
-            // Create 500 objects to map
-            var items = new List<IWorkItem>(500);
+            // Create objects to map
+            const int ItemCount = 500;
+            var items = new List<IWorkItem>(ItemCount);
 
-            for (var i = 0; i < 500; i++)
+            for (var i = 0; i < ItemCount; i++)
             {
                 var instance = create();
                 PopulatePropertiesOnInstance(instance);
+
+                if (Randomizer.ShouldEnter())
+                {
+                    instance["Custom String 01"] = Math.Abs(Randomizer.NextDecimal()).ToString("F2");
+                }
+
                 items.Add(instance);
 
                 foreach (var link in instance.Links.OfType<IRelatedLink>())
@@ -54,9 +63,8 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                     instance["Id"] = link.RelatedWorkItemId;
                     items.Add(instance);
                 }
-
-
             }
+
             return items;
         }
 
@@ -231,7 +239,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             private IEnumerable<MockModel> _givers;
             private IEnumerable<MockModel> _takers;
 
-            [WorkItemLink(typeof(MockModel), ReverseLinkName)]
+            [WorkItemLink(typeof(SubMockModel), ReverseLinkName)]
             public IEnumerable<MockModel> Givers
             {
                 get { return (_givers ?? Enumerable.Empty<MockModel>()); }
@@ -535,6 +543,15 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                     _history = value;
                 }
             }
+
+            [FieldDefinition("Custom String 01", true)]
+            public double Effort { get; set; }
+        }
+
+
+        [WorkItemType("Baz")]
+        public class SubMockModel : MockModel
+        {
         }
 
         protected IEnumerable<IWorkItem> Items { get; set; }

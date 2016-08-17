@@ -73,6 +73,10 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
         private void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, TypeAccessor accessor, object targetWorkItem)
         {
+#if DEBUG
+            Trace.TraceInformation("{0}: Mapping {1}", GetType().Name, sourceWorkItem.Id);
+#endif
+
             foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType, typeof(FieldDefinitionAttribute)))
             {
                 var a = PropertyInfoFieldCache(_inspector, property);
@@ -83,7 +87,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
                 try
                 {
-                    if (a.RequireConversion)
+                    if (convert)
                     {
                         var value = ParseValue(property, sourceWorkItem[fieldName]);
                         accessor[targetWorkItem, property.Name] = value;
