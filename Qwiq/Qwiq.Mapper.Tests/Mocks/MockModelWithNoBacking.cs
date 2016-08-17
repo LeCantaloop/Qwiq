@@ -3,7 +3,7 @@
 namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
-    public class MockModelWithNoBacking
+    public class MockModelWithNoBacking : IIdentifiable
     {
         [FieldDefinition("Id")]
         public virtual int Id { get; internal set; }

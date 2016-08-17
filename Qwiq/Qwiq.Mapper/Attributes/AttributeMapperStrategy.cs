@@ -52,13 +52,21 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                     });
         }
 
-        protected override void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper)
+        public override void Map<T>(IEnumerable<KeyValuePair<IWorkItem, T>> workItemMappings, IWorkItemMapper workItemMapper)
         {
+            var targetWorkItemType = typeof(T);
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
-            MapImpl(targetWorkItemType, sourceWorkItem, accessor, targetWorkItem);
+
+            foreach (var workItemMapping in workItemMappings)
+            {
+                var sourceWorkItem = workItemMapping.Key;
+                var targetWorkItem = workItemMapping.Value;
+
+                MapImpl(targetWorkItemType, sourceWorkItem, accessor, targetWorkItem);
+            }
         }
 
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
 
@@ -99,15 +107,30 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                 }
                 catch (Exception e)
                 {
+                    try
+                    {
+                        Trace.TraceWarning(
+                            "Could not convert value of field '{0}' ({1}) to type {2}",
+                            fieldName,
+                            sourceWorkItem[fieldName].GetType().Name,
+                            property.PropertyType.Name);
+                    }
+                    catch (Exception)
+                    {
+                    }
 
-                    Trace.TraceWarning("Could not convert value of field '{0}' ({1}) to type {2}", fieldName, sourceWorkItem[fieldName].GetType().Name, property.PropertyType.Name);
-
-                    Trace.TraceWarning(
-                        "Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
-                        fieldName,
-                        sourceWorkItem.Type.Name,
-                        targetWorkItemType.Name,
-                        e.Message);
+                    try
+                    {
+                        Trace.TraceWarning(
+                            "Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
+                            fieldName,
+                            sourceWorkItem.Type.Name,
+                            targetWorkItemType.Name,
+                            e.Message);
+                    }
+                    catch (Exception)
+                    {
+                    }
                 }
             }
         }
