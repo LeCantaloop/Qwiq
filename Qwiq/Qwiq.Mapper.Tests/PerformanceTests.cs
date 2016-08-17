@@ -4,20 +4,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnostics.Windows;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.IE.Qwiq.Mocks;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
@@ -571,6 +568,24 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
     {
     }
 
+    public class BenchmarkConfig : ManualConfig
+    {
+        public BenchmarkConfig()
+        {
+            Add(Job.Clr.With(Jit.RyuJit).With(Platform.X64).With(new GarbageCollection { Server = true }));
+            Add(Job.Clr.With(Jit.LegacyJit).With(Platform.X64).With(new GarbageCollection { Server = true }));
+
+            Add(Job.Clr.With(Jit.RyuJit).With(Platform.X86).With(new GarbageCollection { Server = true }));
+            Add(Job.Clr.With(Jit.LegacyJit).With(Platform.X86).With(new GarbageCollection { Server = true }));
+
+            Add(new MemoryDiagnoser());
+            Add(new InliningDiagnoser());
+
+            Add(StatisticColumn.AllStatistics);
+
+        }
+
+    }
 
 
     [TestClass]
@@ -578,14 +593,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
     {
         public override void When()
         {
-            BenchmarkRunner.Run<Benchmark>(
-                ManualConfig
-                    .Create(DefaultConfig.Instance)
-                    .With(Job.Clr)
-                    .With(Job.Core)
-                    .With(Job.AllJits)
-                    .With(Job.ConcurrentServerGC)
-            );
+            BenchmarkRunner.Run<Benchmark>();
         }
 
 
@@ -596,6 +604,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             // Intentionally left blank
         }
 
+        [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
             private WorkItemMapper _mapper;
@@ -619,6 +628,8 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             {
                 return _mapper.Create<MockModel>(_items).ToList();
             }
+
+
         }
     }
 
@@ -644,14 +655,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
     {
         public override void When()
         {
-            BenchmarkRunner.Run<Benchmark>(
-                ManualConfig
-                    .Create(DefaultConfig.Instance)
-                    .With(Job.Clr)
-                    .With(Job.Core)
-                    .With(Job.AllJits)
-                    .With(Job.ConcurrentServerGC)
-            );
+            BenchmarkRunner.Run<Benchmark>();
         }
 
         [TestMethod]
@@ -661,6 +665,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
             // Intentionally left blank
         }
 
+        [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
             public WorkItemMapper Mapper { get; private set; }
