@@ -15,20 +15,23 @@ namespace Microsoft.IE.Qwiq.Mapper
 
         private static object ParseImpl(Type destinationType, object value, Lazy<object> defaultValueFactory)
         {
-            if (destinationType == typeof(object))
-            {
-                return value;
-            }
-
+            // If the incoming value is null, return the default value
             if (ValueRepresentsNull(value))
             {
                 return defaultValueFactory.Value;
+            }
+
+            // Quit if no type conversion is actually required
+            if (value.GetType() == destinationType)
+            {
+                return value;
             }
 
             if (destinationType.IsInstanceOfType(value))
             {
                 return value;
             }
+
 
             object result;
 

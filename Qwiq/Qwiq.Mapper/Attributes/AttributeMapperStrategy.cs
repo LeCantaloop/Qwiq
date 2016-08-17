@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -11,7 +12,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
     {
         private readonly IPropertyInspector _inspector;
         private readonly ITypeParser _typeParser;
-        private static readonly ConcurrentDictionary<PropertyInfo, string> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, string>();
+        private static readonly ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute>();
         private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
 
         public AttributeMapperStrategy(IPropertyInspector inspector, ITypeParser typeParser)
@@ -20,15 +21,11 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
             _typeParser = typeParser;
         }
 
-        private static string PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
+        private static FieldDefinitionAttribute PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
         {
             return PropertyInfoFields.GetOrAdd(
                 property,
-                info =>
-                    {
-                        var a = inspector.GetAttribute<FieldDefinitionAttribute>(property);
-                        return a?.GetFieldName();
-                    });
+                info => inspector.GetAttribute<FieldDefinitionAttribute>(property));
         }
 
         private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
@@ -46,7 +43,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                             inspector.GetAnnotatedProperties(targetType, typeof(FieldDefinitionAttribute))
                                      .Select(
                                          property =>
-                                         new { property, fieldName = PropertyInfoFieldCache(inspector, property) })
+                                         new { property, fieldName = PropertyInfoFieldCache(inspector, property)?.FieldName })
                                      .Where(
                                          @t =>
                                          !string.IsNullOrEmpty(@t.fieldName) && workItem.Fields.Contains(@t.fieldName))
@@ -78,21 +75,37 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         {
             foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType, typeof(FieldDefinitionAttribute)))
             {
-                var fieldName = PropertyInfoFieldCache(_inspector, property);
+                var a = PropertyInfoFieldCache(_inspector, property);
+                if (a == null) continue;
+
+                var fieldName = a.FieldName;
+                var convert = a.RequireConversion;
 
                 try
                 {
-                    var value = ParseValue(property, sourceWorkItem[fieldName]);
-                    accessor[targetWorkItem, property.Name] = value;
+                    if (a.RequireConversion)
+                    {
+                        var value = ParseValue(property, sourceWorkItem[fieldName]);
+                        accessor[targetWorkItem, property.Name] = value;
+                    }
+                    else
+                    {
+                        accessor[targetWorkItem, property.Name] = sourceWorkItem[fieldName];
+                    }
                 }
                 catch (Exception e)
                 {
+
+                    Trace.TraceWarning("Could not convert value of field '{0}' ({1}) to type {2}", fieldName, sourceWorkItem[fieldName].GetType().Name, property.PropertyType.Name);
+
                     System.Diagnostics.Trace.TraceWarning(
                         "Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
                         fieldName,
                         sourceWorkItem.Type.Name,
                         targetWorkItemType.Name,
                         e.Message);
+
+                    throw;
                 }
             }
         }
