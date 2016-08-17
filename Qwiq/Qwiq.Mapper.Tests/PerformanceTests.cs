@@ -599,6 +599,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
         [TestMethod]
         [TestCategory("Performance")]
+        [TestCategory("localOnly")]
         public void Execute_Mapping_Performance_Benchmark()
         {
             // Intentionally left blank
@@ -660,6 +661,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
         [TestMethod]
         [TestCategory("Performance")]
+        [TestCategory("localOnly")]
         public void Execute_Links_Performance_Benchmark()
         {
             // Intentionally left blank
