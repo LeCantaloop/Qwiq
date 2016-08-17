@@ -89,7 +89,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
                 {
                     if (convert)
                     {
-                        var value = ParseValue(property, sourceWorkItem[fieldName]);
+                        var value = _typeParser.Parse(property.PropertyType, sourceWorkItem[fieldName]);
                         accessor[targetWorkItem, property.Name] = value;
                     }
                     else
@@ -102,21 +102,14 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
 
                     Trace.TraceWarning("Could not convert value of field '{0}' ({1}) to type {2}", fieldName, sourceWorkItem[fieldName].GetType().Name, property.PropertyType.Name);
 
-                    System.Diagnostics.Trace.TraceWarning(
+                    Trace.TraceWarning(
                         "Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
                         fieldName,
                         sourceWorkItem.Type.Name,
                         targetWorkItemType.Name,
                         e.Message);
-
-                    throw;
                 }
             }
-        }
-
-        protected virtual object ParseValue(PropertyInfo property, object value)
-        {
-            return _typeParser.Parse(property.PropertyType, value);
         }
     }
 }
