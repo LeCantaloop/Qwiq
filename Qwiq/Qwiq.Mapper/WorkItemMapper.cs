@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +8,14 @@ namespace Microsoft.IE.Qwiq.Mapper
 {
     public class WorkItemMapper : IWorkItemMapper
     {
-        private readonly IEnumerable<IWorkItemMapperStrategy> _mapperStrategies;
-        private delegate object ObjectActivator();
+        public IEnumerable<IWorkItemMapperStrategy> MapperStrategies { get; }
+
+        private delegate IIdentifiable ObjectActivator();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator> OptimizedCtorExpression = new ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator>();
 
         public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
-            _mapperStrategies = mapperStrategies.ToList();
+            MapperStrategies = mapperStrategies.ToList();
         }
 
         public T Default<T>() where T : new()
@@ -23,34 +23,35 @@ namespace Microsoft.IE.Qwiq.Mapper
             return new T();
         }
 
-        public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : new()
+        public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable, new()
         {
-            var type = typeof(T);
-            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, T>(wi, new T())).ToList();
-            foreach (var strategy in _mapperStrategies)
+            var workItemsToMap = new Dictionary<IWorkItem, T>();
+            foreach (var item in collection)
             {
-                strategy.Map(type, workItemsToMap, this);
+                workItemsToMap[item] = new T();
+            }
+
+            foreach (var strategy in MapperStrategies)
+            {
+                strategy.Map(workItemsToMap, this);
             }
 
             return workItemsToMap.Select(wi => wi.Value);
         }
 
-        public IEnumerable Create(Type type, IEnumerable<IWorkItem> collection)
+        public IEnumerable<IIdentifiable> Create(Type type, IEnumerable<IWorkItem> collection)
         {
-            return ParseWorkItems(type, collection);
-        }
-
-        private IEnumerable ParseWorkItems(Type type, IEnumerable<IWorkItem> collection)
-        {
-            // Activator.CreateInstance is SLOW
-            //  About 0.2 ms per 1,000
-            // Compiled expression is 0.04 ms per 1,000
+            // Activator.CreateInstance is about 0.2 ms per 1,000
+            // Compiled expression is about 0.04 ms per 1,000
             var compiled = OptimizedCtorExpressionCache(type);
+            var workItemsToMap = new Dictionary<IWorkItem, IIdentifiable>();
+            foreach (var item in collection)
+            {
+                workItemsToMap[item] = compiled.Invoke();
+            }
 
 
-            var workItemsToMap = collection.Select(wi => new KeyValuePair<IWorkItem, object>(wi, compiled.Invoke())).ToList();
-
-            foreach (var strategy in _mapperStrategies)
+            foreach (var strategy in MapperStrategies)
             {
                 strategy.Map(type, workItemsToMap, this);
             }

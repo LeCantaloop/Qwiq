@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.IE.Qwiq.Mapper.Tests
 {
     public abstract class WorkItemMapperContext<T> : ContextSpecification
-        where T : new()
+        where T : IIdentifiable, new()
     {
         protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
                                                                                  {
