@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Mapper
 {
     public abstract class IndividualWorkItemMapperBase : IWorkItemMapperStrategy
     {
-        public void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
+        public virtual void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             foreach (var workItemMapping in workItemMappings)
             {
@@ -13,6 +14,28 @@ namespace Microsoft.IE.Qwiq.Mapper
             }
         }
 
-        protected abstract void Map(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, IWorkItemMapper workItemMapper);
+        public virtual void Map<T>(
+            IEnumerable<KeyValuePair<IWorkItem, T>> workItemMappings,
+            IWorkItemMapper workItemMapper) where T : IIdentifiable, new()
+        {
+            Map(typeof(T), workItemMappings.Select(s => new KeyValuePair<IWorkItem, IIdentifiable>(s.Key, s.Value)), workItemMapper);
+        }
+
+        protected virtual void Map(
+            Type targetWorkItemType,
+            IWorkItem sourceWorkItem,
+            IIdentifiable targetWorkItem,
+            IWorkItemMapper workItemMapper)
+        {
+            Map(
+                targetWorkItemType,
+                new[] { new KeyValuePair<IWorkItem, IIdentifiable>(sourceWorkItem, targetWorkItem) },
+                workItemMapper);
+        }
+
+        protected virtual void Map<T>(IWorkItem sourceWorkItem, T targetWorkItem, IWorkItemMapper workItemMapper)
+        {
+            Map(typeof(T), sourceWorkItem, (IIdentifiable)targetWorkItem, workItemMapper);
+        }
     }
 }

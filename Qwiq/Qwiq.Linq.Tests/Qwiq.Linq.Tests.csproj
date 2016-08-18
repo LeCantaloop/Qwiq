@@ -254,15 +254,9 @@
     <Compile Include="InstrumentedMockWorkItemStore.cs" />
     <Compile Include="MockPropertyReflector.cs" />
     <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
-    <Compile Include="Mocks\MockField.cs" />
-    <Compile Include="Mocks\MockFieldCollection.cs" />
     <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockModel.cs" />
-    <Compile Include="Mocks\MockWorkItem.cs" />
-    <Compile Include="Mocks\MockWorkItemLinkInfo.cs" />
-    <Compile Include="Mocks\MockWorkItemStore.cs" />
-    <Compile Include="Mocks\MockWorkItemType.cs" />
     <Compile Include="Mocks\SimpleMockModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryBuilderTests.cs" />
@@ -277,6 +271,10 @@
     <ProjectReference Include="..\Qwiq.Linq\Qwiq.Linq.csproj">
       <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
       <Name>Qwiq.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{db07e690-4b77-414f-91c7-1a48c9f01f24}</Project>
+      <Name>Qwiq.Mocks</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

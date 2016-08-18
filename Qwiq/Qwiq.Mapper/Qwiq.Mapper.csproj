@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastMember, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.1.0.0.11\lib\net40\FastMember.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=2.16.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.16.204221202\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
       <Private>True</Private>
@@ -203,7 +207,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -229,7 +233,6 @@
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\WorkItemLinksMapperStrategy.cs" />
-    <Compile Include="Attributes\CachingPropertyReflector.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />
     <Compile Include="Attributes\IPropertyReflector.cs" />
     <Compile Include="Attributes\PropertyInspector.cs" />
@@ -237,6 +240,7 @@
     <Compile Include="Attributes\PropertyReflectorBase.cs" />
     <Compile Include="Attributes\WorkItemLinkAttribute.cs" />
     <Compile Include="Attributes\WorkItemTypeAttribute.cs" />
+    <Compile Include="IIdentifiable.cs" />
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />

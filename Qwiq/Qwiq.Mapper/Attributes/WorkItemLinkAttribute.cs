@@ -2,26 +2,17 @@
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class WorkItemLinkAttribute : Attribute
     {
-        private readonly Type _workItemType;
-        private readonly string _linkImmutableName;
-
         public WorkItemLinkAttribute(Type workItemType, string linkImmutableName)
         {
-            _workItemType = workItemType;
-            _linkImmutableName = linkImmutableName;
+            WorkItemType = workItemType;
+            LinkName = linkImmutableName;
         }
 
-        public string GetLinkName()
-        {
-            return _linkImmutableName;
-        }
+        public string LinkName { get; }
 
-        public Type GetWorkItemType()
-        {
-            return _workItemType;
-        }
+        public Type WorkItemType { get; }
     }
 }
