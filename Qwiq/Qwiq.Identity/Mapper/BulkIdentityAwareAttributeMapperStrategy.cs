@@ -6,6 +6,8 @@ using Microsoft.IE.Qwiq.Identity.Attributes;
 using Microsoft.IE.Qwiq.Mapper;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
 
+using FastMember;
+
 namespace Microsoft.IE.Qwiq.Identity.Mapper
 {
     public class BulkIdentityAwareAttributeMapperStrategy : IndividualWorkItemMapperBase
@@ -34,7 +36,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
             {
                 return;
             }
-
+            var accessor = TypeAccessor.Create(targeWorkItemType, true);
             var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workingSet.Keys.ToList(), validIdentityProperties.Keys.ToList());
             var identitySearchTerms = GetIdentitySearchTerms(validIdentityFieldsWithWorkItems).ToList();
             var identitySearchResults = GetIdentityMap(_identityManagementService, identitySearchTerms);
@@ -48,7 +50,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
                     var mappedValue = identitySearchResults[sourceField.Value];
                     if (!string.IsNullOrEmpty(mappedValue))
                     {
-                        targetProperty.SetValue(targetObject, mappedValue);
+                        accessor[targetObject, targetProperty.Name] = mappedValue;
                     }
                 }
             }
