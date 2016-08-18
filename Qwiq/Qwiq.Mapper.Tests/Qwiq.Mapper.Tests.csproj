@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.IE.Qwiq.Mapper.Tests</RootNamespace>
     <AssemblyName>Microsoft.IE.Qwiq.Mapper.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -352,6 +352,10 @@
     <None Include="_TraceEventProgrammersGuide.docx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Qwiq.Benchmark\Qwiq.Benchmark.csproj">
+      <Project>{d9ed32d7-03fa-468b-ad1a-249cef9c6cdb}</Project>
+      <Name>Qwiq.Benchmark</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
       <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
       <Name>Qwiq.Core</Name>
