@@ -249,15 +249,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IdentityManagementService.ExtensionsTests.cs" />
     <Compile Include="IdentityMapperTests.cs" />
     <Compile Include="Mocks\IdentityMockType.cs" />
     <Compile Include="BulkIdentityAwareAttributeMapperStrategyTests.cs" />
-    <Compile Include="Mocks\MockIdentityDescriptor.cs" />
-    <Compile Include="Mocks\MockIdentityManagementService.cs" />
-    <Compile Include="Mocks\MockField.cs" />
-    <Compile Include="Mocks\MockFieldCollection.cs" />
-    <Compile Include="Mocks\MockWorkItem.cs" />
-    <Compile Include="Mocks\MockTeamFoundationIdentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +263,10 @@
     <ProjectReference Include="..\Qwiq.Identity\Qwiq.Identity.csproj">
       <Project>{b3654d2d-b4d4-405c-9aec-fc1859a87e74}</Project>
       <Name>Qwiq.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{db07e690-4b77-414f-91c7-1a48c9f01f24}</Project>
+      <Name>Qwiq.Mocks</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -9,6 +9,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         IEnumerable<PropertyInfo> GetProperties(Type workItemType);
         IEnumerable<Attribute> GetCustomAttributes(PropertyInfo property);
         IEnumerable<Attribute> GetCustomAttributes(PropertyInfo property, Type attributeType);
-        object GetAttribute(Type type, PropertyInfo property);
+        Attribute GetAttribute(Type type, PropertyInfo property);
     }
 }

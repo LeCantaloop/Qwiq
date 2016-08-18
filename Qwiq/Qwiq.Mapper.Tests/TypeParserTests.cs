@@ -206,6 +206,23 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
+    public class when_parsing_a_valid_generic_nullable_double : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = 7d;
+            Actual = TypeParser.Parse<Nullable<double>>("7");
+        }
+
+        [TestMethod]
+        public void value_is_parsed_as_double()
+        {
+            Assert.AreEqual(Expected, Actual);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class when_parsing_a_null_nullable_int : TypeParserTestsContext
     {
         public override void When()

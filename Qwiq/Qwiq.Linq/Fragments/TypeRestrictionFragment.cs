@@ -6,9 +6,9 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
 {
     internal class TypeRestrictionFragment : IFragment
     {
-        private readonly IEnumerable<string> _workItemTypes;
+        private readonly ICollection<string> _workItemTypes;
 
-        public TypeRestrictionFragment(IEnumerable<string> workItemTypes)
+        public TypeRestrictionFragment(ICollection<string> workItemTypes)
         {
             _workItemTypes = workItemTypes;
         }

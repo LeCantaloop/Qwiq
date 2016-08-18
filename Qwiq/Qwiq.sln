@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq", "Qwiq.Linq\Qwiq.Linq.csproj", "{1EDEB333-3084-42BD-B273-4009B4B18541}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper", "Qwiq.Mapper\Qwiq.Mapper.csproj", "{016E8D93-4195-4639-BCD5-77633E8E1681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mocks", "Qwiq.Mocks\Qwiq.Mocks.csproj", "{DB07E690-4B77-414F-91C7-1A48C9F01F24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{016E8D93-4195-4639-BCD5-77633E8E1681}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{016E8D93-4195-4639-BCD5-77633E8E1681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB07E690-4B77-414F-91C7-1A48C9F01F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB07E690-4B77-414F-91C7-1A48C9F01F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB07E690-4B77-414F-91C7-1A48C9F01F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB07E690-4B77-414F-91C7-1A48C9F01F24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
