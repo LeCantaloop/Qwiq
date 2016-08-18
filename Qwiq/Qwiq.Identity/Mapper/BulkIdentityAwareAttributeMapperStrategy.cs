@@ -8,7 +8,7 @@ using Microsoft.IE.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.IE.Qwiq.Identity.Mapper
 {
-    public class BulkIdentityAwareAttributeMapperStrategy : IWorkItemMapperStrategy
+    public class BulkIdentityAwareAttributeMapperStrategy : IndividualWorkItemMapperBase
     {
         private readonly IPropertyInspector _inspector;
         private readonly IIdentityManagementService _identityManagementService;
@@ -19,7 +19,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
             _identityManagementService = identityManagementService;
         }
 
-        public void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, new WorkItemKeyComparer());
 
@@ -95,7 +95,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
                         new
                         {
                             IdentityProperty = p,
-                            WitFieldName = propertyInspector.GetAttribute<FieldDefinitionAttribute>(p)?.GetFieldName()
+                            WitFieldName = propertyInspector.GetAttribute<FieldDefinitionAttribute>(p)?.FieldName
                         })
                 .Where(p => !string.IsNullOrEmpty(p.WitFieldName) && p.IdentityProperty.CanWrite)
                 .ToDictionary(x => x.WitFieldName, x => x.IdentityProperty);

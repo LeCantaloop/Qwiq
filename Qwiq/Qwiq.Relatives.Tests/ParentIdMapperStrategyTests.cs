@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.IE.Qwiq.Relatives.Tests
 {
-    public abstract class ParentIdMapperStrategyContextSpecification<T> : ContextSpecification where T : new()
+    public abstract class ParentIdMapperStrategyContextSpecification<T> : ContextSpecification where T : IIdentifiable, new()
     {
         protected IWorkItemMapperStrategy ParentIdStrategy { get; set; }
         protected IWorkItemMapper Instance { get; set; }
