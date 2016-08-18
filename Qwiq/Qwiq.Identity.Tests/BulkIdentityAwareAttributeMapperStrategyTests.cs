@@ -16,7 +16,7 @@ namespace Qwiq.Identity.Tests
     public abstract class BulkIdentityAwareAttributeMapperStrategyTests : ContextSpecification
     {
         private IWorkItemMapperStrategy _strategy;
-        private IEnumerable<KeyValuePair<IWorkItem, object>> _workItemMappings;
+        private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
         protected IDictionary<string, IEnumerable<ITeamFoundationIdentity>> Identities { get; set; }
 
         protected MockIdentityType Actual
@@ -42,7 +42,7 @@ namespace Qwiq.Identity.Tests
                     })
             };
 
-            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, object>(t, new MockIdentityType())).ToList();
+            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
         }
 
         public override void When()

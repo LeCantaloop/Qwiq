@@ -78,6 +78,9 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
                 return _innerWorkItemStore.WorkItemLinkTypes;
             }
         }
+
+        public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
+
         public int WorkItemLinkTypesCallCount { get; private set; }
     }
 }
