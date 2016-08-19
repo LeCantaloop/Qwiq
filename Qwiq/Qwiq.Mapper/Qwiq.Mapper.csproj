@@ -241,7 +241,7 @@
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IndividualWorkItemMapperBase.cs" />
+    <Compile Include="WorkItemMapperStrategyBase.cs" />
     <Compile Include="WorkItemMapper.cs" />
     <Compile Include="TypeParser.cs" />
   </ItemGroup>

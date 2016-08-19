@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    public class AttributeMapperStrategy : IndividualWorkItemMapperBase
+    public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {
         private readonly IPropertyInspector _inspector;
         private readonly ITypeParser _typeParser;

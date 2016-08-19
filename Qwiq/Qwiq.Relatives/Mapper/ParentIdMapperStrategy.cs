@@ -5,7 +5,7 @@ using Microsoft.IE.Qwiq.Mapper;
 
 namespace Microsoft.IE.Qwiq.Relatives.Mapper
 {
-    public class ParentIdMapperStrategy : IndividualWorkItemMapperBase
+    public class ParentIdMapperStrategy : WorkItemMapperStrategyBase
     {
         private const int SelfReferenceLinkId = 0;
         private const string ParentLinkQueryFormat = @"

@@ -10,7 +10,7 @@ using FastMember;
 
 namespace Microsoft.IE.Qwiq.Identity.Mapper
 {
-    public class BulkIdentityAwareAttributeMapperStrategy : IndividualWorkItemMapperBase
+    public class BulkIdentityAwareAttributeMapperStrategy : WorkItemMapperStrategyBase
     {
         private readonly IPropertyInspector _inspector;
         private readonly IIdentityManagementService _identityManagementService;
