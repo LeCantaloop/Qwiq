@@ -466,8 +466,6 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
 
             public IEnumerable<IWorkItem> MappingItems { get; private set; }
 
-            public bool SimulateQueryTimes { get; set; }
-
             [Setup]
             public void SetupData()
             {
@@ -478,7 +476,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 var mappingStrategies = new IWorkItemMapperStrategy[]
                                             {
                                                 new AttributeMapperStrategy(propertyInspector, typeParser),
-                                                new WorkItemLinksMapperStrategy(propertyInspector, new MockWorkItemStore(_items) {SimulateQueryTimes = SimulateQueryTimes})
+                                                new WorkItemLinksMapperStrategy(propertyInspector, new MockWorkItemStore(_items)),
                                             };
                 Mapper = new WorkItemMapper(mappingStrategies);
                 MappingItems = _items.Take(500).ToList();
