@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
@@ -11,6 +12,8 @@ namespace Microsoft.IE.Qwiq.Mocks
         private readonly IEnumerable<IWorkItemLinkInfo> _links;
 
         private readonly IList<IWorkItem> _workItems;
+
+        private readonly IDictionary<int, IWorkItem> _lookup;
 
         public MockWorkItemStore()
             : this(new MockTfsTeamProjectCollection(), new MockProject())
@@ -29,12 +32,15 @@ namespace Microsoft.IE.Qwiq.Mocks
                 var wi = new MockWorkItem { Id = _workItems.Count + 1, Type = wit };
                 _workItems.Add(wi);
             }
+
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems)
             : this()
         {
             _workItems = new List<IWorkItem>(workItems);
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links )
@@ -47,6 +53,7 @@ namespace Microsoft.IE.Qwiq.Mocks
             : this(teamProjectCollection, new MockProject())
         {
             _workItems = new List<IWorkItem>(workItems);
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
         public IEnumerable<IProject> Projects { get; set; }
@@ -65,6 +72,8 @@ namespace Microsoft.IE.Qwiq.Mocks
         {
             if (_workItems == null) throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
 
+            Trace.TraceInformation("Querying for work items " + wiql);
+
             return _workItems;
         }
 
@@ -72,12 +81,14 @@ namespace Microsoft.IE.Qwiq.Mocks
         {
             if (_workItems == null) throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
 
-            return _workItems
-                        .Join(
-                                ids,
-                                workItem => workItem.Id,
-                                id => id,
-                                (workItem, id) => workItem);
+            var h = new HashSet<int>(ids);
+
+            Trace.TraceInformation("Querying for IDs " + string.Join(", ", h));
+
+            return _lookup
+                    .Where(p => h.Contains(p.Key))
+                    .Select(p => p.Value)
+                    .ToList();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
@@ -87,6 +98,8 @@ namespace Microsoft.IE.Qwiq.Mocks
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
+            Trace.TraceInformation("Querying for links " + wiql);
+
             return _links;
         }
 
