@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -14,6 +15,8 @@ namespace Microsoft.IE.Qwiq.Mocks
         private readonly IList<IWorkItem> _workItems;
 
         private readonly IDictionary<int, IWorkItem> _lookup;
+
+        private static readonly Random Instance = new Random();
 
         public MockWorkItemStore()
             : this(new MockTfsTeamProjectCollection(), new MockProject())
@@ -34,6 +37,7 @@ namespace Microsoft.IE.Qwiq.Mocks
             }
 
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
+            TimeZone = TimeZone.CurrentTimeZone;
         }
 
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems)
@@ -62,6 +66,10 @@ namespace Microsoft.IE.Qwiq.Mocks
 
         public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get { return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)); } }
 
+        public TimeZone TimeZone { get; }
+
+        public bool SimulateQueryTimes { get; set; }
+
         public void Dispose()
         {
             Dispose(true);
@@ -74,6 +82,13 @@ namespace Microsoft.IE.Qwiq.Mocks
 
             Trace.TraceInformation("Querying for work items " + wiql);
 
+            if (SimulateQueryTimes)
+            {
+                var sleep = WaitTime;
+                Trace.TraceInformation("Sleeping thread {0} ms to simulate query time", WaitTime);
+                Thread.Sleep(sleep);
+            }
+
             return _workItems;
         }
 
@@ -84,6 +99,13 @@ namespace Microsoft.IE.Qwiq.Mocks
             var h = new HashSet<int>(ids);
 
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", h));
+
+            if (SimulateQueryTimes)
+            {
+                var sleep = WaitTime;
+                Trace.TraceInformation("Sleeping thread {0} ms to simulate query time", WaitTime);
+                Thread.Sleep(sleep);
+            }
 
             return _lookup
                     .Where(p => h.Contains(p.Key))
@@ -99,7 +121,12 @@ namespace Microsoft.IE.Qwiq.Mocks
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
             Trace.TraceInformation("Querying for links " + wiql);
-
+            if (SimulateQueryTimes)
+            {
+                var sleep = WaitTime;
+                Trace.TraceInformation("Sleeping thread {0} ms to simulate query time", WaitTime);
+                Thread.Sleep(sleep);
+            }
             return _links;
         }
 
@@ -109,5 +136,7 @@ namespace Microsoft.IE.Qwiq.Mocks
             {
             }
         }
+
+        private int WaitTime => Instance.Next(0, 3000);
     }
 }

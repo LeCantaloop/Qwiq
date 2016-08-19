@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.IE.Qwiq.Mapper
 {
-    public abstract class IndividualWorkItemMapperBase : IWorkItemMapperStrategy
+    public abstract class WorkItemMapperStrategyBase : IWorkItemMapperStrategy
     {
         public virtual void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
