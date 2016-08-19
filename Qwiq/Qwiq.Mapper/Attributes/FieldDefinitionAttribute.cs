@@ -2,19 +2,23 @@
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class FieldDefinitionAttribute : Attribute
     {
-        private readonly string _name;
-
         public FieldDefinitionAttribute(string name)
+            : this(name, false)
         {
-            _name = name;
+
         }
 
-        public string GetFieldName()
+        public FieldDefinitionAttribute(string name, bool requireConversion)
         {
-            return _name;
+            FieldName = name;
+            RequireConversion = requireConversion;
         }
+
+        public string FieldName { get; }
+
+        public bool RequireConversion { get; }
     }
 }

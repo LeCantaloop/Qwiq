@@ -7,6 +7,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
     public interface IPropertyInspector
     {
         IEnumerable<PropertyInfo> GetAnnotatedProperties(Type workItemType, Type attributeType);
-        T GetAttribute<T>(PropertyInfo property);
+
+        T GetAttribute<T>(PropertyInfo property) where T : Attribute;
     }
 }
