@@ -20,20 +20,8 @@ IF EXIST init.cmd (
   CALL init.cmd
 )
 
-:: Download NuGet
-powershell -NoProfile -ExecutionPolicy Bypass -Command "(new-object System.Net.WebClient).DownloadFile('https://nuget.org/nuget.exe', '.\NuGet.exe')"
-
-SET PATH=%PATH%;%CD%
-
 :: Install packages we need
-nuget install gitversion.commandline -SolutionDir .\Qwiq -verbosity quiet -excludeversion
 nuget restore .\Qwiq\Qwiq.sln -NonInteractive -DisableParallelProcessing
-
-:: Delete NuGet
-DEL nuget.exe
-
-:: Output version information for CI
-Qwiq\packages\GitVersion.CommandLine\tools\gitversion /output buildserver
 
 :: Build
 msbuild .\Qwiq\Qwiq.sln /nologo /clp:"NoSummary;Verbosity=minimal" /m /p:Configuration=Release /t:Rebuild
