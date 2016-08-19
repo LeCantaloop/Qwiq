@@ -303,15 +303,14 @@ namespace Microsoft.IE.Qwiq.Linq
 
             protected override Expression VisitMember(MemberExpression node)
             {
-                if (node.Expression != null && node.Expression.NodeType == ExpressionType.Parameter)
+                if (node.Expression != null && (node.Expression.NodeType == ExpressionType.Parameter || node.Expression.NodeType == ExpressionType.Convert))
                 {
                     _expressionInProgress.Enqueue(new MemberFragment(_fieldMapper, node.Member.Name));
 
                     return node;
                 }
 
-                if (node.Expression != null && node.NodeType == ExpressionType.MemberAccess &&
-                    node.Member.Name == "Value")
+                if (node.Expression != null && node.NodeType == ExpressionType.MemberAccess && node.Member.Name == "Value")
                 {
                     // Node is a obj.Property.Value call. The 'Value' can be ignored. Trim it off and continue.
                     return Visit(node.Expression);
