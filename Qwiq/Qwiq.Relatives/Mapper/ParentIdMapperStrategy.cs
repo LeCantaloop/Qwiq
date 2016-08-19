@@ -5,7 +5,7 @@ using Microsoft.IE.Qwiq.Mapper;
 
 namespace Microsoft.IE.Qwiq.Relatives.Mapper
 {
-    public class ParentIdMapperStrategy : IWorkItemMapperStrategy
+    public class ParentIdMapperStrategy : WorkItemMapperStrategyBase
     {
         private const int SelfReferenceLinkId = 0;
         private const string ParentLinkQueryFormat = @"
@@ -26,7 +26,7 @@ ASOF
             _workItemStore = workItemStore;
         }
 
-        public void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var workingSet = workItemMappings.ToList();
             var parentIdField = targeWorkItemType.GetProperty("ParentId");

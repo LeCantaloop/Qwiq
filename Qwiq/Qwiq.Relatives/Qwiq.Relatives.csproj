@@ -42,20 +42,8 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.16.204221202\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Core, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Core.6.0.0\lib\net45\Microsoft.IE.Qwiq.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Linq, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Linq.3.0.0\lib\net45\Microsoft.IE.Qwiq.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.IE.Qwiq.Mapper, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IE.Qwiq.Mapper.4.0.0\lib\net45\Microsoft.IE.Qwiq.Mapper.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.ServiceBus.3.1.4\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
+      <HintPath>..\packages\WindowsAzure.ServiceBus.3.1.7\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.TeamFoundation.Build.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -210,8 +198,8 @@
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.1\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -239,7 +227,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IIdentifiable.cs" />
     <Compile Include="Linq\RelativesAwareTeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="Linq\QueryExtensions.cs" />
     <Compile Include="Linq\RelativesAwareQueryRewriter.cs" />
@@ -256,6 +243,20 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Qwiq.Relatives.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
+      <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
+      <Name>Qwiq.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Linq\Qwiq.Linq.csproj">
+      <Project>{1EDEB333-3084-42BD-B273-4009B4B18541}</Project>
+      <Name>Qwiq.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
+      <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
+      <Name>Qwiq.Mapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />

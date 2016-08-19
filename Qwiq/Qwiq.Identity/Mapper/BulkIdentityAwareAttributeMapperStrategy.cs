@@ -6,9 +6,11 @@ using Microsoft.IE.Qwiq.Identity.Attributes;
 using Microsoft.IE.Qwiq.Mapper;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
 
+using FastMember;
+
 namespace Microsoft.IE.Qwiq.Identity.Mapper
 {
-    public class BulkIdentityAwareAttributeMapperStrategy : IWorkItemMapperStrategy
+    public class BulkIdentityAwareAttributeMapperStrategy : WorkItemMapperStrategyBase
     {
         private readonly IPropertyInspector _inspector;
         private readonly IIdentityManagementService _identityManagementService;
@@ -19,7 +21,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
             _identityManagementService = identityManagementService;
         }
 
-        public void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, object>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, new WorkItemKeyComparer());
 
@@ -34,7 +36,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
             {
                 return;
             }
-
+            var accessor = TypeAccessor.Create(targeWorkItemType, true);
             var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workingSet.Keys.ToList(), validIdentityProperties.Keys.ToList());
             var identitySearchTerms = GetIdentitySearchTerms(validIdentityFieldsWithWorkItems).ToList();
             var identitySearchResults = GetIdentityMap(_identityManagementService, identitySearchTerms);
@@ -48,7 +50,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
                     var mappedValue = identitySearchResults[sourceField.Value];
                     if (!string.IsNullOrEmpty(mappedValue))
                     {
-                        targetProperty.SetValue(targetObject, mappedValue);
+                        accessor[targetObject, targetProperty.Name] = mappedValue;
                     }
                 }
             }
@@ -95,7 +97,7 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
                         new
                         {
                             IdentityProperty = p,
-                            WitFieldName = propertyInspector.GetAttribute<FieldDefinitionAttribute>(p)?.GetFieldName()
+                            WitFieldName = propertyInspector.GetAttribute<FieldDefinitionAttribute>(p)?.FieldName
                         })
                 .Where(p => !string.IsNullOrEmpty(p.WitFieldName) && p.IdentityProperty.CanWrite)
                 .ToDictionary(x => x.WitFieldName, x => x.IdentityProperty);

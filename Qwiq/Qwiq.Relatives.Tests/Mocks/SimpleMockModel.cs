@@ -1,4 +1,5 @@
-﻿using Microsoft.IE.Qwiq.Mapper.Attributes;
+﻿using Microsoft.IE.Qwiq.Mapper;
+using Microsoft.IE.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
 {
