@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Microsoft.IE.Qwiq.Mapper.Attributes
 {
-    public class WorkItemLinksMapperStrategy : IndividualWorkItemMapperBase
+    public class WorkItemLinksMapperStrategy : WorkItemMapperStrategyBase
     {
         private readonly IPropertyInspector _inspector;
 
