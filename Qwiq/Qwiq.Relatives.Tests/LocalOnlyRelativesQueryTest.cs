@@ -24,7 +24,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
             var wis =
                 WorkItemStoreFactory.GetInstance()
                     .Create(new Uri("https://microsoft.visualstudio.com/DefaultCollection"), CredentialsFactory.CreateAadCredentials());
-            var propertyInspector = new PropertyInspector(new CachingPropertyReflector(new PropertyReflector()));
+            var propertyInspector = new PropertyInspector(new PropertyReflector());
             var fieldMapper = new CachingFieldMapper(new FieldMapper());
             var typeParser = new TypeParser();
             var mappingStrategies = new IWorkItemMapperStrategy[]

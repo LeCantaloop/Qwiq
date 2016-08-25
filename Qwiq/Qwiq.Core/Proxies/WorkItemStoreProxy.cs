@@ -114,6 +114,8 @@ namespace Microsoft.IE.Qwiq.Proxies
                         .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(item)));
             }
         }
+
+        public TimeZone TimeZone => _workItemStore.TimeZone;
     }
 
 

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.IE.Qwiq;
 using Microsoft.IE.Qwiq.Identity.Mapper;
@@ -9,6 +13,8 @@ using Microsoft.IE.Qwiq.Mapper;
 using Microsoft.IE.Qwiq.Mapper.Attributes;
 using Microsoft.IE.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Qwiq.Benchmark;
 using Qwiq.Identity.Tests.Mocks;
 
 namespace Qwiq.Identity.Tests
@@ -16,7 +22,7 @@ namespace Qwiq.Identity.Tests
     public abstract class BulkIdentityAwareAttributeMapperStrategyTests : ContextSpecification
     {
         private IWorkItemMapperStrategy _strategy;
-        private IEnumerable<KeyValuePair<IWorkItem, object>> _workItemMappings;
+        private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
         protected IDictionary<string, IEnumerable<ITeamFoundationIdentity>> Identities { get; set; }
 
         protected MockIdentityType Actual
@@ -30,9 +36,9 @@ namespace Qwiq.Identity.Tests
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
             _strategy = new BulkIdentityAwareAttributeMapperStrategy(
-                            propertyInspector, 
-                            Identities == null 
-                                ? new MockIdentityManagementService() 
+                            propertyInspector,
+                            Identities == null
+                                ? new MockIdentityManagementService()
                                 : new MockIdentityManagementService(Identities));
             var sourceWorkItems = new[]
             {
@@ -42,7 +48,7 @@ namespace Qwiq.Identity.Tests
                     })
             };
 
-            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, object>(t, new MockIdentityType())).ToList();
+            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
         }
 
         public override void When()
@@ -133,7 +139,6 @@ namespace Qwiq.Identity.Tests
                 { MockIdentityType.NonExistantField, _identityType.GetProperty("NonExistant") },
                 { MockIdentityType.UriIdentityField, _identityType.GetProperty("UriIdentity") }
             };
-            base.Given();
         }
 
         public override void When()
@@ -148,6 +153,76 @@ namespace Qwiq.Identity.Tests
         public void only_valid_fields_and_properties_are_retrieved()
         {
             Actual.ShouldContainOnly(Expected);
+        }
+    }
+
+    [Config(typeof(BenchmarkConfig))]
+    [TestClass]
+    public class Benchmark
+    {
+        private IWorkItemMapperStrategy _strategy;
+        private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
+
+        [Setup]
+        [TestInitialize]
+        public void Setup()
+        {
+            var propertyInspector = new PropertyInspector(new PropertyReflector());
+            _strategy = new BulkIdentityAwareAttributeMapperStrategy(
+                            propertyInspector,
+                            new MockIdentityManagementService()
+                        );
+
+            var generator = new WorkItemGenerator<MockWorkItem>(()=> new MockWorkItem(), new[] { "Revisions", "Item", "AssignedTo" });
+            generator.Generate();
+
+            var assignees = new[]
+                                {
+                                    MockIdentityManagementService.Danj.DisplayName,
+                                    MockIdentityManagementService.Adamb.DisplayName,
+                                    MockIdentityManagementService.Chrisj.DisplayName,
+                                    MockIdentityManagementService.Chrisjoh.DisplayName,
+                                    MockIdentityManagementService.Chrisjohn.DisplayName,
+                                    MockIdentityManagementService.Chrisjohns.DisplayName
+                                };
+
+            var sourceWorkItems = generator
+                                    .Items
+                                    // Run post-randomization to enable our scenario
+                                    .Select(
+                                        s =>
+                                            {
+                                                var i = Randomizer.Instance.Next(0, assignees.Length - 1);
+                                                s[MockIdentityType.BackingField] = assignees[i];
+
+                                                return s;
+                                            });
+
+            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
+        }
+
+        [Benchmark]
+        public IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> Execute()
+        {
+            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
+            return _workItemMappings;
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("Performance")]
+        [TestCategory("Benchmark")]
+        public void Execute_Identity_Mapping_Performance_Benchmark()
+        {
+            BenchmarkRunner.Run<Benchmark>();
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("Performance")]
+        public void Execute_Identity_Mapping()
+        {
+            Execute();
         }
     }
 }

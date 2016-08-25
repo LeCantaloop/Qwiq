@@ -17,5 +17,6 @@ namespace Microsoft.IE.Qwiq
         ITfsTeamProjectCollection TeamProjectCollection { get; }
         IEnumerable<IProject> Projects { get; }
         IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get; }
+        TimeZone TimeZone { get; }
     }
 }
