@@ -16,8 +16,8 @@ To add to project:
   2a. Go to your packages folder choose the currently installed verion of the
       TeamFoundataionServer Extended Client package
   2b. Locate where the WITDataStore*.dll binaries are stored. At the time of writing this, for
-      Microsoft.TeamFoundationServer.ExtendedClient.14.89.0 the binaries are located under
-      \Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\native, x86 and amd64 respectively
+      Microsoft.TeamFoundationServer.ExtendedClient.14.102.0 the binaries are located under
+      \Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\native, x86 and amd64 respectively
 3. Select the binary and choose Add as a Link from the Add button dropdown
 4. Do this for both the x86 and amd64 binary
 
@@ -29,12 +29,12 @@ The <Visible> tag can be ommitted or included depending on if you would like the
 visible in the project or be hidden.
 
 <ItemGroup>
-    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\native\x86\Microsoft.WITDataStore32.dll">
+    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\native\x86\Microsoft.WITDataStore32.dll">
       <Link>Microsoft.WITDataStore32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </Content>
-    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.89.0\lib\native\amd64\Microsoft.WITDataStore64.dll">
+    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\native\amd64\Microsoft.WITDataStore64.dll">
       <Link>Microsoft.WITDataStore64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
