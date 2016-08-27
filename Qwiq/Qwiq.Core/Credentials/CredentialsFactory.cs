@@ -1,41 +1,24 @@
 ﻿using System;
+using System.Net;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.Common;
 
 namespace Microsoft.IE.Qwiq.Credentials
 {
     public static class CredentialsFactory
     {
-        [Obsolete("The AAD resource, Client ID, and Authority are no longer needed. Use the other overload of this method instead.")]
-        public static TfsCredentials CreateAadCredentials(
-            string tfsResourceString,
-            string tfsClientId,
-            string authority,
-            string username = null,
-            string password = null)
+        public static TfsCredentials CreateAadCredentials()
         {
-            return CreateAadCredentials(username, password);
+            return new TfsCredentials(new TfsClientCredentials(true));
         }
 
-        public static TfsCredentials CreateAadCredentials(string username = null, string password = null)
+        public static TfsCredentials CreateAadCredentials(string username, string password)
         {
-            if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
-            {
-                return new TfsCredentials(new AadCredential());
-            }
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(username));
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(password));
 
-            return new TfsCredentials(new AadCredential(username, password));
-        }
-
-        public static TfsCredentials CreateAcsCredentials(string username, string password)
-        {
-            if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
-            {
-                return new TfsCredentials(new TfsClientCredentials(true));
-            }
-
-            var credentials = new SimpleWebTokenCredential(username, password);
-            return new TfsCredentials(new TfsClientCredentials(credentials));
+            return new TfsCredentials(new WindowsCredential(new NetworkCredential(username, password)));
         }
     }
 }
