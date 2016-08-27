@@ -30,7 +30,7 @@ IF ERRORLEVEL 1 (
 )
 
 :: Build for all target frameworks
-powershell -noprofile -executionpolicy bypass -command "$v = @('4.5.2','4.6','4.6.1','4.6.2'); gci -Filter *.csproj -Recurse -Exclude *.Tests.csproj | %% { foreach ($version in $v) { $lib = ($version.replace('.', '')); & msbuild $_ /nologo /clp:Verbosity=minimal /m /p:Configuration=Release /p:TargetFrameworkVersion=$version /p:OutputPath=bin\Release\net$lib\ /t:Rebuild } }"
+powershell -noprofile -executionpolicy bypass -command "$v = @('4.5.2','4.6','4.6.1','4.6.2'); gci -Filter *.csproj -Recurse -Exclude *.Tests.csproj | %% { foreach ($version in $v) { $lib = ($version.replace('.', '')); & msbuild $_ /nologo /clp:Verbosity=minimal /m /p:Configuration=Release /p:TargetFrameworkVersion=$version /p:OutputPath=bin\Release\net$lib\ } }"
 IF ERRORLEVEL 1 (
   EXIT /B %ERRORLEVEL%
 )
