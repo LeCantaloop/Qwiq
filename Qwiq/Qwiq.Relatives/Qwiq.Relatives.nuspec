@@ -13,8 +13,6 @@
         <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
     </metadata>
   <files>
-    <file src="bin\$configuration$\net45\$id$.dll" target="lib\net45\" />
-    <file src="bin\$configuration$\net451\$id$.dll" target="lib\net451\" />
     <file src="bin\$configuration$\net452\$id$.dll" target="lib\net452\" />
     <file src="bin\$configuration$\net46\$id$.dll" target="lib\net46\" />
     <file src="bin\$configuration$\net461\$id$.dll" target="lib\net461\" />
