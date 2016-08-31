@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Net;
 using Microsoft.TeamFoundation.Client;
 
@@ -6,19 +6,24 @@ namespace Microsoft.IE.Qwiq.Credentials
 {
     public static class CredentialsFactory
     {
-        public static TfsCredentials CreateAadCredentials()
+        public static IEnumerable<TfsCredentials> CreateCredentials(string username = null, string password = null)
         {
-            return new TfsCredentials(new TfsClientCredentials(true));
-        }
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                // Service Identity
+                yield return  new TfsCredentials(new TfsClientCredentials(new SimpleWebTokenCredential(username, password)));
+                yield return new TfsCredentials(new TfsClientCredentials(new WindowsCredential(new NetworkCredential(username, password))));
 
-        public static TfsCredentials CreateAadCredentials(string username, string password)
-        {
-            if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(username));
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(password));
+                // PAT
+                yield return new TfsCredentials(new TfsClientCredentials(new BasicAuthCredential(new NetworkCredential("", password))) { AllowInteractive = false });
 
-            return new TfsCredentials(new WindowsCredential(new NetworkCredential(username, password)));
+                // Basic
+                yield return new TfsCredentials(new TfsClientCredentials(new BasicAuthCredential(new NetworkCredential(username, password))) { AllowInteractive = false });
+            }
+
+            yield return new TfsCredentials(new TfsClientCredentials(new WindowsCredential(false)) { AllowInteractive = false });
+
+            yield return new TfsCredentials(new TfsClientCredentials(true));
         }
     }
 }
