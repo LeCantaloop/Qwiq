@@ -12,7 +12,7 @@ namespace Microsoft.IE.Qwiq.Core.Tests
 
         public override void Given()
         {
-            var credentials = CredentialsFactory.CreateAadCredentials();
+            var credentials = CredentialsFactory.CreateCredentials();
             var connectionUri = new Uri("https://microsoft.visualstudio.com/DefaultCollection");
             WorkItemStore = WorkItemStoreFactory.GetInstance().Create(connectionUri, credentials);
         }

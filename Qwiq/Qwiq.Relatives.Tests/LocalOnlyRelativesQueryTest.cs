@@ -23,7 +23,7 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         {
             var wis =
                 WorkItemStoreFactory.GetInstance()
-                    .Create(new Uri("https://microsoft.visualstudio.com/DefaultCollection"), CredentialsFactory.CreateAadCredentials());
+                    .Create(new Uri("https://microsoft.visualstudio.com/DefaultCollection"), CredentialsFactory.CreateCredentials());
             var propertyInspector = new PropertyInspector(new PropertyReflector());
             var fieldMapper = new CachingFieldMapper(new FieldMapper());
             var typeParser = new TypeParser();
