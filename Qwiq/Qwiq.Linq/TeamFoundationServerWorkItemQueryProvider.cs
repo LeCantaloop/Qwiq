@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.IE.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     public class TeamFoundationServerWorkItemQueryProvider : IQueryProvider
     {
@@ -98,3 +98,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

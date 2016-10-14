@@ -1,18 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Linq;
-using Microsoft.IE.Qwiq.Linq.Visitors;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mocks;
-using Microsoft.IE.Qwiq.Relatives.Linq;
-using Microsoft.IE.Qwiq.Relatives.Mapper;
-using Microsoft.IE.Qwiq.Relatives.Tests.Mocks;
+using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Linq.Visitors;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Relatives.Linq;
+using Microsoft.Qwiq.Relatives.Mapper;
+using Microsoft.Qwiq.Relatives.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests
+namespace Microsoft.Qwiq.Relatives.Tests
 {
     public abstract class RelativesAwareTeamFoundationServerWorkItemQueryProviderContextSpecification : ContextSpecification
     {
@@ -226,3 +226,4 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests
         }
     }
 }
+

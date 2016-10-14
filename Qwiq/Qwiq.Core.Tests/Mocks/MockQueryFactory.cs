@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockQueryFactory : IQueryFactory
     {

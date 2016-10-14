@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.Qwiq.Exceptions;
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     /// <summary>
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
@@ -120,3 +120,4 @@ namespace Microsoft.IE.Qwiq.Proxies
 
 
 }
+

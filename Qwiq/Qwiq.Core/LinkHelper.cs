@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     internal class LinkHelper
     {

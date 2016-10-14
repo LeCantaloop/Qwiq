@@ -1,7 +1,7 @@
-using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class WorkItemTypeProxy : IWorkItemType
     {

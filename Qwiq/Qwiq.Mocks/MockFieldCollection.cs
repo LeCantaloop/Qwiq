@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockFieldCollection : IFieldCollection
     {

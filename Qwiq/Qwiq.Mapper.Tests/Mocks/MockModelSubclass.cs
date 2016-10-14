@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
     public class MockModelSubclass : MockModel
@@ -13,3 +13,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         public override string StringField { get { return "42"; } }
     }
 }
+

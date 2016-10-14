@@ -1,8 +1,8 @@
-﻿using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mocks;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
+namespace Microsoft.Qwiq.Relatives.Tests.Mocks
 {
     [WorkItemType("Mock Issue")]
     public class MockParentIdIssue : IIdentifiable

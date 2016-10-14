@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,11 +7,11 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq;
-using Microsoft.IE.Qwiq.Identity.Mapper;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq;
+using Microsoft.Qwiq.Identity.Mapper;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Qwiq.Benchmark;
@@ -226,3 +226,4 @@ namespace Qwiq.Identity.Tests
         }
     }
 }
+

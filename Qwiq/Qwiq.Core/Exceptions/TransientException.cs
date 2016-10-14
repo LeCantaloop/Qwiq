@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     public class TransientException : Exception
     {
@@ -9,3 +9,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

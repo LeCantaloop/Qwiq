@@ -1,9 +1,10 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     public interface IWiqlQueryBuilder
     {
         TranslatedQuery BuildQuery(Expression expression);
     }
 }
+

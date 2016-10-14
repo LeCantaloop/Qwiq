@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     internal class AggregateExceptionExploder : IExceptionExploder
     {
@@ -12,3 +12,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

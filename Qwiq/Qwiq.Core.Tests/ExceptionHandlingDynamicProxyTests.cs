@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Core.Tests.Mocks;
-using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.Qwiq.Core.Tests.Mocks;
+using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Core.Tests
 {
     public class ExceptionHandlingDynamicProxyTests : ContextSpecification
     {
@@ -60,3 +60,4 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         }
     }
 }
+

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     internal abstract class VssExceptionMapper : IExceptionMapper
     {
@@ -39,3 +39,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
+namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class UnderExpression : Expression
     {
@@ -34,3 +34,4 @@ namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
         internal Expression Target { get; private set; }
     }
 }
+

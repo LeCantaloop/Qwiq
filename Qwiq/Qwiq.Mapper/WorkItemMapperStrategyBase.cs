@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
     public abstract class WorkItemMapperStrategyBase : IWorkItemMapperStrategy
     {
@@ -39,3 +39,4 @@ namespace Microsoft.IE.Qwiq.Mapper
         }
     }
 }
+

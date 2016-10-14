@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     /// <summary>
     ///
@@ -28,3 +28,4 @@
         InvalidCharacters = 17
     }
 }
+

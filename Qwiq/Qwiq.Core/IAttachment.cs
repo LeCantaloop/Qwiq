@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IAttachment
     {

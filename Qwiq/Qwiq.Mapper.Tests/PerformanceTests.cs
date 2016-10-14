@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +7,15 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json;
 
 using Qwiq.Benchmark;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests
+namespace Microsoft.Qwiq.Mapper.Tests
 {
     // POCO serialization pulling static typed objects
     // When running benchmarks, be sure to compile in Release and not attach a debugger
@@ -499,7 +499,7 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
                 {
                     switch (propertyType.ToString())
                     {
-                        case "System.Collections.Generic.ICollection`1[Microsoft.IE.Qwiq.ILink]":
+                        case "System.Collections.Generic.ICollection`1[Microsoft.Qwiq.ILink]":
                             var retval = new List<ILink>();
 
                             if (Randomizer.ShouldEnter())
@@ -561,3 +561,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         }
     }
 }
+

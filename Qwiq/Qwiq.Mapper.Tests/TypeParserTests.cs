@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Xml;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests
+namespace Microsoft.Qwiq.Mapper.Tests
 {
     public abstract class TypeParserTestsContext : ContextSpecification
     {
@@ -357,3 +357,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests
         }
     }
 }
+

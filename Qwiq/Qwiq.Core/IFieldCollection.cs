@@ -1,7 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IFieldCollection : IEnumerable<IField>
     {
@@ -10,3 +10,4 @@ namespace Microsoft.IE.Qwiq
         bool Contains(string fieldName);
     }
 }
+

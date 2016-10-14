@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IQuery
     {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Relatives.Linq
+namespace Microsoft.Qwiq.Relatives.Linq
 {
     public static class QueryExtensions
     {
@@ -30,3 +30,4 @@ namespace Microsoft.IE.Qwiq.Relatives.Linq
         }
     }
 }
+

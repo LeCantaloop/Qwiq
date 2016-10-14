@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Relatives.WiqlExpressions
+namespace Microsoft.Qwiq.Relatives.WiqlExpressions
 {
     public enum RelativesQueryDirection
     {
@@ -36,3 +36,4 @@ namespace Microsoft.IE.Qwiq.Relatives.WiqlExpressions
         }
     }
 }
+

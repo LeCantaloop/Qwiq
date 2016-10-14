@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
     public interface ITypeParser
     {

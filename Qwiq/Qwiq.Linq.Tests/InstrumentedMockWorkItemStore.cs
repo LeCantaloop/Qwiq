@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Linq.Tests
 {
     class InstrumentedMockWorkItemStore : IWorkItemStore
     {
@@ -84,3 +84,4 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         public int WorkItemLinkTypesCallCount { get; private set; }
     }
 }
+

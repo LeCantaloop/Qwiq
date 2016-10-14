@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
+namespace Microsoft.Qwiq.Relatives.Tests.Mocks
 {
     public class MockPropertyReflector : IPropertyReflector
     {
@@ -40,3 +40,4 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         }
     }
 }
+

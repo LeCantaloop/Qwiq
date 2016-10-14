@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class TypeRestrictionFragment : IFragment
     {
@@ -28,3 +28,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         }
     }
 }
+

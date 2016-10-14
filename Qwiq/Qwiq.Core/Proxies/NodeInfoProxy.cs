@@ -1,6 +1,6 @@
-﻿using Tfs = Microsoft.TeamFoundation.Server;
+using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class NodeInfoProxy : INodeInfo
     {
@@ -18,3 +18,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 }
+

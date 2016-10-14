@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     interface IFragment
     {
@@ -9,3 +9,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         bool IsValid();
     }
 }
+

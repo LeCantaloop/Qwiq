@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IIdentityManagementService
     {
@@ -11,3 +11,4 @@ namespace Microsoft.IE.Qwiq
         IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier);
     }
 }
+

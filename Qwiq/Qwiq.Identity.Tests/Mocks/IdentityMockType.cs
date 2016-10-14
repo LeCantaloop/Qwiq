@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Identity.Attributes;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using System;
+using Microsoft.Qwiq.Identity.Attributes;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Qwiq.Identity.Tests.Mocks
 {
@@ -54,3 +54,4 @@ namespace Qwiq.Identity.Tests.Mocks
 
     }
 }
+

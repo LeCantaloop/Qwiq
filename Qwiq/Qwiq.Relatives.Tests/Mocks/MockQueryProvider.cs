@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
-using Microsoft.IE.Qwiq.Linq;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Relatives.Linq;
+using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Relatives.Linq;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
+namespace Microsoft.Qwiq.Relatives.Tests.Mocks
 {
     internal class MockQueryProvider : RelativesAwareTeamFoundationServerWorkItemQueryProvider
     {
@@ -67,3 +67,4 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         }
     }
 }
+

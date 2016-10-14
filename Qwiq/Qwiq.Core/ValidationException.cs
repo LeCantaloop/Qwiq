@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public class ValidationException : InvalidOperationException
     {
@@ -10,3 +10,4 @@ namespace Microsoft.IE.Qwiq
         }
     }
 }
+

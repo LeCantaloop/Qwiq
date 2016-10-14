@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 
-namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockIdentityManagementService2 : IIdentityManagementService2
     {

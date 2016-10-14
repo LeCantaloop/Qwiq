@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class CommonStructureServiceProxy : ICommonStructureService
     {

@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkType : IWorkItemLinkType
     {

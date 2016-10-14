@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Castle.DynamicProxy;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     public class ExceptionHandlingDynamicProxy<T> : IInterceptor
     {
@@ -25,3 +25,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

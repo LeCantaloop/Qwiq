@@ -1,7 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     internal static class LinkTypeEndMapper
     {
@@ -12,3 +12,4 @@ namespace Microsoft.IE.Qwiq
         }
     }
 }
+

@@ -1,6 +1,6 @@
-﻿using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class FieldProxy : IField
     {

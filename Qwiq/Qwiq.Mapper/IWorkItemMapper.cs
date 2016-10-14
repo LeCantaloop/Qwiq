@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
     public interface IWorkItemMapper
     {

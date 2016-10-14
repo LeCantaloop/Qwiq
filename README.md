@@ -1,4 +1,4 @@
-﻿# QWIQ
+# QWIQ
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you! 
 
 ## What can it be used for?
@@ -18,18 +18,18 @@ QWIQ is composed in two libraries: Core and Identity. You can use just Core to h
 
 ### Install Core
 ```
-PM> Install-Package Microsoft.IE.Qwiq.Core
+PM> Install-Package Microsoft.Qwiq.Core
 ```
 
 ### Install Identity
 ```
-PM> Install-Package Microsoft.IE.Qwiq.Identity
+PM> Install-Package Microsoft.Qwiq.Identity
 ```
 
 ### Using QWIQ for work items
 ```csharp
-using Microsoft.IE.Qwiq;
-using Microsoft.IE.Qwiq.Credentials;
+using Microsoft.Qwiq;
+using Microsoft.Qwiq.Credentials;
 
 ...
 
@@ -44,15 +44,15 @@ var store = WorkItemStoreFactory
 var items = store.Query(@"
     SELECT [System.Id] 
     FROM WorkItems 
-    WHERE WorkItemType = 'Bug' AND State = 'Active'", true);​
+    WHERE WorkItemType = 'Bug' AND State = 'Active'", true);?
 ```
 
 ```powershell
-[Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.IE.Qwiq.Core.dll")
+[Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.Qwiq.Core.dll")
 
-$creds = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::CreateAadCredentials()
+$creds = [Microsoft.Qwiq.Credentials.CredentialsFactory]::CreateAadCredentials()
 $uri = [Uri]"[Tfs Tenant Uri]"
-$store = [Microsoft.IE.Qwiq.WorkItemStoreFactory]::GetInstance().Create($uri, $creds)
+$store = [Microsoft.Qwiq.WorkItemStoreFactory]::GetInstance().Create($uri, $creds)
 
 $items = $store.Query(@"
     SELECT [System.Id] 
@@ -70,3 +70,4 @@ $items = $store.Query(@"
 
 
 Once you're familiar with Git and GitHub, clone the repository and start contributing!
+

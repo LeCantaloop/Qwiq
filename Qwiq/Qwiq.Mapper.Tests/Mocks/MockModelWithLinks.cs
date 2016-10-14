@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
     public class MockModelWithLinks : MockModel
@@ -28,3 +28,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         }
     }
 }
+

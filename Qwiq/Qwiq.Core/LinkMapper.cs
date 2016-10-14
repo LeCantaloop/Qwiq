@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Exceptions;
-using Microsoft.IE.Qwiq.Proxies;
+using System;
+using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     internal class LinkMapper
     {
@@ -41,3 +41,4 @@ namespace Microsoft.IE.Qwiq
         }
     }
 }
+

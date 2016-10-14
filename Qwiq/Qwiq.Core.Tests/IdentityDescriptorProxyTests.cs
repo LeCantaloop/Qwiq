@@ -1,9 +1,9 @@
-﻿using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Proxies;
+using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Core.Tests
 {
     public abstract class IdentityDescriptorProxyTests : ContextSpecification
     {
@@ -40,3 +40,4 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         }
     }
 }
+

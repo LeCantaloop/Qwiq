@@ -1,6 +1,6 @@
-﻿using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Linq.Tests.Mocks
 {
     [WorkItemType("Fizz")]
     [WorkItemType("Baz")]
@@ -14,3 +14,4 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
         public int IntField { get; internal set; }
     }
 }
+

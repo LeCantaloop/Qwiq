@@ -1,6 +1,6 @@
-﻿using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Client;
 
-namespace Microsoft.IE.Qwiq.Credentials
+namespace Microsoft.Qwiq.Credentials
 {
     public sealed class TfsCredentials
     {
@@ -12,3 +12,4 @@ namespace Microsoft.IE.Qwiq.Credentials
         internal TfsClientCredentials Credentials { get; private set; }
     }
 }
+

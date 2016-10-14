@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.TeamFoundation.Client;
 
-namespace Microsoft.IE.Qwiq.Credentials
+namespace Microsoft.Qwiq.Credentials
 {
     public static class CredentialsFactory
     {
@@ -27,3 +27,4 @@ namespace Microsoft.IE.Qwiq.Credentials
         }
     }
 }
+

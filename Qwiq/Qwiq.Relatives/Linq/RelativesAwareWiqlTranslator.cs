@@ -1,11 +1,11 @@
 using System.Linq.Expressions;
 using Microsoft.IE.IEPortal.Data.TeamFoundationServer.Linq;
-using Microsoft.IE.Qwiq.Linq;
-using Microsoft.IE.Qwiq.Linq.WiqlExpressions;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Relatives.WiqlExpressions;
+using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Linq.WiqlExpressions;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Relatives.WiqlExpressions;
 
-namespace Microsoft.IE.Qwiq.Relatives.Linq
+namespace Microsoft.Qwiq.Relatives.Linq
 {
     public class RelativesAwareWiqlTranslator : WiqlTranslator
     {

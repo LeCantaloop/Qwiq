@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Exceptions;
+using System;
+using Microsoft.Qwiq.Exceptions;
 using Tfs = Microsoft.TeamFoundation;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class TfsTeamProjectCollectionProxy : IInternalTfsTeamProjectCollection
     {
@@ -46,3 +46,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 }
+

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockQuery : IQuery
     {

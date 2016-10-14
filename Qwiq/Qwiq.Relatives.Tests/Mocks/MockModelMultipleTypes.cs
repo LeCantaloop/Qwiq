@@ -1,6 +1,6 @@
-﻿using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
+namespace Microsoft.Qwiq.Relatives.Tests.Mocks
 {
     [WorkItemType("Fizz")]
     [WorkItemType("Baz")]
@@ -14,3 +14,4 @@ namespace Microsoft.IE.Qwiq.Relatives.Tests.Mocks
         public int Priority { get; internal set; }
     }
 }
+

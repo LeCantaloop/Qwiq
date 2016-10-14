@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface ITeamFoundationIdentity
     {
@@ -16,3 +16,4 @@ namespace Microsoft.IE.Qwiq
         int UniqueUserId { get; }
     }
 }
+

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class WorkItemLinkAttribute : Attribute
@@ -16,3 +16,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         public Type WorkItemType { get; }
     }
 }
+

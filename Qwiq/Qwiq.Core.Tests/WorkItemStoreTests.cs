@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Core.Tests.Mocks;
-using Microsoft.IE.Qwiq.Proxies;
+using Microsoft.Qwiq.Core.Tests.Mocks;
+using Microsoft.Qwiq.Proxies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Core.Tests
 {
     public abstract class WorkItemStoreTests : ContextSpecification
     {
@@ -129,3 +129,4 @@ namespace Microsoft.IE.Qwiq.Core.Tests
         }
     }
 }
+

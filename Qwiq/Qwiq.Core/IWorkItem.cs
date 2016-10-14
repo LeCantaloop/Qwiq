@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     /// <summary>
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference

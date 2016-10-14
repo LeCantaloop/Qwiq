@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     internal class InvalidOperationExceptionMapper : VssExceptionMapper
     {
@@ -15,3 +15,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Linq.Tests.Mocks;
-using Microsoft.IE.Qwiq.Linq.Visitors;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Linq.Visitors;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mocks;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Linq.Tests
 {
     public abstract class QueryTestsBase : ContextSpecification
     {

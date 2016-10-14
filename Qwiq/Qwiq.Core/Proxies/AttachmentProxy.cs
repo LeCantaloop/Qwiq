@@ -1,7 +1,7 @@
 using System;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class AttachmentProxy : IAttachment
     {

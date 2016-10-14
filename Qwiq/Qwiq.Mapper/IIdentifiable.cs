@@ -1,7 +1,8 @@
-﻿namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
     public interface IIdentifiable
     {
         int Id { get; }
     }
 }
+

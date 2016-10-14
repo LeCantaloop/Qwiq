@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     public interface IExceptionMapper
     {
         Exception Map(Exception ex);
     }
 }
+

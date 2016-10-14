@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
+namespace Microsoft.Qwiq.Identity.Linq.Visitors
 {
     public interface IIdentityMapper
     {

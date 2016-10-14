@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +6,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Web.Compilation;
 using Microsoft.IE.IEPortal.Data.TeamFoundationServer.Linq;
-using Microsoft.IE.Qwiq.Linq;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
-using Microsoft.IE.Qwiq.Relatives.WiqlExpressions;
+using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Relatives.WiqlExpressions;
 
-namespace Microsoft.IE.Qwiq.Relatives.Linq
+namespace Microsoft.Qwiq.Relatives.Linq
 {
     public class RelativesAwareTeamFoundationServerWorkItemQueryProvider : TeamFoundationServerWorkItemQueryProvider
     {

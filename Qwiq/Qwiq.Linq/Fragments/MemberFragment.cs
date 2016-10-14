@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Mapper;
+using System;
+using Microsoft.Qwiq.Mapper;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class MemberFragment : IFragment
     {
@@ -26,3 +26,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         }
     }
 }
+

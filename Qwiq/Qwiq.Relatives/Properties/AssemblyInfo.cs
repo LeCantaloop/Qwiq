@@ -1,15 +1,15 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.IE.Qwiq.Relatives")]
-[assembly: AssemblyDescription("Provides ancestor and descendent capability to Microsoft.IE.Qwiq.Linq")]
+[assembly: AssemblyTitle("Microsoft.Qwiq.Relatives")]
+[assembly: AssemblyDescription("Provides ancestor and descendent capability to Microsoft.Qwiq.Linq")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Microsoft.IE.Qwiq")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyProduct("Microsoft.Qwiq")]
+[assembly: AssemblyCopyright("Copyright � Microsoft 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,3 +20,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b6001d84-9bfc-40ab-a29c-3faef3154456")]
+

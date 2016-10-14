@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Castle.DynamicProxy;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     public static class ExceptionHandlingDynamicProxyFactory
     {
@@ -35,3 +35,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

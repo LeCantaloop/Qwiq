@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Identity.Mapper
+namespace Microsoft.Qwiq.Identity.Mapper
 {
     internal struct WorkItemWithFields
     {

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class PropertyReflector : PropertyReflectorBase
     {
@@ -60,3 +60,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         }
     }
 }
+

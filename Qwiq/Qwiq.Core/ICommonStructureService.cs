@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface ICommonStructureService
     {
@@ -14,3 +14,4 @@ namespace Microsoft.IE.Qwiq
         IEnumerable<IProjectInfo> ListAllProjects();
     }
 }
+

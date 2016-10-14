@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockProject : IProject
     {

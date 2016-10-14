@@ -1,6 +1,6 @@
-﻿using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
     public class MockModelWithNoBacking : IIdentifiable
@@ -12,3 +12,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         public string FieldWithNoBackingStore { get; internal set; }
     }
 }
+

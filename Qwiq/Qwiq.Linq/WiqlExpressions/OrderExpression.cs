@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
+namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class OrderExpression : Expression
     {

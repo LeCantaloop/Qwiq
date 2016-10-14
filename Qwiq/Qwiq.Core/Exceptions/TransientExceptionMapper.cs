@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     internal class TransientExceptionMapper: VssExceptionMapper
     {
@@ -11,3 +11,4 @@
         }
     }
 }
+

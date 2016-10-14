@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper;
 
-namespace Microsoft.IE.Qwiq.Relatives.Mapper
+namespace Microsoft.Qwiq.Relatives.Mapper
 {
     public class ParentIdMapperStrategy : WorkItemMapperStrategyBase
     {
@@ -55,3 +55,4 @@ ASOF
         }
     }
 }
+

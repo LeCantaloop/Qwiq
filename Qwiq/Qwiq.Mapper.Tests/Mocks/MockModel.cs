@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using System;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("Baz")]
     public class MockModel : IIdentifiable
@@ -28,3 +28,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Tests.Mocks
         public string NotTheSameName { get; internal set; }
     }
 }
+

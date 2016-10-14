@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.IE.Qwiq.Identity.Attributes;
+using Microsoft.Qwiq.Identity.Attributes;
 
-namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
+namespace Microsoft.Qwiq.Identity.Linq.Visitors
 {
     public class IdentityVisitor : ExpressionVisitor
     {
@@ -73,3 +73,4 @@ namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
         }
     }
 }
+

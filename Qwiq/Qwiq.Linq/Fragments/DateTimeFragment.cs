@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class DateTimeFragment : ConstantFragment
     {
@@ -10,3 +10,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         }
     }
 }
+

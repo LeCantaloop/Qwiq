@@ -1,16 +1,16 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.IE.Qwiq.Identity")]
-[assembly: AssemblyDescription("Provides Microsoft Identity extension methods on top of Microsoft.IE.Qwiq.Core")]
+[assembly: AssemblyTitle("Microsoft.Qwiq.Identity")]
+[assembly: AssemblyDescription("Provides Microsoft Identity extension methods on top of Microsoft.Qwiq.Core")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ieportal@microsoft.com Cantaloop@microsoft.com")]
-[assembly: AssemblyProduct("Microsoft.IE.Qwiq.Identity")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyProduct("Microsoft.Qwiq.Identity")]
+[assembly: AssemblyCopyright("Copyright � Microsoft 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -23,3 +23,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("648010b4-a84b-4ae0-81f6-2de6cf16de69")]
 
 [assembly: InternalsVisibleTo("Qwiq.Identity.Tests")]
+

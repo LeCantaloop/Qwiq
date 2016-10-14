@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-using Microsoft.IE.Qwiq.Credentials;
-using Microsoft.IE.Qwiq.Exceptions;
-using Microsoft.IE.Qwiq.Proxies;
+using Microsoft.Qwiq.Credentials;
+using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IWorkItemStoreFactory
     {
@@ -72,3 +72,4 @@ namespace Microsoft.IE.Qwiq
         }
     }
 }
+

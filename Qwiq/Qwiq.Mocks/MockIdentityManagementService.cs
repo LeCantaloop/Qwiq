@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
@@ -306,3 +306,4 @@ namespace Microsoft.IE.Qwiq.Mocks
         }
     }
 }
+

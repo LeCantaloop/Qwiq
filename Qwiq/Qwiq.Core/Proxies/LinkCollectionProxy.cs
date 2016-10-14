@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class LinkCollectionProxy : ICollection<ILink>
     {
@@ -80,3 +80,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 }
+

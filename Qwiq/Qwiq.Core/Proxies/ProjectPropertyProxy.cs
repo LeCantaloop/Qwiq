@@ -1,6 +1,6 @@
-﻿using Tfs = Microsoft.TeamFoundation.Server;
+using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class ProjectPropertyProxy : IProjectProperty
     {
@@ -12,3 +12,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 }
+

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public abstract class PropertyReflectorBase : IPropertyReflector
     {
@@ -23,3 +23,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         public abstract Attribute GetAttribute(Type type, PropertyInfo property);
     }
 }
+

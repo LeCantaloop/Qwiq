@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     // Boiler plate
     // Developed from http://blogs.msdn.com/b/mattwar/archive/2007/07/30/linq-building-an-iqueryable-provider-part-i.aspx
@@ -64,3 +64,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

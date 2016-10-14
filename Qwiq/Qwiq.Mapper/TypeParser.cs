@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 
-namespace Microsoft.IE.Qwiq.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
     /// <summary>
     /// Helper class that converts objects (as they are returned from the TFS API) to usable types.

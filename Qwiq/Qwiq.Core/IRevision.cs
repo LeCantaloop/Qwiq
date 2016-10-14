@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.IE.Qwiq.Proxies;
+using System.Collections.Generic;
+using Microsoft.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IRevision
     {
@@ -45,3 +45,4 @@ namespace Microsoft.IE.Qwiq
         string GetTagLine();
     }
 }
+

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.IE.Qwiq.Linq.Fragments;
+using Microsoft.Qwiq.Linq.Fragments;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     /// <summary>
     /// This guy holds the results of expression visiting. He allows us to keep lists of sub-expressions
@@ -88,3 +88,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

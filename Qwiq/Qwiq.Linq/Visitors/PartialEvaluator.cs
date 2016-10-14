@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Microsoft.IE.Qwiq.Linq.Visitors
+namespace Microsoft.Qwiq.Linq.Visitors
 {
     /// <summary>
     /// Enables the partial evaluation of queries.
@@ -246,3 +246,4 @@ namespace Microsoft.IE.Qwiq.Linq.Visitors
         }
     }
 }
+

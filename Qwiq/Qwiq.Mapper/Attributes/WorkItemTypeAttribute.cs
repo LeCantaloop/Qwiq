@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class WorkItemTypeAttribute : Attribute
@@ -18,3 +18,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         }
     }
 }
+

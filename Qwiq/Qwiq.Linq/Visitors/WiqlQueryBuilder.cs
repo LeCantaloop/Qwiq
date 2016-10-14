@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq.Visitors
+namespace Microsoft.Qwiq.Linq.Visitors
 {
     public class WiqlQueryBuilder : IWiqlQueryBuilder
     {
@@ -24,3 +24,4 @@ namespace Microsoft.IE.Qwiq.Linq.Visitors
         }
     }
 }
+

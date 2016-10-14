@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class SelectFragment : IFragment
     {
@@ -23,3 +23,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         }
     }
 }
+

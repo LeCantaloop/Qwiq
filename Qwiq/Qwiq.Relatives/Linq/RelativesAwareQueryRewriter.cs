@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
-using Microsoft.IE.Qwiq.Linq.Visitors;
-using Microsoft.IE.Qwiq.Relatives.WiqlExpressions;
+using Microsoft.Qwiq.Linq.Visitors;
+using Microsoft.Qwiq.Relatives.WiqlExpressions;
 
-namespace Microsoft.IE.Qwiq.Relatives.Linq
+namespace Microsoft.Qwiq.Relatives.Linq
 {
     public class RelativesAwareQueryRewriter : QueryRewriter
     {

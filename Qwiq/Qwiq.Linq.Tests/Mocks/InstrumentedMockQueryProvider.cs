@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Linq.Tests.Mocks
 {
     public class InstrumentedMockQueryProvider : IQueryProvider, IDisposable
     {
@@ -60,3 +60,4 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
         }
     }
 }
+

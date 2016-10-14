@@ -1,7 +1,8 @@
-﻿namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface INodeInfo
     {
         string Uri { get; set; }
     }
 }
+

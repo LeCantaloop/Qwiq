@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     public class FieldMapper : IFieldMapper
     {
@@ -56,3 +56,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

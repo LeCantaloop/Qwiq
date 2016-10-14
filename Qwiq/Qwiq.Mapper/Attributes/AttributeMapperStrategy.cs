@@ -1,4 +1,4 @@
-﻿using FastMember;
+using FastMember;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {

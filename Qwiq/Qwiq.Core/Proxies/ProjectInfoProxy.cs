@@ -1,6 +1,6 @@
-﻿using Tfs = Microsoft.TeamFoundation.Server;
+using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class ProjectInfoProxy : IProjectInfo
     {
@@ -14,3 +14,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         public string Uri { get { return _projectInfo.Uri; } set { _projectInfo.Uri = value; } }
     }
 }
+

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Linq.Fragments
+namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class StringFragment : IFragment
     {
@@ -22,3 +22,4 @@ namespace Microsoft.IE.Qwiq.Linq.Fragments
         }
     }
 }
+

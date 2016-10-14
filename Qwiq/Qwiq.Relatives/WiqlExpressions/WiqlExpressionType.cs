@@ -1,4 +1,4 @@
-namespace Microsoft.IE.Qwiq.Relatives.WiqlExpressions
+namespace Microsoft.Qwiq.Relatives.WiqlExpressions
 {
     internal enum WiqlExpressionType
     {

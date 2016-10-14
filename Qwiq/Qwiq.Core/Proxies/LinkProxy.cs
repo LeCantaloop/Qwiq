@@ -1,6 +1,6 @@
-﻿using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies
 {
     public class LinkProxy : ILink
     {
@@ -22,3 +22,4 @@ namespace Microsoft.IE.Qwiq.Proxies
         }
     }
 }
+

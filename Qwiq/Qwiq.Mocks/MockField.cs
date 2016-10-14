@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockField : IField
     {

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     public static class Projector
     {
@@ -19,3 +19,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

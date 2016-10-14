@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Microsoft.IE.Qwiq.Identity.Attributes;
-using Microsoft.IE.Qwiq.Mapper;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Identity.Attributes;
+using Microsoft.Qwiq.Mapper;
+using Microsoft.Qwiq.Mapper.Attributes;
 
 using FastMember;
 
-namespace Microsoft.IE.Qwiq.Identity.Mapper
+namespace Microsoft.Qwiq.Identity.Mapper
 {
     public class BulkIdentityAwareAttributeMapperStrategy : WorkItemMapperStrategyBase
     {
@@ -104,3 +104,4 @@ namespace Microsoft.IE.Qwiq.Identity.Mapper
         }
     }
 }
+

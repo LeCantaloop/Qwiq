@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Exceptions
+namespace Microsoft.Qwiq.Exceptions
 {
     internal class ExceptionMapper : IExceptionMapper
     {
@@ -51,3 +51,4 @@ namespace Microsoft.IE.Qwiq.Exceptions
         }
     }
 }
+

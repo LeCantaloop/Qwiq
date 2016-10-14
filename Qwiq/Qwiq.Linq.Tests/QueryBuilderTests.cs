@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Linq.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Linq.Tests
 {
     public abstract class GenericQueryBuilderTestsBase<T> : QueryTestsBase
     {
@@ -467,3 +467,4 @@ namespace Microsoft.IE.Qwiq.Linq.Tests
         }
     }
 }
+

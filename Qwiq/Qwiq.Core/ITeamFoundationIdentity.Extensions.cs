@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public static class ITeamFoundationIdentityExtensions
     {

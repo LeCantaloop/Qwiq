@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Identity.Linq.Visitors
+namespace Microsoft.Qwiq.Identity.Linq.Visitors
 {
     public class IdentityMapper : IIdentityMapper
     {

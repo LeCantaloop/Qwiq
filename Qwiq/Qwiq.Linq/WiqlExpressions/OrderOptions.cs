@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
+namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     internal enum OrderOptions
     {
@@ -6,3 +6,4 @@
         Descending
     }
 }
+

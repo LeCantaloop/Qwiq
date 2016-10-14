@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface ITfsTeamProjectCollection
     {
@@ -13,3 +13,4 @@ namespace Microsoft.IE.Qwiq
         T GetService<T>();
     }
 }
+

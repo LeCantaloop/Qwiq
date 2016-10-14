@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.IE.Qwiq;
-using Microsoft.IE.Qwiq.Identity;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq;
+using Microsoft.Qwiq.Identity;
+using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Qwiq.Identity.Tests
@@ -158,3 +158,4 @@ namespace Qwiq.Identity.Tests
         }
     }
 }
+

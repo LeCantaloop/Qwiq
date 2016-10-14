@@ -1,8 +1,8 @@
-﻿using Microsoft.IE.Qwiq.Exceptions;
-using Microsoft.IE.Qwiq.Proxies;
+using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies;
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     internal interface IQueryFactory
     {
@@ -29,3 +29,4 @@ namespace Microsoft.IE.Qwiq
         }
     }
 }
+

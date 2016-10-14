@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class ExceptionThrower : IExceptionThrower
     {
@@ -22,3 +22,4 @@ namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
         void ThrowException();
     }
 }
+

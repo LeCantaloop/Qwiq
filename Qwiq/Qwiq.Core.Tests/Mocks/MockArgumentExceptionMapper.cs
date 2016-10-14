@@ -1,7 +1,7 @@
 using System;
-using Microsoft.IE.Qwiq.Exceptions;
+using Microsoft.Qwiq.Exceptions;
 
-namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockArgumentExceptionMapper : IExceptionMapper
     {
@@ -17,3 +17,4 @@ namespace Microsoft.IE.Qwiq.Core.Tests.Mocks
         }
     }
 }
+

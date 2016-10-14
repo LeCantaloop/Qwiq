@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Identity.Attributes
+namespace Microsoft.Qwiq.Identity.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class IdentityFieldAttribute : Attribute

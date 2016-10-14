@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.IE.Qwiq.Linq.Fragments;
-using Microsoft.IE.Qwiq.Linq.WiqlExpressions;
+using Microsoft.Qwiq.Linq.Fragments;
+using Microsoft.Qwiq.Linq.WiqlExpressions;
 
-namespace Microsoft.IE.Qwiq.Linq
+namespace Microsoft.Qwiq.Linq
 {
     // TODO: MATTKOT: Centralize turning the query into text. Right now it is spread across this class and the TranslatedQuery class
 
@@ -321,3 +321,4 @@ namespace Microsoft.IE.Qwiq.Linq
         }
     }
 }
+

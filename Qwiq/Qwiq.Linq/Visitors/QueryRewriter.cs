@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.IE.Qwiq.Linq.WiqlExpressions;
+using Microsoft.Qwiq.Linq.WiqlExpressions;
 
-namespace Microsoft.IE.Qwiq.Linq.Visitors
+namespace Microsoft.Qwiq.Linq.Visitors
 {
     // Developed from http://blogs.msdn.com/b/mattwar/archive/2007/07/30/linq-building-an-iqueryable-provider-part-i.aspx
     /// <summary>
@@ -107,3 +107,4 @@ namespace Microsoft.IE.Qwiq.Linq.Visitors
         }
     }
 }
+

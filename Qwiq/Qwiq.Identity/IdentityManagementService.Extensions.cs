@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.IE.Qwiq.Identity
+namespace Microsoft.Qwiq.Identity
 {
     public static class IdentityManagementServiceExtensions
     {
@@ -111,3 +111,4 @@ namespace Microsoft.IE.Qwiq.Identity
         }
     }
 }
+

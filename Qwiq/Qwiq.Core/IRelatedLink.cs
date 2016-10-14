@@ -1,4 +1,4 @@
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IRelatedLink : ILink
     {
@@ -7,3 +7,4 @@ namespace Microsoft.IE.Qwiq
         string LinkSubType { get; }
     }
 }
+

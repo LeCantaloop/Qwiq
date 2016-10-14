@@ -1,4 +1,4 @@
-﻿namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public enum IdentitySearchFactor
     {
@@ -11,3 +11,4 @@
         Alias = 6
     }
 }
+

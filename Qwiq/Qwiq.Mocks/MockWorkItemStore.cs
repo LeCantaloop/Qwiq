@@ -6,7 +6,7 @@ using System.Threading;
 
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.IE.Qwiq.Mocks
+namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
     {

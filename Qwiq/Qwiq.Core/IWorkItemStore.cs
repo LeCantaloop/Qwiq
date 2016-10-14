@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     /// <summary>
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
@@ -20,3 +20,4 @@ namespace Microsoft.IE.Qwiq
         TimeZone TimeZone { get; }
     }
 }
+

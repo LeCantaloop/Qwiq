@@ -1,6 +1,6 @@
-﻿using Microsoft.IE.Qwiq.Proxies;
+using Microsoft.Qwiq.Proxies;
 
-namespace Microsoft.IE.Qwiq
+namespace Microsoft.Qwiq
 {
     public interface IField
     {

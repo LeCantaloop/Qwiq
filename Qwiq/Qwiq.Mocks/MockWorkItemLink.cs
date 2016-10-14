@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Mapper.Tests
+namespace Microsoft.Qwiq.Mapper.Tests
 {
     public class MockWorkItemLink : IRelatedLink
     {

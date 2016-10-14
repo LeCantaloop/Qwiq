@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.IE.Qwiq.Mapper.Attributes;
+using System;
+using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Linq.Tests.Mocks
 {
     [WorkItemType("MockWorkItem")]
     public class MockModel
@@ -30,3 +30,4 @@ namespace Microsoft.IE.Qwiq.Linq.Tests.Mocks
         public DateTime? UnmappedProperty { get; internal set; }
     }
 }
+

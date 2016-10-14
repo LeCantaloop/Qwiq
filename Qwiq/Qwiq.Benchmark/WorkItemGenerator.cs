@@ -1,5 +1,5 @@
-using Microsoft.IE.Qwiq;
-using Microsoft.IE.Qwiq.Mocks;
+using Microsoft.Qwiq;
+using Microsoft.Qwiq.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -121,7 +121,7 @@ namespace Qwiq.Benchmark
                     value = DateTime.MinValue + randTimeSpan;
                     break;
 
-                case "System.Collections.Generic.ICollection`1[Microsoft.IE.Qwiq.ILink]":
+                case "System.Collections.Generic.ICollection`1[Microsoft.Qwiq.ILink]":
                     var retval = new List<ILink>();
                     value = retval;
                     break;
@@ -137,7 +137,7 @@ namespace Qwiq.Benchmark
                                             .ToArray()));
                     break;
 
-                case "Microsoft.IE.Qwiq.IWorkItemType":
+                case "Microsoft.Qwiq.IWorkItemType":
                     value = new MockWorkItemType("Baz");
                     break;
 

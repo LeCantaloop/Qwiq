@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Relatives.WiqlExpressions
+namespace Microsoft.Qwiq.Relatives.WiqlExpressions
 {
     internal class ChildrenExpression : RelativesExpression
     {
@@ -10,3 +10,4 @@ namespace Microsoft.IE.Qwiq.Relatives.WiqlExpressions
         }
     }
 }
+

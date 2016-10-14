@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 
-namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
+namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class AsOfExpression : Expression
     {
@@ -32,3 +32,4 @@ namespace Microsoft.IE.Qwiq.Linq.WiqlExpressions
         internal DateTime AsOfDateTime { get; private set; }
     }
 }
+

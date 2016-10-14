@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Microsoft.IE.Qwiq.Mapper.Attributes
+namespace Microsoft.Qwiq.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class FieldDefinitionAttribute : Attribute
@@ -22,3 +22,4 @@ namespace Microsoft.IE.Qwiq.Mapper.Attributes
         public bool RequireConversion { get; }
     }
 }
+

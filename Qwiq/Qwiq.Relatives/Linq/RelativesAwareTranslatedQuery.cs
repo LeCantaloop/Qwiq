@@ -1,5 +1,5 @@
-﻿using Microsoft.IE.Qwiq.Linq;
-using Microsoft.IE.Qwiq.Relatives.WiqlExpressions;
+using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Relatives.WiqlExpressions;
 
 namespace Microsoft.IE.IEPortal.Data.TeamFoundationServer.Linq
 {
