@@ -1,4 +1,4 @@
-# QWIQ
+﻿# QWIQ
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you! 
 
 [![Build status](https://ci.appveyor.com/api/projects/status/xlgu9t8gq89ovolu/branch/master?svg=true)](https://ci.appveyor.com/project/MicrosoftEdge/ieportal-qwiq/branch/master)
@@ -38,7 +38,7 @@ using Microsoft.IE.Qwiq.Credentials;
 
 var creds = CredentialsFactory.CreateAadCredentials();
 
-var uri = new Uri("***REMOVED***");
+var uri = new Uri("[Tfs Tenant Uri]");
 
 var store = WorkItemStoreFactory
                 .GetInstance()
@@ -54,7 +54,7 @@ var items = store.Query(@"
 [Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.IE.Qwiq.Core.dll")
 
 $creds = [Microsoft.IE.Qwiq.Credentials.CredentialsFactory]::CreateAadCredentials()
-$uri = [Uri]"***REMOVED***"
+$uri = [Uri]"[Tfs Tenant Uri]"
 $store = [Microsoft.IE.Qwiq.WorkItemStoreFactory]::GetInstance().Create($uri, $creds)
 
 $items = $store.Query(@"
