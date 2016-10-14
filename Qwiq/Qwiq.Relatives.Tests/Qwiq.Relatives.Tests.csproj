@@ -299,7 +299,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="LocalOnlyRelativesQueryTest.cs" />
     <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelNoType.cs" />
     <Compile Include="Mocks\MockParentIdIssue.cs" />
