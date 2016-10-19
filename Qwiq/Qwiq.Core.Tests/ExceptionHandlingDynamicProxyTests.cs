@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
-using Microsoft.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Linq.Visitors;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;

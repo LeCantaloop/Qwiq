@@ -6,8 +6,8 @@ using System.Reflection;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.Qwiq;
+using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Identity.Mapper;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
@@ -16,6 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Qwiq.Benchmark;
 using Qwiq.Identity.Tests.Mocks;
+using Should;
 
 namespace Qwiq.Identity.Tests
 {

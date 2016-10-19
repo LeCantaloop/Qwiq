@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using Microsoft.Qwiq.Core.Tests;
+using Should;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Qwiq.Mapper.Tests

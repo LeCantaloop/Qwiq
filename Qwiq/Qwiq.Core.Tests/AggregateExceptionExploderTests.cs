@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using System.Linq;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {

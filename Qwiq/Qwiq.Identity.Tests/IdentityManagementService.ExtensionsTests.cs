@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using Should;
 using Microsoft.Qwiq;
+using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Identity;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

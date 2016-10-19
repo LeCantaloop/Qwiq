@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {

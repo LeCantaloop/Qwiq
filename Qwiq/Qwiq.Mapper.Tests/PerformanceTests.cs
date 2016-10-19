@@ -5,8 +5,8 @@ using System.Linq;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
+using Microsoft.Qwiq.Core.Tests;
+using Should;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

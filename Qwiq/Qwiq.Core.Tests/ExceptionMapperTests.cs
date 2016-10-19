@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.IE.IEPortal.BehaviorDrivenDevelopmentTools;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestMethod]
         public void exception_is_mapped_to_expected_type()
         {
-            ActualResult.ShouldBeOfType<MockException>();
+            ActualResult.ShouldBeType<MockException>();
         }
     }
 
@@ -128,7 +128,7 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestMethod]
         public void the_exception_should_be_mapped()
         {
-            ActualResult.ShouldBeOfType<MockException>();
+            ActualResult.ShouldBeType<MockException>();
         }
     }
 }
