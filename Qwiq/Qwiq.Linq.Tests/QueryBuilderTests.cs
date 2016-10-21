@@ -122,8 +122,8 @@ namespace Microsoft.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([StringField] = 'mattkot') OR ([StringField] = 'rimuri')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField == "mattkot" || item.StringField == "rimuri").ToString();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([StringField] = 'person1') OR ([StringField] = 'person2')) AND ([Work Item Type] = 'MockWorkItem'))";
+            Actual = Query.Where(item => item.StringField == "person1" || item.StringField == "person2").ToString();
         }
 
         [TestMethod]
@@ -140,14 +140,14 @@ namespace Microsoft.Qwiq.Linq.Tests
         private string[] _values;
         public override void Given()
         {
-            _values = new[] { "mattkot", "rimuri" };
+            _values = new[] { "person1", "person2" };
             base.Given();
         }
 
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('mattkot', 'rimuri')) AND ([Work Item Type] = 'MockWorkItem'))";
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('person1', 'person2')) AND ([Work Item Type] = 'MockWorkItem'))";
             Actual = Query.Where(item => _values.Contains(item.StringField)).ToString();
         }
 
@@ -234,19 +234,19 @@ namespace Microsoft.Qwiq.Linq.Tests
     // ReSharper disable once InconsistentNaming
     public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : QueryBuilderTestsBase
     {
-        private readonly string[] _aliases = { "mattkot", "jweber" };
+        private readonly string[] _aliases = { "person1", "person2" };
         private IEnumerable<string> _filteredAliases;
 
         public override void Given()
         {
-            _filteredAliases = _aliases.Where(alias => alias == "mattkot");
+            _filteredAliases = _aliases.Where(alias => alias == "person1");
             base.Given();
         }
 
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('mattkot')) AND ([Work Item Type] = 'MockWorkItem'))";
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('person1')) AND ([Work Item Type] = 'MockWorkItem'))";
             Actual = Query.Where(item => _filteredAliases.Contains(item.StringField)).ToString();
             base.When();
         }
@@ -348,8 +348,8 @@ namespace Microsoft.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] UNDER 'OS\\CORE-OS Core\\DEP-Developer Ecosystem Platform\\IEP-Internet Explorer Platform\\Rendering and Composition') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField.StartsWith(@"OS\CORE-OS Core\DEP-Developer Ecosystem Platform\IEP-Internet Explorer Platform\Rendering and Composition")).ToString();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] UNDER 'path1\\path2\\path3') AND ([Work Item Type] = 'MockWorkItem'))";
+            Actual = Query.Where(item => item.StringField.StartsWith(@"path1\path2\path3")).ToString();
         }
 
         [TestMethod]

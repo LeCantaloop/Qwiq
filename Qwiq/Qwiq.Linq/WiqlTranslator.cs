@@ -7,7 +7,7 @@ using Microsoft.Qwiq.Linq.WiqlExpressions;
 
 namespace Microsoft.Qwiq.Linq
 {
-    // TODO: MATTKOT: Centralize turning the query into text. Right now it is spread across this class and the TranslatedQuery class
+    // TODO: Centralize turning the query into text. Right now it is spread across this class and the TranslatedQuery class
 
     // WIQL Syntax: http://msdn.microsoft.com/en-US/library/bb130155(v=vs.90).aspx
 
