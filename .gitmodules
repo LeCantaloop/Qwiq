@@ -1,3 +1,0 @@
-[submodule ".tools/AutomaticPackageRestoreMigrationScript"]
-	path = .tools/AutomaticPackageRestoreMigrationScript
-	url = ../../owen2/AutomaticPackageRestoreMigrationScript.git
