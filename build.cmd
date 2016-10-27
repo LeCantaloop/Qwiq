@@ -21,10 +21,10 @@ IF EXIST init.cmd (
 )
 
 :: Install packages we need
-nuget restore .\Qwiq\Qwiq.sln -NonInteractive -DisableParallelProcessing
+nuget restore .\Qwiq.sln -NonInteractive -DisableParallelProcessing
 
 :: Build
-msbuild .\Qwiq\Qwiq.sln /nologo /clp:"NoSummary;Verbosity=minimal" /m /p:Configuration=Release /t:Rebuild
+msbuild .\Qwiq.sln /nologo /clp:"NoSummary;Verbosity=minimal" /m /p:Configuration=Release /t:Rebuild
 IF ERRORLEVEL 1 (
   EXIT /B %ERRORLEVEL%
 )
