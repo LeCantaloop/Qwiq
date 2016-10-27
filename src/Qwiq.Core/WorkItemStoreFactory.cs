@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Proxies;
+using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
@@ -16,7 +17,7 @@ namespace Microsoft.Qwiq
 
         IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials);
     }
-
+    
     public class WorkItemStoreFactory : IWorkItemStoreFactory
     {
         private static readonly Lazy<WorkItemStoreFactory> Instance = new Lazy<WorkItemStoreFactory>(() => new WorkItemStoreFactory());
@@ -52,7 +53,7 @@ namespace Microsoft.Qwiq
 
                     return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemStore>(new WorkItemStoreProxy(tfs, workItemStore, queryFactory));
                 }
-                catch (Exception e)
+                catch (TeamFoundationServerUnauthorizedException e)
                 {
                     System.Diagnostics.Trace.TraceWarning("TFS connection attempt failed with {0}/{1}.\n Exception: {2}", credential.Credentials.Windows.GetType(), credential.Credentials.Federated.GetType(), e);
                 }
@@ -68,6 +69,12 @@ namespace Microsoft.Qwiq
         {
             var tfsServer = new TfsTeamProjectCollection(endpoint, credentials);
             tfsServer.EnsureAuthenticated();
+
+#if DEBUG
+            // The base class TfsConnection integrates various information about the connect with TFS (as well as ways to control that connection)
+            System.Diagnostics.Debug.Print($"Connected to {endpoint}");
+            System.Diagnostics.Debug.Print($"Authenticated: {tfsServer.AuthorizedIdentity.Descriptor.Identifier}");
+#endif
             return tfsServer;
         }
     }
