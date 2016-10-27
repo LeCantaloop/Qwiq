@@ -1,4 +1,8 @@
-# QWIQ
+QWIQ
+=======
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/MicrosoftEdge/Microsoft.Qwiq/blob/master/LICENSE)
+
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you! 
 
 ## What can it be used for?
