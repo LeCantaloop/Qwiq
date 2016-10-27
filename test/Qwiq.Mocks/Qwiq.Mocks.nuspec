@@ -14,9 +14,4 @@
     <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
     <developmentDependency>true</developmentDependency>
   </metadata>
-  <files>
-    <file src="bin\$configuration$\net46\$id$.dll" target="lib\net46\" />
-    <file src="bin\$configuration$\net461\$id$.dll" target="lib\net461\" />
-    <file src="bin\$configuration$\net462\$id$.dll" target="lib\net462\" />
-  </files>
 </package>

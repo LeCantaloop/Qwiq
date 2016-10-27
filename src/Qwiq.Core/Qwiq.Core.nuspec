@@ -15,8 +15,5 @@
   </metadata>
   <files>
     <file src="readme.txt" target="" />
-    <file src="bin\$configuration$\net46\$id$.dll" target="lib\net46\" />
-    <file src="bin\$configuration$\net461\$id$.dll" target="lib\net461\" />
-    <file src="bin\$configuration$\net462\$id$.dll" target="lib\net462\" />
   </files>
 </package>
