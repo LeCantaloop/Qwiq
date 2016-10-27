@@ -4,13 +4,13 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$, Microsoft</owners>
-    <projectUrl>https://github.com/MicrosoftEdge/IEPortal.Qwiq</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <projectUrl>https://github.com/MicrosoftEdge/Microsoft.Qwiq</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>$copyright$</copyright>
-    <tags>IE IEPortal MS Internal Only MicrosoftEdge WebPlatform WebPlatformServices</tags>
+    <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\net46\$id$.dll" target="lib\net46\" />

@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Microsoft.Qwiq.Identity")]
-[assembly: AssemblyDescription("Provides Microsoft Identity extension methods on top of Microsoft.Qwiq.Core")]
+[assembly: AssemblyDescription("Provides identity extension methods on top of Microsoft.Qwiq.Core")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ieportal@microsoft.com Cantaloop@microsoft.com")]
-[assembly: AssemblyProduct("Microsoft.Qwiq.Identity")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("Microsoft.Qwiq")]
+[assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
