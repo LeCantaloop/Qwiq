@@ -1,7 +1,9 @@
 QWIQ
 =======
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/MicrosoftEdge/Microsoft.Qwiq/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/MicrosoftEdge/Microsoft.Qwiq/blob/master/LICENSE) [![AppVeyor](https://img.shields.io/appveyor/ci/MicrosoftEdge/Microsoft-Qwiq.svg)]() [![qwiq MyGet Build Status](https://www.myget.org/BuildSource/Badge/qwiq?identifier=6c2b6200-0621-4b3f-ba6b-b28d2b785765)](https://www.myget.org/)
+
+[![MyGet](https://img.shields.io/myget/qwiq/v/Microsoft.Qwiq.Core.svg)]() [![MyGet](https://img.shields.io/myget/qwiq/vpre/Microsoft.Qwiq.Core.svg)]()
 
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you! 
 
@@ -65,7 +67,7 @@ $items = $store.Query(@"
  * [Setting up Git for Windows and connecting to GitHub](http://help.github.com/win-set-up-git/)
  * [Forking a GitHub repository](http://help.github.com/fork-a-repo/)
  * [The simple guide to GIT guide](http://rogerdudler.github.com/git-guide/)
- * [Open an issue](https://github.com/[Replace Me]/Microsoft.Qwiq/issues) if you encounter a bug or have a suggestion for improvements/features
+ * [Open an issue](https://github.com/MicrosoftEdge/Microsoft.Qwiq/issues) if you encounter a bug or have a suggestion for improvements/features
 
 
 Once you're familiar with Git and GitHub, clone the repository and start contributing!
