@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Microsoft.Qwiq.Linq")]
 [assembly: AssemblyDescription("Add a LINQ query provider to simplify querying for work items")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ieportal@microsoft.com Cantaloop@microsoft.com")]
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Microsoft.Qwiq")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2015")]
+[assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

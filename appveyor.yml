@@ -1,0 +1,28 @@
+configuration: Release
+
+platform: Any CPU
+
+cache:
+  - packages -> **\packages.config
+
+install:
+  - cmd: choco install gitversion.portable -pre -y
+
+before_build:
+  - ps: .\init.ps1
+  - cmd: nuget restore -NonInteractive -DisableParallelProcessing
+  - cmd: gitversion /l console /output buildserver
+
+build:
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
+  parallel: true
+  verbosity: minimal
+
+test:
+  categories:
+    except:
+    - localOnly
+    - Benchmark
+
