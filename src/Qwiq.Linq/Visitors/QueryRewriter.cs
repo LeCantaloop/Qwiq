@@ -33,7 +33,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
 
                 if (projection == null)
                 {
-                    throw new NotSupportedException(String.Format("Performing a select without a lambda is not supported"));
+                    throw new NotSupportedException("Performing a select without a lambda is not supported");
                 }
 
                 return new SelectExpression(node.Type, select, projection);
@@ -63,7 +63,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 return new OrderExpression(node.Type, source, orderSelector, OrderOptions.Descending);
             }
 
-            if (node.Method.DeclaringType == typeof(String) && node.Method.Name == "StartsWith")
+            if (node.Method.DeclaringType == typeof(string) && node.Method.Name == "StartsWith")
             {
                 var subject = Visit(node.Object);
                 var target = Visit(node.Arguments[0]);
@@ -81,7 +81,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
             }
 
             // This is a contains used to do substring matching on a value, such as: bug => bug.Status.Contains("Approved")
-            if (node.Method.DeclaringType == typeof(String) && node.Method.Name == "Contains")
+            if (node.Method.DeclaringType == typeof(string) && node.Method.Name == "Contains")
             {
                 var subject = Visit(node.Object);
                 var target = Visit(node.Arguments[0]);
@@ -99,11 +99,11 @@ namespace Microsoft.Qwiq.Linq.Visitors
 
             if (node.Method.Name == "ToUpper" || node.Method.Name == "ToUpperInvariant" || node.Method.Name == "ToLower" || node.Method.Name == "ToLowerInvariant")
             {
-                throw new NotSupportedException(String.Format("The method {0} is not supported. Queries are case insensitive, so string comparisons should use the regular operators ( ==, > <=, etc.)", node.Method.Name));
+                throw new NotSupportedException($"The method {node.Method.Name} is not supported. Queries are case insensitive, so string comparisons should use the regular operators ( ==, > <=, etc.)");
             }
 
             // Unknown method call
-            throw new NotSupportedException(String.Format("The method '{0}' is not supported", node.Method.Name));
+            throw new NotSupportedException($"The method '{node.Method.Name}' is not supported");
         }
     }
 }
