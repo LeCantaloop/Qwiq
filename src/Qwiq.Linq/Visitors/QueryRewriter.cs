@@ -102,6 +102,11 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 throw new NotSupportedException($"The method {node.Method.Name} is not supported. Queries are case insensitive, so string comparisons should use the regular operators ( ==, > <=, etc.)");
             }
 
+            if (node.Method.Name == "ToString")
+            {
+                return Expression.TypeAs(Visit(node.Object), typeof(string));
+            }
+
             // Unknown method call
             throw new NotSupportedException($"The method '{node.Method.Name}' is not supported");
         }

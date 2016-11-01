@@ -466,5 +466,23 @@ namespace Microsoft.Qwiq.Linq.Tests
             Actual.ShouldEqual(Expected);
         }
     }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_where_clause_with_a_ToString_in_it : GenericQueryBuilderTestsBase<MockModel>
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] = 'SomeValue') AND ([Work Item Type] = 'MockWorkItem'))";
+            Actual = Query.Where(item => item.StringField.ToString() == "SomeValue").ToString();
+        }
+
+        [TestMethod]
+        public void the_ToString_call_is_ignored()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
 }
 
