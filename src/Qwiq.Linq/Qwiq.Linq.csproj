@@ -262,6 +262,7 @@
     <Compile Include="Visitors\WiqlQueryBuilder.cs" />
     <Compile Include="WiqlExpressions\AsOfExpression.cs" />
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />
+    <Compile Include="WiqlExpressions\IndexerExpression.cs" />
     <Compile Include="WiqlExpressions\InExpression.cs" />
     <Compile Include="WiqlExpressions\OrderExpression.cs" />
     <Compile Include="WiqlExpressions\OrderOptions.cs" />

@@ -107,6 +107,13 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 return Expression.TypeAs(Visit(node.Object), typeof(string));
             }
 
+            if (node.Method.Name == "get_Item")
+            {
+                var subject = node.Object;
+                var name = Visit(node.Arguments[0]);
+                return new IndexerExpression(node.Type, subject, name);
+            }
+
             // Unknown method call
             throw new NotSupportedException($"The method '{node.Method.Name}' is not supported");
         }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Should;
 using Microsoft.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Linq.Visitors;
+using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Qwiq.Linq.Tests
@@ -476,6 +478,29 @@ namespace Microsoft.Qwiq.Linq.Tests
 
         [TestMethod]
         public void the_ToString_call_is_ignored()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_where_clause_with_a_type_that_uses_an_indexer : GenericQueryBuilderTestsBase<IWorkItem>
+    {
+        public override void When()
+        {
+            base.When();
+
+            Builder = new WiqlQueryBuilder(new WiqlTranslator(), new PartialEvaluator(), new QueryRewriter());
+            QueryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), Builder);
+            Query = new Query<IWorkItem>(QueryProvider, Builder);
+
+            Expected = "SELECT * FROM WorkItems WHERE (([Some Property] = 'Some Value'))";
+            Actual = Query.Where(item => item["Some Property"].ToString() == "Some Value").ToString();
+        }
+
+        [TestMethod]
+        public void the_index_name_is_used_as_a_field_name()
         {
             Actual.ShouldEqual(Expected);
         }

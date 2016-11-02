@@ -90,6 +90,8 @@ namespace Microsoft.Qwiq.Linq
                         return VisitAsOf((AsOfExpression)expression);
                     case WiqlExpressionType.Contains:
                         return VisitContains((ContainsExpression)expression);
+                    case WiqlExpressionType.Indexer:
+                        return VisitIndexer((IndexerExpression) expression);
                     default:
                         return base.Visit(expression);
                 }
@@ -321,6 +323,13 @@ namespace Microsoft.Qwiq.Linq
                 }
 
                 throw new NotSupportedException(string.Format("The member '{0}' is not supported", node.Member.Name));
+            }
+
+            protected Expression VisitIndexer(IndexerExpression node)
+            {
+                _expressionInProgress.Enqueue(new MemberFragment(_fieldMapper, node.Target.Value.ToString()));
+
+                return node;
             }
         }
     }
