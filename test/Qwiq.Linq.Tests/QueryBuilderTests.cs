@@ -28,13 +28,9 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 
-    public abstract class QueryBuilderTestsBase : GenericQueryBuilderTestsBase<MockModel>
-    {
-    }
-
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_and_expression : QueryBuilderTestsBase
+    public class when_a_query_has_a_where_clause_with_an_and_expression : GenericQueryBuilderTestsBase<MockModel>
     {
         private DateTime _date;
 
@@ -60,7 +56,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_an_asof_clause : QueryBuilderTestsBase
+    public class when_a_query_has_an_asof_clause : GenericQueryBuilderTestsBase<MockModel>
     {
         private DateTime _date;
 
@@ -87,7 +83,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_chained_where_clauses : QueryBuilderTestsBase
+    public class when_a_query_has_chained_where_clauses : GenericQueryBuilderTestsBase<MockModel>
     {
         private DateTime _date;
 
@@ -117,7 +113,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_or_expression : QueryBuilderTestsBase
+    public class when_a_query_has_a_where_clause_with_an_or_expression : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -135,7 +131,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : QueryBuilderTestsBase
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : GenericQueryBuilderTestsBase<MockModel>
     {
         private string[] _values;
         public override void Given()
@@ -160,7 +156,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_on_a_field_that_is_nullable : QueryBuilderTestsBase
+    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -178,7 +174,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_compared_with_null : QueryBuilderTestsBase
+    public class when_a_query_has_a_field_compared_with_null : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -196,7 +192,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_comparison_of_greater_than : QueryBuilderTestsBase
+    public class when_a_query_has_a_field_comparison_of_greater_than : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -214,7 +210,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_uses_the_not_equals_operator : QueryBuilderTestsBase
+    public class when_a_query_uses_the_not_equals_operator : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -232,7 +228,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : QueryBuilderTestsBase
+    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : GenericQueryBuilderTestsBase<MockModel>
     {
         private readonly string[] _aliases = { "person1", "person2" };
         private IEnumerable<string> _filteredAliases;
@@ -260,7 +256,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_constant_has_a_special_wiql_character : QueryBuilderTestsBase
+    public class when_a_constant_has_a_special_wiql_character : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -279,7 +275,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : QueryBuilderTestsBase
+    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : GenericQueryBuilderTestsBase<MockModel>
     {
         private readonly string[] _values = { "Robert O'Sullivan", "Robert O'Laney" };
 
@@ -299,7 +295,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : QueryBuilderTestsBase
+    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<MockModel>
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -312,7 +308,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : QueryBuilderTestsBase
+    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -330,7 +326,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : QueryBuilderTestsBase
+    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : GenericQueryBuilderTestsBase<MockModel>
     {
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
@@ -343,7 +339,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_StartsWith_string_function : QueryBuilderTestsBase
+    public class when_a_where_clause_uses_the_StartsWith_string_function : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -361,7 +357,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_Contains_string_function : QueryBuilderTestsBase
+    public class when_a_where_clause_uses_the_Contains_string_function : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -379,7 +375,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_select_clause_is_used : QueryBuilderTestsBase
+    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -397,7 +393,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_two_select_clauses_are_chained : QueryBuilderTestsBase
+    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
@@ -415,7 +411,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_is_chained_to_a_select_clause : QueryBuilderTestsBase
+    public class when_a_where_clause_is_chained_to_a_select_clause : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
