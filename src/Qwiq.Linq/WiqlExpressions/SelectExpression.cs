@@ -5,31 +5,20 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class SelectExpression : Expression
     {
-        private readonly Type _type;
-
         public Expression Select { get; private set; }
 
         public LambdaExpression Projection { get; private set; }
 
         internal SelectExpression(Type type, Expression select, LambdaExpression projection)
         {
-            _type = type;
+            Type = type;
             Select = select;
             Projection = projection;
         }
 
-        public override Type Type
-        {
-            get { return _type; }
-        }
+        public override Type Type { get; }
 
-        public override ExpressionType NodeType
-        {
-            get
-            {
-                return (ExpressionType)WiqlExpressionType.Select;
-            }
-        }
+        public override ExpressionType NodeType => (ExpressionType)WiqlExpressionType.Select;
     }
 }
 

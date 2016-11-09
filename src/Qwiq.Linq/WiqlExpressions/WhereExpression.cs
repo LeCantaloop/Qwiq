@@ -5,31 +5,16 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class WhereExpression : Expression
     {
-        private readonly Type _type;
-
         internal WhereExpression(Type type, Expression source, Expression filter)
         {
-            _type = type;
-
+            Type = type;
             Source = source;
             Filter = filter;
         }
 
-        public override ExpressionType NodeType
-        {
-            get
-            {
-                return (ExpressionType)WiqlExpressionType.Where;
-            }
-        }
+        public override ExpressionType NodeType => (ExpressionType)WiqlExpressionType.Where;
 
-        public override Type Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
+        public override Type Type { get; }
 
         internal Expression Source { get; private set; }
 

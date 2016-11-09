@@ -5,30 +5,16 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
 {
     public class InExpression : Expression
     {
-        private readonly Type _type;
-
         internal InExpression(Type type, Expression subject, Expression target)
         {
-            _type = type;
-
+            Type = type;
             Subject = subject;
             Target = target;
         }
 
-        public override ExpressionType NodeType
-        {
-            get
-            {
-                return (ExpressionType)WiqlExpressionType.In;
-            }
-        }
-        public override Type Type
-        {
-            get
-            {
-                return _type;
-            }
-        }
+        public override ExpressionType NodeType => (ExpressionType)WiqlExpressionType.In;
+
+        public override Type Type { get; }
 
         internal Expression Subject { get; private set; }
         internal Expression Target { get; private set; }
