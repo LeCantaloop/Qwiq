@@ -207,8 +207,7 @@ namespace Microsoft.Qwiq.Linq
                         Visit(node.Operand);
                         break;
                     default:
-                        throw new NotSupportedException(string.Format("The unary operator '{0}' is not supported",
-                            node.NodeType));
+                        throw new NotSupportedException($"The unary operator '{node.NodeType}' is not supported");
                 }
 
                 return node;
@@ -248,8 +247,7 @@ namespace Microsoft.Qwiq.Linq
                         _expressionInProgress.Enqueue(new StringFragment(" >= "));
                         break;
                     default:
-                        throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported",
-                            node.NodeType));
+                        throw new NotSupportedException($"The binary operator '{node.NodeType}' is not supported");
                 }
 
                 Visit(node.Right);
@@ -299,8 +297,7 @@ namespace Microsoft.Qwiq.Linq
                             _expressionInProgress.Enqueue(new StringFragment(node.Value.ToString()));
                             break;
                         default:
-                            throw new NotSupportedException(string.Format("The constant for '{0}' is not supported",
-                                node.Value));
+                            throw new NotSupportedException($"The constant for '{node.Value}' is not supported");
                     }
                 }
 
@@ -322,7 +319,7 @@ namespace Microsoft.Qwiq.Linq
                     return Visit(node.Expression);
                 }
 
-                throw new NotSupportedException(string.Format("The member '{0}' is not supported", node.Member.Name));
+                throw new NotSupportedException($"The member '{node.Member.Name}' is not supported");
             }
 
             protected Expression VisitIndexer(IndexerExpression node)
