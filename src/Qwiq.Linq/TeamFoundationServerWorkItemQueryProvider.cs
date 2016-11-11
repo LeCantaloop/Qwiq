@@ -11,6 +11,11 @@ namespace Microsoft.Qwiq.Linq
     public class TeamFoundationServerWorkItemQueryProvider : IQueryProvider
     {
         public TeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
+            IWiqlQueryBuilder queryBuilder) : this(workItemStore, queryBuilder, new SimpleWorkItemMapper())
+        {
+        }
+
+        public TeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
             IWiqlQueryBuilder queryBuilder, IWorkItemMapper workItemMapper)
         {
             WorkItemStore = workItemStore;

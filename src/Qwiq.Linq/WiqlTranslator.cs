@@ -21,6 +21,10 @@ namespace Microsoft.Qwiq.Linq
     {
         protected readonly IFieldMapper FieldMapper;
 
+        public WiqlTranslator() : this(new SimpleFieldMapper())
+        {
+        }
+
         public WiqlTranslator(IFieldMapper fieldMapper)
         {
             FieldMapper = fieldMapper;
