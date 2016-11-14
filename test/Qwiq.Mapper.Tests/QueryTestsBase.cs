@@ -8,14 +8,14 @@ using Microsoft.Qwiq.Mocks;
 
 namespace Microsoft.Qwiq.Mapper.Tests
 {
-    public abstract class QueryTestsBase : ContextSpecification
+    public abstract class QueryTestsBase<T> : ContextSpecification
     {
         protected IWorkItemMapper Mapper;
         protected IWiqlQueryBuilder Builder;
         protected IPropertyReflector PropertyReflector;
         protected IWorkItemStore WorkItemStore;
-        protected IQueryProvider QueryProvider;
         protected IFieldMapper FieldMapper;
+        protected IOrderedQueryable<T> Query;
 
         protected virtual IWorkItemStore CreateWorkItemStore()
         {
@@ -88,11 +88,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             Builder = new WiqlQueryBuilder(new WiqlTranslator(FieldMapper), new PartialEvaluator(), new QueryRewriter());
             Mapper = new WorkItemMapper(mapperStrategies);
-        }
 
-        public override void When()
-        {
-            QueryProvider = new MapperTeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
+            var queryProvider = new MapperTeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
+            Query = new Query<T>(queryProvider, Builder);
         }
     }
 }

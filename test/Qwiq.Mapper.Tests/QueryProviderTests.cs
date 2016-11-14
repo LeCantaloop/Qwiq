@@ -1,24 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 
 namespace Microsoft.Qwiq.Mapper.Tests
 {
-    public abstract class QueryProviderTests : QueryTestsBase
-    {
-        protected Query<SimpleMockModel> Query;
-
-        public override void When()
-        {
-            base.When();
-            Query = new Query<SimpleMockModel>(QueryProvider, Builder);
-        }
-    }
-
-    public abstract class SelectTests : QueryProviderTests
+    public abstract class SelectTests : QueryTestsBase<SimpleMockModel>
     {
         protected object Expected;
         protected object Actual;
@@ -59,7 +47,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
     }
 
     [TestClass]
-    public class when_a_where_clause_includes_an_empty_contains_clause : QueryProviderTests
+    public class when_a_where_clause_includes_an_empty_contains_clause : QueryTestsBase<SimpleMockModel>
     {
         private IEnumerable<SimpleMockModel> _actual;
         private InstrumentedMockWorkItemStore _workItemStore;
@@ -73,7 +61,6 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Query = new Query<SimpleMockModel>(QueryProvider, Builder);
             var list = Enumerable.Empty<int>().ToArray();
             _actual = Query.Where(item => list.Contains(item.IntField)).ToList();
         }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,9 +8,8 @@ using Should;
 
 namespace Microsoft.Qwiq.Mapper.Tests
 {
-    public abstract class GenericQueryBuilderTestsBase<T> : QueryTestsBase
+    public abstract class GenericQueryBuilderTestsBase<T> : QueryTestsBase<T>
     {
-        protected Query<T> Query;
         protected string Expected;
         protected string Actual;
         protected IEnumerable<string> FieldNames;
@@ -24,7 +22,6 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Query = new Query<T>(QueryProvider, Builder);
             FieldNames = FieldMapper.GetFieldNames(typeof(T));
         }
     }
