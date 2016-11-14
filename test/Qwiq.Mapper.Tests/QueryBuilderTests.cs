@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,13 +20,13 @@ namespace Microsoft.Qwiq.Mapper.Tests
             return new PropertyInspector(new MockPropertyReflector());
         }
 
-        public override void When()
+        protected override IFieldMapper CreateFieldMapper()
         {
-            base.When();
-            FieldNames = FieldMapper.GetFieldNames(typeof(T));
+            var fieldMapper = base.CreateFieldMapper();
+            FieldNames = fieldMapper.GetFieldNames(typeof(T));
+            return fieldMapper;
         }
     }
-
 
     [TestClass]
     // ReSharper disable once InconsistentNaming

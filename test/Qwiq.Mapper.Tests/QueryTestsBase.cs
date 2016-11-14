@@ -10,11 +10,6 @@ namespace Microsoft.Qwiq.Mapper.Tests
 {
     public abstract class QueryTestsBase<T> : ContextSpecification
     {
-        protected IWorkItemMapper Mapper;
-        protected IWiqlQueryBuilder Builder;
-        protected IPropertyReflector PropertyReflector;
-        protected IWorkItemStore WorkItemStore;
-        protected IFieldMapper FieldMapper;
         protected IOrderedQueryable<T> Query;
 
         protected virtual IWorkItemStore CreateWorkItemStore()
@@ -75,22 +70,22 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void Given()
         {
-            WorkItemStore = CreateWorkItemStore();
-            FieldMapper = CreateFieldMapper();
+            var workItemStore = CreateWorkItemStore();
+            var fieldMapper = CreateFieldMapper();
 
             var propertyInspector = CreatePropertyInspector();
 
             var mapperStrategies = new IWorkItemMapperStrategy[]
             {
                 new AttributeMapperStrategy(propertyInspector, new TypeParser()),
-                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+                new WorkItemLinksMapperStrategy(propertyInspector, workItemStore)
             };
 
-            Builder = new WiqlQueryBuilder(new WiqlTranslator(FieldMapper), new PartialEvaluator(), new QueryRewriter());
-            Mapper = new WorkItemMapper(mapperStrategies);
+            var builder = new WiqlQueryBuilder(new WiqlTranslator(fieldMapper), new PartialEvaluator(), new QueryRewriter());
+            var mapper = new WorkItemMapper(mapperStrategies);
 
-            var queryProvider = new MapperTeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
-            Query = new Query<T>(queryProvider, Builder);
+            var queryProvider = new MapperTeamFoundationServerWorkItemQueryProvider(workItemStore, builder, mapper);
+            Query = new Query<T>(queryProvider, builder);
         }
     }
 }
