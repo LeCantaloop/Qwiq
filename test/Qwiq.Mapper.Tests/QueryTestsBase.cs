@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Linq;
@@ -14,48 +13,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         protected virtual IWorkItemStore CreateWorkItemStore()
         {
-            var workItems = new List<IWorkItem>
-            {
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
-                    {
-                        {"ID", 1},
-                        {"IntField", 2}
-                    }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
-                    {
-                        {"ID", 2},
-                        {"IntField", 4}
-                    })
-,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
-                    {
-                        {"ID", 3},
-                        {"IntField", 3}
-                    })
-,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
-                    {
-                        {"ID", 4},
-                        {"IntField", 4}
-                    })
-,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
-                    {
-                        {"ID", 5},
-                        {"IntField", 5}
-                    })
-
-            };
-
-            var links = new[] {
-                new MockWorkItemLinkInfo(0, 3),
-                new MockWorkItemLinkInfo(3, 1),
-                new MockWorkItemLinkInfo(3, 2),
-                new MockWorkItemLinkInfo(0, 4),
-                new MockWorkItemLinkInfo(0, 5)
-            };
-
-            return new MockWorkItemStore(workItems, links);
+            return new MockWorkItemStore();
         }
 
         protected virtual IFieldMapper CreateFieldMapper()

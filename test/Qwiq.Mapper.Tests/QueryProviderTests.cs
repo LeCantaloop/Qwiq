@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
+using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 
@@ -10,9 +11,56 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         protected object Expected;
         protected object Actual;
+
+        protected override IWorkItemStore CreateWorkItemStore()
+        {
+            var workItems = new List<IWorkItem>
+            {
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                {
+                    {"ID", 1},
+                    {"IntField", 2}
+                }),
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                {
+                    {"ID", 2},
+                    {"IntField", 4}
+                })
+                ,
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                {
+                    {"ID", 3},
+                    {"IntField", 3}
+                })
+                ,
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                {
+                    {"ID", 4},
+                    {"IntField", 4}
+                })
+                ,
+                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                {
+                    {"ID", 5},
+                    {"IntField", 5}
+                })
+            };
+
+            var links = new[]
+            {
+                new MockWorkItemLinkInfo(0, 3),
+                new MockWorkItemLinkInfo(3, 1),
+                new MockWorkItemLinkInfo(3, 2),
+                new MockWorkItemLinkInfo(0, 4),
+                new MockWorkItemLinkInfo(0, 5)
+            };
+
+            return new MockWorkItemStore(workItems, links);
+        }
     }
 
     [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class given_a_query_provider_when_a_select_clause_is_used : SelectTests
     {
         public override void When()
@@ -30,6 +78,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
     }
 
     [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class given_a_query_provider_when_two_select_clauses_are_chained : SelectTests
     {
         public override void When()
@@ -47,6 +96,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
     }
 
     [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class when_a_where_clause_includes_an_empty_contains_clause : QueryTestsBase<SimpleMockModel>
     {
         private IEnumerable<SimpleMockModel> _actual;
