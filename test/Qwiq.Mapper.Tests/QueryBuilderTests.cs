@@ -13,7 +13,6 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         protected string Expected;
         protected string Actual;
-        protected IEnumerable<string> FieldNames;
 
         protected override IPropertyInspector CreatePropertyInspector()
         {
@@ -23,7 +22,8 @@ namespace Microsoft.Qwiq.Mapper.Tests
         protected override IFieldMapper CreateFieldMapper()
         {
             var fieldMapper = base.CreateFieldMapper();
-            FieldNames = fieldMapper.GetFieldNames(typeof(T));
+            Expected = "SELECT " + string.Join(", ", fieldMapper.GetFieldNames(typeof(T))) + " FROM WorkItems";
+
             return fieldMapper;
         }
     }
@@ -35,7 +35,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([NullableField] = 1) AND ([Work Item Type] = 'MockWorkItem'))";
+            Expected += " WHERE (([NullableField] = 1) AND ([Work Item Type] = 'MockWorkItem'))";
             Actual = Query.Where(item => item.NullableField.Value == 1).ToString();
         }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem'))";
+            Expected += " WHERE (([Work Item Type] = 'MockWorkItem'))";
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToString();
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem'))";
+            Expected += " WHERE (([Work Item Type] = 'MockWorkItem'))";
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToString();
         }
 
@@ -102,7 +102,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([Id] = 1) AND ([IntField] > 5)))";
+            Expected += " WHERE ((([Id] = 1) AND ([IntField] > 5)))";
             Actual = Query.Where(item => item.Id == 1 && item.IntField > 5).ToString();
         }
 
@@ -120,7 +120,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Baz', 'Buzz', 'Fizz')))";
+            Expected += " WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Baz', 'Buzz', 'Fizz')))";
             Actual = Query.Where(item => item.IntField > 1).ToString();
         }
 
