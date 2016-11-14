@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
@@ -11,12 +10,6 @@ namespace Microsoft.Qwiq.Mapper.Tests
     public abstract class QueryProviderTests : QueryTestsBase
     {
         protected Query<SimpleMockModel> Query;
-
-        public override void Given()
-        {
-            PropertyReflector = new PropertyReflector();
-            base.Given();
-        }
 
         public override void When()
         {
@@ -71,17 +64,16 @@ namespace Microsoft.Qwiq.Mapper.Tests
         private IEnumerable<SimpleMockModel> _actual;
         private InstrumentedMockWorkItemStore _workItemStore;
 
-        public override void Given()
+        protected override IWorkItemStore CreateWorkItemStore()
         {
-            base.Given();
-            _workItemStore = new InstrumentedMockWorkItemStore(WorkItemStore);
-            var queryProvider = new InstrumentedMockQueryProvider(new MapperTeamFoundationServerWorkItemQueryProvider(_workItemStore, Builder, Mapper));
-            Query = new Query<SimpleMockModel>(queryProvider, Builder);
+            _workItemStore = new InstrumentedMockWorkItemStore(base.CreateWorkItemStore());
+            return _workItemStore;
         }
 
         public override void When()
         {
             base.When();
+            Query = new Query<SimpleMockModel>(QueryProvider, Builder);
             var list = Enumerable.Empty<int>().ToArray();
             _actual = Query.Where(item => list.Contains(item.IntField)).ToList();
         }

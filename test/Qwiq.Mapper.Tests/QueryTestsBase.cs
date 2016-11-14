@@ -17,7 +17,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         protected IQueryProvider QueryProvider;
         protected IFieldMapper FieldMapper;
 
-        public override void Given()
+        protected virtual IWorkItemStore CreateWorkItemStore()
         {
             var workItems = new List<IWorkItem>
             {
@@ -60,15 +60,30 @@ namespace Microsoft.Qwiq.Mapper.Tests
                 new MockWorkItemLinkInfo(0, 5)
             };
 
-            WorkItemStore = new MockWorkItemStore(workItems, links);
-            FieldMapper = new CachingFieldMapper(new FieldMapper());
+            return new MockWorkItemStore(workItems, links);
+        }
 
-            var propertyInspector = new PropertyInspector(PropertyReflector);
+        protected virtual IFieldMapper CreateFieldMapper()
+        {
+            return new CachingFieldMapper(new FieldMapper());
+        }
+
+        protected virtual IPropertyInspector CreatePropertyInspector()
+        {
+            return new PropertyInspector(new PropertyReflector());
+        }
+
+        public override void Given()
+        {
+            WorkItemStore = CreateWorkItemStore();
+            FieldMapper = CreateFieldMapper();
+
+            var propertyInspector = CreatePropertyInspector();
+
             var mapperStrategies = new IWorkItemMapperStrategy[]
             {
-                new AttributeMapperStrategy(propertyInspector,
-                    new TypeParser()),
-                    new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+                new AttributeMapperStrategy(propertyInspector, new TypeParser()),
+                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
             };
 
             Builder = new WiqlQueryBuilder(new WiqlTranslator(FieldMapper), new PartialEvaluator(), new QueryRewriter());

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Linq;
+using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
@@ -15,10 +16,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
         protected string Actual;
         protected IEnumerable<string> FieldNames;
 
-        public override void Given()
+        protected override IPropertyInspector CreatePropertyInspector()
         {
-            PropertyReflector = new MockPropertyReflector();
-            base.Given();
+            return new PropertyInspector(new MockPropertyReflector());
         }
 
         public override void When()
