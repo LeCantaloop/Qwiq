@@ -368,11 +368,10 @@
   <ItemGroup>
     <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
     <Compile Include="Mocks\InstrumentedMockWorkItemStore.cs" />
-    <Compile Include="Mocks\MockModelTwo.cs" />
     <Compile Include="Mocks\MockModelMultipleTypes.cs" />
-    <Compile Include="Mocks\MockModelOne.cs" />
-    <Compile Include="Mocks\MockModelOneSubclass.cs" />
-    <Compile Include="Mocks\MockModelOneWithLinks.cs" />
+    <Compile Include="Mocks\MockModel.cs" />
+    <Compile Include="Mocks\MockModelSubclass.cs" />
+    <Compile Include="Mocks\MockModelWithLinks.cs" />
     <Compile Include="Mocks\MockModelWithNoBacking.cs" />
     <Compile Include="Mocks\MockModelWithNoType.cs" />
     <Compile Include="Mocks\MockPropertyReflector.cs" />

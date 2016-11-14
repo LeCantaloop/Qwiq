@@ -15,44 +15,40 @@ namespace Microsoft.Qwiq.Mapper.Tests
         where T : IIdentifiable, new()
     {
         protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
-                                                                                 {
-                                                                                     {
-                                                                                         "DateTimeField",
-                                                                                         new DateTime
-                                                                                         (
-                                                                                         2014,
-                                                                                         1,
-                                                                                         1)
-                                                                                     },
-                                                                                     {
-                                                                                         "Field with Spaces",
-                                                                                         "7"
-                                                                                     },
-                                                                                     {
-                                                                                         "Id",
-                                                                                         7
-                                                                                     },
-                                                                                     {
-                                                                                         "IntField",
-                                                                                         1
-                                                                                     },
-                                                                                     {
-                                                                                         "Issue Type",
-                                                                                         "Code Bug"
-                                                                                     },
-                                                                                     {
-                                                                                         "FieldWithDifferentName",
-                                                                                         "forty-two"
-                                                                                     },
-                                                                                     {
-                                                                                         "NullableField",
-                                                                                         null
-                                                                                     },
-                                                                                     {
-                                                                                         "StringField",
-                                                                                         "sample"
-                                                                                     }
-                                                                                 };
+        {
+            {
+                "DateTimeField",
+                new DateTime(2014, 1, 1)
+            },
+            {
+                "Field with Spaces",
+                "7"
+            },
+            {
+                "Id",
+                7
+            },
+            {
+                "IntField",
+                1
+            },
+            {
+                "Issue Type",
+                "Code Bug"
+            },
+            {
+                "FieldWithDifferentName",
+                "forty-two"
+            },
+            {
+                "NullableField",
+                null
+            },
+            {
+                "StringField",
+                "sample"
+            }
+        };
 
         protected IWorkItemStore WorkItemStore;
 
@@ -87,50 +83,50 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelOneWithLinks>
+    public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelWithLinks>
     {
         public override void Given()
         {
             WorkItemStore =
                 new MockWorkItemStore(
                     new[]
-                        {
-                            new MockWorkItem { Id = 233, Type = new MockWorkItemType { Name = "Baz" } },
-                            new MockWorkItem { Id = 144, Type = new MockWorkItemType { Name = "Baz" } }
-                        });
+                    {
+                        new MockWorkItem {Id = 233, Type = new MockWorkItemType {Name = "Baz"}},
+                        new MockWorkItem {Id = 144, Type = new MockWorkItemType {Name = "Baz"}}
+                    });
 
             var links = new ILink[]
-                            {
-                                new MockWorkItemLink
-                                    {
-                                        LinkTypeEnd =
-                                            new MockWorkItemLinkTypeEnd(
-                                            MockModelOneWithLinks.ForwardLinkName,
-                                            null),
-                                        RelatedWorkItemId = 233
-                                    },
-                                new MockWorkItemLink
-                                    {
-                                        LinkTypeEnd =
-                                            new MockWorkItemLinkTypeEnd(
-                                            MockModelOneWithLinks.ReverseLinkName,
-                                            null),
-                                        RelatedWorkItemId = 144
-                                    }
-                            };
+            {
+                new MockWorkItemLink
+                {
+                    LinkTypeEnd =
+                        new MockWorkItemLinkTypeEnd(
+                            MockModelWithLinks.ForwardLinkName,
+                            null),
+                    RelatedWorkItemId = 233
+                },
+                new MockWorkItemLink
+                {
+                    LinkTypeEnd =
+                        new MockWorkItemLinkTypeEnd(
+                            MockModelWithLinks.ReverseLinkName,
+                            null),
+                    RelatedWorkItemId = 144
+                }
+            };
 
             SourceWorkItems = new IWorkItem[]
-                                  {
-                                      new MockWorkItem(WorkItemBackingStore)
-                                          {
-                                              Type =
-                                                  new MockWorkItemType
-                                                      {
-                                                          Name = "Baz"
-                                                      },
-                                              Links = new MockLinkCollection(links)
-                                          }
-                                  };
+            {
+                new MockWorkItem(WorkItemBackingStore)
+                {
+                    Type =
+                        new MockWorkItemType
+                        {
+                            Name = "Baz"
+                        },
+                    Links = new MockLinkCollection(links)
+                }
+            };
 
             base.Given();
         }
@@ -174,9 +170,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelOneSubclass>
+    public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelSubclass>
     {
-        private MockModelOneSubclass _expected;
+        private MockModelSubclass _expected;
 
         public override void Given()
         {
@@ -184,7 +180,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
 
-            _expected = new MockModelOneSubclass
+            _expected = new MockModelSubclass
             {
                 DateTimeField = new DateTime(2014, 1, 1),
                 FieldWithSpaces = "7",

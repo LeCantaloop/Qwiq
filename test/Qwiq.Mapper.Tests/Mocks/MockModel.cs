@@ -3,8 +3,8 @@ using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
-    [WorkItemType("Baz")]
-    public class MockModelOne : IIdentifiable
+    [WorkItemType("MockWorkItem")]
+    public class MockModel : IIdentifiable
     {
         [FieldDefinition("Id")]
         public virtual int Id { get; internal set; }
@@ -26,6 +26,8 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         [FieldDefinition("FieldWithDifferentName")]
         public string NotTheSameName { get; internal set; }
+
+        public DateTime? UnmappedProperty { get; internal set; }
     }
 }
 

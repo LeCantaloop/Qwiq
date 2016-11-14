@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Attributes;
@@ -30,7 +29,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<MockModelTwo>
+    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<Mocks.MockModel>
     {
         public override void When()
         {
@@ -48,7 +47,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<MockModelTwo>
+    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<Mocks.MockModel>
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -61,7 +60,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<MockModelTwo>
+    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<Mocks.MockModel>
     {
         public override void When()
         {
@@ -79,7 +78,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<MockModelTwo>
+    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<Mocks.MockModel>
     {
         public override void When()
         {
