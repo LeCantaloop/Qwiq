@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Mapper;
 
-namespace Microsoft.Qwiq.Linq
+namespace Microsoft.Qwiq.Mapper
 {
     public class SimpleWorkItemMapper : IWorkItemMapper
     {

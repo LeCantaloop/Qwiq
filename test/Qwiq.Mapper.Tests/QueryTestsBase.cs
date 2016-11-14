@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests;
+using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
 
-namespace Microsoft.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Mapper.Tests
 {
     public abstract class QueryTestsBase : ContextSpecification
     {
@@ -77,7 +77,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
         public override void When()
         {
-            QueryProvider = new TeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
+            QueryProvider = new MapperTeamFoundationServerWorkItemQueryProvider(WorkItemStore, Builder, Mapper);
         }
     }
 }

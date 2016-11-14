@@ -245,11 +245,14 @@
     <Compile Include="Attributes\WorkItemLinkAttribute.cs" />
     <Compile Include="Attributes\WorkItemLinksMapperStrategy.cs" />
     <Compile Include="Attributes\WorkItemTypeAttribute.cs" />
+    <Compile Include="FieldMapper.cs" />
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
+    <Compile Include="MapperTeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleWorkItemMapper.cs" />
     <Compile Include="TypeParser.cs" />
     <Compile Include="WorkItemMapper.cs" />
     <Compile Include="WorkItemMapperStrategyBase.cs" />
@@ -263,6 +266,10 @@
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
       <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
       <Name>Qwiq.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Linq\Qwiq.Linq.csproj">
+      <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
+      <Name>Qwiq.Linq</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

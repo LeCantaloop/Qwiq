@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     class InstrumentedMockWorkItemStore : IWorkItemStore
     {

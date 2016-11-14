@@ -87,7 +87,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelWithLinks>
+    public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelOneWithLinks>
     {
         public override void Given()
         {
@@ -105,7 +105,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                     {
                                         LinkTypeEnd =
                                             new MockWorkItemLinkTypeEnd(
-                                            MockModelWithLinks.ForwardLinkName,
+                                            MockModelOneWithLinks.ForwardLinkName,
                                             null),
                                         RelatedWorkItemId = 233
                                     },
@@ -113,7 +113,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                     {
                                         LinkTypeEnd =
                                             new MockWorkItemLinkTypeEnd(
-                                            MockModelWithLinks.ReverseLinkName,
+                                            MockModelOneWithLinks.ReverseLinkName,
                                             null),
                                         RelatedWorkItemId = 144
                                     }
@@ -174,9 +174,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelSubclass>
+    public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelOneSubclass>
     {
-        private MockModelSubclass _expected;
+        private MockModelOneSubclass _expected;
 
         public override void Given()
         {
@@ -184,7 +184,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
 
-            _expected = new MockModelSubclass
+            _expected = new MockModelOneSubclass
             {
                 DateTimeField = new DateTime(2014, 1, 1),
                 FieldWithSpaces = "7",

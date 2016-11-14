@@ -264,17 +264,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="InstrumentedMockWorkItemStore.cs" />
-    <Compile Include="MockPropertyReflector.cs" />
-    <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
-    <Compile Include="Mocks\MockModel.cs" />
-    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
-    <Compile Include="Mocks\MockModelNoType.cs" />
-    <Compile Include="Mocks\SimpleMockModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryBuilderTests.cs" />
-    <Compile Include="QueryProviderTests.cs" />
-    <Compile Include="QueryTestsBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -289,10 +279,6 @@
       <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
       <Name>Qwiq.Linq</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj">
-      <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
-      <Name>Qwiq.Mapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
       <Project>{db07e690-4b77-414f-91c7-1a48c9f01f24}</Project>
       <Name>Qwiq.Mocks</Name>
@@ -302,6 +288,7 @@
       <Name>Upda</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

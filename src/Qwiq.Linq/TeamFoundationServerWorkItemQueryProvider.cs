@@ -4,28 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.Qwiq.Mapper;
 
 namespace Microsoft.Qwiq.Linq
 {
     public class TeamFoundationServerWorkItemQueryProvider : IQueryProvider
     {
         public TeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
-            IWiqlQueryBuilder queryBuilder) : this(workItemStore, queryBuilder, new SimpleWorkItemMapper())
-        {
-        }
-
-        public TeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
-            IWiqlQueryBuilder queryBuilder, IWorkItemMapper workItemMapper)
+            IWiqlQueryBuilder queryBuilder)
         {
             WorkItemStore = workItemStore;
             WiqlQueryBuilder = queryBuilder;
-            WorkItemMapper = workItemMapper;
         }
 
         protected IWorkItemStore WorkItemStore { get; set; }
 
-        protected IWorkItemMapper WorkItemMapper { get; set; }
 
         protected IWiqlQueryBuilder WiqlQueryBuilder { get; set; }
 
@@ -99,7 +91,7 @@ namespace Microsoft.Qwiq.Linq
         protected virtual IEnumerable ExecuteRawQuery(Type workItemType, string queryString)
         {
             var workItems = WorkItemStore.Query(queryString);
-            return WorkItemMapper.Create(workItemType, workItems);
+            return workItems;
         }
     }
 }

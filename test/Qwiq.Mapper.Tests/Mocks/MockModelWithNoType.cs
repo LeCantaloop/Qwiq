@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks

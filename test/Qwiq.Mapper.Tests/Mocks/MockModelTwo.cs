@@ -1,10 +1,10 @@
 using System;
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("MockWorkItem")]
-    public class MockModel
+    public class MockModelTwo
     {
         [FieldDefinition("ID")]
         public int Id { get; internal set; }

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Should;
-using Microsoft.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
-namespace Microsoft.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Mapper.Tests
 {
     public abstract class QueryProviderTests : QueryTestsBase
     {
@@ -74,7 +75,7 @@ namespace Microsoft.Qwiq.Linq.Tests
         {
             base.Given();
             _workItemStore = new InstrumentedMockWorkItemStore(WorkItemStore);
-            var queryProvider = new InstrumentedMockQueryProvider(new TeamFoundationServerWorkItemQueryProvider(_workItemStore, Builder, Mapper));
+            var queryProvider = new InstrumentedMockQueryProvider(new MapperTeamFoundationServerWorkItemQueryProvider(_workItemStore, Builder, Mapper));
             Query = new Query<SimpleMockModel>(queryProvider, Builder);
         }
 
