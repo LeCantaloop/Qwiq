@@ -9,11 +9,6 @@ namespace Microsoft.Qwiq.Mapper
         protected IWorkItemMapper WorkItemMapper;
 
         public MapperTeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
-            IWiqlQueryBuilder queryBuilder) : this(workItemStore, queryBuilder, new SimpleWorkItemMapper())
-        {
-        }
-
-        public MapperTeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
             IWiqlQueryBuilder queryBuilder, IWorkItemMapper workItemMapper) : base(workItemStore, queryBuilder)
         {
             WorkItemMapper = workItemMapper;
