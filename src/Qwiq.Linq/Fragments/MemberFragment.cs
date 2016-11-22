@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Qwiq.Mapper;
 
 namespace Microsoft.Qwiq.Linq.Fragments
 {

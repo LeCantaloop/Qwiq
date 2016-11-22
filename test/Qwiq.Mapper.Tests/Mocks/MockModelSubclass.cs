@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
-    [WorkItemType("Baz")]
+    [WorkItemType("MockWorkItem")]
     public class MockModelSubclass : MockModel
     {
-        public override string StringField { get { return "42"; } }
+        public override string StringField => "42";
     }
 }
 

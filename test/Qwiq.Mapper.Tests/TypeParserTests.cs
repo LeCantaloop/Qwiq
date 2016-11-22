@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void enum_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -48,7 +48,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -65,7 +65,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -82,7 +82,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -99,7 +99,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -110,13 +110,13 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             Expected = 0d;
-            Actual = TypeParser.Parse(typeof(double), (object)null);
+            Actual = TypeParser.Parse(typeof(double), null);
         }
 
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -133,7 +133,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -150,7 +150,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void default_value_is_returned()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -167,7 +167,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_parsed_as_double()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -184,7 +184,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_null()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -201,7 +201,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_parsed_as_double()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -212,13 +212,13 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             Expected = 7d;
-            Actual = TypeParser.Parse<Nullable<double>>("7");
+            Actual = TypeParser.Parse<double?>("7");
         }
 
         [TestMethod]
         public void value_is_parsed_as_double()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -235,7 +235,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_null()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -252,7 +252,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_parsed_as_int()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -269,7 +269,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_null()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -286,7 +286,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_parsed_as_date()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -303,7 +303,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_empty_string()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -314,13 +314,13 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             Expected = "test string";
-            Actual = TypeParser.Parse<string>((object)"test string");
+            Actual = TypeParser.Parse<string>("test string");
         }
 
         [TestMethod]
         public void value_is_parsed_as_string()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -337,7 +337,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         [TestMethod]
         public void value_is_default()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 
@@ -348,13 +348,13 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             Expected = 7;
-            Actual = TypeParser.Parse<int>((object)7);
+            Actual = TypeParser.Parse<int>(7);
         }
 
         [TestMethod]
         public void value_is_parsed_as_int()
         {
-            Assert.AreEqual(Expected, Actual);
+            Actual.ShouldEqual(Expected);
         }
     }
 }

@@ -1,52 +1,47 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Should;
-using Microsoft.Qwiq.Linq.Tests.Mocks;
+using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Linq.Visitors;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
 namespace Microsoft.Qwiq.Linq.Tests
 {
-    public abstract class GenericQueryBuilderTestsBase<T> : QueryTestsBase
+    public abstract class QueryBuilderTests : ContextSpecification
     {
-        protected Query<T> Query;
         protected string Expected;
         protected string Actual;
-        protected IEnumerable<string> FieldNames;
+        protected IOrderedQueryable<IWorkItem> Query;
 
         public override void Given()
         {
-            PropertyReflector = new MockPropertyReflector();
             base.Given();
-        }
-
-        public override void When()
-        {
-            base.When();
-            Query = new Query<T>(QueryProvider, Builder);
-            FieldNames = FieldMapper.GetFieldNames(typeof(T));
+            var builder = new WiqlQueryBuilder(new WiqlTranslator(), new PartialEvaluator(), new QueryRewriter());
+            var queryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), builder);
+            Query = new Query<IWorkItem>(queryProvider, builder);
         }
     }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_and_expression : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_a_where_clause_with_an_and_expression : QueryBuilderTests
     {
         private DateTime _date;
 
         public override void Given()
         {
-            _date = DateTime.SpecifyKind(new DateTime(2012, 11, 29, 17, 0, 0), DateTimeKind.Utc);
             base.Given();
+            _date = DateTime.SpecifyKind(new DateTime(2012, 11, 29, 17, 0, 0), DateTimeKind.Utc);
         }
 
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([StringField] = 'asdf') AND ([DateTimeField] > '2012-11-29 17:00:00Z')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField == "asdf" && item.DateTimeField > _date).ToString();
+            Expected =
+                "SELECT * FROM WorkItems WHERE ((([Title] = 'asdf') AND ([Changed Date] > '2012-11-29 17:00:00Z')))";
+            Actual = Query.Where(item => item.Title == "asdf" && item.ChangedDate > _date).ToString();
         }
 
         [TestMethod]
@@ -58,7 +53,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_an_asof_clause : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_an_asof_clause : QueryBuilderTests
     {
         private DateTime _date;
 
@@ -72,7 +67,7 @@ namespace Microsoft.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem')) ASOF '2014-06-01 07:00:00Z'";
+            Expected = "SELECT * FROM WorkItems ASOF '2014-06-01 07:00:00Z'";
             Actual = Query.AsOf(_date).ToString();
         }
 
@@ -85,7 +80,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_chained_where_clauses : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_chained_where_clauses : QueryBuilderTests
     {
         private DateTime _date;
 
@@ -98,11 +93,12 @@ namespace Microsoft.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Field with Spaces] = 'asdf') AND ([StringField] = 'String Value') AND ([DateTimeField] > '2012-11-29 17:00:00Z') AND ([Work Item Type] = 'MockWorkItem'))";
+            Expected =
+                "SELECT * FROM WorkItems WHERE (([Title] = 'asdf') AND ([Keywords] = 'String Value') AND ([Created Date] > '2012-11-29 17:00:00Z'))";
             Actual =
-                Query.Where(item => item.FieldWithSpaces == "asdf")
-                    .Where(item => item.StringField == "String Value")
-                    .Where(item => item.DateTimeField > _date)
+                Query.Where(item => item.Title == "asdf")
+                    .Where(item => item.Keywords == "String Value")
+                    .Where(item => item.CreatedDate > _date)
                     .ToString();
         }
 
@@ -115,13 +111,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_or_expression : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_a_where_clause_with_an_or_expression : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([StringField] = 'person1') OR ([StringField] = 'person2')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField == "person1" || item.StringField == "person2").ToString();
+            Expected = "SELECT * FROM WorkItems WHERE ((([Keywords] = 'person1') OR ([Keywords] = 'person2')))";
+            Actual = Query.Where(item => item.Keywords == "person1" || item.Keywords == "person2").ToString();
         }
 
         [TestMethod]
@@ -133,20 +129,21 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : QueryBuilderTests
     {
         private string[] _values;
+
         public override void Given()
         {
-            _values = new[] { "person1", "person2" };
+            _values = new[] {"person1", "person2"};
             base.Given();
         }
 
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('person1', 'person2')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => _values.Contains(item.StringField)).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Keywords] IN ('person1', 'person2')))";
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
         }
 
         [TestMethod]
@@ -156,33 +153,16 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 
+
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_a_field_compared_with_null : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([NullableField] = 1) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.NullableField.Value == 1).ToString();
-        }
-
-        [TestMethod]
-        public void the_value_of_the_field_is_compared()
-        {
-            Actual.ShouldEqual(Expected);
-        }
-    }
-
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_compared_with_null : GenericQueryBuilderTestsBase<MockModel>
-    {
-        public override void When()
-        {
-            base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([NullableField] <> '') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.NullableField != null).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Title] <> ''))";
+            Actual = Query.Where(item => item.Title != null).ToString();
         }
 
         [TestMethod]
@@ -194,13 +174,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_comparison_of_greater_than : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_has_a_field_comparison_of_greater_than : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.IntField > 1).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] > 1))";
+            Actual = Query.Where(item => item.Id > 1).ToString();
         }
 
         [TestMethod]
@@ -212,13 +192,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_uses_the_not_equals_operator : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_uses_the_not_equals_operator : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] <> 1234) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.IntField != 1234).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] <> 1234))";
+            Actual = Query.Where(item => item.Id != 1234).ToString();
         }
 
         [TestMethod]
@@ -230,9 +210,9 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : QueryBuilderTests
     {
-        private readonly string[] _aliases = { "person1", "person2" };
+        private readonly string[] _aliases = {"person1", "person2"};
         private IEnumerable<string> _filteredAliases;
 
         public override void Given()
@@ -244,8 +224,8 @@ namespace Microsoft.Qwiq.Linq.Tests
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('person1')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => _filteredAliases.Contains(item.StringField)).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] IN ('person1')))";
+            Actual = Query.Where(item => _filteredAliases.Contains(item.AssignedTo)).ToString();
             base.When();
         }
 
@@ -258,13 +238,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_constant_has_a_special_wiql_character : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_constant_has_a_special_wiql_character : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] = 'Robert O''Sullivan') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField == "Robert O'Sullivan").ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'Robert O''Sullivan'))";
+            Actual = Query.Where(item => item.AssignedTo == "Robert O'Sullivan").ToString();
 
         }
 
@@ -277,15 +257,15 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : GenericQueryBuilderTestsBase<MockModel>
+    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : QueryBuilderTests
     {
-        private readonly string[] _values = { "Robert O'Sullivan", "Robert O'Laney" };
+        private readonly string[] _values = {"Robert O'Sullivan", "Robert O'Laney"};
 
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] IN ('Robert O''Sullivan', 'Robert O''Laney')) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => _values.Contains(item.StringField)).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] IN ('Robert O''Sullivan', 'Robert O''Laney')))";
+            Actual = Query.Where(item => _values.Contains(item.AssignedTo)).ToString();
         }
 
         [TestMethod]
@@ -295,28 +275,16 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<MockModel>
-    {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void an_argument_exception_is_thrown()
-        {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Query.Where(item => item.UnmappedProperty != null).ToString();
-        }
-    }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem')) ORDER BY [StringField] desc, [DateTimeField] asc";
-            Actual = Query.OrderByDescending(item => item.StringField).ThenBy(bug => bug.DateTimeField).ToString();
+            Expected = "SELECT * FROM WorkItems ORDER BY [Title] desc, [Revised Date] asc";
+            Actual = Query.OrderByDescending(item => item.Title).ThenBy(bug => bug.RevisedDate).ToString();
         }
 
         [TestMethod]
@@ -328,26 +296,26 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : QueryBuilderTests
     {
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void a_NotSupportedException_is_thrown_to_notify_the_developer_that_text_matches_are_case_insensitive()
         {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Query.Where(item => item.StringField.ToUpper() == "TEST").ToString();
+            Query.Where(item => item.Title.ToUpper() == "TEST").ToString();
         }
     }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_StartsWith_string_function : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_where_clause_uses_the_StartsWith_string_function : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] UNDER 'path1\\path2\\path3') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField.StartsWith(@"path1\path2\path3")).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Area Path] UNDER 'path1\\path2\\path3'))";
+            Actual = Query.Where(item => item.AreaPath.StartsWith(@"path1\path2\path3")).ToString();
         }
 
         [TestMethod]
@@ -359,13 +327,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_Contains_string_function : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_where_clause_uses_the_Contains_string_function : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] CONTAINS 'Obsolete') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField.Contains("Obsolete")).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Tags] CONTAINS 'Obsolete'))";
+            Actual = Query.Where(item => item.Tags.Contains("Obsolete")).ToString();
         }
 
         [TestMethod]
@@ -375,51 +343,16 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 
+
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<MockModel>
+    public class when_a_where_clause_is_chained_to_a_select_clause : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToString();
-        }
-
-        [TestMethod]
-        public void the_query_string_contains_all_fields_for_work_item()
-        {
-            Actual.ShouldEqual(Expected);
-        }
-    }
-
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<MockModel>
-    {
-        public override void When()
-        {
-            base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToString();
-        }
-
-        [TestMethod]
-        public void the_query_string_contains_all_fields_for_work_item()
-        {
-            Actual.ShouldEqual(Expected);
-        }
-    }
-
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_is_chained_to_a_select_clause : GenericQueryBuilderTestsBase<MockModel>
-    {
-        public override void When()
-        {
-            base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.IntField > 1).Select(item => new { One = item.IntField, Two = item.IntField }).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] > 1))";
+            Actual = Query.Where(item => item.Id > 1).Select(item => new {One = item.Id, Two = item.Title}).ToString();
         }
 
         [TestMethod]
@@ -431,49 +364,13 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_against_a_type_with_no_workitemtype_attribute : GenericQueryBuilderTestsBase<MockModelNoType>
+    public class when_a_query_has_a_where_clause_with_a_ToString_in_it : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE ((([ID] = 1) AND ([IntField] > 5)))";
-            Actual = Query.Where(item => item.Id == 1 && item.IntField > 5).ToString();
-        }
-
-        [TestMethod]
-        public void it_is_translated_to_a_where_with_no_type_restriction()
-        {
-            Actual.ShouldEqual(Expected);
-        }
-    }
-
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_against_a_type_with_multiple_workitemtype_attributes : GenericQueryBuilderTestsBase<MockModelMultipleTypes>
-    {
-        public override void When()
-        {
-            base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Baz', 'Buzz', 'Fizz')))";
-            Actual = Query.Where(item => item.IntField > 1).ToString();
-        }
-
-        [TestMethod]
-        public void it_is_translated_to_a_where_with_multiple_type_restriction()
-        {
-            Actual.ShouldEqual(Expected);
-        }
-    }
-
-    [TestClass]
-    // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_a_ToString_in_it : GenericQueryBuilderTestsBase<MockModel>
-    {
-        public override void When()
-        {
-            base.When();
-            Expected = "SELECT " + string.Join(", ", FieldNames) + " FROM WorkItems WHERE (([StringField] = 'SomeValue') AND ([Work Item Type] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.StringField.ToString() == "SomeValue").ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] = '42'))";
+            Actual = Query.Where(item => item.Id.ToString() == "42").ToString();
         }
 
         [TestMethod]
@@ -485,16 +382,11 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_a_type_that_uses_an_indexer : GenericQueryBuilderTestsBase<IWorkItem>
+    public class when_a_query_has_a_where_clause_with_a_type_that_uses_an_indexer : QueryBuilderTests
     {
         public override void When()
         {
             base.When();
-
-            Builder = new WiqlQueryBuilder(new WiqlTranslator(), new PartialEvaluator(), new QueryRewriter());
-            QueryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), Builder);
-            Query = new Query<IWorkItem>(QueryProvider, Builder);
-
             Expected = "SELECT * FROM WorkItems WHERE (([Some Property] = 'Some Value'))";
             Actual = Query.Where(item => item["Some Property"].ToString() == "Some Value").ToString();
         }
@@ -506,4 +398,3 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 }
-

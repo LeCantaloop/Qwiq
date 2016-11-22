@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     public class InstrumentedMockQueryProvider : IQueryProvider, IDisposable
     {

@@ -13,7 +13,7 @@ using Microsoft.Qwiq.Relatives.WiqlExpressions;
 
 namespace Microsoft.Qwiq.Relatives.Linq
 {
-    public class RelativesAwareTeamFoundationServerWorkItemQueryProvider : TeamFoundationServerWorkItemQueryProvider
+    public class RelativesAwareTeamFoundationServerWorkItemQueryProvider : MapperTeamFoundationServerWorkItemQueryProvider
     {
         private readonly IFieldMapper _fieldMapper;
 

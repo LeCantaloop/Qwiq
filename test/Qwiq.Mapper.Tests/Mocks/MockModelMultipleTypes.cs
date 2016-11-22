@@ -1,10 +1,11 @@
-using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Linq.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
-    [WorkItemType("SimpleMockWorkItem")]
-    public class SimpleMockModel : IIdentifiable
+    [WorkItemType("Fizz")]
+    [WorkItemType("Baz")]
+    [WorkItemType("Buzz")]
+    public class MockModelMultipleTypes
     {
         [FieldDefinition("ID")]
         public int Id { get; internal set; }

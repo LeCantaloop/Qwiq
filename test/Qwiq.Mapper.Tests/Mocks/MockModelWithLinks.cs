@@ -4,7 +4,7 @@ using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
-    [WorkItemType("Baz")]
+    [WorkItemType("MockWorkItem")]
     public class MockModelWithLinks : MockModel
     {
         public const string ReverseLinkName = "NS.SampleLink-Reverse";
@@ -16,14 +16,14 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
         [WorkItemLink(typeof(MockModel), ReverseLinkName)]
         public IEnumerable<MockModel> Givers
         {
-            get { return (_givers ?? Enumerable.Empty<MockModel>()); }
+            get { return _givers ?? Enumerable.Empty<MockModel>(); }
             internal set { _givers = value; }
         }
 
         [WorkItemLink(typeof(MockModel), ForwardLinkName)]
         public IEnumerable<MockModel> Takers
         {
-            get { return (_takers ?? Enumerable.Empty<MockModel>()); }
+            get { return _takers ?? Enumerable.Empty<MockModel>(); }
             internal set { _takers = value; }
         }
     }
