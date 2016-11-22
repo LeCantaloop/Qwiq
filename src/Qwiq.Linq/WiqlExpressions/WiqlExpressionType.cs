@@ -8,7 +8,8 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
         Order,
         AsOf,
         Contains,
-        Select
+        Select,
+        Indexer
     }
 }
 

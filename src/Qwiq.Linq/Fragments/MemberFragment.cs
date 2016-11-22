@@ -17,7 +17,7 @@ namespace Microsoft.Qwiq.Linq.Fragments
 
         public string Get(Type queryType)
         {
-            return _fieldMapper.GetFieldName(queryType, ParameterName);
+            return "[" + _fieldMapper.GetFieldName(queryType, ParameterName) + "]";
         }
 
         public bool IsValid()

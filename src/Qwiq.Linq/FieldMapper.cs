@@ -20,7 +20,7 @@ namespace Microsoft.Qwiq.Linq
                 type.GetProperties()
                     .SelectMany(property => property.GetCustomAttributes(typeof(FieldDefinitionAttribute), true))
                     .Cast<FieldDefinitionAttribute>();
-            var fieldNames = customAttributes.Select(attrib => "[" + attrib.FieldName + "]");
+            var fieldNames = customAttributes.Select(attrib => attrib.FieldName);
             return fieldNames.OrderBy(name => name);
             // Order alphabetically so string comparisons work and we don't needlessly permute our queries
         }
@@ -36,7 +36,7 @@ namespace Microsoft.Qwiq.Linq
                         + " Either map the '{0}' property or remove it from the query.", propertyName), nameof(propertyName));
             }
 
-            var fieldName = "[" + customAttribute.FieldName + "]";
+            var fieldName = customAttribute.FieldName;
             return fieldName;
         }
 

@@ -252,6 +252,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />
     <Compile Include="QueryExtensions.cs" />
+    <Compile Include="SimpleFieldMapper.cs" />
+    <Compile Include="SimpleWorkItemMapper.cs" />
     <Compile Include="TeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="TranslatedQuery.cs" />
     <Compile Include="TypeSystem.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="Visitors\WiqlQueryBuilder.cs" />
     <Compile Include="WiqlExpressions\AsOfExpression.cs" />
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />
+    <Compile Include="WiqlExpressions\IndexerExpression.cs" />
     <Compile Include="WiqlExpressions\InExpression.cs" />
     <Compile Include="WiqlExpressions\OrderExpression.cs" />
     <Compile Include="WiqlExpressions\OrderOptions.cs" />
