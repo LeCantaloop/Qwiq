@@ -11,7 +11,9 @@ namespace Microsoft.Qwiq.Credentials
             if (!string.IsNullOrEmpty(password))
             {
                 if (!string.IsNullOrEmpty(username))
-                { 
+                {
+                    yield return new TfsCredentials(new TfsClientCredentials(new AadCredential(username, password)) { AllowInteractive = false });
+
                     // Service Identity - Non Interactive
                     yield return  new TfsCredentials(new TfsClientCredentials(new SimpleWebTokenCredential(username, password)) {AllowInteractive = false});
 
