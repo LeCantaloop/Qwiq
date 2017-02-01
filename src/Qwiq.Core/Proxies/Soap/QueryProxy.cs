@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     public class QueryProxy : IQuery
     {

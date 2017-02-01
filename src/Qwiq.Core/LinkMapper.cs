@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Proxies.Soap;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq

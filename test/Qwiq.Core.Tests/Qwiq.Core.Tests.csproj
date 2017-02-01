@@ -293,6 +293,7 @@
     <Compile Include="IContextSpecification.cs" />
     <Compile Include="IdentityDescriptorProxyTests.cs" />
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
+    <Compile Include="IntegrationTests.cs" />
     <Compile Include="Mocks\ExceptionThrower.cs" />
     <Compile Include="Mocks\MockArgumentExceptionMapper.cs" />
     <Compile Include="Mocks\MockException.cs" />

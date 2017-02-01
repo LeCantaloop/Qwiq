@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     /// <summary>
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
@@ -21,8 +23,8 @@ namespace Microsoft.Qwiq.Proxies
 
         public string AssignedTo
         {
-            get { return _item["Assigned To"].ToString(); }
-            set { _item["Assigned To"] = value; }
+            get { return _item[Tfs.CoreFieldReferenceNames.AssignedTo].ToString(); }
+            set { _item[Tfs.CoreFieldReferenceNames.AssignedTo] = value; }
         }
 
         /// <summary>
@@ -180,7 +182,7 @@ namespace Microsoft.Qwiq.Proxies
         /// <summary>
         /// Gets the integer that represents the revision number of this work item.
         /// </summary>
-        public int Revision
+        public long Revision
         {
             get { return _item.Revision; }
         }
@@ -211,8 +213,8 @@ namespace Microsoft.Qwiq.Proxies
 
         public string Keywords
         {
-            get { return (string)_item["Keywords"]; }
-            set { _item["Keywords"] = value; }
+            get { return (string)_item[WorkItemFields.Keywords]; }
+            set { _item[WorkItemFields.Keywords] = value; }
         }
 
         /// <summary>
@@ -244,7 +246,7 @@ namespace Microsoft.Qwiq.Proxies
             get { return _item.Uri; }
         }
 
-        public int Rev
+        public long Rev
         {
             get { return _item.Rev; }
         }

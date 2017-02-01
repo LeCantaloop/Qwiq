@@ -91,7 +91,7 @@ namespace Microsoft.Qwiq
         /// </summary>
         int RelatedLinkCount { get; }
 
-        int Rev { get; }
+        long Rev { get; }
 
         /// <summary>
         /// Gets a System.DateTime object that represents the revision date and time
@@ -102,7 +102,7 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets the integer that represents the revision number of this work item.
         /// </summary>
-        int Revision { get; }
+        long Revision { get; }
 
         /// <summary>
         /// Gets an object that represents a collection of valid revision numbers for this work

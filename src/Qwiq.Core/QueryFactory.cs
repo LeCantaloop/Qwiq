@@ -1,5 +1,8 @@
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Proxies.Soap;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq
@@ -9,23 +12,51 @@ namespace Microsoft.Qwiq
         IQuery Create(string wiql, bool dayPrecision);
     }
 
-    internal class QueryFactory : IQueryFactory
+    namespace Microsoft.Qwiq.Soap
     {
-        private readonly Tfs.WorkItemStore _store;
-
-        private QueryFactory(Tfs.WorkItemStore store)
+        internal class QueryFactory : IQueryFactory
         {
-            _store = store;
+            private readonly Tfs.WorkItemStore _store;
+
+            private QueryFactory(Tfs.WorkItemStore store)
+            {
+                _store = store;
+            }
+
+            public static IQueryFactory GetInstance(Tfs.WorkItemStore store)
+            {
+                return new QueryFactory(store);
+            }
+
+            public IQuery Create(string wiql, bool dayPrecision)
+            {
+                return
+                    ExceptionHandlingDynamicProxyFactory.Create<IQuery>(
+                        new QueryProxy(new Tfs.Query(_store, wiql, null, dayPrecision)));
+            }
         }
+    }
 
-        public static QueryFactory GetInstance(Tfs.WorkItemStore store)
+    namespace Microsoft.Qwiq.Rest
+    {
+        internal class QueryFactory : IQueryFactory
         {
-            return new QueryFactory(store);
-        }
+            private readonly WorkItemTrackingHttpClient _store;
 
-        public IQuery Create(string wiql, bool dayPrecision)
-        {
-            return ExceptionHandlingDynamicProxyFactory.Create<IQuery>(new QueryProxy(new Tfs.Query(_store, wiql, null, dayPrecision)));
+            private QueryFactory(WorkItemTrackingHttpClient store)
+            {
+                _store = store;
+            }
+
+            public static IQueryFactory GetInstance(WorkItemTrackingHttpClient store)
+            {
+                return new QueryFactory(store);
+            }
+
+            public IQuery Create(string wiql, bool dayPrecision)
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Microsoft.Qwiq
     internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable
     {
         T GetService<T>();
+
+        T GetClient<T>();
     }
 }
 

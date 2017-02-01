@@ -368,8 +368,8 @@
   <ItemGroup>
     <Compile Include="Mocks\InstrumentedMockQueryProvider.cs" />
     <Compile Include="Mocks\InstrumentedMockWorkItemStore.cs" />
-    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModel.cs" />
+    <Compile Include="Mocks\MockModelMultipleTypes.cs" />
     <Compile Include="Mocks\MockModelSubclass.cs" />
     <Compile Include="Mocks\MockModelWithLinks.cs" />
     <Compile Include="Mocks\MockModelWithNoBacking.cs" />
@@ -390,10 +390,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Qwiq.Linq\Qwiq.Linq.csproj">
-      <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
-      <Name>Qwiq.Linq</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Benchmark\Qwiq.Benchmark.csproj">
       <Project>{d9ed32d7-03fa-468b-ad1a-249cef9c6cdb}</Project>
       <Name>Qwiq.Benchmark</Name>
@@ -401,6 +397,10 @@
     <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj">
       <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
       <Name>Qwiq.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Qwiq.Linq\Qwiq.Linq.csproj">
+      <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
+      <Name>Qwiq.Linq</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj">
       <Project>{016e8d93-4195-4639-bcd5-77633e8e1681}</Project>

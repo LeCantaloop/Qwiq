@@ -1,5 +1,7 @@
 using System;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies.Soap;
+
 using Tfs = Microsoft.TeamFoundation;
 
 namespace Microsoft.Qwiq.Proxies
@@ -29,6 +31,11 @@ namespace Microsoft.Qwiq.Proxies
         public T GetService<T>()
         {
             return _tfs.GetService<T>();
+        }
+
+        public T GetClient<T>()
+        {
+            return _tfs.GetClient<T>();
         }
 
         protected virtual void Dispose(bool disposing)

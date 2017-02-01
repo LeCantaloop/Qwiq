@@ -3,24 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Proxies;
+using TfsSoap = Microsoft.Qwiq.Proxies.Soap;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
-    public abstract class WorkItemStoreTests : ContextSpecification
+    public abstract class WorkItemStoreTests<T> : ContextSpecification
+        where T : IWorkItemStore
     {
         protected IWorkItemStore WorkItemStore;
         internal MockQueryFactory QueryFactory;
 
+        protected abstract T Create();
+
         public override void Given()
         {
-            WorkItemStore = new WorkItemStoreProxy(null, null, QueryFactory);
+            WorkItemStore = Create();
+        }
+
+        public override void Cleanup()
+        {
+            WorkItemStore.Dispose();
+        }
+    }
+
+    public abstract class WorkItemStoreSoapTests : WorkItemStoreTests<TfsSoap.WorkItemStoreProxy>
+    {
+        protected override TfsSoap.WorkItemStoreProxy Create()
+        {
+            return new TfsSoap.WorkItemStoreProxy(null, null, QueryFactory);
         }
     }
 
     [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_no_ids : WorkItemStoreTests
+    public class given_an_IWorkItemStore_and_a_query_with_no_ids : WorkItemStoreSoapTests
     {
         private IEnumerable<IWorkItem> _actual;
 
@@ -49,7 +66,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_one_id : WorkItemStoreTests
+    public class given_an_IWorkItemStore_and_a_query_with_one_id : WorkItemStoreSoapTests
     {
         public override void Given()
         {
@@ -76,7 +93,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_two_ids : WorkItemStoreTests
+    public class given_an_IWorkItemStore_and_a_query_with_two_ids : WorkItemStoreSoapTests
     {
         public override void Given()
         {
@@ -103,7 +120,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_an_IWorkItemStore_an_a_query_with_two_ids_and_an_asof_date : WorkItemStoreTests
+    public class given_an_IWorkItemStore_an_a_query_with_two_ids_and_an_asof_date : WorkItemStoreSoapTests
     {
         public override void Given()
         {
