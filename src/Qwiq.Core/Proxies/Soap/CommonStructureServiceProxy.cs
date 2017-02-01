@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+
 using Microsoft.Qwiq.Exceptions;
+
 using Tfs = Microsoft.TeamFoundation.Server;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     public class CommonStructureServiceProxy : ICommonStructureService
     {

@@ -211,11 +211,11 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public int Rev
+        public long Rev
         {
             get
             {
-                return (int)GetValue("Rev");
+                return (long)GetValue("Rev");
             }
             set
             {
@@ -230,9 +230,9 @@ namespace Microsoft.Qwiq.Mocks
             set { SetValue("Revised Date", value); }
         }
 
-        public int Revision
+        public long Revision
         {
-            get { return (int)GetValue("Revision"); }
+            get { return (long)GetValue("Revision"); }
             set { SetValue("Revision", value); }
         }
 

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
+
 using Tfs = Microsoft.TeamFoundation.Framework;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     public class IdentityManagementServiceProxy : IIdentityManagementService
     {

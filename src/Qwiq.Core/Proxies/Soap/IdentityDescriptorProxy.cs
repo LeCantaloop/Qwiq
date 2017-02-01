@@ -1,6 +1,6 @@
 using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     public class IdentityDescriptorProxy : IIdentityDescriptor
     {

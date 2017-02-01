@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     /// <summary>
     /// Wrapper around the TFS RevisionProxy. This exists so that every agent doesn't need to reference

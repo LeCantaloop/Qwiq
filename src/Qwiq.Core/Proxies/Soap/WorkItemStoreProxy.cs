@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
+
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq.Proxies.Soap
 {
     /// <summary>
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
@@ -14,7 +16,7 @@ namespace Microsoft.Qwiq.Proxies
     public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly IQueryFactory _queryFactory;
-        private readonly IInternalTfsTeamProjectCollection _tfs;
+        private IInternalTfsTeamProjectCollection _tfs;
         private readonly TfsWorkItem.WorkItemStore _workItemStore;
 
         internal WorkItemStoreProxy(IInternalTfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
@@ -36,7 +38,8 @@ namespace Microsoft.Qwiq.Proxies
         {
             if (disposing)
             {
-                _tfs.Dispose();
+                _tfs?.Dispose();
+                _tfs = null;
             }
         }
         #endregion

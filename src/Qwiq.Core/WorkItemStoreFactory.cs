@@ -3,21 +3,32 @@ using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
+
 using Microsoft.Qwiq.Proxies;
+using TfsSoap = Microsoft.Qwiq.Proxies.Soap;
+using TfsRest = Microsoft.Qwiq.Proxies.Rest;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace Microsoft.Qwiq
 {
     public interface IWorkItemStoreFactory
     {
-        IWorkItemStore Create(Uri endpoint, TfsCredentials credentials);
+        IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default);
 
-        IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials);
+        IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials, ClientType type = ClientType.Default);
     }
-    
+
+    public enum ClientType
+    {
+        Default,
+        Soap,
+        Rest
+    }
+
     public class WorkItemStoreFactory : IWorkItemStoreFactory
     {
         private static readonly Lazy<WorkItemStoreFactory> Instance = new Lazy<WorkItemStoreFactory>(() => new WorkItemStoreFactory());
@@ -31,14 +42,14 @@ namespace Microsoft.Qwiq
             return Instance.Value;
         }
 
-        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials)
+        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default)
         {
-            return Create(endpoint, new [] { credentials });
+            return Create(endpoint, new[] { credentials }, type);
         }
 
-        public IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials)
+        public IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials, ClientType type = ClientType.Default)
         {
-            Func<WorkItemStore, IQueryFactory> queryFactoryFunc = QueryFactory.GetInstance;
+
             foreach (var credential in credentials)
             {
                 try
@@ -48,10 +59,20 @@ namespace Microsoft.Qwiq
                     System.Diagnostics.Trace.TraceInformation("TFS connection attempt success with {0}/{1}.", credential.Credentials.Windows.GetType(), credential.Credentials.Federated.GetType());
 
                     var tfs = ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(tfsNative));
-                    var workItemStore = tfs.GetService<WorkItemStore>();
-                    var queryFactory = queryFactoryFunc.Invoke(workItemStore);
 
-                    return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemStore>(new WorkItemStoreProxy(tfs, workItemStore, queryFactory));
+                    IWorkItemStore wis = null;
+                    switch (type)
+                    {
+                        case ClientType.Rest:
+                            wis = CreateRestWorkItemStore(tfs);
+                            break;
+                        case ClientType.Soap:
+                        case ClientType.Default:
+                            wis = CreateSoapWorkItemStore(tfs);
+                            break;
+                    }
+
+                    return ExceptionHandlingDynamicProxyFactory.Create(wis);
                 }
                 catch (TeamFoundationServerUnauthorizedException e)
                 {
@@ -61,6 +82,20 @@ namespace Microsoft.Qwiq
 
             System.Diagnostics.Trace.TraceError("All TFS connection attempts failed.");
             throw new AccessDeniedException("Invalid credentials");
+        }
+
+        private static IWorkItemStore CreateRestWorkItemStore(IInternalTfsTeamProjectCollection tfs)
+        {
+            var workItemStore = tfs.GetClient<WorkItemTrackingHttpClient>();            
+            return new TfsRest.WorkItemStoreProxy(tfs, workItemStore);
+        }
+
+        private static IWorkItemStore CreateSoapWorkItemStore(IInternalTfsTeamProjectCollection tfs)
+        {
+
+            var workItemStore = tfs.GetService<WorkItemStore>();
+            var queryFactory = Microsoft.Qwiq.Soap.QueryFactory.GetInstance(workItemStore);
+            return new TfsSoap.WorkItemStoreProxy(tfs, workItemStore, queryFactory);
         }
 
         private static TfsTeamProjectCollection ConnectToTfsCollection(
