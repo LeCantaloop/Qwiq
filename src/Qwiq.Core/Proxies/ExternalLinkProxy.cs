@@ -20,10 +20,5 @@ namespace Microsoft.Qwiq.Proxies
         {
             get { return this.externalLink.ArtifactLinkType.Name; }
         }
-
-        //public Tfs.RegisteredLinkType ArtifactLinkType
-        //{
-        //    get { return _hyperLink.ArtifactLinkType; }
-        //}
     }
 }
