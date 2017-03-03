@@ -259,6 +259,7 @@
     <Compile Include="IField.cs" />
     <Compile Include="IFieldCollection.cs" />
     <Compile Include="IFieldConflict.cs" />
+    <Compile Include="IExternalLink.cs" />
     <Compile Include="IHyperlink.cs" />
     <Compile Include="IIdentityDescriptor.cs" />
     <Compile Include="IIdentityManagementService.cs" />
@@ -292,6 +293,7 @@
     <Compile Include="Proxies\FieldCollectionProxy.cs" />
     <Compile Include="Proxies\FieldConflictProxy.cs" />
     <Compile Include="Proxies\FieldProxy.cs" />
+    <Compile Include="Proxies\ExternalLinkProxy.cs" />
     <Compile Include="Proxies\HyperlinkProxy.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="Proxies\IdentityManagementServiceProxy.cs" />
@@ -314,6 +316,7 @@
     <Compile Include="Proxies\WorkItemStoreProxy.cs" />
     <Compile Include="Proxies\WorkItemTypeProxy.cs" />
     <Compile Include="QueryFactory.cs" />
+    <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="ValidationException.cs" />
