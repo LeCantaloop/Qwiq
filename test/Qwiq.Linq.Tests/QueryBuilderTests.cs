@@ -327,6 +327,24 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
+    public class when_a_where_clause_uses_the_ever_function : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] EVER 'alias'))";
+            Actual = Query.Where(item => item.AssignedTo.WasEver("alias")).ToString();
+        }
+
+        [TestMethod]
+        public void the_WasEver_is_translated_to_an_ever_operator()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class when_a_where_clause_uses_the_Contains_string_function : QueryBuilderTests
     {
         public override void When()
