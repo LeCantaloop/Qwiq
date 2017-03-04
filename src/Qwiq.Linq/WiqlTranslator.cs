@@ -92,6 +92,8 @@ namespace Microsoft.Qwiq.Linq
                         return VisitContains((ContainsExpression)expression);
                     case WiqlExpressionType.Indexer:
                         return VisitIndexer((IndexerExpression) expression);
+                    case WiqlExpressionType.WasEver:
+                        return VisitWasEver((WasEverExpression)expression);
                     default:
                         return base.Visit(expression);
                 }
@@ -143,6 +145,19 @@ namespace Microsoft.Qwiq.Linq
                 Visit(expression.Subject);
 
                 _expressionInProgress.Enqueue(new StringFragment(" UNDER "));
+
+                Visit(expression.Target);
+                _expressionInProgress.Enqueue(new GroupEndFragment());
+
+                return expression;
+            }
+
+            protected virtual Expression VisitWasEver(WasEverExpression expression)
+            {
+                _expressionInProgress.Enqueue(new GroupStartFragment());
+                Visit(expression.Subject);
+
+                _expressionInProgress.Enqueue(new StringFragment(" EVER "));
 
                 Visit(expression.Target);
                 _expressionInProgress.Enqueue(new GroupEndFragment());

@@ -258,6 +258,7 @@
     <Compile Include="Visitors\PartialEvaluator.cs" />
     <Compile Include="Visitors\QueryRewriter.cs" />
     <Compile Include="Visitors\WiqlQueryBuilder.cs" />
+    <Compile Include="WiqlExpressions\WasEverExpression.cs" />
     <Compile Include="WiqlExpressions\AsOfExpression.cs" />
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />
     <Compile Include="WiqlExpressions\IndexerExpression.cs" />

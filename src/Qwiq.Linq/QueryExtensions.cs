@@ -18,6 +18,11 @@ namespace Microsoft.Qwiq.Linq
         {
             return true;
         }
+
+        public static bool WasEver<T>(this T _, T __)
+        {
+            return true;
+        }
     }
 }
 
