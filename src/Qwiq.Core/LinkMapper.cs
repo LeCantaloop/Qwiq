@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Proxies;
 using Microsoft.Qwiq.Proxies.Soap;
@@ -11,36 +12,46 @@ namespace Microsoft.Qwiq
     {
         public Tfs.Link Map(ILink link, Tfs.WorkItem item)
         {
-            if (link.BaseType == BaseLinkType.RelatedLink)
+            switch (link.BaseType)
             {
-                var relatedLink = (IRelatedLink)link;
-                var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, relatedLink.LinkTypeEnd);
-                return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
+                case BaseLinkType.RelatedLink:
+                    var relatedLink = (IRelatedLink)link;
+                    var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, relatedLink.LinkTypeEnd);
+                    return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
+
+                case BaseLinkType.Hyperlink:
+                    var hyperlink = (IHyperlink)link;
+                    return new Tfs.Hyperlink(hyperlink.Location);
+
+                case BaseLinkType.ExternalLink:
+                    var externalLink = (IExternalLink)link;
+                    var registeredLinkType = RegisteredLinkTypeMapper.Map(item.Store, externalLink.ArtifactLinkTypeName);
+                    return new Tfs.ExternalLink(registeredLinkType, externalLink.LinkedArtifactUri);
+
+                default:
+                    throw new ArgumentException("Unknown link type", nameof(link));
             }
-            if (link.BaseType == BaseLinkType.Hyperlink)
-            {
-                var hyperlink = (IHyperlink) link;
-                return new Tfs.Hyperlink(hyperlink.Location);
-            }
-            throw new ArgumentException("Unknown link type", nameof(link));
         }
 
         public ILink Map(Tfs.Link link)
         {
-            if (link.BaseType == Tfs.BaseLinkType.RelatedLink)
+            switch (link.BaseType)
             {
-                var relatedLink = (Tfs.RelatedLink) link;
-                return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLinkProxy(relatedLink));
+                case Tfs.BaseLinkType.RelatedLink:
+                    var relatedLink = (Tfs.RelatedLink)link;
+                    return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLinkProxy(relatedLink));
 
-            }
-            if (link.BaseType == Tfs.BaseLinkType.Hyperlink)
-            {
-                var hyperlink = (Tfs.Hyperlink) link;
-                return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(hyperlink));
-            }
+                case Tfs.BaseLinkType.Hyperlink:
+                    var hyperlink = (Tfs.Hyperlink)link;
+                    return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(hyperlink));
 
-            throw new ArgumentException("Unknown link type", nameof(link));
+                case Tfs.BaseLinkType.ExternalLink:
+                    var externalLink = (Tfs.ExternalLink)link;
+                    return ExceptionHandlingDynamicProxyFactory.Create<IExternalLink>(new ExternalLinkProxy(externalLink));
+
+                default:
+                    throw new ArgumentException("Unknown link type", nameof(link));
+            }
         }
     }
 }
-

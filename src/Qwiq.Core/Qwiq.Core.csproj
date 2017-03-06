@@ -256,6 +256,7 @@
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
+    <Compile Include="IExternalLink.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IFieldCollection.cs" />
     <Compile Include="IFieldConflict.cs" />
@@ -293,6 +294,7 @@
     <Compile Include="Proxies\Rest\WorkItemTypeProxy.cs" />
     <Compile Include="Proxies\Soap\AttachmentProxy.cs" />
     <Compile Include="Proxies\Soap\CommonStructureServiceProxy.cs" />
+    <Compile Include="Proxies\Soap\ExternalLinkProxy.cs" />
     <Compile Include="Proxies\Soap\FieldCollectionProxy.cs" />
     <Compile Include="Proxies\Soap\FieldConflictProxy.cs" />
     <Compile Include="Proxies\Soap\FieldProxy.cs" />
@@ -318,6 +320,7 @@
     <Compile Include="Proxies\Soap\WorkItemTypeProxy.cs" />
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="QueryFactory.cs" />
+    <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="ValidationException.cs" />

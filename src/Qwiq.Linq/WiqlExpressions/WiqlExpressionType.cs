@@ -9,7 +9,8 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
         AsOf,
         Contains,
         Select,
-        Indexer
+        Indexer,
+        WasEver
     }
 }
 
