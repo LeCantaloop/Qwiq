@@ -244,8 +244,6 @@ mode(recursive)
         [TestMethod]
         public void CoreFields_are_equal()
         {
-            
-
             foreach (var field in CoreFields)
             {
                 RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field]);
