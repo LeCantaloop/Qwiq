@@ -1,9 +1,5 @@
 ﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
@@ -13,7 +9,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         internal WorkItemLinkInfoProxy(WorkItemLink item)
         {
-            _item = item;            
+            _item = item;
         }
 
         public bool IsLocked => throw new NotImplementedException();
