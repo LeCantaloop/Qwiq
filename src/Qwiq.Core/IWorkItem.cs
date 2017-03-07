@@ -212,5 +212,17 @@ namespace Microsoft.Qwiq
         /// An ArrayList of the fields in this work item that are not valid.
         /// </returns>
         IEnumerable<IField> Validate();
+
+        /// <summary>
+        /// Applies the server rules for validation and fix up to the work item.
+        /// </summary>
+        /// <param name="doNotUpdateChangedBy">
+        /// If true, will set ChangedBy to the user context of the <see cref="IWorkItemStore"/>.
+        /// If false, ChangedBy will not be modified.
+        /// </param>
+        /// <remarks>
+        /// Use ApplyRules(true) in the case where you want "transparent fix ups".
+        /// </remarks>
+        void ApplyRules(bool doNotUpdateChangedBy = false);
     }
 }

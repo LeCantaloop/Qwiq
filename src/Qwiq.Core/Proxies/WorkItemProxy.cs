@@ -416,6 +416,11 @@ namespace Microsoft.Qwiq.Proxies
                 throw new ServerRejectedChangesException(ex);
             }
         }
+
+        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        {
+            _item.ApplyRules(doNotUpdateChangedBy);
+        }
     }
 }
 
