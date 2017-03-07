@@ -22,11 +22,11 @@ namespace Microsoft.Qwiq
         IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials, ClientType type = ClientType.Default);
     }
 
-    public enum ClientType
+    public enum ClientType : short
     {
-        Default,
-        Soap,
-        Rest
+        Default = 0,
+        Soap = 0,
+        Rest = 1
     }
 
     public class WorkItemStoreFactory : IWorkItemStoreFactory
@@ -60,16 +60,17 @@ namespace Microsoft.Qwiq
 
                     var tfs = ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(tfsNative));
 
-                    IWorkItemStore wis = null;
+                    IWorkItemStore wis;
                     switch (type)
                     {
                         case ClientType.Rest:
                             wis = CreateRestWorkItemStore(tfs);
                             break;
                         case ClientType.Soap:
-                        case ClientType.Default:
                             wis = CreateSoapWorkItemStore(tfs);
                             break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(type));
                     }
 
                     return ExceptionHandlingDynamicProxyFactory.Create(wis);
@@ -86,7 +87,7 @@ namespace Microsoft.Qwiq
 
         private static IWorkItemStore CreateRestWorkItemStore(IInternalTfsTeamProjectCollection tfs)
         {
-            var workItemStore = tfs.GetClient<WorkItemTrackingHttpClient>();            
+            var workItemStore = tfs.GetClient<WorkItemTrackingHttpClient>();
             return new TfsRest.WorkItemStoreProxy(tfs, workItemStore);
         }
 
