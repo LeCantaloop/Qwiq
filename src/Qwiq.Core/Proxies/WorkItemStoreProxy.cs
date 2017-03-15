@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+
 using Microsoft.Qwiq.Exceptions;
+
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Proxies
@@ -14,18 +16,23 @@ namespace Microsoft.Qwiq.Proxies
     public class WorkItemStoreProxy : IWorkItemStore
     {
         private readonly IQueryFactory _queryFactory;
+
         private readonly IInternalTfsTeamProjectCollection _tfs;
+
         private readonly TfsWorkItem.WorkItemStore _workItemStore;
 
-        internal WorkItemStoreProxy(IInternalTfsTeamProjectCollection tfs, TfsWorkItem.WorkItemStore workItemStore, IQueryFactory queryFactory)
+        internal WorkItemStoreProxy(
+            IInternalTfsTeamProjectCollection tfs,
+            TfsWorkItem.WorkItemStore workItemStore,
+            IQueryFactory queryFactory)
         {
             _tfs = tfs;
             _workItemStore = workItemStore;
             _queryFactory = queryFactory;
-
         }
 
         #region IDisposable
+
         public void Dispose()
         {
             Dispose(true);
@@ -39,23 +46,40 @@ namespace Microsoft.Qwiq.Proxies
                 _tfs.Dispose();
             }
         }
-        #endregion
+
+        #endregion IDisposable
+
+        public IEnumerable<IProject> Projects
+        {
+            get
+            {
+                return
+                    _workItemStore.Projects.Cast<TfsWorkItem.Project>()
+                                  .Select(
+                                      item =>
+                                          ExceptionHandlingDynamicProxyFactory.Create<IProject>(new ProjectProxy(item)));
+            }
+        }
 
         public ITfsTeamProjectCollection TeamProjectCollection
         {
-            get { return _tfs; }
+            get
+            {
+                return _tfs;
+            }
         }
 
-        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
+        public TimeZone TimeZone => _workItemStore.TimeZone;
+
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
         {
-            try
+            get
             {
-                var query = _queryFactory.Create(wiql, dayPrecision);
-                return query.RunLinkQuery();
-            }
-            catch (TfsWorkItem.ValidationException ex)
-            {
-                throw new ValidationException(ex);
+                return
+                    _workItemStore.WorkItemLinkTypes.Select(
+                        item =>
+                            ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(
+                                new WorkItemLinkTypeProxy(item)));
             }
         }
 
@@ -95,29 +119,23 @@ namespace Microsoft.Qwiq.Proxies
             return Query(new[] { id }, asOf).SingleOrDefault();
         }
 
-        public IEnumerable<IProject> Projects
+        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
-            get
+            try
             {
-                return
-                    _workItemStore.Projects.Cast<TfsWorkItem.Project>()
-                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new ProjectProxy(item)));
+                var query = _queryFactory.Create(wiql, dayPrecision);
+                return query.RunLinkQuery();
+            }
+            catch (TfsWorkItem.ValidationException ex)
+            {
+                throw new ValidationException(ex);
             }
         }
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
-        {
-            get
-            {
-                return
-                    _workItemStore.WorkItemLinkTypes
-                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(item)));
-            }
-        }
+        public string UserDisplayName => _workItemStore.UserDisplayName;
 
-        public TimeZone TimeZone => _workItemStore.TimeZone;
+        public string UserIdentityName => _workItemStore.UserIdentityName;
+
+        public string UserSid => _workItemStore.UserSid;
     }
-
-
 }
-

@@ -10,13 +10,13 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
     {
-        private readonly IEnumerable<IWorkItemLinkInfo> _links;
+        private static readonly Random Instance = new Random();
 
-        private readonly IList<IWorkItem> _workItems;
+        private readonly IEnumerable<IWorkItemLinkInfo> _links;
 
         private readonly IDictionary<int, IWorkItem> _lookup;
 
-        private static readonly Random Instance = new Random();
+        private readonly IList<IWorkItem> _workItems;
 
         public MockWorkItemStore()
             : this(new MockTfsTeamProjectCollection(), new MockProject())
@@ -47,8 +47,8 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
-        public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links )
-            :this(workItems)
+        public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links)
+            : this(workItems)
         {
             _links = links;
         }
@@ -62,13 +62,21 @@ namespace Microsoft.Qwiq.Mocks
 
         public IEnumerable<IProject> Projects { get; set; }
 
-        public ITfsTeamProjectCollection TeamProjectCollection { get; set; }
+        public bool SimulateQueryTimes { get; set; }
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get { return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)); } }
+        public ITfsTeamProjectCollection TeamProjectCollection { get; set; }
 
         public TimeZone TimeZone { get; }
 
-        public bool SimulateQueryTimes { get; set; }
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        {
+            get
+            {
+                return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s));
+            }
+        }
+
+        private int WaitTime => Instance.Next(0, 3000);
 
         public void Dispose()
         {
@@ -107,10 +115,7 @@ namespace Microsoft.Qwiq.Mocks
                 Thread.Sleep(sleep);
             }
 
-            return _lookup
-                    .Where(p => h.Contains(p.Key))
-                    .Select(p => p.Value)
-                    .ToList();
+            return _lookup.Where(p => h.Contains(p.Key)).Select(p => p.Value).ToList();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
@@ -137,6 +142,10 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        private int WaitTime => Instance.Next(0, 3000);
+        public string UserDisplayName => string.Empty;
+
+        public string UserIdentityName => string.Empty;
+
+        public string UserSid => string.Empty;
     }
 }
