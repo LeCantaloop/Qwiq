@@ -10,7 +10,36 @@ namespace Microsoft.Qwiq.Mapper
     {
         public object Parse(Type destinationType, object value, object defaultValue)
         {
-            return ParseImpl(destinationType, value, new Lazy<object>(() => defaultValue));
+            return ParseImpl(
+                destinationType,
+                value,
+                new Lazy<object>(() => defaultValue ?? GetDefaultValueOfType(destinationType)));
+        }
+
+        public object Parse(Type destinationType, object input)
+        {
+            return ParseImpl(destinationType, input, new Lazy<object>(() => GetDefaultValueOfType(destinationType)));
+        }
+
+        public T Parse<T>(object value)
+        {
+            return Parse(value, default(T));
+        }
+
+        public T Parse<T>(object value, T defaultValue)
+        {
+            return (T)Parse(typeof(T), value, defaultValue);
+        }
+
+        private static object GetDefaultValueOfType(Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
+        }
+
+        private static bool IsGenericNullable(Type type)
+        {
+            return type.IsGenericType
+                   && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
         }
 
         private static object ParseImpl(Type destinationType, object value, Lazy<object> defaultValueFactory)
@@ -32,7 +61,6 @@ namespace Microsoft.Qwiq.Mapper
                 return value;
             }
 
-
             object result;
 
             if (TryConvert(destinationType, value, out result))
@@ -51,36 +79,6 @@ namespace Microsoft.Qwiq.Mapper
             }
 
             return null;
-        }
-
-        public object Parse(Type destinationType, object input)
-        {
-            return ParseImpl(destinationType, input, new Lazy<object>(()=> GetDefaultValueOfType(destinationType)));
-        }
-
-        public T Parse<T>(object value)
-        {
-            return Parse(value, default(T));
-        }
-
-        public T Parse<T>(object value, T defaultValue)
-        {
-            return (T)Parse(typeof(T), value, defaultValue);
-        }
-
-
-
-        private static object GetDefaultValueOfType(Type type)
-        {
-            return type.IsValueType
-                ? Activator.CreateInstance(type)
-                : null;
-        }
-
-        private static bool IsGenericNullable(Type type)
-        {
-            return type.IsGenericType &&
-                   type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
         }
 
         private static bool TryConvert(Type destinationType, object value, out object result)
