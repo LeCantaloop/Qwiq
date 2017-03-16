@@ -25,11 +25,14 @@ namespace Microsoft.Qwiq.Credentials
                     new Lazy<string>(() => accessToken));
         }
 
-        public static IEnumerable<TfsCredentials> CreateCredentials(Lazy<string> username, Lazy<string> password, Lazy<string> accessToken)
+        public static IEnumerable<TfsCredentials> CreateCredentials(
+            Lazy<string> username = null,
+            Lazy<string> password = null,
+            Lazy<string> accessToken = null)
         {
-            if (username == null) throw new ArgumentNullException(nameof(username));
-            if (password == null) throw new ArgumentNullException(nameof(password));
-            if (accessToken == null) throw new ArgumentNullException(nameof(accessToken));
+            if (username == null) username = new Lazy<string>(() => string.Empty);
+            if (password == null) password = new Lazy<string>(() => string.Empty);
+            if (accessToken == null) accessToken = new Lazy<string>(() => string.Empty);
 
             return CreateCredentialsImpl(username, password, accessToken)
                    .Select(c => new TfsCredentials(c));
