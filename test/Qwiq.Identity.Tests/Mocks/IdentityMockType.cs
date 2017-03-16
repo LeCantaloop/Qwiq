@@ -36,10 +36,6 @@ namespace Qwiq.Identity.Tests.Mocks
         public string NotAnIdentity { get; set; }
 
         [IdentityField]
-        [FieldDefinition("")]
-        public string Empty { get; set; }
-
-        [IdentityField]
         [FieldDefinition(NonExistantField)]
         public string NonExistant { get; set; }
 
