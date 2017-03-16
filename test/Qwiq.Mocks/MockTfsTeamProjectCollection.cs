@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
+using Microsoft.Qwiq.Credentials;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -17,7 +14,13 @@ namespace Microsoft.Qwiq.Mocks
             IdentityManagementService = identityManagementService;
         }
 
+        public TfsCredentials AuthorizedCredentials { get; set; }
+
+        public ITeamFoundationIdentity AuthorizedIdentity { get; set; }
+
         public ICommonStructureService CommonStructureService { get; set; }
+
+        public bool HasAuthenticated { get; set; }
 
         public IIdentityManagementService IdentityManagementService { get; set; }
     }

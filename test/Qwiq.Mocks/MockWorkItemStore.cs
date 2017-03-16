@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
+using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Mocks
@@ -60,6 +61,8 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
+        public TfsCredentials AuthorizedCredentials => null;
+
         public IEnumerable<IProject> Projects { get; set; }
 
         public bool SimulateQueryTimes { get; set; }
@@ -67,6 +70,12 @@ namespace Microsoft.Qwiq.Mocks
         public ITfsTeamProjectCollection TeamProjectCollection { get; set; }
 
         public TimeZone TimeZone { get; }
+
+        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
+
+        public string UserIdentityName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
+
+        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
         public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
         {
@@ -141,11 +150,5 @@ namespace Microsoft.Qwiq.Mocks
             {
             }
         }
-
-        public string UserDisplayName => string.Empty;
-
-        public string UserIdentityName => string.Empty;
-
-        public string UserSid => string.Empty;
     }
 }

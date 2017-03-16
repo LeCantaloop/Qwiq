@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Qwiq.Credentials;
+
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     internal class InstrumentedMockWorkItemStore : IWorkItemStore
@@ -11,6 +13,8 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
         {
             _innerWorkItemStore = innerWorkItemStore;
         }
+
+        public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
 
         public IEnumerable<IProject> Projects
         {

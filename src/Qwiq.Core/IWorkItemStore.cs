@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Qwiq.Credentials;
+
 namespace Microsoft.Qwiq
 {
     /// <summary>
@@ -9,6 +11,8 @@ namespace Microsoft.Qwiq
     /// </summary>
     public interface IWorkItemStore : IDisposable
     {
+        TfsCredentials AuthorizedCredentials { get; }
+
         IEnumerable<IProject> Projects { get; }
 
         ITfsTeamProjectCollection TeamProjectCollection { get; }

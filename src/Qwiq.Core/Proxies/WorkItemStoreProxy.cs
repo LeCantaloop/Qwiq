@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.TeamFoundation.Client;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -15,21 +17,44 @@ namespace Microsoft.Qwiq.Proxies
     /// </summary>
     public class WorkItemStoreProxy : IWorkItemStore
     {
-        private readonly IQueryFactory _queryFactory;
+        private readonly Lazy<IQueryFactory> _queryFactory;
 
-        private readonly IInternalTfsTeamProjectCollection _tfs;
+        private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private readonly TfsWorkItem.WorkItemStore _workItemStore;
+        private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
 
         internal WorkItemStoreProxy(
-            IInternalTfsTeamProjectCollection tfs,
-            TfsWorkItem.WorkItemStore workItemStore,
-            IQueryFactory queryFactory)
+            TfsTeamProjectCollection tfsNative,
+            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
+            : this(
+                () =>
+                    ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
+                        new TfsTeamProjectCollectionProxy(tfsNative)),
+                queryFactory)
         {
-            _tfs = tfs;
-            _workItemStore = workItemStore;
-            _queryFactory = queryFactory;
         }
+
+        internal WorkItemStoreProxy(
+            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<TfsWorkItem.WorkItemStore> wisFactory,
+            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
+        {
+            if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
+            if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
+            if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(() => tpcFactory());
+            _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(() => wisFactory());
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+        }
+
+        internal WorkItemStoreProxy(
+            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
+            : this(tpcFactory, () => tpcFactory()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
+        {
+        }
+
+        public TfsCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
         #region IDisposable
 
@@ -43,7 +68,7 @@ namespace Microsoft.Qwiq.Proxies
         {
             if (disposing)
             {
-                _tfs.Dispose();
+                if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
             }
         }
 
@@ -54,29 +79,29 @@ namespace Microsoft.Qwiq.Proxies
             get
             {
                 return
-                    _workItemStore.Projects.Cast<TfsWorkItem.Project>()
+                    _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
                                   .Select(
                                       item =>
                                           ExceptionHandlingDynamicProxyFactory.Create<IProject>(new ProjectProxy(item)));
             }
         }
 
-        public ITfsTeamProjectCollection TeamProjectCollection
-        {
-            get
-            {
-                return _tfs;
-            }
-        }
+        public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
-        public TimeZone TimeZone => _workItemStore.TimeZone;
+        public TimeZone TimeZone => _workItemStore.Value.TimeZone;
+
+        public string UserDisplayName => _workItemStore.Value.UserDisplayName;
+
+        public string UserIdentityName => _workItemStore.Value.UserIdentityName;
+
+        public string UserSid => _workItemStore.Value.UserSid;
 
         public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
         {
             get
             {
                 return
-                    _workItemStore.WorkItemLinkTypes.Select(
+                    _workItemStore.Value.WorkItemLinkTypes.Select(
                         item =>
                             ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(
                                 new WorkItemLinkTypeProxy(item)));
@@ -87,7 +112,7 @@ namespace Microsoft.Qwiq.Proxies
         {
             try
             {
-                var query = _queryFactory.Create(wiql, dayPrecision);
+                var query = _queryFactory.Value.Create(wiql, dayPrecision);
                 return query.RunQuery();
             }
             catch (TfsWorkItem.ValidationException ex)
@@ -123,7 +148,7 @@ namespace Microsoft.Qwiq.Proxies
         {
             try
             {
-                var query = _queryFactory.Create(wiql, dayPrecision);
+                var query = _queryFactory.Value.Create(wiql, dayPrecision);
                 return query.RunLinkQuery();
             }
             catch (TfsWorkItem.ValidationException ex)
@@ -131,11 +156,5 @@ namespace Microsoft.Qwiq.Proxies
                 throw new ValidationException(ex);
             }
         }
-
-        public string UserDisplayName => _workItemStore.UserDisplayName;
-
-        public string UserIdentityName => _workItemStore.UserIdentityName;
-
-        public string UserSid => _workItemStore.UserSid;
     }
 }
