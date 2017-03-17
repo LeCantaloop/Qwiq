@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,34 +19,50 @@ namespace Microsoft.Qwiq.Credentials
         /// </summary>
         public static IEnumerable<TfsCredentials> CreateCredentials(string username = null, string password = null, string accessToken = null)
         {
-            return CreateCredentialsImpl(username, password, accessToken).Select(c => new TfsCredentials(c));
+            return CreateCredentials(
+                    new Lazy<string>(() => username),
+                    new Lazy<string>(() => password),
+                    new Lazy<string>(() => accessToken));
+        }
+
+        public static IEnumerable<TfsCredentials> CreateCredentials(
+            Lazy<string> username = null,
+            Lazy<string> password = null,
+            Lazy<string> accessToken = null)
+        {
+            if (username == null) username = new Lazy<string>(() => string.Empty);
+            if (password == null) password = new Lazy<string>(() => string.Empty);
+            if (accessToken == null) accessToken = new Lazy<string>(() => string.Empty);
+
+            return CreateCredentialsImpl(username, password, accessToken)
+                   .Select(c => new TfsCredentials(c));
         }
 
         private static IEnumerable<TfsClientCredentials> CreateCredentialsImpl(
-            string username = null,
-            string password = null,
-            string accessToken = null)
+            Lazy<string> username,
+            Lazy<string> password,
+            Lazy<string> accessToken)
         {
             // First try OAuth, as this is our preferred method
-            foreach (var c in GetOAuthCredentials(accessToken))
+            foreach (var c in GetOAuthCredentials(accessToken.Value))
             {
                 yield return c;
             }
 
             // Next try Username/Password combinations
-            foreach (var c in GetServiceIdentityCredentials(username, password))
+            foreach (var c in GetServiceIdentityCredentials(username.Value, password.Value))
             {
                 yield return c;
             }
 
             // Next try PAT
-            foreach (var c in GetServiceIdentityPatCredentials(password))
+            foreach (var c in GetServiceIdentityPatCredentials(password.Value))
             {
                 yield return c;
             }
 
             // Next try basic credentials
-            foreach (var c in GetBasicCredentials(username, password))
+            foreach (var c in GetBasicCredentials(username.Value, password.Value))
             {
                 yield return c;
             }

@@ -243,10 +243,10 @@
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
+    <Compile Include="IExternalLink.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IFieldCollection.cs" />
     <Compile Include="IFieldConflict.cs" />
-    <Compile Include="IExternalLink.cs" />
     <Compile Include="IHyperlink.cs" />
     <Compile Include="IIdentityDescriptor.cs" />
     <Compile Include="IIdentityManagementService.cs" />
@@ -277,10 +277,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\AttachmentProxy.cs" />
     <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
+    <Compile Include="Proxies\ExternalLinkProxy.cs" />
     <Compile Include="Proxies\FieldCollectionProxy.cs" />
     <Compile Include="Proxies\FieldConflictProxy.cs" />
     <Compile Include="Proxies\FieldProxy.cs" />
-    <Compile Include="Proxies\ExternalLinkProxy.cs" />
     <Compile Include="Proxies\HyperlinkProxy.cs" />
     <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
     <Compile Include="Proxies\IdentityManagementServiceProxy.cs" />

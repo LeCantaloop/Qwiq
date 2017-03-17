@@ -244,7 +244,6 @@
     <Compile Include="Visitors\PartialEvaluator.cs" />
     <Compile Include="Visitors\QueryRewriter.cs" />
     <Compile Include="Visitors\WiqlQueryBuilder.cs" />
-    <Compile Include="WiqlExpressions\WasEverExpression.cs" />
     <Compile Include="WiqlExpressions\AsOfExpression.cs" />
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />
     <Compile Include="WiqlExpressions\IndexerExpression.cs" />
@@ -253,6 +252,7 @@
     <Compile Include="WiqlExpressions\OrderOptions.cs" />
     <Compile Include="WiqlExpressions\SelectExpression.cs" />
     <Compile Include="WiqlExpressions\UnderExpression.cs" />
+    <Compile Include="WiqlExpressions\WasEverExpression.cs" />
     <Compile Include="WiqlExpressions\WhereExpression.cs" />
     <Compile Include="WiqlExpressions\WiqlExpressionType.cs" />
     <Compile Include="WiqlTranslator.cs" />

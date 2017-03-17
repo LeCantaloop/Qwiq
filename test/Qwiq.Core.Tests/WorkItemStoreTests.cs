@@ -1,28 +1,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Proxies;
+using Microsoft.TeamFoundation.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
-    public abstract class WorkItemStoreTests : ContextSpecification
-    {
-        protected IWorkItemStore WorkItemStore;
-        internal MockQueryFactory QueryFactory;
-
-        public override void Given()
-        {
-            WorkItemStore = new WorkItemStoreProxy(null, null, QueryFactory);
-        }
-    }
-
     [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_no_ids : WorkItemStoreTests
+    public class given_an_IWorkItemStore_an_a_query_with_two_ids_and_an_asof_date : WorkItemStoreTests
     {
-        private IEnumerable<IWorkItem> _actual;
+        [TestMethod]
+        public void a_query_is_created()
+        {
+            QueryFactory.CreateCallCount.ShouldEqual(1);
+        }
+
+        [TestMethod]
+        public void a_query_string_with_two_ids_and_an_asof_clause_is_generated()
+        {
+            QueryFactory.QueryWiqls.Single()
+                        .ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1, 2) ASOF '2012-01-12 12:23:34Z'");
+        }
 
         public override void Given()
         {
@@ -32,8 +35,14 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void When()
         {
-            _actual = WorkItemStore.Query(new int[] {});
+            WorkItemStore.Query(new[] { 1, 2 }, new DateTime(2012, 1, 12, 12, 23, 34, DateTimeKind.Utc));
         }
+    }
+
+    [TestClass]
+    public class given_an_IWorkItemStore_and_a_query_with_no_ids : WorkItemStoreTests
+    {
+        private IEnumerable<IWorkItem> _actual;
 
         [TestMethod]
         public void a_query_is_never_created()
@@ -46,11 +55,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             _actual.ShouldBeEmpty();
         }
-    }
 
-    [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_one_id : WorkItemStoreTests
-    {
         public override void Given()
         {
             QueryFactory = new MockQueryFactory();
@@ -59,9 +64,13 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void When()
         {
-            WorkItemStore.Query(new[] { 1 });
+            _actual = WorkItemStore.Query(new int[] { });
         }
+    }
 
+    [TestClass]
+    public class given_an_IWorkItemStore_and_a_query_with_one_id : WorkItemStoreTests
+    {
         [TestMethod]
         public void a_query_is_created()
         {
@@ -73,11 +82,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             QueryFactory.QueryWiqls.Single().ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1)");
         }
-    }
 
-    [TestClass]
-    public class given_an_IWorkItemStore_and_a_query_with_two_ids : WorkItemStoreTests
-    {
         public override void Given()
         {
             QueryFactory = new MockQueryFactory();
@@ -86,9 +91,13 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void When()
         {
-            WorkItemStore.Query(new[] { 1, 2 });
+            WorkItemStore.Query(new[] { 1 });
         }
+    }
 
+    [TestClass]
+    public class given_an_IWorkItemStore_and_a_query_with_two_ids : WorkItemStoreTests
+    {
         [TestMethod]
         public void a_query_is_created()
         {
@@ -100,11 +109,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             QueryFactory.QueryWiqls.Single().ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1, 2)");
         }
-    }
 
-    [TestClass]
-    public class given_an_IWorkItemStore_an_a_query_with_two_ids_and_an_asof_date : WorkItemStoreTests
-    {
         public override void Given()
         {
             QueryFactory = new MockQueryFactory();
@@ -113,20 +118,19 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void When()
         {
-            WorkItemStore.Query(new[] { 1, 2 }, new DateTime(2012, 1, 12, 12, 23, 34, DateTimeKind.Utc));
+            WorkItemStore.Query(new[] { 1, 2 });
         }
+    }
 
-        [TestMethod]
-        public void a_query_is_created()
-        {
-            QueryFactory.CreateCallCount.ShouldEqual(1);
-        }
+    public abstract class WorkItemStoreTests : ContextSpecification
+    {
+        internal MockQueryFactory QueryFactory;
 
-        [TestMethod]
-        public void a_query_string_with_two_ids_and_an_asof_clause_is_generated()
+        protected IWorkItemStore WorkItemStore;
+
+        public override void Given()
         {
-            QueryFactory.QueryWiqls.Single().ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1, 2) ASOF '2012-01-12 12:23:34Z'");
+            WorkItemStore = new WorkItemStoreProxy((TfsTeamProjectCollection)null, s => QueryFactory);
         }
     }
 }
-
