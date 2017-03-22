@@ -15,6 +15,8 @@ namespace Microsoft.Qwiq
         bool HasAuthenticated { get; }
 
         IIdentityManagementService IdentityManagementService { get; }
+
+        Uri Uri { get; }
     }
 
     internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable

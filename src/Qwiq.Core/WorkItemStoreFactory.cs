@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
@@ -7,13 +9,22 @@ using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
     public interface IWorkItemStoreFactory
     {
+        IWorkItemStore Create(AuthenticationOptions options);
+
+        [Obsolete(
+            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
+            false)]
         IWorkItemStore Create(Uri endpoint, TfsCredentials credentials);
 
+        [Obsolete(
+            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
+            false)]
         IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials);
     }
 
@@ -26,58 +37,93 @@ namespace Microsoft.Qwiq
         {
         }
 
-        public static IWorkItemStoreFactory GetInstance()
+        public IWorkItemStore Create(AuthenticationOptions options)
         {
-            return Instance.Value;
+            var credentials = EnumerateCredentials(options);
+
+            foreach (var credential in credentials)
+                try
+                {
+                    var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
+                    var tfsProxy = ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(tfsNative));
+
+                    options.Notifications.AuthenticationSuccess(new AuthenticationSuccessNotification(credential, tfsProxy));
+
+                    var proxy = new WorkItemStoreProxy(()=>tfsProxy, QueryFactory.GetInstance);
+                    return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemStore>(proxy);
+                }
+                catch (TeamFoundationServerUnauthorizedException e)
+                {
+                    options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(credential, e));
+                }
+
+            var nocreds = new AccessDeniedException("Invalid credentials");
+            options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
+            throw nocreds;
         }
 
+        [Obsolete(
+            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
+            false)]
         public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials)
         {
             return Create(endpoint, new[] { credentials });
         }
 
+        [Obsolete(
+            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
+            false)]
         public IWorkItemStore Create(Uri endpoint, IEnumerable<TfsCredentials> credentials)
         {
-            foreach (var credential in credentials)
-            {
-                try
-                {
-                    var tfsNative = ConnectToTfsCollection(endpoint, credential.Credentials);
+            var options =
+                new AuthenticationOptions(
+                    endpoint,
+                    AuthenticationType.Windows) { CreateCredentials = t => credentials };
 
-                    System.Diagnostics.Trace.TraceInformation(
-                        "TFS connection attempt success with {0}/{1}.",
-                        credential.Credentials.Windows.GetType(),
-                        credential.Credentials.Federated.GetType());
-
-                    return
-                        ExceptionHandlingDynamicProxyFactory.Create<IWorkItemStore>(
-                            new WorkItemStoreProxy(tfsNative, QueryFactory.GetInstance));
-                }
-                catch (TeamFoundationServerUnauthorizedException e)
-                {
-                    System.Diagnostics.Trace.TraceWarning(
-                        "TFS connection attempt failed with {0}/{1}.\n Exception: {2}",
-                        credential.Credentials.Windows.GetType(),
-                        credential.Credentials.Federated.GetType(),
-                        e);
-                }
-            }
-
-            System.Diagnostics.Trace.TraceError("All TFS connection attempts failed.");
-            throw new AccessDeniedException("Invalid credentials");
+            return Create(options);
         }
 
-        private static TfsTeamProjectCollection ConnectToTfsCollection(Uri endpoint, TfsClientCredentials credentials)
+        public static IWorkItemStoreFactory GetInstance()
+        {
+            return Instance.Value;
+        }
+
+        private static TfsTeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
         {
             var tfsServer = new TfsTeamProjectCollection(endpoint, credentials);
             tfsServer.EnsureAuthenticated();
-
-#if DEBUG
-            // The base class TfsConnection integrates various information about the connect with TFS (as well as ways to control that connection)
-            System.Diagnostics.Debug.Print($"Connected to {endpoint}");
-            System.Diagnostics.Debug.Print($"Authenticated: {tfsServer.AuthorizedIdentity.Descriptor.Identifier}");
-#endif
             return tfsServer;
+        }
+
+        private static IEnumerable<TfsCredentials> EnumerateCredentials(AuthenticationOptions options)
+        {
+            foreach (var credential in EnumerateCredentials(options, AuthenticationType.OAuth)) yield return credential;
+            foreach (var credential in EnumerateCredentials(options, AuthenticationType.PersonalAccessToken)) yield return credential;
+            foreach (var credential in EnumerateCredentials(options, AuthenticationType.Basic)) yield return credential;
+            foreach (var credential in EnumerateCredentials(options, AuthenticationType.Windows)) yield return credential;
+            foreach (var credential in EnumerateCredentials(options, AuthenticationType.Anonymous)) yield return credential;
+        }
+
+        private static IEnumerable<TfsCredentials> EnumerateCredentials(
+            AuthenticationOptions authenticationOptions,
+            AuthenticationType authenticationType)
+        {
+            if (!authenticationOptions.AuthenticationType.HasFlag(authenticationType)) yield break;
+
+            var credentials = Enumerable.Empty<TfsCredentials>();
+
+            try
+            {
+                credentials = authenticationOptions.CreateCredentials(authenticationType);
+            }
+            catch (Exception e)
+            {
+                authenticationOptions.Notifications.AuthenticationFailed(
+                    new AuthenticationFailedNotification(null) { Exception = e });
+                throw;
+            }
+
+            foreach (var credential in credentials) yield return credential;
         }
     }
 }

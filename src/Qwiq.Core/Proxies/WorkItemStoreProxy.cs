@@ -42,15 +42,15 @@ namespace Microsoft.Qwiq.Proxies
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
-            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(() => tpcFactory());
-            _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(() => wisFactory());
+            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
+            _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
         }
 
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
+            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
         {
         }
 
