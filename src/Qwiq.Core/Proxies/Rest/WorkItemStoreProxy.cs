@@ -13,17 +13,25 @@ namespace Microsoft.Qwiq.Proxies.Rest
     {
         private readonly WorkItemTrackingHttpClient _workItemStore;
 
+        private readonly int _batchSize;
+
         private IInternalTfsTeamProjectCollection _teamProjectCollection;
 
         internal WorkItemStoreProxy(
             IInternalTfsTeamProjectCollection teamProjectCollection,
-            WorkItemTrackingHttpClient workItemStore)
+            WorkItemTrackingHttpClient workItemStore,
+            int batchSize = 100)
         {
             if (teamProjectCollection == null) throw new ArgumentNullException(nameof(teamProjectCollection));
             if (workItemStore == null) throw new ArgumentNullException(nameof(workItemStore));
 
             _teamProjectCollection = teamProjectCollection;
             _workItemStore = workItemStore;
+
+            // Boundary check the batch size
+            if (batchSize <= 0) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be greater than 0.");
+            if (batchSize > 200) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be less than 200.");
+            _batchSize = batchSize;
         }
 
         public TfsCredentials AuthorizedCredentials => throw new NotImplementedException();
@@ -62,15 +70,14 @@ namespace Microsoft.Qwiq.Proxies.Rest
                 fields.Add(field.Value);
             }
 
-            var result = _workItemStore.QueryByWiqlAsync(w, "OS").GetAwaiter().GetResult();
+            var result = _workItemStore.QueryByWiqlAsync(w).GetAwaiter().GetResult();
             if (result.WorkItems.Any())
             {
                 var skip = 0;
-                const int BatchSize = 100;
                 IEnumerable<WorkItemReference> workItemRefs;
                 do
                 {
-                    workItemRefs = result.WorkItems.Skip(skip).Take(BatchSize);
+                    workItemRefs = result.WorkItems.Skip(skip).Take(_batchSize).ToList();
                     if (workItemRefs.Any())
                     {
                         // TODO: Support AsOf
@@ -80,14 +87,16 @@ namespace Microsoft.Qwiq.Proxies.Rest
                             .GetResult();
                         foreach (var workItem in workItems) yield return new WorkItemProxy(workItem);
                     }
-                    skip += BatchSize;
+                    skip += _batchSize;
                 }
-                while (workItemRefs.Count() == BatchSize);
+                while (workItemRefs.Count() == _batchSize);
             }
         }
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
+            if (asOf.HasValue) throw new NotSupportedException();
+
             if (!ids.Any()) yield return null;
 
             var wis = _workItemStore.GetWorkItemsAsync(ids, null, asOf, WorkItemExpand.Fields).GetAwaiter().GetResult();
@@ -98,6 +107,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public IWorkItem Query(int id, DateTime? asOf = null)
         {
+            if (asOf.HasValue) throw new NotSupportedException();
+
             var wi = _workItemStore.GetWorkItemAsync(id, null, asOf, WorkItemExpand.Fields).GetAwaiter().GetResult();
             return new WorkItemProxy(wi);
         }
@@ -108,17 +119,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
             var w = new Wiql { Query = wiql };
 
-            var result = _workItemStore.QueryByWiqlAsync(w, "OS").GetAwaiter().GetResult();
+            var result = _workItemStore.QueryByWiqlAsync(w).GetAwaiter().GetResult();
             foreach (var workItem in result.WorkItemRelations) yield return new WorkItemLinkInfoProxy(workItem);
-        }
-
-        private static IEnumerable<int> Ids(WorkItemQueryResult result, int skip = 0)
-        {
-            return result.WorkItemRelations.Where(r => r.Target != null)
-                         .Select(r => r.Target.Id)
-                         .Union(result.WorkItemRelations.Where(r => r.Source != null).Select(r => r.Source.Id))
-                         .Skip(skip)
-                         .Take(100);
         }
 
         private void Dispose(bool disposing)
