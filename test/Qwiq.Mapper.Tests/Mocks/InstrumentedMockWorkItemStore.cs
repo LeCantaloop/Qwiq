@@ -101,5 +101,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             QueryLinksCallCount += 1;
             return _innerWorkItemStore.QueryLinks(wiql, dayPrecision);
         }
+
+        public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
     }
 }

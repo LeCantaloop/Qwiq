@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class WorkItemTypeProxy : IWorkItemType
     {
-        internal WorkItemTypeProxy(string name)
+        private readonly WorkItemType _type;
+
+        internal WorkItemTypeProxy(WorkItemType type)
         {
-            Name = name;
+            _type = type;
         }
 
-        public string Description { get; }
+        public string Description => _type.Description;
 
-        public string Name { get; }
+        public IFieldDefinitionCollection FieldDefinitions => new FieldDefinitionCollectionProxy(_type.Fields);
+
+        public string Name => _type.Name;
 
         public IWorkItem NewWorkItem()
         {

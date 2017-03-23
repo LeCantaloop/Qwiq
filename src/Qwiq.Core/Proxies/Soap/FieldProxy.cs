@@ -11,59 +11,32 @@ namespace Microsoft.Qwiq.Proxies.Soap
             _field = field;
         }
 
-        public int Id
-        {
-            get { return _field.Id; }
-        }
+        public int Id => _field.Id;
 
-        public bool IsDirty
-        {
-            get { return _field.IsDirty; }
-        }
+        public bool IsChangedByUser => _field.IsChangedByUser;
 
-        public bool IsEditable
-        {
-            get { return _field.IsEditable; }
-        }
+        public bool IsDirty => _field.IsDirty;
 
-        public bool IsRequired
-        {
-            get { return _field.IsRequired; }
-        }
+        public bool IsEditable => _field.IsEditable;
 
-        public bool IsValid
-        {
-            get { return _field.IsValid; }
-        }
+        public bool IsRequired => _field.IsRequired;
 
-        public string Name
-        {
-            get { return _field.Name; }
-        }
+        public bool IsValid => _field.IsValid;
 
-        public ValidationState ValidationState
-        {
-            get
-            {
-                return (ValidationState)((int)_field.Status);
-            }
-        }
-
-        public bool IsChangedByUser
-        {
-            get { return _field.IsChangedByUser; }
-        }
-
-        public object Value
-        {
-            get { return _field.Value; }
-            set { _field.Value = value; }
-        }
+        public string Name => _field.Name;
 
         public object OriginalValue
         {
-            get { return _field.OriginalValue; }
-            set { _field.Value = value; }
+            get => _field.OriginalValue;
+            set => _field.Value = value;
+        }
+
+        public ValidationState ValidationState => (ValidationState)(int)_field.Status;
+
+        public object Value
+        {
+            get => _field.Value;
+            set => _field.Value = value;
         }
     }
 }

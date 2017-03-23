@@ -151,24 +151,28 @@ mode(recursive)
         }
 
         [TestMethod]
+        [TestCategory("localOnly")]
         public void SOAP_Links_returned()
         {
             SoapResult.WorkItemLinks.ShouldNotBeNull();
         }
 
         [TestMethod]
+        [TestCategory("localOnly")]
         public void REST_Links_returned()
         {
             RestResult.WorkItemLinks.ShouldNotBeNull();
         }
 
         [TestMethod]
+        [TestCategory("localOnly")]
         public void Same_number_of_links_returned()
         {
             RestResult.WorkItemLinks.Count().ShouldEqual(SoapResult.WorkItemLinks.Count());
         }
 
         [TestMethod]
+        [TestCategory("localOnly")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
             for (var i = 0; i < RestResult.WorkItemLinks.Count(); i++)
@@ -243,7 +247,7 @@ mode(recursive)
                     "System.ChangedDate", "System.CreatedBy", "System.CreatedDate", "System.Description",
                     "System.ExternalLinkCount", "System.History", "System.HyperLinkCount", "System.Id",
                     "System.IterationPath", "System.RelatedLinkCount", "System.Rev", "System.RevisedDate",
-                    "System.State", "System.Title", "System.WorkItemType",
+                    "System.State", "System.Title", "System.WorkItemType", CoreFieldRefNames.Tags
                 };
 
         [TestMethod]
@@ -252,7 +256,7 @@ mode(recursive)
         {
             foreach (var field in CoreFields)
             {
-                RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field]);
+                RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field], field);
             }
         }
 

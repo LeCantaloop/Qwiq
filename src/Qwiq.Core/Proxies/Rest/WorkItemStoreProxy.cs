@@ -1,52 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
+using Microsoft.Qwiq.Exceptions;
+using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class WorkItemStoreProxy : IWorkItemStore
     {
-        private readonly WorkItemTrackingHttpClient _workItemStore;
+        private readonly Lazy<IQueryFactory> _queryFactory;
 
-        private readonly int _batchSize;
+        private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private IInternalTfsTeamProjectCollection _teamProjectCollection;
+        private readonly Lazy<WorkItemTrackingHttpClient> _workItemStore;
 
         internal WorkItemStoreProxy(
-            IInternalTfsTeamProjectCollection teamProjectCollection,
-            WorkItemTrackingHttpClient workItemStore,
-            int batchSize = 100)
+            TfsTeamProjectCollection tfsNative,
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
+            : this(
+                () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
+                    new TfsTeamProjectCollectionProxy(tfsNative)),
+                queryFactory)
         {
-            if (teamProjectCollection == null) throw new ArgumentNullException(nameof(teamProjectCollection));
-            if (workItemStore == null) throw new ArgumentNullException(nameof(workItemStore));
-
-            _teamProjectCollection = teamProjectCollection;
-            _workItemStore = workItemStore;
-
-            // Boundary check the batch size
-            if (batchSize <= 0) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be greater than 0.");
-            if (batchSize > 200) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be less than 200.");
-            _batchSize = batchSize;
         }
 
-        public TfsCredentials AuthorizedCredentials => throw new NotImplementedException();
+        internal WorkItemStoreProxy(
+            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
+            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory)
+        {
+        }
+
+        internal WorkItemStoreProxy(
+            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<WorkItemTrackingHttpClient> wisFactory,
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
+        {
+            if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
+            if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
+            if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
+            _workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+        }
+
+        public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
+
+        public IFieldDefinitionCollection FieldDefinitions => throw new NotImplementedException();
 
         public IEnumerable<IProject> Projects => throw new NotImplementedException();
 
-        public ITfsTeamProjectCollection TeamProjectCollection => _teamProjectCollection;
+        public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
-        public TimeZone TimeZone => throw new NotImplementedException();
+        public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 
+        // REVIEW: SOAP WorkItemStore gets the identity from its cache based on UserSid
         public string UserDisplayName => throw new NotImplementedException();
 
+        // REVIEW: SOAP WorkItemStore gets the identity from its cache based on UserSid
         public string UserIdentityName => throw new NotImplementedException();
 
-        public string UserSid => throw new NotImplementedException();
+        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
         public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes => throw new NotImplementedException();
 
@@ -60,76 +78,44 @@ namespace Microsoft.Qwiq.Proxies.Rest
         {
             if (dayPrecision) throw new NotSupportedException();
 
-            var p = Parser.ParseSyntax(wiql);
-            var w = new Wiql { Query = p.ToString() };
-
-            var fields = new List<string>();
-            for (var i = 0; i < p.Fields.Count; i++)
-            {
-                var field = p.Fields[i];
-                fields.Add(field.Value);
-            }
-
-            var result = _workItemStore.QueryByWiqlAsync(w).GetAwaiter().GetResult();
-            if (result.WorkItems.Any())
-            {
-                var skip = 0;
-                IEnumerable<WorkItemReference> workItemRefs;
-                do
-                {
-                    workItemRefs = result.WorkItems.Skip(skip).Take(_batchSize).ToList();
-                    if (workItemRefs.Any())
-                    {
-                        // TODO: Support AsOf
-                        var workItems = _workItemStore
-                            .GetWorkItemsAsync(workItemRefs.Select(wir => wir.Id), fields, null, null)
-                            .GetAwaiter()
-                            .GetResult();
-                        foreach (var workItem in workItems) yield return new WorkItemProxy(workItem);
-                    }
-                    skip += _batchSize;
-                }
-                while (workItemRefs.Count() == _batchSize);
-            }
+            // REVIEW: SOAP client catches a ValidationException here
+            var query = _queryFactory.Value.Create(wiql, dayPrecision);
+            return query.RunQuery();
         }
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (asOf.HasValue) throw new NotSupportedException();
+            if (!ids.Any()) return Enumerable.Empty<IWorkItem>();
 
-            if (!ids.Any()) yield return null;
+            // REVIEW: This implementation is the same as SOAP but requires two trips to the server
+            // First trip to execute the WIQL and return the IDs,
+            // the second trip to load items by ID
 
-            var wis = _workItemStore.GetWorkItemsAsync(ids, null, asOf, WorkItemExpand.Fields).GetAwaiter().GetResult();
-            foreach (var workItem in wis)
-                // write work item to console
-                yield return new WorkItemProxy(workItem);
+            var wiql = "SELECT * FROM WorkItems WHERE [System.Id] IN ({0})";
+            if (asOf.HasValue) wiql += " ASOF '" + asOf.Value.ToString("u") + "'";
+
+            var query = string.Format(CultureInfo.InvariantCulture, wiql, string.Join(", ", ids));
+
+            return Query(query);
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
         {
-            if (asOf.HasValue) throw new NotSupportedException();
-
-            var wi = _workItemStore.GetWorkItemAsync(id, null, asOf, WorkItemExpand.Fields).GetAwaiter().GetResult();
-            return new WorkItemProxy(wi);
+            return Query(new[] { id }, asOf).SingleOrDefault();
         }
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
             if (dayPrecision) throw new NotSupportedException();
 
-            var w = new Wiql { Query = wiql };
-
-            var result = _workItemStore.QueryByWiqlAsync(w).GetAwaiter().GetResult();
-            foreach (var workItem in result.WorkItemRelations) yield return new WorkItemLinkInfoProxy(workItem);
+            // REVIEW: SOAP client catches a ValidationException here
+            var query = _queryFactory.Value.Create(wiql, dayPrecision);
+            return query.RunLinkQuery();
         }
 
         private void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _teamProjectCollection?.Dispose();
-                _teamProjectCollection = null;
-            }
+            if (disposing) if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
         }
     }
 }

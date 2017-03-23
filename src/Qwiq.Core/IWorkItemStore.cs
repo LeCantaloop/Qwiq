@@ -34,5 +34,7 @@ namespace Microsoft.Qwiq
         IWorkItem Query(int id, DateTime? asOf = null);
 
         IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false);
+
+        IFieldDefinitionCollection FieldDefinitions { get; }
     }
 }

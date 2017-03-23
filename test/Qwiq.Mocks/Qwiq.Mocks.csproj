@@ -241,6 +241,7 @@
   <ItemGroup>
     <Compile Include="MockField.cs" />
     <Compile Include="MockFieldCollection.cs" />
+    <Compile Include="MockFieldDefinitionCollection.cs" />
     <Compile Include="MockIdentityDescriptor.cs" />
     <Compile Include="MockIdentityManagementService.cs" />
     <Compile Include="MockNode.cs" />

@@ -7,14 +7,13 @@ using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Client;
 
-
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Proxies.Soap
 {
     /// <summary>
-    /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
-    /// all the TFS libraries.
+    ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
+    ///     all the TFS libraries.
     /// </summary>
     public class WorkItemStoreProxy : IWorkItemStore
     {
@@ -28,9 +27,8 @@ namespace Microsoft.Qwiq.Proxies.Soap
             TfsTeamProjectCollection tfsNative,
             Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
             : this(
-                () =>
-                    ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
-                        new TfsTeamProjectCollectionProxy(tfsNative)),
+                () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
+                    new TfsTeamProjectCollectionProxy(tfsNative)),
                 queryFactory)
         {
         }
@@ -57,33 +55,18 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public TfsCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
-        #region IDisposable
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
-            }
-        }
-
-        #endregion IDisposable
+        public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory
+            .Create<IFieldDefinitionCollection>(
+                new FieldDefinitionCollectionProxy(_workItemStore.Value.FieldDefinitions));
 
         public IEnumerable<IProject> Projects
         {
             get
             {
-                return
-                    _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
-                                  .Select(
-                                      item =>
-                                          ExceptionHandlingDynamicProxyFactory.Create<IProject>(new ProjectProxy(item)));
+                return _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
+                                     .Select(
+                                         item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
+                                             new ProjectProxy(item)));
             }
         }
 
@@ -101,12 +84,16 @@ namespace Microsoft.Qwiq.Proxies.Soap
         {
             get
             {
-                return
-                    _workItemStore.Value.WorkItemLinkTypes.Select(
-                        item =>
-                            ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(
-                                new WorkItemLinkTypeProxy(item)));
+                return _workItemStore.Value.WorkItemLinkTypes.Select(
+                    item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(
+                        new WorkItemLinkTypeProxy(item)));
             }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
@@ -124,16 +111,10 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (!ids.Any())
-            {
-                return Enumerable.Empty<IWorkItem>();
-            }
+            if (!ids.Any()) return Enumerable.Empty<IWorkItem>();
 
             var wiql = "SELECT * FROM WorkItems WHERE [System.Id] IN ({0})";
-            if (asOf.HasValue)
-            {
-                wiql += " ASOF '" + asOf.Value.ToString("u") + "'";
-            }
+            if (asOf.HasValue) wiql += " ASOF '" + asOf.Value.ToString("u") + "'";
 
             var query = string.Format(CultureInfo.InvariantCulture, wiql, string.Join(", ", ids));
 
@@ -156,6 +137,11 @@ namespace Microsoft.Qwiq.Proxies.Soap
             {
                 throw new ValidationException(ex);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing) if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
         }
     }
 }

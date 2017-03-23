@@ -43,6 +43,8 @@ namespace Microsoft.Qwiq.Proxies
 
         public IIdentityManagementService IdentityManagementService => _ims.Value;
 
+        public TimeZone TimeZone => _tfs?.TimeZone ?? TimeZone.CurrentTimeZone;
+
         public void Dispose()
         {
             Dispose(true);

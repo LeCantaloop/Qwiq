@@ -55,6 +55,11 @@ namespace Microsoft.Qwiq.Mocks
 
         }
 
+        internal MockWorkItem(IWorkItemType type)
+            : this(type.Name, type.FieldDefinitions.ToDictionary(p => p.Name, e => (object)null))
+        {
+        }
+
         public string AreaPath
         {
             get { return (string)GetValue("Area Path"); }

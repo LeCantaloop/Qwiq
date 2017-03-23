@@ -144,6 +144,8 @@ namespace Microsoft.Qwiq.Mocks
             return _links;
         }
 
+        public IFieldDefinitionCollection FieldDefinitions => new MockFieldDefinitionCollection(this);
+
         protected void Dispose(bool disposing)
         {
             if (disposing)

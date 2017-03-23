@@ -3,15 +3,12 @@ using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Microsoft.Qwiq.Soap;
 using Microsoft.Qwiq.Proxies;
 using TfsSoap = Microsoft.Qwiq.Proxies.Soap;
 using TfsRest = Microsoft.Qwiq.Proxies.Rest;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace Microsoft.Qwiq
 {
@@ -65,8 +62,7 @@ namespace Microsoft.Qwiq
                     switch (type)
                     {
                         case ClientType.Rest:
-                            var tfs = ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(new TfsTeamProjectCollectionProxy(tfsNative));
-                            wis = CreateRestWorkItemStore(tfs);
+                            wis = CreateRestWorkItemStore(tfsNative);
                             break;
                         case ClientType.Soap:
                             wis = CreateSoapWorkItemStore(tfsNative);
@@ -91,15 +87,14 @@ namespace Microsoft.Qwiq
             throw new AccessDeniedException("Invalid credentials");
         }
 
-        private static IWorkItemStore CreateRestWorkItemStore(IInternalTfsTeamProjectCollection tfs)
+        private static IWorkItemStore CreateRestWorkItemStore(TfsTeamProjectCollection tfs)
         {
-            var workItemStore = tfs.GetClient<WorkItemTrackingHttpClient>();
-            return new TfsRest.WorkItemStoreProxy(tfs, workItemStore);
+            return new TfsRest.WorkItemStoreProxy(tfs, Microsoft.Qwiq.Rest.QueryFactory.GetInstance);
         }
 
         private static IWorkItemStore CreateSoapWorkItemStore(TfsTeamProjectCollection tfs)
         {
-            return new TfsSoap.WorkItemStoreProxy(tfs, w=>QueryFactory.GetInstance(w));
+            return new TfsSoap.WorkItemStoreProxy(tfs, Microsoft.Qwiq.Soap.QueryFactory.GetInstance);
         }
 
         private static TfsTeamProjectCollection ConnectToTfsCollection(

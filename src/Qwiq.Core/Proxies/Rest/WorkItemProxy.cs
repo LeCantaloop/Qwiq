@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
-
-using WorkItem = Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
@@ -18,124 +13,85 @@ namespace Microsoft.Qwiq.Proxies.Rest
         internal WorkItemProxy(WorkItem item)
         {
             _item = item;
-            Type = new WorkItemTypeProxy(GetValue<string>(CoreFieldRefNames.WorkItemType));
+            //Type = new WorkItemTypeProxy(GetValue<string>(CoreFieldRefNames.WorkItemType));
             Uri = new Uri(item.Url);
         }
 
         public string AreaPath
         {
-            get
-            {
-                return GetValue<string>(CoreFieldRefNames.AreaPath);
-            }
-            set
-            {
-                SetValue(CoreFieldRefNames.AreaPath, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.AreaPath);
+            set => SetValue(CoreFieldRefNames.AreaPath, value);
         }
 
         public string AssignedTo
         {
-            get
-            {
-                return GetValue<string>(CoreFieldRefNames.AssignedTo);
-            }
-            set
-            {
-                SetValue(CoreFieldRefNames.AssignedTo, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.AssignedTo);
+            set => SetValue(CoreFieldRefNames.AssignedTo, value);
         }
 
         public int AttachedFileCount => GetValue<int>(CoreFieldRefNames.AttachedFileCount);
 
-        public IEnumerable<IAttachment> Attachments { get { throw new NotImplementedException(); } }
+        public IEnumerable<IAttachment> Attachments => throw new NotImplementedException();
 
         public string ChangedBy
         {
-            get { return GetValue<string>(CoreFieldRefNames.ChangedBy); }
-            set
-            {
-                SetValue(CoreFieldRefNames.ChangedBy, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.ChangedBy);
+            set => SetValue(CoreFieldRefNames.ChangedBy, value);
         }
 
         public DateTime ChangedDate
         {
-            get { return (DateTime)GetValue(CoreFieldRefNames.ChangedDate); }
-            set
-            {
-                SetValue(CoreFieldRefNames.ChangedDate, value);
-            }
+            get => (DateTime)GetValue(CoreFieldRefNames.ChangedDate);
+            set => SetValue(CoreFieldRefNames.ChangedDate, value);
         }
 
         public string CreatedBy
         {
-            get { return GetValue<string>(CoreFieldRefNames.CreatedBy); }
-            set
-            {
-                SetValue(CoreFieldRefNames.CreatedBy, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.CreatedBy);
+            set => SetValue(CoreFieldRefNames.CreatedBy, value);
         }
 
         public DateTime CreatedDate
         {
-            get { return (DateTime)GetValue(CoreFieldRefNames.CreatedDate); }
-            set
-            {
-                SetValue(CoreFieldRefNames.CreatedDate, value);
-            }
+            get => (DateTime)GetValue(CoreFieldRefNames.CreatedDate);
+            set => SetValue(CoreFieldRefNames.CreatedDate, value);
         }
 
         public string Description
         {
-            get
-            {
-                return GetValue<string>(CoreFieldRefNames.Description);
-            }
-            set
-            {
-                SetValue(CoreFieldRefNames.Description, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.Description);
+            set => SetValue(CoreFieldRefNames.Description, value);
         }
 
         public int ExternalLinkCount => GetValue<int>(CoreFieldRefNames.ExternalLinkCount);
 
-        public IFieldCollection Fields { get { throw new NotImplementedException(); } }
+        public IFieldCollection Fields => throw new NotImplementedException();
 
         public string History
         {
-            get { return GetValue(CoreFieldRefNames.History) as string ?? string.Empty; }
-            set
-            {
-                SetValue(CoreFieldRefNames.History, value);
-            }
+            get => GetValue(CoreFieldRefNames.History) as string ?? string.Empty;
+            set => SetValue(CoreFieldRefNames.History, value);
         }
 
         public int HyperLinkCount => GetValue<int>(CoreFieldRefNames.HyperLinkCount);
 
         public int Id => _item.Id.GetValueOrDefault(0);
 
-        public bool IsDirty { get { throw new NotImplementedException(); } }
+        public bool IsDirty => throw new NotImplementedException();
 
         public string IterationPath
         {
-            get
-            {
-                return GetValue<string>(CoreFieldRefNames.IterationPath);
-            }
-            set
-            {
-                SetValue(CoreFieldRefNames.IterationPath, value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.IterationPath);
+            set => SetValue(CoreFieldRefNames.IterationPath, value);
         }
 
         public string Keywords
         {
-            get { return GetValue<string>(WorkItemFields.Keywords); }
-            set { SetValue(WorkItemFields.Keywords, value); }
+            get => GetValue<string>(WorkItemFields.Keywords);
+            set => SetValue(WorkItemFields.Keywords, value);
         }
 
-        public ICollection<ILink> Links { get { throw new NotImplementedException(); } }
+        public ICollection<ILink> Links => throw new NotImplementedException();
 
         public int RelatedLinkCount => GetValue<int>(CoreFieldRefNames.RelatedLinkCount);
 
@@ -145,24 +101,24 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public long Revision => Rev;
 
-        public IEnumerable<IRevision> Revisions { get { throw new NotImplementedException(); } }
+        public IEnumerable<IRevision> Revisions => throw new NotImplementedException();
 
         public string State
         {
-            get { return GetValue<string>(CoreFieldRefNames.State); }
-            set { SetValue(CoreFieldRefNames.State, value); }
+            get => GetValue<string>(CoreFieldRefNames.State);
+            set => SetValue(CoreFieldRefNames.State, value);
         }
 
         public string Tags
         {
-            get { return GetValue<string>(CoreFieldRefNames.Tags); }
-            set { SetValue(CoreFieldRefNames.Tags, value); }
+            get => GetValue<string>(CoreFieldRefNames.Tags);
+            set => SetValue(CoreFieldRefNames.Tags, value);
         }
 
         public string Title
         {
-            get { return GetValue<string>(CoreFieldRefNames.Title); }
-            set { SetValue(CoreFieldRefNames.Title, value); }
+            get => GetValue<string>(CoreFieldRefNames.Title);
+            set => SetValue(CoreFieldRefNames.Title, value);
         }
 
         public IWorkItemType Type { get; }
@@ -171,14 +127,13 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public object this[string name]
         {
-            get
-            {
-                return GetValue(name);
-            }
-            set
-            {
-                SetValue(name, value);
-            }
+            get => GetValue(name);
+            set => SetValue(name, value);
+        }
+
+        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        {
+            throw new NotImplementedException();
         }
 
         public void Close()
@@ -240,23 +195,19 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private object GetValue(string field)
         {
-            if (!_item.Fields.TryGetValue(field, out object val))
-            {
-                // To preserve OM compatability
-                throw new FieldDefinitionNotExistException(
-                    $"TF26026: A field definition ID {field} in the work item type definition file does not exist. Add a definition for this field ID, or remove the reference to the field ID and try again.");
-            }
-            return val;
+            //if (!Type.FieldDefinitions.Contains(field))
+            //{
+            //    // To preserve OM compatability
+            //    throw new FieldDefinitionNotExistException(
+            //        $"TF26026: A field definition ID {field} in the work item type definition file does not exist. Add a definition for this field ID, or remove the reference to the field ID and try again.");
+            //}
+
+            return !_item.Fields.TryGetValue(field, out object val) ? null : val;
         }
 
         private void SetValue(string field, object value)
         {
             _item.Fields[field] = value;
-        }
-
-        public void ApplyRules(bool doNotUpdateChangedBy = false)
-        {
-            throw new NotImplementedException();
         }
     }
 }

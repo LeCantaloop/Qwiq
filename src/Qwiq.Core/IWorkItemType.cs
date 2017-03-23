@@ -4,6 +4,8 @@ namespace Microsoft.Qwiq
     {
         string Description { get; }
         string Name { get; }
+
+        IFieldDefinitionCollection FieldDefinitions { get; }
         IWorkItem NewWorkItem();
     }
 }
