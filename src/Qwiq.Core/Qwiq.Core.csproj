@@ -278,6 +278,7 @@
     <Compile Include="LinkHelper.cs" />
     <Compile Include="LinkMapper.cs" />
     <Compile Include="LinkTypeEndMapper.cs" />
+    <Compile Include="LinqExtensions.cs" />
     <Compile Include="PageSizeRangeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionCollectionProxy.cs" />
