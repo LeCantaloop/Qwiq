@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -25,25 +26,21 @@ namespace Microsoft.Qwiq.Proxies.Rest
             _workItemStore = workItemStore;
         }
 
-        public IEnumerable<IProject> Projects
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public TfsCredentials AuthorizedCredentials => throw new NotImplementedException();
+
+        public IEnumerable<IProject> Projects => throw new NotImplementedException();
 
         public ITfsTeamProjectCollection TeamProjectCollection => _teamProjectCollection;
 
-        public TimeZone TimeZone
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public TimeZone TimeZone => throw new NotImplementedException();
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get; }
+        public string UserDisplayName => throw new NotImplementedException();
+
+        public string UserIdentityName => throw new NotImplementedException();
+
+        public string UserSid => throw new NotImplementedException();
+
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes => throw new NotImplementedException();
 
         public void Dispose()
         {
@@ -56,7 +53,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (dayPrecision) throw new NotSupportedException();
 
             var p = Parser.ParseSyntax(wiql);
-            var w = new Wiql() { Query = p.ToString() };
+            var w = new Wiql { Query = p.ToString() };
 
             var fields = new List<string>();
             for (var i = 0; i < p.Fields.Count; i++)
@@ -68,7 +65,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             var result = _workItemStore.QueryByWiqlAsync(w, "OS").GetAwaiter().GetResult();
             if (result.WorkItems.Any())
             {
-                int skip = 0;
+                var skip = 0;
                 const int BatchSize = 100;
                 IEnumerable<WorkItemReference> workItemRefs;
                 do
@@ -77,14 +74,11 @@ namespace Microsoft.Qwiq.Proxies.Rest
                     if (workItemRefs.Any())
                     {
                         // TODO: Support AsOf
-                        var workItems =
-                            _workItemStore.GetWorkItemsAsync(workItemRefs.Select(wir => wir.Id), fields, null, null)
-                                          .GetAwaiter()
-                                          .GetResult();
-                        foreach (var workItem in workItems)
-                        {
-                            yield return new WorkItemProxy(workItem);
-                        }
+                        var workItems = _workItemStore
+                            .GetWorkItemsAsync(workItemRefs.Select(wir => wir.Id), fields, null, null)
+                            .GetAwaiter()
+                            .GetResult();
+                        foreach (var workItem in workItems) yield return new WorkItemProxy(workItem);
                     }
                     skip += BatchSize;
                 }
@@ -94,17 +88,12 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (!ids.Any())
-            {
-                yield return null;
-            }
+            if (!ids.Any()) yield return null;
 
             var wis = _workItemStore.GetWorkItemsAsync(ids, null, asOf, WorkItemExpand.Fields).GetAwaiter().GetResult();
             foreach (var workItem in wis)
-            {
                 // write work item to console
                 yield return new WorkItemProxy(workItem);
-            }
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
@@ -117,23 +106,19 @@ namespace Microsoft.Qwiq.Proxies.Rest
         {
             if (dayPrecision) throw new NotSupportedException();
 
-            var w = new Wiql() { Query = wiql };
+            var w = new Wiql { Query = wiql };
 
             var result = _workItemStore.QueryByWiqlAsync(w, "OS").GetAwaiter().GetResult();
-            foreach (var workItem in result.WorkItemRelations)
-            {
-                yield return new WorkItemLinkInfoProxy(workItem);
-            }
+            foreach (var workItem in result.WorkItemRelations) yield return new WorkItemLinkInfoProxy(workItem);
         }
 
         private static IEnumerable<int> Ids(WorkItemQueryResult result, int skip = 0)
         {
-            return
-                result.WorkItemRelations.Where(r => r.Target != null)
-                      .Select(r => r.Target.Id)
-                      .Union(result.WorkItemRelations.Where(r => r.Source != null).Select(r => r.Source.Id))
-                      .Skip(skip)
-                      .Take(100);
+            return result.WorkItemRelations.Where(r => r.Target != null)
+                         .Select(r => r.Target.Id)
+                         .Union(result.WorkItemRelations.Where(r => r.Source != null).Select(r => r.Source.Id))
+                         .Skip(skip)
+                         .Take(100);
         }
 
         private void Dispose(bool disposing)

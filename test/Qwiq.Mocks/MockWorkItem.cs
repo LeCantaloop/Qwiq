@@ -398,5 +398,9 @@ namespace Microsoft.Qwiq.Mocks
                 _properties.Add(field, new MockField(value, value) { Name = field });
             }
         }
+
+        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        {
+        }
     }
 }

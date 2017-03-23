@@ -418,6 +418,11 @@ namespace Microsoft.Qwiq.Proxies.Soap
                 throw new ServerRejectedChangesException(ex);
             }
         }
+
+        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        {
+            _item.ApplyRules(doNotUpdateChangedBy);
+        }
     }
 }
 

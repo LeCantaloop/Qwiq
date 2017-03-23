@@ -253,5 +253,10 @@ namespace Microsoft.Qwiq.Proxies.Rest
         {
             _item.Fields[field] = value;
         }
+
+        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

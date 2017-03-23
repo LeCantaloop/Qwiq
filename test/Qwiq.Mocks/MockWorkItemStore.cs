@@ -4,19 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
+using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
     {
-        private readonly IEnumerable<IWorkItemLinkInfo> _links;
+        private static readonly Random Instance = new Random();
 
-        private readonly IList<IWorkItem> _workItems;
+        private readonly IEnumerable<IWorkItemLinkInfo> _links;
 
         private readonly IDictionary<int, IWorkItem> _lookup;
 
-        private static readonly Random Instance = new Random();
+        private readonly IList<IWorkItem> _workItems;
 
         public MockWorkItemStore()
             : this(new MockTfsTeamProjectCollection(), new MockProject())
@@ -47,8 +48,8 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
-        public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links )
-            :this(workItems)
+        public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links)
+            : this(workItems)
         {
             _links = links;
         }
@@ -60,15 +61,31 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
+        public TfsCredentials AuthorizedCredentials => null;
+
         public IEnumerable<IProject> Projects { get; set; }
+
+        public bool SimulateQueryTimes { get; set; }
 
         public ITfsTeamProjectCollection TeamProjectCollection { get; set; }
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get { return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)); } }
-
         public TimeZone TimeZone { get; }
 
-        public bool SimulateQueryTimes { get; set; }
+        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
+
+        public string UserIdentityName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
+
+        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
+
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        {
+            get
+            {
+                return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s));
+            }
+        }
+
+        private int WaitTime => Instance.Next(0, 3000);
 
         public void Dispose()
         {
@@ -107,10 +124,7 @@ namespace Microsoft.Qwiq.Mocks
                 Thread.Sleep(sleep);
             }
 
-            return _lookup
-                    .Where(p => h.Contains(p.Key))
-                    .Select(p => p.Value)
-                    .ToList();
+            return _lookup.Where(p => h.Contains(p.Key)).Select(p => p.Value).ToList();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
@@ -136,7 +150,5 @@ namespace Microsoft.Qwiq.Mocks
             {
             }
         }
-
-        private int WaitTime => Instance.Next(0, 3000);
     }
 }

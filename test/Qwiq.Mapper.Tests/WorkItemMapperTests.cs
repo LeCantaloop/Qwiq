@@ -82,6 +82,60 @@ namespace Microsoft.Qwiq.Mapper.Tests
     }
 
     [TestClass]
+    public class when_an_issue_is_mapped_with_a_field_containing_null_that_does_not_accept_null_and_has_a_null_substitute : WorkItemMapperContext<when_an_issue_is_mapped_with_a_field_containing_null_that_does_not_accept_null_and_has_a_null_substitute.MockModelWithMissingField>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem("MissingFields", WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoesNotExist.ShouldEqual(-1);
+        }
+
+        [WorkItemType("MissingFields")]
+        public class MockModelWithMissingField : IIdentifiable
+        {
+            [FieldDefinition("Id")]
+            public virtual int Id { get; internal set; }
+
+            [FieldDefinition("NullableField", -1)]
+            public virtual int DoesNotExist { get; internal set; }
+        }
+    }
+
+    [TestClass]
+    public class when_an_issue_is_mapped_with_a_field_containing_null_that_does_not_accept_null_and_convert_and_has_a_null_substitute : WorkItemMapperContext<when_an_issue_is_mapped_with_a_field_containing_null_that_does_not_accept_null_and_convert_and_has_a_null_substitute.MockModelWithMissingField>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem("Default", WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoesNotExist.ShouldEqual(-1);
+        }
+
+        [WorkItemType("Default")]
+        public class MockModelWithMissingField : IIdentifiable
+        {
+            [FieldDefinition("Id")]
+            public int Id { get; internal set; }
+
+            [FieldDefinition("NullableField", true, -1)]
+            public int DoesNotExist { get; internal set; }
+        }
+    }
+
+    [TestClass]
     // ReSharper disable once InconsistentNaming
     public class when_the_issue_factory_parses_an_issue_with_links : WorkItemMapperContext<MockModelWithLinks>
     {
