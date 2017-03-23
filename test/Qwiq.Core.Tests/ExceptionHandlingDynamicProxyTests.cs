@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Qwiq.Core.Tests

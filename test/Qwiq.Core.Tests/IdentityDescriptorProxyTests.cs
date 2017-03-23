@@ -1,4 +1,5 @@
 using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;

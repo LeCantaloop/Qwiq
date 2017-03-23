@@ -201,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseLinkType.cs" />
+    <Compile Include="CoreLinkTypeReferenceNames.cs" />
     <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
     <Compile Include="Credentials\AuthenticationOptions.cs" />
     <Compile Include="Credentials\AuthenticationSuccessNotification.cs" />

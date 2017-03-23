@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;

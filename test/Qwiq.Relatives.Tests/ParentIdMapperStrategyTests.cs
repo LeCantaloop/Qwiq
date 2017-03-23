@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Core.Tests;
+
 using Should;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Relatives.Mapper;
 using Microsoft.Qwiq.Relatives.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Qwiq.Tests.Common;
 
 namespace Microsoft.Qwiq.Relatives.Tests
 {
