@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Qwiq.Exceptions;
@@ -8,12 +9,10 @@ using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Rest
 {
     public class QueryProxy : IQuery
     {
-
-
         private readonly Wiql _query;
 
         private readonly WorkItemTrackingHttpClient _workItemStore;
@@ -22,18 +21,26 @@ namespace Microsoft.Qwiq.Microsoft.Qwiq.Rest
 
         private readonly List<string> _fields;
 
-        internal QueryProxy(NodeSelect parseResults, Wiql query, WorkItemTrackingHttpClient workItemStore, int batchSize = 100)
+        internal QueryProxy(
+            NodeSelect parseResults,
+            Wiql query,
+            WorkItemTrackingHttpClient workItemStore,
+            int batchSize = 200)
         {
             _query = query;
             _workItemStore = workItemStore;
 
             // Boundary check the batch size
-            if (batchSize <= 0) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be greater than 0.");
-            if (batchSize > 200) throw new ArgumentOutOfRangeException(nameof(batchSize), batchSize, "Batch size must be less than 200.");
+            // This is defined in Microsoft.TeamFoundation.WorkItemTracking.Client.PageSizes
+            if (batchSize < 50) throw new PageSizeRangeException();
+            if (batchSize > 200) throw new PageSizeRangeException();
 
             _batchSize = batchSize;
 
-            if (parseResults.Fields != null)
+            // The API can take up to 100 fields to get with each work item
+            // If there are no fields or greater than 100 specified, omit and permit WorkItemExpand to perform the selection
+            if (parseResults.Fields != null &&
+                parseResults.Fields.Count <= 100)
             {
                 _fields = new List<string>(parseResults.Fields.Count);
 
@@ -51,10 +58,13 @@ namespace Microsoft.Qwiq.Microsoft.Qwiq.Rest
             if (result.WorkItems.Any())
             {
                 var skip = 0;
-                IEnumerable<WorkItemReference> workItemRefs;
+                List<WorkItemReference> workItemRefs;
                 do
                 {
+                    Debug.Print("Skipping {0}; Taking {1}", skip, _batchSize);
                     workItemRefs = result.WorkItems.Skip(skip).Take(_batchSize).ToList();
+                    Debug.Print("Took {0}", workItemRefs.Count);
+
                     if (workItemRefs.Any())
                     {
                         // TODO: Support AsOf
@@ -69,7 +79,7 @@ namespace Microsoft.Qwiq.Microsoft.Qwiq.Rest
                     }
                     skip += _batchSize;
                 }
-                while (workItemRefs.Count() == _batchSize);
+                while (workItemRefs.Count == _batchSize);
             }
         }
 
