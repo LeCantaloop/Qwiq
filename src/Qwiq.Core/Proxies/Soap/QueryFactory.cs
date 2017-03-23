@@ -2,7 +2,7 @@ using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Proxies.Soap;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Soap
 {
     internal class QueryFactory : IQueryFactory
     {

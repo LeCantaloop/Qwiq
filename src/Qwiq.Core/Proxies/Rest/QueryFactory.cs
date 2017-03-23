@@ -5,7 +5,7 @@ using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Rest
 {
     internal class QueryFactory : IQueryFactory
     {
