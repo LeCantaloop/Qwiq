@@ -1,6 +1,8 @@
 using System;
 using System.Xml;
-using Microsoft.Qwiq.Core.Tests;
+
+using Microsoft.Qwiq.Tests.Common;
+
 using Should;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

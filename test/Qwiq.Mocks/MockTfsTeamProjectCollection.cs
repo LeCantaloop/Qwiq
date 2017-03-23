@@ -1,3 +1,5 @@
+using System;
+
 using Microsoft.Qwiq.Credentials;
 
 namespace Microsoft.Qwiq.Mocks
@@ -23,5 +25,7 @@ namespace Microsoft.Qwiq.Mocks
         public bool HasAuthenticated { get; set; }
 
         public IIdentityManagementService IdentityManagementService { get; set; }
+
+        public Uri Uri { get; set; }
     }
 }

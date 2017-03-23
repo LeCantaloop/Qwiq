@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Tests.Common
 {
     public static class ShouldExtensions
     {

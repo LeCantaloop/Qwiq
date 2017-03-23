@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Mocks
 {

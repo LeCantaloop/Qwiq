@@ -2,6 +2,9 @@ using System;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Framework.Client;
+using Microsoft.TeamFoundation.Server;
 
 using Tfs = Microsoft.TeamFoundation;
 
@@ -13,22 +16,18 @@ namespace Microsoft.Qwiq.Proxies
 
         private readonly Lazy<IIdentityManagementService> _ims;
 
-        private readonly Tfs.Client.TfsTeamProjectCollection _tfs;
+        private readonly TfsTeamProjectCollection _tfs;
 
-        internal TfsTeamProjectCollectionProxy(Tfs.Client.TfsTeamProjectCollection tfs)
+        internal TfsTeamProjectCollectionProxy(TfsTeamProjectCollection tfs)
         {
             _tfs = tfs;
-            _css =
-                new Lazy<ICommonStructureService>(
-                    () =>
-                        ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(
-                            new CommonStructureServiceProxy(_tfs?.GetService<Tfs.Server.ICommonStructureService4>())));
-            _ims =
-                new Lazy<IIdentityManagementService>(
-                    () =>
-                        ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(
-                            new IdentityManagementServiceProxy(
-                                _tfs?.GetService<Tfs.Framework.Client.IIdentityManagementService2>())));
+
+            _css = new Lazy<ICommonStructureService>(
+                () => ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(
+                    new CommonStructureServiceProxy(_tfs?.GetService<ICommonStructureService4>())));
+            _ims = new Lazy<IIdentityManagementService>(
+                () => ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(
+                    new IdentityManagementServiceProxy(_tfs?.GetService<IIdentityManagementService2>())));
         }
 
         public TfsCredentials AuthorizedCredentials => new TfsCredentials(_tfs?.ClientCredentials);
@@ -40,6 +39,8 @@ namespace Microsoft.Qwiq.Proxies
         public bool HasAuthenticated => _tfs?.HasAuthenticated ?? false;
 
         public IIdentityManagementService IdentityManagementService => _ims.Value;
+
+        public Uri Uri => _tfs.Uri;
 
         public void Dispose()
         {
@@ -54,10 +55,7 @@ namespace Microsoft.Qwiq.Proxies
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _tfs?.Dispose();
-            }
+            if (disposing) _tfs?.Dispose();
         }
     }
 }

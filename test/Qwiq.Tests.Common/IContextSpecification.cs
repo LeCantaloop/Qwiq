@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Tests.Common
 {
     public interface IContextSpecification
     {

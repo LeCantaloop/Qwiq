@@ -1,7 +1,5 @@
 using System;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkType : IWorkItemLinkType
@@ -47,6 +45,6 @@ namespace Microsoft.Qwiq.Mocks
             ReferenceName.Equals("System.LinkTypes.Related") ? "Forward" : "Reverse",
             _reverseName) { LinkType = this };
 
-       
+
     }
 }
