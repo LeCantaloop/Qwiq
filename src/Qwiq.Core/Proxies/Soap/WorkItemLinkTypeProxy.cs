@@ -1,4 +1,4 @@
-using Microsoft.Qwiq.Exceptions;
+using System;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -8,29 +8,39 @@ namespace Microsoft.Qwiq.Proxies.Soap
     {
         private readonly Tfs.WorkItemLinkType _linkType;
 
+        private readonly Lazy<WorkItemLinkTypeEndProxy> _reverseEnd;
+        private readonly Lazy<WorkItemLinkTypeEndProxy> _forwardEnd;
+
         internal WorkItemLinkTypeProxy(Tfs.WorkItemLinkType linkType)
         {
             _linkType = linkType;
+            _reverseEnd = new Lazy<WorkItemLinkTypeEndProxy>(() => new WorkItemLinkTypeEndProxy(_linkType.ReverseEnd));
+            _forwardEnd = new Lazy<WorkItemLinkTypeEndProxy>(() => new WorkItemLinkTypeEndProxy(_linkType.ForwardEnd));
         }
 
-        public IWorkItemLinkTypeEnd ForwardEnd
+        public IWorkItemLinkTypeEnd ForwardEnd => _forwardEnd.Value;
+
+        public bool IsActive => _linkType.IsActive;
+
+        public string ReferenceName => _linkType.ReferenceName;
+
+        public IWorkItemLinkTypeEnd ReverseEnd => _reverseEnd.Value;
+
+        public override bool Equals(object obj)
         {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_linkType.ForwardEnd)); }
+            if (!(obj is IWorkItemLinkType)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return WorkItemLinkTypeEqualityComparer.Instance.Equals(this, (IWorkItemLinkType)obj);
         }
 
-        public bool IsActive
+        public override int GetHashCode()
         {
-            get { return _linkType.IsActive; }
+            return WorkItemLinkTypeEqualityComparer.Instance.GetHashCode(this);
         }
 
-        public string ReferenceName
+        public override string ToString()
         {
-            get { return _linkType.ReferenceName; }
-        }
-
-        public IWorkItemLinkTypeEnd ReverseEnd
-        {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_linkType.ReverseEnd)); }
+            return ReferenceName;
         }
     }
 }

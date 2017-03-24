@@ -84,9 +84,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
         {
             get
             {
-                return _workItemStore.Value.WorkItemLinkTypes.Select(
-                    item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(
-                        new WorkItemLinkTypeProxy(item)));
+                return _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkTypeProxy(item));
             }
         }
 

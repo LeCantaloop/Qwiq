@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Exceptions;
@@ -14,26 +14,6 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest
 {
-    public static class NodeSelectExtensions
-    {
-        /// <summary>
-        /// Gets the <see cref="NodeSelect.AsOf"/> as <see cref="DateTime"/> in UTC.
-        /// </summary>
-        /// <param name="nodeSelect"></param>
-        /// <returns>If value is not already in UTC <see langword="null" /> is returned.</returns>
-        public static DateTime? GetAsOfUtc(this NodeSelect nodeSelect)
-        {
-            if (nodeSelect.AsOf == null ||
-                !DateTime.TryParse(((NodeItem)nodeSelect.AsOf).Value, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out DateTime result))
-                return null;
-            if (result.Kind != DateTimeKind.Utc)
-            {
-                throw new ArgumentOutOfRangeException(nameof(nodeSelect.AsOf), "Specified date must be UTC");
-            }
-            return result;
-        }
-    }
-
     public class QueryProxy : IQuery
     {
         private IEnumerable<int> _ids;
@@ -53,6 +33,8 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly DateTime? AsOf;
 
+        private readonly NodeAndOperator _linkGroup;
+
         private QueryProxy(
             WorkItemTrackingHttpClient workItemStore,
             NodeSelect parseResults,
@@ -68,11 +50,11 @@ namespace Microsoft.Qwiq.Rest
 
             _batchSize = batchSize;
 
-            var asOf = parseResults.GetAsOfUtc();
-            if (asOf != DateTime.MinValue)
-            {
-                AsOf = asOf;
-            }
+            AsOf = parseResults.GetAsOfUtc();
+
+            var nodeAndOperator = (NodeAndOperator)null;
+            parseResults.GetWhereGroups().TryGetValue(string.Empty, out nodeAndOperator);
+            _linkGroup = nodeAndOperator;
 
             // The API can take up to 100 fields to get with each work item
             // If there are no fields or greater than 100 specified, omit and permit WorkItemExpand to perform the selection
@@ -106,6 +88,7 @@ namespace Microsoft.Qwiq.Rest
             int batchSize = MaximumBatchSize)
             : this(workItemStore, parseResults, batchSize)
         {
+
             _query = new Wiql { Query = parseResults.ToString() };
         }
 
@@ -141,6 +124,23 @@ namespace Microsoft.Qwiq.Rest
             {
                 yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkInfo>(new WorkItemLinkInfoProxy(workItemLink));
             }
+        }
+
+
+
+        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        {
+            //TODO: Verify this is a links query
+            if (_linkGroup == null)
+            {
+                // TODO: return all link type ends
+            }
+            else
+            {
+                // TODO: return link type ends specified in the WIQL
+            }
+
+            throw new NotSupportedException();
         }
     }
 }

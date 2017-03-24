@@ -150,6 +150,39 @@ mode(Recursive)
     }
 
     [TestClass]
+    public class LinkTypeTests : ContextSpecification
+    {
+        private IWorkItemStore _soap;
+
+        private IEnumerable<IWorkItemLinkType> _soapResult;
+        private IWorkItemStore _rest;
+        private IEnumerable<IWorkItemLinkType> _restResult;
+
+        public override void Given()
+        {
+            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
+            var fac = WorkItemStoreFactory.GetInstance();
+            var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
+
+            _soap = fac.Create(uri, credentials, ClientType.Soap);
+            _rest = fac.Create(uri, credentials, ClientType.Rest);
+        }
+
+        public override void When()
+        {
+            _soapResult = _soap.WorkItemLinkTypes.ToList();
+            _restResult = _rest.WorkItemLinkTypes.ToList();
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        public void Equal()
+        {
+            _restResult.ShouldContainOnly(_soapResult);
+        }
+    }
+
+    [TestClass]
     public class WiqlHierarchyQueryTests : ContextSpecification
     {
         protected Result RestResult { get; set; }
@@ -214,14 +247,7 @@ mode(recursive)
         [TestCategory("localOnly")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
-            for (var i = 0; i < RestResult.WorkItemLinks.Count(); i++)
-            {
-                var r = RestResult.WorkItemLinks.ElementAt(i);
-                var s = SoapResult.WorkItemLinks.ElementAt(i);
-
-                r.SourceId.ShouldEqual(s.SourceId);
-                r.TargetId.ShouldEqual(s.TargetId);
-            }
+            RestResult.WorkItemLinks.ShouldContainOnly(SoapResult.WorkItemLinks, WorkItemLinkInfoEqualityComparer.Instance);
         }
 
         protected class Result : IDisposable

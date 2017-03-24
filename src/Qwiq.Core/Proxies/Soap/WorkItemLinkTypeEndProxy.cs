@@ -13,34 +13,33 @@ namespace Microsoft.Qwiq.Proxies.Soap
             _end = end;
         }
 
-        public int Id
+        public int Id => _end.Id;
+
+        public string ImmutableName => _end.ImmutableName;
+
+        public bool IsForwardLink => _end.IsForwardLink;
+
+        public IWorkItemLinkType LinkType => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(_end.LinkType));
+
+        public string Name => _end.Name;
+
+        public IWorkItemLinkTypeEnd OppositeEnd => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_end.OppositeEnd));
+
+        public override bool Equals(object obj)
         {
-            get { return _end.Id; }
+            if (!(obj is IWorkItemLinkTypeEnd)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return WorkItemLinkTypeEndEqualityComparer.Instance.Equals(this, (IWorkItemLinkTypeEnd)obj);
         }
 
-        public string ImmutableName
+        public override int GetHashCode()
         {
-            get { return _end.ImmutableName; }
+            return WorkItemLinkTypeEndEqualityComparer.Instance.GetHashCode(this);
         }
 
-        public bool IsForwardLink
+        public override string ToString()
         {
-            get { return _end.IsForwardLink; }
-        }
-
-        public IWorkItemLinkType LinkType
-        {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(_end.LinkType)); }
-        }
-
-        public string Name
-        {
-            get { return _end.Name; }
-        }
-
-        public IWorkItemLinkTypeEnd OppositeEnd
-        {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_end.OppositeEnd)); }
+            return ImmutableName;
         }
     }
 }

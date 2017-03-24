@@ -6,5 +6,7 @@ namespace Microsoft.Qwiq
     {
         IEnumerable<IWorkItem> RunQuery();
         IEnumerable<IWorkItemLinkInfo> RunLinkQuery();
+
+        IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes();
     }
 }

@@ -242,6 +242,7 @@
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
     <Compile Include="FieldDefinitionNotExistException.cs" />
+    <Compile Include="GenericComparer.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
@@ -280,6 +281,7 @@
     <Compile Include="LinkMapper.cs" />
     <Compile Include="LinkTypeEndMapper.cs" />
     <Compile Include="LinqExtensions.cs" />
+    <Compile Include="NodeSelectExtensions.cs" />
     <Compile Include="PageSizeRangeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionCollectionProxy.cs" />
@@ -287,6 +289,8 @@
     <Compile Include="Proxies\Rest\QueryFactory.cs" />
     <Compile Include="Proxies\Rest\QueryProxy.cs" />
     <Compile Include="Proxies\Rest\WorkItemLinkInfoProxy.cs" />
+    <Compile Include="Proxies\Rest\WorkItemLinkTypeEndProxy.cs" />
+    <Compile Include="Proxies\Rest\WorkItemLinkTypeProxy.cs" />
     <Compile Include="Proxies\Rest\WorkItemProxy.cs" />
     <Compile Include="Proxies\Rest\WorkItemStoreProxy.cs" />
     <Compile Include="Proxies\Rest\WorkItemTypeProxy.cs" />
@@ -328,6 +332,8 @@
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemFields.cs" />
     <Compile Include="WorkItemLinkInfoEqualityComparer.cs" />
+    <Compile Include="WorkItemLinkTypeEndEqualityComparer.cs" />
+    <Compile Include="WorkItemLinkTypeEqualityComparer.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
   </ItemGroup>
   <ItemGroup>

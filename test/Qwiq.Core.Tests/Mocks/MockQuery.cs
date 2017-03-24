@@ -19,5 +19,10 @@ namespace Microsoft.Qwiq.Core.Tests.Mocks
         {
             return Enumerable.Empty<IWorkItemLinkInfo>();
         }
+
+        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        {
+            return Enumerable.Empty<IWorkItemLinkTypeEnd>();
+        }
     }
 }

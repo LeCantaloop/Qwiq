@@ -23,5 +23,13 @@ namespace Microsoft.Qwiq.Proxies.Soap
         {
             return _query.RunLinkQuery().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkInfo>(new WorkItemLinkInfoProxy(item)));
         }
+
+        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        {
+            return _query.GetLinkTypes()
+                         .Select(
+                             item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(
+                                 new WorkItemLinkTypeEndProxy(item)));
+        }
     }
 }

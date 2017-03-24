@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Proxies.Rest;
 using Microsoft.Qwiq.Rest;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
@@ -18,11 +16,15 @@ namespace Microsoft.Qwiq.Proxies.Rest
     {
         private readonly int _batchSize;
 
+        private readonly Regex _immutableLinkTypeNameRegex = new Regex(
+            "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
+            RegexOptions.Singleline | RegexOptions.Compiled);
+
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private readonly Lazy<WorkItemTrackingHttpClient> _workItemStore;
+        private readonly Lazy<IEnumerable<IWorkItemLinkType>> _linkTypes;
 
         internal WorkItemStoreProxy(
             TfsTeamProjectCollection tfsNative,
@@ -54,9 +56,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
-            _workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
-            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
-
+            var workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(workItemStore?.Value));
 
             // Boundary check the batch size
 
@@ -64,6 +65,65 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (batchSize > QueryProxy.MaximumBatchSize) throw new PageSizeRangeException();
 
             _batchSize = batchSize;
+
+            IEnumerable<IWorkItemLinkType> ValueFactory()
+            {
+                var types = workItemStore.Value.GetRelationTypesAsync().GetAwaiter().GetResult();
+                var d = new Dictionary<string, IList<WorkItemRelationType>>(StringComparer.OrdinalIgnoreCase);
+                var d2 = new Dictionary<string, WorkItemLinkTypeProxy>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var type in types.Where(p => (string)p.Attributes["usage"] == "workItemLink"))
+                {
+                    var m = _immutableLinkTypeNameRegex.Match(type.ReferenceName);
+                    var linkRef = m.Groups["LinkTypeReferenceName"].Value;
+
+                    if (string.IsNullOrWhiteSpace(linkRef))
+                    {
+                        linkRef = type.ReferenceName;
+                    }
+
+                    if (!d.ContainsKey(linkRef)) d[linkRef] = new List<WorkItemRelationType>();
+                    d[linkRef].Add(type);
+
+                    if (!d2.ContainsKey(linkRef)) d2[linkRef] = new WorkItemLinkTypeProxy(linkRef);
+                }
+
+                foreach (var kvp in d2)
+                {
+                    var type = kvp.Value;
+                    var ends = d[kvp.Key];
+
+                    var isDirectional = ends.All(p => (bool)p.Attributes["directional"]);
+
+                    type.IsActive = ends.All(p => (bool)p.Attributes["enabled"]);
+
+                    var forwardEnd = ends.Count == 1 && !isDirectional
+                                         ? ends[0]
+                                         : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward"));
+
+                    if (!forwardEnd.ReferenceName.EndsWith("Forward"))
+                    {
+                        forwardEnd.ReferenceName += "-Forward";
+                    }
+
+                    type.ForwardEnd = new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type };
+                    if (isDirectional)
+                    {
+                        type.ReverseEnd = new WorkItemLinkTypeEndProxy(ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type };
+                        ((WorkItemLinkTypeEndProxy)type.ReverseEnd).OppositeEnd = type.ForwardEnd;
+                        ((WorkItemLinkTypeEndProxy)type.ForwardEnd).OppositeEnd = type.ReverseEnd;
+                    }
+                    else
+                    {
+                        ((WorkItemLinkTypeEndProxy)type.ForwardEnd).OppositeEnd = type.ForwardEnd;
+                        type.ReverseEnd = type.ForwardEnd;
+                    }
+
+                    yield return type;
+                }
+            }
+
+            _linkTypes = new Lazy<IEnumerable<IWorkItemLinkType>>(ValueFactory);
         }
 
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
@@ -84,7 +144,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes => throw new NotImplementedException();
+        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes => _linkTypes.Value;
 
         public void Dispose()
         {
@@ -113,9 +173,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             {
                 // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
                 if (asOf.Value.Kind != DateTimeKind.Utc)
-                {
                     asOf = DateTime.SpecifyKind(asOf.Value - TimeZone.GetUtcOffset(asOf.Value), DateTimeKind.Utc);
-                }
                 wiql += $" ASOF \'{asOf.Value:u}\'";
             }
 
