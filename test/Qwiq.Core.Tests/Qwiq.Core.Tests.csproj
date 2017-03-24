@@ -244,6 +244,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AggregateExceptionExploderTests.cs" />
+    <Compile Include="Clock.cs" />
     <Compile Include="ContextSpecification.cs" />
     <Compile Include="ExceptionHandlingDynamicProxyTests.cs" />
     <Compile Include="ExceptionMapperTests.cs" />
