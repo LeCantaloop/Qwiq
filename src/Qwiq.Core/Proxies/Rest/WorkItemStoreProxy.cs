@@ -28,6 +28,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
 
+        private Lazy<WorkItemTrackingHttpClient> _workItemStore;
+
         internal WorkItemStoreProxy(
             TfsTeamProjectCollection tfsNative,
             Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
@@ -58,8 +60,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
-            var workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
-            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(workItemStore?.Value));
+            _workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
 
             // Boundary check the batch size
 
@@ -70,7 +72,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
             WorkItemLinkTypeCollection ValueFactory()
             {
-                return GetLinks(workItemStore.Value);
+                return GetLinks(_workItemStore.Value);
             }
 
             _linkTypes = new Lazy<WorkItemLinkTypeCollection>(ValueFactory);
@@ -224,7 +226,11 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private void Dispose(bool disposing)
         {
-            if (disposing) if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
+            if (disposing)
+            {
+                if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
+                if (_workItemStore.IsValueCreated) _workItemStore.Value?.Dispose();
+            }
         }
     }
 }
