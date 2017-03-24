@@ -229,6 +229,7 @@
     <Compile Include="BaseLinkType.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
+    <Compile Include="EqualityComparerFactory.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="ValidationState.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemFields.cs" />
+    <Compile Include="WorkItemLinkInfoEqualityComparer.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
   </ItemGroup>
   <ItemGroup>

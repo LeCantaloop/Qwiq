@@ -3,7 +3,7 @@ using System;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
-    public class WorkItemLinkInfoProxy : IWorkItemLinkInfo
+    public struct WorkItemLinkInfoProxy : IWorkItemLinkInfo
     {
         private readonly WorkItemLink _item;
 
@@ -16,8 +16,29 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public int LinkTypeId => throw new NotImplementedException();
 
-        public int SourceId => (_item.Source?.Id).GetValueOrDefault();
+        public int SourceId => (_item?.Source?.Id).GetValueOrDefault();
 
-        public int TargetId => (_item.Target?.Id).GetValueOrDefault();
+        public int TargetId => (_item?.Target?.Id).GetValueOrDefault();
+
+        public static bool operator !=(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
+        {
+            return !x.Equals(y);
+        }
+
+        public static bool operator ==(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
+        {
+            return x.Equals(y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is WorkItemLinkInfoProxy)) return false;
+            return WorkItemLinkInfoEqualityComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemLinkInfoEqualityComparer.Instance.GetHashCode(this);
+        }
     }
 }
