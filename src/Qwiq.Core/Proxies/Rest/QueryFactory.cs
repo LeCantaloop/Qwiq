@@ -5,7 +5,7 @@ using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Proxies.Rest
 {
     internal class QueryFactory : IQueryFactory
     {

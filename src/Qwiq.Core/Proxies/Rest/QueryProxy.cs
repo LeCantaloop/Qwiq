@@ -4,13 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Proxies;
-using Microsoft.Qwiq.Proxies.Rest;
+using Microsoft.Qwiq.Rest;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class QueryProxy : IQuery
     {

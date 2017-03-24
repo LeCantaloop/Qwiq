@@ -89,12 +89,12 @@ namespace Microsoft.Qwiq
 
         private static IWorkItemStore CreateRestWorkItemStore(TfsTeamProjectCollection tfs)
         {
-            return new TfsRest.WorkItemStoreProxy(tfs, Rest.QueryFactory.GetInstance);
+            return new TfsRest.WorkItemStoreProxy(tfs, TfsRest.QueryFactory.GetInstance);
         }
 
         private static IWorkItemStore CreateSoapWorkItemStore(TfsTeamProjectCollection tfs)
         {
-            return new TfsSoap.WorkItemStoreProxy(tfs, Soap.QueryFactory.GetInstance);
+            return new TfsSoap.WorkItemStoreProxy(tfs, TfsSoap.QueryFactory.GetInstance);
         }
 
         private static TfsTeamProjectCollection ConnectToTfsCollection(
