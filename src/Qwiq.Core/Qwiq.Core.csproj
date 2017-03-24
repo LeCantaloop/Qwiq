@@ -325,6 +325,7 @@
     <Compile Include="Proxies\Soap\WorkItemStoreProxy.cs" />
     <Compile Include="Proxies\Soap\WorkItemTypeProxy.cs" />
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
+    <Compile Include="Proxies\WorkItemLinkTypeCollection.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndCollection.cs" />
     <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />
