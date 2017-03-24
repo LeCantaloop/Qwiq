@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies.Rest;
+using Microsoft.Qwiq.Rest;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class WorkItemStoreProxy : IWorkItemStore
     {
+        private readonly int _batchSize;
+
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
@@ -20,25 +26,29 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         internal WorkItemStoreProxy(
             TfsTeamProjectCollection tfsNative,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            int batchSize = QueryProxy.MaximumBatchSize)
             : this(
                 () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
                     new TfsTeamProjectCollectionProxy(tfsNative)),
-                queryFactory)
+                queryFactory,
+                batchSize)
         {
         }
 
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory)
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            int batchSize = QueryProxy.MaximumBatchSize)
+            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, batchSize)
         {
         }
 
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<WorkItemTrackingHttpClient> wisFactory,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory)
+            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            int batchSize = QueryProxy.MaximumBatchSize)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
@@ -46,6 +56,14 @@ namespace Microsoft.Qwiq.Proxies.Rest
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+
+
+            // Boundary check the batch size
+
+            if (batchSize < QueryProxy.MinimumBatchSize) throw new PageSizeRangeException();
+            if (batchSize > QueryProxy.MaximumBatchSize) throw new PageSizeRangeException();
+
+            _batchSize = batchSize;
         }
 
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
@@ -85,18 +103,24 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (!ids.Any()) return Enumerable.Empty<IWorkItem>();
+            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            var ids2 = (int[])ids.ToArray().Clone();
 
-            // REVIEW: This implementation is the same as SOAP but requires two trips to the server
-            // First trip to execute the WIQL and return the IDs,
-            // the second trip to load items by ID
+            // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
+            // It is used for ASOF
+            var wiql = "SELECT * FROM WorkItems";
+            if (asOf.HasValue)
+            {
+                // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
+                if (asOf.Value.Kind != DateTimeKind.Utc)
+                {
+                    asOf = DateTime.SpecifyKind(asOf.Value - TimeZone.GetUtcOffset(asOf.Value), DateTimeKind.Utc);
+                }
+                wiql += $" ASOF \'{asOf.Value:u}\'";
+            }
 
-            var wiql = "SELECT * FROM WorkItems WHERE [System.Id] IN ({0})";
-            if (asOf.HasValue) wiql += " ASOF '" + asOf.Value.ToString("u") + "'";
-
-            var query = string.Format(CultureInfo.InvariantCulture, wiql, string.Join(", ", ids));
-
-            return Query(query);
+            var query = _queryFactory.Value.Create(ids2, wiql);
+            return query.RunQuery();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)

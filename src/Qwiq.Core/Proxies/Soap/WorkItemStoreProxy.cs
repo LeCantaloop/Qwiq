@@ -111,14 +111,25 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (!ids.Any()) return Enumerable.Empty<IWorkItem>();
+            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            var ids2 = (int[])ids.ToArray().Clone();
 
-            var wiql = "SELECT * FROM WorkItems WHERE [System.Id] IN ({0})";
-            if (asOf.HasValue) wiql += " ASOF '" + asOf.Value.ToString("u") + "'";
+            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>();
 
-            var query = string.Format(CultureInfo.InvariantCulture, wiql, string.Join(", ", ids));
+            // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
+            // It is used for ASOF
+            var wiql = "SELECT * FROM WorkItems";
+            if (asOf.HasValue) wiql += $" ASOF \'{asOf.Value:u}\'";
 
-            return Query(query);
+            try
+            {
+                var query = _queryFactory.Value.Create(ids2, wiql);
+                return query.RunQuery();
+            }
+            catch (TfsWorkItem.ValidationException ex)
+            {
+                throw new ValidationException(ex);
+            }
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)

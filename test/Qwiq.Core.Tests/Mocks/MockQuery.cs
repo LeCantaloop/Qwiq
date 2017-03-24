@@ -5,7 +5,7 @@ namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockQuery : IQuery
     {
-        public MockQuery(string wiql, bool dayPrecision, IList<string> wiqls)
+        public MockQuery(string wiql, bool dayPrecision, ICollection<string> wiqls)
         {
             wiqls.Add(wiql);
         }

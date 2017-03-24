@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             ((MockQueryFactory)QueryFactory)
                 .QueryWiqls.Single()
-                .ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1, 2) ASOF '2012-01-12 12:23:34Z'");
+                .ShouldEqual("SELECT * FROM WorkItems ASOF '2012-01-12 12:23:34Z'");
         }
 
         public override void Given()
@@ -88,7 +88,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             ((MockQueryFactory)QueryFactory)
                 .QueryWiqls.Single()
-                .ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1)");
+                .ShouldEqual("SELECT * FROM WorkItems");
         }
 
         public override void Given()
@@ -119,7 +119,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             ((MockQueryFactory)QueryFactory)
                 .QueryWiqls.Single()
-                .ShouldEqual("SELECT * FROM WorkItems WHERE [System.Id] IN (1, 2)");
+                .ShouldEqual("SELECT * FROM WorkItems");
         }
 
         public override void Given()
