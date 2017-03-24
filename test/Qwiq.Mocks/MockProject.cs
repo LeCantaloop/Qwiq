@@ -5,8 +5,13 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockProject : IProject
     {
-        public MockProject()
+
+
+        public MockProject(IWorkItemStore store, INode node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            Store = store ?? throw new ArgumentNullException(nameof(store));
+
             WorkItemTypes = new[]
                                 {
                                     new MockWorkItemType("Task"),
@@ -17,8 +22,19 @@ namespace Microsoft.Qwiq.Mocks
                                     new MockWorkItemType("Measure")
                                 };
 
-            AreaRootNodes = new[] { CreateNodes(true) };
+            AreaRootNodes = new[] { node };
             IterationRootNodes = new[] { CreateNodes(false) };
+        }
+
+        public MockProject(IWorkItemStore store)
+            :this(store, CreateNodes(true))
+        {
+        }
+
+        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore).")]
+        public MockProject()
+            : this(new MockWorkItemStore(), CreateNodes(true))
+        {
         }
 
         public IEnumerable<INode> AreaRootNodes { get; set; }
@@ -32,6 +48,8 @@ namespace Microsoft.Qwiq.Mocks
         public Uri Uri { get; set; }
 
         public IEnumerable<IWorkItemType> WorkItemTypes { get; set; }
+
+        public IWorkItemStore Store { get; }
 
         private static MockNode CreateNodes(bool area)
         {

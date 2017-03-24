@@ -1,34 +1,45 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
 
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemType : IWorkItemType
     {
-        private readonly IWorkItemStore _store;
-
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore, String, String).")]
         public MockWorkItemType()
             : this("Mock")
         {
         }
 
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See ctor(String, IEnumerable<IFieldDefinition>, String).")]
         public MockWorkItemType(string name)
-            :this(new MockWorkItemStore(), name)
+            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(null, s)))
         {
         }
 
-        public MockWorkItemType(IWorkItemStore store, string name, string description = null)
+        public MockWorkItemType(string name, IEnumerable<IFieldDefinition> fieldDefinitions, string description = null)
+            : this(name, new MockFieldDefinitionCollection(fieldDefinitions), description)
         {
-            _store = store ?? throw new ArgumentNullException(nameof(store));
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
+        }
 
+        public MockWorkItemType(string name, IFieldDefinitionCollection fieldDefinitions, string description = null)
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            FieldDefinitions = fieldDefinitions ?? throw new ArgumentNullException(nameof(fieldDefinitions));
             Description = description;
         }
 
-        public string Description { get; set; }
+        public string Description { get; }
 
-        public string Name { get; set; }
+        public IFieldDefinitionCollection FieldDefinitions { get; }
 
-        public IFieldDefinitionCollection FieldDefinitions => new MockFieldDefinitionCollection(_store, this);
+        public string Name { get; }
 
         public IWorkItem NewWorkItem()
         {

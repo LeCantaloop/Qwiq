@@ -24,6 +24,8 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public string ReferenceName => _linkType.ReferenceName;
 
+        public bool IsDirectional => _linkType.IsDirectional;
+
         public IWorkItemLinkTypeEnd ReverseEnd => _reverseEnd.Value;
 
         public override bool Equals(object obj)

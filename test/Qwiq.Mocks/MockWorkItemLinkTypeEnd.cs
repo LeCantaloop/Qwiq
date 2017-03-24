@@ -4,40 +4,42 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkTypeEnd : IWorkItemLinkTypeEnd
     {
-        public MockWorkItemLinkTypeEnd(string parentName, string direction, string name)
-            : this(parentName + "-" + direction, name)
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes (IWorkItemLinkType, String).")]
+        public MockWorkItemLinkTypeEnd(string name)
         {
-        }
-
-        public MockWorkItemLinkTypeEnd(string immutableName, string name)
-        {
-            ImmutableName = immutableName;
             Name = name;
         }
 
-        public int Id
+        public MockWorkItemLinkTypeEnd(IWorkItemLinkType linkType, string name, int id = 0)
+        {
+            Id = id;
+            LinkType = linkType ?? throw new ArgumentNullException(nameof(linkType));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+        }
+
+        public int Id { get; }
+
+        public string ImmutableName
+
         {
             get
             {
-                throw new NotImplementedException();
+                var referenceName = LinkType.ReferenceName;
+                if (!LinkType.IsDirectional)
+                {
+                    return referenceName;
+                }
+                return referenceName + (IsForwardLink ? "-Forward" : "-Reverse");
             }
         }
 
-        public string ImmutableName { get; }
+        public bool IsForwardLink => Equals(LinkType.ForwardEnd, this);
 
-        public bool IsForwardLink => Name.Equals("Child", StringComparison.OrdinalIgnoreCase)
-                                     || Name.Equals("Forward", StringComparison.OrdinalIgnoreCase);
-
-        public IWorkItemLinkType LinkType { get; set; }
+        public IWorkItemLinkType LinkType { get; }
 
         public string Name { get; }
 
-        public IWorkItemLinkTypeEnd OppositeEnd
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IWorkItemLinkTypeEnd OppositeEnd => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd;
     }
 }

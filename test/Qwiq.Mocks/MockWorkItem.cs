@@ -17,47 +17,65 @@ namespace Microsoft.Qwiq.Mocks
 
         private IWorkItemType _type;
 
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem()
-            : this(null, null as IEnumerable<IField>)
+            : this((string)null, null as IEnumerable<IField>)
         {
         }
 
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null)
             : this(workItemType, null as IEnumerable<IField>)
         {
         }
 
-        public MockWorkItem(IDictionary<string, object> properties)
-            : this(null, properties)
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        public MockWorkItem(IDictionary<string, object> fields)
+            : this((string)null, fields)
         {
         }
 
-        public MockWorkItem(string workItemType = null, IDictionary<string, object> properties = null)
-            : this(workItemType, properties?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        public MockWorkItem(string workItemType = null, IDictionary<string, object> fields = null)
+            : this(workItemType, fields?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
         {
         }
 
-        internal MockWorkItem(string workItemType = null, IEnumerable<IField> properties = null)
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        internal MockWorkItem(string workItemType = null, IEnumerable<IField> fields = null)
+            :this(string.IsNullOrEmpty(workItemType) ? new MockWorkItemType() : new MockWorkItemType(workItemType), fields)
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type)
+            : this(type, type.FieldDefinitions.ToDictionary(p => p.Name, e => (object)null))
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
+            : this(type, fields?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type, IEnumerable<IField> fields)
         {
             _links = new MockLinkCollection();
             _properties = new Dictionary<string, IField>(StringComparer.OrdinalIgnoreCase);
 
-            if (properties != null)
+            if (fields != null)
             {
-                foreach (var prop in properties)
+                foreach (var prop in fields)
                 {
                     _properties[prop.Name] = prop;
                 }
             }
-
-            Type = new MockWorkItemType(workItemType);
+            Type = type;
             Revisions = Enumerable.Empty<IRevision>();
-
-        }
-
-        internal MockWorkItem(IWorkItemType type)
-            : this(type.Name, type.FieldDefinitions.ToDictionary(p => p.Name, e => (object)null))
-        {
         }
 
         public string AreaPath

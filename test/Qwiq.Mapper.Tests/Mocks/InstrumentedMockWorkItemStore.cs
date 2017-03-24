@@ -62,7 +62,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public string UserSid => _innerWorkItemStore.UserSid;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        public Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {

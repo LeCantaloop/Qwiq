@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             _item = item;
         }
 
-        public int Id { get; }
+        public int Id { get; internal set; }
 
         public string ImmutableName => _item.ReferenceName;
 
@@ -21,7 +21,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public string Name => _item.Name;
 
-        public IWorkItemLinkTypeEnd OppositeEnd { get; internal set; }
+        public IWorkItemLinkTypeEnd OppositeEnd => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd;
 
         public override bool Equals(object obj)
         {

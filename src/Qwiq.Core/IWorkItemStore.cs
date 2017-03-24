@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
+using Microsoft.Qwiq.Proxies;
 
 namespace Microsoft.Qwiq
 {
@@ -25,7 +26,7 @@ namespace Microsoft.Qwiq
 
         string UserSid { get; }
 
-        IEnumerable<IWorkItemLinkType> WorkItemLinkTypes { get; }
+        WorkItemLinkTypeCollection WorkItemLinkTypes { get; }
 
         IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false);
 

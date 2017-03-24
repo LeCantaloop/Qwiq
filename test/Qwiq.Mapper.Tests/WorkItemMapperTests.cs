@@ -141,43 +141,36 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
+            var wit = new MockWorkItemType("Baz", WorkItemBackingStore.Select(s => new MockFieldDefinition(s.Key, null)));
+
             WorkItemStore =
                 new MockWorkItemStore(
                     new[]
                     {
-                        new MockWorkItem {Id = 233, Type = new MockWorkItemType {Name = "Baz"}},
-                        new MockWorkItem {Id = 144, Type = new MockWorkItemType {Name = "Baz"}}
+                        new MockWorkItem(wit) {Id = 233 },
+                        new MockWorkItem(wit) {Id = 144 }
                     });
+
+            var related = new MockWorkItemLinkType("NS.SampleLink", true, "Taker", "Giver");
 
             var links = new ILink[]
             {
                 new MockWorkItemLink
                 {
-                    LinkTypeEnd =
-                        new MockWorkItemLinkTypeEnd(
-                            MockModelWithLinks.ForwardLinkName,
-                            null),
+                    LinkTypeEnd = related.ForwardEnd,
                     RelatedWorkItemId = 233
                 },
                 new MockWorkItemLink
                 {
-                    LinkTypeEnd =
-                        new MockWorkItemLinkTypeEnd(
-                            MockModelWithLinks.ReverseLinkName,
-                            null),
+                    LinkTypeEnd = related.ReverseEnd,
                     RelatedWorkItemId = 144
                 }
             };
 
             SourceWorkItems = new IWorkItem[]
             {
-                new MockWorkItem(WorkItemBackingStore)
+                new MockWorkItem(wit, WorkItemBackingStore)
                 {
-                    Type =
-                        new MockWorkItemType
-                        {
-                            Name = "Baz"
-                        },
                     Links = new MockLinkCollection(links)
                 }
             };

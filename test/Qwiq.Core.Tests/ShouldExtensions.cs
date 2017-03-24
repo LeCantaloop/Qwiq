@@ -64,7 +64,7 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append(string.Join(",\n", enumerable.Select(x => x.ToUsefulString().Tab()).Take(10).ToArray()));
+            sb.Append(string.Join(",\n", enumerable.Select(x => x.ToUsefulString().Tab()).Take(20).ToArray()));
             if (enumerable.Count() > 20)
             {
                 if (enumerable.Count() > 21)

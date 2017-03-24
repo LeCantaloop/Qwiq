@@ -7,10 +7,7 @@ namespace Microsoft.Qwiq.Relatives.Tests.Mocks
     [WorkItemType("Mock Issue")]
     public class MockParentIdIssue : IIdentifiable
     {
-        public static readonly IWorkItemType CustomWorkItemType = new MockWorkItemType
-        {
-            Name = "Mock Issue"
-        };
+        public static readonly IWorkItemType CustomWorkItemType = new MockWorkItemType("Mock Issue");
 
         public int ParentId { get; set; }
 

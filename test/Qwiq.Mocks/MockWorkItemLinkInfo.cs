@@ -16,5 +16,26 @@ namespace Microsoft.Qwiq.Mocks
         public int LinkTypeId { get; set; }
         public int SourceId { get; set; }
         public int TargetId { get; set; }
+
+        public static bool operator !=(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
+        {
+            return !WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+        }
+
+        public static bool operator ==(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
+        {
+            return WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is IWorkItemLinkInfo)) return false;
+            return WorkItemLinkInfoEqualityComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemLinkInfoEqualityComparer.Instance.GetHashCode(this);
+        }
     }
 }

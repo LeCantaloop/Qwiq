@@ -21,15 +21,15 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
-            return _query.RunLinkQuery().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkInfo>(new WorkItemLinkInfoProxy(item)));
+            return _query.RunLinkQuery().Select(item => (IWorkItemLinkInfo)new WorkItemLinkInfoProxy(item));
         }
 
         public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
         {
             return _query.GetLinkTypes()
                          .Select(
-                             item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(
-                                 new WorkItemLinkTypeEndProxy(item)));
+                             item =>
+                                 new WorkItemLinkTypeEndProxy(item));
         }
     }
 }

@@ -122,9 +122,6 @@ mode(Recursive)
         public void Link_Count_Equal()
         {
             RestResult.WorkItemLinks.Count().ShouldEqual(SoapResult.WorkItemLinks.Count(), "WorkItemLinks.Count");
-
-
-
         }
 
         [TestMethod]
@@ -211,9 +208,15 @@ WHERE
     [Target].[System.WorkItemType] = 'Scenario'
 mode(recursive)
 ";
-
+            var start = Clock.GetTimestamp();
             RestResult.WorkItemLinks = RestResult.WorkItemStore.QueryLinks(WIQL).ToList();
+            var stop = Clock.GetTimestamp();
+            Debug.Print("REST: {0}", Clock.GetTimeSpan(start, stop));
+
+            start = Clock.GetTimestamp();
             SoapResult.WorkItemLinks = SoapResult.WorkItemStore.QueryLinks(WIQL).ToList();
+            stop = Clock.GetTimestamp();
+            Debug.Print("SOAP: {0}", Clock.GetTimeSpan(start, stop));
         }
 
         public override void Cleanup()
@@ -247,7 +250,7 @@ mode(recursive)
         [TestCategory("localOnly")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
-            RestResult.WorkItemLinks.ShouldContainOnly(SoapResult.WorkItemLinks, WorkItemLinkInfoEqualityComparer.Instance);
+            RestResult.WorkItemLinks.ShouldContainOnly(SoapResult.WorkItemLinks);
         }
 
         protected class Result : IDisposable

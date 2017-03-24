@@ -17,14 +17,12 @@ namespace Microsoft.Qwiq.Mocks
         {
             if (fieldDefintions == null) throw new ArgumentNullException(nameof(fieldDefintions));
 
-            _fieldUsagesByName = fieldDefintions.ToDictionary(k => k.Name, e => e, StringComparer.OrdinalIgnoreCase);
-            _fieldUsagesByReferenceName = fieldDefintions.ToDictionary(k => k.ReferenceName, e => e, StringComparer.OrdinalIgnoreCase);
+
+            _fieldUsagesByName = fieldDefintions.Where(p => !string.IsNullOrEmpty(p.Name)).ToDictionary(k => k.Name, e => e, StringComparer.OrdinalIgnoreCase);
+            _fieldUsagesByReferenceName = fieldDefintions.Where(p => !string.IsNullOrEmpty(p.ReferenceName)).ToDictionary(k => k.ReferenceName, e => e, StringComparer.OrdinalIgnoreCase);
         }
 
-        public MockFieldDefinitionCollection(IWorkItemStore store, IWorkItemType type = null)
-            :this(store.Projects.SelectMany(s => s.WorkItemTypes.Where(p=> (type == null) ? true : (p.Equals(type)))).SelectMany(s => s.FieldDefinitions))
-        {
-        }
+
 
         public IEnumerator<IFieldDefinition> GetEnumerator()
         {

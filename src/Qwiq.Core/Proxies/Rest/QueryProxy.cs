@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.Qwiq.Proxies;
 using Microsoft.Qwiq.Proxies.Rest;
-using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -27,6 +25,8 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly WorkItemTrackingHttpClient _workItemStore;
 
+        private readonly NodeSelect _select;
+
         private readonly int _batchSize;
 
         private readonly List<string> _fields;
@@ -37,35 +37,36 @@ namespace Microsoft.Qwiq.Rest
 
         private QueryProxy(
             WorkItemTrackingHttpClient workItemStore,
-            NodeSelect parseResults,
+            NodeSelect select,
             int batchSize = MaximumBatchSize
             )
         {
-            if (parseResults == null) throw new ArgumentNullException(nameof(parseResults));
+            _select = select ?? throw new ArgumentNullException(nameof(select));
             _workItemStore = workItemStore ?? throw new ArgumentNullException(nameof(workItemStore));
             // Boundary check the batch size
 
             if (batchSize < MinimumBatchSize) throw new PageSizeRangeException();
             if (batchSize > MaximumBatchSize) throw new PageSizeRangeException();
 
+
             _batchSize = batchSize;
 
-            AsOf = parseResults.GetAsOfUtc();
+            AsOf = select.GetAsOfUtc();
 
-            var nodeAndOperator = (NodeAndOperator)null;
-            parseResults.GetWhereGroups().TryGetValue(string.Empty, out nodeAndOperator);
+            NodeAndOperator nodeAndOperator;
+            select.GetWhereGroups().TryGetValue(string.Empty, out nodeAndOperator);
             _linkGroup = nodeAndOperator;
 
             // The API can take up to 100 fields to get with each work item
             // If there are no fields or greater than 100 specified, omit and permit WorkItemExpand to perform the selection
-            if (parseResults.Fields != null &&
-                parseResults.Fields.Count <= MaximumFieldSize)
+            if (select.Fields != null &&
+                select.Fields.Count <= MaximumFieldSize)
             {
-                _fields = new List<string>(parseResults.Fields.Count);
+                _fields = new List<string>(select.Fields.Count);
 
-                for (var i = 0; i < parseResults.Fields.Count; i++)
+                for (var i = 0; i < select.Fields.Count; i++)
                 {
-                    var field = parseResults.Fields[i];
+                    var field = select.Fields[i];
                     _fields.Add(field.Value);
                 }
             }
@@ -73,11 +74,11 @@ namespace Microsoft.Qwiq.Rest
 
         internal QueryProxy(
             IEnumerable<int> ids,
-            NodeSelect parseResults,
+            NodeSelect select,
             WorkItemTrackingHttpClient workItemStore,
             int batchSize = MaximumBatchSize
             )
-            : this(workItemStore, parseResults, batchSize)
+            : this(workItemStore, select, batchSize)
         {
             _ids = ids;
         }
@@ -119,10 +120,33 @@ namespace Microsoft.Qwiq.Rest
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
+            var ends = GetLinkTypes();
+            var ends2 = ends as WorkItemLinkTypeEndCollection;
+            var useStrong = ends2 != null;
+            if (!useStrong)
+            {
+                ends = new List<IWorkItemLinkTypeEnd>(ends);
+            }
+
             var result = _workItemStore.QueryByWiqlAsync(_query).GetAwaiter().GetResult();
             foreach (var workItemLink in result.WorkItemRelations)
             {
-                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkInfo>(new WorkItemLinkInfoProxy(workItemLink));
+                IWorkItemLinkTypeEnd end = null;
+
+                if (!string.IsNullOrEmpty(workItemLink.Rel))
+                {
+                    if (useStrong)
+                    {
+                        ends2.TryGetByName(workItemLink.Rel, out end);
+                    }
+                    else
+                    {
+                        end = ends.SingleOrDefault(
+                            p => p.ImmutableName.Equals(workItemLink.Rel, StringComparison.OrdinalIgnoreCase));
+                    }
+                }
+
+                yield return new WorkItemLinkInfoProxy(workItemLink, end?.Id ?? 0);
             }
         }
 
@@ -131,16 +155,19 @@ namespace Microsoft.Qwiq.Rest
         public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
         {
             //TODO: Verify this is a links query
-            if (_linkGroup == null)
-            {
-                // TODO: return all link type ends
-            }
-            else
-            {
-                // TODO: return link type ends specified in the WIQL
-            }
+            // if (!IsLinkQuery) return null;
 
-            throw new NotSupportedException();
+            var wit = WorkItemStoreProxy.GetLinks(_workItemStore);
+
+            // TODO: Limit IWorkItemLinkTypeEnds to the links contained in WIQL
+
+
+            return wit.LinkTypeEnds;
+
+
+
         }
+
+
     }
 }

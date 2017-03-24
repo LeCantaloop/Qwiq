@@ -509,9 +509,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                     retval.Add(
                                         new MockWorkItemLink {
                                             LinkTypeEnd =
-                                                    new MockWorkItemLinkTypeEnd(
-                                                    MockModel.ReverseLinkName,
-                                                    "Giver"),
+                                                    new MockWorkItemLinkTypeEnd("Giver"),
                                             RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
                                         });
                                 }
@@ -524,9 +522,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                     retval.Add(
                                         new MockWorkItemLink {
                                             LinkTypeEnd =
-                                                    new MockWorkItemLinkTypeEnd(
-                                                    MockModel.ForwardLinkName,
-                                                    "Taker"),
+                                                    new MockWorkItemLinkTypeEnd("Taker"),
                                             RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
                                         });
                                 }

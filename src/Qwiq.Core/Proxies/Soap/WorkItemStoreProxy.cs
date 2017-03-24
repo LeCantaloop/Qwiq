@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
@@ -17,6 +16,8 @@ namespace Microsoft.Qwiq.Proxies.Soap
     /// </summary>
     public class WorkItemStoreProxy : IWorkItemStore
     {
+        private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
+
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
@@ -44,6 +45,13 @@ namespace Microsoft.Qwiq.Proxies.Soap
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+
+            _linkTypes = new Lazy<WorkItemLinkTypeCollection>(
+                () =>
+                    {
+                        return new WorkItemLinkTypeCollection(
+                            _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkTypeProxy(item)));
+                    });
         }
 
         internal WorkItemStoreProxy(
@@ -66,7 +74,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
                 return _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
                                      .Select(
                                          item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
-                                             new ProjectProxy(item)));
+                                             new ProjectProxy(item, this)));
             }
         }
 
@@ -80,13 +88,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public string UserSid => _workItemStore.Value.UserSid;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
-        {
-            get
-            {
-                return _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkTypeProxy(item));
-            }
-        }
+        public WorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
 
         public void Dispose()
         {

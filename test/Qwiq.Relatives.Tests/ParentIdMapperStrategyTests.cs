@@ -287,13 +287,13 @@ namespace Microsoft.Qwiq.Relatives.Tests
                 {
                     Id = 2,
                     ChangedDate = new DateTime(2010, 10, 10),
-                    Type = new MockWorkItemType { Name = "SimpleMockWorkItem" }
+                    Type = new MockWorkItemType("SimpleMockWorkItem")
                 },
                 new MockWorkItem
                 {
                     Id = 4,
                     ChangedDate = new DateTime(2011, 11, 11),
-                    Type = new MockWorkItemType { Name = "SimpleMockWorkItem" }
+                    Type = new MockWorkItemType("SimpleMockWorkItem")
                 }
             };
 

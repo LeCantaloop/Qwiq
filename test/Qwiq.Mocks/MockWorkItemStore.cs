@@ -15,32 +15,36 @@ namespace Microsoft.Qwiq.Mocks
 
         private readonly IEnumerable<IWorkItemLinkInfo> _links;
 
-        private readonly IDictionary<int, IWorkItem> _lookup;
+        private IDictionary<int, IWorkItem> _lookup;
 
-        private readonly IList<IWorkItem> _workItems;
+        private IList<IWorkItem> _workItems;
 
+        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(ITfsTeamProjectCollection).")]
         public MockWorkItemStore()
-            : this(new MockTfsTeamProjectCollection(), new MockProject())
+            : this(new MockTfsTeamProjectCollection())
         {
+        }
+
+        public MockWorkItemStore(ITfsTeamProjectCollection teamProjectCollection)
+        {
+            TeamProjectCollection = teamProjectCollection
+                                    ?? throw new ArgumentNullException(nameof(teamProjectCollection));
+
+            TimeZone = teamProjectCollection.TimeZone;
+
+            var project = new MockProject(this);
+
+            InitializeProject(project);
         }
 
         public MockWorkItemStore(ITfsTeamProjectCollection teamProjectCollection, IProject project)
+            : this(teamProjectCollection)
         {
-            TeamProjectCollection = teamProjectCollection;
-            Projects = new[] { project };
-
-            _workItems = new List<IWorkItem>();
-
-            foreach (var wit in project.WorkItemTypes)
-            {
-                var wi = new MockWorkItem { Id = _workItems.Count + 1, Type = wit };
-                _workItems.Add(wi);
-            }
-
-            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
-            TimeZone = TimeZone.CurrentTimeZone;
+            if (project == null) throw new ArgumentNullException(nameof(project));
+            InitializeProject(project);
         }
 
+        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(ITfsTeamProjectCollection, IEnumerable<IWorkItem>).")]
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems)
             : this()
         {
@@ -48,6 +52,7 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
+        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(ITfsTeamProjectCollection, IEnumerable<IWorkItem>).")]
         public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links)
             : this(workItems)
         {
@@ -55,17 +60,21 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItemStore(ITfsTeamProjectCollection teamProjectCollection, IEnumerable<IWorkItem> workItems)
-            : this(teamProjectCollection, new MockProject())
+            : this(teamProjectCollection)
         {
             _workItems = new List<IWorkItem>(workItems);
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
 
+        public bool SimulateQueryTimes { get; set; }
+
+        private int WaitTime => Instance.Next(0, 3000);
+
         public TfsCredentials AuthorizedCredentials => null;
 
-        public IEnumerable<IProject> Projects { get; set; }
+        public IFieldDefinitionCollection FieldDefinitions => new MockFieldDefinitionCollection(Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s));
 
-        public bool SimulateQueryTimes { get; set; }
+        public IEnumerable<IProject> Projects { get; set; }
 
         public ITfsTeamProjectCollection TeamProjectCollection { get; set; }
 
@@ -77,15 +86,15 @@ namespace Microsoft.Qwiq.Mocks
 
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+
+
+        public Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {
-                return CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s));
+                return new Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)));
             }
         }
-
-        private int WaitTime => Instance.Next(0, 3000);
 
         public void Dispose()
         {
@@ -95,7 +104,8 @@ namespace Microsoft.Qwiq.Mocks
 
         public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
         {
-            if (_workItems == null) throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
+            if (_workItems == null)
+                throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
 
             Trace.TraceInformation("Querying for work items " + wiql);
 
@@ -111,7 +121,8 @@ namespace Microsoft.Qwiq.Mocks
 
         public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (_workItems == null) throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
+            if (_workItems == null)
+                throw new InvalidOperationException("Class must be initialized with set of IWorkItems.");
 
             var h = new HashSet<int>(ids);
 
@@ -144,13 +155,26 @@ namespace Microsoft.Qwiq.Mocks
             return _links;
         }
 
-        public IFieldDefinitionCollection FieldDefinitions => new MockFieldDefinitionCollection(this);
-
         protected void Dispose(bool disposing)
         {
             if (disposing)
             {
             }
+        }
+
+        private void InitializeProject(IProject project)
+        {
+            Projects = new[] { project };
+
+            _workItems = new List<IWorkItem>();
+
+            foreach (var wit in project.WorkItemTypes)
+            {
+                var wi = new MockWorkItem(wit) { Id = _workItems.Count + 1, Type = wit };
+                _workItems.Add(wi);
+            }
+
+            _lookup = _workItems.ToDictionary(k => k.Id, e => e);
         }
     }
 }

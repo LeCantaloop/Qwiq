@@ -7,6 +7,8 @@ using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Rest;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Common;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -16,7 +18,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
     {
         private readonly int _batchSize;
 
-        private readonly Regex _immutableLinkTypeNameRegex = new Regex(
+        private static readonly Regex ImmutableLinkTypeNameRegex = new Regex(
             "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
             RegexOptions.Singleline | RegexOptions.Compiled);
 
@@ -24,7 +26,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private readonly Lazy<IEnumerable<IWorkItemLinkType>> _linkTypes;
+        private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
 
         internal WorkItemStoreProxy(
             TfsTeamProjectCollection tfsNative,
@@ -66,64 +68,89 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
             _batchSize = batchSize;
 
-            IEnumerable<IWorkItemLinkType> ValueFactory()
+            WorkItemLinkTypeCollection ValueFactory()
             {
-                var types = workItemStore.Value.GetRelationTypesAsync().GetAwaiter().GetResult();
-                var d = new Dictionary<string, IList<WorkItemRelationType>>(StringComparer.OrdinalIgnoreCase);
-                var d2 = new Dictionary<string, WorkItemLinkTypeProxy>(StringComparer.OrdinalIgnoreCase);
+                return GetLinks(workItemStore.Value);
+            }
 
-                foreach (var type in types.Where(p => (string)p.Attributes["usage"] == "workItemLink"))
+            _linkTypes = new Lazy<WorkItemLinkTypeCollection>(ValueFactory);
+        }
+
+        internal static WorkItemLinkTypeCollection GetLinks(WorkItemTrackingHttpClient workItemStore)
+        {
+            var types = workItemStore.GetRelationTypesAsync().GetAwaiter().GetResult();
+            var d = new Dictionary<string, IList<WorkItemRelationType>>(StringComparer.OrdinalIgnoreCase);
+            var d2 = new Dictionary<string, WorkItemLinkTypeProxy>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var type in types.Where(p => (string)p.Attributes["usage"] == "workItemLink"))
+            {
+                var m = ImmutableLinkTypeNameRegex.Match(type.ReferenceName);
+                var linkRef = m.Groups["LinkTypeReferenceName"].Value;
+
+                if (string.IsNullOrWhiteSpace(linkRef))
                 {
-                    var m = _immutableLinkTypeNameRegex.Match(type.ReferenceName);
-                    var linkRef = m.Groups["LinkTypeReferenceName"].Value;
-
-                    if (string.IsNullOrWhiteSpace(linkRef))
-                    {
-                        linkRef = type.ReferenceName;
-                    }
-
-                    if (!d.ContainsKey(linkRef)) d[linkRef] = new List<WorkItemRelationType>();
-                    d[linkRef].Add(type);
-
-                    if (!d2.ContainsKey(linkRef)) d2[linkRef] = new WorkItemLinkTypeProxy(linkRef);
+                    linkRef = type.ReferenceName;
                 }
 
-                foreach (var kvp in d2)
+                if (!d.ContainsKey(linkRef)) d[linkRef] = new List<WorkItemRelationType>();
+                d[linkRef].Add(type);
+
+                if (!d2.ContainsKey(linkRef)) d2[linkRef] = new WorkItemLinkTypeProxy(linkRef);
+            }
+
+            foreach (var kvp in d2)
+            {
+                var type = kvp.Value;
+                var ends = d[kvp.Key];
+
+                type.IsDirectional = ends.All(p => (bool)p.Attributes["directional"]);
+                type.IsActive = ends.All(p => (bool)p.Attributes["enabled"]);
+
+                var forwardEnd = ends.Count == 1 && !type.IsDirectional
+                                     ? ends[0]
+                                     : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward"));
+
+                if (!forwardEnd.ReferenceName.EndsWith("Forward"))
                 {
-                    var type = kvp.Value;
-                    var ends = d[kvp.Key];
+                    forwardEnd.ReferenceName += "-Forward";
+                }
 
-                    var isDirectional = ends.All(p => (bool)p.Attributes["directional"]);
+                type.ForwardEnd = new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type };
+                type.ReverseEnd = type.IsDirectional
+                                      ? new WorkItemLinkTypeEndProxy(ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type }
+                                      : type.ForwardEnd;
 
-                    type.IsActive = ends.All(p => (bool)p.Attributes["enabled"]);
+                // The REST API does not return the ID of the link type. For well-known system links, we can populate the ID value
+                if (CoreLinkTypeReferenceNames.All.Contains(type.ReferenceName, StringComparer.OrdinalIgnoreCase))
+                {
+                    int forwardId = 0, reverseId = 0;
 
-                    var forwardEnd = ends.Count == 1 && !isDirectional
-                                         ? ends[0]
-                                         : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward"));
-
-                    if (!forwardEnd.ReferenceName.EndsWith("Forward"))
+                    if (CoreLinkTypeReferenceNames.Hierarchy.Equals(type.ReferenceName,StringComparison.OrdinalIgnoreCase))
                     {
-                        forwardEnd.ReferenceName += "-Forward";
+                        // The forward should be Child, but the ID used in CoreLinkTypes is -2, should be 2
+                        forwardId = CoreLinkTypes.Child;
+                        reverseId = CoreLinkTypes.Parent;
+                    }
+                    else if (CoreLinkTypeReferenceNames.Related.Equals(
+                        type.ReferenceName,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        forwardId = reverseId = CoreLinkTypes.Related;
+                    }
+                    else if (CoreLinkTypeReferenceNames.Dependency.Equals(
+                        type.ReferenceName,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        forwardId = CoreLinkTypes.Successor;
+                        reverseId = CoreLinkTypes.Predecessor;
                     }
 
-                    type.ForwardEnd = new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type };
-                    if (isDirectional)
-                    {
-                        type.ReverseEnd = new WorkItemLinkTypeEndProxy(ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type };
-                        ((WorkItemLinkTypeEndProxy)type.ReverseEnd).OppositeEnd = type.ForwardEnd;
-                        ((WorkItemLinkTypeEndProxy)type.ForwardEnd).OppositeEnd = type.ReverseEnd;
-                    }
-                    else
-                    {
-                        ((WorkItemLinkTypeEndProxy)type.ForwardEnd).OppositeEnd = type.ForwardEnd;
-                        type.ReverseEnd = type.ForwardEnd;
-                    }
-
-                    yield return type;
+                    ((WorkItemLinkTypeEndProxy)type.ForwardEnd).Id = -forwardId;
+                    ((WorkItemLinkTypeEndProxy)type.ReverseEnd).Id = -reverseId;
                 }
             }
 
-            _linkTypes = new Lazy<IEnumerable<IWorkItemLinkType>>(ValueFactory);
+            return new WorkItemLinkTypeCollection(d2.Values);
         }
 
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
@@ -144,7 +171,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes => _linkTypes.Value;
+        public WorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
 
         public void Dispose()
         {

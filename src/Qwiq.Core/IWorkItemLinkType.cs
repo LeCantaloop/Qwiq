@@ -5,6 +5,7 @@ namespace Microsoft.Qwiq
         IWorkItemLinkTypeEnd ForwardEnd { get; }
         bool IsActive { get; }
         string ReferenceName { get; }
+        bool IsDirectional { get; }
         IWorkItemLinkTypeEnd ReverseEnd { get; }
     }
 }

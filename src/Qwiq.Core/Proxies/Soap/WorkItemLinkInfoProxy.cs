@@ -2,7 +2,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Proxies.Soap
 {
-    public struct WorkItemLinkInfoProxy : IWorkItemLinkInfo
+    public class WorkItemLinkInfoProxy : IWorkItemLinkInfo
     {
         private readonly Tfs.WorkItemLinkInfo _item;
 
@@ -21,23 +21,28 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public static bool operator !=(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
         {
-            return !x.Equals(y);
+            return !WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
         }
 
         public static bool operator ==(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
         {
-            return x.Equals(y);
+            return WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
         }
 
         public override bool Equals(object obj)
         {
-            if (!(obj is WorkItemLinkInfoProxy)) return false;
+            if (!(obj is IWorkItemLinkInfo)) return false;
             return WorkItemLinkInfoEqualityComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
         }
 
         public override int GetHashCode()
         {
             return WorkItemLinkInfoEqualityComparer.Instance.GetHashCode(this);
+        }
+
+        public override string ToString()
+        {
+            return $"S:{SourceId} T:{TargetId} ID:{LinkTypeId}";
         }
     }
 }

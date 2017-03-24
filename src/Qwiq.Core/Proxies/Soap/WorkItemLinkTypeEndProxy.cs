@@ -1,4 +1,4 @@
-using Microsoft.Qwiq.Exceptions;
+using System;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -8,9 +8,13 @@ namespace Microsoft.Qwiq.Proxies.Soap
     {
         private readonly Tfs.WorkItemLinkTypeEnd _end;
 
+        private readonly Lazy<IWorkItemLinkTypeEnd> _opposite;
+
         internal WorkItemLinkTypeEndProxy(Tfs.WorkItemLinkTypeEnd end)
         {
             _end = end;
+            LinkType = new WorkItemLinkTypeProxy(_end.LinkType);
+            _opposite = new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEndProxy(_end.OppositeEnd));
         }
 
         public int Id => _end.Id;
@@ -19,11 +23,11 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public bool IsForwardLink => _end.IsForwardLink;
 
-        public IWorkItemLinkType LinkType => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkType>(new WorkItemLinkTypeProxy(_end.LinkType));
+        public IWorkItemLinkType LinkType { get; }
 
         public string Name => _end.Name;
 
-        public IWorkItemLinkTypeEnd OppositeEnd => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_end.OppositeEnd));
+        public IWorkItemLinkTypeEnd OppositeEnd => _opposite.Value;
 
         public override bool Equals(object obj)
         {
