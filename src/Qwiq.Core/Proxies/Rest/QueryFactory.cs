@@ -16,11 +16,6 @@ namespace Microsoft.Qwiq.Proxies.Rest
             _store = store ?? throw new ArgumentNullException(nameof(store));
         }
 
-        public static IQueryFactory GetInstance(WorkItemTrackingHttpClient store)
-        {
-            return new QueryFactory(store);
-        }
-
         public IQuery Create(string wiql, bool dayPrecision)
         {
             try
@@ -43,9 +38,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
             {
                 var p = Parser.ParseSyntax(wiql);
                 if (p.Where != null || p.OrderBy != null)
-                {
-                    throw new ValidationException("The WHERE and ORDER BY clauses of a query string are not supported on a parameterized query.");
-                }
+                    throw new ValidationException(
+                        "The WHERE and ORDER BY clauses of a query string are not supported on a parameterized query.");
 
                 // TODO: Check that the WIQL is not a LINK or TREE query
 
@@ -57,6 +51,11 @@ namespace Microsoft.Qwiq.Proxies.Rest
             {
                 throw new ValidationException(e);
             }
+        }
+
+        public static IQueryFactory GetInstance(WorkItemTrackingHttpClient store)
+        {
+            return new QueryFactory(store);
         }
     }
 }

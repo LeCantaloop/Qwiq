@@ -14,7 +14,5 @@ namespace Microsoft.Qwiq.Proxies.Rest
         public string Name => _field.Name;
 
         public string ReferenceName => _field.ReferenceName;
-
-
     }
 }

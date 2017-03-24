@@ -15,9 +15,9 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public bool IsActive { get; internal set; }
 
-        public string ReferenceName { get; }
-
         public bool IsDirectional { get; internal set; }
+
+        public string ReferenceName { get; }
 
         public IWorkItemLinkTypeEnd ReverseEnd { get; internal set; }
 

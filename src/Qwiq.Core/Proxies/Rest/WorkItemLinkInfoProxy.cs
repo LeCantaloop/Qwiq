@@ -1,5 +1,4 @@
 ﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using System;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
