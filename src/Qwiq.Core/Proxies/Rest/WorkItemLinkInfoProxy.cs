@@ -1,4 +1,6 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+﻿using System;
+
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
@@ -6,15 +8,17 @@ namespace Microsoft.Qwiq.Proxies.Rest
     {
         private readonly WorkItemLink _item;
 
-        internal WorkItemLinkInfoProxy(WorkItemLink item, int id)
+        private readonly Lazy<int> _id;
+
+        internal WorkItemLinkInfoProxy(WorkItemLink item, Lazy<int> id)
         {
             _item = item;
-            LinkTypeId = id;
+            _id = id;
         }
 
         public bool IsLocked { get; }
 
-        public int LinkTypeId { get; }
+        public int LinkTypeId => _id.Value;
 
         public int SourceId => (_item?.Source?.Id).GetValueOrDefault();
 

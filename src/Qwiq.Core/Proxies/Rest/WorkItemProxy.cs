@@ -10,11 +10,14 @@ namespace Microsoft.Qwiq.Proxies.Rest
     {
         private readonly WorkItem _item;
 
-        internal WorkItemProxy(WorkItem item)
+        private readonly Lazy<IWorkItemType> _wit;
+
+        internal WorkItemProxy(WorkItem item, Lazy<IWorkItemType> wit)
         {
             _item = item;
-            //Type = new WorkItemTypeProxy(GetValue<string>(CoreFieldRefNames.WorkItemType));
+            _wit = wit;
             Uri = new Uri(item.Url);
+            
         }
 
         public string AreaPath
@@ -121,7 +124,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             set => SetValue(CoreFieldRefNames.Title, value);
         }
 
-        public IWorkItemType Type { get; }
+        public IWorkItemType Type => _wit.Value;
 
         public Uri Uri { get; }
 

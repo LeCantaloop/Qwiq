@@ -15,12 +15,12 @@ namespace Microsoft.Qwiq.Proxies.Rest
         private readonly Dictionary<string, IFieldDefinition> _fieldUsagesByReferenceName;
 
         internal FieldDefinitionCollectionProxy(IEnumerable<WorkItemTypeFieldInstance> typeFields)
-            : this(typeFields.Select(s => s.Field))
+            : this(typeFields.Where(p => p != null).Select(s => s.Field))
         {
         }
 
         internal FieldDefinitionCollectionProxy(IEnumerable<WorkItemFieldReference> typeFields)
-            : this(typeFields.Select(s => new FieldDefinitionProxy(s)))
+            : this(typeFields.Where(p=>p != null).Select(s => new FieldDefinitionProxy(s)))
         {
         }
 

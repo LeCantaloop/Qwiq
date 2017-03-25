@@ -6,6 +6,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.Common;
+using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
@@ -19,7 +21,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
             RegexOptions.Singleline | RegexOptions.Compiled);
 
-        private readonly int _batchSize;
+        public int BatchSize { get; }
 
         private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
 
@@ -27,11 +29,13 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private readonly Lazy<WorkItemTrackingHttpClient> _workItemStore;
+        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
+
+        private readonly Lazy<IEnumerable<IProject>> _projects;
 
         internal WorkItemStoreProxy(
             TfsTeamProjectCollection tfsNative,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            Func<WorkItemStoreProxy, IQueryFactory> queryFactory,
             int batchSize = QueryProxy.MaximumBatchSize)
             : this(
                 () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
@@ -43,7 +47,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            Func<WorkItemStoreProxy, IQueryFactory> queryFactory,
             int batchSize = QueryProxy.MaximumBatchSize)
             : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, batchSize)
         {
@@ -52,36 +56,47 @@ namespace Microsoft.Qwiq.Proxies.Rest
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<WorkItemTrackingHttpClient> wisFactory,
-            Func<WorkItemTrackingHttpClient, IQueryFactory> queryFactory,
+            Func<WorkItemStoreProxy, IQueryFactory> queryFactory,
             int batchSize = QueryProxy.MaximumBatchSize)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
-            _workItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
-            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+            NativeWorkItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
             // Boundary check the batch size
 
             if (batchSize < QueryProxy.MinimumBatchSize) throw new PageSizeRangeException();
             if (batchSize > QueryProxy.MaximumBatchSize) throw new PageSizeRangeException();
 
-            _batchSize = batchSize;
+            BatchSize = batchSize;
 
             WorkItemLinkTypeCollection ValueFactory()
             {
-                return GetLinks(_workItemStore.Value);
+                return GetLinks(NativeWorkItemStore.Value);
             }
 
             _linkTypes = new Lazy<WorkItemLinkTypeCollection>(ValueFactory);
+            _projects = new Lazy<IEnumerable<IProject>>(
+                () =>
+                    {
+                        using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
+                        {
+                            var projects = projectHttpClient.GetProjects(ProjectState.WellFormed).GetAwaiter().GetResult();
+                            return projects.Select(project => new ProjectProxy(project, this))
+                                           .Cast<IProject>()
+                                           .ToList();
+                        }
+                    });
         }
 
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
         public IFieldDefinitionCollection FieldDefinitions => throw new NotImplementedException();
 
-        public IEnumerable<IProject> Projects => throw new NotImplementedException();
+        public IEnumerable<IProject> Projects => _projects.Value;
 
         public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
@@ -183,7 +198,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
                 type.ReverseEnd = type.IsDirectional
                                       ? new WorkItemLinkTypeEndProxy(
                                             ends.SingleOrDefault(
-                                                p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type }
+                                                p => p.ReferenceName.EndsWith("Reverse")))
+                                      { LinkType = type }
                                       : type.ForwardEnd;
 
                 // The REST API does not return the ID of the link type. For well-known system links, we can populate the ID value
@@ -226,7 +242,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (disposing)
             {
                 if (_tfs.IsValueCreated) _tfs.Value?.Dispose();
-                if (_workItemStore.IsValueCreated) _workItemStore.Value?.Dispose();
+                if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
             }
         }
     }

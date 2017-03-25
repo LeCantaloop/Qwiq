@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public IEnumerable<INode> ChildNodes
         {
-            get { return _node.ChildNodes.Cast<Tfs.Node>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(item))); }
+            get { return _node.ChildNodes.Cast<Tfs.Node>().Select(item => new NodeProxy(item)); }
         }
 
         public bool HasChildNodes

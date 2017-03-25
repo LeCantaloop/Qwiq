@@ -6,18 +6,20 @@ namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class WorkItemTypeProxy : IWorkItemType
     {
-        private readonly WorkItemType _type;
+        
 
         internal WorkItemTypeProxy(WorkItemType type)
         {
-            _type = type;
+            Description = type.Description;
+            Name = type.Name;
+            FieldDefinitions = new FieldDefinitionCollectionProxy(type.Fields);
         }
 
-        public string Description => _type.Description;
+        public string Description { get; }
 
-        public IFieldDefinitionCollection FieldDefinitions => new FieldDefinitionCollectionProxy(_type.Fields);
+        public IFieldDefinitionCollection FieldDefinitions { get; }
 
-        public string Name => _type.Name;
+        public string Name { get; }
 
         public IWorkItem NewWorkItem()
         {

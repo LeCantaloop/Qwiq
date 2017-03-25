@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Rest;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
+using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -20,8 +21,6 @@ namespace Microsoft.Qwiq.Proxies.Rest
         // This is defined in Microsoft.TeamFoundation.WorkItemTracking.Client.PageSizes
         internal const int MinimumBatchSize = 50;
 
-        private readonly int _batchSize;
-
         private readonly List<string> _fields;
 
         private readonly NodeAndOperator _linkGroup;
@@ -30,7 +29,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         private readonly NodeSelect _select;
 
-        private readonly WorkItemTrackingHttpClient _workItemStore;
+        private readonly WorkItemStoreProxy _workItemStore;
 
         private readonly DateTime? AsOf;
 
@@ -39,35 +38,26 @@ namespace Microsoft.Qwiq.Proxies.Rest
         internal QueryProxy(
             IEnumerable<int> ids,
             NodeSelect select,
-            WorkItemTrackingHttpClient workItemStore,
-            int batchSize = MaximumBatchSize)
-            : this(workItemStore, select, batchSize)
+            WorkItemStoreProxy workItemStore)
+            : this(workItemStore, select)
         {
             _ids = ids;
         }
 
         internal QueryProxy(
             NodeSelect parseResults,
-            WorkItemTrackingHttpClient workItemStore,
-            int batchSize = MaximumBatchSize)
-            : this(workItemStore, parseResults, batchSize)
+            WorkItemStoreProxy workItemStore)
+            : this(workItemStore, parseResults)
         {
             _query = new Wiql { Query = parseResults.ToString() };
         }
 
         private QueryProxy(
-            WorkItemTrackingHttpClient workItemStore,
-            NodeSelect select,
-            int batchSize = MaximumBatchSize)
+            WorkItemStoreProxy workItemStore,
+            NodeSelect select)
         {
             _select = select ?? throw new ArgumentNullException(nameof(select));
             _workItemStore = workItemStore ?? throw new ArgumentNullException(nameof(workItemStore));
-            // Boundary check the batch size
-
-            if (batchSize < MinimumBatchSize) throw new PageSizeRangeException();
-            if (batchSize > MaximumBatchSize) throw new PageSizeRangeException();
-
-            _batchSize = batchSize;
 
             AsOf = select.GetAsOfUtc();
 
@@ -94,7 +84,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             //TODO: Verify this is a links query
             // if (!IsLinkQuery) return null;
 
-            var wit = WorkItemStoreProxy.GetLinks(_workItemStore);
+            var wit = _workItemStore.WorkItemLinkTypes;
 
             // TODO: Limit IWorkItemLinkTypeEnds to the links contained in WIQL
 
@@ -103,23 +93,15 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
-            var ends = GetLinkTypes();
-            var ends2 = ends as WorkItemLinkTypeEndCollection;
-            var useStrong = ends2 != null;
-            if (!useStrong) ends = new List<IWorkItemLinkTypeEnd>(ends);
+            // Eager loading for the link type ID (which is not returned by the REST API) causes ~250ms delay
+            var ends = new Lazy<WorkItemLinkTypeEndCollection>(()=>(WorkItemLinkTypeEndCollection)GetLinkTypes());
+            var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query).GetAwaiter().GetResult();
 
-            var result = _workItemStore.QueryByWiqlAsync(_query).GetAwaiter().GetResult();
             foreach (var workItemLink in result.WorkItemRelations)
             {
-                IWorkItemLinkTypeEnd end = null;
-
-                if (!string.IsNullOrEmpty(workItemLink.Rel))
-                    if (useStrong) ends2.TryGetByName(workItemLink.Rel, out end);
-                    else
-                        end = ends.SingleOrDefault(
-                            p => p.ImmutableName.Equals(workItemLink.Rel, StringComparison.OrdinalIgnoreCase));
-
-                yield return new WorkItemLinkInfoProxy(workItemLink, end?.Id ?? 0);
+                yield return new WorkItemLinkInfoProxy(
+                    workItemLink,
+                    new Lazy<int>(()=> ends.Value.TryGetByName(workItemLink.Rel, out IWorkItemLinkTypeEnd end) ? end.Id : 0));
             }
         }
 
@@ -129,7 +111,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
             if (_ids == null && _query != null)
             {
-                var result = _workItemStore.QueryByWiqlAsync(_query).GetAwaiter().GetResult();
+                var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query).GetAwaiter().GetResult();
                 if (!result.WorkItems.Any()) yield break;
                 _ids = result.WorkItems.Select(wir => wir.Id);
             }
@@ -137,12 +119,32 @@ namespace Microsoft.Qwiq.Proxies.Rest
             if (_ids == null) yield break;
 
             var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.Fields;
-            var qry = _ids.Partition(_batchSize);
-            var ts = qry.Select(s => _workItemStore.GetWorkItemsAsync(s, _fields, AsOf, expand));
+            var qry = _ids.Partition(_workItemStore.BatchSize);
+            var ts = qry.Select(s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, _fields, AsOf, expand));
+
+            // REST API does not return the WIT with the item
+            // Eagerly loading requires several trips to the server at a cost of 50-250ms for each project
+
+            // REVIEW: Can we only request the projects needed instead of all?
+            var wits = new Lazy<Dictionary<string, Dictionary<string, IWorkItemType>>>(()=> _workItemStore.Projects.ToDictionary(
+                k => k.Name,
+                e => e.WorkItemTypes.ToDictionary(
+                    i => i.Name,
+                    j => j,
+                    StringComparer.OrdinalIgnoreCase),
+                StringComparer.OrdinalIgnoreCase));
 
             // This is done in parallel so keep performance similar to the SOAP client
             foreach (var workItem in Task.WhenAll(ts).GetAwaiter().GetResult().SelectMany(s => s.Select(f => f)))
-                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(workItem));
+            {
+                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(workItem, new Lazy<IWorkItemType>(
+                                                                                                          () =>
+                                                                                                              {
+                                                                                                                  var proj = wits.Value[(string)workItem.Fields[CoreFieldRefNames.TeamProject]];
+                                                                                                                  var wit = proj[(string)workItem.Fields[CoreFieldRefNames.WorkItemType]];
+                                                                                                                  return wit;
+                                                                                                              })));
+            }
         }
     }
 }

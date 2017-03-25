@@ -9,9 +9,9 @@ namespace Microsoft.Qwiq.Proxies.Rest
 {
     internal class QueryFactory : IQueryFactory
     {
-        private readonly WorkItemTrackingHttpClient _store;
+        private readonly WorkItemStoreProxy _store;
 
-        private QueryFactory(WorkItemTrackingHttpClient store)
+        private QueryFactory(WorkItemStoreProxy store)
         {
             _store = store ?? throw new ArgumentNullException(nameof(store));
         }
@@ -53,7 +53,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             }
         }
 
-        public static IQueryFactory GetInstance(WorkItemTrackingHttpClient store)
+        public static IQueryFactory GetInstance(WorkItemStoreProxy store)
         {
             return new QueryFactory(store);
         }
