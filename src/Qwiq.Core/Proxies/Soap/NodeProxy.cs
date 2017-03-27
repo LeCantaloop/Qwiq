@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
-
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Proxies.Soap
@@ -49,7 +47,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
 
         public INode ParentNode
         {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(_node.ParentNode)); }
+            get { return new NodeProxy(_node.ParentNode); }
         }
 
         public string Path
@@ -60,6 +58,11 @@ namespace Microsoft.Qwiq.Proxies.Soap
         public Uri Uri
         {
             get { return _node.Uri; }
+        }
+
+        public override string ToString()
+        {
+            return Path;
         }
     }
 }

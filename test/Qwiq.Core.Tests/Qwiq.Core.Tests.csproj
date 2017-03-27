@@ -264,6 +264,7 @@
     <Compile Include="Mocks\MockQueryFactory.cs" />
     <Compile Include="Mocks\MockVssExceptionMapper.cs" />
     <Compile Include="MultipleIdTests.cs" />
+    <Compile Include="ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShouldExtensions.cs" />
     <Compile Include="SingleIdTests.cs" />

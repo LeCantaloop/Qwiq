@@ -9,10 +9,11 @@ namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class ProjectProxy : IProject
     {
-        private readonly Lazy<IEnumerable<IWorkItemType>> _workItemTypes;
-
         private readonly Lazy<IEnumerable<INode>> _area;
+
         private readonly Lazy<IEnumerable<INode>> _iteration;
+
+        private readonly Lazy<IEnumerable<IWorkItemType>> _workItemTypes;
 
         internal ProjectProxy(TeamProjectReference project, WorkItemStoreProxy store)
         {
@@ -38,8 +39,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
                                           .GetAwaiter()
                                           .GetResult();
 
-                        return new[] { new WorkItemClassificationNodeProxy(result), };
-
+                        return new[] { new WorkItemClassificationNodeProxy(result) };
                     });
 
             _iteration = new Lazy<IEnumerable<INode>>(
@@ -50,8 +50,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
                                           .GetAwaiter()
                                           .GetResult();
 
-                        return new[] { new WorkItemClassificationNodeProxy(result), };
-
+                        return new[] { new WorkItemClassificationNodeProxy(result) };
                     });
         }
 
@@ -63,10 +62,10 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public string Name { get; }
 
+        public IWorkItemStore Store { get; }
+
         public Uri Uri { get; }
 
         public IEnumerable<IWorkItemType> WorkItemTypes => _workItemTypes.Value;
-
-        public IWorkItemStore Store { get; }
     }
 }

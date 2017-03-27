@@ -8,14 +8,18 @@ namespace Microsoft.Qwiq.Proxies.Rest
 {
     public class WorkItemClassificationNodeProxy : INode
     {
+        private readonly Lazy<string> _path;
+
         public WorkItemClassificationNodeProxy(WorkItemClassificationNode node)
         {
             Id = node.Id;
             IsAreaNode = node.StructureType == TreeNodeStructureType.Area;
             IsIterationNode = !IsAreaNode;
             Name = node.Name;
-            HasChildNodes = node.Children.Any();
+            HasChildNodes = node.Children?.Any() ?? false;
             ChildNodes = InitializeChildNodes(this, node.Children);
+
+            _path = new Lazy<string>(()=> ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\'));
         }
 
         private IEnumerable<INode> InitializeChildNodes(WorkItemClassificationNodeProxy t, IEnumerable<WorkItemClassificationNode> children)
@@ -42,8 +46,13 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
         public INode ParentNode { get; private set; }
 
-        public string Path => (ParentNode?.Path ?? string.Empty) + "\\" + Name;
+        public string Path => _path.Value;
 
         public Uri Uri { get; }
+
+        public override string ToString()
+        {
+            return Path;
+        }
     }
 }

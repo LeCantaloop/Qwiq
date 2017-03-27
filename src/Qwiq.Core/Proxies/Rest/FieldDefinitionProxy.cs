@@ -14,5 +14,15 @@ namespace Microsoft.Qwiq.Proxies.Rest
         public string Name => _field.Name;
 
         public string ReferenceName => _field.ReferenceName;
+
+        public override bool Equals(object obj)
+        {
+            return FieldDefinitionComparer.Instance.Equals(this, obj as IFieldDefinition);
+        }
+
+        public override int GetHashCode()
+        {
+            return FieldDefinitionComparer.Instance.GetHashCode(this);
+        }
     }
 }

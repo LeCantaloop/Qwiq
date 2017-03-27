@@ -16,5 +16,15 @@ namespace Microsoft.Qwiq.Proxies.Soap
         public string Name => _fieldDefinition.Name;
 
         public string ReferenceName => _fieldDefinition.ReferenceName;
+
+        public override bool Equals(object obj)
+        {
+            return FieldDefinitionComparer.Instance.Equals(this, obj as IFieldDefinition);
+        }
+
+        public override int GetHashCode()
+        {
+            return FieldDefinitionComparer.Instance.GetHashCode(this);
+        }
     }
 }

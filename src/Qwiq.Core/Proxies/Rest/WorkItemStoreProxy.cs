@@ -84,7 +84,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
                     {
                         using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
                         {
-                            var projects = projectHttpClient.GetProjects(ProjectState.WellFormed).GetAwaiter().GetResult();
+                            var projects = projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
                             return projects.Select(project => new ProjectProxy(project, this))
                                            .Cast<IProject>()
                                            .ToList();

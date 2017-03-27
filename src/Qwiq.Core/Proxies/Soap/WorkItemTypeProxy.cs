@@ -26,5 +26,16 @@ namespace Microsoft.Qwiq.Proxies.Soap
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(_type.NewWorkItem()));
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is IWorkItemType)) return false;
+            return WorkItemTypeComparer.Instance.Equals(this, (IWorkItemType)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemTypeComparer.Instance.GetHashCode(this);
+        }
     }
 }

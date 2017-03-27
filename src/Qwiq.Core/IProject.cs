@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq
 {
