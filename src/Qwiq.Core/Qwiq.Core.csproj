@@ -317,6 +317,7 @@
     <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeCollection.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndCollection.cs" />
+    <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
     <Compile Include="Proxies\WorkItemTypeProxy.cs" />
     <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />

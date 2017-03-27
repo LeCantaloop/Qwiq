@@ -1,0 +1,48 @@
+﻿using System;
+
+namespace Microsoft.Qwiq.Proxies
+{
+    internal partial class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
+    {
+        private readonly Lazy<IWorkItemLinkTypeEnd> _opposite;
+
+        internal WorkItemLinkTypeEndProxy(Lazy<IWorkItemLinkTypeEnd> oppositeEnd)
+            : this()
+        {
+            _opposite = oppositeEnd;
+        }
+
+        private WorkItemLinkTypeEndProxy()
+        {
+            _opposite = new Lazy<IWorkItemLinkTypeEnd>(
+                () => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd);
+        }
+
+        public int Id { get; internal set; }
+
+        public string ImmutableName { get; internal set; }
+
+        public bool IsForwardLink { get; internal set; }
+
+        public IWorkItemLinkType LinkType { get; internal set; }
+
+        public string Name { get; internal set; }
+
+        public IWorkItemLinkTypeEnd OppositeEnd => _opposite.Value;
+
+        public override bool Equals(object obj)
+        {
+            return WorkItemLinkTypeEndEqualityComparer.Instance.Equals(this, obj as IWorkItemLinkTypeEnd);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemLinkTypeEndEqualityComparer.Instance.GetHashCode(this);
+        }
+
+        public override string ToString()
+        {
+            return ImmutableName;
+        }
+    }
+}
