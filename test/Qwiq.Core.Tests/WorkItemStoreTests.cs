@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Core.Tests.Mocks;
+using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

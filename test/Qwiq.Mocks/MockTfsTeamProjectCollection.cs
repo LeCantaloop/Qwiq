@@ -27,6 +27,8 @@ namespace Microsoft.Qwiq.Mocks
 
         public IIdentityManagementService IdentityManagementService { get; set; }
 
+        public Uri Uri { get; set; }
+
         public TimeZone TimeZone { get; }
     }
 }

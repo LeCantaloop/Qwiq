@@ -16,6 +16,8 @@ namespace Microsoft.Qwiq
 
         IIdentityManagementService IdentityManagementService { get; }
 
+        Uri Uri { get; }
+
         TimeZone TimeZone { get; }
     }
 

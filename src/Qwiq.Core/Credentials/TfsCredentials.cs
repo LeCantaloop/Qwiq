@@ -1,17 +1,19 @@
 using System.Diagnostics;
 
-using Microsoft.TeamFoundation.Client;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Credentials
 {
     [DebuggerStepThrough]
     public sealed class TfsCredentials
     {
-        public TfsCredentials(TfsClientCredentials credentials)
+        public TfsCredentials(VssCredentials credentials)
         {
             Credentials = credentials;
         }
 
-        internal TfsClientCredentials Credentials { get; private set; }
+
+
+        internal VssCredentials Credentials { get; private set; }
     }
 }

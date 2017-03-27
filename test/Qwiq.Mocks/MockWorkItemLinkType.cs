@@ -1,8 +1,5 @@
 using System;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
-using Microsoft.TeamFoundation.WorkItemTracking.Common;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkType : IWorkItemLinkType

@@ -57,7 +57,7 @@ namespace Microsoft.Qwiq.Proxies.Soap
         internal WorkItemStoreProxy(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
+            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
         {
         }
 

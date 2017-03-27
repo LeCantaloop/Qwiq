@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Should;
 using Microsoft.Qwiq;
-using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Identity;
 using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Qwiq.Identity.Tests

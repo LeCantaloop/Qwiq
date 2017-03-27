@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

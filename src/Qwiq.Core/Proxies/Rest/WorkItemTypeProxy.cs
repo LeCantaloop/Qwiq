@@ -56,5 +56,10 @@ namespace Microsoft.Qwiq.Proxies.Rest
         {
             return WorkItemTypeComparer.Instance.GetHashCode(this);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

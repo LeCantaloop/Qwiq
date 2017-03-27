@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemType : IWorkItemType
