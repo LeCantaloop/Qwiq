@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    public partial class WorkItemTypeProxy : IWorkItemType
+    public partial class WorkItemTypeProxy : IWorkItemType, IEquatable<IWorkItemType>
     {
         private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
 
@@ -12,8 +12,7 @@ namespace Microsoft.Qwiq.Proxies
             string name,
             string description,
             Lazy<IFieldDefinitionCollection> fieldDefinitions,
-            Func<IWorkItem> workItemFactory
-            )
+            Func<IWorkItem> workItemFactory)
         {
             _fieldDefinitions = fieldDefinitions;
             _workItemFactory = workItemFactory;
@@ -21,11 +20,16 @@ namespace Microsoft.Qwiq.Proxies
             Description = description;
         }
 
+        public bool Equals(IWorkItemType other)
+        {
+            return WorkItemTypeComparer.Instance.Equals(this, other);
+        }
+
         public string Description { get; }
 
-        public string Name { get; }
-
         public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
+
+        public string Name { get; }
 
         public IWorkItem NewWorkItem()
         {

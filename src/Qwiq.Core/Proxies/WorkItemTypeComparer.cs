@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 namespace Microsoft.Qwiq.Proxies
 {
@@ -14,15 +13,21 @@ namespace Microsoft.Qwiq.Proxies
             if (ReferenceEquals(y, null)) return false;
 
             return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                   && string.Equals(x.Description, y.Description, StringComparison.OrdinalIgnoreCase)
-                   && x.FieldDefinitions.All(p => y.FieldDefinitions.Contains(p, FieldDefinitionComparer.Instance));
+                && string.Equals(x.Description,y.Description,StringComparison.OrdinalIgnoreCase)
+                && x.FieldDefinitions.Equals(y.FieldDefinitions);
         }
 
         public override int GetHashCode(IWorkItemType obj)
         {
+            // Disable overflow compiler check
             unchecked
             {
-                return 397 * (obj.Name.GetHashCode() ^ obj.Description.GetHashCode());
+                var hash = 27;
+                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.Description != null ? obj.Description.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.FieldDefinitions != null ? obj.FieldDefinitions.GetHashCode() : 0);
+
+                return hash;
             }
         }
 

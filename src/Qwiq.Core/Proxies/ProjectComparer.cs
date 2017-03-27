@@ -15,12 +15,26 @@ namespace Microsoft.Qwiq.Proxies
             if (ReferenceEquals(y, null)) return false;
 
             return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                   && x.WorkItemTypes.All(p => y.WorkItemTypes.Contains(p, WorkItemTypeComparer.Instance));
+                && x.Guid.Equals(y.Guid)
+                && Equals(x.AreaRootNodes, y.AreaRootNodes)
+                && Equals(x.IterationRootNodes, y.IterationRootNodes)
+                && x.WorkItemTypes.All(p => y.WorkItemTypes.Contains(p, WorkItemTypeComparer.Instance));
         }
 
         public override int GetHashCode(IProject obj)
         {
-            return obj.Guid.GetHashCode();
+            unchecked
+            {
+                var hash = 27;
+                hash = (13 * hash) ^ obj.Guid.GetHashCode();
+                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.AreaRootNodes != null ? obj.AreaRootNodes.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.IterationRootNodes != null ? obj.IterationRootNodes.GetHashCode() : 0);
+
+                return obj.WorkItemTypes.Aggregate(hash, (current, wit) => (13 * current) ^ wit.GetHashCode());
+            }
+
+
         }
 
         private class Nested

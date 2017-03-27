@@ -14,6 +14,49 @@ using TfsSoap = Microsoft.Qwiq.Proxies.Soap;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
+
+    public abstract class WorkItemStoreComparisonContext : ContextSpecification
+    {
+        protected IWorkItemStore Rest { get; set; }
+
+        protected IWorkItemStore Soap { get; set; }
+
+        public override void Given()
+        {
+            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
+            var fac = WorkItemStoreFactory.GetInstance();
+            var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
+
+            Soap = fac.Create(uri, credentials, ClientType.Soap);
+            Rest = fac.Create(uri, credentials, ClientType.Rest);
+        }
+    }
+
+    [TestClass]
+    public class Given_SOAP_and_REST_workitemstore_implementations : WorkItemStoreComparisonContext
+    {
+
+
+        public override void When()
+        {
+            SoapLinkTypes = Soap.WorkItemLinkTypes;
+            RestLinkTypes = Rest.WorkItemLinkTypes;
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void WorkItemLinkTypeCollections_are_equal()
+        {
+            RestLinkTypes.ShouldContainOnly(SoapLinkTypes);
+        }
+
+        public WorkItemLinkTypeCollection RestLinkTypes { get; set; }
+
+        public WorkItemLinkTypeCollection SoapLinkTypes { get; set; }
+    }
+
     [TestClass]
     public class given_an_IWorkItemStore_an_a_query_with_two_ids_and_an_asof_date : WorkItemStoreSoapTests
     {

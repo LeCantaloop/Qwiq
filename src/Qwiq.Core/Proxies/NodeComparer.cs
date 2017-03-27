@@ -32,14 +32,13 @@ namespace Microsoft.Qwiq.Proxies
             unchecked
             {
                 var hashCode = (obj.ChildNodes != null ? obj.ChildNodes.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ obj.HasChildNodes.GetHashCode();
                 hashCode = (hashCode * 397) ^ obj.Id;
                 hashCode = (hashCode * 397) ^ obj.IsAreaNode.GetHashCode();
                 hashCode = (hashCode * 397) ^ obj.IsIterationNode.GetHashCode();
                 hashCode = (hashCode * 397) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (obj.ParentNode != null ? obj.ParentNode.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (obj.Path != null ? obj.Path.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (obj.Uri != null ? obj.Uri.GetHashCode() : 0);
+
                 return hashCode;
             }
         }

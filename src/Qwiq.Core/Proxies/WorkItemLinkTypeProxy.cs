@@ -4,13 +4,13 @@ namespace Microsoft.Qwiq.Proxies
 {
     internal partial class WorkItemLinkTypeProxy : IWorkItemLinkType
     {
-        private IWorkItemLinkTypeEnd _forward;
-
-        private IWorkItemLinkTypeEnd _reverse;
-
         private readonly Lazy<IWorkItemLinkTypeEnd> _forwardFac;
 
         private readonly Lazy<IWorkItemLinkTypeEnd> _reverseFac;
+
+        private IWorkItemLinkTypeEnd _forward;
+
+        private IWorkItemLinkTypeEnd _reverse;
 
         internal WorkItemLinkTypeProxy(IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
         {

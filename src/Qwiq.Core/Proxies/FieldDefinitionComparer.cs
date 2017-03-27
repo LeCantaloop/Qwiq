@@ -16,6 +16,18 @@ namespace Microsoft.Qwiq.Proxies
                    && string.Equals(x.ReferenceName, y.ReferenceName, StringComparison.OrdinalIgnoreCase);
         }
 
+        public override int GetHashCode(IFieldDefinition obj)
+        {
+            unchecked
+            {
+                var hash = 27;
+                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.ReferenceName != null ? obj.ReferenceName.GetHashCode() : 0);
+
+                return hash;
+            }
+        }
+
         private class Nested
         {
             internal static readonly FieldDefinitionComparer Instance = new FieldDefinitionComparer();

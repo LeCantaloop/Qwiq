@@ -20,5 +20,23 @@ namespace Microsoft.Qwiq.Proxies
 
 
         public abstract bool Contains(string fieldName);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return this.Aggregate(27, (current, f) => (13 * current) ^ f.GetHashCode());
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(obj, null)) return false;
+            var fdc = obj as IFieldDefinitionCollection;
+            if (fdc == null) return false;
+
+            return this.All(p => fdc.Contains(p, FieldDefinitionComparer.Instance));
+        }
     }
 }

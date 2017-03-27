@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Proxies
 {
@@ -53,6 +54,24 @@ namespace Microsoft.Qwiq.Proxies
         public bool TryGetByName(string linkTypeReferenceName, out IWorkItemLinkType linkType)
         {
             return _mapByName.TryGetValue(linkTypeReferenceName, out linkType);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return this.Aggregate(27, (current, l) => (13 * current) ^ l.GetHashCode());
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(obj, null)) return false;
+            var ltc = obj as IEnumerable<IWorkItemLinkType>;
+            if (ltc == null) return false;
+
+            return this.All(p => ltc.Contains(p, WorkItemLinkTypeComparer.Instance));
         }
     }
 }

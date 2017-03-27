@@ -22,7 +22,13 @@ namespace Microsoft.Qwiq.Proxies
         {
             unchecked
             {
-                return 397 * (obj.LinkTypeId ^ obj.SourceId ^ obj.TargetId);
+                var hash = 27;
+                hash = (13 * hash) ^ obj.IsLocked.GetHashCode();
+                hash = (13 * hash) ^ obj.LinkTypeId.GetHashCode();
+                hash = (13 * hash) ^ obj.SourceId.GetHashCode();
+                hash = (13 * hash) ^ obj.TargetId.GetHashCode();
+
+                return hash;
             }
         }
 

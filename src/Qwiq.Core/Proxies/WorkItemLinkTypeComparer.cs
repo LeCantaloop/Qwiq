@@ -13,17 +13,24 @@ namespace Microsoft.Qwiq.Proxies
             if (ReferenceEquals(y, null)) return false;
 
             return x.IsActive == y.IsActive
-                   && x.ReferenceName.Equals(y.ReferenceName, StringComparison.OrdinalIgnoreCase)
-                   && WorkItemLinkTypeEndComparer.Instance.Equals(x.ForwardEnd, y.ForwardEnd)
-                   && WorkItemLinkTypeEndComparer.Instance.Equals(x.ReverseEnd, y.ReverseEnd);
+                && x.IsDirectional == y.IsDirectional
+                && string.Equals(x.ReferenceName, y.ReferenceName, StringComparison.OrdinalIgnoreCase)
+                && Equals(x.ForwardEnd, y.ForwardEnd)
+                && Equals(x.ReverseEnd, y.ReverseEnd);
         }
 
         public override int GetHashCode(IWorkItemLinkType obj)
         {
             unchecked
             {
-                return 397 * (obj.ForwardEnd.GetHashCode() ^ obj.ReverseEnd.GetHashCode()
-                              ^ obj.ReferenceName.GetHashCode());
+                var hash = 27;
+                hash = (13 * hash) ^ (obj.ReferenceName != null ? obj.ReferenceName.GetHashCode() : 0);
+                hash = (13 * hash) ^ obj.IsActive.GetHashCode();
+                hash = (13 * hash) ^ obj.IsDirectional.GetHashCode();
+                hash = (13 * hash) ^ (obj.ForwardEnd != null ? obj.ForwardEnd.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.ReverseEnd != null ? obj.ReverseEnd.GetHashCode() : 0);
+
+                return hash;
             }
         }
 
