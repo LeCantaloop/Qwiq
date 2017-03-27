@@ -1,3 +1,5 @@
+using Microsoft.Qwiq.Proxies;
+
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkInfo : IWorkItemLinkInfo
@@ -19,23 +21,23 @@ namespace Microsoft.Qwiq.Mocks
 
         public static bool operator !=(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
         {
-            return !WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+            return !WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }
 
         public static bool operator ==(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
         {
-            return WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+            return WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }
 
         public override bool Equals(object obj)
         {
             if (!(obj is IWorkItemLinkInfo)) return false;
-            return WorkItemLinkInfoEqualityComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
+            return WorkItemLinkInfoComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemLinkInfoEqualityComparer.Instance.GetHashCode(this);
+            return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
         }
     }
 }

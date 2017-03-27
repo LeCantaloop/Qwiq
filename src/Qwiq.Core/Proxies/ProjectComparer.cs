@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Microsoft.Qwiq.Proxies
 {
     public class ProjectComparer : GenericComparer<IProject>
     {
-        public static IEqualityComparer<IProject> Instance => Nested.Instance;
+        public static ProjectComparer Instance => Nested.Instance;
 
         public override bool Equals(IProject x, IProject y)
         {
@@ -25,7 +25,7 @@ namespace Microsoft.Qwiq
 
         private class Nested
         {
-            internal static readonly IEqualityComparer<IProject> Instance = new ProjectComparer();
+            internal static readonly ProjectComparer Instance = new ProjectComparer();
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

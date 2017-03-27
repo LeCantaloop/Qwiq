@@ -21,23 +21,23 @@ namespace Microsoft.Qwiq.Proxies
 
         public static bool operator !=(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
         {
-            return !WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+            return !WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }
 
         public static bool operator ==(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
         {
-            return WorkItemLinkInfoEqualityComparer.Instance.Equals(x, y);
+            return WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }
 
         public override bool Equals(object obj)
         {
             if (!(obj is IWorkItemLinkInfo)) return false;
-            return WorkItemLinkInfoEqualityComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
+            return WorkItemLinkInfoComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemLinkInfoEqualityComparer.Instance.GetHashCode(this);
+            return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
         }
 
         public override string ToString()

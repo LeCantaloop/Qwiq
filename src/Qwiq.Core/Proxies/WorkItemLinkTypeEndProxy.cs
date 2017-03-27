@@ -32,12 +32,12 @@ namespace Microsoft.Qwiq.Proxies
 
         public override bool Equals(object obj)
         {
-            return WorkItemLinkTypeEndEqualityComparer.Instance.Equals(this, obj as IWorkItemLinkTypeEnd);
+            return WorkItemLinkTypeEndComparer.Instance.Equals(this, obj as IWorkItemLinkTypeEnd);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemLinkTypeEndEqualityComparer.Instance.GetHashCode(this);
+            return WorkItemLinkTypeEndComparer.Instance.GetHashCode(this);
         }
 
         public override string ToString()

@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Microsoft.Qwiq.Proxies
 {
     public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {

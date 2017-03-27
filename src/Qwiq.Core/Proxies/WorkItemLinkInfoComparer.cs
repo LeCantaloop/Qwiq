@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Microsoft.Qwiq.Proxies
 {
-    public class WorkItemLinkInfoEqualityComparer : GenericComparer<IWorkItemLinkInfo>
+    public class WorkItemLinkInfoComparer : GenericComparer<IWorkItemLinkInfo>
     {
-        public static IEqualityComparer<IWorkItemLinkInfo> Instance => Nested.Instance;
+        public static WorkItemLinkInfoComparer Instance => Nested.Instance;
 
         public override bool Equals(IWorkItemLinkInfo x, IWorkItemLinkInfo y)
         {
@@ -29,7 +28,7 @@ namespace Microsoft.Qwiq
 
         private class Nested
         {
-            internal static readonly IEqualityComparer<IWorkItemLinkInfo> Instance = new WorkItemLinkInfoEqualityComparer();
+            internal static readonly WorkItemLinkInfoComparer Instance = new WorkItemLinkInfoComparer();
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

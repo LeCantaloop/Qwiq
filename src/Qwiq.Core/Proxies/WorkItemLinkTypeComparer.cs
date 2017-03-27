@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Microsoft.Qwiq.Proxies
 {
-    public class WorkItemLinkTypeEqualityComparer : GenericComparer<IWorkItemLinkType>
+    public class WorkItemLinkTypeComparer : GenericComparer<IWorkItemLinkType>
     {
-        public static IEqualityComparer<IWorkItemLinkType> Instance => Nested.Instance;
+        public static WorkItemLinkTypeComparer Instance => Nested.Instance;
 
         public override bool Equals(IWorkItemLinkType x, IWorkItemLinkType y)
         {
@@ -15,22 +14,22 @@ namespace Microsoft.Qwiq
 
             return x.IsActive == y.IsActive
                    && x.ReferenceName.Equals(y.ReferenceName, StringComparison.OrdinalIgnoreCase)
-                   && WorkItemLinkTypeEndEqualityComparer.Instance.Equals(x.ForwardEnd, y.ForwardEnd)
-                   && WorkItemLinkTypeEndEqualityComparer.Instance.Equals(x.ReverseEnd, y.ReverseEnd);
-
+                   && WorkItemLinkTypeEndComparer.Instance.Equals(x.ForwardEnd, y.ForwardEnd)
+                   && WorkItemLinkTypeEndComparer.Instance.Equals(x.ReverseEnd, y.ReverseEnd);
         }
 
         public override int GetHashCode(IWorkItemLinkType obj)
         {
             unchecked
             {
-                return 397 * (obj.ForwardEnd.GetHashCode() ^ obj.ReverseEnd.GetHashCode() ^ obj.ReferenceName.GetHashCode());
+                return 397 * (obj.ForwardEnd.GetHashCode() ^ obj.ReverseEnd.GetHashCode()
+                              ^ obj.ReferenceName.GetHashCode());
             }
         }
 
         private class Nested
         {
-            internal static readonly IEqualityComparer<IWorkItemLinkType> Instance = new WorkItemLinkTypeEqualityComparer();
+            internal static readonly WorkItemLinkTypeComparer Instance = new WorkItemLinkTypeComparer();
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

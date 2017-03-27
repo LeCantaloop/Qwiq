@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Microsoft.Qwiq.Proxies
 {
     public class WorkItemTypeComparer : GenericComparer<IWorkItemType>
     {
