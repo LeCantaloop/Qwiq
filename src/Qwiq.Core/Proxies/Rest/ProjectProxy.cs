@@ -33,7 +33,7 @@ namespace Microsoft.Qwiq.Proxies
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new WorkItemClassificationNodeProxy(result) };
+                            return new[] { new NodeProxy(result),  };
                         }),
                 new Lazy<IEnumerable<INode>>(
                     () =>
@@ -43,7 +43,7 @@ namespace Microsoft.Qwiq.Proxies
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new WorkItemClassificationNodeProxy(result) };
+                            return new[] { new NodeProxy(result) };
                         })
                  )
         {

@@ -271,6 +271,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\FieldDefinitionCollectionProxy.cs" />
     <Compile Include="Proxies\FieldDefinitionProxy.cs" />
+    <Compile Include="Proxies\NodeComparer.cs" />
+    <Compile Include="Proxies\NodeProxy.cs" />
     <Compile Include="Proxies\ProjectProxy.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionCollectionProxy.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionProxy.cs" />
