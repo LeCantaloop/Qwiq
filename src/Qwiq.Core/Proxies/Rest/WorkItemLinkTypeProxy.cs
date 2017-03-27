@@ -1,41 +1,26 @@
 using System;
 
-namespace Microsoft.Qwiq.Proxies.Rest
+namespace Microsoft.Qwiq.Proxies
 {
-    public class WorkItemLinkTypeProxy : IWorkItemLinkType
+    internal partial class WorkItemLinkTypeProxy
     {
-        public WorkItemLinkTypeProxy(string referenceName)
+        internal WorkItemLinkTypeProxy(
+            string referenceName
+            )
         {
             if (string.IsNullOrEmpty(referenceName))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
             ReferenceName = referenceName;
         }
 
-        public IWorkItemLinkTypeEnd ForwardEnd { get; internal set; }
-
-        public bool IsActive { get; internal set; }
-
-        public bool IsDirectional { get; internal set; }
-
-        public string ReferenceName { get; }
-
-        public IWorkItemLinkTypeEnd ReverseEnd { get; internal set; }
-
-        public override bool Equals(object obj)
+        internal void SetForwardEnd(IWorkItemLinkTypeEnd forward)
         {
-            if (!(obj is IWorkItemLinkType)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return WorkItemLinkTypeEqualityComparer.Instance.Equals(this, (IWorkItemLinkType)obj);
+            _forward = forward ?? throw new ArgumentNullException(nameof(forward));
         }
 
-        public override int GetHashCode()
+        internal void SetReverseEnd(IWorkItemLinkTypeEnd reverse)
         {
-            return WorkItemLinkTypeEqualityComparer.Instance.GetHashCode(this);
-        }
-
-        public override string ToString()
-        {
-            return ReferenceName;
+            _reverse = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
     }
 }

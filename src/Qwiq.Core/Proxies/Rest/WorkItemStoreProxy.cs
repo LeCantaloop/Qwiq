@@ -194,13 +194,14 @@ namespace Microsoft.Qwiq.Proxies.Rest
 
                 if (!forwardEnd.ReferenceName.EndsWith("Forward")) forwardEnd.ReferenceName += "-Forward";
 
-                type.ForwardEnd = new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type };
-                type.ReverseEnd = type.IsDirectional
+                type.SetForwardEnd(new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type });
+                type.SetReverseEnd(type.IsDirectional
                                       ? new WorkItemLinkTypeEndProxy(
                                             ends.SingleOrDefault(
                                                 p => p.ReferenceName.EndsWith("Reverse")))
-                                      { LinkType = type }
-                                      : type.ForwardEnd;
+                                            { LinkType = type }
+                                      : type.ForwardEnd);
+
 
                 // The REST API does not return the ID of the link type. For well-known system links, we can populate the ID value
                 if (CoreLinkTypeReferenceNames.All.Contains(type.ReferenceName, StringComparer.OrdinalIgnoreCase))
