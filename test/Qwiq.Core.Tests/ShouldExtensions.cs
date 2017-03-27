@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -10,24 +11,25 @@ using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
+    [DebuggerStepThrough]
     public static class ShouldExtensions
     {
-        public static void ShouldContainOnly<T>(this IEnumerable<T> list, IEnumerable<T> items)
+        public static void ShouldContainOnly<T>(this IEnumerable<T> collection, IEnumerable<T> expected)
         {
-            ShouldContainOnly(list, items, GenericComparer<T>.Default);
+            ShouldContainOnly(collection, expected, GenericComparer<T>.Default);
         }
 
-        public static void ShouldContainOnly<T>(this IEnumerable<T> list, params T[] items)
+        public static void ShouldContainOnly<T>(this IEnumerable<T> collection, params T[] expected)
         {
-            ShouldContainOnly(list, items, GenericComparer<T>.Default);
+            ShouldContainOnly(collection, expected, GenericComparer<T>.Default);
         }
 
-        public static void ShouldContainOnly<T>(this IEnumerable<T> list, IEnumerable<T> items, IEqualityComparer<T> comparer)
+        public static void ShouldContainOnly<T>(this IEnumerable<T> collection, IEnumerable<T> expected, IEqualityComparer<T> comparer)
         {
-            var source = new List<T>(list);
+            var source = new List<T>(collection);
             var noContain = new List<T>();
 
-            foreach (T item in items)
+            foreach (var item in expected)
             {
                 if (!source.Contains(item, comparer))
                 {
@@ -44,7 +46,7 @@ namespace Microsoft.Qwiq.Core.Tests
             if (noContain.Any() || source.Any())
             {
                 string message =
-                    $"Should contain only: {items.EachToUsefulString()} \r\nentire list: {list.EachToUsefulString()}";
+                    $"Should contain only: {expected.EachToUsefulString()} \r\nentire list: {collection.EachToUsefulString()}";
 
                 if (noContain.Any())
                 {
@@ -107,7 +109,7 @@ namespace Microsoft.Qwiq.Core.Tests
 
             if (obj is IEnumerable)
             {
-                IEnumerable<object> enumerable = ((IEnumerable)obj).Cast<object>();
+                var enumerable = ((IEnumerable)obj).Cast<object>();
 
                 return obj.GetType() + ":\n" + enumerable.EachToUsefulString();
             }
@@ -141,11 +143,11 @@ namespace Microsoft.Qwiq.Core.Tests
                 return string.Empty;
             }
 
-            string[] split = str.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            var split = str.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
             var sb = new StringBuilder();
 
             sb.Append("  " + split[0]);
-            foreach (string part in split.Skip(1))
+            foreach (var part in split.Skip(1))
             {
                 sb.AppendLine();
                 sb.Append("  " + part);
