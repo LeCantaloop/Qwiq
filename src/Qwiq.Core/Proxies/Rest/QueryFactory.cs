@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
