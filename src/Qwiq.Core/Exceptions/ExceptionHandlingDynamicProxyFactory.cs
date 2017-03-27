@@ -6,6 +6,7 @@ namespace Microsoft.Qwiq.Exceptions
     public static class ExceptionHandlingDynamicProxyFactory
     {
         private static readonly ProxyGenerator Generator = new ProxyGenerator();
+        private static readonly ProxyGenerationOptions Options = new ProxyGenerationOptions { BaseTypeForInterfaceProxy = typeof(ProxyBase) };
 
         public static T Create<T>(T instance) where T : class
         {
@@ -31,7 +32,7 @@ namespace Microsoft.Qwiq.Exceptions
                         exploders,
                         mappers));
 
-            return (T)Generator.CreateInterfaceProxyWithTarget(typeof(T), instance, proxy);
+            return (T)Generator.CreateInterfaceProxyWithTarget(typeof(T), instance, Options, proxy);
         }
     }
 }
