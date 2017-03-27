@@ -1,41 +1,37 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Exceptions;
+using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Proxies.Soap
 {
-    public class FieldDefinitionCollectionProxy : IFieldDefinitionCollection
+    internal class FieldDefinitionCollectionProxy : Proxies.FieldDefinitionCollectionProxy
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection _innerCollection;
+        private readonly FieldDefinitionCollection _innerCollection;
 
-        public FieldDefinitionCollectionProxy(TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection innerCollection)
+        internal FieldDefinitionCollectionProxy(FieldDefinitionCollection innerCollection)
         {
             _innerCollection = innerCollection;
         }
 
-        public IEnumerator<IFieldDefinition> GetEnumerator()
-        {
-            return _innerCollection
-                .Cast<TeamFoundation.WorkItemTracking.Client.FieldDefinition>()
-                .Select(field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinitionProxy(field)))
-                .GetEnumerator();
-        }
+        public override int Count => _innerCollection.Count;
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public override IFieldDefinition this[string name] => ExceptionHandlingDynamicProxyFactory
+            .Create<IFieldDefinition>(new FieldDefinitionProxy(_innerCollection[name]));
 
-        public int Count => _innerCollection.Count;
-
-        public IFieldDefinition this[string name] => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(
-            new FieldDefinitionProxy(_innerCollection[name]));
-
-        public bool Contains(string fieldName)
+        public override bool Contains(string fieldName)
         {
             return _innerCollection.Contains(fieldName);
+        }
+
+        public override IEnumerator<IFieldDefinition> GetEnumerator()
+        {
+            return _innerCollection.Cast<FieldDefinition>()
+                                   .Select(
+                                       field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(
+                                           new FieldDefinitionProxy(field)))
+                                   .GetEnumerator();
         }
     }
 }

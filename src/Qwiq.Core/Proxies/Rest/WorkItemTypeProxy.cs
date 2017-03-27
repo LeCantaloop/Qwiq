@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq.Proxies
             : this(
                 type?.Name,
                 type?.Description,
-                new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollectionProxy(type?.Fields)),
+                new Lazy<IFieldDefinitionCollection>(() => new Proxies.Rest.FieldDefinitionCollectionProxy(type?.Fields)),
                 NewWorkItemImpl)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

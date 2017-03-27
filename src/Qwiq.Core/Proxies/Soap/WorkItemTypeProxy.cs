@@ -13,7 +13,7 @@ namespace Microsoft.Qwiq.Proxies
             : this(
                  type?.Name,
                  type?.Description,
-                 new Lazy<IFieldDefinitionCollection>(() => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(new FieldDefinitionCollectionProxy(type?.FieldDefinitions))),
+                 new Lazy<IFieldDefinitionCollection>(() => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(new Soap.FieldDefinitionCollectionProxy(type?.FieldDefinitions))),
                  () => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItemProxy(type?.NewWorkItem()))
                  )
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +7,7 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Proxies.Rest
 {
-    internal class FieldDefinitionCollectionProxy : IFieldDefinitionCollection
+    internal class FieldDefinitionCollectionProxy : Microsoft.Qwiq.Proxies.FieldDefinitionCollectionProxy
     {
         private readonly Dictionary<string, IFieldDefinition> _fieldUsagesByName;
 
@@ -35,9 +34,9 @@ namespace Microsoft.Qwiq.Proxies.Rest
                 StringComparer.OrdinalIgnoreCase);
         }
 
-        public int Count => _fieldUsagesByName.Count;
+        public override int Count => _fieldUsagesByName.Count;
 
-        public IFieldDefinition this[string name]
+        public override IFieldDefinition this[string name]
         {
             get
             {
@@ -52,21 +51,16 @@ namespace Microsoft.Qwiq.Proxies.Rest
             }
         }
 
-        public bool Contains(string fieldName)
+        public override bool Contains(string fieldName)
         {
             if (string.IsNullOrEmpty(fieldName))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(fieldName));
             return _fieldUsagesByName.ContainsKey(fieldName) || _fieldUsagesByReferenceName.ContainsKey(fieldName);
         }
 
-        public IEnumerator<IFieldDefinition> GetEnumerator()
+        public override IEnumerator<IFieldDefinition> GetEnumerator()
         {
             return _fieldUsagesByName.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }
