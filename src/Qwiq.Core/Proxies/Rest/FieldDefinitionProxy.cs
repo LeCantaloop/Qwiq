@@ -1,28 +1,16 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+﻿using System;
 
-namespace Microsoft.Qwiq.Proxies.Rest
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+
+namespace Microsoft.Qwiq.Proxies
 {
-    public class FieldDefinitionProxy : IFieldDefinition
+    internal partial class FieldDefinitionProxy
     {
-        private readonly WorkItemFieldReference _field;
-
         internal FieldDefinitionProxy(WorkItemFieldReference field)
         {
-            _field = field;
-        }
-
-        public string Name => _field.Name;
-
-        public string ReferenceName => _field.ReferenceName;
-
-        public override bool Equals(object obj)
-        {
-            return FieldDefinitionComparer.Instance.Equals(this, obj as IFieldDefinition);
-        }
-
-        public override int GetHashCode()
-        {
-            return FieldDefinitionComparer.Instance.GetHashCode(this);
+            if (field == null) throw new ArgumentNullException(nameof(field));
+            Name = field.Name;
+            ReferenceName = field.ReferenceName;
         }
     }
 }

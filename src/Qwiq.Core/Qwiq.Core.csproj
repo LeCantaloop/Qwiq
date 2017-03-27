@@ -270,6 +270,7 @@
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\FieldDefinitionCollectionProxy.cs" />
+    <Compile Include="Proxies\FieldDefinitionProxy.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionCollectionProxy.cs" />
     <Compile Include="Proxies\Rest\FieldDefinitionProxy.cs" />
     <Compile Include="Proxies\Rest\ProjectProxy.cs" />

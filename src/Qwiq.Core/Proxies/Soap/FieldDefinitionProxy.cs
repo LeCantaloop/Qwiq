@@ -2,29 +2,15 @@ using System;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Proxies.Soap
+namespace Microsoft.Qwiq.Proxies
 {
-    public class FieldDefinitionProxy : IFieldDefinition
+    internal partial class FieldDefinitionProxy
     {
-        private readonly Tfs.FieldDefinition _fieldDefinition;
-
-        public FieldDefinitionProxy(Tfs.FieldDefinition fieldDefinition)
+        internal FieldDefinitionProxy(Tfs.FieldDefinition fieldDefinition)
         {
-            _fieldDefinition = fieldDefinition ?? throw new ArgumentNullException(nameof(fieldDefinition));
-        }
-
-        public string Name => _fieldDefinition.Name;
-
-        public string ReferenceName => _fieldDefinition.ReferenceName;
-
-        public override bool Equals(object obj)
-        {
-            return FieldDefinitionComparer.Instance.Equals(this, obj as IFieldDefinition);
-        }
-
-        public override int GetHashCode()
-        {
-            return FieldDefinitionComparer.Instance.GetHashCode(this);
+            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
+            Name = fieldDefinition.Name;
+            ReferenceName = fieldDefinition.ReferenceName;
         }
     }
 }
