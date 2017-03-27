@@ -220,6 +220,7 @@
     <Compile Include="Exceptions\IExceptionMapper.cs" />
     <Compile Include="Exceptions\InnerExceptionExploder.cs" />
     <Compile Include="Exceptions\InvalidOperationExceptionMapper.cs" />
+    <Compile Include="Exceptions\ProxyBase.cs" />
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
@@ -312,6 +313,7 @@
     <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeCollection.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndCollection.cs" />
+    <Compile Include="Proxies\WorkItemTypeProxy.cs" />
     <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />

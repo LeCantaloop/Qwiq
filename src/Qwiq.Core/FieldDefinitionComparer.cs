@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
     public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {
-        public static IEqualityComparer<IFieldDefinition> Instance => Nested.Instance;
+        public static FieldDefinitionComparer Instance => Nested.Instance;
 
         public override bool Equals(IFieldDefinition x, IFieldDefinition y)
         {
@@ -19,7 +18,7 @@ namespace Microsoft.Qwiq
 
         private class Nested
         {
-            internal static readonly IEqualityComparer<IFieldDefinition> Instance = new FieldDefinitionComparer();
+            internal static readonly FieldDefinitionComparer Instance = new FieldDefinitionComparer();
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

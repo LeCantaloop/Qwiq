@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
+using Should.Core.Exceptions;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
@@ -63,11 +65,26 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestCategory("REST")]
         public void Project_WITs_are_equal()
         {
-            foreach (var sp in SoapProjects)
-            {
-                var rp = RestProjects.Find(p => ProjectComparer.Instance.Equals(sp, p));
+            var soap = SoapProjects.ToDictionary(k => k.Guid, e => e);
+            var rest = RestProjects.ToDictionary(k => k.Guid, e => e);
 
-                rp?.WorkItemTypes.ShouldContainOnly(sp.WorkItemTypes, WorkItemTypeComparer.Instance);
+            foreach (var sp in soap)
+            {
+                IProject rp;
+                if (!rest.TryGetValue(sp.Key, out rp))
+                {
+                    Trace.TraceWarning("REST collection does not contain project {0} ({1})", sp.Key, sp.Value.Name);
+                    continue;
+                }
+
+                try
+                {
+                    rp.WorkItemTypes.ShouldContainOnly(sp.Value.WorkItemTypes, WorkItemTypeComparer.Instance);
+                }
+                catch (AssertFailedException e)
+                {
+                    throw new Exception($"Project {sp.Key} ({sp.Value.Name}) contains differences.", e);
+                }
             }
         }
 

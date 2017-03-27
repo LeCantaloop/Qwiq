@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics;
+
 using Castle.DynamicProxy;
 
 namespace Microsoft.Qwiq.Exceptions
 {
+    [DebuggerStepThrough]
     public class ExceptionHandlingDynamicProxy<T> : IInterceptor
     {
         private readonly IExceptionMapper _exceptionMapper;

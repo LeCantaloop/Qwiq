@@ -1,25 +1,23 @@
 ﻿using System;
 
+using Microsoft.Qwiq.Proxies.Rest;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Proxies.Rest
+namespace Microsoft.Qwiq.Proxies
 {
-    public class WorkItemTypeProxy : IWorkItemType
+    public partial class WorkItemTypeProxy
     {
         internal WorkItemTypeProxy(WorkItemType type)
+            : this(
+                type?.Name,
+                type?.Description,
+                new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollectionProxy(type?.Fields)),
+                NewWorkItemImpl)
         {
-            Description = type.Description;
-            Name = type.Name;
-            FieldDefinitions = new FieldDefinitionCollectionProxy(type.Fields);
+            if (type == null) throw new ArgumentNullException(nameof(type));
         }
 
-        public string Description { get; }
-
-        public IFieldDefinitionCollection FieldDefinitions { get; }
-
-        public string Name { get; }
-
-        public IWorkItem NewWorkItem()
+        private static IWorkItem NewWorkItemImpl()
         {
             throw new NotSupportedException();
 
@@ -44,22 +42,6 @@ namespace Microsoft.Qwiq.Proxies.Rest
              * return new WorkItemProxy(result);
              *
              */
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is IWorkItemType)) return false;
-            return WorkItemTypeComparer.Instance.Equals(this, (IWorkItemType)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return WorkItemTypeComparer.Instance.GetHashCode(this);
-        }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Linq;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Should;
+
 namespace Microsoft.Qwiq.Core.Tests
 {
     [TestClass]

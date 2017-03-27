@@ -23,6 +23,7 @@ namespace Microsoft.Qwiq.Proxies.Rest
             Name = project.Name;
             Uri = new Uri(project.Url);
             Store = store;
+            Guid = project.Id;
 
             _workItemTypes = new Lazy<IEnumerable<IWorkItemType>>(
                 () =>
@@ -55,6 +56,8 @@ namespace Microsoft.Qwiq.Proxies.Rest
         }
 
         public IEnumerable<INode> AreaRootNodes => _area.Value;
+
+        public Guid Guid { get; }
 
         public int Id { get; }
 

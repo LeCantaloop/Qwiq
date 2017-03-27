@@ -5,11 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Qwiq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Should;
-
-namespace Microsoft.Qwiq.Tests.Common
+namespace Should
 {
     [DebuggerStepThrough]
     public static class ShouldExtensions

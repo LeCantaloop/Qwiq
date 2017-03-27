@@ -24,6 +24,7 @@ namespace Microsoft.Qwiq.Mocks
 
             AreaRootNodes = new[] { node };
             IterationRootNodes = new[] { CreateNodes(false) };
+            Guid = Guid.NewGuid();
         }
 
         public MockProject(IWorkItemStore store)
@@ -38,6 +39,8 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public IEnumerable<INode> AreaRootNodes { get; set; }
+
+        public Guid Guid { get; set; }
 
         public int Id { get; set; }
 
