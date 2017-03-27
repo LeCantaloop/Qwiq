@@ -2,73 +2,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Qwiq.Proxies.Rest;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Proxies.Rest
+namespace Microsoft.Qwiq.Proxies
 {
-    public class ProjectProxy : IProject
+    internal partial class ProjectProxy
     {
-        private readonly Lazy<IEnumerable<INode>> _area;
-
-        private readonly Lazy<IEnumerable<INode>> _iteration;
-
-        private readonly Lazy<IEnumerable<IWorkItemType>> _workItemTypes;
-
         internal ProjectProxy(TeamProjectReference project, WorkItemStoreProxy store)
+            : this(
+                // REST API stores ID as GUID rather than INT
+                // Converting from 128-bit GUID will have some loss in precision
+                BitConverter.ToInt32(project.Id.ToByteArray(), 0),
+                project.Id,
+                project.Name,
+                new Uri(project.Url),
+                store,
+                new Lazy<IEnumerable<IWorkItemType>>(
+                    () =>
+                        {
+                            var wits = store.NativeWorkItemStore.Value.GetWorkItemTypesAsync(project.Name).GetAwaiter().GetResult();
+                            return wits.Select(s => new WorkItemTypeProxy(s));
+                        }),
+                new Lazy<IEnumerable<INode>>(
+                    () =>
+                        {
+                            var result = store.NativeWorkItemStore.Value
+                                              .GetClassificationNodeAsync(project.Name, TreeStructureGroup.Areas)
+                                              .GetAwaiter()
+                                              .GetResult();
+
+                            return new[] { new WorkItemClassificationNodeProxy(result) };
+                        }),
+                new Lazy<IEnumerable<INode>>(
+                    () =>
+                        {
+                            var result = store.NativeWorkItemStore.Value
+                                              .GetClassificationNodeAsync(project.Name, TreeStructureGroup.Iterations)
+                                              .GetAwaiter()
+                                              .GetResult();
+
+                            return new[] { new WorkItemClassificationNodeProxy(result) };
+                        })
+                 )
         {
-            // REST API stores ID as GUID rather than INT
-            // Converting from 128-bit GUID will have some loss in precision
-            Id = BitConverter.ToInt32(project.Id.ToByteArray(), 0);
-            Name = project.Name;
-            Uri = new Uri(project.Url);
-            Store = store;
-            Guid = project.Id;
-
-            _workItemTypes = new Lazy<IEnumerable<IWorkItemType>>(
-                () =>
-                    {
-                        var wits = store.NativeWorkItemStore.Value.GetWorkItemTypesAsync(Name).GetAwaiter().GetResult();
-                        return wits.Select(s => new WorkItemTypeProxy(s));
-                    });
-
-            _area = new Lazy<IEnumerable<INode>>(
-                () =>
-                    {
-                        var result = store.NativeWorkItemStore.Value
-                                          .GetClassificationNodeAsync(Name, TreeStructureGroup.Areas)
-                                          .GetAwaiter()
-                                          .GetResult();
-
-                        return new[] { new WorkItemClassificationNodeProxy(result) };
-                    });
-
-            _iteration = new Lazy<IEnumerable<INode>>(
-                () =>
-                    {
-                        var result = store.NativeWorkItemStore.Value
-                                          .GetClassificationNodeAsync(Name, TreeStructureGroup.Iterations)
-                                          .GetAwaiter()
-                                          .GetResult();
-
-                        return new[] { new WorkItemClassificationNodeProxy(result) };
-                    });
         }
-
-        public IEnumerable<INode> AreaRootNodes => _area.Value;
-
-        public Guid Guid { get; }
-
-        public int Id { get; }
-
-        public IEnumerable<INode> IterationRootNodes => _iteration.Value;
-
-        public string Name { get; }
-
-        public IWorkItemStore Store { get; }
-
-        public Uri Uri { get; }
-
-        public IEnumerable<IWorkItemType> WorkItemTypes => _workItemTypes.Value;
     }
 }

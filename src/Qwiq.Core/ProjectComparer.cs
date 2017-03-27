@@ -18,6 +18,11 @@ namespace Microsoft.Qwiq
                    && x.WorkItemTypes.All(p => y.WorkItemTypes.Contains(p, WorkItemTypeComparer.Instance));
         }
 
+        public override int GetHashCode(IProject obj)
+        {
+            return obj.Guid.GetHashCode();
+        }
+
         private class Nested
         {
             internal static readonly IEqualityComparer<IProject> Instance = new ProjectComparer();
