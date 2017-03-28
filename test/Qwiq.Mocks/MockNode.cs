@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockNode : INode
+    public class MockNode : Microsoft.Qwiq.Proxies.NodeProxy
     {
         public MockNode(string name, bool isArea, bool isIteration)
         {
@@ -13,24 +11,7 @@ namespace Microsoft.Qwiq.Mocks
             IsIterationNode = isIteration;
             ChildNodes = Enumerable.Empty<INode>();
             ParentNode = null;
+            Path = ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\');
         }
-
-        public IEnumerable<INode> ChildNodes { get; set; }
-
-        public bool HasChildNodes => ChildNodes.Any();
-
-        public int Id { get; }
-
-        public bool IsAreaNode { get; }
-
-        public bool IsIterationNode { get; }
-
-        public string Name { get; }
-
-        public INode ParentNode { get; set; }
-
-        public string Path => ParentNode?.Path + "\\" + Name;
-
-        public Uri Uri { get; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal class NodeProxy : INode, IComparer<INode>, IEquatable<INode>
+    public class NodeProxy : INode, IComparer<INode>, IEquatable<INode>
     {
         public IEnumerable<INode> ChildNodes { get; internal set; }
 
