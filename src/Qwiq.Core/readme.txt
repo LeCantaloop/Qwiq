@@ -29,12 +29,12 @@ The <Visible> tag can be ommitted or included depending on if you would like the
 visible in the project or be hidden.
 
 <ItemGroup>
-    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\native\x86\Microsoft.WITDataStore32.dll">
+    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\lib\native\x86\Microsoft.WITDataStore32.dll">
       <Link>Microsoft.WITDataStore32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </Content>
-    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\native\amd64\Microsoft.WITDataStore64.dll">
+    <Content Include="..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\lib\native\amd64\Microsoft.WITDataStore64.dll">
       <Link>Microsoft.WITDataStore64.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
