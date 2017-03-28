@@ -169,7 +169,7 @@ namespace Microsoft.Qwiq.Mocks
 
             foreach (var wit in project.WorkItemTypes)
             {
-                var wi = new MockWorkItem(wit) { Id = _workItems.Count + 1, Type = wit };
+                var wi = new MockWorkItem(wit) { Id = _workItems.Count + 1 };
                 _workItems.Add(wi);
             }
 

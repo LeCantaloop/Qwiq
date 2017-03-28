@@ -45,11 +45,10 @@ namespace Microsoft.Qwiq.Relatives.Tests
 
             var workItems = new[]
             {
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 2,
-                    ChangedDate = new DateTime(2010, 10, 10),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2010, 10, 10)
                 }
             };
 
@@ -103,11 +102,10 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItems = new[]
             {
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 2,
-                    ChangedDate = new DateTime(2010, 10, 10),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2010, 10, 10)
                 }
             };
 
@@ -146,17 +144,15 @@ namespace Microsoft.Qwiq.Relatives.Tests
 
             var workItems = new[]
             {
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 2,
-                    ChangedDate = new DateTime(2010, 10, 10),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2010, 10, 10)
                 },
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 4,
-                    ChangedDate = new DateTime(2011, 11, 11),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2011, 11, 11)
                 }
             };
 
@@ -200,17 +196,15 @@ namespace Microsoft.Qwiq.Relatives.Tests
 
             var workItems = new[]
             {
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 2,
-                    ChangedDate = new DateTime(2010, 10, 10),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2010, 10, 10)
                 },
-                new MockWorkItem
+                new MockWorkItem(MockParentIdIssue.CustomWorkItemType)
                 {
                     Id = 4,
-                    ChangedDate = new DateTime(2011, 11, 11),
-                    Type = MockParentIdIssue.CustomWorkItemType
+                    ChangedDate = new DateTime(2011, 11, 11)
                 }
             };
 
