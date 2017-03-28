@@ -2,15 +2,11 @@ using System;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal partial class WorkItemLinkTypeProxy : Microsoft.Qwiq.Proxies.WorkItemLinkTypeProxy
+    internal partial class WorkItemLinkType : Qwiq.WorkItemLinkType
     {
-        internal WorkItemLinkTypeProxy(
-            string referenceName
-            )
+        internal WorkItemLinkType(string referenceName)
+            : base(referenceName)
         {
-            if (string.IsNullOrEmpty(referenceName))
-                throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
-            ReferenceName = referenceName;
         }
 
         internal void SetForwardEnd(IWorkItemLinkTypeEnd forward)

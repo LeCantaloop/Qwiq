@@ -87,11 +87,11 @@ namespace Microsoft.Qwiq.Mocks
 
 
 
-        public Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection WorkItemLinkTypes
+        public WorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {
-                return new Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)));
+                return new WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)));
             }
         }
 

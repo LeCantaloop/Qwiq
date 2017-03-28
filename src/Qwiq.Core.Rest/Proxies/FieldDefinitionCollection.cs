@@ -7,23 +7,23 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal class FieldDefinitionCollectionProxy : Microsoft.Qwiq.Proxies.FieldDefinitionCollectionProxy
+    internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
         private readonly Dictionary<string, IFieldDefinition> _fieldUsagesByName;
 
         private readonly Dictionary<string, IFieldDefinition> _fieldUsagesByReferenceName;
 
-        internal FieldDefinitionCollectionProxy(IEnumerable<WorkItemTypeFieldInstance> typeFields)
+        internal FieldDefinitionCollection(IEnumerable<WorkItemTypeFieldInstance> typeFields)
             : this(typeFields.Where(p => p != null).Select(s => s.Field))
         {
         }
 
-        internal FieldDefinitionCollectionProxy(IEnumerable<WorkItemFieldReference> typeFields)
-            : this(typeFields.Where(p=>p != null).Select(s => new FieldDefinitionProxy(s)))
+        internal FieldDefinitionCollection(IEnumerable<WorkItemFieldReference> typeFields)
+            : this(typeFields.Where(p=>p != null).Select(s => new FieldDefinition(s)))
         {
         }
 
-        private FieldDefinitionCollectionProxy(IEnumerable<IFieldDefinition> fieldDefinitions)
+        private FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
         {
             if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
 

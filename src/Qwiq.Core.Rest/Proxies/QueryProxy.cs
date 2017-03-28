@@ -88,7 +88,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
 
             foreach (var workItemLink in result.WorkItemRelations)
             {
-                yield return new WorkItemLinkInfoProxy(
+                yield return new WorkItemLinkInfo(
                     workItemLink,
                     new Lazy<int>(() => ends.Value.TryGetByName(workItemLink.Rel, out IWorkItemLinkTypeEnd end) ? end.Id : 0));
             }

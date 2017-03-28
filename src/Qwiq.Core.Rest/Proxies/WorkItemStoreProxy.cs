@@ -71,7 +71,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                         using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
                         {
                             var projects = projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
-                            return projects.Select(project => new ProjectProxy(project, this))
+                            return projects.Select(project => new Project(project, this))
                                            .Cast<IProject>()
                                            .ToList();
                         }
@@ -140,7 +140,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
         {
             var types = workItemStore.GetRelationTypesAsync().GetAwaiter().GetResult();
             var d = new Dictionary<string, IList<WorkItemRelationType>>(StringComparer.OrdinalIgnoreCase);
-            var d2 = new Dictionary<string, WorkItemLinkTypeProxy>(StringComparer.OrdinalIgnoreCase);
+            var d2 = new Dictionary<string, WorkItemLinkType>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var type in types.Where(p => (string)p.Attributes["usage"] == "workItemLink"))
             {
@@ -152,7 +152,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                 if (!d.ContainsKey(linkRef)) d[linkRef] = new List<WorkItemRelationType>();
                 d[linkRef].Add(type);
 
-                if (!d2.ContainsKey(linkRef)) d2[linkRef] = new WorkItemLinkTypeProxy(linkRef);
+                if (!d2.ContainsKey(linkRef)) d2[linkRef] = new WorkItemLinkType(linkRef);
             }
 
             foreach (var kvp in d2)
@@ -169,9 +169,9 @@ namespace Microsoft.Qwiq.Rest.Proxies
 
                 if (!forwardEnd.ReferenceName.EndsWith("Forward")) forwardEnd.ReferenceName += "-Forward";
 
-                type.SetForwardEnd(new WorkItemLinkTypeEndProxy(forwardEnd) { IsForwardLink = true, LinkType = type });
+                type.SetForwardEnd(new WorkItemLinkTypeEnd(forwardEnd) { IsForwardLink = true, LinkType = type });
                 type.SetReverseEnd(type.IsDirectional
-                                      ? new WorkItemLinkTypeEndProxy(
+                                      ? new WorkItemLinkTypeEnd(
                                             ends.SingleOrDefault(
                                                 p => p.ReferenceName.EndsWith("Reverse")))
                                             { LinkType = type }
@@ -205,8 +205,8 @@ namespace Microsoft.Qwiq.Rest.Proxies
                         reverseId = CoreLinkTypes.Predecessor;
                     }
 
-                    ((WorkItemLinkTypeEndProxy)type.ForwardEnd).Id = -forwardId;
-                    ((WorkItemLinkTypeEndProxy)type.ReverseEnd).Id = -reverseId;
+                    ((WorkItemLinkTypeEnd)type.ForwardEnd).Id = -forwardId;
+                    ((WorkItemLinkTypeEnd)type.ReverseEnd).Id = -reverseId;
                 }
             }
 

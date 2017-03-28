@@ -235,7 +235,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
         /// </exception>
         public IWorkItemType Type
         {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemTypeProxy(_item.Type)); }
+            get { return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(_item.Type)); }
         }
 
         /// <summary>

@@ -6,11 +6,11 @@ using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
-    internal class FieldDefinitionCollectionProxy : Qwiq.Proxies.FieldDefinitionCollectionProxy
+    internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
-        private readonly FieldDefinitionCollection _innerCollection;
+        private readonly TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection _innerCollection;
 
-        internal FieldDefinitionCollectionProxy(FieldDefinitionCollection innerCollection)
+        internal FieldDefinitionCollection(TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection innerCollection)
         {
             _innerCollection = innerCollection;
         }
@@ -18,7 +18,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
         public override int Count => _innerCollection.Count;
 
         public override IFieldDefinition this[string name] => ExceptionHandlingDynamicProxyFactory
-            .Create<IFieldDefinition>(new FieldDefinitionProxy(_innerCollection[name]));
+            .Create<IFieldDefinition>(new FieldDefinition(_innerCollection[name]));
 
         public override bool Contains(string fieldName)
         {
@@ -27,10 +27,10 @@ namespace Microsoft.Qwiq.Soap.Proxies
 
         public override IEnumerator<IFieldDefinition> GetEnumerator()
         {
-            return _innerCollection.Cast<FieldDefinition>()
+            return _innerCollection.Cast<TeamFoundation.WorkItemTracking.Client.FieldDefinition>()
                                    .Select(
                                        field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(
-                                           new FieldDefinitionProxy(field)))
+                                           new FieldDefinition(field)))
                                    .GetEnumerator();
         }
     }

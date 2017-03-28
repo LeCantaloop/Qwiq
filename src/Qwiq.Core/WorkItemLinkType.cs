@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeProxy : IWorkItemLinkType, IComparable<IWorkItemLinkType>, IEquatable<IWorkItemLinkType>
+    public class WorkItemLinkType : IWorkItemLinkType, IComparable<IWorkItemLinkType>, IEquatable<IWorkItemLinkType>
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _forwardFac;
 
@@ -12,20 +12,25 @@ namespace Microsoft.Qwiq.Proxies
 
         protected IWorkItemLinkTypeEnd _reverse;
 
-        internal WorkItemLinkTypeProxy(IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
+        internal WorkItemLinkType(string referenceName, IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
+            : this(referenceName)
         {
             _forward = forward ?? throw new ArgumentNullException(nameof(forward));
             _reverse = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
 
-        internal WorkItemLinkTypeProxy(Lazy<IWorkItemLinkTypeEnd> forward, Lazy<IWorkItemLinkTypeEnd> reverse)
+        internal WorkItemLinkType(string referenceName, Lazy<IWorkItemLinkTypeEnd> forward, Lazy<IWorkItemLinkTypeEnd> reverse)
+            : this(referenceName)
         {
             _forwardFac = forward ?? throw new ArgumentNullException(nameof(forward));
             _reverseFac = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
 
-        internal WorkItemLinkTypeProxy()
+        internal WorkItemLinkType(string referenceName)
         {
+            ReferenceName = referenceName;
+            if (string.IsNullOrWhiteSpace(referenceName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
         }
 
         public IWorkItemLinkTypeEnd ForwardEnd => _forward ?? _forwardFac.Value;
@@ -34,7 +39,7 @@ namespace Microsoft.Qwiq.Proxies
 
         public bool IsDirectional { get; internal set; }
 
-        public string ReferenceName { get; internal set; }
+        public string ReferenceName { get; }
 
         public IWorkItemLinkTypeEnd ReverseEnd => _reverse ?? _reverseFac.Value;
 

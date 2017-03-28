@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
     public class WorkItemLinkTypeEndCollection : IReadOnlyCollection<IWorkItemLinkTypeEnd>
     {
@@ -31,6 +31,8 @@ namespace Microsoft.Qwiq.Proxies
         {
             get
             {
+                if (string.IsNullOrWhiteSpace(linkTypeEndName))
+                    throw new ArgumentException("Value cannot be null or whitespace.", nameof(linkTypeEndName));
                 IWorkItemLinkTypeEnd end;
                 if (_mapByName.TryGetValue(linkTypeEndName, out end)) return end;
 

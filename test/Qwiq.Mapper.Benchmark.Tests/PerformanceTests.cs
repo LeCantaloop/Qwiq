@@ -489,9 +489,12 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             private class WorkItemLinkGenerator : WorkItemGenerator<MockWorkItem>
             {
+                private readonly MockWorkItemLinkType _linkType;
+
                 public WorkItemLinkGenerator(Func<MockWorkItem> create, IEnumerable<string> propertiesToSkip)
                     : base(create, propertiesToSkip)
                 {
+                    _linkType = new MockWorkItemLinkType(CoreLinkTypeReferenceNames.Hierarchy);
                 }
 
                 protected override object GetRandomValue(Type propertyType)
@@ -506,9 +509,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                 for (var i = 0; i < Randomizer.Instance.Next(0, 10); i++)
                                 {
                                     retval.Add(
-                                        new MockWorkItemLink {
-                                            LinkTypeEnd =
-                                                    new MockWorkItemLinkTypeEnd("Giver"),
+                                        new MockWorkItemLink
+                                        {
+                                            LinkTypeEnd = _linkType.ForwardEnd,
                                             RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
                                         });
                                 }
@@ -519,9 +522,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                 for (var i = 0; i < Randomizer.Instance.Next(0, 10); i++)
                                 {
                                     retval.Add(
-                                        new MockWorkItemLink {
-                                            LinkTypeEnd =
-                                                    new MockWorkItemLinkTypeEnd("Taker"),
+                                        new MockWorkItemLink
+                                        {
+                                            LinkTypeEnd = _linkType.ReverseEnd,
                                             RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
                                         });
                                 }

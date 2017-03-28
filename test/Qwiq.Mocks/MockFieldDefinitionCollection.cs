@@ -6,7 +6,7 @@ using Microsoft.Qwiq.Exceptions;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockFieldDefinitionCollection : Microsoft.Qwiq.Proxies.FieldDefinitionCollectionProxy
+    public class MockFieldDefinitionCollection : FieldDefinitionCollection
     {
         private readonly Dictionary<string, IFieldDefinition> _fieldUsagesByName;
 

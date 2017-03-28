@@ -5,11 +5,11 @@ using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    public class VssConnectionProxy : IInternalTfsTeamProjectCollection
+    internal class VssConnectionAdapter : IInternalTfsTeamProjectCollection
     {
         private readonly VssConnection _connection;
 
-        public VssConnectionProxy(VssConnection connection)
+        public VssConnectionAdapter(VssConnection connection)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             AuthorizedCredentials = new TfsCredentials(connection.Credentials);

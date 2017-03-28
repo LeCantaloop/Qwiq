@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
-    public class NodeProxy : INode, IComparer<INode>, IEquatable<INode>
+    public class Node : INode, IComparer<INode>, IEquatable<INode>
     {
+        internal Node()
+        {
+        }
         public IEnumerable<INode> ChildNodes { get; internal set; }
 
         public bool HasChildNodes { get; internal set; }

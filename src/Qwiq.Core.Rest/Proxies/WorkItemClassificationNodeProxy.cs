@@ -5,9 +5,9 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal class NodeProxy : Microsoft.Qwiq.Proxies.NodeProxy
+    internal class Node : Qwiq.Node
     {
-        internal NodeProxy(WorkItemClassificationNode node)
+        internal Node(WorkItemClassificationNode node)
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
 
@@ -17,7 +17,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
             Name = node.Name;
             HasChildNodes = node.Children?.Any() ?? false;
             ChildNodes = HasChildNodes
-                             ? node.Children.Select(s => new NodeProxy(s) { ParentNode = this }).ToList()
+                             ? node.Children.Select(s => new Node(s) { ParentNode = this }).ToList()
                              : Enumerable.Empty<INode>();
 
             Path = ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\');

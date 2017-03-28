@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
-    public class WorkItemTypeProxy : IWorkItemType, IEquatable<IWorkItemType>, IComparable<IWorkItemType>
+    public class WorkItemType : IWorkItemType, IEquatable<IWorkItemType>, IComparable<IWorkItemType>
     {
         private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
 
-        internal WorkItemTypeProxy(string name, string description, Lazy<IFieldDefinitionCollection> fieldDefinitions)
+        internal WorkItemType(string name, string description, Lazy<IFieldDefinitionCollection> fieldDefinitions)
             : this(name, description, fieldDefinitions, null)
         {
         }
 
-        internal WorkItemTypeProxy(
+        internal WorkItemType(
             string name,
             string description,
             Lazy<IFieldDefinitionCollection> fieldDefinitions,

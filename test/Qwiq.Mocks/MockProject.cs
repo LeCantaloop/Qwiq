@@ -5,7 +5,7 @@ using Microsoft.Qwiq.Proxies;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockProject : ProjectProxy
+    public class MockProject : Project
     {
         public MockProject(IWorkItemStore store)
             : base(

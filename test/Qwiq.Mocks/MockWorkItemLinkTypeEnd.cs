@@ -2,28 +2,23 @@ using System;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkTypeEnd : Microsoft.Qwiq.Proxies.WorkItemLinkTypeEndProxy
+    public class MockWorkItemLinkTypeEnd : WorkItemLinkTypeEnd
     {
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes (IWorkItemLinkType, String, Bool, Int32).")]
-        public MockWorkItemLinkTypeEnd(string name)
-        {
-            Name = name;
-        }
-
         public MockWorkItemLinkTypeEnd(IWorkItemLinkType linkType, string name, bool isForward, int id = 0)
+            : base(GetValue(linkType, isForward))
         {
             Id = id;
             LinkType = linkType ?? throw new ArgumentNullException(nameof(linkType));
             Name = name ?? throw new ArgumentNullException(nameof(name));
             IsForwardLink = isForward;
+        }
 
-            var referenceName = LinkType.ReferenceName;
-            if (!LinkType.IsDirectional)
-            {
-                ImmutableName = referenceName;
-            }
-            ImmutableName = referenceName + (IsForwardLink ? "-Forward" : "-Reverse");
+        private static string GetValue(IWorkItemLinkType linkType, bool isForward)
+        {
+            if (linkType == null) throw new ArgumentNullException(nameof(linkType));
+            var referenceName = linkType.ReferenceName;
+            if (!linkType.IsDirectional) return referenceName;
+            return referenceName + (isForward ? "-Forward" : "-Reverse");
         }
     }
 }

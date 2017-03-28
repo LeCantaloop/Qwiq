@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemType : Microsoft.Qwiq.Proxies.WorkItemTypeProxy
+    public class MockWorkItemType : WorkItemType
     {
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore, String, String).")]
@@ -13,10 +13,8 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See ctor(String, IEnumerable<IFieldDefinition>, String).")]
-        public MockWorkItemType(string name)
-            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(s)))
+        public MockWorkItemType(string name, string description = null)
+            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(s, CoreFieldRefNames.NameLookup[s])), description)
         {
         }
 

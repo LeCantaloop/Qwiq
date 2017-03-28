@@ -4,9 +4,9 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
-    internal class NodeProxy : Microsoft.Qwiq.Proxies.NodeProxy
+    internal class Node : Qwiq.Node
     {
-        internal NodeProxy(Tfs.Node node)
+        internal Node(Tfs.Node node)
         {
             Id = node.Id;
             HasChildNodes = node.HasChildNodes;
@@ -15,8 +15,8 @@ namespace Microsoft.Qwiq.Soap.Proxies
             Name = node.Name;
             Path = node.Path;
             Uri = node.Uri;
-            ChildNodes = node.ChildNodes.Cast<Tfs.Node>().Select(item => new NodeProxy(item));
-            ParentNode = node.ParentNode != null ? new NodeProxy(node.ParentNode) : null;
+            ChildNodes = node.ChildNodes.Cast<Tfs.Node>().Select(item => new Node(item));
+            ParentNode = node.ParentNode != null ? new Node(node.ParentNode) : null;
         }
     }
 }

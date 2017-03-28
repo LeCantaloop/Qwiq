@@ -1,19 +1,21 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkInfoProxy : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>, IComparable<IWorkItemLinkInfo>
+    public class WorkItemLinkInfo : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>, IComparable<IWorkItemLinkInfo>
     {
         private readonly Lazy<int> _id;
 
-        internal WorkItemLinkInfoProxy(int id)
-            :this(new Lazy<int>(()=>id))
+        internal WorkItemLinkInfo(int sourceId, int targetId, int id)
+            : this(sourceId, targetId, new Lazy<int>(() => id))
         {
 
         }
 
-        internal WorkItemLinkInfoProxy(Lazy<int> id)
+        internal WorkItemLinkInfo(int sourceId, int targetId, Lazy<int> id)
         {
+            SourceId = sourceId;
+            TargetId = targetId;
             _id = id;
         }
 
@@ -26,16 +28,16 @@ namespace Microsoft.Qwiq.Proxies
 
         public int LinkTypeId => _id.Value;
 
-        public int SourceId { get; internal set; }
+        public int SourceId { get; }
 
-        public int TargetId { get; internal set; }
+        public int TargetId { get; }
 
-        public static bool operator !=(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
+        public static bool operator !=(WorkItemLinkInfo x, WorkItemLinkInfo y)
         {
             return !WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }
 
-        public static bool operator ==(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
+        public static bool operator ==(WorkItemLinkInfo x, WorkItemLinkInfo y)
         {
             return WorkItemLinkInfoComparer.Instance.Equals(x, y);
         }

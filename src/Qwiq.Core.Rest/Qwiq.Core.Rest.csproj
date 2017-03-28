@@ -97,20 +97,20 @@
   <ItemGroup>
     <Compile Include="IInternalTfsTeamProjectCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxies\FieldDefinitionCollectionProxy.cs" />
-    <Compile Include="Proxies\FieldDefinitionProxy.cs" />
-    <Compile Include="Proxies\ProjectProxy.cs" />
+    <Compile Include="Proxies\FieldDefinition.cs" />
+    <Compile Include="Proxies\FieldDefinitionCollection.cs" />
+    <Compile Include="Proxies\Project.cs" />
     <Compile Include="Proxies\QueryFactory.cs" />
     <Compile Include="Proxies\QueryProxy.cs" />
     <Compile Include="Proxies\TeamFoundationIdentityProxy.cs" />
-    <Compile Include="Proxies\VssConnectionProxy.cs" />
+    <Compile Include="Proxies\VssConnectionAdapter.cs" />
     <Compile Include="Proxies\WorkItemClassificationNodeProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
+    <Compile Include="Proxies\WorkItemLinkInfo.cs" />
+    <Compile Include="Proxies\WorkItemLinkType.cs" />
+    <Compile Include="Proxies\WorkItemLinkTypeEnd.cs" />
     <Compile Include="Proxies\WorkItemProxy.cs" />
     <Compile Include="Proxies\WorkItemStoreProxy.cs" />
-    <Compile Include="Proxies\WorkItemTypeProxy.cs" />
+    <Compile Include="Proxies\WorkItemType.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
   </ItemGroup>
   <ItemGroup>

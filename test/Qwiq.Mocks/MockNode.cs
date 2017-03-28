@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockNode : Microsoft.Qwiq.Proxies.NodeProxy
+    public class MockNode : Node
     {
         public MockNode(string name, bool isArea, bool isIteration)
         {

@@ -22,7 +22,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
         {
             get
             {
-                return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEndProxy(_relatedLink.LinkTypeEnd));
+                return ExceptionHandlingDynamicProxyFactory.Create<IWorkItemLinkTypeEnd>(new WorkItemLinkTypeEnd(_relatedLink.LinkTypeEnd));
             }
         }
 

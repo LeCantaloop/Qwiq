@@ -8,9 +8,9 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
-    internal class ProjectProxy : Microsoft.Qwiq.Proxies.ProjectProxy
+    internal class Project : Qwiq.Project
     {
-        internal ProjectProxy(Tfs.Project project, IWorkItemStore store)
+        internal Project(Tfs.Project project, IWorkItemStore store)
             : base(
                 project.Id,
                 project.Guid,
@@ -21,15 +21,15 @@ namespace Microsoft.Qwiq.Soap.Proxies
                     () => project.WorkItemTypes.Cast<Tfs.WorkItemType>()
                                  .Select(
                                      item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(
-                                         new WorkItemTypeProxy(item)))),
+                                         new WorkItemType(item)))),
                 new Lazy<IEnumerable<INode>>(
                     () => project.AreaRootNodes.Cast<Tfs.Node>()
                                  .Select(
-                                     item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(item)))),
+                                     item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new Node(item)))),
                 new Lazy<IEnumerable<INode>>(
                     () => project.IterationRootNodes.Cast<Tfs.Node>()
                                  .Select(
-                                     item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new NodeProxy(item)))))
+                                     item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new Node(item)))))
         {
         }
     }

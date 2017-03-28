@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Proxies
+using Microsoft.Qwiq.Proxies;
+
+namespace Microsoft.Qwiq
 {
-    public abstract class FieldDefinitionCollectionProxy : IFieldDefinitionCollection
+    /// <summary>
+    /// A facade over <see cref="Microsoft.TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection"/>.
+    /// </summary>
+    public abstract class FieldDefinitionCollection : IFieldDefinitionCollection
     {
         public abstract int Count { get; }
 

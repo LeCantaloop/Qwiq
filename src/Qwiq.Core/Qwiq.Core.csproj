@@ -203,7 +203,9 @@
   <ItemGroup>
     <Compile Include="BaseLinkType.cs" />
     <Compile Include="ClientType.cs" />
+    <Compile Include="CoreFieldRefNames.cs" />
     <Compile Include="CoreLinkTypeReferenceNames.cs" />
+    <Compile Include="CoreLinkTypes.cs" />
     <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
     <Compile Include="Credentials\AuthenticationOptions.cs" />
     <Compile Include="Credentials\AuthenticationSuccessNotification.cs" />
@@ -225,6 +227,8 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="FieldDefinition.cs" />
+    <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="FieldDefinitionComparer.cs" />
     <Compile Include="FieldDefinitionNotExistException.cs" />
     <Compile Include="GenericComparer.cs" />
@@ -263,29 +267,27 @@
     <Compile Include="IWorkItemStoreFactory.cs" />
     <Compile Include="IWorkItemType.cs" />
     <Compile Include="LinqExtensions.cs" />
+    <Compile Include="Node.cs" />
     <Compile Include="NodeComparer.cs" />
     <Compile Include="NodeSelectExtensions.cs" />
     <Compile Include="PageSizeRangeException.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxies\FieldDefinitionCollectionProxy.cs" />
-    <Compile Include="Proxies\FieldDefinitionProxy.cs" />
-    <Compile Include="Proxies\NodeProxy.cs" />
-    <Compile Include="Proxies\ProjectProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeCollection.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeEndCollection.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
-    <Compile Include="Proxies\WorkItemTypeProxy.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemFields.cs" />
+    <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkInfoComparer.cs" />
+    <Compile Include="WorkItemLinkType.cs" />
+    <Compile Include="WorkItemLinkTypeCollection.cs" />
     <Compile Include="WorkItemLinkTypeComparer.cs" />
+    <Compile Include="WorkItemLinkTypeEnd.cs" />
+    <Compile Include="WorkItemLinkTypeEndCollection.cs" />
     <Compile Include="WorkItemLinkTypeEndComparer.cs" />
+    <Compile Include="WorkItemType.cs" />
     <Compile Include="WorkItemTypeComparer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -298,7 +300,9 @@
   <ItemGroup>
     <None Include="readme.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Proxies\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

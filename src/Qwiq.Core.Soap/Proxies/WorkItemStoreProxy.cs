@@ -7,7 +7,7 @@ using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Client;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
-using WorkItemLinkTypeCollection = Microsoft.Qwiq.Proxies.WorkItemLinkTypeCollection;
+using WorkItemLinkTypeCollection = Microsoft.Qwiq.WorkItemLinkTypeCollection;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
@@ -51,7 +51,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
                 () =>
                     {
                         return new WorkItemLinkTypeCollection(
-                            _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkTypeProxy(item)));
+                            _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
                     });
         }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
 
         public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory
             .Create<IFieldDefinitionCollection>(
-                new FieldDefinitionCollectionProxy(_workItemStore.Value.FieldDefinitions));
+                new FieldDefinitionCollection(_workItemStore.Value.FieldDefinitions));
 
         public IEnumerable<IProject> Projects
         {
@@ -75,7 +75,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
                 return _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
                                      .Select(
                                          item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
-                                             new ProjectProxy(item, this)));
+                                             new Project(item, this)));
             }
         }
 

@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Proxies
+using Microsoft.Qwiq.Proxies;
+
+namespace Microsoft.Qwiq
 {
     public class WorkItemLinkTypeCollection : IReadOnlyCollection<IWorkItemLinkType>
     {
@@ -30,6 +32,8 @@ namespace Microsoft.Qwiq.Proxies
         {
             get
             {
+                if (string.IsNullOrWhiteSpace(linkTypeReferenceName))
+                    throw new ArgumentException("Value cannot be null or whitespace.", nameof(linkTypeReferenceName));
                 if (_mapByName.TryGetValue(linkTypeReferenceName, out IWorkItemLinkType end)) return end;
 
                 throw new Exception($"Work item link type {linkTypeReferenceName} does not exist.");
@@ -48,11 +52,15 @@ namespace Microsoft.Qwiq.Proxies
 
         public bool Contains(string linkTypeReferenceName)
         {
+            if (string.IsNullOrWhiteSpace(linkTypeReferenceName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(linkTypeReferenceName));
             return _mapByName.ContainsKey(linkTypeReferenceName);
         }
 
         public bool TryGetByName(string linkTypeReferenceName, out IWorkItemLinkType linkType)
         {
+            if (string.IsNullOrWhiteSpace(linkTypeReferenceName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(linkTypeReferenceName));
             return _mapByName.TryGetValue(linkTypeReferenceName, out linkType);
         }
 

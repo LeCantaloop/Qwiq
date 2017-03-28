@@ -7,9 +7,9 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal class ProjectProxy : Microsoft.Qwiq.Proxies.ProjectProxy
+    internal class Project : Qwiq.Project
     {
-        internal ProjectProxy(TeamProjectReference project, WorkItemStoreProxy store)
+        internal Project(TeamProjectReference project, WorkItemStoreProxy store)
             : base(
                 // REST API stores ID as GUID rather than INT
                 // Converting from 128-bit GUID will have some loss in precision
@@ -22,7 +22,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                     () =>
                         {
                             var wits = store.NativeWorkItemStore.Value.GetWorkItemTypesAsync(project.Name).GetAwaiter().GetResult();
-                            return wits.Select(s => new WorkItemTypeProxy(s));
+                            return wits.Select(s => new WorkItemType(s));
                         }),
                 new Lazy<IEnumerable<INode>>(
                     () =>
@@ -32,7 +32,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new NodeProxy(result),  };
+                            return new[] { new Node(result),  };
                         }),
                 new Lazy<IEnumerable<INode>>(
                     () =>
@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new NodeProxy(result) };
+                            return new[] { new Node(result) };
                         })
                  )
         {

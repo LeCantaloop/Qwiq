@@ -4,13 +4,13 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal class WorkItemTypeProxy : Microsoft.Qwiq.Proxies.WorkItemTypeProxy
+    internal class WorkItemType : Qwiq.WorkItemType
     {
-        internal WorkItemTypeProxy(WorkItemType type)
+        internal WorkItemType(TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemType type)
             : base(
                 type?.Name,
                 type?.Description,
-                new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollectionProxy(type?.Fields)),
+                new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollection(type?.Fields)),
                 NewWorkItemImpl)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

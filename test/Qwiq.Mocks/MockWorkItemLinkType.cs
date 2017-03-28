@@ -2,16 +2,17 @@ using System;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkType : Microsoft.Qwiq.Proxies.WorkItemLinkTypeProxy
+    public class MockWorkItemLinkType : WorkItemLinkType
     {
         public MockWorkItemLinkType(string referenceName)
+            : base(referenceName)
         {
             string reverseName;
             int reverseId = 0;
             string forwardName;
             int forwardId = 0;
 
-            if (CoreLinkTypeReferenceNames.Hierarchy.Equals(referenceName,StringComparison.OrdinalIgnoreCase))
+            if (CoreLinkTypeReferenceNames.Hierarchy.Equals(referenceName, StringComparison.OrdinalIgnoreCase))
             {
                 // The forward should be Child, but the ID used in CoreLinkTypes is -2, should be 2
                 forwardName = "Child";
@@ -47,7 +48,7 @@ namespace Microsoft.Qwiq.Mocks
                     referenceName,
                     "Reference name not supported in mock object.");
             }
-            ReferenceName = referenceName;
+
             _forward = new MockWorkItemLinkTypeEnd(this, forwardName, true, -forwardId);
             _reverse = new MockWorkItemLinkTypeEnd(this, reverseName, false, -reverseId);
         }
@@ -57,12 +58,11 @@ namespace Microsoft.Qwiq.Mocks
             bool isDirectional,
             string forwardEndName,
             string reverseEndName)
+            : base(referenceName)
         {
             if (string.IsNullOrEmpty(forwardEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(forwardEndName));
-            if (string.IsNullOrEmpty(referenceName)) throw new ArgumentException("Value cannot be null or empty.", nameof(referenceName));
             if (string.IsNullOrEmpty(reverseEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(reverseEndName));
             IsDirectional = isDirectional;
-            ReferenceName = referenceName;
             _forward = new MockWorkItemLinkTypeEnd(this, forwardEndName, true);
             _reverse = new MockWorkItemLinkTypeEnd(this, reverseEndName, false);
         }

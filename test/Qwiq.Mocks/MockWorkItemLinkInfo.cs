@@ -1,22 +1,15 @@
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkInfo : Microsoft.Qwiq.Proxies.WorkItemLinkInfoProxy
+    public class MockWorkItemLinkInfo : WorkItemLinkInfo
     {
-        public MockWorkItemLinkInfo()
-            : base(0)
-        {
-        }
-
         public MockWorkItemLinkInfo(int sourceId, int targetId)
             : this(sourceId, targetId, 0)
         {
         }
 
         public MockWorkItemLinkInfo(int sourceId, int targetId, int linkTypeId)
-            : base(linkTypeId)
+            : base(sourceId, targetId, linkTypeId)
         {
-            SourceId = sourceId;
-            TargetId = targetId;
         }
     }
 }

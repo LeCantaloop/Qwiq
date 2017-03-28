@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Rest
                     var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
                     var tfsProxy =
                         ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
-                            new VssConnectionProxy(tfsNative));
+                            new VssConnectionAdapter(tfsNative));
 
                     options.Notifications.AuthenticationSuccess(
                         new AuthenticationSuccessNotification(credential, tfsProxy));

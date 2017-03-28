@@ -24,13 +24,13 @@ namespace Microsoft.Qwiq.Soap.Proxies
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
             return _query.RunLinkQuery()
-                         .Select(item => new WorkItemLinkInfoProxy(item));
+                         .Select(item => new WorkItemLinkInfo(item));
         }
 
         public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
         {
             return _query.GetLinkTypes()
-                         .Select(item => new WorkItemLinkTypeEndProxy(item));
+                         .Select(item => new WorkItemLinkTypeEnd(item));
         }
     }
 }

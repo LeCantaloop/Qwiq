@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
-    public class ProjectProxy : IProject, IComparer<IProject>, IEquatable<IProject>
+    public class Project : IProject, IComparer<IProject>, IEquatable<IProject>
     {
         private readonly Lazy<IEnumerable<INode>> _area;
 
@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq.Proxies
 
         private readonly Lazy<IEnumerable<IWorkItemType>> _wits;
 
-        internal ProjectProxy(
+        internal Project(
             int id,
             Guid guid,
             string name,
@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq.Proxies
             _iteration = iteration ?? throw new ArgumentNullException(nameof(iteration));
         }
 
-        private ProjectProxy()
+        private Project()
         {
         }
 
