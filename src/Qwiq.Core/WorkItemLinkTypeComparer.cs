@@ -15,8 +15,8 @@ namespace Microsoft.Qwiq
             return x.IsActive == y.IsActive
                 && x.IsDirectional == y.IsDirectional
                 && string.Equals(x.ReferenceName, y.ReferenceName, StringComparison.OrdinalIgnoreCase)
-                && Equals(x.ForwardEnd, y.ForwardEnd)
-                && Equals(x.ReverseEnd, y.ReverseEnd);
+                && WorkItemLinkTypeEndComparer.Instance.Equals(x.ForwardEnd, y.ForwardEnd)
+                && WorkItemLinkTypeEndComparer.Instance.Equals(x.ReverseEnd, y.ReverseEnd);
         }
 
         public override int GetHashCode(IWorkItemLinkType obj)
@@ -27,8 +27,8 @@ namespace Microsoft.Qwiq
                 hash = (13 * hash) ^ (obj.ReferenceName != null ? obj.ReferenceName.GetHashCode() : 0);
                 hash = (13 * hash) ^ obj.IsActive.GetHashCode();
                 hash = (13 * hash) ^ obj.IsDirectional.GetHashCode();
-                hash = (13 * hash) ^ (obj.ForwardEnd != null ? obj.ForwardEnd.GetHashCode() : 0);
-                hash = (13 * hash) ^ (obj.ReverseEnd != null ? obj.ReverseEnd.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.ForwardEnd != null ? WorkItemLinkTypeEndComparer.Instance.GetHashCode(obj.ForwardEnd) : 0);
+                hash = (13 * hash) ^ (obj.ReverseEnd != null ? WorkItemLinkTypeEndComparer.Instance.GetHashCode(obj.ReverseEnd) : 0);
 
                 return hash;
             }

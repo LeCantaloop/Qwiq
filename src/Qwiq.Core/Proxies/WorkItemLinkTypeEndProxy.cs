@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
+    public class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _opposite;
 

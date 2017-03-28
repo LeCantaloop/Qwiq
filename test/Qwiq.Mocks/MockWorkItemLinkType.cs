@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkType : IWorkItemLinkType
+    public class MockWorkItemLinkType : Microsoft.Qwiq.Proxies.WorkItemLinkTypeProxy
     {
         public MockWorkItemLinkType(string referenceName)
         {
@@ -23,7 +23,7 @@ namespace Microsoft.Qwiq.Mocks
             else if (CoreLinkTypeReferenceNames.Related.Equals(referenceName, StringComparison.OrdinalIgnoreCase))
             {
                 forwardName = reverseName = "Related";
-                forwardId = CoreLinkTypes.Related;
+                forwardId = reverseId = -CoreLinkTypes.Related;
                 IsDirectional = false;
             }
             else if (CoreLinkTypeReferenceNames.Dependency.Equals(referenceName, StringComparison.OrdinalIgnoreCase))
@@ -48,8 +48,8 @@ namespace Microsoft.Qwiq.Mocks
                     "Reference name not supported in mock object.");
             }
             ReferenceName = referenceName;
-            ForwardEnd = new MockWorkItemLinkTypeEnd(this, forwardName, -forwardId);
-            ReverseEnd = new MockWorkItemLinkTypeEnd(this, reverseName, -reverseId);
+            _forward = new MockWorkItemLinkTypeEnd(this, forwardName, true, -forwardId);
+            _reverse = new MockWorkItemLinkTypeEnd(this, reverseName, false, -reverseId);
         }
 
         public MockWorkItemLinkType(
@@ -63,18 +63,10 @@ namespace Microsoft.Qwiq.Mocks
             if (string.IsNullOrEmpty(reverseEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(reverseEndName));
             IsDirectional = isDirectional;
             ReferenceName = referenceName;
-            ForwardEnd = new MockWorkItemLinkTypeEnd(this, forwardEndName);
-            ReverseEnd = new MockWorkItemLinkTypeEnd(this, reverseEndName);
+            _forward = new MockWorkItemLinkTypeEnd(this, forwardEndName, true);
+            _reverse = new MockWorkItemLinkTypeEnd(this, reverseEndName, false);
         }
 
-        public IWorkItemLinkTypeEnd ForwardEnd { get; }
 
-        public bool IsActive => true;
-
-        public bool IsDirectional { get; }
-
-        public string ReferenceName { get; }
-
-        public IWorkItemLinkTypeEnd ReverseEnd { get; }
     }
 }

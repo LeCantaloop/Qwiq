@@ -241,6 +241,7 @@
     <Compile Include="SingleIdTests.cs" />
     <Compile Include="WiqlFlatQueryTests.cs" />
     <Compile Include="WiqlHierarchyQueryTests.cs" />
+    <Compile Include="WorkItemLinkTypeComparerTests.cs" />
     <Compile Include="WorkItemStoreComparisonContextSpecification.cs" />
     <Compile Include="WorkItemStoreFactoryTests.cs" />
     <Compile Include="WorkItemStoreTests.cs" />
@@ -261,6 +262,10 @@
     <ProjectReference Include="..\..\src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj">
       <Project>{6f5ffc42-0539-4161-b348-a54adb57c2bd}</Project>
       <Name>Qwiq.Core.Soap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{DB07E690-4B77-414F-91C7-1A48C9F01F24}</Project>
+      <Name>Qwiq.Mocks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>
