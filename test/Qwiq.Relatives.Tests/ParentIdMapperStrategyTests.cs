@@ -40,12 +40,7 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 1,
-                    SourceId = 2,
-                    LinkTypeId = -2
-                }
+                new MockWorkItemLinkInfo(2,1,-2)
             };
 
             var workItems = new[]
@@ -146,12 +141,7 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 1,
-                    SourceId = 2,
-                    LinkTypeId = -2
-                }
+                new MockWorkItemLinkInfo(2,1,-2)
             };
 
             var workItems = new[]
@@ -204,18 +194,8 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 1,
-                    SourceId = 2,
-                    LinkTypeId = -2
-                },
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 3,
-                    SourceId = 4,
-                    LinkTypeId = 0
-                }
+                new MockWorkItemLinkInfo(2,1,-2),
+                new MockWorkItemLinkInfo(4,3,0)
             };
 
             var workItems = new[]
@@ -268,33 +248,23 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 1,
-                    SourceId = 2,
-                    LinkTypeId = -2
-                },
-                new MockWorkItemLinkInfo
-                {
-                    TargetId = 3,
-                    SourceId = 4,
-                    LinkTypeId = 0
-                }
+                new MockWorkItemLinkInfo(2,1,-2),
+                new MockWorkItemLinkInfo(4,3,0)
             };
+
+            var wit = new MockWorkItemType("SimpleMockWorkItem");
 
             var workItems = new[]
             {
-                new MockWorkItem
+                new MockWorkItem(wit)
                 {
                     Id = 2,
-                    ChangedDate = new DateTime(2010, 10, 10),
-                    Type = new MockWorkItemType("SimpleMockWorkItem")
+                    ChangedDate = new DateTime(2010, 10, 10)
                 },
-                new MockWorkItem
+                new MockWorkItem(wit)
                 {
                     Id = 4,
-                    ChangedDate = new DateTime(2011, 11, 11),
-                    Type = new MockWorkItemType("SimpleMockWorkItem")
+                    ChangedDate = new DateTime(2011, 11, 11)
                 }
             };
 

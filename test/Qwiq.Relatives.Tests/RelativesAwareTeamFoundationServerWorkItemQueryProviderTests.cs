@@ -78,31 +78,11 @@ namespace Microsoft.Qwiq.Relatives.Tests
             };
 
             WorkItemStoreWorkItemLinks = new[] {
-                new MockWorkItemLinkInfo
-                {
-                    SourceId = 0,
-                    TargetId = 3
-                },
-                new MockWorkItemLinkInfo
-                {
-                    SourceId = 3,
-                    TargetId = 1
-                },
-                new MockWorkItemLinkInfo
-                {
-                    SourceId = 3,
-                    TargetId = 2
-                },
-                new MockWorkItemLinkInfo
-                {
-                    SourceId = 0,
-                    TargetId = 4
-                },
-                new MockWorkItemLinkInfo
-                {
-                    SourceId = 0,
-                    TargetId = 5
-                }
+                new MockWorkItemLinkInfo(0, 3),
+                new MockWorkItemLinkInfo(3, 1),
+                new MockWorkItemLinkInfo(3, 2),
+                new MockWorkItemLinkInfo(0, 4),
+                new MockWorkItemLinkInfo(0, 5)
             };
 
             base.Given();

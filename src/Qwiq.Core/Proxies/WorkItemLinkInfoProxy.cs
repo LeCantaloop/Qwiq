@@ -2,9 +2,15 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal class WorkItemLinkInfoProxy : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>
+    public class WorkItemLinkInfoProxy : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>, IComparable<IWorkItemLinkInfo>
     {
         private readonly Lazy<int> _id;
+
+        internal WorkItemLinkInfoProxy(int id)
+            :this(new Lazy<int>(()=>id))
+        {
+
+        }
 
         internal WorkItemLinkInfoProxy(Lazy<int> id)
         {
@@ -42,6 +48,11 @@ namespace Microsoft.Qwiq.Proxies
         public override int GetHashCode()
         {
             return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
+        }
+
+        public int CompareTo(IWorkItemLinkInfo other)
+        {
+            return WorkItemLinkInfoComparer.Instance.Compare(this, other);
         }
 
         public override string ToString()

@@ -1,41 +1,22 @@
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkInfo : IWorkItemLinkInfo
+    public class MockWorkItemLinkInfo : Microsoft.Qwiq.Proxies.WorkItemLinkInfoProxy
     {
         public MockWorkItemLinkInfo()
+            : base(0)
         {
         }
 
         public MockWorkItemLinkInfo(int sourceId, int targetId)
+            : this(sourceId, targetId, 0)
+        {
+        }
+
+        public MockWorkItemLinkInfo(int sourceId, int targetId, int linkTypeId)
+            : base(linkTypeId)
         {
             SourceId = sourceId;
             TargetId = targetId;
-        }
-
-        public bool IsLocked { get; set; }
-        public int LinkTypeId { get; set; }
-        public int SourceId { get; set; }
-        public int TargetId { get; set; }
-
-        public static bool operator !=(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
-        {
-            return !WorkItemLinkInfoComparer.Instance.Equals(x, y);
-        }
-
-        public static bool operator ==(MockWorkItemLinkInfo x, MockWorkItemLinkInfo y)
-        {
-            return WorkItemLinkInfoComparer.Instance.Equals(x, y);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is IWorkItemLinkInfo)) return false;
-            return WorkItemLinkInfoComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
         }
     }
 }
