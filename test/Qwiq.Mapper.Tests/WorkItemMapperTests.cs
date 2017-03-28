@@ -142,7 +142,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
-            var wit = new MockWorkItemType("Baz", WorkItemBackingStore.Select(s => new MockFieldDefinition(s.Key, null)));
+            var wit = new MockWorkItemType("Baz", WorkItemBackingStore.Select(s => new MockFieldDefinition(s.Key)));
 
             WorkItemStore =
                 new MockWorkItemStore(

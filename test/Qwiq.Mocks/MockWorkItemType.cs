@@ -16,7 +16,7 @@ namespace Microsoft.Qwiq.Mocks
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See ctor(String, IEnumerable<IFieldDefinition>, String).")]
         public MockWorkItemType(string name)
-            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(null, s)))
+            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(s)))
         {
         }
 

@@ -1,21 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockFieldDefinition : IFieldDefinition
+    public class MockFieldDefinition : Microsoft.Qwiq.Proxies.FieldDefinitionProxy
     {
-        public MockFieldDefinition(string name, string referenceName)
+        public MockFieldDefinition(string referenceName)
         {
-            Name = name;
+            if (string.IsNullOrWhiteSpace(referenceName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
+
             ReferenceName = referenceName;
         }
 
-        public string Name { get; }
-
-        public string ReferenceName { get; }
+        public MockFieldDefinition(string name, string referenceName)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            if (string.IsNullOrWhiteSpace(referenceName))
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
+            Name = name;
+            ReferenceName = referenceName;
+        }
     }
 }
