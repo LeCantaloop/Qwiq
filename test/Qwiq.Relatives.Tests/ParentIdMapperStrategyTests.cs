@@ -40,7 +40,7 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo(2,1,-2)
+                new MockWorkItemLinkInfo(2,1,CoreLinkTypes.Child)
             };
 
             var workItems = new[]
@@ -141,7 +141,7 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo(2,1,-2)
+                new MockWorkItemLinkInfo(2,1,CoreLinkTypes.Child)
             };
 
             var workItems = new[]
@@ -194,8 +194,8 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo(2,1,-2),
-                new MockWorkItemLinkInfo(4,3,0)
+                new MockWorkItemLinkInfo(2,1,CoreLinkTypes.Child),
+                new MockWorkItemLinkInfo(4,3,CoreLinkTypes.Self)
             };
 
             var workItems = new[]
@@ -248,8 +248,8 @@ namespace Microsoft.Qwiq.Relatives.Tests
         {
             var workItemLinks = new[]
             {
-                new MockWorkItemLinkInfo(2,1,-2),
-                new MockWorkItemLinkInfo(4,3,0)
+                new MockWorkItemLinkInfo(2,1,CoreLinkTypes.Child),
+                new MockWorkItemLinkInfo(4,3,CoreLinkTypes.Self)
             };
 
             var wit = new MockWorkItemType("SimpleMockWorkItem");

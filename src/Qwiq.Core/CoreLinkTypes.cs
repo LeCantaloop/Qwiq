@@ -14,5 +14,7 @@ namespace Microsoft.Qwiq
         public const int Predecessor = 3;
 
         public const int Successor = -3;
+
+        public const int Self = 0;
     }
 }
