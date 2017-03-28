@@ -13,7 +13,4 @@
     <copyright>$copyright$</copyright>
     <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
   </metadata>
-  <files>
-    <file src="readme.txt" target="" />
-  </files>
 </package>
