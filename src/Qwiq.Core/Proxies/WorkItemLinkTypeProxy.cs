@@ -2,15 +2,15 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal partial class WorkItemLinkTypeProxy : IWorkItemLinkType
+    internal class WorkItemLinkTypeProxy : IWorkItemLinkType
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _forwardFac;
 
         private readonly Lazy<IWorkItemLinkTypeEnd> _reverseFac;
 
-        private IWorkItemLinkTypeEnd _forward;
+        protected IWorkItemLinkTypeEnd _forward;
 
-        private IWorkItemLinkTypeEnd _reverse;
+        protected IWorkItemLinkTypeEnd _reverse;
 
         internal WorkItemLinkTypeProxy(IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
         {
@@ -24,7 +24,7 @@ namespace Microsoft.Qwiq.Proxies
             _reverseFac = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
 
-        private WorkItemLinkTypeProxy()
+        internal WorkItemLinkTypeProxy()
         {
         }
 
@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq.Proxies
 
         public bool IsDirectional { get; internal set; }
 
-        public string ReferenceName { get; }
+        public string ReferenceName { get; internal set; }
 
         public IWorkItemLinkTypeEnd ReverseEnd => _reverse ?? _reverseFac.Value;
 

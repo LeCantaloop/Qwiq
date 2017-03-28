@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Microsoft.Qwiq.Proxies;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq

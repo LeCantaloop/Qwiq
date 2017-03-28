@@ -9,7 +9,7 @@ using Should;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
-    public abstract class IntegrationContextSpecification : ContextSpecification
+    public abstract class IntegrationContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
         protected Result RestResult { get; set; }
 
@@ -98,12 +98,10 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void Given()
         {
-            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
-            var fac = WorkItemStoreFactory.GetInstance();
-            var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
+            base.Given();
 
-            SoapResult = new Result() { WorkItemStore = fac.Create(uri, credentials, ClientType.Soap) };
-            RestResult = new Result() { WorkItemStore = fac.Create(uri, credentials, ClientType.Rest) };
+            SoapResult = new Result() { WorkItemStore = Soap };
+            RestResult = new Result() { WorkItemStore = Rest };
         }
 
         [TestMethod]

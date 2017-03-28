@@ -202,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseLinkType.cs" />
+    <Compile Include="ClientType.cs" />
     <Compile Include="CoreLinkTypeReferenceNames.cs" />
     <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
     <Compile Include="Credentials\AuthenticationOptions.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="FieldDefinitionComparer.cs" />
     <Compile Include="FieldDefinitionNotExistException.cs" />
     <Compile Include="GenericComparer.cs" />
     <Compile Include="IAttachment.cs" />
@@ -252,88 +254,39 @@
     <Compile Include="ITeamFoundationIdentity.Extensions.cs">
       <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>
     </Compile>
-    <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
     <Compile Include="IWorkItemLinkType.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="IWorkItemStoreFactory.cs" />
     <Compile Include="IWorkItemType.cs" />
-    <Compile Include="LinkHelper.cs" />
-    <Compile Include="LinkMapper.cs" />
-    <Compile Include="LinkTypeEndMapper.cs" />
     <Compile Include="LinqExtensions.cs" />
+    <Compile Include="NodeComparer.cs" />
     <Compile Include="NodeSelectExtensions.cs" />
     <Compile Include="PageSizeRangeException.cs" />
+    <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\FieldDefinitionCollectionProxy.cs" />
-    <Compile Include="Proxies\FieldDefinitionComparer.cs" />
     <Compile Include="Proxies\FieldDefinitionProxy.cs" />
-    <Compile Include="Proxies\NodeComparer.cs" />
     <Compile Include="Proxies\NodeProxy.cs" />
-    <Compile Include="Proxies\ProjectComparer.cs" />
     <Compile Include="Proxies\ProjectProxy.cs" />
-    <Compile Include="Proxies\Rest\FieldDefinitionCollectionProxy.cs" />
-    <Compile Include="Proxies\Rest\FieldDefinitionProxy.cs" />
-    <Compile Include="Proxies\Rest\ProjectProxy.cs" />
-    <Compile Include="Proxies\Rest\QueryFactory.cs" />
-    <Compile Include="Proxies\Rest\QueryProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemClassificationNodeProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemLinkTypeEndProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemLinkTypeProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemStoreProxy.cs" />
-    <Compile Include="Proxies\Rest\WorkItemTypeProxy.cs" />
-    <Compile Include="Proxies\Soap\AttachmentProxy.cs" />
-    <Compile Include="Proxies\Soap\CommonStructureServiceProxy.cs" />
-    <Compile Include="Proxies\Soap\ExternalLinkProxy.cs" />
-    <Compile Include="Proxies\Soap\FieldCollectionProxy.cs" />
-    <Compile Include="Proxies\Soap\FieldConflictProxy.cs" />
-    <Compile Include="Proxies\Soap\FieldDefinitionCollectionProxy.cs" />
-    <Compile Include="Proxies\Soap\FieldDefinitionProxy.cs" />
-    <Compile Include="Proxies\Soap\FieldProxy.cs" />
-    <Compile Include="Proxies\Soap\HyperlinkProxy.cs" />
-    <Compile Include="Proxies\Soap\IdentityDescriptorProxy.cs" />
-    <Compile Include="Proxies\Soap\IdentityManagementServiceProxy.cs" />
-    <Compile Include="Proxies\Soap\LinkCollectionProxy.cs" />
-    <Compile Include="Proxies\Soap\LinkProxy.cs" />
-    <Compile Include="Proxies\Soap\NodeInfoProxy.cs" />
-    <Compile Include="Proxies\Soap\NodeProxy.cs" />
-    <Compile Include="Proxies\Soap\ProjectInfoProxy.cs" />
-    <Compile Include="Proxies\Soap\ProjectPropertyProxy.cs" />
-    <Compile Include="Proxies\Soap\ProjectProxy.cs" />
-    <Compile Include="Proxies\Soap\QueryFactory.cs" />
-    <Compile Include="Proxies\Soap\QueryProxy.cs" />
-    <Compile Include="Proxies\Soap\RelatedLinkProxy.cs" />
-    <Compile Include="Proxies\Soap\RevisionProxy.cs" />
-    <Compile Include="Proxies\Soap\TeamFoundationIdentityProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemLinkTypeEndProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemLinkTypeProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemStoreProxy.cs" />
-    <Compile Include="Proxies\Soap\WorkItemTypeProxy.cs" />
-    <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkInfoComparer.cs" />
     <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeCollection.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeComparer.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndCollection.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeEndComparer.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
     <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
-    <Compile Include="Proxies\WorkItemTypeComparer.cs" />
     <Compile Include="Proxies\WorkItemTypeProxy.cs" />
-    <Compile Include="RegisteredLinkTypeMapper.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
-    <Compile Include="ValidationException.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemFields.cs" />
-    <Compile Include="WorkItemStoreFactory.cs" />
+    <Compile Include="WorkItemLinkInfoComparer.cs" />
+    <Compile Include="WorkItemLinkTypeComparer.cs" />
+    <Compile Include="WorkItemLinkTypeEndComparer.cs" />
+    <Compile Include="WorkItemTypeComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -345,6 +298,7 @@
   <ItemGroup>
     <None Include="readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

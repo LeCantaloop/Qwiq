@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Core.Tests
 {
     [TestClass]
-    public class SingleIdTests : IntegrationContextSpecification
+    public class SingleIdTests : IntegrationContextSpecificationSpecification
     {
         private const int Id = 10726528;
 

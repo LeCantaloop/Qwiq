@@ -21,10 +21,5 @@ namespace Microsoft.Qwiq
         TimeZone TimeZone { get; }
     }
 
-    internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable
-    {
-        T GetService<T>();
-
-        T GetClient<T>();
-    }
+    
 }

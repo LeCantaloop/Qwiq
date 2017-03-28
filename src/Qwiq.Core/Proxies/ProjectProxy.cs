@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal partial class ProjectProxy : IProject
+    internal class ProjectProxy : IProject, IComparer<IProject>, IEquatable<IProject>
     {
         private readonly Lazy<IEnumerable<INode>> _area;
 
@@ -33,6 +33,16 @@ namespace Microsoft.Qwiq.Proxies
 
         private ProjectProxy()
         {
+        }
+
+        public int Compare(IProject x, IProject y)
+        {
+            return ProjectComparer.Instance.Compare(x, y);
+        }
+
+        public bool Equals(IProject other)
+        {
+            return ProjectComparer.Instance.Equals(this, other);
         }
 
         public IEnumerable<INode> AreaRootNodes => _area.Value;

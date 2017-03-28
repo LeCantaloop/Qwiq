@@ -2,22 +2,27 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal partial class WorkItemLinkInfoProxy : IWorkItemLinkInfo
+    internal class WorkItemLinkInfoProxy : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>
     {
         private readonly Lazy<int> _id;
 
-        private WorkItemLinkInfoProxy(Lazy<int> id)
+        internal WorkItemLinkInfoProxy(Lazy<int> id)
         {
             _id = id;
         }
 
-        public bool IsLocked { get; }
+        public bool Equals(IWorkItemLinkInfo other)
+        {
+            return WorkItemLinkInfoComparer.Instance.Equals(this, other);
+        }
+
+        public bool IsLocked { get; internal set; }
 
         public int LinkTypeId => _id.Value;
 
-        public int SourceId { get; }
+        public int SourceId { get; internal set; }
 
-        public int TargetId { get; }
+        public int TargetId { get; internal set; }
 
         public static bool operator !=(WorkItemLinkInfoProxy x, WorkItemLinkInfoProxy y)
         {
@@ -31,8 +36,7 @@ namespace Microsoft.Qwiq.Proxies
 
         public override bool Equals(object obj)
         {
-            if (!(obj is IWorkItemLinkInfo)) return false;
-            return WorkItemLinkInfoComparer.Instance.Equals(this, (IWorkItemLinkInfo)obj);
+            return WorkItemLinkInfoComparer.Instance.Equals(this, obj as IWorkItemLinkInfo);
         }
 
         public override int GetHashCode()

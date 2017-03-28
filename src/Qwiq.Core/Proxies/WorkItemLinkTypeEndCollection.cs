@@ -48,13 +48,21 @@ namespace Microsoft.Qwiq.Proxies
             return _mapByName.Values.GetEnumerator();
         }
 
-        public bool Contains(string linkTypeName)
+        public bool Contains(string linkTypeEndName)
         {
-            return _mapByName.ContainsKey(linkTypeName);
+            if (string.IsNullOrWhiteSpace(linkTypeEndName)) return false;
+
+            return _mapByName.ContainsKey(linkTypeEndName);
         }
 
         public bool TryGetByName(string linkTypeEndName, out IWorkItemLinkTypeEnd linkTypeEnd)
         {
+            if (string.IsNullOrWhiteSpace(linkTypeEndName))
+            {
+                linkTypeEnd = null;
+                return false;
+            }
+
             return _mapByName.TryGetValue(linkTypeEndName, out linkTypeEnd);
         }
     }

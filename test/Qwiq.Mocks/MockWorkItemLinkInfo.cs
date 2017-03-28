@@ -1,5 +1,3 @@
-using Microsoft.Qwiq.Proxies;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemLinkInfo : IWorkItemLinkInfo

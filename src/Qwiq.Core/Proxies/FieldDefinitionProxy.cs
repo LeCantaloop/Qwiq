@@ -1,10 +1,10 @@
 ﻿namespace Microsoft.Qwiq.Proxies
 {
-    internal partial class FieldDefinitionProxy : IFieldDefinition
+    internal class FieldDefinitionProxy : IFieldDefinition
     {
-        public string Name { get; }
+        public string Name { get; internal set; }
 
-        public string ReferenceName { get; }
+        public string ReferenceName { get; internal set; }
 
         public override bool Equals(object obj)
         {

@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    internal partial class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
+    internal class WorkItemLinkTypeEndProxy : IWorkItemLinkTypeEnd
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _opposite;
 
@@ -12,7 +12,7 @@ namespace Microsoft.Qwiq.Proxies
             _opposite = oppositeEnd;
         }
 
-        private WorkItemLinkTypeEndProxy()
+        internal WorkItemLinkTypeEndProxy()
         {
             _opposite = new Lazy<IWorkItemLinkTypeEnd>(
                 () => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Proxies;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,35 +11,23 @@ using Should.Core.Exceptions;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
-    public abstract class ProjectContextSpecification : ContextSpecification
+    public abstract class ProjectContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
         protected List<IProject> RestProjects { get; set; }
 
         protected List<IProject> SoapProjects { get; set; }
 
-        protected IWorkItemStore Rest { get; set; }
 
-        protected IWorkItemStore Soap { get; set; }
 
         public override void When()
         {
             RestProjects = Rest.Projects.ToList();
             SoapProjects = Soap.Projects.ToList();
         }
-
-        public override void Given()
-        {
-            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
-            var fac = WorkItemStoreFactory.GetInstance();
-            var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
-
-            Soap = fac.Create(uri, credentials, ClientType.Soap);
-            Rest = fac.Create(uri, credentials, ClientType.Rest);
-        }
     }
 
     [TestClass]
-    public class Given_projects_from_each_WorkItemStore_implementation : ProjectContextSpecification
+    public class Given_projects_from_each_WorkItemStore_implementation : ProjectContextSpecificationSpecification
     {
         [TestMethod]
         [TestCategory("localOnly")]

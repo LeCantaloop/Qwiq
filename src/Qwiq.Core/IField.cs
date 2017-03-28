@@ -1,5 +1,3 @@
-using Microsoft.Qwiq.Proxies;
-
 namespace Microsoft.Qwiq
 {
     public interface IField

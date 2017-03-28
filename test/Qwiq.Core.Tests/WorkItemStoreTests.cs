@@ -4,39 +4,19 @@ using System.Linq;
 
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Soap;
+using Microsoft.Qwiq.Soap.Proxies;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-using TfsSoap = Microsoft.Qwiq.Proxies.Soap;
-
 namespace Microsoft.Qwiq.Core.Tests
 {
-
-    public abstract class WorkItemStoreComparisonContext : ContextSpecification
-    {
-        protected IWorkItemStore Rest { get; set; }
-
-        protected IWorkItemStore Soap { get; set; }
-
-        public override void Given()
-        {
-            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
-            var fac = WorkItemStoreFactory.GetInstance();
-            var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
-
-            Soap = fac.Create(uri, credentials, ClientType.Soap);
-            Rest = fac.Create(uri, credentials, ClientType.Rest);
-        }
-    }
-
     [TestClass]
-    public class Given_SOAP_and_REST_workitemstore_implementations : WorkItemStoreComparisonContext
+    public class Given_SOAP_and_REST_workitemstore_implementations : WorkItemStoreComparisonContextSpecification
     {
-
-
         public override void When()
         {
             SoapLinkTypes = Soap.WorkItemLinkTypes;
@@ -179,11 +159,11 @@ namespace Microsoft.Qwiq.Core.Tests
         }
     }
 
-    public abstract class WorkItemStoreSoapTests : WorkItemStoreTests<TfsSoap.WorkItemStoreProxy>
+    public abstract class WorkItemStoreSoapTests : WorkItemStoreTests<IWorkItemStore>
     {
-        protected override TfsSoap.WorkItemStoreProxy Create()
+        protected override IWorkItemStore Create()
         {
-            return new TfsSoap.WorkItemStoreProxy((TfsTeamProjectCollection)null, s => QueryFactory);
+            return new WorkItemStoreProxy((TfsTeamProjectCollection)null, s => QueryFactory);
         }
     }
 

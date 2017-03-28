@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Core.Tests
 {
     [TestClass]
-    public class WiqlFlatQueryTests : IntegrationContextSpecification
+    public class WiqlFlatQueryTests : IntegrationContextSpecificationSpecification
     {
         private const int Id = 10726528;
 

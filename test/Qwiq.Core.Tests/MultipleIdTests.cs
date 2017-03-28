@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Core.Tests
 {
     [TestClass]
-    public class MultipleIdTests : IntegrationContextSpecification
+    public class MultipleIdTests : IntegrationContextSpecificationSpecification
     {
         private const int Id = 10726528;
 

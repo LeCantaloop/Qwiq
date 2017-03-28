@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Core.Tests.Mocks
@@ -15,6 +16,17 @@ namespace Microsoft.Qwiq.Core.Tests.Mocks
         {
             CreateCallCount++;
             return new MockQuery(wiql, false, _wiqls);
+        }
+
+        public IQuery Create(IEnumerable<int> ids, DateTime? asOf = null)
+        {
+            var wiql = "SELECT * FROM WorkItems";
+            if (asOf.HasValue)
+            {
+                wiql += $" ASOF \'{asOf.Value:u}\'";
+            }
+
+            return Create(ids, wiql);
         }
 
         public int CreateCallCount { get; private set; }

@@ -8,6 +8,8 @@ namespace Microsoft.Qwiq
         IQuery Create(string wiql, bool dayPrecision = false);
 
         IQuery Create(IEnumerable<int> ids, string wiql);
+
+        IQuery Create(IEnumerable<int> ids, DateTime? asOf = null);
     }
 }
 

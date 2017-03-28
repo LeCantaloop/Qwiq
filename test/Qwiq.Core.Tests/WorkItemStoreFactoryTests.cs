@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.Qwiq.Credentials;
+using Microsoft.Qwiq.Soap;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
@@ -18,7 +19,7 @@ namespace Microsoft.Qwiq.Core.Tests
         public override void Given()
         {
             base.Given();
-            Instance = WorkItemStoreFactory.GetInstance();
+            Instance = WorkItemStoreFactory.Instance;
         }
 
         public override void Cleanup()

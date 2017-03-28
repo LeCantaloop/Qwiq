@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Proxies
 {
-    public partial class WorkItemTypeProxy : IWorkItemType, IEquatable<IWorkItemType>
+    public class WorkItemTypeProxy : IWorkItemType, IEquatable<IWorkItemType>
     {
         private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
 
@@ -14,6 +14,8 @@ namespace Microsoft.Qwiq.Proxies
             Lazy<IFieldDefinitionCollection> fieldDefinitions,
             Func<IWorkItem> workItemFactory)
         {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+
             _fieldDefinitions = fieldDefinitions;
             _workItemFactory = workItemFactory;
             Name = name;
