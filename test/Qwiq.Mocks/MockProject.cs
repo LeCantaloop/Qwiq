@@ -1,58 +1,39 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.Qwiq.Proxies;
+
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockProject : IProject
+    public class MockProject : ProjectProxy
     {
-
-
-        public MockProject(IWorkItemStore store, INode node)
-        {
-            if (node == null) throw new ArgumentNullException(nameof(node));
-            Store = store ?? throw new ArgumentNullException(nameof(store));
-
-            WorkItemTypes = new[]
-                                {
-                                    new MockWorkItemType("Task"),
-                                    new MockWorkItemType("Deliverable"),
-                                    new MockWorkItemType("Scenario"),
-                                    new MockWorkItemType("Customer Promise"),
-                                    new MockWorkItemType("Bug"),
-                                    new MockWorkItemType("Measure")
-                                };
-
-            AreaRootNodes = new[] { node };
-            IterationRootNodes = new[] { CreateNodes(false) };
-            Guid = Guid.NewGuid();
-        }
-
         public MockProject(IWorkItemStore store)
-            :this(store, CreateNodes(true))
+            : base(
+                BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+                Guid.NewGuid(),
+                "Mock",
+                new Uri("http://localhost"),
+                store,
+                new Lazy<IEnumerable<IWorkItemType>>(
+                    () => new[]
+                              {
+                                  new MockWorkItemType("Task"),
+                                  new MockWorkItemType("Deliverable"),
+                                  new MockWorkItemType("Scenario"),
+                                  new MockWorkItemType("Customer Promise"),
+                                  new MockWorkItemType("Bug"),
+                                  new MockWorkItemType("Measure")
+                              }),
+                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
+                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
         {
         }
 
         [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore).")]
         public MockProject()
-            : this(new MockWorkItemStore(), CreateNodes(true))
+            : this(new MockWorkItemStore())
         {
         }
-
-        public IEnumerable<INode> AreaRootNodes { get; set; }
-
-        public Guid Guid { get; set; }
-
-        public int Id { get; set; }
-
-        public IEnumerable<INode> IterationRootNodes { get; set; }
-
-        public string Name => "Mock";
-
-        public Uri Uri { get; set; }
-
-        public IEnumerable<IWorkItemType> WorkItemTypes { get; set; }
-
-        public IWorkItemStore Store { get; }
 
         private static MockNode CreateNodes(bool area)
         {
