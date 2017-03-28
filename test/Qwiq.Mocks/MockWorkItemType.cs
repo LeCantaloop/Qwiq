@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemType : IWorkItemType
+    public class MockWorkItemType : Microsoft.Qwiq.Proxies.WorkItemTypeProxy
     {
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore, String, String).")]
@@ -27,21 +27,9 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItemType(string name, IFieldDefinitionCollection fieldDefinitions, string description = null)
+            : base(name, description, new Lazy<IFieldDefinitionCollection>(() => fieldDefinitions))
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            FieldDefinitions = fieldDefinitions ?? throw new ArgumentNullException(nameof(fieldDefinitions));
-            Description = description;
-        }
-
-        public string Description { get; }
-
-        public IFieldDefinitionCollection FieldDefinitions { get; }
-
-        public string Name { get; }
-
-        public IWorkItem NewWorkItem()
-        {
-            return new MockWorkItem(this);
+            WorkItemFactory = () => new MockWorkItem(this);
         }
     }
 }
