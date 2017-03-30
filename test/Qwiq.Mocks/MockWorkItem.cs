@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using Microsoft.Qwiq.Exceptions;
+
 namespace Microsoft.Qwiq.Mocks
 {
     [Serializable]
@@ -11,21 +13,23 @@ namespace Microsoft.Qwiq.Mocks
     {
         internal bool PartialOpenWasCalled = false;
         private readonly ICollection<ILink> _links;
-        private readonly Dictionary<string, IField> _properties;
+
 
         private IWorkItemType _type;
+
+        private IEnumerable<IRevision> _revisions;
 
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem()
-            : this((string)null, null as IEnumerable<IField>)
+            : this("Mock")
         {
         }
 
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null)
-            : this(workItemType, null as IEnumerable<IField>)
+            : this(workItemType, null)
         {
         }
 
@@ -36,186 +40,135 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        /// <summary>
+        /// Creates a new work item type of the specified name and new field definitions for that type based on the supplied fields.
+        /// </summary>
+        /// <param name="workItemType"></param>
+        /// <param name="fields"></param>
         public MockWorkItem(string workItemType = null, IDictionary<string, object> fields = null)
-            : this(workItemType, fields?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
-        {
-        }
-
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
-        internal MockWorkItem(string workItemType = null, IEnumerable<IField> fields = null)
-            :this(string.IsNullOrEmpty(workItemType) ? new MockWorkItemType() : new MockWorkItemType(workItemType), fields)
-        {
-        }
-
-        public MockWorkItem(IWorkItemType type)
-            : this(type, type.FieldDefinitions.ToDictionary(p => p.Name, e => (object)null))
+            : this(
+                  new MockWorkItemType(
+                      workItemType ?? "Mock",
+                      CoreFieldDefinitions.All.Union(fields?.Select(p => MockFieldDefinition.Create(p.Key)) ?? Enumerable.Empty<IFieldDefinition>())),
+                  fields)
         {
         }
 
         public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
-            : this(type, fields?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
+            : this(type, fields?.Select(p => new MockField(type.FieldDefinitions[p.Key], p.Value, p.Value)) ?? Enumerable.Empty<IField>())
         {
         }
 
         public MockWorkItem(IWorkItemType type, IEnumerable<IField> fields)
         {
-            _links = new MockLinkCollection();
-            _properties = new Dictionary<string, IField>(StringComparer.OrdinalIgnoreCase);
+            if (fields == null) throw new ArgumentNullException(nameof(fields));
+            Type = type ?? throw new ArgumentNullException(nameof(type));
 
-            if (fields != null)
+            foreach (var field in fields)
             {
-                foreach (var prop in fields)
-                {
-                    _properties[prop.Name] = prop;
-                }
+                var f = Fields[field.ReferenceName ?? field.Name];
+                f.Value = field.Value;
+                f.OriginalValue = field.OriginalValue;
             }
-            Type = type;
+
+            _links = new MockLinkCollection();
             Revisions = Enumerable.Empty<IRevision>();
+            ApplyRules(false);
         }
 
         public string AreaPath
         {
-            get { return (string)GetValue("Area Path"); }
-            set
-            {
-                SetValue("Area Path", value);
-                SetValue("System.AreaPath", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.AreaPath);
+            set => SetValue(CoreFieldRefNames.AreaPath, value);
         }
 
         public string AssignedTo
         {
-            get
-            {
-                return (string)GetValue("Assigned To");
-            }
-            set
-            {
-                SetValue("Assigned To", value);
-                SetValue("System.AssignedTo", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.AssignedTo);
+            set => SetValue(CoreFieldRefNames.AssignedTo, value);
         }
 
         public int AttachedFileCount
         {
-            get { return (int)GetValue("Attached File Count"); }
-            set { SetValue("Attached File Count", value); }
+            get => (int)GetValue(CoreFieldRefNames.AttachedFileCount);
+            set => SetValue(CoreFieldRefNames.AttachedFileCount, value);
         }
 
-        public IEnumerable<IAttachment> Attachments
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public IEnumerable<IAttachment> Attachments => throw new NotImplementedException();
 
         public string ChangedBy
         {
-            get { return (string)GetValue("Changed By"); }
-            set
-            {
-                SetValue("Changed By", value);
-                SetValue("System.ChangedBy", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.ChangedBy);
+            set => SetValue(CoreFieldRefNames.ChangedBy, value);
         }
 
         public DateTime ChangedDate
         {
-            get { return (DateTime)GetValue("Changed Date"); }
-            set
-            {
-                SetValue("Changed Date", value);
-                SetValue("System.ChangedDate", value);
-            }
+            get => (DateTime)GetValue(CoreFieldRefNames.ChangedDate);
+            set => SetValue(CoreFieldRefNames.ChangedDate, value);
         }
 
         public string CreatedBy
         {
-            get { return (string)GetValue("Created By"); }
-            set
-            {
-                SetValue("Created By", value);
-                SetValue("Microsoft.VSTS.Common.CreatedBy", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.CreatedBy);
+            set => SetValue(CoreFieldRefNames.CreatedBy, value);
         }
 
         public DateTime CreatedDate
         {
-            get { return (DateTime)GetValue("Created Date"); }
-            set
-            {
-                SetValue("Created Date", value);
-                SetValue("Microsoft.VSTS.Common.CreatedDate", value);
-            }
+            get => (DateTime)GetValue(CoreFieldRefNames.CreatedDate);
+            set => SetValue(CoreFieldRefNames.CreatedDate, value);
         }
 
         public string Description
         {
-            get { return (string)GetValue("Description"); }
-            set
-            {
-                SetValue("Description", value);
-                SetValue("System.Description", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.Description);
+            set => SetValue(CoreFieldRefNames.Description, value);
         }
 
         public int ExternalLinkCount
         {
-            get { return (int)GetValue("External Link Count"); }
-            set { SetValue("External Link Count", value); }
+            get => (int)GetValue(CoreFieldRefNames.ExternalLinkCount);
+            set => SetValue(CoreFieldRefNames.ExternalLinkCount, value);
         }
 
-        public IFieldCollection Fields => new MockFieldCollection(_properties);
+        private IFieldCollection _fields;
+
+        public IFieldCollection Fields => _fields ?? (_fields = new MockFieldCollection(Type.FieldDefinitions));
 
         public string History
         {
-            get { return GetValue("History") as string ?? string.Empty; }
-            set
-            {
-                SetValue("History", value);
-                SetValue("System.History", value);
-            }
+            get => GetValue(CoreFieldRefNames.History) as string ?? string.Empty;
+            set => SetValue(CoreFieldRefNames.History, value);
         }
 
         public int HyperLinkCount
         {
-            get { return (int)GetValue("Hyper Link Count"); }
-            set { SetValue("Hyper Link Count", value); }
+            get => GetValue<int>(CoreFieldRefNames.HyperLinkCount);
+            set => SetValue(CoreFieldRefNames.HyperLinkCount, value);
         }
 
         public int Id
         {
-            get { return ((int?)GetValue("Id")).GetValueOrDefault(0); }
-            set
-            {
-                SetValue("Id", value);
-                SetValue("System.Id", value);
-            }
+            get => ((int?)GetValue(CoreFieldRefNames.Id)).GetValueOrDefault(0);
+            set => SetValue(CoreFieldRefNames.Id, value);
         }
 
         public bool IsDirty
         {
-            get { return _properties.Select(p => p.Value.IsDirty).Any(); }
+            get { return Fields.Any(p => p.IsDirty); }
         }
 
         public string IterationPath
         {
-            get
-            {
-                return (string)GetValue("Iteration Path");
-            }
-            set
-            {
-                SetValue("Iteration Path", value);
-                SetValue("System.IterationPath", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.IterationPath);
+            set => SetValue(CoreFieldRefNames.IterationPath, value);
         }
 
         public string Keywords
         {
-            get { return (string)GetValue("Keywords"); }
-            set { SetValue("Keywords", value); }
+            get => GetValue<string>(WorkItemFields.Keywords);
+            set => SetValue(WorkItemFields.Keywords, value);
         }
 
         public ICollection<ILink> Links { get; set; }
@@ -224,7 +177,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public string ReproSteps
         {
-            get { return (string)GetValue("Repro Steps"); }
+            get => GetValue<string>("Repro Steps");
             set
             {
                 SetValue("Repro Steps", value);
@@ -234,85 +187,62 @@ namespace Microsoft.Qwiq.Mocks
 
         public long Rev
         {
-            get
-            {
-                return (long)GetValue("Rev");
-            }
-            set
-            {
-                SetValue("Rev", value);
-                SetValue("System.Rev", value);
-            }
+            get => GetValue<long>(CoreFieldRefNames.Rev);
+            set => SetValue(CoreFieldRefNames.Rev, value);
         }
 
         public DateTime RevisedDate
         {
-            get { return (DateTime)GetValue("Revised Date"); }
-            set { SetValue("Revised Date", value); }
+            get => GetValue<DateTime>(CoreFieldRefNames.RevisedDate);
+            set => SetValue(CoreFieldRefNames.RevisedDate, value);
         }
 
         public long Revision
         {
-            get { return (long)GetValue("Revision"); }
-            set { SetValue("Revision", value); }
+            get => (long)GetValue("Revision");
+            set => SetValue("Revision", value);
         }
 
         public IEnumerable<IRevision> Revisions
         {
-            get { return (IEnumerable<IRevision>)GetValue("Revisions"); }
-            set { SetValue("Revisions", value); }
+            get => _revisions;
+            set => _revisions = value;
         }
 
         public string State
         {
-            get { return (string)GetValue("State"); }
-            set
-            {
-                SetValue("State", value);
-                SetValue("System.State", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.State);
+            set => SetValue(CoreFieldRefNames.State, value);
         }
 
         public string Tags
         {
-            get { return (string)GetValue("Tags"); }
-            set { SetValue("Tags", value); }
+            get => GetValue<string>(CoreFieldRefNames.Tags);
+            set => SetValue(CoreFieldRefNames.Tags, value);
         }
 
         public string Title
         {
-            get { return (string)GetValue("Title"); }
-            set
-            {
-                SetValue("Title", value);
-                SetValue("System.Title", value);
-            }
+            get => GetValue<string>(CoreFieldRefNames.Title);
+            set => SetValue(CoreFieldRefNames.Title, value);
         }
 
         public IWorkItemType Type
         {
-            get
-            {
-                return _type;
-            }
+            get => _type;
             set
             {
                 _type = value;
-                SetValue("System.WorkItemType", value.Name);
-                SetValue("Work Item Type", value.Name);
+                SetValue(CoreFieldRefNames.WorkItemType, value.Name);
             }
         }
 
-        public Uri Uri
-        {
-            get { return (Uri)GetValue("Uri"); }
-            set { SetValue("Uri", value); }
-        }
+        public Uri Uri { get; set; }
 
         public object this[string name]
         {
-            get { return GetValue(name); }
-            set { SetValue(name, value); }
+            get => GetValue(name);
+            set => SetValue(name, value);
         }
 
         public void Close()
@@ -380,44 +310,27 @@ namespace Microsoft.Qwiq.Mocks
 
         public IEnumerable<IField> Validate()
         {
-            var invalidFields = _properties.Where(p => !p.Value.IsValid).Select(p => p.Value).ToArray();
+            var invalidFields = Fields.Where(p => !p.IsValid).Select(p => p).ToArray();
             return invalidFields.Any()
                 ? invalidFields
                 : null;
         }
-        //public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd end, IWorkItem target)
-        //{
-        //    return new MockWorkItemLink(end)
-        //    {
-        //        RelatedWorkItemId = target.Id,
-        //        LinkSubType = "Related"
-        //    };
-        //}
 
-        //public IHyperlink CreateHyperlink(string location)
-        //{
-        //    return new MockHyperlink(location);
-        //}
+        private T GetValue<T>(string field)
+        {
+            return (T)GetValue(field);
+        }
 
         private object GetValue(string field)
         {
-            IField val;
-            return _properties.TryGetValue(field, out val)
-                ? val.Value
-                : null;
+            if (field == null) throw new ArgumentNullException(nameof(field));
+            return Fields[field].Value;
         }
 
         private void SetValue(string field, object value)
         {
-            IField val;
-            if (_properties.TryGetValue(field, out val))
-            {
-                val.Value = value;
-            }
-            else
-            {
-                _properties.Add(field, new MockField(value, value) { Name = field });
-            }
+            if (field == null) throw new ArgumentNullException(nameof(field));
+            Fields[field].Value = value;
         }
 
         public void ApplyRules(bool doNotUpdateChangedBy = false)

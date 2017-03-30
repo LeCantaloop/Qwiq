@@ -4,30 +4,22 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemType : IWorkItemType, IEquatable<IWorkItemType>, IComparable<IWorkItemType>
     {
-        private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
-
-        internal WorkItemType(string name, string description, Lazy<IFieldDefinitionCollection> fieldDefinitions)
-            : this(name, description, fieldDefinitions, null)
-        {
-        }
-
         internal WorkItemType(
             string name,
             string description,
             Lazy<IFieldDefinitionCollection> fieldDefinitions,
-            Func<IWorkItem> workItemFactory)
+            Func<IWorkItem> workItemFactory = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            _fieldDefinitions = fieldDefinitions ?? throw new ArgumentNullException(nameof(fieldDefinitions));
+            FieldDefinitionFactory = () => fieldDefinitions.Value;
             WorkItemFactory = workItemFactory;
             Name = name;
             Description = description;
         }
 
-        public string Description { get; }
-        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
-        public string Name { get; }
+        protected internal Func<IFieldDefinitionCollection> FieldDefinitionFactory { get; internal set; }
+
         protected internal Func<IWorkItem> WorkItemFactory { get; internal set; }
 
         public int CompareTo(IWorkItemType other)
@@ -39,6 +31,18 @@ namespace Microsoft.Qwiq
         {
             return WorkItemTypeComparer.Instance.Equals(this, other);
         }
+
+        public string Description { get; }
+
+        public IFieldDefinitionCollection FieldDefinitions => FieldDefinitionFactory();
+
+        public string Name { get; }
+
+        public IWorkItem NewWorkItem()
+        {
+            return WorkItemFactory();
+        }
+
         public override bool Equals(object obj)
         {
             return WorkItemTypeComparer.Instance.Equals(this, obj as IWorkItemType);
@@ -49,10 +53,6 @@ namespace Microsoft.Qwiq
             return WorkItemTypeComparer.Instance.GetHashCode(this);
         }
 
-        public IWorkItem NewWorkItem()
-        {
-            return WorkItemFactory();
-        }
         public override string ToString()
         {
             return Name;

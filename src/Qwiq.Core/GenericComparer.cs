@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq
                         return hasNextX == hasNextY ? 0 : -1;
                     }
 
-                    if (!GenericComparer<T>.Equals(enumeratorX.Current, enumeratorY.Current))
+                    if (!Equals(enumeratorX.Current, enumeratorY.Current))
                     {
                         return -1;
                     }

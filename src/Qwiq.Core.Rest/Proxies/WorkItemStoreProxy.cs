@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -129,8 +128,6 @@ namespace Microsoft.Qwiq.Rest.Proxies
 
         public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
         {
-            if (dayPrecision) throw new NotSupportedException();
-
             // REVIEW: SOAP client catches a ValidationException here
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
             return query.RunLinkQuery();

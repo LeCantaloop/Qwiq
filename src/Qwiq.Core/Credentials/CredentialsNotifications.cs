@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Microsoft.Qwiq.Credentials
 {
     /// <summary>
-    /// Specifies events which the <see cref="WorkItemStoreFactory"/> invokes to enable developer control over the authentication process.
+    /// Specifies events which the <see cref="IWorkItemStoreFactory"/> invokes to enable developer control over the authentication process.
     /// </summary>
     public class CredentialsNotifications
     {

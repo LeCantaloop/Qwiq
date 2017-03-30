@@ -37,6 +37,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreFieldDefinitions.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="MockField.cs" />
     <Compile Include="MockFieldCollection.cs" />

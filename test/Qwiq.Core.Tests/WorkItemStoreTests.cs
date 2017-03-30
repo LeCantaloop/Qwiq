@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Core.Tests.Mocks;
-using Microsoft.Qwiq.Proxies;
 using Microsoft.Qwiq.Soap;
 using Microsoft.Qwiq.Soap.Proxies;
 using Microsoft.Qwiq.Tests.Common;

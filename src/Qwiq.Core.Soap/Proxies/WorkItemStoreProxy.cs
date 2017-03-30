@@ -7,7 +7,6 @@ using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Client;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
-using WorkItemLinkTypeCollection = Microsoft.Qwiq.WorkItemLinkTypeCollection;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {

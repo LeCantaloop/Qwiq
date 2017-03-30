@@ -103,9 +103,13 @@ namespace Microsoft.Qwiq.Rest
             return new WorkItemStoreProxy(() => tfs, QueryFactory.GetInstance);
         }
 
+        // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
+            // ReSharper restore ClassNeverInstantiated.Local
         {
+            // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemStoreFactory Instance = new WorkItemStoreFactory();
+            // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

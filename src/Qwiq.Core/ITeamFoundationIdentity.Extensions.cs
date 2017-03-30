@@ -2,7 +2,9 @@ using System;
 
 namespace Microsoft.Qwiq
 {
+    // ReSharper disable InconsistentNaming
     public static class ITeamFoundationIdentityExtensions
+        // ReSharper restore InconsistentNaming
     {
 
         public static string GetUserAlias(this ITeamFoundationIdentity identity)

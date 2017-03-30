@@ -15,8 +15,6 @@ namespace Microsoft.Qwiq
 
         string Name { get; }
 
-        IWorkItemStore Store { get; }
-
         Uri Uri { get; }
 
         IEnumerable<IWorkItemType> WorkItemTypes { get; }

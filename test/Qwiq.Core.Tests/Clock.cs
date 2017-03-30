@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq.Core.Tests
 
         private static TimeSpan GetTimeSpan(long start, long stop, long frequency)
         {
-            var seconds = 1.0d * (double)Math.Max(0L, stop - start) / (double)frequency;
+            var seconds = 1.0d * Math.Max(0L, stop - start) / frequency;
             var ticks = (long)Math.Round(seconds * 10000000d);
             return TimeSpan.FromTicks(ticks);
         }

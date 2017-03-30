@@ -72,26 +72,66 @@ namespace Microsoft.Qwiq
 
         public const string WorkItemType = "System.WorkItemType";
 
+        public static IEnumerable<string> All => NameLookup.Keys;
 
+        public static IReadOnlyDictionary<string, int> CoreFieldIdLookup { get; } =
+            new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+                {
+                    { AreaId, (int)CoreField.AreaId },
+                    { AreaPath, (int)CoreField.AreaPath },
+                    { AssignedTo, (int)CoreField.AssignedTo },
+                    { AttachedFileCount, (int)CoreField.AttachedFileCount },
+                    { AuthorizedAs, (int)CoreField.AuthorizedAs },
+                    { AuthorizedDate, (int)CoreField.AuthorizedDate },
+                    { BoardColumn, (int)CoreField.BoardColumn },
+                    { BoardColumnDone, (int)CoreField.BoardColumnDone },
+                    { BoardLane, (int)CoreField.BoardLane },
+                    { ChangedBy, (int)CoreField.ChangedBy },
+                    { ChangedDate, (int)CoreField.ChangedDate },
+                    { CreatedBy, (int)CoreField.CreatedBy },
+                    { CreatedDate, (int)CoreField.CreatedDate },
+                    { Description, (int)CoreField.Description },
+                    { ExternalLinkCount, (int)CoreField.ExternalLinkCount },
+                    { History, (int)CoreField.History },
+                    { HyperLinkCount, (int)CoreField.HyperLinkCount },
+                    { Id, (int)CoreField.Id },
+                    { IterationId, (int)CoreField.IterationId },
+                    { IterationPath, (int)CoreField.IterationPath },
+                    { LinkType, (int)CoreField.LinkType },
+                    { NodeName, (int)CoreField.NodeName },
+                    { Reason, (int)CoreField.Reason },
+                    { RelatedLinkCount, (int)CoreField.RelatedLinkCount },
+                    { Rev, (int)CoreField.Rev },
+                    { RevisedDate, (int)CoreField.RevisedDate },
+                    { State, (int)CoreField.State },
+                    { Tags, (int)CoreField.Tags },
+                    { TeamProject, (int)CoreField.TeamProject },
+                    { Title, (int)CoreField.Title },
+                    { Watermark, (int)CoreField.Watermark },
+                    { WorkItemType, (int)CoreField.WorkItemType }
+                };
 
-        public static IDictionary<string, string> NameLookup { get; } =
+        /// <summary>
+        ///     Given a reference name from <see cref="CoreFieldRefNames" />, get the corresponding friendly name.
+        /// </summary>
+        public static IReadOnlyDictionary<string, string> NameLookup { get; } =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                 {
                     { AreaId, "Area ID" },
                     { AreaPath, "Area Path" },
                     { AssignedTo, "Assigned To" },
-                    { AttachedFileCount,"Attached File Count"},
+                    { AttachedFileCount, "Attached File Count" },
                     { AuthorizedAs, "Authorized As" },
                     { AuthorizedDate, "Authorized Date" },
                     { BoardColumn, "Board Column" },
-                    { BoardColumnDone,"Board Column Done"},
+                    { BoardColumnDone, "Board Column Done" },
                     { BoardLane, "Board Lane" },
                     { ChangedBy, "Changed By" },
                     { ChangedDate, "Changed Date" },
                     { CreatedBy, "Created By" },
                     { CreatedDate, "Created Date" },
                     { Description, "Description" },
-                    { ExternalLinkCount,"External Link Count"},
+                    { ExternalLinkCount, "External Link Count" },
                     { History, "History" },
                     { HyperLinkCount, "Hyperlink Count" },
                     { Id, "ID" },
@@ -100,7 +140,7 @@ namespace Microsoft.Qwiq
                     { LinkType, "Link Type" },
                     { NodeName, "Node Name" },
                     { Reason, "Reason" },
-                    { RelatedLinkCount, "Related Link Count"},
+                    { RelatedLinkCount, "Related Link Count" },
                     { Rev, "Rev" },
                     { RevisedDate, "Revised Date" },
                     { State, "State" },
@@ -111,11 +151,12 @@ namespace Microsoft.Qwiq
                     { WorkItemType, "Work Item Type" }
                 };
 
-        public static IDictionary<string, string> ReferenceNameLookup { get; } = NameLookup.ToDictionary(
+        /// <summary>
+        ///     Given a friendly name for one of <see cref="CoreFieldRefNames" />, get the corresponding reference name.
+        /// </summary>
+        public static IReadOnlyDictionary<string, string> ReferenceNameLookup { get; } = NameLookup.ToDictionary(
             k => k.Value,
             e => e.Key,
             StringComparer.OrdinalIgnoreCase);
-
-        public static IEnumerable<string> All => NameLookup.Keys;
     }
 }

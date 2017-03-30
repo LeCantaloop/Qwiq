@@ -17,18 +17,23 @@ namespace Microsoft.Qwiq.Soap.Proxies
             _innerCollection = innerCollection;
         }
 
-        public IField this[string name]
+        public IField this[string name] => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(_innerCollection[name]));
+
+        public int Count => _innerCollection.Count;
+
+        public bool Contains(string name)
         {
-            get { return ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(_innerCollection[name])); }
+            return _innerCollection.Contains(name);
         }
 
-        public int Count
+        public IField TryGetById(int id)
         {
-            get { return _innerCollection.Count; }
+            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(_innerCollection.TryGetById(id)));
         }
-        public bool Contains(string fieldName)
+
+        public IField GetById(int id)
         {
-            return _innerCollection.Contains(fieldName);
+            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(_innerCollection.GetById(id)));
         }
 
         public IEnumerator<IField> GetEnumerator()

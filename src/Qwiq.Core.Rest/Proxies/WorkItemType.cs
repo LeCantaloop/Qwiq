@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-
 namespace Microsoft.Qwiq.Rest.Proxies
 {
     internal class WorkItemType : Qwiq.WorkItemType

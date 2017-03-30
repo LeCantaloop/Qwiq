@@ -14,6 +14,8 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         protected override IWorkItemStore CreateWorkItemStore()
         {
+
+
             var workItems = new List<IWorkItem>
             {
                 new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
@@ -55,7 +57,10 @@ namespace Microsoft.Qwiq.Mapper.Tests
                 new MockWorkItemLinkInfo(0, 5)
             };
 
-            return new MockWorkItemStore(workItems, links);
+            var tpcMock = new MockTfsTeamProjectCollection();
+            var projMock = new MockProject(workItems.Select(s=>s.Type).Distinct());
+
+            return new MockWorkItemStore(tpcMock, projMock, null, workItems, links);
         }
     }
 

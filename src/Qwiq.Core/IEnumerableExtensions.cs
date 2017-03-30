@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
-
-namespace Microsoft.Qwiq.Rest
+// ReSharper disable CheckNamespace
+namespace System.Collections.Generic
+// ReSharper restore CheckNamespace
 {
-    internal static class LinqExtensions
+    // ReSharper disable InconsistentNaming
+    internal static class IEnumerableExtensions
+    // ReSharper restore InconsistentNaming
     {
         public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> source, int size)
         {

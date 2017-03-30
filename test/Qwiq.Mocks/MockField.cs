@@ -5,9 +5,39 @@ namespace Microsoft.Qwiq.Mocks
     public class MockField : IField
     {
         private const int MaxStringLength = 255;
+
         private object _value;
 
-        public MockField(object value, object originalValue = null, ValidationState validationState = ValidationState.Valid, bool isChangedByUser = true)
+        public MockField(IFieldDefinition definition)
+        {
+            if (definition == null) throw new ArgumentNullException(nameof(definition));
+
+            Id = definition.Id;
+            Name = definition.Name;
+            ReferenceName = definition.ReferenceName;
+        }
+
+        public MockField(
+            IFieldDefinition definition,
+            object value,
+            object originalValue = null,
+            ValidationState validationState = ValidationState.Valid,
+            bool isChangedByUser = true)
+            : this(definition)
+        {
+            Value = value;
+            OriginalValue = originalValue;
+            ValidationState = validationState;
+            IsChangedByUser = isChangedByUser;
+            IsEditable = true;
+        }
+
+        [Obsolete("This method has been deprecated and will be removed in a future version.")]
+        public MockField(
+            object value,
+            object originalValue = null,
+            ValidationState validationState = ValidationState.Valid,
+            bool isChangedByUser = true)
         {
             Value = value;
             OriginalValue = originalValue;
@@ -18,7 +48,10 @@ namespace Microsoft.Qwiq.Mocks
 
         public int Id { get; set; }
 
+        public bool IsChangedByUser { get; }
+
         public bool IsDirty { get; private set; }
+
         public bool IsEditable { get; set; }
 
         public bool IsRequired { get; set; }
@@ -28,12 +61,14 @@ namespace Microsoft.Qwiq.Mocks
         public string Name { get; set; }
 
         public object OriginalValue { get; set; }
+
+        public string ReferenceName { get; }
+
         public ValidationState ValidationState { get; private set; }
-        public bool IsChangedByUser { get; }
 
         public object Value
         {
-            get { return _value; }
+            get => _value;
             set
             {
                 _value = value;
@@ -48,51 +83,62 @@ namespace Microsoft.Qwiq.Mocks
                 switch (ValidationState)
                 {
                     case ValidationState.InvalidNotEmpty:
-                        if (string.IsNullOrEmpty(value as string))
-                        {
-                            ValidationState = ValidationState.Valid;
-                        }
+                        if (string.IsNullOrEmpty(value as string)) ValidationState = ValidationState.Valid;
                         break;
 
                     case ValidationState.InvalidTooLong:
                         var str = value as string;
-                        if (str != null && str.Length <= MaxStringLength)
-                        {
-                            ValidationState = ValidationState.Valid;
-                        }
+                        if (str != null && str.Length <= MaxStringLength) ValidationState = ValidationState.Valid;
                         break;
+
                     case ValidationState.Valid:
                         break;
+
                     case ValidationState.InvalidEmpty:
                         break;
+
                     case ValidationState.InvalidFormat:
                         break;
+
                     case ValidationState.InvalidListValue:
                         break;
+
                     case ValidationState.InvalidOldValue:
                         break;
+
                     case ValidationState.InvalidNotOldValue:
                         break;
+
                     case ValidationState.InvalidEmptyOrOldValue:
                         break;
+
                     case ValidationState.InvalidNotEmptyOrOldValue:
                         break;
+
                     case ValidationState.InvalidValueInOtherField:
                         break;
+
                     case ValidationState.InvalidValueNotInOtherField:
                         break;
+
                     case ValidationState.InvalidUnknown:
                         break;
+
                     case ValidationState.InvalidDate:
                         break;
+
                     case ValidationState.InvalidType:
                         break;
+
                     case ValidationState.InvalidComputedField:
                         break;
+
                     case ValidationState.InvalidPath:
                         break;
+
                     case ValidationState.InvalidCharacters:
                         break;
+
                     default:
                         throw new ArgumentOutOfRangeException();
                 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Diagnostics;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Qwiq.Tests.Common
 {
@@ -109,6 +111,7 @@ namespace Microsoft.Qwiq.Tests.Common
     /// http://channel9.msdn.com/Events/TechEd/NorthAmerica/2010/DPR302
     ///
     /// </remarks>
+    [DebuggerStepThrough]
     public abstract class ContextSpecification : IContextSpecification
     {
         [TestInitialize]

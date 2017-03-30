@@ -1,4 +1,3 @@
-using Microsoft.Qwiq.Proxies;
 using System;
 using System.Linq;
 
@@ -37,7 +36,9 @@ namespace Microsoft.Qwiq
 
         private class Nested
         {
+            // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly ProjectComparer Instance = new ProjectComparer();
+            // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

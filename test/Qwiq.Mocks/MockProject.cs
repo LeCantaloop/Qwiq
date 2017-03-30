@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Proxies;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockProject : Project
     {
-        public MockProject(IWorkItemStore store)
+        public MockProject()
             : base(
                 BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
                 Guid.NewGuid(),
-                "Mock",
+                "Mock Project",
                 new Uri("http://localhost"),
-                store,
                 new Lazy<IEnumerable<IWorkItemType>>(
                     () => new[]
                               {
@@ -29,9 +26,20 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore).")]
-        public MockProject()
-            : this(new MockWorkItemStore())
+        public MockProject(IEnumerable<IWorkItemType> workItemTypes)
+            : base(
+                BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+                Guid.NewGuid(),
+                "Mock Project",
+                new Uri("http://localhost"),
+                new Lazy<IEnumerable<IWorkItemType>>(() => workItemTypes),
+                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
+                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
+        {
+        }
+
+        public MockProject(IWorkItemType workItemType)
+            : this(new[] { workItemType })
         {
         }
 

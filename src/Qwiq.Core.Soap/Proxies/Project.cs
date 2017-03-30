@@ -16,7 +16,6 @@ namespace Microsoft.Qwiq.Soap.Proxies
                 project.Guid,
                 project.Name,
                 project.Uri,
-                store,
                 new Lazy<IEnumerable<IWorkItemType>>(
                     () => project.WorkItemTypes.Cast<Tfs.WorkItemType>()
                                  .Select(

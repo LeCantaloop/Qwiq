@@ -14,14 +14,16 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItemType(string name, string description = null)
-            : this(name, CoreFieldRefNames.All.Select(s => new MockFieldDefinition(s, CoreFieldRefNames.NameLookup[s])), description)
+            : this(name, CoreFieldDefinitions.All, description)
         {
         }
 
         public MockWorkItemType(string name, IEnumerable<IFieldDefinition> fieldDefinitions, string description = null)
-            : this(name, new MockFieldDefinitionCollection(fieldDefinitions), description)
+            : base(name, description, null, null)
         {
             if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
+            WorkItemFactory = () => new MockWorkItem(this);
+            FieldDefinitionFactory = () => new MockFieldDefinitionCollection(fieldDefinitions);
         }
 
         public MockWorkItemType(string name, IFieldDefinitionCollection fieldDefinitions, string description = null)

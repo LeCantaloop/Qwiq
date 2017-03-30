@@ -43,7 +43,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
 
         public DateTime ChangedDate
         {
-            get => (DateTime)GetValue(CoreFieldRefNames.ChangedDate);
+            get => GetValue<DateTime>(CoreFieldRefNames.ChangedDate);
             set => SetValue(CoreFieldRefNames.ChangedDate, value);
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
 
         public DateTime CreatedDate
         {
-            get => (DateTime)GetValue(CoreFieldRefNames.CreatedDate);
+            get => GetValue<DateTime>(CoreFieldRefNames.CreatedDate);
             set => SetValue(CoreFieldRefNames.CreatedDate, value);
         }
 

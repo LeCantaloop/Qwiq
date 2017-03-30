@@ -11,5 +11,10 @@ namespace Microsoft.Qwiq.Soap.Proxies
         {
             if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
         }
+
+        public static implicit operator FieldDefinition(Tfs.FieldDefinition fieldDefinition)
+        {
+            return new FieldDefinition(fieldDefinition);
+        }
     }
 }

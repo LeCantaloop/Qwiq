@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Proxies;
 
 namespace Microsoft.Qwiq
 {

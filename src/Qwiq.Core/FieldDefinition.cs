@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Microsoft.Qwiq.Proxies;
-
 namespace Microsoft.Qwiq
 {
     /// <summary>
@@ -9,6 +7,12 @@ namespace Microsoft.Qwiq
     /// </summary>
     public class FieldDefinition : IFieldDefinition, IComparable<IFieldDefinition>, IEquatable<IFieldDefinition>
     {
+        internal FieldDefinition(int id, string referenceName, string name)
+            : this(referenceName, name)
+        {
+            Id = id;
+        }
+
         internal FieldDefinition(string referenceName, string name)
         {
             if (string.IsNullOrWhiteSpace(referenceName))
@@ -19,11 +23,14 @@ namespace Microsoft.Qwiq
 
             Name = name;
             ReferenceName = referenceName;
+            Id = name.GetHashCode() ^ referenceName.GetHashCode();
         }
 
         public string Name { get; }
 
         public string ReferenceName { get; }
+
+        public int Id { get; }
 
         public int CompareTo(IFieldDefinition other)
         {

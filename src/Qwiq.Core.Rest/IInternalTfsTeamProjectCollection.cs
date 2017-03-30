@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.Services.WebApi;
 
-namespace Microsoft.Qwiq.Rest.Proxies
+namespace Microsoft.Qwiq.Rest
 {
     internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection
     {

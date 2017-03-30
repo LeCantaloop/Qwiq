@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq.Soap.Proxies
         {
             get
             {
-                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field)) as IField);
+                return _rev.Fields.Cast<Tfs.Field>().ToDictionary(field => field.Name, field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new FieldProxy(field)));
             }
         }
 

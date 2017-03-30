@@ -2,23 +2,16 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
-    public class ExternalLinkProxy : LinkProxy, IExternalLink
+    internal class ExternalLinkProxy : LinkProxy, IExternalLink
     {
-        private readonly Tfs.ExternalLink externalLink;
-
         internal ExternalLinkProxy(Tfs.ExternalLink externalLink) : base(externalLink)
         {
-            this.externalLink = externalLink;
+            LinkedArtifactUri = externalLink.LinkedArtifactUri;
+            ArtifactLinkTypeName = externalLink.ArtifactLinkType.Name;
         }
 
-        public string LinkedArtifactUri
-        {
-            get { return this.externalLink.LinkedArtifactUri; }
-        }
+        public string LinkedArtifactUri { get; }
 
-        public string ArtifactLinkTypeName
-        {
-            get { return this.externalLink.ArtifactLinkType.Name; }
-        }
+        public string ArtifactLinkTypeName { get; }
     }
 }

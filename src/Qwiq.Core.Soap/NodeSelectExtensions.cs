@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql;
-
-namespace Microsoft.Qwiq.Rest
+// ReSharper disable CheckNamespace
+namespace Microsoft.TeamFoundation.WorkItemTracking.Client.Wiql
+// ReSharper restore CheckNamespace
 {
     public static class NodeSelectExtensions
     {

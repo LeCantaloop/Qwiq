@@ -25,6 +25,8 @@ namespace Microsoft.Qwiq.Soap.Proxies
 
         public string Name => _field.Name;
 
+        public string ReferenceName => _field.ReferenceName;
+
         public object OriginalValue
         {
             get => _field.OriginalValue;

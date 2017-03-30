@@ -45,7 +45,9 @@ namespace Microsoft.Qwiq
 
         private class Nested
         {
+            // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly NodeComparer Instance = new NodeComparer();
+            // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

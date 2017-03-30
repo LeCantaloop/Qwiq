@@ -4,5 +4,6 @@
     {
         string Name { get; }
         string ReferenceName { get; }
+        int Id { get; }
     }
 }

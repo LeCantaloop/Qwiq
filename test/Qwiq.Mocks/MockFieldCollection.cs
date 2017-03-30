@@ -1,28 +1,55 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockFieldCollection : IFieldCollection
     {
-        private readonly IDictionary<string, IField> _values;
+        private readonly IDictionary<int, IField> _cache;
 
-        public MockFieldCollection(IDictionary<string, IField> values)
+        private readonly IFieldDefinitionCollection _definitions;
+
+        public MockFieldCollection(IFieldDefinitionCollection definitions)
         {
-            _values = values;
+            _definitions = definitions;
+            _cache = new Dictionary<int, IField>();
         }
 
-        public MockFieldCollection(ICollection<IField> fields)
-            : this(fields.ToDictionary(k => k.Name, e => e, StringComparer.OrdinalIgnoreCase))
-        {
+        public int Count => _definitions.Count;
 
+        public IField this[string name]
+        {
+            get
+            {
+                if (name == null) throw new ArgumentNullException(nameof(name));
+                return GetById(_definitions[name].Id);
+            }
+        }
+
+        public bool Contains(string name)
+        {
+            try
+            {
+                return _definitions.Contains(name);
+            }
+            // REVIEW: Catch a more specific exception
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public IField GetById(int id)
+        {
+            var byId = TryGetById(id);
+            if (byId == null) throw new ArgumentException($"Field {id} does not exist.", nameof(id));
+            return byId;
         }
 
         public IEnumerator<IField> GetEnumerator()
         {
-            return _values.Values.GetEnumerator();
+            return _cache.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -30,13 +57,24 @@ namespace Microsoft.Qwiq.Mocks
             return GetEnumerator();
         }
 
-        public bool Contains(string fieldName)
+        public IField TryGetById(int id)
         {
-            return _values.ContainsKey(fieldName);
+            IField field;
+            if (_cache.TryGetValue(id, out field)) return field;
+            try
+            {
+                var def = _definitions.TryGetById(id);
+                if (def != null)
+                {
+                    field = new MockField(def);
+                    _cache[id] = field;
+                }
+            }
+            // REVIEW: Catch a more specific exception
+            catch (Exception)
+            {
+            }
+            return field;
         }
-
-        public IField this[string name] => _values[name];
-
-        public int Count => _values.Count;
     }
 }

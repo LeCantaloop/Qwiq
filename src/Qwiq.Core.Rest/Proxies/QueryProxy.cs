@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Proxies;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest.Proxies

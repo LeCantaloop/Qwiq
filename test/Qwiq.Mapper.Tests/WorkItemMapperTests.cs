@@ -143,16 +143,16 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void Given()
         {
             var wit = new MockWorkItemType("Baz");
-
             WorkItemStore =
                 new MockWorkItemStore(
                     new[]
-                    {
-                        new MockWorkItem(wit) {Id = 233 },
-                        new MockWorkItem(wit) {Id = 144 }
-                    });
+                        {
+                            new MockWorkItem(wit) {Id = 233 },
+                            new MockWorkItem(wit) {Id = 144 }
+                        });
 
             var related = new MockWorkItemLinkType("NS.SampleLink", true, "Taker", "Giver");
+
 
             var links = new ILink[]
             {
@@ -170,7 +170,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             SourceWorkItems = new IWorkItem[]
             {
-                new MockWorkItem(wit, WorkItemBackingStore)
+                new MockWorkItem("Baz", WorkItemBackingStore)
                 {
                     Links = new MockLinkCollection(links)
                 }

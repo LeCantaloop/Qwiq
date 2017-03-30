@@ -8,6 +8,7 @@ namespace Microsoft.Qwiq
         bool IsRequired { get; }
         bool IsValid { get; }
         string Name { get; }
+        string ReferenceName { get; }
         object OriginalValue { get; set; }
         ValidationState ValidationState { get; }
         bool IsChangedByUser { get; }

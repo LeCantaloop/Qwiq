@@ -17,7 +17,6 @@ namespace Microsoft.Qwiq.Rest.Proxies
                 project.Id,
                 project.Name,
                 new Uri(project.Url),
-                store,
                 new Lazy<IEnumerable<IWorkItemType>>(
                     () =>
                         {
@@ -32,7 +31,7 @@ namespace Microsoft.Qwiq.Rest.Proxies
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new Node(result),  };
+                            return new[] { new Node(result), };
                         }),
                 new Lazy<IEnumerable<INode>>(
                     () =>

@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Proxies
+namespace Microsoft.Qwiq
 {
     public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {
@@ -30,7 +30,9 @@ namespace Microsoft.Qwiq.Proxies
 
         private class Nested
         {
+            // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly FieldDefinitionComparer Instance = new FieldDefinitionComparer();
+            // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

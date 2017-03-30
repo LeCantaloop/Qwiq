@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Proxies;
-
 namespace Microsoft.Qwiq
 {
     public class WorkItemLinkTypeCollection : IReadOnlyCollection<IWorkItemLinkType>

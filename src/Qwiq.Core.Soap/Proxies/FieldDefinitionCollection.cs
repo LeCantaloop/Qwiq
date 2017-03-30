@@ -2,15 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap.Proxies
 {
     internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection _innerCollection;
+        private readonly Tfs.FieldDefinitionCollection _innerCollection;
 
-        internal FieldDefinitionCollection(TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection innerCollection)
+        internal FieldDefinitionCollection(Tfs.FieldDefinitionCollection innerCollection)
         {
             _innerCollection = innerCollection;
         }
@@ -25,13 +25,17 @@ namespace Microsoft.Qwiq.Soap.Proxies
             return _innerCollection.Contains(fieldName);
         }
 
+        public override IFieldDefinition TryGetById(int id)
+        {
+            return ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(_innerCollection.TryGetById(id)));
+        }
+
         public override IEnumerator<IFieldDefinition> GetEnumerator()
         {
-            return _innerCollection.Cast<TeamFoundation.WorkItemTracking.Client.FieldDefinition>()
-                                   .Select(
-                                       field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(
-                                           new FieldDefinition(field)))
-                                   .GetEnumerator();
+            return _innerCollection
+                        .Cast<Tfs.FieldDefinition>()
+                        .Select(field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(field)))
+                        .GetEnumerator();
         }
     }
 }

@@ -1,13 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public interface IFieldCollection : IEnumerable<IField>
+    public interface IFieldCollection : IReadOnlyCollection<IField>
     {
         IField this[string name] { get; }
-        int Count { get; }
-        bool Contains(string fieldName);
+        bool Contains(string name);
+
+        IField TryGetById(int id);
+
+        IField GetById(int id);
     }
 }
 

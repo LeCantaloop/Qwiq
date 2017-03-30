@@ -16,7 +16,6 @@ namespace Microsoft.Qwiq
             Guid guid,
             string name,
             Uri uri,
-            IWorkItemStore store,
             Lazy<IEnumerable<IWorkItemType>> wits,
             Lazy<IEnumerable<INode>> area,
             Lazy<IEnumerable<INode>> iteration)
@@ -25,7 +24,6 @@ namespace Microsoft.Qwiq
             Guid = guid;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Uri = uri ?? throw new ArgumentNullException(nameof(uri));
-            Store = store ?? throw new ArgumentNullException(nameof(store));
             _wits = wits ?? throw new ArgumentNullException(nameof(wits));
             _area = area ?? throw new ArgumentNullException(nameof(area));
             _iteration = iteration ?? throw new ArgumentNullException(nameof(iteration));
@@ -54,8 +52,6 @@ namespace Microsoft.Qwiq
         public IEnumerable<INode> IterationRootNodes => _iteration.Value;
 
         public string Name { get; }
-
-        public IWorkItemStore Store { get; }
 
         public Uri Uri { get; }
 

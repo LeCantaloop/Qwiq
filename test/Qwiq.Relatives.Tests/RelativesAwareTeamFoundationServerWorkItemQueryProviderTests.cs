@@ -48,29 +48,38 @@ namespace Microsoft.Qwiq.Relatives.Tests
     {
         public override void Given()
         {
+            var wit = new MockWorkItemType(
+                "SimpleMockWorkItem",
+                new []
+                    {
+                        CoreFieldDefinitions.ReferenceNameLookup[CoreFieldRefNames.Id],
+                        CoreFieldDefinitions.ReferenceNameLookup[CoreFieldRefNames.WorkItemType],
+                        MockFieldDefinition.Create("Priority"),
+                    });
+
             WorkItemStoreWorkItems = new List<IWorkItem>
             {
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                     {
                         {"ID", 1},
                         {"Priority", 2}
                     }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                     {
                         {"ID", 2},
                         {"Priority", 4}
                     }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                     {
                         {"ID", 3},
                         {"Priority", 3}
                     }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                     {
                         {"ID", 4},
                         {"Priority", 4}
                     }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                     {
                         {"ID", 5},
                         {"Priority", 5}

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
+    
+
     public class WorkItemLinkTypeEndCollection : IReadOnlyCollection<IWorkItemLinkTypeEnd>
     {
         private readonly Dictionary<string, IWorkItemLinkTypeEnd> _mapByName;

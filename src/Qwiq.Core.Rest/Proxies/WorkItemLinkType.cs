@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq.Rest.Proxies
 {
-    internal partial class WorkItemLinkType : Qwiq.WorkItemLinkType
+    internal class WorkItemLinkType : Qwiq.WorkItemLinkType
     {
         internal WorkItemLinkType(string referenceName)
             : base(referenceName)
