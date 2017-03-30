@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Soap.Proxies;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -20,7 +19,7 @@ namespace Microsoft.Qwiq.Soap
 
         public IEnumerable<IFieldConflict> FieldConflicts
         {
-            get { return _exception.FieldConflicts.Select(item => ExceptionHandlingDynamicProxyFactory.Create<IFieldConflict>(new FieldConflictProxy(item))); }
+            get { return _exception.FieldConflicts.Select(item => ExceptionHandlingDynamicProxyFactory.Create<IFieldConflict>(new FieldConflict(item))); }
         }
     }
 }

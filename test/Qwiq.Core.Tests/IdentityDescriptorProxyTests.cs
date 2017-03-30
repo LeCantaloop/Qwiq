@@ -1,19 +1,19 @@
-using Microsoft.Qwiq.Soap.Proxies;
 using Microsoft.Qwiq.Tests.Common;
-using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
+
+
 
 namespace Microsoft.Qwiq.Core.Tests
 {
     public abstract class IdentityDescriptorProxyTests : ContextSpecification
     {
-        protected IdentityDescriptorProxy IdentityDescriptorProxy;
-        protected IdentityDescriptor IdentityDescriptor;
+        protected Soap.IdentityDescriptor IdentityDescriptorProxy;
+        protected TeamFoundation.Framework.Client.IdentityDescriptor IdentityDescriptor;
 
         public override void When()
         {
-            IdentityDescriptorProxy = new IdentityDescriptorProxy(IdentityDescriptor);
+            IdentityDescriptorProxy = new Soap.IdentityDescriptor(IdentityDescriptor);
         }
     }
 
@@ -25,7 +25,7 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void Given()
         {
-            IdentityDescriptor = new IdentityDescriptor(IdentityType, Identifier);
+            IdentityDescriptor = new TeamFoundation.Framework.Client.IdentityDescriptor(IdentityType, Identifier);
         }
 
         [TestMethod]

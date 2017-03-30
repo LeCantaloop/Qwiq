@@ -1,6 +1,5 @@
 ﻿using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Rest.Proxies;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -100,7 +99,7 @@ namespace Microsoft.Qwiq.Rest
 
         private static IWorkItemStore CreateRestWorkItemStore(IInternalTfsTeamProjectCollection tfs)
         {
-            return new WorkItemStoreProxy(() => tfs, QueryFactory.GetInstance);
+            return new WorkItemStore(() => tfs, QueryFactory.GetInstance);
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

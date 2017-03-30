@@ -4,12 +4,13 @@ using System.Linq;
 
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Soap;
-using Microsoft.Qwiq.Soap.Proxies;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
+
+using TfsTeamProjectCollection = Microsoft.TeamFoundation.Client.TfsTeamProjectCollection;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
@@ -162,7 +163,7 @@ namespace Microsoft.Qwiq.Core.Tests
     {
         protected override IWorkItemStore Create()
         {
-            return new WorkItemStoreProxy((TfsTeamProjectCollection)null, s => QueryFactory);
+            return new WorkItemStore((TfsTeamProjectCollection)null, s => QueryFactory);
         }
     }
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Soap.Proxies;
 using Microsoft.TeamFoundation;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
@@ -32,7 +31,7 @@ namespace Microsoft.Qwiq.Soap
                             var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
                             var tfsProxy =
                                 ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
-                                    new TfsTeamProjectCollectionProxy(tfsNative));
+                                    new TfsTeamProjectCollection(tfsNative));
 
                             options.Notifications.AuthenticationSuccess(
                                 new AuthenticationSuccessNotification(credential, tfsProxy));
@@ -88,16 +87,16 @@ namespace Microsoft.Qwiq.Soap
             return Instance;
         }
 
-        private static TfsTeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
+        private static TeamFoundation.Client.TfsTeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
         {
-            var tfsServer = new TfsTeamProjectCollection(endpoint, credentials);
+            var tfsServer = new TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
             tfsServer.EnsureAuthenticated();
             return tfsServer;
         }
 
         private static IWorkItemStore CreateSoapWorkItemStore(IInternalTfsTeamProjectCollection tfs)
         {
-            return new WorkItemStoreProxy(() => tfs, QueryFactory.GetInstance);
+            return new WorkItemStore(() => tfs, QueryFactory.GetInstance);
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

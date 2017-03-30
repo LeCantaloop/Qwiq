@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.Qwiq.Soap.Proxies;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -38,15 +37,15 @@ namespace Microsoft.Qwiq.Soap
             {
                 case Tfs.BaseLinkType.RelatedLink:
                     var relatedLink = (Tfs.RelatedLink)link;
-                    return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLinkProxy(relatedLink));
+                    return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLink(relatedLink));
 
                 case Tfs.BaseLinkType.Hyperlink:
                     var hyperlink = (Tfs.Hyperlink)link;
-                    return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new HyperlinkProxy(hyperlink));
+                    return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(hyperlink));
 
                 case Tfs.BaseLinkType.ExternalLink:
                     var externalLink = (Tfs.ExternalLink)link;
-                    return ExceptionHandlingDynamicProxyFactory.Create<IExternalLink>(new ExternalLinkProxy(externalLink));
+                    return ExceptionHandlingDynamicProxyFactory.Create<IExternalLink>(new ExternalLink(externalLink));
 
                 default:
                     throw new ArgumentException("Unknown link type", nameof(link));
