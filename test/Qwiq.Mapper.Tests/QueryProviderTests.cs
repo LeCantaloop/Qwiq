@@ -14,34 +14,34 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         protected override IWorkItemStore CreateWorkItemStore()
         {
-
+            var wit = new MockWorkItemType("SimpleMockWorkItem", new []{MockFieldDefinition.Create("ID"), MockFieldDefinition.Create("IntField")});
 
             var workItems = new List<IWorkItem>
             {
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                 {
                     {"ID", 1},
                     {"IntField", 2}
                 }),
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                 {
                     {"ID", 2},
                     {"IntField", 4}
                 })
                 ,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                 {
                     {"ID", 3},
                     {"IntField", 3}
                 })
                 ,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                 {
                     {"ID", 4},
                     {"IntField", 4}
                 })
                 ,
-                new MockWorkItem("SimpleMockWorkItem", new Dictionary<string, object>
+                new MockWorkItem(wit, new Dictionary<string, object>
                 {
                     {"ID", 5},
                     {"IntField", 5}
@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
             };
 
             var tpcMock = new MockTfsTeamProjectCollection();
-            var projMock = new MockProject(workItems.Select(s=>s.Type).Distinct());
+            var projMock = new MockProject(wit);
 
             return new MockWorkItemStore(tpcMock, projMock, null, workItems, links);
         }

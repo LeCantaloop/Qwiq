@@ -23,7 +23,7 @@ namespace Microsoft.Qwiq.Mocks
         {
             if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
             WorkItemFactory = () => new MockWorkItem(this);
-            FieldDefinitionFactory = () => new MockFieldDefinitionCollection(fieldDefinitions);
+            FieldDefinitionFactory = () => new MockFieldDefinitionCollection(fieldDefinitions.Union(new[] { CoreFieldDefinitions.Id, CoreFieldDefinitions.WorkItemType }));
         }
 
         public MockWorkItemType(string name, IFieldDefinitionCollection fieldDefinitions, string description = null)

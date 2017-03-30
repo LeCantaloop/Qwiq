@@ -39,7 +39,9 @@ namespace Qwiq.Identity.Tests
                                 : new MockIdentityManagementService(Identities));
             var sourceWorkItems = new[]
             {
-                new MockWorkItem(new Dictionary<string, object>
+                new MockWorkItem(
+                    new MockWorkItemType("Baz", new[]{MockFieldDefinition.Create(MockIdentityType.BackingField)}),
+                    new Dictionary<string, object>
                     {
                         { MockIdentityType.BackingField, IdentityFieldBackingValue }
                     })
@@ -50,7 +52,7 @@ namespace Qwiq.Identity.Tests
 
         public override void When()
         {
-            _strategy.Map(typeof (MockIdentityType), _workItemMappings, null);
+            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
         }
     }
 
@@ -124,7 +126,7 @@ namespace Qwiq.Identity.Tests
     [TestClass]
     public class given_a_work_item_with_defined_fields_when_the_field_names_to_properties_are_retrieved : ContextSpecification
     {
-        private readonly Type _identityType = typeof (MockIdentityType);
+        private readonly Type _identityType = typeof(MockIdentityType);
         private IDictionary<string, PropertyInfo> Expected { get; set; }
         private IDictionary<string, PropertyInfo> Actual { get; set; }
 
@@ -153,6 +155,6 @@ namespace Qwiq.Identity.Tests
         }
     }
 
-    
+
 }
 

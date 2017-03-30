@@ -40,16 +40,13 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        /// <summary>
-        /// Creates a new work item type of the specified name and new field definitions for that type based on the supplied fields.
-        /// </summary>
-        /// <param name="workItemType"></param>
-        /// <param name="fields"></param>
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null, IDictionary<string, object> fields = null)
             : this(
                   new MockWorkItemType(
                       workItemType ?? "Mock",
-                      CoreFieldDefinitions.All.Union(fields?.Select(p => MockFieldDefinition.Create(p.Key)) ?? Enumerable.Empty<IFieldDefinition>())),
+                      CoreFieldDefinitions.All.Union(fields?.Keys.Select(MockFieldDefinition.Create) ?? Enumerable.Empty<IFieldDefinition>())),
                   fields)
         {
         }
