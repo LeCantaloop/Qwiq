@@ -74,7 +74,6 @@
     <Compile Include="QueryBuilderTests.cs" />
     <Compile Include="QueryProviderTests.cs" />
     <Compile Include="QueryTestsBase.cs" />
-    <Compile Include="TypeParserTests.cs" />
     <Compile Include="WorkItemMapperTests.cs" />
   </ItemGroup>
   <ItemGroup>

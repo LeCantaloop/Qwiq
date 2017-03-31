@@ -61,7 +61,7 @@ namespace Should
             }
         }
 
-        private static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
+        public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
         {
             var sb = new StringBuilder();
             sb.AppendLine("{");
@@ -87,7 +87,7 @@ namespace Should
             return sb.ToString();
         }
 
-        private static string ToUsefulString(this object obj)
+        public static string ToUsefulString(this object obj)
         {
             string str;
             if (obj == null)

@@ -208,12 +208,10 @@
     <Compile Include="Attributes\WorkItemTypeAttribute.cs" />
     <Compile Include="FieldMapper.cs" />
     <Compile Include="IIdentifiable.cs" />
-    <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
     <Compile Include="MapperTeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeParser.cs" />
     <Compile Include="WorkItemMapper.cs" />
     <Compile Include="WorkItemMapperStrategyBase.cs" />
   </ItemGroup>

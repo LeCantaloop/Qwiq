@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Rest
 {
-    internal class WorkItem : IWorkItem
+    public class WorkItem : Qwiq.WorkItem
     {
         private readonly TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem _item;
 
@@ -14,186 +13,26 @@ namespace Microsoft.Qwiq.Rest
             _item = item;
             _wit = wit;
             Uri = new Uri(item.Url);
-
+            Url = item.Url;
         }
 
-        public string AreaPath
-        {
-            get => GetValue<string>(CoreFieldRefNames.AreaPath);
-            set => SetValue(CoreFieldRefNames.AreaPath, value);
-        }
+        public override int Id => _item.Id.GetValueOrDefault(0);
 
-        public string AssignedTo
-        {
-            get => GetValue<string>(CoreFieldRefNames.AssignedTo);
-            set => SetValue(CoreFieldRefNames.AssignedTo, value);
-        }
-
-        public int AttachedFileCount => GetValue<int>(CoreFieldRefNames.AttachedFileCount);
-
-        public IEnumerable<IAttachment> Attachments => throw new NotImplementedException();
-
-        public string ChangedBy
-        {
-            get => GetValue<string>(CoreFieldRefNames.ChangedBy);
-            set => SetValue(CoreFieldRefNames.ChangedBy, value);
-        }
-
-        public DateTime ChangedDate
-        {
-            get => GetValue<DateTime>(CoreFieldRefNames.ChangedDate);
-            set => SetValue(CoreFieldRefNames.ChangedDate, value);
-        }
-
-        public string CreatedBy
-        {
-            get => GetValue<string>(CoreFieldRefNames.CreatedBy);
-            set => SetValue(CoreFieldRefNames.CreatedBy, value);
-        }
-
-        public DateTime CreatedDate
-        {
-            get => GetValue<DateTime>(CoreFieldRefNames.CreatedDate);
-            set => SetValue(CoreFieldRefNames.CreatedDate, value);
-        }
-
-        public string Description
-        {
-            get => GetValue<string>(CoreFieldRefNames.Description);
-            set => SetValue(CoreFieldRefNames.Description, value);
-        }
-
-        public int ExternalLinkCount => GetValue<int>(CoreFieldRefNames.ExternalLinkCount);
-
-        public IFieldCollection Fields => throw new NotImplementedException();
-
-        public string History
-        {
-            get => GetValue(CoreFieldRefNames.History) as string ?? string.Empty;
-            set => SetValue(CoreFieldRefNames.History, value);
-        }
-
-        public int HyperLinkCount => GetValue<int>(CoreFieldRefNames.HyperLinkCount);
-
-        public int Id => _item.Id.GetValueOrDefault(0);
-
-        public bool IsDirty => throw new NotImplementedException();
-
-        public string IterationPath
-        {
-            get => GetValue<string>(CoreFieldRefNames.IterationPath);
-            set => SetValue(CoreFieldRefNames.IterationPath, value);
-        }
-
-        public string Keywords
+        public override string Keywords
         {
             get => GetValue<string>(WorkItemFields.Keywords);
             set => SetValue(WorkItemFields.Keywords, value);
         }
 
-        public ICollection<ILink> Links => throw new NotImplementedException();
+        public override int Rev => _item.Rev.GetValueOrDefault(0);
 
-        public int RelatedLinkCount => GetValue<int>(CoreFieldRefNames.RelatedLinkCount);
+        public override IWorkItemType Type => _wit.Value;
 
-        public long Rev => GetValue<long>(CoreFieldRefNames.Rev);
+        public override Uri Uri { get; }
 
-        public DateTime RevisedDate => GetValue<DateTime>(CoreFieldRefNames.RevisedDate);
+        public override string Url { get; }
 
-        public long Revision => Rev;
-
-        public IEnumerable<IRevision> Revisions => throw new NotImplementedException();
-
-        public string State
-        {
-            get => GetValue<string>(CoreFieldRefNames.State);
-            set => SetValue(CoreFieldRefNames.State, value);
-        }
-
-        public string Tags
-        {
-            get => GetValue<string>(CoreFieldRefNames.Tags);
-            set => SetValue(CoreFieldRefNames.Tags, value);
-        }
-
-        public string Title
-        {
-            get => GetValue<string>(CoreFieldRefNames.Title);
-            set => SetValue(CoreFieldRefNames.Title, value);
-        }
-
-        public IWorkItemType Type => _wit.Value;
-
-        public Uri Uri { get; }
-
-        public object this[string name]
-        {
-            get => GetValue(name);
-            set => SetValue(name, value);
-        }
-
-        public void ApplyRules(bool doNotUpdateChangedBy = false)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Close()
-        {
-        }
-
-        public IWorkItem Copy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Open()
-        {
-        }
-
-        public void PartialOpen()
-        {
-        }
-
-        public void Reset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save(SaveFlags saveFlags)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IField> Validate()
-        {
-            throw new NotImplementedException();
-        }
-
-        private T GetValue<T>(string field)
-        {
-            return (T)GetValue(field);
-        }
-
-        private object GetValue(string field)
+        protected override object GetValue(string field)
         {
             //if (!Type.FieldDefinitions.Contains(field))
             //{
@@ -205,7 +44,7 @@ namespace Microsoft.Qwiq.Rest
             return !_item.Fields.TryGetValue(field, out object val) ? null : val;
         }
 
-        private void SetValue(string field, object value)
+        protected override void SetValue(string field, object value)
         {
             _item.Fields[field] = value;
         }

@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq.Rest
             if (!m.Success) return null;
 
             DateTime retval;
-            if (!DateTime.TryParse(m.Value, out retval))
+            if (!DateTime.TryParse(m.Groups["date"].Value, out retval))
             {
                 throw new Exception();
             }
@@ -106,7 +106,7 @@ namespace Microsoft.Qwiq.Rest
 
             if (_ids == null) yield break;
 
-            var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.Fields;
+            var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.All;
             var qry = _ids.Partition(_workItemStore.BatchSize);
             var ts = qry.Select(s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, _fields, _asOf, expand, WorkItemErrorPolicy.Omit));
 

@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq.Core.Tests
     {
         private const int Id = 10726528;
 
-        private static readonly string Wiql = $"SELECT {string.Join(", ", CoreFields)} FROM WorkItems WHERE [System.Id] = {Id}";
+        private static readonly string Wiql = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems WHERE [System.Id] = {Id}";
 
         public override void When()
         {

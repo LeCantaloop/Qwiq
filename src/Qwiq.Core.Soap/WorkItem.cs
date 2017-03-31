@@ -9,354 +9,295 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 namespace Microsoft.Qwiq.Soap
 {
     /// <summary>
-    /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
-    /// all the TFS libraries.
+    ///     Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
+    ///     all the TFS libraries.
     /// </summary>
-    internal class WorkItem : IWorkItem
+    public class WorkItem : Qwiq.WorkItem, IWorkItem
     {
         private readonly Tfs.WorkItem _item;
 
         internal WorkItem(Tfs.WorkItem item)
+            : base(ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(item.Type)))
         {
             _item = item;
-        }
-
-        public string AssignedTo
-        {
-            get => _item[Tfs.CoreFieldReferenceNames.AssignedTo].ToString();
-            set => _item[Tfs.CoreFieldReferenceNames.AssignedTo] = value;
+            Url = item.Uri.ToString();
         }
 
         /// <summary>
-        /// Gets or sets the string value of the AreaPath field for this work item.
+        ///     Gets or sets the string value of the AreaPath field for this work item.
         /// </summary>
-        public string AreaPath
+        public override string AreaPath
         {
             get => _item.AreaPath;
             set => _item.AreaPath = value;
         }
 
         /// <summary>
-        /// Gets the number of attached files for this work item.
+        ///     Gets the number of attached files for this work item.
         /// </summary>
-        public int AttachedFileCount => _item.AttachedFileCount;
+        public override int AttachedFileCount => _item.AttachedFileCount;
 
         /// <summary>
-        /// Gets the Microsoft.TeamFoundation.WorkItemTracking.Client.AttachmentCollection
-        /// object that represents the attachments that belong to this work item.
+        ///     Gets the Microsoft.TeamFoundation.WorkItemTracking.Client.AttachmentCollection
+        ///     object that represents the attachments that belong to this work item.
         /// </summary>
-        public IEnumerable<IAttachment> Attachments
+        public override IEnumerable<IAttachment> Attachments
         {
-            get { return _item.Attachments.Cast<Tfs.Attachment>().Select(item => ExceptionHandlingDynamicProxyFactory.Create<IAttachment>(new Attachment(item))); }
+            get
+            {
+                return _item.Attachments.Cast<Tfs.Attachment>()
+                            .Select(
+                                item => ExceptionHandlingDynamicProxyFactory
+                                    .Create<IAttachment>(new Attachment(item)));
+            }
         }
 
-        /// <summary>
-        /// Gets the string value of the ChangedBy field for this work item.
-        /// </summary>
-        public string ChangedBy => _item.ChangedBy;
+
 
         /// <summary>
-        /// Gets the System.DateTime object that represents the date and time that this
-        /// work item was last changed.
+        ///     Gets the string value of the ChangedBy field for this work item.
         /// </summary>
-        public DateTime ChangedDate => _item.ChangedDate;
+        public override string ChangedBy => _item.ChangedBy;
 
         /// <summary>
-        /// Gets the string value of the CreatedBy field for this work item.
+        ///     Gets the System.DateTime object that represents the date and time that this
+        ///     work item was last changed.
         /// </summary>
-        public string CreatedBy => _item.CreatedBy;
+        public override DateTime ChangedDate => _item.ChangedDate;
 
         /// <summary>
-        /// Gets the System.DateTime object that represents the date and time that this
-        /// work item was created.
+        ///     Gets the string value of the CreatedBy field for this work item.
         /// </summary>
-        public DateTime CreatedDate => _item.CreatedDate;
+        public override string CreatedBy => _item.CreatedBy;
 
         /// <summary>
-        /// Closes this WorkItem instance and frees memory that is associated with it.
+        ///     Gets the System.DateTime object that represents the date and time that this
+        ///     work item was created.
         /// </summary>
-        public void Close()
-        {
-            _item.Close();
-        }
+        public override DateTime CreatedDate => _item.CreatedDate;
 
         /// <summary>
-        /// Gets or sets a string that describes this work item.
+        ///     Gets or sets a string that describes this work item.
         /// </summary>
-        public string Description
+        public override string Description
         {
             get => _item.Description;
             set => _item.Description = value;
         }
 
         /// <summary>
-        /// Gets the number of external links in this work item.
+        ///     Gets the number of external links in this work item.
         /// </summary>
-        public int ExternalLinkCount => _item.ExternalLinkCount;
+        public override int ExternalLinkCount => _item.ExternalLinkCount;
 
-        public IFieldCollection Fields => ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(new FieldCollection(_item.Fields));
+        public override IFieldCollection Fields => ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(
+            new FieldCollection(_item.Fields));
 
         /// <summary>
-        /// Gets or sets the string value of the History field for this work item.
+        ///     Gets or sets the string value of the History field for this work item.
         /// </summary>
-        public string History
+        public override string History
         {
             get => _item.History;
             set => _item.History = value;
         }
 
         /// <summary>
-        /// Gets the number of hyperlinks in this work item.
+        ///     Gets the number of hyperlinks in this work item.
         /// </summary>
-        public int HyperLinkCount => _item.HyperLinkCount;
+        public new int HyperLinkCount => _item.HyperLinkCount;
 
         /// <summary>
-        /// Gets the ID of this work item.
+        ///     Gets the ID of this work item.
         /// </summary>
-        public int Id => _item.Id;
+        public override int Id => _item.Id;
+
+        public override bool IsDirty => _item.IsDirty;
 
         /// <summary>
-        /// Gets or sets the string value of the IterationPath field of this work item.
+        ///     Gets or sets the string value of the IterationPath field of this work item.
         /// </summary>
-        public string IterationPath
+        public override string IterationPath
         {
             get => _item.IterationPath;
             set => _item.IterationPath = value;
         }
 
-        /// <summary>
-        /// Gets the collection of the links in this work item.
-        /// </summary>
-        /// <summary>
-        /// Gets the links of the work item in this revision.
-        /// </summary>
-        public ICollection<ILink> Links => ExceptionHandlingDynamicProxyFactory.Create<ICollection<ILink>>(new LinkCollection(_item));
-
-        /// <summary>
-        /// Gets the number of related links of this work item.
-        /// </summary>
-        public int RelatedLinkCount => _item.RelatedLinkCount;
-
-        /// <summary>
-        /// Gets a System.DateTime object that represents the revision date and time
-        /// of this work item.
-        /// </summary>
-        public DateTime RevisedDate => _item.RevisedDate;
-
-        /// <summary>
-        /// Gets the integer that represents the revision number of this work item.
-        /// </summary>
-        public long Revision => _item.Revision;
-
-        /// <summary>
-        /// Gets an object that represents a collection of valid revision numbers for this work
-        /// item.
-        /// </summary>
-        public IEnumerable<IRevision> Revisions
-        {
-            get { return _item.Revisions.Cast<Tfs.Revision>().Select(r => ExceptionHandlingDynamicProxyFactory.Create<IRevision>(new Revision(r))); }
-        }
-
-        /// <summary>
-        /// Gets or sets a string that describes the state of this work item.
-        /// </summary>
-        public string State
-        {
-            get => _item.State;
-            set => _item.State = value;
-        }
-
-        public string Tags
-        {
-            get => _item.Tags;
-            set => _item["Tags"] = value;
-        }
-
-        public string Keywords
+        public override string Keywords
         {
             get => (string)_item[WorkItemFields.Keywords];
             set => _item[WorkItemFields.Keywords] = value;
         }
 
         /// <summary>
-        /// Gets or sets a string that describes the title of this work item.
+        ///     Gets the collection of the links in this work item.
         /// </summary>
-        public string Title
+        /// <summary>
+        ///     Gets the links of the work item in this revision.
+        /// </summary>
+        public override ICollection<ILink> Links => ExceptionHandlingDynamicProxyFactory.Create<ICollection<ILink>>(
+            new LinkCollection(_item));
+
+        /// <summary>
+        ///     Gets the number of related links of this work item.
+        /// </summary>
+        public override int RelatedLinkCount => _item.RelatedLinkCount;
+
+        public override int Rev => _item.Rev;
+
+        /// <summary>
+        ///     Gets a System.DateTime object that represents the revision date and time
+        ///     of this work item.
+        /// </summary>
+        public override DateTime RevisedDate => _item.RevisedDate;
+
+        /// <summary>
+        ///     Gets the integer that represents the revision number of this work item.
+        /// </summary>
+        public override int Revision => _item.Revision;
+
+        /// <summary>
+        ///     Gets an object that represents a collection of valid revision numbers for this work
+        ///     item.
+        /// </summary>
+        public override IEnumerable<IRevision> Revisions
+        {
+            get
+            {
+                return _item.Revisions.Cast<Tfs.Revision>()
+                            .Select(r => ExceptionHandlingDynamicProxyFactory.Create<IRevision>(new Revision(r)));
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a string that describes the state of this work item.
+        /// </summary>
+        public override string State
+        {
+            get => _item.State;
+            set => _item.State = value;
+        }
+
+        
+
+        public override string Tags
+        {
+            get => _item.Tags;
+            set => _item.Tags = value;
+        }
+
+        /// <summary>
+        ///     Gets or sets a string that describes the title of this work item.
+        /// </summary>
+        public override string Title
         {
             get => _item.Title;
             set => _item.Title = value;
         }
 
         /// <summary>
-        /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object
-        /// that represents the type of this work item.
+        ///     Gets the uniform resource identifier (System.Uri) of this work item.
         /// </summary>
-        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
-        /// The Type property is null.
-        /// </exception>
-        public IWorkItemType Type => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(_item.Type));
+        public override Uri Uri => _item.Uri;
 
-        /// <summary>
-        /// Gets the uniform resource identifier (System.Uri) of this work item.
-        /// </summary>
-        public Uri Uri => _item.Uri;
+        public override string Url { get; }
 
-        public long Rev => _item.Rev;
-
-        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        public override void ApplyRules(bool doNotUpdateChangedBy = false)
         {
-            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
-            return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLink(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id)));
-        }
-
-        public IHyperlink CreateHyperlink(string location)
-        {
-            return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(new Tfs.Hyperlink(location)));
+            _item.ApplyRules(doNotUpdateChangedBy);
         }
 
         /// <summary>
-        /// Gets or sets the value of a field in this work item that is specified by
-        /// the field name.
+        ///     Closes this WorkItem instance and frees memory that is associated with it.
         /// </summary>
-        /// <param name="name">
-        /// The string that is passed in name could be either the field name or a reference name.
-        /// </param>
-        /// <returns>The object that is contained in this field.</returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// The name parameter is null.
-        /// </exception>
-        public object this[string name]
+        public override void Close()
         {
-            get => _item[name];
-            set => _item[name] = value;
+            _item.Close();
         }
 
         /// <summary>
-        /// Creates a copy of this WorkItem instance.
+        ///     Creates a copy of this WorkItem instance.
         /// </summary>
         /// <returns>A new WorkItem instance that is a copy of this WorkItem instance.</returns>
-        public IWorkItem Copy()
+        public override IWorkItem Copy()
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(_item.Copy()));
         }
 
-        /// <summary>
-        /// Creates a copy of this WorkItem instance that is of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType.
-        /// </summary>
-        /// <param name="targetType">The type of the target work item.</param>
-        /// <returns>
-        /// A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
-        /// that is a copy of this WorkItem instance.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when targetType is null.
-        /// </exception>
-        public IWorkItem Copy(IWorkItemType targetType)
+        public override IHyperlink CreateHyperlink(string location)
         {
-            var type = GetWorkItemType(targetType);
-            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(_item.Copy(type)));
+            return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(new Tfs.Hyperlink(location)));
         }
 
-        private Tfs.WorkItemType GetWorkItemType(IWorkItemType type)
+        public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
         {
-            var workItemTypes = _item.Project.WorkItemTypes.Cast<Tfs.WorkItemType>();
-            return workItemTypes.Single(item => item.Name == type.Name);
+            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
+            return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(
+                new RelatedLink(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id)));
         }
 
         /// <summary>
-        /// Creates a copy of this WorkItem instance that is of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType.
-        /// </summary>
-        /// <param name="targetType">The type of the target work item.</param>
-        /// <param name="flags">Flags that specify items to copy in addition to fields.</param>
-        /// <returns>
-        /// A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
-        /// that is a copy of this WorkItem instance.
-        /// </returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when targetType is null.
-        /// </exception>
-        public IWorkItem Copy(IWorkItemType targetType, WorkItemCopyFlags flags)
-        {
-            var type = GetWorkItemType(targetType);
-
-            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags)));
-        }
-
-        /// <summary>
-        /// Validates the fields of this work item.
+        ///     Validates the fields of this work item.
         /// </summary>
         /// <returns>
-        /// True if all fields are valid. False if at least one field is not valid.
+        ///     True if all fields are valid. False if at least one field is not valid.
         /// </returns>
-        public bool IsValid()
+        public override bool IsValid()
         {
             return _item.IsValid();
         }
 
-        public bool IsDirty => _item.IsDirty;
-
         /// <summary>
-        /// Opens this work item for modification.
+        ///     Opens this work item for modification.
         /// </summary>
-        public void Open()
+        public override void Open()
         {
             _item.Open();
         }
 
         /// <summary>
-        /// Opens this work item for modification when transmitting minimal amounts of data over the network.
+        ///     Opens this work item for modification when transmitting minimal amounts of data over the network.
         /// </summary>
         /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.ValidationException">
-        /// This WorkItem instance does not belong to a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemCollection.
+        ///     This WorkItem instance does not belong to a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemCollection.
         /// </exception>
         /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.DeniedOrNotExistException">
-        /// This WorkItem instance could not be opened for edit correctly.
+        ///     This WorkItem instance could not be opened for edit correctly.
         /// </exception>
-        public void PartialOpen()
+        public override void PartialOpen()
         {
             _item.PartialOpen();
         }
 
         /// <summary>
-        /// Reverts all changes that were made since the last save.
+        ///     Reverts all changes that were made since the last save.
         /// </summary>
-        public void Reset()
+        public override void Reset()
         {
             _item.Reset();
         }
 
         /// <summary>
-        /// Gets an ArrayList of fields in this work item that are not valid.
+        ///     Saves any pending changes on this work item.
         /// </summary>
-        /// <returns>
-        /// An ArrayList of the fields in this work item that are not valid.
-        /// </returns>
-        public IEnumerable<IField> Validate()
-        {
-            return _item.Validate().Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(field)));
-        }
-
-        /// <summary>
-        /// Saves any pending changes on this work item.
-        /// </summary>
-        public void Save()
+        public override void Save()
         {
             _item.Save();
         }
 
         /// <summary>
-        /// Saves any pending changes on this work item.
+        ///     Saves any pending changes on this work item.
         /// </summary>
         /// <param name="saveFlags">
-        /// If set to Microsoft.TeamFoundation.WorkItemTracking.Client.SaveFlags.MergeLinks,
-        /// does not return errors if the link that is being added already exists or
-        /// the link that is being removed was already removed.
+        ///     If set to Microsoft.TeamFoundation.WorkItemTracking.Client.SaveFlags.MergeLinks,
+        ///     does not return errors if the link that is being added already exists or
+        ///     the link that is being removed was already removed.
         /// </param>
-        public void Save(SaveFlags saveFlags)
+        public override void Save(SaveFlags saveFlags)
         {
             try
             {
-                _item.Save((Tfs.SaveFlags) saveFlags);
+                _item.Save((Tfs.SaveFlags)saveFlags);
             }
             catch (Tfs.ItemAlreadyUpdatedOnServerException ex)
             {
@@ -368,10 +309,71 @@ namespace Microsoft.Qwiq.Soap
             }
         }
 
-        public void ApplyRules(bool doNotUpdateChangedBy = false)
+        /// <summary>
+        ///     Gets an ArrayList of fields in this work item that are not valid.
+        /// </summary>
+        /// <returns>
+        ///     An ArrayList of the fields in this work item that are not valid.
+        /// </returns>
+        public override IEnumerable<IField> Validate()
         {
-            _item.ApplyRules(doNotUpdateChangedBy);
+            return _item.Validate()
+                        .Cast<Tfs.Field>()
+                        .Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(field)));
+        }
+
+        /// <summary>
+        ///     Creates a copy of this WorkItem instance that is of the specified
+        ///     Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType.
+        /// </summary>
+        /// <param name="targetType">The type of the target work item.</param>
+        /// <returns>
+        ///     A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
+        ///     that is a copy of this WorkItem instance.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown when targetType is null.
+        /// </exception>
+        public IWorkItem Copy(IWorkItemType targetType)
+        {
+            var type = GetWorkItemType(targetType);
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(_item.Copy(type)));
+        }
+
+        /// <summary>
+        ///     Creates a copy of this WorkItem instance that is of the specified
+        ///     Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType.
+        /// </summary>
+        /// <param name="targetType">The type of the target work item.</param>
+        /// <param name="flags">Flags that specify items to copy in addition to fields.</param>
+        /// <returns>
+        ///     A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
+        ///     that is a copy of this WorkItem instance.
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        ///     Thrown when targetType is null.
+        /// </exception>
+        public IWorkItem Copy(IWorkItemType targetType, WorkItemCopyFlags flags)
+        {
+            var type = GetWorkItemType(targetType);
+
+            return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(
+                new WorkItem(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags)));
+        }
+
+        protected override object GetValue(string name)
+        {
+            return _item[name];
+        }
+
+        protected override void SetValue(string name, object value)
+        {
+            _item[name] = value;
+        }
+
+        private Tfs.WorkItemType GetWorkItemType(IWorkItemType type)
+        {
+            return _item.Project.WorkItemTypes[type.Name];
         }
     }
 }
-

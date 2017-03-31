@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly Lazy<IEnumerable<IProject>> _projects;
 
-
+        private Lazy<FieldDefinitionCollection> _fieldDefinitions;
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
@@ -75,11 +75,12 @@ namespace Microsoft.Qwiq.Rest
                                            .ToList();
                         }
                     });
+            _fieldDefinitions = new Lazy<FieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
         }
 
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
-        public IFieldDefinitionCollection FieldDefinitions => throw new NotImplementedException();
+        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
 
         public IEnumerable<IProject> Projects => _projects.Value;
 

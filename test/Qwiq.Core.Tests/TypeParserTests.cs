@@ -2,11 +2,11 @@ using System;
 using System.Xml;
 
 using Microsoft.Qwiq.Tests.Common;
-
-using Should;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Mapper.Tests
+using Should;
+
+namespace Microsoft.Qwiq.Core.Tests
 {
     public abstract class TypeParserTestsContext : ContextSpecification
     {
@@ -17,6 +17,22 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void Given()
         {
             TypeParser = new TypeParser();
+        }
+    }
+
+    [TestClass]
+    public class when_parsing_a_value_type_to_nullable_value_type : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = (int?)1;
+            Actual = TypeParser.Parse<int?>(1L);
+        }
+
+        [TestMethod]
+        public void value_is_converted()
+        {
+            Actual.ShouldEqual(Expected);
         }
     }
 

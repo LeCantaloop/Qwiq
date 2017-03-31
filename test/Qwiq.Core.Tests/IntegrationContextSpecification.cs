@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-using Microsoft.Qwiq.Tests.Common;
-using Microsoft.TeamFoundation.WorkItemTracking.Common.Constants;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -17,6 +16,8 @@ namespace Microsoft.Qwiq.Core.Tests
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void AreaPath_is_equal()
         {
             RestResult.WorkItem.AreaPath.ShouldEqual(SoapResult.WorkItem.AreaPath);
@@ -40,7 +41,7 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestCategory("localOnly")]
         public void ChangedDate_is_equal()
         {
-            RestResult.WorkItem.ChangedDate.ShouldEqual(SoapResult.WorkItem.ChangedDate.ToLocalTime());
+            RestResult.WorkItem.ChangedDate.ShouldEqual(SoapResult.WorkItem.ChangedDate.ToUniversalTime());
         }
 
         public override void Cleanup()
@@ -49,22 +50,26 @@ namespace Microsoft.Qwiq.Core.Tests
             RestResult?.Dispose();
         }
 
-        protected static readonly string[] CoreFields =
-            {
-                "System.AreaPath", "System.AssignedTo", "System.AttachedFileCount", "System.ChangedBy",
-                "System.ChangedDate", "System.CreatedBy", "System.CreatedDate", "System.Description",
-                "System.ExternalLinkCount", "System.History", "System.HyperLinkCount", "System.Id",
-                "System.IterationPath", "System.RelatedLinkCount", "System.Rev", "System.RevisedDate",
-                "System.State", "System.Title", "System.WorkItemType", CoreFieldRefNames.Tags
-            };
-
         [TestMethod]
         [TestCategory("localOnly")]
         public void CoreFields_are_equal()
         {
-            foreach (var field in CoreFields)
+            var exceptions = new List<Exception>();
+            foreach (var field in CoreFieldRefNames.All)
             {
-                RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field], field);
+                try
+                {
+                    RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field], field);
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+            }
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(ShouldExtensions.EachToUsefulString(exceptions), exceptions);
             }
         }
 
@@ -86,7 +91,7 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestCategory("localOnly")]
         public void CreatedDate_is_equal()
         {
-            RestResult.WorkItem.CreatedDate.ShouldEqual(SoapResult.WorkItem.CreatedDate);
+            RestResult.WorkItem.CreatedDate.ShouldEqual(SoapResult.WorkItem.CreatedDate.ToUniversalTime());
         }
 
         [TestMethod]

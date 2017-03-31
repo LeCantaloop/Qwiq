@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Soap;
 using Microsoft.Qwiq.Tests.Common;
-using Microsoft.TeamFoundation.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -19,8 +18,8 @@ namespace Microsoft.Qwiq.Core.Tests
     {
         public override void When()
         {
-            SoapLinkTypes = Soap.WorkItemLinkTypes;
-            RestLinkTypes = Rest.WorkItemLinkTypes;
+            SoapLinkTypes = TimedAction(()=> Soap.WorkItemLinkTypes, "SOAP", "Work Item Link Types");
+            RestLinkTypes = TimedAction(() => Rest.WorkItemLinkTypes, "REST", "Work Item Link Types");
         }
 
         [TestMethod]

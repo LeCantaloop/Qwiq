@@ -72,7 +72,7 @@ namespace Microsoft.Qwiq
 
         public const string WorkItemType = "System.WorkItemType";
 
-        public static IEnumerable<string> All => NameLookup.Keys;
+        public static IEnumerable<string> All => NameLookup.Keys.Except(new[]{LinkType});
 
         public static IReadOnlyDictionary<string, int> CoreFieldIdLookup { get; } =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)

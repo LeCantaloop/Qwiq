@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkType : IWorkItemLinkType, IComparable<IWorkItemLinkType>, IEquatable<IWorkItemLinkType>
+    public class WorkItemLinkType : IWorkItemLinkType, IEquatable<IWorkItemLinkType>
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _forwardFac;
 
@@ -46,11 +46,6 @@ namespace Microsoft.Qwiq
         public override bool Equals(object obj)
         {
             return WorkItemLinkTypeComparer.Instance.Equals(this, obj as IWorkItemLinkType);
-        }
-
-        public int CompareTo(IWorkItemLinkType other)
-        {
-            return WorkItemLinkTypeComparer.Instance.Compare(this, other);
         }
 
         public bool Equals(IWorkItemLinkType other)
