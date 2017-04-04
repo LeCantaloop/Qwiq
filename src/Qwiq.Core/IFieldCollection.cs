@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq
         IField this[string name] { get; }
         bool Contains(string name);
 
-        IField TryGetById(int id);
+        bool TryGetById(int id, out IField field);
 
         IField GetById(int id);
     }

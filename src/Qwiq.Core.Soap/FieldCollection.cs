@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,23 @@ namespace Microsoft.Qwiq.Soap
             return _innerCollection.Contains(name);
         }
 
-        public IField TryGetById(int id)
+        public bool TryGetById(int id, out IField field)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection.TryGetById(id)));
+            try
+            {
+                var nativeField = _innerCollection.TryGetById(id);
+                if (nativeField != null)
+                {
+                    field = ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(nativeField));
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            field = null;
+            return false;
         }
 
         public IField GetById(int id)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,9 +27,23 @@ namespace Microsoft.Qwiq.Soap
             return _innerCollection.Contains(fieldName);
         }
 
-        public override IFieldDefinition TryGetById(int id)
+        public override bool TryGetById(int id, out IFieldDefinition fieldDefinition)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(_innerCollection.TryGetById(id)));
+            try
+            {
+                var nativeFieldDefinition = _innerCollection.TryGetById(id);
+                if (nativeFieldDefinition != null)
+                {
+                    fieldDefinition = ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(nativeFieldDefinition));
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            fieldDefinition = null;
+            return false;
         }
 
         public override IEnumerator<IFieldDefinition> GetEnumerator()

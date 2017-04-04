@@ -42,8 +42,10 @@ namespace Microsoft.Qwiq.Mocks
 
         public IField GetById(int id)
         {
-            var byId = TryGetById(id);
-            if (byId == null) throw new ArgumentException($"Field {id} does not exist.", nameof(id));
+            if (!TryGetById(id, out IField byId))
+            {
+                throw new ArgumentException($"Field {id} does not exist.", nameof(id));
+            }
             return byId;
         }
 
@@ -57,24 +59,23 @@ namespace Microsoft.Qwiq.Mocks
             return GetEnumerator();
         }
 
-        public IField TryGetById(int id)
+        public bool TryGetById(int id, out IField field)
         {
-            IField field;
-            if (_cache.TryGetValue(id, out field)) return field;
+            if (_cache.TryGetValue(id, out field)) return true;
             try
             {
-                var def = _definitions.TryGetById(id);
-                if (def != null)
+                if (_definitions.TryGetById(id, out IFieldDefinition def))
                 {
                     field = new MockField(def);
                     _cache[id] = field;
+                    return true;
                 }
             }
             // REVIEW: Catch a more specific exception
             catch (Exception)
             {
             }
-            return field;
+            return false;
         }
     }
 }

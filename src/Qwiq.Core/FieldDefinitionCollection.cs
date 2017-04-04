@@ -61,11 +61,15 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        public virtual IFieldDefinition TryGetById(int id)
+        public virtual bool TryGetById(int id, out IFieldDefinition fieldDefinition)
         {
-            int index;
-            if (_fieldUsagesById.TryGetValue(id, out index)) return _list[index];
-            return null;
+            if (_fieldUsagesById.TryGetValue(id, out int index))
+            {
+                fieldDefinition = _list[index];
+                return true;
+            }
+            fieldDefinition = null;
+            return false;
         }
 
         public override bool Equals(object obj)

@@ -9,6 +9,6 @@ namespace Microsoft.Qwiq
 
         bool Contains(string fieldName);
 
-        IFieldDefinition TryGetById(int id);
+        bool TryGetById(int id, out IFieldDefinition fieldDefinition);
     }
 }
