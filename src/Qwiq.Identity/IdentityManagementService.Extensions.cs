@@ -98,7 +98,7 @@ namespace Microsoft.Qwiq.Identity
 
                     descriptorsForAlias.Add(ims.CreateIdentityDescriptor(IdentityConstants.ClaimsType, loggedInAccountString));
                     descriptorsForAlias.Add(ims.CreateIdentityDescriptor(IdentityConstants.BindPendingIdentityType,
-                        "upn:" + loggedInAccountString));
+                        IdentityConstants.BindPendingSidPrefix + loggedInAccountString));
                 }
 
                 descriptors.Add(alias, descriptorsForAlias);
