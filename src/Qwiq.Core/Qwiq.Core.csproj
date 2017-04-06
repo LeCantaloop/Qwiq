@@ -113,6 +113,7 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="Field.cs" />
     <Compile Include="FieldCollection.cs" />
     <Compile Include="FieldDefinition.cs" />
     <Compile Include="FieldDefinitionCollection.cs" />
