@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Tests.Common;
+using Microsoft.Qwiq.Core.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]
     public class LargeWiqlHierarchyQueryTests : WorkItemStoreComparisonContextSpecification

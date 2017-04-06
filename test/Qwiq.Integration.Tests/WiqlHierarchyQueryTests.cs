@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]
     public class WiqlHierarchyQueryTests : WorkItemStoreComparisonContextSpecification

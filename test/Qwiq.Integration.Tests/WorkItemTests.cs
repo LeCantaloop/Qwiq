@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Rest;
@@ -12,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Integration.Tests
 {
     public abstract class RestWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
     {

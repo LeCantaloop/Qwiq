@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Exceptions.Tests
 {
-    public class ExceptionHandlingDynamicProxyTests : ContextSpecification
+    public class ExceptionHandlingDynamicProxyFactoryContextSpecification : ContextSpecification
     {
         protected IExceptionThrower InstanceToProxy { get; set; }
 
@@ -27,7 +26,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_a_exceptionhandling_proxied_class_when_an_understood_exception_is_thrown_by_the_proxied_class : ExceptionHandlingDynamicProxyTests
+    public class given_a_exceptionhandling_proxied_class_when_an_understood_exception_is_thrown_by_the_proxied_class : ExceptionHandlingDynamicProxyFactoryContextSpecification
     {
         public override void Given()
         {
@@ -44,7 +43,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_a_exceptionhandling_proxied_class_when_an_unknown_exception_is_thrown_by_the_proxied_class : ExceptionHandlingDynamicProxyTests
+    public class given_a_exceptionhandling_proxied_class_when_an_unknown_exception_is_thrown_by_the_proxied_class : ExceptionHandlingDynamicProxyFactoryContextSpecification
     {
         public override void Given()
         {

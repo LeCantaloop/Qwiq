@@ -68,7 +68,7 @@ namespace Microsoft.Qwiq.Relatives.Linq
                             .MakeGenericType(itemType))
                             as IList;
 
-            var ids = source.Select(item => item.Id);
+            var ids = source.Where(p => p.Id.HasValue).Select(item => item.Id.Value);
             if (!ids.Any())
             {
                 return results;
@@ -182,7 +182,7 @@ namespace Microsoft.Qwiq.Relatives.Linq
             {
 
                 var assemblies = GetAssemblies();
-                var fields = GetFields(assemblies).SelectMany(s=>s).ToArray();
+                var fields = GetFields(assemblies).SelectMany(s => s).ToArray();
                 var fieldList = string.Join(", ", fields.Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(n => n));
 
                 ID_QUERY = "SELECT " + fieldList + " FROM WorkItems WHERE [System.Id] IN (#{{Ids}}) AND [Work Item Type] IN ('#{{Ancestor}}', '#{{Descendent}}') ASOF '#{{AsOf}}'";

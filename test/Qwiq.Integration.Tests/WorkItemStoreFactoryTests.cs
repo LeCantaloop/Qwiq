@@ -2,14 +2,13 @@
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Soap;
-using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Integration.Tests
 {
     public abstract class WorkItemStoreFactoryContextSpecification : WorkItemStoreTests<IWorkItemStore>
     {

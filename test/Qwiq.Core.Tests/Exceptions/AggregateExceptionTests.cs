@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Exceptions.Tests
 {
-    public class AggregateExceptionExploderTests : ContextSpecification
+    public class AggregateExceptionContextSpecification : ContextSpecification
     {
         protected IExceptionExploder Instance { get; set; }
         protected Exception Exception { get; set; }
@@ -26,7 +24,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_a_non_AggregateException_when_exploded : AggregateExceptionExploderTests
+    public class given_a_non_AggregateException_when_exploded : AggregateExceptionContextSpecification
     {
         public override void Given()
         {
@@ -43,7 +41,7 @@ namespace Microsoft.Qwiq.Core.Tests
     }
 
     [TestClass]
-    public class given_an_AggregateException_containing_AggregateExceptions_when_exploded : AggregateExceptionExploderTests
+    public class given_an_AggregateException_containing_AggregateExceptions_when_exploded : AggregateExceptionContextSpecification
     {
         private IEnumerable<Exception> ExpectedExceptions { get; set; }
 

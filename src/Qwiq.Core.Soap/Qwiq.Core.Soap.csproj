@@ -211,6 +211,7 @@
     <Compile Include="NodeInfo.cs" />
     <Compile Include="NodeSelectExtensions.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectInfo.cs" />
     <Compile Include="ProjectProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

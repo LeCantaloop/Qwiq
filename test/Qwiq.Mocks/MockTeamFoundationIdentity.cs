@@ -6,45 +6,57 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockTeamFoundationIdentity : TeamFoundationIdentity
     {
+        private const string AccountName = "Account";
+
+        private const string Alias = "Alias";
+
+        private const string Domain = "Domain";
+
+        private const string IdentityTypeClaim = "IdentityTypeClaim";
+
+        private const string MailAddress = "Mail";
+
         private readonly IDictionary<string, object> _properties;
 
-        private bool _isActive;
+        public MockTeamFoundationIdentity(
+            IIdentityDescriptor descriptor,
+            string displayName,
+            Guid teamFoundationId,
+            bool isActive = true,
+            IEnumerable<IIdentityDescriptor> members = null,
+            IEnumerable<IIdentityDescriptor> memberOf = null)
+            : base(isActive, teamFoundationId == Guid.Empty ? Guid.NewGuid() : teamFoundationId, isActive ? 0 : 1)
 
-        public MockTeamFoundationIdentity(string displayName, string uniqueName)
         {
+            DisplayName = displayName;
+            MemberOf = memberOf ?? Enumerable.Empty<IIdentityDescriptor>();
+            Members = members ?? Enumerable.Empty<IIdentityDescriptor>();
+            IsContainer = false;
+            Descriptor = descriptor;
+
+            var f = new IdentityFieldValue(DisplayName, Descriptor.Identifier, null);
             _properties =
                 new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
                     {
-                        { "Account", uniqueName },
+                        { AccountName, f.Alias },
+                        { Alias, f.Alias },
+                        { Domain, f.Domain },
+                        { MailAddress, f.Email },
                         {
-                            "Domain",
-                            MockIdentityDescriptor.Domain
+                            IdentityTypeClaim,
+                            Descriptor.IdentityType
                         }
                     };
-
-            DisplayName = displayName;
-            MemberOf = Enumerable.Empty<IIdentityDescriptor>();
-            Members = Enumerable.Empty<IIdentityDescriptor>();
-            IsActive = true;
-            IsContainer = false;
-            TeamFoundationId = Guid.Empty;
-            Descriptor = new MockIdentityDescriptor(uniqueName);
-            UniqueUserId = IsActive ? 0 : 1;
         }
 
-        public sealed override IIdentityDescriptor Descriptor { get; internal set; }
-
-        public override string DisplayName { get; }
-
-        public new bool IsActive
+        public MockTeamFoundationIdentity(string displayName, string uniqueName)
+            : this(new MockIdentityDescriptor(uniqueName), displayName, Guid.Empty)
         {
-            get => _isActive;
-            set
-            {
-                _isActive = value;
-                UniqueUserId = value ? 0 : 1;
-            }
         }
+
+        public sealed override IIdentityDescriptor Descriptor { get; }
+
+        public sealed override string DisplayName { get; }
 
         public sealed override bool IsContainer { get; }
 
@@ -52,13 +64,11 @@ namespace Microsoft.Qwiq.Mocks
 
         public sealed override IEnumerable<IIdentityDescriptor> Members { get; }
 
-        public sealed override Guid TeamFoundationId { get; internal set; }
-
-        public new int UniqueUserId { get; private set; }
-
         public override string GetAttribute(string name, string defaultValue)
         {
-            return _properties.TryGetValue(name, out object obj) ? obj.ToString() : defaultValue;
+            return _properties != null && _properties.TryGetValue(name, out object obj)
+                       ? obj?.ToString() ?? defaultValue
+                       : defaultValue;
         }
 
         public override IEnumerable<KeyValuePair<string, object>> GetProperties()

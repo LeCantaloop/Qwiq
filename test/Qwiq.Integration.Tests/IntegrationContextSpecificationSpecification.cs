@@ -6,13 +6,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Integration.Tests
 {
     public abstract class IntegrationContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
         protected Result RestResult { get; set; }
-
         protected Result SoapResult { get; set; }
+
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
@@ -56,11 +56,30 @@ namespace Microsoft.Qwiq.Core.Tests
         public void CoreFields_are_equal()
         {
             var exceptions = new List<Exception>();
+            var identityFields = new[]
+                                     {
+                                         CoreFieldRefNames.AssignedTo, CoreFieldRefNames.AuthorizedAs,
+                                         CoreFieldRefNames.ChangedBy, CoreFieldRefNames.CreatedBy
+                                     };
             foreach (var field in CoreFieldRefNames.All)
             {
                 try
                 {
-                    RestResult.WorkItem[field]?.ToString().ShouldEqual(SoapResult.WorkItem[field]?.ToString(), field);
+
+                    var restValue = RestResult.WorkItem[field]?.ToString();
+                    var soapValue = SoapResult.WorkItem[field]?.ToString();
+
+                    // If there is an identity field, drop the account name that REST returns to us
+                    if (identityFields.Contains(field))
+                    {
+                        restValue = new IdentityFieldValue(restValue).DisplayName;
+                        soapValue = new IdentityFieldValue(soapValue).DisplayName;
+                    }
+
+
+
+                    restValue.ShouldEqual(soapValue, field);
+
                 }
                 catch (Exception e)
                 {
@@ -166,18 +185,6 @@ namespace Microsoft.Qwiq.Core.Tests
             RestResult.WorkItem.Title.ShouldEqual(SoapResult.WorkItem.Title);
         }
 
-        protected class Result : IDisposable
-        {
-            public IWorkItem WorkItem { get; set; }
 
-            public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
-
-            public IWorkItemStore WorkItemStore { get; set; }
-
-            public void Dispose()
-            {
-                WorkItemStore?.Dispose();
-            }
-        }
     }
 }

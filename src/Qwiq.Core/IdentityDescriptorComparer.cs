@@ -16,31 +16,7 @@ namespace Microsoft.Qwiq
                    && string.Equals(x.IdentityType, y.IdentityType, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static readonly System.Security.Cryptography.MD5CryptoServiceProvider Md5Provider = new System.Security.Cryptography.MD5CryptoServiceProvider();
-        // the database is usually set to Latin1_General_CI_AS which is codepage 1252
-        private static readonly System.Text.Encoding Encoding = System.Text.Encoding.GetEncoding(1252);
-
-        private static int ComputeStringHash(string sourceString, int modulo = 0)
-        {
-            var md5Bytes = Md5Provider.ComputeHash(Encoding.GetBytes(sourceString));
-            var result = BitConverter.ToInt32(new[] { md5Bytes[15], md5Bytes[14], md5Bytes[13], md5Bytes[12] }, 0);
-            return modulo == 0
-                       ? result
-                       : Math.Abs(result) % modulo;
-        }
-
-        public override int GetHashCode(IIdentityDescriptor obj)
-        {
-            unchecked
-            {
-                var hash = 27;
-
-                hash = (13 * hash) ^ ComputeStringHash(obj.Identifier);
-                hash = (13 * hash) ^ ComputeStringHash(obj.IdentityType);
-
-                return hash;
-            }
-        }
+        
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested

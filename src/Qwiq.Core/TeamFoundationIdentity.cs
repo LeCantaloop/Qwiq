@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Services.Common;
+using System;
 using System.Collections.Generic;
-
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
@@ -9,7 +8,23 @@ namespace Microsoft.Qwiq
     {
         private string _uniqueName;
 
-        public abstract IIdentityDescriptor Descriptor { get; internal set; }
+        protected internal TeamFoundationIdentity(
+            bool isActive,
+            Guid teamFoundationId,
+            int uniqueUserId
+            )
+        {
+            IsActive = isActive;
+            TeamFoundationId = teamFoundationId;
+            UniqueUserId = uniqueUserId;
+        }
+
+        public bool Equals(ITeamFoundationIdentity other)
+        {
+            return TeamFoundationIdentityComparer.Instance.Equals(this, other);
+        }
+
+        public abstract IIdentityDescriptor Descriptor { get; }
 
         public abstract string DisplayName { get; }
 
@@ -23,7 +38,10 @@ namespace Microsoft.Qwiq
                 if (!string.IsNullOrEmpty(schema) && string.Equals(
                         schema,
                         IdentityConstants.SchemaClassGroup,
-                        StringComparison.OrdinalIgnoreCase)) return true;
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
 
                 return false;
             }
@@ -33,7 +51,7 @@ namespace Microsoft.Qwiq
 
         public abstract IEnumerable<IIdentityDescriptor> Members { get; }
 
-        public virtual Guid TeamFoundationId { get; internal set; }
+        public virtual Guid TeamFoundationId { get; }
 
         public virtual string UniqueName
         {
@@ -41,14 +59,24 @@ namespace Microsoft.Qwiq
             {
                 if (!string.IsNullOrEmpty(_uniqueName)) return _uniqueName;
 
-                var domain = GetAttribute("Domain", string.Empty);
-                var account = GetAttribute("Account", string.Empty);
+                var domain = GetAttribute(IdentityAttributeTags.Domain, string.Empty);
+                var account = GetAttribute(IdentityAttributeTags.AccountName, string.Empty);
 
-                if (UniqueUserId == IdentityConstants.ActiveUniqueId) _uniqueName = string.IsNullOrEmpty(domain) ? account : $"{domain}\\{account}";
+                if (UniqueUserId == IdentityConstants.ActiveUniqueId)
+                {
+                    _uniqueName = string.IsNullOrEmpty(domain)
+                                      ? account
+                                      : string.Format(
+                                          IdentityConstants.DomainQualifiedAccountNameFormat,
+                                          domain,
+                                          account);
+                }
                 else
+                {
                     _uniqueName = string.IsNullOrEmpty(domain)
                                       ? $"{account}:{UniqueUserId}"
-                                      : $"{domain}\\{account}:{UniqueUserId}";
+                                      : $"{string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{ UniqueUserId}";
+                }
 
                 return _uniqueName;
             }
@@ -56,28 +84,25 @@ namespace Microsoft.Qwiq
 
         public virtual int UniqueUserId { get; }
 
-        public bool Equals(ITeamFoundationIdentity other)
-        {
-            return TeamFoundationIdentityComparer.Instance.Equals(this, other);
-        }
+        public abstract string GetAttribute(string name, string defaultValue);
+
+        public abstract IEnumerable<KeyValuePair<string, object>> GetProperties();
+
+        public abstract object GetProperty(string name);
+
         public override bool Equals(object obj)
         {
             return Equals(obj as ITeamFoundationIdentity);
         }
-
-        public abstract string GetAttribute(string name, string defaultValue);
 
         public override int GetHashCode()
         {
             return TeamFoundationIdentityComparer.Instance.GetHashCode(this);
         }
 
-        public abstract IEnumerable<KeyValuePair<string, object>> GetProperties();
-
-        public abstract object GetProperty(string name);
         public override string ToString()
         {
-            return UniqueName;
+            return $"Identity {TeamFoundationId} (IdentityType: {(Descriptor == null ? string.Empty : Descriptor.IdentityType)}; Identifier: {(Descriptor == null ? string.Empty : Descriptor.Identifier)}; DisplayName: {DisplayName})";
         }
     }
 }

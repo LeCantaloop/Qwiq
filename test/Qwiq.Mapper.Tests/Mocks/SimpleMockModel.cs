@@ -6,7 +6,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
     public class SimpleMockModel : IIdentifiable
     {
         [FieldDefinition("ID")]
-        public int Id { get; internal set; }
+        public int? Id { get; internal set; }
 
         [FieldDefinition("IntField")]
         public int IntField { get; internal set; }

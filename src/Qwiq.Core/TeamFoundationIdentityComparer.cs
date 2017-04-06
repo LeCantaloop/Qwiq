@@ -10,10 +10,8 @@ namespace Microsoft.Qwiq
         {
             unchecked
             {
-                var hash = 27;
-                hash = (13 * hash) ^ obj.UniqueName.GetHashCode();
-                hash = (13 * hash) ^ obj.TeamFoundationId.GetHashCode();
-                return hash;
+                if (obj.Descriptor == null) return 0;
+                return obj.Descriptor.GetHashCode();
             }
         }
 

@@ -10,6 +10,10 @@ namespace Microsoft.Qwiq
     {
         public static ITypeParser Default => Nested.Instance;
 
+        private TypeParser()
+        {
+        }
+
         public object Parse(Type destinationType, object value, object defaultValue)
         {
             return ParseImpl(

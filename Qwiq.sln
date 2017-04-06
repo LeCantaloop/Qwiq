@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "test\Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Soap", "src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj", "{6F5FFC42-0539-4161-B348-A54ADB57C2BD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Rest", "src\Qwiq.Core.Rest\Qwiq.Core.Rest.csproj", "{0F70E1C2-D696-4749-8601-374A7C9C268A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Integration.Tests", "test\Qwiq.Integration.Tests\Qwiq.Integration.Tests.csproj", "{E4130432-C890-41E0-8407-C4142CAF59D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal class TeamFoundationIdentity : ITeamFoundationIdentity
+    internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity
     {
         private readonly Lazy<IIdentityDescriptor> _descriptor;
 
@@ -19,8 +19,9 @@ namespace Microsoft.Qwiq.Soap
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _members;
 
         internal TeamFoundationIdentity(Tfs.TeamFoundationIdentity identity)
+            : base(identity.IsActive, identity.TeamFoundationId, identity.UniqueUserId)
         {
-            _identity = identity ?? throw new ArgumentNullException(nameof(identity));
+            _identity = identity;
 
             _descriptor = new Lazy<IIdentityDescriptor>(
                 () => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
@@ -37,37 +38,37 @@ namespace Microsoft.Qwiq.Soap
                         new IdentityDescriptor(item))));
         }
 
-        public IIdentityDescriptor Descriptor => _descriptor.Value;
+        public override IIdentityDescriptor Descriptor => _descriptor.Value;
 
-        public string DisplayName => _identity.DisplayName;
+        public override string DisplayName => _identity.DisplayName;
 
-        public bool IsActive => _identity.IsActive;
+        public override bool IsActive => _identity.IsActive;
 
-        public bool IsContainer => _identity.IsContainer;
+        public override bool IsContainer => _identity.IsContainer;
 
-        public IEnumerable<IIdentityDescriptor> MemberOf => _memberOf.Value;
+        public override IEnumerable<IIdentityDescriptor> MemberOf => _memberOf.Value;
 
-        public IEnumerable<IIdentityDescriptor> Members => _members.Value;
+        public override IEnumerable<IIdentityDescriptor> Members => _members.Value;
 
-        public Guid TeamFoundationId => _identity.TeamFoundationId;
+        public override Guid TeamFoundationId => _identity.TeamFoundationId;
 
-        public string UniqueName => _identity.UniqueName;
+        public override string UniqueName => _identity.UniqueName;
 
-        public int UniqueUserId => _identity.UniqueUserId;
+        public override int UniqueUserId => _identity.UniqueUserId;
 
-        public string GetAttribute(string name, string defaultValue)
+        public override string GetAttribute(string name, string defaultValue)
         {
             return _identity.GetAttribute(name, defaultValue);
         }
 
-        public IEnumerable<KeyValuePair<string, object>> GetProperties()
+        public override IEnumerable<KeyValuePair<string, object>> GetProperties()
         {
             return _identity.GetProperties();
         }
 
-        public object GetProperty(string name)
+        public override object GetProperty(string name)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create(_identity.GetProperty(name));
+            return _identity.GetProperty(name);
         }
     }
 }

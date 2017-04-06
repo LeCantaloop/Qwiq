@@ -121,5 +121,10 @@ namespace Microsoft.Qwiq.Soap
         {
             if (disposing) _tfs?.Dispose();
         }
+
+        public override string ToString()
+        {
+            return _tfs.Name;
+        }
     }
 }

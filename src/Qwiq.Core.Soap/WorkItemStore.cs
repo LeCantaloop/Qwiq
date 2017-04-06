@@ -1,44 +1,15 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal class ProjectCollection : IProjectCollection
-    {
-        private readonly TfsWorkItem.ProjectCollection _valueProjects;
-
-        public ProjectCollection(TfsWorkItem.ProjectCollection valueProjects)
-        {
-            _valueProjects = valueProjects ?? throw new ArgumentNullException(nameof(valueProjects));
-        }
-
-        public IEnumerator<IProject> GetEnumerator()
-        {
-            return _valueProjects.Cast<TfsWorkItem.Project>()
-                                 .Select(
-                                     item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(item)))
-                                     .GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        IProject IProjectCollection.this[string projectName] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[projectName]));
-
-        IProject IProjectCollection.this[Guid id] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[id]));
-    }
-
     /// <summary>
     ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
     ///     all the TFS libraries.

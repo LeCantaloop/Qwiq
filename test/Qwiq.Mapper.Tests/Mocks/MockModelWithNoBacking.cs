@@ -6,7 +6,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
     public class MockModelWithNoBacking : IIdentifiable
     {
         [FieldDefinition("Id")]
-        public virtual int Id { get; internal set; }
+        public virtual int? Id { get; internal set; }
 
         [FieldDefinition("FieldWithNoBackingStore")]
         public string FieldWithNoBackingStore { get; internal set; }

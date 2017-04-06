@@ -122,7 +122,9 @@
     <Compile Include="GenericComparer.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
+    <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IdentityDescriptorComparer.cs" />
+    <Compile Include="IdentityFieldValue.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="IExternalLink.cs" />
@@ -146,6 +148,7 @@
     <Compile Include="IQueryFactory.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IRevision.cs" />
+    <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />
     <Compile Include="ITeamFoundationIdentity.Extensions.cs">
       <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>

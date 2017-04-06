@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq.Relatives.Tests.Mocks
     public class SimpleMockModel : IIdentifiable
     {
         [FieldDefinition("ID")]
-        public int Id { get; internal set; }
+        public int? Id { get; internal set; }
 
         [FieldDefinition("Priority")]
         public int Priority { get; internal set; }

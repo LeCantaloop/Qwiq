@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Services.Identity;
 
 namespace Microsoft.Qwiq.Rest
 {
-    internal class TeamFoundationIdentity : ITeamFoundationIdentity
+    internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity, ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
         private readonly Identity _identity;
 
@@ -18,14 +18,14 @@ namespace Microsoft.Qwiq.Rest
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _members;
 
         internal TeamFoundationIdentity(Identity identity)
+            : base(identity.IsActive, identity.Id, identity.UniqueUserId)
         {
-            _identity = identity;
-            if (identity == null) throw new ArgumentNullException(nameof(identity));
+            _identity = identity ?? throw new ArgumentNullException(nameof(identity));
             DisplayName = identity.DisplayName;
-            IsActive = identity.IsActive;
+            
             IsContainer = identity.IsContainer;
-            TeamFoundationId = identity.Id;
-            UniqueUserId = identity.UniqueUserId;
+            
+            
 
             _descriptor = new Lazy<IIdentityDescriptor>(()=>  ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptor(identity.Descriptor)));
             _memberOf =
@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq.Rest
                         identity.MemberOf.Select(
                             item =>
                                 ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                                    new IdentityDescriptor(item))) ?? Enumerable.Empty<IIdentityDescriptor>());
+                                    new IdentityDescriptor(item))));
 
             _members =
                 new Lazy<IEnumerable<IIdentityDescriptor>>(
@@ -42,45 +42,61 @@ namespace Microsoft.Qwiq.Rest
                         identity.Members.Select(
                             item =>
                                 ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                                    new IdentityDescriptor(item))) ?? Enumerable.Empty<IIdentityDescriptor>());
+                                    new IdentityDescriptor(item))));
+
+            
 
         }
 
-        public IIdentityDescriptor Descriptor => _descriptor.Value;
+        public override bool IsContainer { get; }
 
-        public string DisplayName { get; }
+        public override IEnumerable<IIdentityDescriptor> MemberOf => _memberOf.Value;
 
-        public bool IsActive { get; }
+        public override IEnumerable<IIdentityDescriptor> Members => _members.Value;
 
-        public bool IsContainer { get; }
+     
 
-        public IEnumerable<IIdentityDescriptor> MemberOf => _memberOf.Value;
-
-        public IEnumerable<IIdentityDescriptor> Members => _members.Value;
-
-        public Guid TeamFoundationId { get; }
-
-        public string UniqueName { get; }
-
-        public int UniqueUserId { get; }
-
-        public string GetAttribute(string name, string defaultValue)
+        public override string GetAttribute(string name, string defaultValue)
         {
             if (_identity.Properties.TryGetValue(name, out object obj))
             {
-                return obj.ToString();
+                return obj?.ToString() ?? defaultValue;
             }
             return defaultValue;
         }
 
-        public IEnumerable<KeyValuePair<string, object>> GetProperties()
+        public override IEnumerable<KeyValuePair<string, object>> GetProperties()
         {
             return _identity.Properties;
         }
 
-        public object GetProperty(string name)
+        public override object GetProperty(string name)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create(_identity.Properties[name]);
+            return _identity.Properties[name];
         }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ITeamFoundationIdentity);
+        }
+
+        public override int GetHashCode()
+        {
+            return TeamFoundationIdentityComparer.Instance.GetHashCode(this);
+        }
+
+        public override string ToString()
+        {
+            return UniqueName;
+        }
+
+        public bool Equals(ITeamFoundationIdentity other)
+        {
+            return TeamFoundationIdentityComparer.Instance.Equals(this, other);
+        }
+
+        public override IIdentityDescriptor Descriptor => _descriptor.Value;
+
+        public override string DisplayName { get; }
     }
 }

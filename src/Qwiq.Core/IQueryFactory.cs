@@ -6,7 +6,7 @@ namespace Microsoft.Qwiq
     /// <summary>
     /// Initializes a new instance of <see cref="IQuery"/>.
     /// </summary>
-    internal interface IQueryFactory
+    public interface IQueryFactory
     {
         /// <summary>
         ///     Creates an instance of <see cref="IQuery" /> that is described in <paramref name="wiql" />.

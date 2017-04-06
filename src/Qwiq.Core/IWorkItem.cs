@@ -11,6 +11,8 @@ namespace Microsoft.Qwiq
     {
         new int AttachedFileCount { get; }
 
+        IEnumerable<IAttachment> Attachments { get; }
+
         new DateTime ChangedDate { get; }
 
         new DateTime CreatedDate { get; }
@@ -18,10 +20,6 @@ namespace Microsoft.Qwiq
         new int ExternalLinkCount { get; }
 
         new int HyperLinkCount { get; }
-
-        new int RelatedLinkCount { get; }
-
-        new DateTime RevisedDate { get; }
 
         /// <summary>
         ///     Gets the ID of this work item.
@@ -32,7 +30,16 @@ namespace Microsoft.Qwiq
 
         string Keywords { get; set; }
 
+        /// <summary>
+        ///     Gets the links of the work item in this revision.
+        /// </summary>
+        ICollection<ILink> Links { get; }
+
+        new int RelatedLinkCount { get; }
+
         new int Rev { get; }
+
+        new DateTime RevisedDate { get; }
 
         /// <summary>
         ///     Gets the integer that represents the revision number of this work item.

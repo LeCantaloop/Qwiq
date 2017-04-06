@@ -8,31 +8,37 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
-        public static readonly ITeamFoundationIdentity Danj = new MockTeamFoundationIdentity("Dan Jump", "danj")
-        {
-            TeamFoundationId = Guid.Parse("b7de08a6-8417-491b-be62-85945a538f46")
-        };
-        public static readonly ITeamFoundationIdentity Adamb = new MockTeamFoundationIdentity("Adam Barr", "adamb")
-        {
-            TeamFoundationId = Guid.Parse("7846c22f-d3d8-4e02-8b62-d055d0284783")
-        };
-        public static readonly ITeamFoundationIdentity Chrisj = new MockTeamFoundationIdentity("Chris Johnson", "chrisj")
-        {
-            TeamFoundationId = Guid.Parse("f92c1baa-0038-4247-be68-12043fcc34e3"),
-            IsActive = false
-        };
-        public static readonly ITeamFoundationIdentity Chrisjoh = new MockTeamFoundationIdentity("Chris Johnson (FINANCE)", "chrisjoh")
-        {
-            TeamFoundationId = Guid.Parse("41e97533-89f7-45d7-8246-eaa449b5651d")
-        };
-        public static readonly ITeamFoundationIdentity Chrisjohn = new MockTeamFoundationIdentity("Chris F. Johnson","chrisjohn")
-        {
-            TeamFoundationId = Guid.Parse("b3da460c-6191-4725-b08d-52bba48a574f")
-        };
-        public static readonly ITeamFoundationIdentity Chrisjohns = new MockTeamFoundationIdentity("Chris Johnson <chrisjohns@contoso.com>", "chrisjohns")
-        {
-            TeamFoundationId = Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47")
-        };
+        public static readonly ITeamFoundationIdentity Danj = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("danj", "contoso.com"),
+            "Dan Jump",
+            Guid.Parse("b7de08a6-8417-491b-be62-85945a538f46"));
+
+        public static readonly ITeamFoundationIdentity Adamb = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("adamb", "contoso.com"),
+            "Adam Barr",
+            Guid.Parse("7846c22f-d3d8-4e02-8b62-d055d0284783"));
+
+        public static readonly ITeamFoundationIdentity Chrisj = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("chrisj", "contoso.com"),
+            "Chris Johnson",
+            Guid.Parse("f92c1baa-0038-4247-be68-12043fcc34e3"),
+            false);
+
+        public static readonly ITeamFoundationIdentity Chrisjoh = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("chrisjoh", "contoso.com"),
+            "Chris Johnson (FINANCE)",
+            Guid.Parse("41e97533-89f7-45d7-8246-eaa449b5651d"));
+
+        public static readonly ITeamFoundationIdentity Chrisjohn = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("chrisjohn", "contoso.com"),
+            "Chris F. Johnson",
+            Guid.Parse("b3da460c-6191-4725-b08d-52bba48a574f"));
+
+        public static readonly ITeamFoundationIdentity Chrisjohns = new MockTeamFoundationIdentity(
+            new MockIdentityDescriptor("chrisjohns", "contoso.com"),
+            "Chris Johnson <chrisjohns@contoso.com>",
+            Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47"));
+        
 
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;

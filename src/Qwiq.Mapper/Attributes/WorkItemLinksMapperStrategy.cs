@@ -134,7 +134,8 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         // This allows for lazy creation of common parents
                         foreach (var createdItem in createdItems)
                         {
-                            var key2 = new Tuple<int, RuntimeTypeHandle>(createdItem.Id, propertyType.TypeHandle);
+                            if (!createdItem.Id.HasValue) continue;
+                            var key2 = new Tuple<int, RuntimeTypeHandle>(createdItem.Id.Value, propertyType.TypeHandle);
                             previouslyMapped[key2] = createdItem;
                         }
 

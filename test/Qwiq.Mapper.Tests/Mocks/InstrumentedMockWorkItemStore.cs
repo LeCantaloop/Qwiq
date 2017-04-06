@@ -36,7 +36,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
-        public IEnumerable<IProject> Projects
+        public IProjectCollection Projects
         {
             get
             {

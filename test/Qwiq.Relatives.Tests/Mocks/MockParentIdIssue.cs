@@ -11,6 +11,6 @@ namespace Microsoft.Qwiq.Relatives.Tests.Mocks
 
         public int ParentId { get; set; }
 
-        public int Id { get; }
+        public int? Id { get; }
     }
 }

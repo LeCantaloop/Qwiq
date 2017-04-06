@@ -102,7 +102,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public class MockModelWithMissingField : IIdentifiable
         {
             [FieldDefinition("Id")]
-            public virtual int Id { get; internal set; }
+            public virtual int? Id { get; internal set; }
 
             [FieldDefinition("NullableField", -1)]
             public virtual int DoesNotExist { get; internal set; }
@@ -129,7 +129,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public class MockModelWithMissingField : IIdentifiable
         {
             [FieldDefinition("Id")]
-            public int Id { get; internal set; }
+            public int? Id { get; internal set; }
 
             [FieldDefinition("NullableField", true, -1)]
             public int DoesNotExist { get; internal set; }
