@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq.Rest
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            var wiql = "SELECT * FROM WorkItems";
+            var wiql = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
             if (asOf.HasValue)
             {
                 // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
