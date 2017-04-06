@@ -56,12 +56,15 @@ namespace Microsoft.Qwiq
 
         protected virtual object GetValue(string name)
         {
-            return !_fields.TryGetValue(name, out object val) ? null : val;
+            return _fields != null && _fields.TryGetValue(name, out object val) ? val : null;
         }
 
         protected virtual void SetValue(string name, object value)
         {
-            _fields[name] = value;
+            if (_fields != null)
+            {
+                _fields[name] = value;
+            }
         }
 
         public bool Equals(IWorkItemCore other)
@@ -88,12 +91,5 @@ namespace Microsoft.Qwiq
         {
             SetValue(fieldDefinition.ReferenceName, value);
         }
-    }
-
-    internal interface IRevisionInternal
-    {
-        object GetCurrentFieldValue(IFieldDefinition fieldDefinition);
-
-        void SetFieldValue(IFieldDefinition fieldDefinition, object value);
     }
 }
