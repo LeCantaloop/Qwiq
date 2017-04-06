@@ -170,6 +170,7 @@
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Revision.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
