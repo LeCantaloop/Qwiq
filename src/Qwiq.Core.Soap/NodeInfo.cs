@@ -1,3 +1,5 @@
+using System;
+
 using Tfs = Microsoft.TeamFoundation.Server;
 
 namespace Microsoft.Qwiq.Soap
@@ -8,7 +10,7 @@ namespace Microsoft.Qwiq.Soap
 
         internal NodeInfo(Tfs.NodeInfo nodeInfo)
         {
-            _nodeInfo = nodeInfo;
+            _nodeInfo = nodeInfo ?? throw new ArgumentNullException(nameof(nodeInfo));
         }
 
         public string Uri

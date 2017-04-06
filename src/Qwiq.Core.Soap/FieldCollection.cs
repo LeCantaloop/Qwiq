@@ -13,18 +13,37 @@ namespace Microsoft.Qwiq.Soap
     {
         private readonly Tfs.FieldCollection _innerCollection;
 
-        public FieldCollection(Tfs.FieldCollection innerCollection)
+        internal FieldCollection(Tfs.FieldCollection innerCollection)
         {
-            _innerCollection = innerCollection;
+            _innerCollection = innerCollection ?? throw new ArgumentNullException(nameof(innerCollection));
         }
 
-        public IField this[string name] => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection[name]));
-
         public int Count => _innerCollection.Count;
+
+        public IField this[string name] => ExceptionHandlingDynamicProxyFactory.Create<IField>(
+            new Field(_innerCollection[name]));
 
         public bool Contains(string name)
         {
             return _innerCollection.Contains(name);
+        }
+
+        public IField GetById(int id)
+        {
+            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection.GetById(id)));
+        }
+
+        public IEnumerator<IField> GetEnumerator()
+        {
+            return _innerCollection.Cast<Tfs.Field>()
+                                   .Select(
+                                       field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(field)))
+                                   .GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public bool TryGetById(int id, out IField field)
@@ -45,21 +64,5 @@ namespace Microsoft.Qwiq.Soap
             field = null;
             return false;
         }
-
-        public IField GetById(int id)
-        {
-            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection.GetById(id)));
-        }
-
-        public IEnumerator<IField> GetEnumerator()
-        {
-            return _innerCollection.Cast<Tfs.Field>().Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(field))).GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 }
-

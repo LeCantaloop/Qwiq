@@ -14,13 +14,12 @@ namespace Microsoft.Qwiq.Soap
 
         internal FieldDefinitionCollection(Tfs.FieldDefinitionCollection innerCollection)
         {
-            _innerCollection = innerCollection;
+            _innerCollection = innerCollection ?? throw new ArgumentNullException(nameof(innerCollection));
         }
 
         public override int Count => _innerCollection.Count;
 
-        public override IFieldDefinition this[string name] => ExceptionHandlingDynamicProxyFactory
-            .Create<IFieldDefinition>(new FieldDefinition(_innerCollection[name]));
+        public override IFieldDefinition this[string name] => ExceptionHandlingDynamicProxyFactory.Create<FieldDefinition>(_innerCollection[name]);
 
         public override bool Contains(string fieldName)
         {
@@ -34,7 +33,7 @@ namespace Microsoft.Qwiq.Soap
                 var nativeFieldDefinition = _innerCollection.TryGetById(id);
                 if (nativeFieldDefinition != null)
                 {
-                    fieldDefinition = ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(nativeFieldDefinition));
+                    fieldDefinition = ExceptionHandlingDynamicProxyFactory.Create<FieldDefinition>(new FieldDefinition(nativeFieldDefinition));
                     return true;
                 }
             }

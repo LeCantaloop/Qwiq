@@ -1,8 +1,9 @@
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Tests.Common;
+using Microsoft.VisualStudio.Services.Client;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -10,7 +11,7 @@ using Should.Core.Exceptions;
 
 namespace Microsoft.Qwiq.Core.Tests
 {
-    public abstract class WorkItemStoreComparisonContextSpecification : ContextSpecification
+    public abstract class WorkItemStoreComparisonContextSpecification : TimedContextSpecification
     {
         protected IWorkItemStore Rest { get; private set; }
 
@@ -18,36 +19,39 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void Given()
         {
-            var credentials = Credentials.CredentialsFactory.CreateCredentials((string)null);
             var uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
 
+            var options = new AuthenticationOptions(uri, AuthenticationType.Windows){CreateCredentials = CreateCredentials};
 
             Soap = TimedAction(
-                ()=> Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(uri, credentials, ClientType.Soap),
+                ()=> Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
                 "SOAP",
                 "Create WIS");
 
-
+            options.ClientType = ClientType.Rest;
 
             Rest = TimedAction(
-                () => Microsoft.Qwiq.Rest.WorkItemStoreFactory.Instance.Create(uri, credentials, ClientType.Rest),
+                () => Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
                 "REST",
                 "Create WIS");
 
         }
 
-        protected static T TimedAction<T>(Func<T> action, string category, string userMessage)
+        private static IEnumerable<TfsCredentials> CreateCredentials(AuthenticationType t)
         {
-            var start = Clock.GetTimestamp();
-            try
-            {
-                return action();
-            }
-            finally
-            {
-                var stop = Clock.GetTimestamp();
-                Debug.Print("{0}: {1} {2}", category,  Clock.GetTimeSpan(start, stop), userMessage);
-            }
+            // User did not specify a username or a password, so use the process identity
+            yield return new VssClientCredentials(new WindowsCredential(false)) { Storage = new VssClientCredentialStorage(), PromptType = CredentialPromptType.DoNotPrompt };
+
+            // Use the Windows identity of the logged on user
+            yield return new VssClientCredentials(true) { Storage = new VssClientCredentialStorage(), PromptType = CredentialPromptType.PromptIfNeeded };
+        }
+
+        public override void Cleanup()
+        {
+            Rest?.Dispose();
+            Soap?.Dispose();
+
+            base.Cleanup();
         }
     }
 

@@ -38,7 +38,7 @@ namespace Microsoft.Qwiq.Credentials
                     var credential = n.Credentials;
 
                     Trace.TraceInformation(
-                        $"Connected to {n.TeamProjectCollection.Uri}: {n.TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier}");
+                        $"Connected to {n.TeamProjectCollection.Uri}: {n.TeamProjectCollection.AuthorizedIdentity.UniqueName}");
 
                     Trace.TraceInformation(
                         "TFS connection attempt success with {0}/{1}.",

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Microsoft.Qwiq.Soap
 
         internal LinkCollection(Tfs.WorkItem item)
         {
-            _item = item;
+            _item = item ?? throw new ArgumentNullException(nameof(item));
             _linkHelper = new LinkHelper();
             _linkMapper = new LinkMapper();
         }

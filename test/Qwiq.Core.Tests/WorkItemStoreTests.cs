@@ -166,16 +166,17 @@ namespace Microsoft.Qwiq.Core.Tests
         }
     }
 
-    public abstract class WorkItemStoreTests<T> : ContextSpecification
+    public abstract class WorkItemStoreTests<T> : TimedContextSpecification
         where T : IWorkItemStore
     {
         internal IQueryFactory QueryFactory;
 
-        protected IWorkItemStore WorkItemStore;
+        protected T WorkItemStore;
 
         public override void Cleanup()
         {
-            WorkItemStore.Dispose();
+            WorkItemStore?.Dispose();
+            base.Cleanup();
         }
 
         public override void Given()

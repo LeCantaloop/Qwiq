@@ -14,7 +14,27 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             _innerWorkItemStore = innerWorkItemStore;
         }
 
+        public int ProjectsCallCount { get; private set; }
+
+        public int QueryCallCount => QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
+
+        public int QueryIdCallCount { get; private set; }
+
+        public int QueryIdsCallCount { get; private set; }
+
+        public int QueryLinksCallCount { get; private set; }
+
+        public int QueryStringCallCount { get; private set; }
+
+        public int TeamProjectCollectionCallCount { get; private set; }
+
+        public int WorkItemLinkTypesCallCount { get; private set; }
+
         public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
+
+        public ClientType ClientType => _innerWorkItemStore.ClientType;
+
+        public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
         public IEnumerable<IProject> Projects
         {
@@ -25,24 +45,6 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             }
         }
 
-        public int ProjectsCallCount { get; private set; }
-
-        public int QueryCallCount
-        {
-            get
-            {
-                return QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
-            }
-        }
-
-        public int QueryIdCallCount { get; private set; }
-
-        public int QueryIdsCallCount { get; private set; }
-
-        public int QueryLinksCallCount { get; private set; }
-
-        public int QueryStringCallCount { get; private set; }
-
         public ITfsTeamProjectCollection TeamProjectCollection
         {
             get
@@ -52,13 +54,11 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             }
         }
 
-        public int TeamProjectCollectionCallCount { get; private set; }
-
         public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
 
-        public string UserDisplayName => _innerWorkItemStore.UserDisplayName;
+        public string UserAccountName => _innerWorkItemStore.UserAccountName;
 
-        public string UserIdentityName => _innerWorkItemStore.UserIdentityName;
+        public string UserDisplayName => _innerWorkItemStore.UserDisplayName;
 
         public string UserSid => _innerWorkItemStore.UserSid;
 
@@ -70,8 +70,6 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
                 return _innerWorkItemStore.WorkItemLinkTypes;
             }
         }
-
-        public int WorkItemLinkTypesCallCount { get; private set; }
 
         public void Dispose()
         {
@@ -101,7 +99,5 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             QueryLinksCallCount += 1;
             return _innerWorkItemStore.QueryLinks(wiql, dayPrecision);
         }
-
-        public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
     }
 }

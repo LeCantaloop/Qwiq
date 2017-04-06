@@ -8,13 +8,13 @@ using Tfs = Microsoft.TeamFoundation.Framework;
 
 namespace Microsoft.Qwiq.Soap
 {
-    public class IdentityManagementService : IIdentityManagementService
+    internal class IdentityManagementService : IIdentityManagementService
     {
         private readonly Tfs.Client.IIdentityManagementService2 _identityManagementService2;
 
         internal IdentityManagementService(Tfs.Client.IIdentityManagementService2 identityManagementService2)
         {
-            _identityManagementService2 = identityManagementService2;
+            _identityManagementService2 = identityManagementService2 ?? throw new ArgumentNullException(nameof(identityManagementService2));
         }
 
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)

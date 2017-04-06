@@ -8,7 +8,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    public class ItemAlreadyUpdatedOnServerException : InvalidOperationException
+    internal class ItemAlreadyUpdatedOnServerException : InvalidOperationException
     {
         private readonly Tfs.ItemAlreadyUpdatedOnServerException _exception;
 

@@ -91,7 +91,7 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public sealed override IFieldCollection Fields => _fields
-                                                          ?? (_fields = new MockFieldCollection(Type.FieldDefinitions));
+                                                          ?? (_fields = new MockFieldCollection(this, Type.FieldDefinitions));
 
         public new int Id
         {

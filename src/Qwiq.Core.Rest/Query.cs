@@ -9,7 +9,7 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Rest
 {
-    public class Query : IQuery
+    internal class Query : IQuery
     {
         internal const int MaximumBatchSize = 200;
 
@@ -107,29 +107,21 @@ namespace Microsoft.Qwiq.Rest
             if (_ids == null) yield break;
 
             var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.All;
-            var qry = _ids.Partition(_workItemStore.BatchSize);
+            var qry = _ids.Partition(_workItemStore.PageSize);
             var ts = qry.Select(s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, _fields, _asOf, expand, WorkItemErrorPolicy.Omit));
-
-            // REST API does not return the WIT with the item
-            // Eagerly loading requires several trips to the server at a cost of 50-250ms for each project
-
-            // REVIEW: Can we only request the projects needed instead of all?
-            var wits = new Lazy<Dictionary<string, Dictionary<string, IWorkItemType>>>(() => _workItemStore.Projects.ToDictionary(
-                k => k.Name,
-                e => e.WorkItemTypes.ToDictionary(
-                    i => i.Name,
-                    j => j,
-                    StringComparer.OrdinalIgnoreCase),
-                StringComparer.OrdinalIgnoreCase));
-
+            
             // This is done in parallel so keep performance similar to the SOAP client
             foreach (var workItem in Task.WhenAll(ts).GetAwaiter().GetResult().SelectMany(s => s.Select(f => f)))
             {
+               
                 yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(workItem, new Lazy<IWorkItemType>(
                                                                                                           () =>
                                                                                                               {
-                                                                                                                  var proj = wits.Value[(string)workItem.Fields[CoreFieldRefNames.TeamProject]];
-                                                                                                                  var wit = proj[(string)workItem.Fields[CoreFieldRefNames.WorkItemType]];
+                                                                                                                  // REST API does not return the WIT with the item
+                                                                                                                  // Eagerly loading requires several trips to the server at a cost of 50-2500ms for each trip
+                                                                                                                  var proj = (string)workItem.Fields[CoreFieldRefNames.TeamProject];
+                                                                                                                  var witName = (string)workItem.Fields[CoreFieldRefNames.WorkItemType];
+                                                                                                                  var wit = _workItemStore.Projects[proj].WorkItemTypes[witName];
                                                                                                                   return wit;
                                                                                                               })));
             }

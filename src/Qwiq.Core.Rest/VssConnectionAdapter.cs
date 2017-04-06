@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq.Rest
     {
         private readonly VssConnection _connection;
 
-        public VssConnectionAdapter(VssConnection connection)
+        internal VssConnectionAdapter(VssConnection connection)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             AuthorizedCredentials = new TfsCredentials(connection.Credentials);

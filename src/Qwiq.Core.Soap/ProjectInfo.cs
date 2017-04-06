@@ -1,3 +1,5 @@
+using System;
+
 using Tfs = Microsoft.TeamFoundation.Server;
 
 namespace Microsoft.Qwiq.Soap
@@ -8,7 +10,7 @@ namespace Microsoft.Qwiq.Soap
 
         internal ProjectInfo(Tfs.ProjectInfo projectInfo)
         {
-            _projectInfo = projectInfo;
+            _projectInfo = projectInfo ?? throw new ArgumentNullException(nameof(projectInfo));
         }
 
         public string Uri { get => _projectInfo.Uri;

@@ -58,112 +58,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        private class IIdentityDescriptorComparer : IComparer, IEqualityComparer, IComparer<IIdentityDescriptor>, IEqualityComparer<IIdentityDescriptor>
-        {
-            public int Compare(object x, object y)
-            {
-                if (x == y) return 0;
-                if (x == null) return -1;
-                if (y == null) return 1;
-
-                var da = x as IIdentityDescriptor;
-                if (da != null)
-                {
-                    var db = y as IIdentityDescriptor;
-                    if (db != null)
-                    {
-                        return Compare(da, db);
-                    }
-                }
-
-                var ia = x as IComparable;
-                if (ia != null)
-                {
-                    return ia.CompareTo(y);
-                }
-
-                throw new ArgumentException("Argument must implement IComparable");
-            }
-
-            public new bool Equals(object x, object y)
-            {
-                if (x == y) return true;
-                if (x == null || y == null) return false;
-
-                var da = x as IIdentityDescriptor;
-                if (da != null)
-                {
-                    var db = y as IIdentityDescriptor;
-                    if (db != null)
-                    {
-                        return Equals(da, db);
-                    }
-                }
-
-                return x.Equals(y);
-            }
-
-            private static readonly System.Security.Cryptography.MD5CryptoServiceProvider Md5Provider = new System.Security.Cryptography.MD5CryptoServiceProvider();
-            // the database is usually set to Latin1_General_CI_AS which is codepage 1252
-            private static readonly System.Text.Encoding Encoding = System.Text.Encoding.GetEncoding(1252);
-
-            private static int ComputeStringHash(string sourceString, int modulo = 0)
-            {
-                var md5Bytes = Md5Provider.ComputeHash(Encoding.GetBytes(sourceString));
-                var result = BitConverter.ToInt32(new[] { md5Bytes[15], md5Bytes[14], md5Bytes[13], md5Bytes[12] }, 0);
-                return modulo == 0
-                    ? result
-                    : Math.Abs(result) % modulo;
-            }
-
-            public int GetHashCode(object obj)
-            {
-                if (obj == null)
-                {
-                    throw new ArgumentNullException(nameof(obj));
-                }
-                var s = obj as IIdentityDescriptor;
-                return s != null
-                    ? GetHashCode(s)
-                    : obj.GetHashCode();
-            }
-
-            public int Compare(IIdentityDescriptor x, IIdentityDescriptor y)
-            {
-                if (ReferenceEquals(x, y)) return 0;
-                if (x == null) return -1;
-                if (y == null) return 1;
-
-                var xt = x.IdentityType;
-                var xi = x.Identifier;
-                var yt = y.IdentityType;
-                var yi = y.Identifier;
-
-                return StringComparer.OrdinalIgnoreCase.Compare(xt + xi, yt + yi);
-            }
-
-            public bool Equals(IIdentityDescriptor x, IIdentityDescriptor y)
-            {
-                if (ReferenceEquals(x, y)) return true;
-                if (x == null || y == null) return false;
-
-                var xt = x.IdentityType;
-                var xi = x.Identifier;
-                var yt = y.IdentityType;
-                var yi = y.Identifier;
-
-                return StringComparer.OrdinalIgnoreCase.Equals(xt + xi, yt + yi);
-            }
-
-            public int GetHashCode(IIdentityDescriptor obj)
-            {
-                var hash = 17;
-                if (!string.IsNullOrEmpty(obj.IdentityType)) hash = hash * 23 + ComputeStringHash(obj.IdentityType);
-                if (!string.IsNullOrEmpty(obj.Identifier)) hash = hash * 23 + ComputeStringHash(obj.Identifier);
-
-                return hash;
-            }
-        }
+       
 
         /// <summary>
         /// Creates a new instance of the IMS
@@ -174,7 +69,7 @@ namespace Microsoft.Qwiq.Mocks
         public MockIdentityManagementService(IDictionary<string, ITeamFoundationIdentity> accountNameMappings)
         {
             _accountNameMappings = new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
-            _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(new IIdentityDescriptorComparer());
+            _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(IdentityDescriptorComparer.Instance);
 
             foreach (var account in accountNameMappings)
             {
@@ -207,7 +102,7 @@ namespace Microsoft.Qwiq.Mocks
         {
             _accountNameMappings = accountMappings?.ToDictionary(k => k.Key, e => e.Value.ToArray())
                                     ?? new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
-            _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(new IIdentityDescriptorComparer());
+            _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(IdentityDescriptorComparer.Instance);
 
             foreach (var accounts in _accountNameMappings.Values)
             {
@@ -268,7 +163,7 @@ namespace Microsoft.Qwiq.Mocks
                     {
                         yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
                             value,
-                            Locate(identity => identity.UniqueName.StartsWith(value, StringComparison.OrdinalIgnoreCase)));
+                            Locate(identity => identity.GetAttribute("Account", string.Empty).StartsWith(value, StringComparison.OrdinalIgnoreCase)));
                     }
                     break;
                 // Display name

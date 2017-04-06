@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq.Credentials
 
         public AuthenticationType AuthenticationType { get; }
 
-        public ClientType ClientType { get; }
+        public ClientType ClientType { get; set; }
 
         public AuthenticationOptions(string uri)
             : this(new Uri(uri, UriKind.Absolute))

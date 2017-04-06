@@ -7,19 +7,15 @@ namespace Microsoft.Qwiq
     ///     Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
     ///     all the TFS libraries.
     /// </summary>
-    public interface IWorkItem : IWorkItemCommon
+    public interface IWorkItem : IWorkItemCommon, IRevision, IIdentifiable<int>
     {
         new int AttachedFileCount { get; }
-
-        IEnumerable<IAttachment> Attachments { get; }
 
         new DateTime ChangedDate { get; }
 
         new DateTime CreatedDate { get; }
 
         new int ExternalLinkCount { get; }
-
-        IFieldCollection Fields { get; }
 
         new int HyperLinkCount { get; }
 
@@ -35,11 +31,6 @@ namespace Microsoft.Qwiq
         bool IsDirty { get; }
 
         string Keywords { get; set; }
-
-        /// <summary>
-        ///     Gets the links of the work item in this revision.
-        /// </summary>
-        ICollection<ILink> Links { get; }
 
         new int Rev { get; }
 

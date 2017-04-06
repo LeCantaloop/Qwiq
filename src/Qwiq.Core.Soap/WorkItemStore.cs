@@ -1,15 +1,44 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
+    internal class ProjectCollection : IProjectCollection
+    {
+        private readonly TfsWorkItem.ProjectCollection _valueProjects;
+
+        public ProjectCollection(TfsWorkItem.ProjectCollection valueProjects)
+        {
+            _valueProjects = valueProjects ?? throw new ArgumentNullException(nameof(valueProjects));
+        }
+
+        public IEnumerator<IProject> GetEnumerator()
+        {
+            return _valueProjects.Cast<TfsWorkItem.Project>()
+                                 .Select(
+                                     item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(item)))
+                                     .GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        IProject IProjectCollection.this[string projectName] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[projectName]));
+
+        IProject IProjectCollection.this[Guid id] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[id]));
+    }
+
     /// <summary>
     ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
     ///     all the TFS libraries.
@@ -24,27 +53,35 @@ namespace Microsoft.Qwiq.Soap
 
         private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
 
+        private readonly Lazy<IProjectCollection> _projects;
+
         internal WorkItemStore(
             TeamFoundation.Client.TfsTeamProjectCollection tfsNative,
-            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
+            Func<WorkItemStore, IQueryFactory> queryFactory,
+            int pageSize = PageSizeLimits.MaxPageSize)
             : this(
                 () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
                     new TfsTeamProjectCollection(tfsNative)),
-                queryFactory)
+                queryFactory, pageSize)
         {
         }
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<TfsWorkItem.WorkItemStore> wisFactory,
-            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
+            Func<WorkItemStore, IQueryFactory> queryFactory,
+            int pageSize = PageSizeLimits.MaxPageSize)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+
+            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize)
+                throw new PageSizeRangeException();
+
             _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
-            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory.Invoke(_workItemStore?.Value));
+            _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
             _linkTypes = new Lazy<WorkItemLinkTypeCollection>(
                 () =>
@@ -52,31 +89,33 @@ namespace Microsoft.Qwiq.Soap
                         return new WorkItemLinkTypeCollection(
                             _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
                     });
+
+            _projects = new Lazy<IProjectCollection>(()=>new ProjectCollection(_workItemStore.Value.Projects));
+
+            PageSize = pageSize;
         }
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
-            Func<TfsWorkItem.WorkItemStore, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
+            Func<WorkItemStore, IQueryFactory> queryFactory,
+            int pageSize = PageSizeLimits.MaxPageSize)
+            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory, pageSize)
         {
         }
 
+        public int PageSize { get; }
+
+        public ClientType ClientType => ClientType.Soap;
+
         public TfsCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
+
+        internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
 
         public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory
             .Create<IFieldDefinitionCollection>(
                 new FieldDefinitionCollection(_workItemStore.Value.FieldDefinitions));
 
-        public IEnumerable<IProject> Projects
-        {
-            get
-            {
-                return _workItemStore.Value.Projects.Cast<TfsWorkItem.Project>()
-                                     .Select(
-                                         item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
-                                             new Project(item)));
-            }
-        }
+        public IProjectCollection Projects => _projects.Value;
 
         public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
@@ -84,7 +123,7 @@ namespace Microsoft.Qwiq.Soap
 
         public string UserDisplayName => _workItemStore.Value.UserDisplayName;
 
-        public string UserIdentityName => _workItemStore.Value.UserIdentityName;
+        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
 
         public string UserSid => _workItemStore.Value.UserSid;
 
@@ -96,7 +135,7 @@ namespace Microsoft.Qwiq.Soap
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
+        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = true)
         {
             try
             {
@@ -131,7 +170,7 @@ namespace Microsoft.Qwiq.Soap
             return Query(new[] { id }, asOf).SingleOrDefault();
         }
 
-        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
+        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = true)
         {
             try
             {

@@ -8,7 +8,7 @@ namespace Microsoft.Qwiq.Soap
 {
     internal class LinkMapper
     {
-        public Tfs.Link Map(ILink link, Tfs.WorkItem item)
+        internal Tfs.Link Map(ILink link, Tfs.WorkItem item)
         {
             switch (link.BaseType)
             {
@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq.Soap
             }
         }
 
-        public ILink Map(Tfs.Link link)
+        internal ILink Map(Tfs.Link link)
         {
             switch (link.BaseType)
             {

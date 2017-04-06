@@ -9,18 +9,16 @@ namespace Microsoft.Qwiq
 
         private readonly Lazy<IEnumerable<INode>> _iteration;
 
-        private readonly Lazy<IEnumerable<IWorkItemType>> _wits;
+        private readonly Lazy<IWorkItemTypeCollection> _wits;
 
         internal Project(
-            int id,
             Guid guid,
             string name,
             Uri uri,
-            Lazy<IEnumerable<IWorkItemType>> wits,
+            Lazy<IWorkItemTypeCollection> wits,
             Lazy<IEnumerable<INode>> area,
             Lazy<IEnumerable<INode>> iteration)
         {
-            Id = id;
             Guid = guid;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Uri = uri ?? throw new ArgumentNullException(nameof(uri));
@@ -47,7 +45,7 @@ namespace Microsoft.Qwiq
 
         public Guid Guid { get; }
 
-        public int Id { get; }
+      
 
         public IEnumerable<INode> IterationRootNodes => _iteration.Value;
 
@@ -55,7 +53,7 @@ namespace Microsoft.Qwiq
 
         public Uri Uri { get; }
 
-        public IEnumerable<IWorkItemType> WorkItemTypes => _wits.Value;
+        public IWorkItemTypeCollection WorkItemTypes => _wits.Value;
 
         public override bool Equals(object obj)
         {

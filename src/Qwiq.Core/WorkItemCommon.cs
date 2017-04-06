@@ -1,9 +1,20 @@
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class WorkItemCommon : WorkItemCore, IWorkItemCommon
+    public abstract class WorkItemCommon : WorkItemCore, IWorkItemCommon, IEquatable<IWorkItemCommon>
     {
+        protected internal WorkItemCommon()
+            :base()
+        {
+        }
+
+        protected internal WorkItemCommon(IDictionary<string, object> fields)
+            :base(fields)
+        {
+        }
+
         public virtual int? AreaId
         {
             get => GetValue<int?>(CoreFieldRefNames.AreaId);
@@ -85,5 +96,12 @@ namespace Microsoft.Qwiq
         public virtual int? Watermark => GetValue<int?>(CoreFieldRefNames.Watermark);
 
         public virtual string WorkItemType => GetValue<string>(CoreFieldRefNames.WorkItemType);
+
+        
+
+        public bool Equals(IWorkItemCommon other)
+        {
+            return NullableIdentifiableComparer.Instance.Equals(this, other);
+        }
     }
 }

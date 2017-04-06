@@ -200,6 +200,7 @@
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IdentityManagementService.cs" />
     <Compile Include="IInternalTfsTeamProjectCollection.cs" />
+    <Compile Include="IRevision.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkCollection.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="WorkItemStore.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
     <Compile Include="WorkItemType.cs" />
+    <Compile Include="WorkItemTypeCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">

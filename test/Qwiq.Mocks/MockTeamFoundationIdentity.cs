@@ -4,61 +4,71 @@ using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockTeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
+    public class MockTeamFoundationIdentity : TeamFoundationIdentity
     {
+        private readonly IDictionary<string, object> _properties;
+
+        private bool _isActive;
+
         public MockTeamFoundationIdentity(string displayName, string uniqueName)
         {
+            _properties =
+                new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        { "Account", uniqueName },
+                        {
+                            "Domain",
+                            MockIdentityDescriptor.Domain
+                        }
+                    };
+
             DisplayName = displayName;
-            UniqueName = uniqueName;
             MemberOf = Enumerable.Empty<IIdentityDescriptor>();
             Members = Enumerable.Empty<IIdentityDescriptor>();
             IsActive = true;
             IsContainer = false;
             TeamFoundationId = Guid.Empty;
             Descriptor = new MockIdentityDescriptor(uniqueName);
+            UniqueUserId = IsActive ? 0 : 1;
         }
 
-        public IIdentityDescriptor Descriptor { get; }
+        public sealed override IIdentityDescriptor Descriptor { get; internal set; }
 
-        public string DisplayName { get; }
+        public override string DisplayName { get; }
 
-        public bool IsActive { get; set; }
-
-        public bool IsContainer { get; set; }
-
-        public IEnumerable<IIdentityDescriptor> MemberOf { get; set; }
-
-        public IEnumerable<IIdentityDescriptor> Members { get; set; }
-
-        public Guid TeamFoundationId { get; set; }
-
-        public string UniqueName { get; set; }
-
-        public int UniqueUserId
+        public new bool IsActive
         {
-            get
+            get => _isActive;
+            set
             {
-                // Based on http://stackoverflow.com/questions/263400/what-is-the-best-algorithm-for-an-overridden-system-object-gethashcode
-                var hash = 17;
-
-                if (!string.IsNullOrEmpty(DisplayName)) hash = hash * 23 + DisplayName.GetHashCode();
-                if (!string.IsNullOrEmpty(UniqueName)) hash = hash * 23 + UniqueName.GetHashCode();
-                if (TeamFoundationId != null) hash = hash * 23 + TeamFoundationId.GetHashCode();
-                if (Descriptor != null) hash = hash * 23 + Descriptor.GetHashCode();
-                hash = hash * 23 + IsContainer.GetHashCode();
-
-                return hash;
+                _isActive = value;
+                UniqueUserId = value ? 0 : 1;
             }
         }
 
-        public bool Equals(ITeamFoundationIdentity other)
-        {
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
+        public sealed override bool IsContainer { get; }
 
-            return UniqueUserId == other?.UniqueUserId;
+        public sealed override IEnumerable<IIdentityDescriptor> MemberOf { get; }
+
+        public sealed override IEnumerable<IIdentityDescriptor> Members { get; }
+
+        public sealed override Guid TeamFoundationId { get; internal set; }
+
+        public new int UniqueUserId { get; private set; }
+
+        public override string GetAttribute(string name, string defaultValue)
+        {
+            return _properties.TryGetValue(name, out object obj) ? obj.ToString() : defaultValue;
+        }
+
+        public override IEnumerable<KeyValuePair<string, object>> GetProperties()
+        {
+            return _properties;
+        }
+
+        public override object GetProperty(string name)
+        {
+            return _properties[name];
         }
     }
 }

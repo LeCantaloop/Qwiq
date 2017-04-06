@@ -4,7 +4,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    public class Attachment : IAttachment
+    internal class Attachment : IAttachment
     {
         private readonly Tfs.Attachment _attachment;
 

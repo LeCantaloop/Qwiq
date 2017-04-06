@@ -1,14 +1,16 @@
+using System;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    public class FieldConflict : IFieldConflict
+    internal class FieldConflict : IFieldConflict
     {
         private readonly Tfs.FieldConflict _field;
 
-        public FieldConflict(Tfs.FieldConflict field)
+        internal FieldConflict(Tfs.FieldConflict field)
         {
-            _field = field;
+            _field = field ?? throw new ArgumentNullException(nameof(field));
         }
 
         public object BaselineValue => _field.BaselineValue;

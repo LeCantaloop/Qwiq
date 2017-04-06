@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq.Soap
 {
     internal class LinkHelper
     {
-        public Tfs.Link FindEquivalentLink(Tfs.WorkItem item, ILink link)
+        internal Tfs.Link FindEquivalentLink(Tfs.WorkItem item, ILink link)
         {
             if (link.BaseType == BaseLinkType.RelatedLink)
             {

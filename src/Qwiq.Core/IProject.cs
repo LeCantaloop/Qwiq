@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public interface IProject
+    public interface IProject 
     {
         IEnumerable<INode> AreaRootNodes { get; }
 
         Guid Guid { get; }
-
-        int Id { get; }
 
         IEnumerable<INode> IterationRootNodes { get; }
 
@@ -17,6 +15,6 @@ namespace Microsoft.Qwiq
 
         Uri Uri { get; }
 
-        IEnumerable<IWorkItemType> WorkItemTypes { get; }
+        IWorkItemTypeCollection WorkItemTypes { get; }
     }
 }

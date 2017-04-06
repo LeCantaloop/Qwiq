@@ -6,7 +6,7 @@ namespace Microsoft.Qwiq.Soap
 {
     internal static class RegisteredLinkTypeMapper
     {
-        public static Tfs.RegisteredLinkType Map(Tfs.WorkItemStore store, string linkTypeName)
+        internal static Tfs.RegisteredLinkType Map(Tfs.WorkItemStore store, string linkTypeName)
             => store.RegisteredLinkTypes
                 .OfType<Tfs.RegisteredLinkType>()
                 .FirstOrDefault(x => x.Name == linkTypeName);

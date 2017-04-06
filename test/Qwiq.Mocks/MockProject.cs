@@ -7,20 +7,17 @@ namespace Microsoft.Qwiq.Mocks
     {
         public MockProject()
             : base(
-                BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
                 Guid.NewGuid(),
                 "Mock Project",
                 new Uri("http://localhost"),
-                new Lazy<IEnumerable<IWorkItemType>>(
-                    () => new[]
-                              {
-                                  new MockWorkItemType("Task"),
-                                  new MockWorkItemType("Deliverable"),
-                                  new MockWorkItemType("Scenario"),
-                                  new MockWorkItemType("Customer Promise"),
-                                  new MockWorkItemType("Bug"),
-                                  new MockWorkItemType("Measure")
-                              }),
+                new Lazy<IWorkItemTypeCollection>(
+                    () => new WorkItemTypeCollection(
+                                                     new MockWorkItemType("Task"),
+                                                     new MockWorkItemType("Deliverable"),
+                                                     new MockWorkItemType("Scenario"),
+                                                     new MockWorkItemType("Customer Promise"),
+                                                     new MockWorkItemType("Bug"),
+                                                     new MockWorkItemType("Measure"))),
                 new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
                 new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
         {
@@ -28,11 +25,10 @@ namespace Microsoft.Qwiq.Mocks
 
         public MockProject(IEnumerable<IWorkItemType> workItemTypes)
             : base(
-                BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
                 Guid.NewGuid(),
                 "Mock Project",
                 new Uri("http://localhost"),
-                new Lazy<IEnumerable<IWorkItemType>>(() => workItemTypes),
+                new Lazy<IWorkItemTypeCollection>(() => new WorkItemTypeCollection(workItemTypes)),
                 new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
                 new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
         {

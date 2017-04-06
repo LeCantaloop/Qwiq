@@ -1,3 +1,5 @@
+using System;
+
 using Tfs = Microsoft.TeamFoundation.Server;
 
 namespace Microsoft.Qwiq.Soap
@@ -8,7 +10,7 @@ namespace Microsoft.Qwiq.Soap
 
         internal ProjectProperty(Tfs.ProjectProperty projectProperty)
         {
-            _projectProperty = projectProperty;
+            _projectProperty = projectProperty ?? throw new ArgumentNullException(nameof(projectProperty));
         }
     }
 }

@@ -6,7 +6,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    public class ValidationException : InvalidOperationException
+    internal class ValidationException : InvalidOperationException
     {
         internal ValidationException(string message)
             : base(message)

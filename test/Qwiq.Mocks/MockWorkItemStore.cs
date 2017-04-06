@@ -54,7 +54,7 @@ namespace Microsoft.Qwiq.Mocks
 
             if (workItems == null)
             {
-                Projects = new[] { project };
+                Projects = new ProjectCollection(project);
                 _workItems = new List<IWorkItem>();
 
                 foreach (var wit in project.WorkItemTypes)
@@ -83,7 +83,7 @@ namespace Microsoft.Qwiq.Mocks
                     project = new MockProject(project.WorkItemTypes.Union(missing).Distinct());
                 }
 
-                Projects = new[] { project };
+                Projects = new ProjectCollection(project);
             }
 
             _lookup = _workItems.ToDictionary(k => k.Id, e => e);
@@ -95,21 +95,23 @@ namespace Microsoft.Qwiq.Mocks
 
         private int WaitTime => Instance.Next(0, 3000);
 
+        public ClientType ClientType => ClientType.None;
+
         public TfsCredentials AuthorizedCredentials => null;
 
         public IFieldDefinitionCollection FieldDefinitions => _storeDefinitions.Value;
 
-        public IEnumerable<IProject> Projects { get; }
+        public IProjectCollection Projects { get; }
 
         public ITfsTeamProjectCollection TeamProjectCollection { get; }
 
         public TimeZone TimeZone { get; }
 
-        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
-        public string UserIdentityName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
+
+        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
+
+        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
 
         public WorkItemLinkTypeCollection WorkItemLinkTypes { get; }
 

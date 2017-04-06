@@ -13,7 +13,6 @@ namespace Microsoft.Qwiq.Core.Tests
         protected Result RestResult { get; set; }
 
         protected Result SoapResult { get; set; }
-
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
@@ -48,6 +47,8 @@ namespace Microsoft.Qwiq.Core.Tests
         {
             SoapResult?.Dispose();
             RestResult?.Dispose();
+
+            base.Cleanup();
         }
 
         [TestMethod]
@@ -59,7 +60,7 @@ namespace Microsoft.Qwiq.Core.Tests
             {
                 try
                 {
-                    RestResult.WorkItem[field].ShouldEqual(SoapResult.WorkItem[field], field);
+                    RestResult.WorkItem[field]?.ToString().ShouldEqual(SoapResult.WorkItem[field]?.ToString(), field);
                 }
                 catch (Exception e)
                 {
@@ -69,7 +70,7 @@ namespace Microsoft.Qwiq.Core.Tests
 
             if (exceptions.Any())
             {
-                throw new AggregateException(ShouldExtensions.EachToUsefulString(exceptions), exceptions);
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
             }
         }
 

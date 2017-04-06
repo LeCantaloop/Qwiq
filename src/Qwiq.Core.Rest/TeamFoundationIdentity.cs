@@ -7,16 +7,19 @@ using Microsoft.VisualStudio.Services.Identity;
 
 namespace Microsoft.Qwiq.Rest
 {
-    public class TeamFoundationIdentity : ITeamFoundationIdentity
+    internal class TeamFoundationIdentity : ITeamFoundationIdentity
     {
+        private readonly Identity _identity;
+
         private readonly Lazy<IIdentityDescriptor> _descriptor;
 
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _memberOf;
 
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _members;
 
-        public TeamFoundationIdentity(Identity identity)
+        internal TeamFoundationIdentity(Identity identity)
         {
+            _identity = identity;
             if (identity == null) throw new ArgumentNullException(nameof(identity));
             DisplayName = identity.DisplayName;
             IsActive = identity.IsActive;
@@ -60,5 +63,24 @@ namespace Microsoft.Qwiq.Rest
         public string UniqueName { get; }
 
         public int UniqueUserId { get; }
+
+        public string GetAttribute(string name, string defaultValue)
+        {
+            if (_identity.Properties.TryGetValue(name, out object obj))
+            {
+                return obj.ToString();
+            }
+            return defaultValue;
+        }
+
+        public IEnumerable<KeyValuePair<string, object>> GetProperties()
+        {
+            return _identity.Properties;
+        }
+
+        public object GetProperty(string name)
+        {
+            return ExceptionHandlingDynamicProxyFactory.Create(_identity.Properties[name]);
+        }
     }
 }

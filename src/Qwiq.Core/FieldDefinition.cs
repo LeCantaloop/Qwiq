@@ -5,7 +5,7 @@ namespace Microsoft.Qwiq
     /// <summary>
     /// A facade for <see cref="Microsoft.TeamFoundation.WorkItemTracking.Client.FieldDefinition"/>
     /// </summary>
-    public class FieldDefinition : IFieldDefinition, IComparable<IFieldDefinition>, IEquatable<IFieldDefinition>
+    public class FieldDefinition : IFieldDefinition, IEquatable<IFieldDefinition>
     {
         internal FieldDefinition(int id, string referenceName, string name)
             : this(referenceName, name)
@@ -23,7 +23,7 @@ namespace Microsoft.Qwiq
 
             Name = name;
             ReferenceName = referenceName;
-            Id = name.GetHashCode() ^ referenceName.GetHashCode();
+            Id = FieldDefinitionComparer.Instance.GetHashCode(this);
         }
 
         public string Name { get; }
@@ -31,11 +31,6 @@ namespace Microsoft.Qwiq
         public string ReferenceName { get; }
 
         public int Id { get; }
-
-        public int CompareTo(IFieldDefinition other)
-        {
-            return FieldDefinitionComparer.Instance.Compare(this, other);
-        }
 
         public bool Equals(IFieldDefinition other)
         {

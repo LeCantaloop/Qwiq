@@ -11,17 +11,14 @@ namespace Microsoft.Qwiq.Rest
     {
         internal Project(TeamProjectReference project, WorkItemStore store)
             : base(
-                // REST API stores ID as GUID rather than INT
-                // Converting from 128-bit GUID will have some loss in precision
-                BitConverter.ToInt32(project.Id.ToByteArray(), 0),
                 project.Id,
                 project.Name,
                 new Uri(project.Url),
-                new Lazy<IEnumerable<IWorkItemType>>(
+                new Lazy<IWorkItemTypeCollection>(
                     () =>
                         {
                             var wits = store.NativeWorkItemStore.Value.GetWorkItemTypesAsync(project.Name).GetAwaiter().GetResult();
-                            return wits.Select(s => new WorkItemType(s));
+                            return new WorkItemTypeCollection(wits.Select(s => new WorkItemType(s)));
                         }),
                 new Lazy<IEnumerable<INode>>(
                     () =>

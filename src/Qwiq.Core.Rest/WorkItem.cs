@@ -2,18 +2,22 @@
 
 namespace Microsoft.Qwiq.Rest
 {
-    public class WorkItem : Qwiq.WorkItem
+    internal class WorkItem : Qwiq.WorkItem
     {
         private readonly TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem _item;
 
         private readonly Lazy<IWorkItemType> _wit;
 
+        private readonly Lazy<IFieldCollection> _fields;
+
         internal WorkItem(TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item, Lazy<IWorkItemType> wit)
+            :base(item.Fields)
         {
             _item = item;
             _wit = wit;
             Uri = new Uri(item.Url);
             Url = item.Url;
+            _fields = new Lazy<IFieldCollection>(() => new FieldCollection(this, Type.FieldDefinitions, (r,d) => new Field(r,d)));
         }
 
         public override int Id => _item.Id.GetValueOrDefault(0);
@@ -32,21 +36,6 @@ namespace Microsoft.Qwiq.Rest
 
         public override string Url { get; }
 
-        protected override object GetValue(string field)
-        {
-            //if (!Type.FieldDefinitions.Contains(field))
-            //{
-            //    // To preserve OM compatability
-            //    throw new FieldDefinitionNotExistException(
-            //        $"TF26026: A field definition ID {field} in the work item type definition file does not exist. Add a definition for this field ID, or remove the reference to the field ID and try again.");
-            //}
-
-            return !_item.Fields.TryGetValue(field, out object val) ? null : val;
-        }
-
-        protected override void SetValue(string field, object value)
-        {
-            _item.Fields[field] = value;
-        }
+        public override IFieldCollection Fields => _fields.Value;
     }
 }

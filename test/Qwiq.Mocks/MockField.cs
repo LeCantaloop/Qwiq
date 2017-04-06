@@ -4,30 +4,32 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockField : IField
     {
+        private readonly IFieldDefinition _fieldDefinition;
+
         private const int MaxStringLength = 255;
 
         private object _value;
 
-        public MockField(IFieldDefinition definition)
-        {
-            if (definition == null) throw new ArgumentNullException(nameof(definition));
+        private ValidationState _validationState;
 
-            Id = definition.Id;
-            Name = definition.Name;
-            ReferenceName = definition.ReferenceName;
+        private bool _isDirty;
+
+        public MockField(IFieldDefinition fieldDefinition)
+        {
+            _fieldDefinition = fieldDefinition;
         }
 
         public MockField(
-            IFieldDefinition definition,
+            IFieldDefinition fieldDefinition,
             object value,
             object originalValue = null,
             ValidationState validationState = ValidationState.Valid,
             bool isChangedByUser = true)
-            : this(definition)
+            : this(fieldDefinition)
         {
             Value = value;
             OriginalValue = originalValue;
-            ValidationState = validationState;
+            _validationState = validationState;
             IsChangedByUser = isChangedByUser;
             IsEditable = true;
         }
@@ -38,33 +40,31 @@ namespace Microsoft.Qwiq.Mocks
             object originalValue = null,
             ValidationState validationState = ValidationState.Valid,
             bool isChangedByUser = true)
+            :this(MockFieldDefinition.Create(Guid.NewGuid().ToString("N")), value, originalValue, validationState, isChangedByUser)
         {
-            Value = value;
-            OriginalValue = originalValue;
-            ValidationState = validationState;
-            IsChangedByUser = isChangedByUser;
-            IsEditable = true;
         }
 
-        public int Id { get; set; }
+        
 
         public bool IsChangedByUser { get; }
 
-        public bool IsDirty { get; private set; }
+        public bool IsDirty => _isDirty;
 
-        public bool IsEditable { get; set; }
+        public bool IsEditable { get;  }
 
-        public bool IsRequired { get; set; }
+        public bool IsRequired { get; }
 
-        public bool IsValid => ValidationState == ValidationState.Valid;
+        public virtual bool IsValid => ValidationState == ValidationState.Valid;
 
-        public string Name { get; set; }
+        public virtual string Name => _fieldDefinition.Name;
+
+        public virtual string ReferenceName => _fieldDefinition.ReferenceName;
+
+        public virtual int Id => _fieldDefinition.Id;
 
         public object OriginalValue { get; set; }
 
-        public string ReferenceName { get; }
-
-        public ValidationState ValidationState { get; private set; }
+        public ValidationState ValidationState => _validationState;
 
         public object Value
         {
@@ -72,23 +72,23 @@ namespace Microsoft.Qwiq.Mocks
             set
             {
                 _value = value;
-                IsDirty = true;
+                _isDirty = true;
 
                 if (OriginalValue != null && _value != null && _value.Equals(OriginalValue))
                 {
-                    IsDirty = false;
-                    ValidationState = ValidationState.Valid;
+                    _isDirty = false;
+                    _validationState = ValidationState.Valid;
                 }
 
                 switch (ValidationState)
                 {
                     case ValidationState.InvalidNotEmpty:
-                        if (string.IsNullOrEmpty(value as string)) ValidationState = ValidationState.Valid;
+                        if (string.IsNullOrEmpty(value as string)) _validationState = ValidationState.Valid;
                         break;
 
                     case ValidationState.InvalidTooLong:
                         var str = value as string;
-                        if (str != null && str.Length <= MaxStringLength) ValidationState = ValidationState.Valid;
+                        if (str != null && str.Length <= MaxStringLength) _validationState = ValidationState.Valid;
                         break;
 
                     case ValidationState.Valid:

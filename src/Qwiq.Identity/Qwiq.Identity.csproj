@@ -46,8 +46,8 @@
     <Compile Include="Linq\Visitors\IdentityVisitor.cs" />
     <Compile Include="Linq\Visitors\IIdentityMapper.cs" />
     <Compile Include="Mapper\BulkIdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="Mapper\IdentifiableComparer.cs" />
     <Compile Include="Mapper\WorkItemField.cs" />
-    <Compile Include="Mapper\WorkItemKeyComparer.cs" />
     <Compile Include="Mapper\WorkItemWithFields.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

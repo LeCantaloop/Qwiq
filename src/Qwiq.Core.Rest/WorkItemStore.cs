@@ -16,25 +16,21 @@ namespace Microsoft.Qwiq.Rest
             "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
             RegexOptions.Singleline | RegexOptions.Compiled);
 
-        public int BatchSize { get; }
-
         private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
+
+        private readonly Lazy<IProjectCollection> _projects;
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
-
-        private readonly Lazy<IEnumerable<IProject>> _projects;
-
-        private Lazy<FieldDefinitionCollection> _fieldDefinitions;
+        private readonly Lazy<FieldDefinitionCollection> _fieldDefinitions;
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
-            int batchSize = Rest.Query.MaximumBatchSize)
-            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, batchSize)
+            int pageSize = Rest.Query.MaximumBatchSize)
+            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, pageSize)
         {
         }
 
@@ -42,7 +38,7 @@ namespace Microsoft.Qwiq.Rest
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
             Func<WorkItemTrackingHttpClient> wisFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
-            int batchSize = Rest.Query.MaximumBatchSize)
+            int pageSize = Rest.Query.MaximumBatchSize)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
@@ -53,10 +49,10 @@ namespace Microsoft.Qwiq.Rest
 
             // Boundary check the batch size
 
-            if (batchSize < Rest.Query.MinimumBatchSize) throw new PageSizeRangeException();
-            if (batchSize > Rest.Query.MaximumBatchSize) throw new PageSizeRangeException();
+            if (pageSize < Rest.Query.MinimumBatchSize || pageSize > Rest.Query.MaximumBatchSize) throw new PageSizeRangeException();
+            
 
-            BatchSize = batchSize;
+            PageSize = pageSize;
 
             WorkItemLinkTypeCollection ValueFactory()
             {
@@ -64,35 +60,37 @@ namespace Microsoft.Qwiq.Rest
             }
 
             _linkTypes = new Lazy<WorkItemLinkTypeCollection>(ValueFactory);
-            _projects = new Lazy<IEnumerable<IProject>>(
+            _projects = new Lazy<IProjectCollection>(
                 () =>
                     {
                         using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
                         {
                             var projects = projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
-                            return projects.Select(project => new Project(project, this))
-                                           .Cast<IProject>()
-                                           .ToList();
+                            return new ProjectCollection(projects.Select(project => new Project(project, this)).Cast<IProject>().ToList());
                         }
                     });
             _fieldDefinitions = new Lazy<FieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
         }
 
+        public int PageSize { get; }
+
+        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
+
         public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
+
+        public ClientType ClientType => ClientType.Rest;
 
         public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
 
-        public IEnumerable<IProject> Projects => _projects.Value;
+        public IProjectCollection Projects => _projects.Value;
 
         public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 
-        // REVIEW: SOAP WorkItemStore gets the identity from its cache based on UserSid
-        public string UserDisplayName => throw new NotImplementedException();
+        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
 
-        // REVIEW: SOAP WorkItemStore gets the identity from its cache based on UserSid
-        public string UserIdentityName => throw new NotImplementedException();
+        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
 
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
@@ -168,13 +166,11 @@ namespace Microsoft.Qwiq.Rest
                 if (!forwardEnd.ReferenceName.EndsWith("Forward")) forwardEnd.ReferenceName += "-Forward";
 
                 type.SetForwardEnd(new WorkItemLinkTypeEnd(forwardEnd) { IsForwardLink = true, LinkType = type });
-                type.SetReverseEnd(type.IsDirectional
-                                      ? new WorkItemLinkTypeEnd(
-                                            ends.SingleOrDefault(
-                                                p => p.ReferenceName.EndsWith("Reverse")))
-                                            { LinkType = type }
-                                      : type.ForwardEnd);
-
+                type.SetReverseEnd(
+                    type.IsDirectional
+                        ? new WorkItemLinkTypeEnd(
+                              ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type }
+                        : type.ForwardEnd);
 
                 // The REST API does not return the ID of the link type. For well-known system links, we can populate the ID value
                 if (CoreLinkTypeReferenceNames.All.Contains(type.ReferenceName, StringComparer.OrdinalIgnoreCase))
@@ -213,10 +209,7 @@ namespace Microsoft.Qwiq.Rest
 
         private void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
-            }
+            if (disposing) if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
         }
     }
 }

@@ -37,15 +37,9 @@ WHERE
     [Target].[System.WorkItemType] = 'Scenario'
 mode(recursive)
 ";
-            var start = Clock.GetTimestamp();
-            RestResult.WorkItemLinks = RestResult.WorkItemStore.QueryLinks(WIQL).ToList();
-            var stop = Clock.GetTimestamp();
-            Debug.Print("REST: {0}", Clock.GetTimeSpan(start, stop));
 
-            start = Clock.GetTimestamp();
-            SoapResult.WorkItemLinks = SoapResult.WorkItemStore.QueryLinks(WIQL).ToList();
-            stop = Clock.GetTimestamp();
-            Debug.Print("SOAP: {0}", Clock.GetTimeSpan(start, stop));
+            RestResult.WorkItemLinks = TimedAction(() => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(), "REST", "QueryLinks");
+            SoapResult.WorkItemLinks = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks");
         }
 
         public override void Cleanup()

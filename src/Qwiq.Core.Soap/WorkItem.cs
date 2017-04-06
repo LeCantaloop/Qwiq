@@ -12,16 +12,23 @@ namespace Microsoft.Qwiq.Soap
     ///     Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference
     ///     all the TFS libraries.
     /// </summary>
-    public class WorkItem : Qwiq.WorkItem, IWorkItem
+    internal class WorkItem : Qwiq.WorkItem, IWorkItem
     {
         private readonly Tfs.WorkItem _item;
 
         internal WorkItem(Tfs.WorkItem item)
-            : base(ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(item.Type)))
+            : base(
+                ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(item.Type)),
+                () => ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(new FieldCollection(item.Fields)))
         {
             _item = item;
             Url = item.Uri.ToString();
         }
+
+        /// <summary>
+        ///     Gets the integer that represents the revision number of this work item.
+        /// </summary>
+        public override int Revision => _item.Revision;
 
         /// <summary>
         ///     Gets or sets the string value of the AreaPath field for this work item.
@@ -51,8 +58,6 @@ namespace Microsoft.Qwiq.Soap
                                     .Create<IAttachment>(new Attachment(item)));
             }
         }
-
-
 
         /// <summary>
         ///     Gets the string value of the ChangedBy field for this work item.
@@ -89,9 +94,6 @@ namespace Microsoft.Qwiq.Soap
         ///     Gets the number of external links in this work item.
         /// </summary>
         public override int ExternalLinkCount => _item.ExternalLinkCount;
-
-        public override IFieldCollection Fields => ExceptionHandlingDynamicProxyFactory.Create<IFieldCollection>(
-            new FieldCollection(_item.Fields));
 
         /// <summary>
         ///     Gets or sets the string value of the History field for this work item.
@@ -152,15 +154,10 @@ namespace Microsoft.Qwiq.Soap
         public override DateTime RevisedDate => _item.RevisedDate;
 
         /// <summary>
-        ///     Gets the integer that represents the revision number of this work item.
-        /// </summary>
-        public override int Revision => _item.Revision;
-
-        /// <summary>
         ///     Gets an object that represents a collection of valid revision numbers for this work
         ///     item.
         /// </summary>
-        public override IEnumerable<IRevision> Revisions
+        public new IEnumerable<IRevision> Revisions
         {
             get
             {
@@ -177,8 +174,6 @@ namespace Microsoft.Qwiq.Soap
             get => _item.State;
             set => _item.State = value;
         }
-
-        
 
         public override string Tags
         {
@@ -320,6 +315,11 @@ namespace Microsoft.Qwiq.Soap
             return _item.Validate()
                         .Cast<Tfs.Field>()
                         .Select(field => ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(field)));
+        }
+
+        public static implicit operator WorkItem(Tfs.WorkItem workItem)
+        {
+            return new WorkItem(workItem);
         }
 
         /// <summary>

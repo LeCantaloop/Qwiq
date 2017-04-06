@@ -10,9 +10,7 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return x.IsLocked == y.IsLocked
-                   && x.LinkTypeId == y.LinkTypeId
-                   && x.SourceId == y.SourceId
+            return x.SourceId == y.SourceId
                    && x.TargetId == y.TargetId;
         }
 
@@ -21,8 +19,6 @@ namespace Microsoft.Qwiq
             unchecked
             {
                 var hash = 27;
-                hash = (13 * hash) ^ obj.IsLocked.GetHashCode();
-                hash = (13 * hash) ^ obj.LinkTypeId.GetHashCode();
                 hash = (13 * hash) ^ obj.SourceId.GetHashCode();
                 hash = (13 * hash) ^ obj.TargetId.GetHashCode();
 

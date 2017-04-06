@@ -1,9 +1,22 @@
 using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class WorkItemCore : IWorkItemCore
+    public abstract class WorkItemCore : IWorkItemCore, IEquatable<IWorkItemCore>, IRevisionInternal
     {
+        private readonly IDictionary<string, object> _fields;
+
+        protected internal WorkItemCore()
+            :this(null)
+        {
+        }
+
+        protected internal WorkItemCore(IDictionary<string, object> fields)
+        {
+            _fields = fields ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+        }
+
         public virtual int? Id => GetValue<int?>(CoreFieldRefNames.Id);
 
         public virtual int? Rev => GetValue<int?>(CoreFieldRefNames.Rev);
@@ -21,7 +34,7 @@ namespace Microsoft.Qwiq
         /// <exception cref="System.ArgumentNullException">
         /// name is null
         /// </exception>
-        public object this[string name]
+        public virtual object this[string name]
         {
             get
 
@@ -41,8 +54,46 @@ namespace Microsoft.Qwiq
             return TypeParser.Default.Parse<T>(GetValue(name));
         }
 
-        protected abstract object GetValue(string name);
+        protected virtual object GetValue(string name)
+        {
+            return !_fields.TryGetValue(name, out object val) ? null : val;
+        }
 
-        protected abstract void SetValue(string name, object value);
+        protected virtual void SetValue(string name, object value)
+        {
+            _fields[name] = value;
+        }
+
+        public bool Equals(IWorkItemCore other)
+        {
+            return NullableIdentifiableComparer.Instance.Equals(this, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return NullableIdentifiableComparer.Instance.Equals(this, obj as IWorkItemCore);
+        }
+
+        public override int GetHashCode()
+        {
+            return NullableIdentifiableComparer.Instance.GetHashCode(this);
+        }
+
+        public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
+        {
+            return GetValue(fieldDefinition.ReferenceName);
+        }
+
+        public void SetFieldValue(IFieldDefinition fieldDefinition, object value)
+        {
+            SetValue(fieldDefinition.ReferenceName, value);
+        }
+    }
+
+    internal interface IRevisionInternal
+    {
+        object GetCurrentFieldValue(IFieldDefinition fieldDefinition);
+
+        void SetFieldValue(IFieldDefinition fieldDefinition, object value);
     }
 }
