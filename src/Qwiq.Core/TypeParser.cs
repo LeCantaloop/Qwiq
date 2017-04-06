@@ -67,6 +67,21 @@ namespace Microsoft.Qwiq
 
         private static bool TryConvert(Type destinationType, object value, out object result)
         {
+            if (IsGenericNullable(destinationType))
+            {
+                try
+                {
+                    var converter = new NullableConverter(destinationType);
+                    result = converter.ConvertTo(value, converter.UnderlyingType);
+                    return true;
+                }
+                // ReSharper disable CatchAllClause
+                catch
+                // ReSharper restore CatchAllClause
+                {
+                }
+            }
+
             var valueType = value.GetType();
             var typeConverter = TypeDescriptor.GetConverter(valueType);
             if (typeConverter.CanConvertTo(destinationType))
@@ -77,7 +92,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                    // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -90,7 +105,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                    // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -107,8 +122,8 @@ namespace Microsoft.Qwiq
                             return true;
                         }
                         // ReSharper disable EmptyGeneralCatchClause
-                        catch 
-                            // ReSharper restore EmptyGeneralCatchClause
+                        catch
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
                     }
@@ -126,7 +141,7 @@ namespace Microsoft.Qwiq
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-            // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly ITypeParser Instance = new TypeParser();
