@@ -23,7 +23,13 @@ namespace Microsoft.Qwiq
 
             Name = name;
             ReferenceName = referenceName;
-            Id = FieldDefinitionComparer.Instance.GetHashCode(this);
+
+            if (!CoreFieldRefNames.CoreFieldIdLookup.TryGetValue(referenceName, out int id))
+            {
+                id = FieldDefinitionComparer.Instance.GetHashCode(this);
+            }
+
+            Id = id;
         }
 
         public string Name { get; }
