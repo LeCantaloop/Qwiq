@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using Castle.DynamicProxy;
 
 namespace Microsoft.Qwiq.Exceptions
@@ -8,6 +10,7 @@ namespace Microsoft.Qwiq.Exceptions
     /// <remarks>
     /// This inspects the incoming proxy objects and ensures Object.Equals(Object) and Object.GetHashCode() are directed to the appropriate location.
     /// </remarks>
+    [DebuggerStepThrough]
     public class ProxyBase
     {
         /// <summary>
