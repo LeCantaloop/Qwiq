@@ -27,30 +27,31 @@ mode(Recursive)
 ";
 
             var start = Clock.GetTimestamp();
-            RestResult.Links = RestResult.WorkItemStore.QueryLinks(WIQL).ToList();
-            RestResult.WorkItems = RestResult
-                .WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
-                .ToList();
-            var stop = Clock.GetTimestamp();
-            Debug.Print("REST: {0}", Clock.GetTimeSpan(start, stop));
+            RestResult.Links = TimedAction(
+                () => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(),
+                "REST",
+                "QueryLinks - WIQL");
+            RestResult.WorkItems = TimedAction(
+                () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                "REST",
+                "Query - IDs");
 
-            start = Clock.GetTimestamp();
-            SoapResult.Links = SoapResult.WorkItemStore.QueryLinks(WIQL).ToList();
-            SoapResult.WorkItems = SoapResult
-                .WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
-                .ToList();
-            stop = Clock.GetTimestamp();
-            Debug.Print("SOAP: {0}", Clock.GetTimeSpan(start, stop));
-        }
 
-        public override void Cleanup()
-        {
-            SoapResult?.Dispose();
-            RestResult?.Dispose();
+
+            SoapResult.Links = TimedAction(
+                () => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(),
+                "SOAP",
+                "QueryLinks - WIQL");
+            SoapResult.WorkItems = TimedAction(
+                () => SoapResult.WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                "SOAP",
+                "Query - IDs");
         }
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void Link_Count_Equal()
         {
             RestResult.Links.Count().ShouldEqual(SoapResult.Links.Count(), "WorkItemLinks.Count");
@@ -58,23 +59,29 @@ mode(Recursive)
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void WorkItem_Count_Equal()
         {
             RestResult.WorkItems.Count().ShouldEqual(SoapResult.WorkItems.Count(), "WorkItems.Count");
         }
 
-        //[TestMethod]
-        //[TestCategory("localOnly")]
-        //public void Links_Equal()
-        //{
-        //    RestResult.WorkItemLinks.ShouldContainOnly(SoapResult.WorkItemLinks);
-        //}
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Links_Equal()
+        {
+            RestResult.Links.ShouldContainOnly(SoapResult.Links);
+        }
 
-        //[TestMethod]
-        //[TestCategory("localOnly")]
-        //public void WorkItems_Equal()
-        //{
-        //    RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
-        //}
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void WorkItems_Equal()
+        {
+            RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
+        }
     }
 }

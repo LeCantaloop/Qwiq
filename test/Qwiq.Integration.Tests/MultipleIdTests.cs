@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]
-    public class Given_WorkItems_from_each_client : SingleWorkItemComparisonContextSpecification
+    public class Given_WorkItems_from_each_client_by_IDs : SingleWorkItemComparisonContextSpecification
     {
         private const int Id = 10726528;
 
@@ -18,7 +18,7 @@ namespace Microsoft.Qwiq.Integration.Tests
     }
 
     [TestClass]
-    public class Given_WorkItems_from_each_client_by_AsOf : SingleWorkItemComparisonContextSpecification
+    public class Given_WorkItems_from_each_client_by_IDs_at_AsOf : SingleWorkItemComparisonContextSpecification
     {
         private const int Id = 10726528;
 
