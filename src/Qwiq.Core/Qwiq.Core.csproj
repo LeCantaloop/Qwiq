@@ -122,6 +122,7 @@
     <Compile Include="GenericComparer.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
+    <Compile Include="IdentifiableComparer.cs" />
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IdentityDescriptorComparer.cs" />
     <Compile Include="IdentityFieldValue.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="IWorkItemTypeCollection.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeComparer.cs" />
+    <Compile Include="NullableIdentifiableComparer.cs" />
     <Compile Include="PageSizeRangeException.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCollection.cs" />

@@ -11,18 +11,6 @@ namespace Microsoft.Qwiq.Integration.Tests
     [TestClass]
     public class WiqlHierarchyQueryTests : WorkItemStoreComparisonContextSpecification
     {
-        protected Result RestResult { get; set; }
-
-        protected Result SoapResult { get; set; }
-
-        public override void Given()
-        {
-            base.Given();
-
-            SoapResult = new Result() { WorkItemStore = Soap };
-            RestResult = new Result() { WorkItemStore = Rest };
-        }
-
         public override void When()
         {
             const string WIQL = @"
@@ -36,8 +24,8 @@ WHERE
 mode(recursive)
 ";
 
-            RestResult.WorkItemLinks = TimedAction(() => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(), "REST", "QueryLinks");
-            SoapResult.WorkItemLinks = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks");
+            RestResult.Links = TimedAction(() => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(), "REST", "QueryLinks");
+            SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks");
         }
 
         public override void Cleanup()
@@ -50,42 +38,28 @@ mode(recursive)
         [TestCategory("localOnly")]
         public void SOAP_Links_returned()
         {
-            SoapResult.WorkItemLinks.ShouldNotBeNull();
+            SoapResult.Links.ShouldNotBeNull();
         }
 
         [TestMethod]
         [TestCategory("localOnly")]
         public void REST_Links_returned()
         {
-            RestResult.WorkItemLinks.ShouldNotBeNull();
+            RestResult.Links.ShouldNotBeNull();
         }
 
         [TestMethod]
         [TestCategory("localOnly")]
         public void Same_number_of_links_returned()
         {
-            RestResult.WorkItemLinks.Count().ShouldEqual(SoapResult.WorkItemLinks.Count());
+            RestResult.Links.Count().ShouldEqual(SoapResult.Links.Count());
         }
 
         [TestMethod]
         [TestCategory("localOnly")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
-            RestResult.WorkItemLinks.ShouldContainOnly(SoapResult.WorkItemLinks);
-        }
-
-        protected class Result : IDisposable
-        {
-            public IWorkItem WorkItem { get; set; }
-
-            public IEnumerable<IWorkItemLinkInfo> WorkItemLinks { get; set; }
-
-            public IWorkItemStore WorkItemStore { get; set; }
-
-            public void Dispose()
-            {
-                WorkItemStore?.Dispose();
-            }
+            RestResult.Links.ShouldContainOnly(SoapResult.Links);
         }
     }
 }

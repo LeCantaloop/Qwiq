@@ -11,32 +11,6 @@ using Should;
 
 namespace Microsoft.Qwiq.Integration.Tests
 {
-    public abstract class RestWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
-    {
-        
-
-        protected override IWorkItemStore Create()
-        {
-            var options = AuthenticationOptions;
-            options.ClientType = ClientType.Rest;
-
-            return TimedAction(() => Rest.WorkItemStoreFactory.Instance.Create(options), "REST", "WIS Create");
-        }
-    }
-
-    public abstract class SoapWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
-    {
-
-
-        protected override IWorkItemStore Create()
-        {
-            var options = AuthenticationOptions;
-            options.ClientType = ClientType.Soap;
-
-            return TimedAction(() => Soap.WorkItemStoreFactory.Instance.Create(options), "SOAP", "WIS Create");
-        }
-    }
-
     public abstract class WorkItemContextSpecification<T> : WorkItemStoreTests<T>
         where T : IWorkItemStore
     {

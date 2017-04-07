@@ -7,6 +7,8 @@ namespace Microsoft.Qwiq.Integration.Tests
     {
         public IWorkItem WorkItem { get; set; }
 
+        public IEnumerable<IWorkItem> WorkItems { get; set; }
+
         public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
 
         public IWorkItemStore WorkItemStore { get; set; }

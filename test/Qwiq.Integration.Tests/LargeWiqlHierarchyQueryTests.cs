@@ -13,18 +13,6 @@ namespace Microsoft.Qwiq.Integration.Tests
     [TestClass]
     public class LargeWiqlHierarchyQueryTests : WorkItemStoreComparisonContextSpecification
     {
-        protected Result RestResult { get; set; }
-
-        protected Result SoapResult { get; set; }
-
-        public override void Given()
-        {
-            base.Given();
-
-            SoapResult = new Result() { WorkItemStore = Soap };
-            RestResult = new Result() { WorkItemStore = Rest };
-        }
-
         public override void When()
         {
             const string WIQL = @"
@@ -39,17 +27,17 @@ mode(Recursive)
 ";
 
             var start = Clock.GetTimestamp();
-            RestResult.WorkItemLinks = RestResult.WorkItemStore.QueryLinks(WIQL).ToList();
+            RestResult.Links = RestResult.WorkItemStore.QueryLinks(WIQL).ToList();
             RestResult.WorkItems = RestResult
-                .WorkItemStore.Query(new HashSet<int>(RestResult.WorkItemLinks.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
+                .WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
                 .ToList();
             var stop = Clock.GetTimestamp();
             Debug.Print("REST: {0}", Clock.GetTimeSpan(start, stop));
 
             start = Clock.GetTimestamp();
-            SoapResult.WorkItemLinks = SoapResult.WorkItemStore.QueryLinks(WIQL).ToList();
+            SoapResult.Links = SoapResult.WorkItemStore.QueryLinks(WIQL).ToList();
             SoapResult.WorkItems = SoapResult
-                .WorkItemStore.Query(new HashSet<int>(SoapResult.WorkItemLinks.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
+                .WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0)))
                 .ToList();
             stop = Clock.GetTimestamp();
             Debug.Print("SOAP: {0}", Clock.GetTimeSpan(start, stop));
@@ -61,25 +49,11 @@ mode(Recursive)
             RestResult?.Dispose();
         }
 
-        protected class Result : IDisposable
-        {
-            public IEnumerable<IWorkItem> WorkItems { get; set; }
-
-            public IEnumerable<IWorkItemLinkInfo> WorkItemLinks { get; set; }
-
-            public IWorkItemStore WorkItemStore { get; set; }
-
-            public void Dispose()
-            {
-                WorkItemStore?.Dispose();
-            }
-        }
-
         [TestMethod]
         [TestCategory("localOnly")]
         public void Link_Count_Equal()
         {
-            RestResult.WorkItemLinks.Count().ShouldEqual(SoapResult.WorkItemLinks.Count(), "WorkItemLinks.Count");
+            RestResult.Links.Count().ShouldEqual(SoapResult.Links.Count(), "WorkItemLinks.Count");
         }
 
         [TestMethod]

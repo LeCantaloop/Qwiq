@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]
-    public class WiqlFlatQueryTests : IntegrationContextSpecificationSpecification
+    public class Given_a_WorkItem_from_each_client_by_WIQL : SingleWorkItemComparisonContextSpecification
     {
         private const int Id = 10726528;
 

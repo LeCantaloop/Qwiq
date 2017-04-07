@@ -5,14 +5,20 @@ using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Should;
 
 namespace Microsoft.Qwiq.Integration.Tests
 {
     public abstract class WorkItemStoreComparisonContextSpecification : TimedContextSpecification
     {
-        protected IWorkItemStore Rest { get; private set; }
+        protected IWorkItemStore Rest => RestResult.WorkItemStore;
 
-        protected IWorkItemStore Soap { get; private set; }
+        protected IWorkItemStore Soap => SoapResult.WorkItemStore;
+
+        protected Result RestResult { get; private set; }
+        protected Result SoapResult { get; private set; }
 
         public override void Given()
         {
@@ -20,17 +26,23 @@ namespace Microsoft.Qwiq.Integration.Tests
 
             var options = new AuthenticationOptions(uri, AuthenticationType.Windows) { CreateCredentials = CreateCredentials };
 
-            Soap = TimedAction(
-                () => Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
-                "SOAP",
-                "Create WIS");
+            SoapResult = new Result()
+                             {
+                                 WorkItemStore = TimedAction(
+                                     () => Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
+                                     "SOAP",
+                                     "Create WIS")
+                             };
 
             options.ClientType = ClientType.Rest;
 
-            Rest = TimedAction(
-                () => Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
-                "REST",
-                "Create WIS");
+            RestResult = new Result()
+                             {
+                                 WorkItemStore = TimedAction(
+                                     () => Microsoft.Qwiq.Soap.WorkItemStoreFactory.Instance.Create(options),
+                                     "REST",
+                                     "Create WIS")
+                             };
 
         }
 
@@ -49,6 +61,21 @@ namespace Microsoft.Qwiq.Integration.Tests
             Soap?.Dispose();
 
             base.Cleanup();
+        }
+
+        
+    }
+
+    public abstract class SingleWorkItemComparisonContextSpecification : WorkItemStoreComparisonContextSpecification
+    {
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void WorkItem_is_equal()
+        {
+            RestResult.WorkItem.ShouldEqual(SoapResult.WorkItem);
+            RestResult.WorkItem.GetHashCode().ShouldEqual(SoapResult.WorkItem.GetHashCode());
         }
     }
 }
