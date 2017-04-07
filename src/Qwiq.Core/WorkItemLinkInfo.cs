@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkInfo : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>, IComparable<IWorkItemLinkInfo>
+    public class WorkItemLinkInfo : IWorkItemLinkInfo, IEquatable<IWorkItemLinkInfo>
     {
         private readonly Lazy<int> _id;
 
@@ -50,11 +50,6 @@ namespace Microsoft.Qwiq
         public override int GetHashCode()
         {
             return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
-        }
-
-        public int CompareTo(IWorkItemLinkInfo other)
-        {
-            return WorkItemLinkInfoComparer.Instance.Compare(this, other);
         }
 
         public override string ToString()
