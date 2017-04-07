@@ -62,7 +62,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void Given()
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
-            var typeParser = new TypeParser();
+            var typeParser = TypeParser.Default;
             var mappingStrategies = new IWorkItemMapperStrategy[]
                                         {
                                             new AttributeMapperStrategy(propertyInspector, typeParser),
