@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public class Project : IProject, IComparer<IProject>, IEquatable<IProject>
+    public class Project : IProject, IEquatable<IProject>
     {
-        private readonly Lazy<IEnumerable<INode>> _area;
+        private readonly Lazy<INodeCollection> _area;
 
-        private readonly Lazy<IEnumerable<INode>> _iteration;
+        private readonly Lazy<INodeCollection> _iteration;
 
         private readonly Lazy<IWorkItemTypeCollection> _wits;
 
@@ -16,8 +15,8 @@ namespace Microsoft.Qwiq
             string name,
             Uri uri,
             Lazy<IWorkItemTypeCollection> wits,
-            Lazy<IEnumerable<INode>> area,
-            Lazy<IEnumerable<INode>> iteration)
+            Lazy<INodeCollection> area,
+            Lazy<INodeCollection> iteration)
         {
             Guid = guid;
             Name = name ?? throw new ArgumentNullException(nameof(name));
@@ -31,23 +30,16 @@ namespace Microsoft.Qwiq
         {
         }
 
-        public int Compare(IProject x, IProject y)
-        {
-            return ProjectComparer.Instance.Compare(x, y);
-        }
-
         public bool Equals(IProject other)
         {
             return ProjectComparer.Instance.Equals(this, other);
         }
 
-        public IEnumerable<INode> AreaRootNodes => _area.Value;
+        public INodeCollection AreaRootNodes => _area.Value;
 
         public Guid Guid { get; }
 
-      
-
-        public IEnumerable<INode> IterationRootNodes => _iteration.Value;
+        public INodeCollection IterationRootNodes => _iteration.Value;
 
         public string Name { get; }
 

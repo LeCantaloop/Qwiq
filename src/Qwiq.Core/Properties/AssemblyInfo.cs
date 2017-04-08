@@ -29,3 +29,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Qwiq.Mocks")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Soap")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Rest")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Integration.Tests")]

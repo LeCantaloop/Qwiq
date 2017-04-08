@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -9,66 +10,76 @@ using Should;
 namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]
-    public class Given_projects_from_each_WorkItemStore_implementation : ProjectContextSpecificationSpecification
+    public class Given_a_Project_from_each_WorkItemStore_implementation : ProjectComparisonContextSpecification
     {
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
-        public void Number_of_projects_is_equal()
+        public void Each_project_contains_the_same_WorkItemTypes()
         {
-            RestProjects.Count.ShouldEqual(SoapProjects.Count);
+            RestProject.WorkItemTypes.ShouldContainOnly(SoapProject.WorkItemTypes);
+            RestProject.WorkItemTypes.GetHashCode().ShouldEqual(SoapProject.WorkItemTypes.GetHashCode(), "GetHashCode");
         }
 
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
-        public void Project_names_are_equal()
+        public void Each_project_contains_the_same_WorkItemTypes_with_the_same_FieldDefinitions()
         {
-            RestProjects.Select(s => s.Name).ToList().ShouldContainOnly(SoapProjects.Select(s => s.Name).ToList());
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("SOAP")]
-        [TestCategory("REST")]
-        public void Project_WITs_are_equal()
-        {
-            var soap = SoapProjects.ToDictionary(k => k.Guid, e => e);
-            var rest = RestProjects.ToDictionary(k => k.Guid, e => e);
-
-            foreach (var sp in soap)
+            var exceptions = new List<Exception>();
+            foreach (var wit in SoapProject.WorkItemTypes)
             {
-                IProject rp;
-                if (!rest.TryGetValue(sp.Key, out rp))
-                {
-                    Trace.TraceWarning("REST collection does not contain project {0} ({1})", sp.Key, sp.Value.Name);
-                    continue;
-                }
-
+                var sw = wit;
                 try
                 {
-                    rp.WorkItemTypes.ShouldContainOnly(sp.Value.WorkItemTypes, WorkItemTypeComparer.Instance);
+                    var rw = RestProject.WorkItemTypes[sw.Name];
+                    rw.ShouldNotBeNull($"No WIT '{sw.Name}' in REST");
+                    
+                    // We can't do a simple ShouldContainsOnly check here because the REST client is returning fields the SOAP client is not
+
+                    var rwfs = rw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate).OrderBy(p=>p.ReferenceName).ToList();
+                    var swfs = sw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate).OrderBy(p => p.ReferenceName).ToList();
+
+                    try
+                    {
+                        rwfs.ShouldContainOnly(swfs);
+                    }
+                    catch (Exception e)
+                    {
+                        exceptions.Add(e);
+                    }
+                    
+                    foreach (var swfd in swfs)
+                    {
+                        var rwfd = rw.FieldDefinitions[swfd.ReferenceName];
+
+                        rwfd.ShouldEqual(swfd, $"{rw.Name}:{rwfd.ReferenceName}:Equals");
+                        rwfd.GetHashCode().ShouldEqual(swfd.GetHashCode(), $"{rw.Name}:{rwfd.ReferenceName}:GetHashCode");
+                    }
+
+                    rw.FieldDefinitions.ShouldEqual(sw.FieldDefinitions, FieldDefinitionCollectionComparer.Instance);
+                    rw.FieldDefinitions.GetHashCode().ShouldEqual(sw.FieldDefinitions.GetHashCode(), $"{rw.Name}:{nameof(rw.FieldDefinitions)}:GetHashCode");
                 }
-                catch (AssertFailedException e)
+                catch (Exception e)
                 {
-                    throw new Exception($"Project {sp.Key} ({sp.Value.Name}) contains differences.", e);
+                    exceptions.Add(e);
                 }
             }
-        }
 
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("SOAP")]
-        [TestCategory("REST")]
-        public void Project_Area_Paths_are_equal()
-        {
-            foreach (var sp in SoapProjects)
+            try
             {
-                var rp = RestProjects.Find(p => ProjectComparer.Instance.Equals(sp, p));
+                RestProject.WorkItemTypes.ShouldEqual(SoapProject.WorkItemTypes, WorkItemTypeCollectionComparer.Instance);
+            }
+            catch (Exception e)
+            {
+                exceptions.Add(e);
+            }
 
-                rp?.AreaRootNodes.ShouldContainOnly(sp.AreaRootNodes);
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
             }
         }
 
@@ -76,14 +87,59 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
-        public void Project_Iteration_Paths_are_equal()
+        public void Each_project_contains_the_same_WorkItemTypes_DETAILED()
         {
-            foreach (var sp in SoapProjects)
+            var exceptions = new List<Exception>();
+            foreach (var wit in SoapProject.WorkItemTypes)
             {
-                var rp = RestProjects.Find(p => ProjectComparer.Instance.Equals(sp, p));
+                var sw = wit;
+                try
+                {
+                    var rw = RestProject.WorkItemTypes[sw.Name];
+                    rw.ShouldNotBeNull($"No WIT '{sw.Name}' in REST");
 
-                rp?.IterationRootNodes.ShouldContainOnly(sp.IterationRootNodes);
+                    foreach (var sfd in sw.FieldDefinitions)
+                    {
+                        var tfd = rw.FieldDefinitions[sfd.ReferenceName];
+                        tfd.ShouldNotBeNull($"No Field '{sfd.ReferenceName}' on WIT '{sw.Name}' in REST");
+                        tfd.ShouldEqual(sfd, sfd.ReferenceName);
+                        tfd.GetHashCode().ShouldEqual(sfd.GetHashCode(), sfd.ReferenceName);
+                    }
+
+                    rw.ShouldEqual(sw, sw.Name);
+                    rw.GetHashCode().ShouldEqual(sw.GetHashCode(), sw.Name + " - GetHashCode");
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+
             }
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Each_project_contains_the_same_Area_paths()
+        {
+            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Instance);
+            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, NodeCollectionComparer.Instance);
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Each_project_contains_the_same_Iteration_paths()
+        {
+            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Instance);
+            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, NodeCollectionComparer.Instance);
         }
     }
 }

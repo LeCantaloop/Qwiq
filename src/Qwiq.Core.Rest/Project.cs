@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using System;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Rest
 {
@@ -17,30 +15,44 @@ namespace Microsoft.Qwiq.Rest
                 new Lazy<IWorkItemTypeCollection>(
                     () =>
                         {
-                            var wits = store.NativeWorkItemStore.Value.GetWorkItemTypesAsync(project.Name).GetAwaiter().GetResult();
+                            var wits = store.NativeWorkItemStore
+                                            .Value
+                                            .GetWorkItemTypesAsync(project.Name)
+                                            .GetAwaiter()
+                                            .GetResult();
                             return new WorkItemTypeCollection(wits.Select(s => new WorkItemType(s)));
                         }),
-                new Lazy<IEnumerable<INode>>(
+                new Lazy<INodeCollection>(
                     () =>
                         {
-                            var result = store.NativeWorkItemStore.Value
-                                              .GetClassificationNodeAsync(project.Name, TreeStructureGroup.Areas)
+                            var result = store.NativeWorkItemStore
+                                              .Value
+                                              .GetClassificationNodeAsync(
+                                                  project.Id,
+                                                  TreeStructureGroup.Areas,
+                                                  null,
+                                                  int.MaxValue)
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new Node(result), };
+                            // SOAP Client does not return just the root, so return the root's children to match implementation
+                            return new NodeCollection(new Node(result).ChildNodes);
                         }),
-                new Lazy<IEnumerable<INode>>(
+                new Lazy<INodeCollection>(
                     () =>
                         {
-                            var result = store.NativeWorkItemStore.Value
-                                              .GetClassificationNodeAsync(project.Name, TreeStructureGroup.Iterations)
+                            var result = store.NativeWorkItemStore
+                                              .Value
+                                              .GetClassificationNodeAsync(
+                                                  project.Name,
+                                                  TreeStructureGroup.Iterations,
+                                                  null,
+                                                  int.MaxValue)
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new[] { new Node(result) };
-                        })
-                 )
+                            return new NodeCollection(new Node(result).ChildNodes);
+                        }))
         {
         }
     }

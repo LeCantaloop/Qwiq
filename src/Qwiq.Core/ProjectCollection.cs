@@ -16,6 +16,7 @@ namespace Microsoft.Qwiq
         internal ProjectCollection(params IProject[] projects)
             : this(projects as IEnumerable<IProject>)
         {
+            if (projects == null) throw new ArgumentNullException(nameof(projects));
         }
 
         internal ProjectCollection(IEnumerable<IProject> projects)
@@ -39,7 +40,7 @@ namespace Microsoft.Qwiq
                 if (projectName == null) throw new ArgumentNullException(nameof(projectName));
                 if (_nameMap.TryGetValue(projectName, out int idx)) return _projects[idx];
 
-                throw new Exception();
+                throw new DeniedOrNotExistException(projectName);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Microsoft.Qwiq
 
                 if (_guidMap.TryGetValue(projectGuid, out int idx)) return _projects[idx];
 
-                throw new Exception();
+                throw new DeniedOrNotExistException(projectGuid);
             }
         }
 

@@ -72,7 +72,7 @@ namespace Microsoft.Qwiq
 
         public const string WorkItemType = "System.WorkItemType";
 
-        public static IEnumerable<string> All => NameLookup.Keys.Except(new[]{LinkType});
+        public static IEnumerable<string> All => NameLookup.Keys.Except(new[] { LinkType });
 
         public static IReadOnlyDictionary<string, int> CoreFieldIdLookup { get; } =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -120,7 +120,7 @@ namespace Microsoft.Qwiq
                     { AreaId, "Area ID" },
                     { AreaPath, "Area Path" },
                     { AssignedTo, "Assigned To" },
-                    { AttachedFileCount, "Attached File Count" },
+                    { AttachedFileCount, "Attached File Count"},
                     { AuthorizedAs, "Authorized As" },
                     { AuthorizedDate, "Authorized Date" },
                     { BoardColumn, "Board Column" },

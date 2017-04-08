@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.Services.Identity;
 
 namespace Microsoft.Qwiq.Rest
 {
-    internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity, ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
+    internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity
     {
-        private readonly Identity _identity;
-
         private readonly Lazy<IIdentityDescriptor> _descriptor;
+
+        private readonly Identity _identity;
 
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _memberOf;
 
@@ -22,31 +22,26 @@ namespace Microsoft.Qwiq.Rest
         {
             _identity = identity ?? throw new ArgumentNullException(nameof(identity));
             DisplayName = identity.DisplayName;
-            
+
             IsContainer = identity.IsContainer;
-            
-            
 
-            _descriptor = new Lazy<IIdentityDescriptor>(()=>  ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptor(identity.Descriptor)));
-            _memberOf =
-                new Lazy<IEnumerable<IIdentityDescriptor>>(
-                    () =>
-                        identity.MemberOf.Select(
-                            item =>
-                                ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                                    new IdentityDescriptor(item))));
+            _descriptor = new Lazy<IIdentityDescriptor>(
+                () => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
+                    new IdentityDescriptor(identity.Descriptor)));
+            _memberOf = new Lazy<IEnumerable<IIdentityDescriptor>>(
+                () => identity.MemberOf.Select(
+                    item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
+                        new IdentityDescriptor(item))));
 
-            _members =
-                new Lazy<IEnumerable<IIdentityDescriptor>>(
-                    () =>
-                        identity.Members.Select(
-                            item =>
-                                ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                                    new IdentityDescriptor(item))));
-
-            
-
+            _members = new Lazy<IEnumerable<IIdentityDescriptor>>(
+                () => identity.Members.Select(
+                    item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
+                        new IdentityDescriptor(item))));
         }
+
+        public override IIdentityDescriptor Descriptor => _descriptor.Value;
+
+        public override string DisplayName { get; }
 
         public override bool IsContainer { get; }
 
@@ -54,14 +49,9 @@ namespace Microsoft.Qwiq.Rest
 
         public override IEnumerable<IIdentityDescriptor> Members => _members.Value;
 
-     
-
         public override string GetAttribute(string name, string defaultValue)
         {
-            if (_identity.Properties.TryGetValue(name, out object obj))
-            {
-                return obj?.ToString() ?? defaultValue;
-            }
+            if (_identity.Properties.TryGetValue(name, out object obj)) return obj?.ToString() ?? defaultValue;
             return defaultValue;
         }
 
@@ -75,28 +65,9 @@ namespace Microsoft.Qwiq.Rest
             return _identity.Properties[name];
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as ITeamFoundationIdentity);
-        }
-
-        public override int GetHashCode()
-        {
-            return TeamFoundationIdentityComparer.Instance.GetHashCode(this);
-        }
-
         public override string ToString()
         {
             return UniqueName;
         }
-
-        public bool Equals(ITeamFoundationIdentity other)
-        {
-            return TeamFoundationIdentityComparer.Instance.Equals(this, other);
-        }
-
-        public override IIdentityDescriptor Descriptor => _descriptor.Value;
-
-        public override string DisplayName { get; }
     }
 }

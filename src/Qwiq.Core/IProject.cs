@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public interface IProject 
+    public interface IProject
     {
-        IEnumerable<INode> AreaRootNodes { get; }
+        INodeCollection AreaRootNodes { get; }
 
         Guid Guid { get; }
 
-        IEnumerable<INode> IterationRootNodes { get; }
+        INodeCollection IterationRootNodes { get; }
 
         string Name { get; }
 

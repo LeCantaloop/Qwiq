@@ -7,20 +7,24 @@ namespace Microsoft.Qwiq.Rest
 {
     internal class Node : Qwiq.Node
     {
-        internal Node(WorkItemClassificationNode node)
+        private readonly Lazy<Uri> _uri;
+
+        internal Node(WorkItemClassificationNode node, INode parentNode = null)
+            : base(
+                node.Id,
+                node.StructureType == TreeNodeStructureType.Area,
+                node.StructureType == TreeNodeStructureType.Iteration,
+                node.Name,
+                () => parentNode,
+                n => node.Children?.Any() ?? false
+                         ? node.Children.Select(s => new Node(s, n)).ToList()
+                         : Enumerable.Empty<INode>())
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
 
-            Id = node.Id;
-            IsAreaNode = node.StructureType == TreeNodeStructureType.Area;
-            IsIterationNode = !IsAreaNode;
-            Name = node.Name;
-            HasChildNodes = node.Children?.Any() ?? false;
-            ChildNodes = HasChildNodes
-                             ? node.Children.Select(s => new Node(s) { ParentNode = this }).ToList()
-                             : Enumerable.Empty<INode>();
-
-            Path = ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\');
+            _uri = new Lazy<Uri>(() => new Uri(node.Url));
         }
+
+        public override Uri Uri => _uri.Value;
     }
 }

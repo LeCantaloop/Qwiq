@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -18,8 +19,8 @@ namespace Microsoft.Qwiq.Mocks
                                                      new MockWorkItemType("Customer Promise"),
                                                      new MockWorkItemType("Bug"),
                                                      new MockWorkItemType("Measure"))),
-                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
-                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
+                new Lazy<INodeCollection>(() => CreateNodes(true) ),
+                new Lazy<INodeCollection>(() => CreateNodes(false) ))
         {
         }
 
@@ -29,8 +30,8 @@ namespace Microsoft.Qwiq.Mocks
                 "Mock Project",
                 new Uri("http://localhost"),
                 new Lazy<IWorkItemTypeCollection>(() => new WorkItemTypeCollection(workItemTypes)),
-                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(true) }),
-                new Lazy<IEnumerable<INode>>(() => new[] { CreateNodes(false) }))
+                new Lazy<INodeCollection>(() => CreateNodes(true) ),
+                new Lazy<INodeCollection>(() => CreateNodes(false) ))
         {
         }
 
@@ -39,15 +40,15 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        private static MockNode CreateNodes(bool area)
+        private static INodeCollection CreateNodes(bool area)
         {
-            var root = new MockNode("Root", true, !area);
-            var l1 = new MockNode("L1", true, !area) { ParentNode = root };
-            var l2 = new MockNode("L2", true, !area) { ParentNode = l1 };
+            var root = new Node(1, area, !area, "Root");
+            var l1 = new Node(2, area, !area, "L1",
+                () => root,
+                n => new[] { new Node(3, area, !area, "L2", () => n, (c) => Enumerable.Empty<INode>()) });
 
-            root.ChildNodes = new[] { l1 };
-            l1.ChildNodes = new[] { l2 };
-            return root;
+
+            return new NodeCollection( root);
         }
     }
 }

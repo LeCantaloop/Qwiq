@@ -1,9 +1,8 @@
+using Microsoft.Qwiq.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
-using Microsoft.Qwiq.Exceptions;
 
 namespace Microsoft.Qwiq.Soap
 {
@@ -16,10 +15,17 @@ namespace Microsoft.Qwiq.Soap
             _valueProjects = valueProjects ?? throw new ArgumentNullException(nameof(valueProjects));
         }
 
+        IProject IProjectCollection.this[string projectName] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
+            new Project(_valueProjects[projectName]));
+
+        IProject IProjectCollection.this[Guid id] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(
+            new Project(_valueProjects[id]));
+
         public IEnumerator<IProject> GetEnumerator()
         {
             return _valueProjects.Cast<TeamFoundation.WorkItemTracking.Client.Project>()
-                                 .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(item)))
+                                 .Select(
+                                     item => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(item)))
                                  .GetEnumerator();
         }
 
@@ -27,9 +33,5 @@ namespace Microsoft.Qwiq.Soap
         {
             return GetEnumerator();
         }
-
-        IProject IProjectCollection.this[string projectName] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[projectName]));
-
-        IProject IProjectCollection.this[Guid id] => ExceptionHandlingDynamicProxyFactory.Create<IProject>(new Project(_valueProjects[id]));
     }
 }

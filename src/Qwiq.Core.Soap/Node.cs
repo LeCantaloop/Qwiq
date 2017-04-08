@@ -8,17 +8,22 @@ namespace Microsoft.Qwiq.Soap
     internal class Node : Qwiq.Node
     {
         internal Node(Tfs.Node node)
+            : base(
+                node.Id,
+                node.IsAreaNode,
+                node.IsIterationNode,
+                node.Name,
+                () => node.ParentNode != null ? new Node(node.ParentNode) : null,
+                n => node.ChildNodes.Cast<Tfs.Node>().Select(item => new Node(item)).ToList())
         {
             if (node == null) throw new ArgumentNullException(nameof(node));
-            Id = node.Id;
-            HasChildNodes = node.HasChildNodes;
-            IsAreaNode = node.IsAreaNode;
-            IsIterationNode = node.IsIterationNode;
-            Name = node.Name;
+
             Path = node.Path;
             Uri = node.Uri;
-            ChildNodes = node.ChildNodes.Cast<Tfs.Node>().Select(item => new Node(item));
-            ParentNode = node.ParentNode != null ? new Node(node.ParentNode) : null;
         }
+
+        public override string Path { get; }
+
+        public override Uri Uri { get; }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Microsoft.Qwiq
 {
     /// <summary>
     ///     A facade over <see cref="Microsoft.TeamFoundation.WorkItemTracking.Client.FieldDefinitionCollection" />.
     /// </summary>
-    public abstract class FieldDefinitionCollection : IFieldDefinitionCollection
+    public abstract class FieldDefinitionCollection : IFieldDefinitionCollection, IEquatable<IFieldDefinitionCollection>
     {
         private readonly Dictionary<int, int> _fieldUsagesById;
 
@@ -16,17 +15,22 @@ namespace Microsoft.Qwiq
 
         private readonly List<IFieldDefinition> _list;
 
-        protected FieldDefinitionCollection()
+        protected internal FieldDefinitionCollection()
         {
         }
 
-        protected FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
+        protected internal FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
         {
             _list = new List<IFieldDefinition>();
             _fieldUsagesByName = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             _fieldUsagesById = new Dictionary<int, int>();
 
             foreach (var field in fieldDefinitions) Add(field);
+        }
+
+        public bool Equals(IFieldDefinitionCollection other)
+        {
+            return FieldDefinitionCollectionComparer.Instance.Equals(other);
         }
 
         public virtual int Count => _list.Count;
@@ -74,20 +78,12 @@ namespace Microsoft.Qwiq
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(this, obj)) return true;
-            if (ReferenceEquals(obj, null)) return false;
-            var fdc = obj as IFieldDefinitionCollection;
-            if (fdc == null) return false;
-
-            return this.All(p => fdc.Contains(p, FieldDefinitionComparer.Instance));
+            return FieldDefinitionCollectionComparer.Instance.Equals(obj as IFieldDefinitionCollection);
         }
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                return this.Aggregate(27, (current, f) => (13 * current) ^ f.GetHashCode());
-            }
+            return FieldDefinitionCollectionComparer.Instance.GetHashCode(this);
         }
 
         private void Add(IFieldDefinition p)

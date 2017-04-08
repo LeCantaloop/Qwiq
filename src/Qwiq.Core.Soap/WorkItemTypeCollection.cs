@@ -1,32 +1,33 @@
-using System.Collections;
+using Microsoft.Qwiq.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
-
 namespace Microsoft.Qwiq.Soap
 {
-    internal class WorkItemTypeCollection : IWorkItemTypeCollection
+    public class WorkItemTypeCollection : Qwiq.WorkItemTypeCollection
     {
         private readonly TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection _workItemTypeCollection;
 
-        internal WorkItemTypeCollection(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection workItemTypeCollection)
+        internal WorkItemTypeCollection(
+            TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection workItemTypeCollection)
         {
-            _workItemTypeCollection = workItemTypeCollection;
+            _workItemTypeCollection = workItemTypeCollection
+                                      ?? throw new ArgumentNullException(nameof(workItemTypeCollection));
         }
 
-        public IEnumerator<IWorkItemType> GetEnumerator()
+        public override int Count => _workItemTypeCollection.Count;
+
+        public override IWorkItemType this[string typeName] => ExceptionHandlingDynamicProxyFactory
+            .Create<IWorkItemType>(new WorkItemType(_workItemTypeCollection[typeName]));
+
+        public override IEnumerator<IWorkItemType> GetEnumerator()
         {
             return _workItemTypeCollection.Cast<TeamFoundation.WorkItemTracking.Client.WorkItemType>()
-                                          .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(item)))
+                                          .Select(
+                                              item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(
+                                                  new WorkItemType(item)))
                                           .GetEnumerator();
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public IWorkItemType this[string typeName] => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(new WorkItemType(_workItemTypeCollection[typeName]));
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Microsoft.Qwiq
 {
@@ -17,29 +16,28 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return x.HasChildNodes == y.HasChildNodes
-                   && x.Id == y.Id
-                   && x.IsAreaNode == y.IsAreaNode
-                   && x.IsIterationNode == y.IsIterationNode
-                   && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                   && Instance.Equals(x.ParentNode, y.ParentNode)
-                   && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase)
-                   && x.ChildNodes.All(p=>y.ChildNodes.Contains(p, Instance));
+            return x.Id == y.Id && x.IsAreaNode == y.IsAreaNode && x.IsIterationNode == y.IsIterationNode
+                   && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(
+                       x.Path,
+                       y.Path,
+                       StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode(INode obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
-                var hashCode = (obj.ChildNodes != null ? obj.ChildNodes.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ obj.Id;
-                hashCode = (hashCode * 397) ^ obj.IsAreaNode.GetHashCode();
-                hashCode = (hashCode * 397) ^ obj.IsIterationNode.GetHashCode();
-                hashCode = (hashCode * 397) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (obj.ParentNode != null ? obj.ParentNode.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (obj.Path != null ? obj.Path.GetHashCode() : 0);
+                var hash = 27;
 
-                return hashCode;
+                hash = (hash * 13) ^ obj.Id;
+                hash = (hash * 13) ^ obj.IsAreaNode.GetHashCode();
+                hash = (hash * 13) ^ obj.IsIterationNode.GetHashCode();
+                hash = (hash * 13) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
+                hash = (hash * 13) ^ (obj.Path != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Path) : 0);
+
+                return hash;
             }
         }
 
@@ -47,6 +45,7 @@ namespace Microsoft.Qwiq
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly NodeComparer Instance = new NodeComparer();
+
             // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler

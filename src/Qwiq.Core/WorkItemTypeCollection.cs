@@ -5,25 +5,37 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    internal class WorkItemTypeCollection : IWorkItemTypeCollection
+    public class WorkItemTypeCollection : IWorkItemTypeCollection, IEquatable<IWorkItemTypeCollection>
     {
         private readonly IDictionary<string, int> _nameMap;
 
         private readonly IList<IWorkItemType> _workItemTypes;
 
-        public WorkItemTypeCollection(params IWorkItemType[] workItemTypes)
+        internal WorkItemTypeCollection()
+            : this(null)
+        {
+        }
+
+        internal WorkItemTypeCollection(params IWorkItemType[] workItemTypes)
             : this(workItemTypes as IEnumerable<IWorkItemType>)
         {
         }
 
-        public WorkItemTypeCollection(IEnumerable<IWorkItemType> workItemTypes)
+        internal WorkItemTypeCollection(IEnumerable<IWorkItemType> workItemTypes)
         {
-            _workItemTypes = workItemTypes?.ToList() ?? throw new ArgumentNullException(nameof(workItemTypes));
+            _workItemTypes = workItemTypes?.ToList() ?? new List<IWorkItemType>();
             _nameMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             for (var i = 0; i < _workItemTypes.Count; i++) _nameMap.Add(_workItemTypes[i].Name, i);
         }
 
-        public IWorkItemType this[string typeName]
+        public bool Equals(IWorkItemTypeCollection other)
+        {
+            return WorkItemTypeCollectionComparer.Instance.Equals(this, other);
+        }
+
+        public virtual int Count => _workItemTypes.Count;
+
+        public virtual IWorkItemType this[string typeName]
         {
             get
             {
@@ -34,7 +46,7 @@ namespace Microsoft.Qwiq
             }
         }
 
-        public IEnumerator<IWorkItemType> GetEnumerator()
+        public virtual IEnumerator<IWorkItemType> GetEnumerator()
         {
             return _workItemTypes.GetEnumerator();
         }
@@ -42,6 +54,16 @@ namespace Microsoft.Qwiq
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return WorkItemTypeCollectionComparer.Instance.Equals(this, obj as IWorkItemTypeCollection);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemTypeCollectionComparer.Instance.GetHashCode(this);
         }
     }
 }

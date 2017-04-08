@@ -10,9 +10,6 @@ namespace Microsoft.Qwiq.Integration.Tests
 {
     public abstract class IntegrationContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
-        protected Result RestResult { get; set; }
-        protected Result SoapResult { get; set; }
-
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
@@ -119,14 +116,6 @@ namespace Microsoft.Qwiq.Integration.Tests
         public void Description_is_equal()
         {
             RestResult.WorkItem.Description.ShouldEqual(SoapResult.WorkItem.Description);
-        }
-
-        public override void Given()
-        {
-            base.Given();
-
-            SoapResult = new Result() { WorkItemStore = Soap };
-            RestResult = new Result() { WorkItemStore = Rest };
         }
 
         [TestMethod]

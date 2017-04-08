@@ -88,6 +88,7 @@
     <Compile Include="IntegrationContextSpecificationSpecification.cs" />
     <Compile Include="LargeWiqlHierarchyQueryTests.cs" />
     <Compile Include="MultipleIdTests.cs" />
+    <Compile Include="ProjectComparisonContextSpecification.cs" />
     <Compile Include="ProjectContextSpecificationSpecification.cs" />
     <Compile Include="ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -12,8 +12,10 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                   && string.Equals(x.ReferenceName, y.ReferenceName, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(
+                       x.ReferenceName,
+                       y.ReferenceName,
+                       StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode(IFieldDefinition obj)
@@ -21,8 +23,10 @@ namespace Microsoft.Qwiq
             unchecked
             {
                 var hash = 27;
-                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
-                hash = (13 * hash) ^ (obj.ReferenceName != null ? obj.ReferenceName.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
+                hash = (13 * hash) ^ (obj.ReferenceName != null
+                                          ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.ReferenceName)
+                                          : 0);
 
                 return hash;
             }
@@ -32,6 +36,7 @@ namespace Microsoft.Qwiq
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly FieldDefinitionComparer Instance = new FieldDefinitionComparer();
+
             // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler

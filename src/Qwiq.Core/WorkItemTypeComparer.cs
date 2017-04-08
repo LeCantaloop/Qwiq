@@ -13,8 +13,8 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(y, null)) return false;
 
             return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(x.Description, y.Description, StringComparison.OrdinalIgnoreCase)
-                && x.FieldDefinitions.Equals(y.FieldDefinitions);
+                   && string.Equals(x.Description, y.Description, StringComparison.OrdinalIgnoreCase)
+                   && FieldDefinitionCollectionComparer.Instance.Equals(x.FieldDefinitions, y.FieldDefinitions);
         }
 
         public override int GetHashCode(IWorkItemType obj)
@@ -33,10 +33,11 @@ namespace Microsoft.Qwiq
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-        // ReSharper restore ClassNeverInstantiated.Local
+            // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemTypeComparer Instance = new WorkItemTypeComparer();
+
             // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler

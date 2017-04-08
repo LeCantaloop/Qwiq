@@ -45,7 +45,6 @@
     <Compile Include="MockFieldDefinitionCollection.cs" />
     <Compile Include="MockIdentityDescriptor.cs" />
     <Compile Include="MockIdentityManagementService.cs" />
-    <Compile Include="MockNode.cs" />
     <Compile Include="MockProject.cs" />
     <Compile Include="MockQuery.cs" />
     <Compile Include="MockQueryFactory.cs" />

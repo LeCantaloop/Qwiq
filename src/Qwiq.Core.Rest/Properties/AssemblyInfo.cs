@@ -27,4 +27,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Mocks")]
 [assembly: InternalsVisibleTo("Qwiq.Mocks")]
-
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Soap")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Integration.Tests")]
