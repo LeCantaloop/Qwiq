@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    internal class Field : IField, IReadOnlyField
+    internal class Field : IField
     {
         private readonly IRevisionInternal _revision;
 
@@ -20,11 +20,7 @@ namespace Microsoft.Qwiq
 
         public virtual string ReferenceName => _fieldDefinition.ReferenceName;
 
-        public virtual object OriginalValue
-        {
-            get => throw new NotImplementedException();
-            set => throw new NotImplementedException();
-        }
+        public virtual object OriginalValue => throw new NotImplementedException();
 
         public virtual ValidationState ValidationState => throw new NotImplementedException();
 

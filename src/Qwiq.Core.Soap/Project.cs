@@ -25,6 +25,6 @@ namespace Microsoft.Qwiq.Soap
             Id = project.Id;
         }
 
-        public int Id { get; }
+        public new int Id { get; }
     }
 }

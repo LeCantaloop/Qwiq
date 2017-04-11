@@ -17,20 +17,23 @@ namespace Microsoft.Qwiq
                    && x.Guid.Equals(y.Guid)
                    && Equals(x.AreaRootNodes, y.AreaRootNodes)
                    && Equals(x.IterationRootNodes, y.IterationRootNodes)
-                   && x.WorkItemTypes.All(p => y.WorkItemTypes.Contains(p, WorkItemTypeComparer.Instance));
+                   && WorkItemTypeCollectionComparer.Instance.Equals(x.WorkItemTypes, y.WorkItemTypes);
         }
 
         public override int GetHashCode(IProject obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
                 var hash = 27;
                 hash = (13 * hash) ^ obj.Guid.GetHashCode();
-                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
-                hash = (13 * hash) ^ (obj.AreaRootNodes != null ? obj.AreaRootNodes.GetHashCode() : 0);
-                hash = (13 * hash) ^ (obj.IterationRootNodes != null ? obj.IterationRootNodes.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
+                hash = (13 * hash) ^ Comparer.NodeCollectionComparer.GetHashCode(obj.AreaRootNodes);
+                hash = (13 * hash) ^ Comparer.NodeCollectionComparer.GetHashCode(obj.IterationRootNodes);
+                hash = (13 * hash) ^ WorkItemTypeCollectionComparer.Instance.GetHashCode(obj.WorkItemTypes);
 
-                return obj.WorkItemTypes.Aggregate(hash, (current, wit) => (13 * current) ^ wit.GetHashCode());
+                return hash;
             }
         }
 

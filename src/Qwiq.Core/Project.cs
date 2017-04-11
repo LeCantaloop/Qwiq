@@ -61,5 +61,7 @@ namespace Microsoft.Qwiq
         {
             return $"{Guid} ({Name})";
         }
+
+        public Guid Id => Guid;
     }
 }

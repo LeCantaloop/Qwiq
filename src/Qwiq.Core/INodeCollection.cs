@@ -1,11 +1,8 @@
-using System.Collections.Generic;
+using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface INodeCollection : IReadOnlyCollection<INode>
+    public interface INodeCollection : IReadOnlyListWithId<INode, int>, IEquatable<INodeCollection>
     {
-        INode this[string name] { get; }
-
-        bool Contains(string name);
     }
 }

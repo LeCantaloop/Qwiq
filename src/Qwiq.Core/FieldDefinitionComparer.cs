@@ -12,14 +12,16 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(
-                       x.ReferenceName,
-                       y.ReferenceName,
-                       StringComparison.OrdinalIgnoreCase);
+            // Not including Id because the int value only appears in SOAP responses
+
+            return StringComparer.OrdinalIgnoreCase.Equals(x.Name, y.Name)
+                && StringComparer.OrdinalIgnoreCase.Equals(x.ReferenceName, y.ReferenceName);
         }
 
         public override int GetHashCode(IFieldDefinition obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
                 var hash = 27;

@@ -17,11 +17,10 @@ namespace Qwiq.Benchmark
 
         public WorkItemGenerator(Func<T> create, IEnumerable<string> propertiesToSkip)
         {
-            if (create == null) throw new ArgumentNullException(nameof(create));
             if (propertiesToSkip == null) throw new ArgumentNullException(nameof(propertiesToSkip));
 
             _propertiesToSkip = new HashSet<string>(propertiesToSkip, StringComparer.OrdinalIgnoreCase);
-            _create = create;
+            _create = create ?? throw new ArgumentNullException(nameof(create));
         }
 
         public IList<IWorkItem> Generate(int quantity = 500)
@@ -33,11 +32,6 @@ namespace Qwiq.Benchmark
             {
                 var instance = _create();
                 PopulatePropertiesOnInstance(instance);
-
-                if (Randomizer.ShouldEnter())
-                {
-                    instance["Custom String 01"] = Math.Abs(Randomizer.NextDecimal()).ToString("F2");
-                }
 
                 if (!generatedItems.Contains(instance.Id))
                 {
@@ -51,7 +45,7 @@ namespace Qwiq.Benchmark
                     {
                         instance = _create();
                         PopulatePropertiesOnInstance(instance);
-                        instance["Id"] = link.RelatedWorkItemId;
+                        instance[CoreFieldRefNames.Id] = link.RelatedWorkItemId;
                         Items.Add(instance);
                         generatedItems.Add(instance.Id);
                     }

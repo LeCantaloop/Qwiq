@@ -40,6 +40,12 @@ namespace Microsoft.Qwiq
             {
                 Email = arr[1];
                 Alias = arr[1].Split('@')[0];
+
+                Guid guid;
+                if (Guid.TryParse(arr[0], out guid))
+                {
+                    Domain = arr[0];
+                }
             }
             else
             {
@@ -54,6 +60,8 @@ namespace Microsoft.Qwiq
                     Alias = arr[1];
                 }
             }
+
+
         }
 
         public IdentityFieldValue(string displayName)

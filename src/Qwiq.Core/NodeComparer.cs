@@ -16,11 +16,11 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return x.Id == y.Id && x.IsAreaNode == y.IsAreaNode && x.IsIterationNode == y.IsIterationNode
-                   && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase) && string.Equals(
-                       x.Path,
-                       y.Path,
-                       StringComparison.OrdinalIgnoreCase);
+            return x.Id == y.Id
+                && x.IsAreaNode == y.IsAreaNode
+                && x.IsIterationNode == y.IsIterationNode
+                && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase);
         }
 
         public override int GetHashCode(INode obj)

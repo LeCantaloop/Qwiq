@@ -18,7 +18,9 @@ namespace Microsoft.Qwiq
             var source = y.ToList();
             foreach (var wit in expected)
             {
-                if (!source.Contains(wit, WorkItemTypeComparer.Instance)) return false;
+                if (!y.Contains(wit.Name)) return false;
+                var tw = y[wit.Name];
+                if (!WorkItemTypeComparer.Instance.Equals(wit, tw)) return false;
 
                 // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch
                 source.Remove(wit);
@@ -26,14 +28,6 @@ namespace Microsoft.Qwiq
 
             // If there are any items left then fail
             if (source.Any()) return false;
-
-            foreach (var wit in expected)
-            {
-                var sw = wit;
-                var tw = y[sw.Name];
-
-                if (!WorkItemTypeComparer.Instance.Equals(sw, tw)) return false;
-            }
 
             return true;
         }
@@ -50,7 +44,7 @@ namespace Microsoft.Qwiq
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-            // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemTypeCollectionComparer Instance = new WorkItemTypeCollectionComparer();

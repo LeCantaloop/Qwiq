@@ -1,15 +1,9 @@
-using System.Collections.Generic;
+using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IFieldCollection : IReadOnlyCollection<IField>
+    public interface IFieldCollection : IReadOnlyListWithId<IField, int>
     {
-        IField this[string name] { get; }
-        bool Contains(string name);
-
-        bool TryGetById(int id, out IField field);
-
-        IField GetById(int id);
     }
 }
 

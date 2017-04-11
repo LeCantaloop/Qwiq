@@ -4,6 +4,8 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockField : IField
     {
+        private readonly IRevisionInternal _revision;
+
         private readonly IFieldDefinition _fieldDefinition;
 
         private const int MaxStringLength = 255;
@@ -17,6 +19,12 @@ namespace Microsoft.Qwiq.Mocks
         public MockField(IFieldDefinition fieldDefinition)
         {
             _fieldDefinition = fieldDefinition;
+        }
+
+        internal MockField(IRevisionInternal revision, IFieldDefinition definition)
+            :this(definition)
+        {
+            _revision = revision;
         }
 
         public MockField(
@@ -44,7 +52,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        
+
 
         public bool IsChangedByUser { get; }
 
@@ -68,10 +76,12 @@ namespace Microsoft.Qwiq.Mocks
 
         public object Value
         {
-            get => _value;
+            get => _revision != null ? _revision.GetCurrentFieldValue(_fieldDefinition) : _value;
             set
             {
-                _value = value;
+                if (_revision != null) _revision.SetFieldValue(_fieldDefinition, value);
+                else _value = value;
+
                 _isDirty = true;
 
                 if (OriginalValue != null && _value != null && _value.Equals(OriginalValue))

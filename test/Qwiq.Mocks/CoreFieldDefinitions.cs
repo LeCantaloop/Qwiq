@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public static class CoreFieldDefinitions
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
+    public struct CoreFieldDefinitions
     {
         public static IFieldDefinition Id { get; } = new MockFieldDefinition((int)CoreField.Id, CoreFieldRefNames.NameLookup[CoreFieldRefNames.Id], CoreFieldRefNames.Id);
         public static IFieldDefinition WorkItemType { get; } = new MockFieldDefinition((int)CoreField.WorkItemType, CoreFieldRefNames.NameLookup[CoreFieldRefNames.WorkItemType], CoreFieldRefNames.WorkItemType);

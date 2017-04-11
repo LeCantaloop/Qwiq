@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,7 +37,7 @@ namespace Microsoft.Qwiq.Mocks
             new MockIdentityDescriptor("chrisjohns", "contoso.com"),
             "Chris Johnson <chrisjohns@contoso.com>",
             Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47"));
-        
+
 
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;
@@ -64,7 +63,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-       
+
 
         /// <summary>
         /// Creates a new instance of the IMS

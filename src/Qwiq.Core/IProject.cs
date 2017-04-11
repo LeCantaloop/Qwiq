@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IProject
+    public interface IProject : IIdentifiable<Guid>
     {
         INodeCollection AreaRootNodes { get; }
 

@@ -23,14 +23,63 @@ namespace Microsoft.Qwiq.Soap
         public IField this[string name] => ExceptionHandlingDynamicProxyFactory.Create<IField>(
             new Field(_innerCollection[name]));
 
+        public bool Contains(IField value)
+        {
+            return IndexOf(value) != -1;
+        }
+
         public bool Contains(string name)
         {
             return _innerCollection.Contains(name);
         }
 
+        public IField GetItem(int index)
+        {
+            return ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection[index]));
+        }
+
+        public int IndexOf(IField value)
+        {
+            if (value is Field) return _innerCollection.IndexOf(((Field)value).NativeField);
+
+            for (var i = 0; i < Count; i++) if (GenericComparer<IField>.Default.Equals(this[i], value)) return i;
+
+            return -1;
+        }
+
+        public bool TryGetByName(string name, out IField value)
+        {
+            if (name == null)
+            {
+                value = null;
+                return false;
+            }
+            if (!Contains(name))
+            {
+                value = null;
+                return false;
+            }
+
+            try
+            {
+                value = this[name];
+                return false;
+            }
+            catch (Exception)
+            {
+                value = null;
+                return false;
+            }
+        }
+
         public IField GetById(int id)
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(_innerCollection.GetById(id)));
+        }
+
+        public bool Contains(int id)
+        {
+            return _innerCollection.Contains(id);
         }
 
         public IEnumerator<IField> GetEnumerator()
@@ -46,14 +95,14 @@ namespace Microsoft.Qwiq.Soap
             return GetEnumerator();
         }
 
-        public bool TryGetById(int id, out IField field)
+        public bool TryGetById(int id, out IField value)
         {
             try
             {
                 var nativeField = _innerCollection.TryGetById(id);
                 if (nativeField != null)
                 {
-                    field = ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(nativeField));
+                    value = ExceptionHandlingDynamicProxyFactory.Create<IField>(new Field(nativeField));
                     return true;
                 }
             }
@@ -61,8 +110,22 @@ namespace Microsoft.Qwiq.Soap
             {
             }
 
-            field = null;
+            value = null;
             return false;
+        }
+
+        public IField this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _innerCollection.Count) throw new ArgumentOutOfRangeException(nameof(index));
+                return GetItem(index);
+            }
+        }
+
+        public bool Equals(IReadOnlyListWithId<IField, int> other)
+        {
+            return Comparer.FieldCollectionComparer.Equals(this, other);
         }
     }
 }

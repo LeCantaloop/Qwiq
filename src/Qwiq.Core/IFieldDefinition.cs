@@ -1,9 +1,8 @@
 ﻿namespace Microsoft.Qwiq
 {
-    public interface IFieldDefinition
+    public interface IFieldDefinition : IIdentifiable<int>
     {
         string Name { get; }
         string ReferenceName { get; }
-        int Id { get; }
     }
 }

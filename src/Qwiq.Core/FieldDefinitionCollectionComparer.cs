@@ -41,7 +41,10 @@ namespace Microsoft.Qwiq
 
             foreach (var field in expected)
             {
-                if (!source.Contains(field, FieldDefinitionComparer.Instance)) return false;
+                if (!y.Contains(field.ReferenceName)) return false;
+
+                var tf = y[field.ReferenceName];
+                if (!FieldDefinitionComparer.Instance.Equals(field, tf)) return false;
 
                 // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch
                 source.Remove(field);
@@ -49,15 +52,6 @@ namespace Microsoft.Qwiq
 
             // If there are any items left then fail
             if (source.Any()) return false;
-
-            // Iterate through and ensure each field is equal
-            foreach (var field in expected)
-            {
-                var sf = field;
-                var tf = y[sf.ReferenceName];
-
-                if (!FieldDefinitionComparer.Instance.Equals(sf, tf)) return false;
-            }
 
             return true;
         }

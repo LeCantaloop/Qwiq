@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemTypeCollection : IEnumerable<IWorkItemType>
+    public interface IWorkItemTypeCollection : IReadOnlyList<IWorkItemType>, IEquatable<IWorkItemTypeCollection>
     {
-        int Count { get; }
-
-        IWorkItemType this[string typeName] { get; }
     }
 }

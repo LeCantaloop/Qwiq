@@ -76,7 +76,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         }
 
         [JsonIgnore]
-        public int Id
+        public int? Id
         {
             get
             {
@@ -84,7 +84,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
             }
             set
             {
-                ID = value;
+                ID = value.GetValueOrDefault();
             }
         }
 
@@ -403,7 +403,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
             public void SetupData()
             {
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
-                var typeParser = new TypeParser();
+                var typeParser = TypeParser.Default;
                 var mappingStrategies = new IWorkItemMapperStrategy[]
                                             { new AttributeMapperStrategy(propertyInspector, typeParser) };
                 _mapper = new WorkItemMapper(mappingStrategies);
@@ -471,7 +471,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                 var generator = new WorkItemLinkGenerator(() => new MockWorkItem("Baz"), new[] { "Revisions", "Item" });
                 _items = generator.Generate();
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
-                var typeParser = new TypeParser();
+                var typeParser = TypeParser.Default;
                 var mappingStrategies = new IWorkItemMapperStrategy[]
                                             {
                                                 new AttributeMapperStrategy(propertyInspector, typeParser),

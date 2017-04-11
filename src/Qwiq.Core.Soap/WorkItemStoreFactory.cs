@@ -95,7 +95,7 @@ namespace Microsoft.Qwiq.Soap
 
         private static IWorkItemStore CreateSoapWorkItemStore(IInternalTfsTeamProjectCollection tfs)
         {
-            return new WorkItemStore(() => tfs, QueryFactory.GetInstance);
+            return new WorkItemStore(() => tfs, store =>  new QueryFactory(store));
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

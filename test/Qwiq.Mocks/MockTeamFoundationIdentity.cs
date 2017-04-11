@@ -2,20 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockTeamFoundationIdentity : TeamFoundationIdentity
     {
-        private const string AccountName = "Account";
-
-        private const string Alias = "Alias";
-
-        private const string Domain = "Domain";
-
-        private const string IdentityTypeClaim = "IdentityTypeClaim";
-
-        private const string MailAddress = "Mail";
-
         private readonly IDictionary<string, object> _properties;
 
         public MockTeamFoundationIdentity(
@@ -38,14 +30,14 @@ namespace Microsoft.Qwiq.Mocks
             _properties =
                 new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
                     {
-                        { AccountName, f.Alias },
-                        { Alias, f.Alias },
-                        { Domain, f.Domain },
-                        { MailAddress, f.Email },
-                        {
-                            IdentityTypeClaim,
-                            Descriptor.IdentityType
-                        }
+                        { IdentityAttributeTags.SchemaClassName, "User"},
+                        { IdentityAttributeTags.Description, string.Empty },
+                        { IdentityAttributeTags.Domain, f.Domain },
+                        { IdentityAttributeTags.AccountName, f.Alias },
+                        { IdentityAttributeTags.DistinguishedName, string.Empty},
+                        { IdentityAttributeTags.MailAddress, f.Email },
+                        { IdentityAttributeTags.SpecialType, "Generic" },
+                        { IdentityAttributeTags.IdentityTypeClaim, Descriptor.IdentityType }
                     };
         }
 

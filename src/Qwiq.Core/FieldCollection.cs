@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class FieldCollection : ReadOnlyList, IFieldCollection
+    public class FieldCollection : IFieldCollection
     {
         private readonly IDictionary<int, IField> _cache;
 
@@ -25,9 +26,11 @@ namespace Microsoft.Qwiq
             _cache = new Dictionary<int, IField>();
         }
 
-        public override int Count => _definitions.Count;
+        
 
-        public virtual IField this[string name]
+        public int Count => _definitions.Count;
+
+        public IField this[string name]
         {
             get
             {
@@ -36,7 +39,26 @@ namespace Microsoft.Qwiq
             }
         }
 
-        public virtual bool Contains(string name)
+        public IField this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= _definitions.Count) throw new ArgumentOutOfRangeException(nameof(index));
+                return GetItem(index);
+            }
+        }
+
+        public bool Contains(int id)
+        {
+            return _definitions.Contains(id);
+        }
+
+        public bool Contains(IField value)
+        {
+            return IndexOf(value) != -1;
+        }
+
+        public bool Contains(string name)
         {
             try
             {
@@ -51,8 +73,7 @@ namespace Microsoft.Qwiq
 
         public virtual IField GetById(int id)
         {
-            if (!TryGetById(id, out IField byId))
-                throw new ArgumentException($"Field {id} does not exist.", nameof(id));
+            if (!TryGetById(id, out IField byId)) throw new DeniedOrNotExistException();
             return byId;
         }
 
@@ -66,15 +87,28 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        public virtual bool TryGetById(int id, out IField field)
+        public IField GetItem(int index)
         {
-            if (_cache.TryGetValue(id, out field)) return true;
+            var def = _definitions[index];
+            return GetById(def.Id);
+        }
+
+        public virtual int IndexOf(IField value)
+        {
+            for (var i = 0; i < Count; i++) if (GenericComparer<IField>.Default.Equals(this[i], value)) return i;
+
+            return -1;
+        }
+
+        public bool TryGetById(int id, out IField value)
+        {
+            if (_cache.TryGetValue(id, out value)) return true;
             try
             {
                 if (_definitions.TryGetById(id, out IFieldDefinition def))
                 {
-                    field = _fieldFactory(_revision, def);
-                    _cache[id] = field;
+                    value = _fieldFactory(_revision, def);
+                    _cache[id] = value;
                     return true;
                 }
             }
@@ -85,9 +119,24 @@ namespace Microsoft.Qwiq
             return false;
         }
 
-        protected override object GetItem(int index)
+        public bool TryGetByName(string name, out IField value)
         {
-            return this[index];
+            if (name == null)
+            {
+                value = null;
+                return false;
+            }
+            if (!_definitions.TryGetByName(name, out IFieldDefinition def))
+            {
+                value = null;
+                return false;
+            }
+            return TryGetById(def.Id, out value);
+        }
+
+        public bool Equals(IReadOnlyListWithId<IField, int> other)
+        {
+            return Comparer.FieldCollectionComparer.Equals(this, other);
         }
     }
 }

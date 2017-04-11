@@ -59,7 +59,7 @@ namespace Microsoft.Qwiq.Mocks
 
                 foreach (var wit in project.WorkItemTypes)
                 {
-                    var wi = new MockWorkItem(wit) { Id = _workItems.Count + 1 };
+                    var wi = new MockWorkItem(wit, _workItems.Count +1);
                     _workItems.Add(wi);
                 }
             }
@@ -77,7 +77,7 @@ namespace Microsoft.Qwiq.Mocks
                 {
                     Trace.TraceWarning(
                         "Project {0} is missing the following work item type definitions: {1}.",
-                        project.Name,
+                        project,
                         string.Join(", ", missing));
                     // Add the missing WITs to the incoming project
                     project = new MockProject(project.WorkItemTypes.Union(missing).Distinct());

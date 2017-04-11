@@ -8,6 +8,18 @@ using Should;
 
 namespace Microsoft.Qwiq.Integration.Tests
 {
+    [TestClass]
+    public class Given_a_WorkItem_from_each_WorkItemStore_implementation : IntegrationContextSpecificationSpecification
+    {
+        private const int Id = 10726528;
+
+        public override void When()
+        {
+            SoapResult.WorkItem = TimedAction(() => SoapResult.WorkItemStore.Query(Id), "SOAP", "Query By Id");
+            RestResult.WorkItem = TimedAction(() => RestResult.WorkItemStore.Query(Id), "REST", "Query By Id");
+        }
+    }
+
     public abstract class IntegrationContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
         [TestMethod]
@@ -17,27 +29,11 @@ namespace Microsoft.Qwiq.Integration.Tests
         public void AreaPath_is_equal()
         {
             RestResult.WorkItem.AreaPath.ShouldEqual(SoapResult.WorkItem.AreaPath);
-        }
 
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void AssignedTo_is_equal()
-        {
-            RestResult.WorkItem.AssignedTo.ShouldEqual(SoapResult.WorkItem.AssignedTo);
-        }
+            RestResult.WorkItem[CoreFieldRefNames.AreaPath].ShouldEqual(RestResult.WorkItem.AreaPath);
+            RestResult.WorkItem.Fields[CoreFieldRefNames.AreaPath].Value.ShouldEqual(RestResult.WorkItem.AreaPath);
 
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void ChangedBy_is_equal()
-        {
-            RestResult.WorkItem.ChangedBy.ShouldEqual(SoapResult.WorkItem.ChangedBy);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void ChangedDate_is_equal()
-        {
-            RestResult.WorkItem.ChangedDate.ShouldEqual(SoapResult.WorkItem.ChangedDate.ToUniversalTime());
+            SoapResult.WorkItem[CoreFieldRefNames.AreaPath].ShouldEqual(SoapResult.WorkItem.AreaPath);
         }
 
         public override void Cleanup()
@@ -50,6 +46,8 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void CoreFields_are_equal()
         {
             var exceptions = new List<Exception>();
@@ -92,20 +90,6 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         [TestMethod]
         [TestCategory("localOnly")]
-        public void CreatedBy_is_equal()
-        {
-            RestResult.WorkItem.CreatedBy.ShouldEqual(SoapResult.WorkItem.CreatedBy);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void Rev_is_equal()
-        {
-            RestResult.WorkItem.Rev.ShouldEqual(SoapResult.WorkItem.Rev);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
         public void CreatedDate_is_equal()
         {
             RestResult.WorkItem.CreatedDate.ShouldEqual(SoapResult.WorkItem.CreatedDate.ToUniversalTime());
@@ -113,67 +97,9 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         [TestMethod]
         [TestCategory("localOnly")]
-        public void Description_is_equal()
+        public void RelatedLinkCount_is_equal()
         {
-            RestResult.WorkItem.Description.ShouldEqual(SoapResult.WorkItem.Description);
+            RestResult.WorkItem.RelatedLinkCount.ShouldEqual(SoapResult.WorkItem.RelatedLinkCount);
         }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void History_is_equal()
-        {
-            RestResult.WorkItem.History.ShouldEqual(SoapResult.WorkItem.History);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void Id_is_equal()
-        {
-            RestResult.WorkItem.Id.ShouldEqual(SoapResult.WorkItem.Id);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void IterationPath_is_equal()
-        {
-            RestResult.WorkItem.IterationPath.ShouldEqual(SoapResult.WorkItem.IterationPath);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void REST_WorkItem_is_returned()
-        {
-            RestResult.WorkItem.ShouldNotBeNull();
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void SOAP_WorkItem_is_returned()
-        {
-            SoapResult.WorkItem.ShouldNotBeNull();
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void State_is_equal()
-        {
-            RestResult.WorkItem.State.ShouldEqual(SoapResult.WorkItem.State);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void Tags_is_equal()
-        {
-            RestResult.WorkItem.Tags.ShouldEqual(SoapResult.WorkItem.Tags);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        public void Title_is_equal()
-        {
-            RestResult.WorkItem.Title.ShouldEqual(SoapResult.WorkItem.Title);
-        }
-
-
     }
 }

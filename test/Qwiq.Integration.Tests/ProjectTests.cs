@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,10 +15,32 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
-        public void Each_project_contains_the_same_WorkItemTypes()
+        public void Each_project_equals_eachother()
         {
-            RestProject.WorkItemTypes.ShouldContainOnly(SoapProject.WorkItemTypes);
-            RestProject.WorkItemTypes.GetHashCode().ShouldEqual(SoapProject.WorkItemTypes.GetHashCode(), "GetHashCode");
+            RestProject.ShouldEqual(SoapProject, ProjectComparer.Instance);
+            RestProject.GetHashCode().ShouldEqual(SoapProject.GetHashCode());
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Each_project_contains_the_same_Area_paths()
+        {
+            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Instance);
+            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, Comparer.NodeCollectionComparer);
+            RestProject.AreaRootNodes.GetHashCode().ShouldEqual(SoapProject.AreaRootNodes.GetHashCode());
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Each_project_contains_the_same_Iteration_paths()
+        {
+            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Instance);
+            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, Comparer.NodeCollectionComparer);
+            RestProject.IterationRootNodes.GetHashCode().ShouldEqual(SoapProject.IterationRootNodes.GetHashCode());
         }
 
         [TestMethod]
@@ -36,11 +57,15 @@ namespace Microsoft.Qwiq.Integration.Tests
                 {
                     var rw = RestProject.WorkItemTypes[sw.Name];
                     rw.ShouldNotBeNull($"No WIT '{sw.Name}' in REST");
-                    
+
                     // We can't do a simple ShouldContainsOnly check here because the REST client is returning fields the SOAP client is not
 
-                    var rwfs = rw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate).OrderBy(p=>p.ReferenceName).ToList();
-                    var swfs = sw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate).OrderBy(p => p.ReferenceName).ToList();
+                    var rwfs = rw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate)
+                                 .OrderBy(p => p.ReferenceName)
+                                 .ToList();
+                    var swfs = sw.FieldDefinitions.Where(FieldDefinitionCollectionComparer.SkippedFieldsPredicate)
+                                 .OrderBy(p => p.ReferenceName)
+                                 .ToList();
 
                     try
                     {
@@ -50,17 +75,21 @@ namespace Microsoft.Qwiq.Integration.Tests
                     {
                         exceptions.Add(e);
                     }
-                    
+
                     foreach (var swfd in swfs)
                     {
                         var rwfd = rw.FieldDefinitions[swfd.ReferenceName];
 
                         rwfd.ShouldEqual(swfd, $"{rw.Name}:{rwfd.ReferenceName}:Equals");
-                        rwfd.GetHashCode().ShouldEqual(swfd.GetHashCode(), $"{rw.Name}:{rwfd.ReferenceName}:GetHashCode");
+                        rwfd.GetHashCode()
+                            .ShouldEqual(swfd.GetHashCode(), $"{rw.Name}:{rwfd.ReferenceName}:GetHashCode");
                     }
 
                     rw.FieldDefinitions.ShouldEqual(sw.FieldDefinitions, FieldDefinitionCollectionComparer.Instance);
-                    rw.FieldDefinitions.GetHashCode().ShouldEqual(sw.FieldDefinitions.GetHashCode(), $"{rw.Name}:{nameof(rw.FieldDefinitions)}:GetHashCode");
+                    rw.FieldDefinitions.GetHashCode()
+                      .ShouldEqual(
+                          sw.FieldDefinitions.GetHashCode(),
+                          $"{rw.Name}:{nameof(rw.FieldDefinitions)}:GetHashCode");
                 }
                 catch (Exception e)
                 {
@@ -70,76 +99,20 @@ namespace Microsoft.Qwiq.Integration.Tests
 
             try
             {
-                RestProject.WorkItemTypes.ShouldEqual(SoapProject.WorkItemTypes, WorkItemTypeCollectionComparer.Instance);
+                RestProject.WorkItemTypes.ShouldEqual(
+                    SoapProject.WorkItemTypes,
+                    WorkItemTypeCollectionComparer.Instance);
+                RestProject.WorkItemTypes.GetHashCode()
+                           .ShouldEqual(
+                               SoapProject.WorkItemTypes.GetHashCode(),
+                               $"{nameof(RestProject.WorkItemTypes)}:GetHashCode");
             }
             catch (Exception e)
             {
                 exceptions.Add(e);
             }
 
-            if (exceptions.Any())
-            {
-                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("SOAP")]
-        [TestCategory("REST")]
-        public void Each_project_contains_the_same_WorkItemTypes_DETAILED()
-        {
-            var exceptions = new List<Exception>();
-            foreach (var wit in SoapProject.WorkItemTypes)
-            {
-                var sw = wit;
-                try
-                {
-                    var rw = RestProject.WorkItemTypes[sw.Name];
-                    rw.ShouldNotBeNull($"No WIT '{sw.Name}' in REST");
-
-                    foreach (var sfd in sw.FieldDefinitions)
-                    {
-                        var tfd = rw.FieldDefinitions[sfd.ReferenceName];
-                        tfd.ShouldNotBeNull($"No Field '{sfd.ReferenceName}' on WIT '{sw.Name}' in REST");
-                        tfd.ShouldEqual(sfd, sfd.ReferenceName);
-                        tfd.GetHashCode().ShouldEqual(sfd.GetHashCode(), sfd.ReferenceName);
-                    }
-
-                    rw.ShouldEqual(sw, sw.Name);
-                    rw.GetHashCode().ShouldEqual(sw.GetHashCode(), sw.Name + " - GetHashCode");
-                }
-                catch (Exception e)
-                {
-                    exceptions.Add(e);
-                }
-
-            }
-
-            if (exceptions.Any())
-            {
-                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("SOAP")]
-        [TestCategory("REST")]
-        public void Each_project_contains_the_same_Area_paths()
-        {
-            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Instance);
-            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, NodeCollectionComparer.Instance);
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("SOAP")]
-        [TestCategory("REST")]
-        public void Each_project_contains_the_same_Iteration_paths()
-        {
-            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Instance);
-            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, NodeCollectionComparer.Instance);
+            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
     }
 }

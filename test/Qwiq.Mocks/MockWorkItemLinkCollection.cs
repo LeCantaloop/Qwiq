@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,15 +18,11 @@ namespace Microsoft.Qwiq.Mocks
             _links = links;
         }
 
-        public IEnumerator<ILink> GetEnumerator()
-        {
-            return _links.GetEnumerator();
-        }
+        public ILink[] Links => _links.ToArray();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public int Count => _links.Count;
+
+        public bool IsReadOnly => _links.IsReadOnly;
 
         public void Add(ILink item)
         {
@@ -49,15 +44,19 @@ namespace Microsoft.Qwiq.Mocks
             _links.CopyTo(array, arrayIndex);
         }
 
+        public IEnumerator<ILink> GetEnumerator()
+        {
+            return _links.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public bool Remove(ILink item)
         {
             return _links.Remove(item);
         }
-
-        public int Count => _links.Count;
-
-        public bool IsReadOnly => _links.IsReadOnly;
-
-        public ILink[] Links => _links.ToArray();
     }
 }

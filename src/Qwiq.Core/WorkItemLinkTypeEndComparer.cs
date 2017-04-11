@@ -19,9 +19,16 @@ namespace Microsoft.Qwiq
 
         public override int GetHashCode(IWorkItemLinkTypeEnd obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
-                return 397 * (obj.Id ^ obj.ImmutableName.GetHashCode());
+                var hash = 27;
+
+                hash = (13 * hash) ^ obj.Id.GetHashCode();
+                hash = (13 * hash) ^ StringComparer.OrdinalIgnoreCase.GetHashCode(obj.ImmutableName);
+
+                return hash;
             }
         }
 

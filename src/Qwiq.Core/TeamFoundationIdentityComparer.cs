@@ -8,11 +8,9 @@ namespace Microsoft.Qwiq
 
         public override int GetHashCode(ITeamFoundationIdentity obj)
         {
-            unchecked
-            {
-                if (obj.Descriptor == null) return 0;
-                return obj.Descriptor.GetHashCode();
-            }
+            if (ReferenceEquals(obj, null)) return 0;
+
+            return IdentityDescriptorComparer.Instance.GetHashCode(obj.Descriptor);
         }
 
         public override bool Equals(ITeamFoundationIdentity x, ITeamFoundationIdentity y)
@@ -21,7 +19,8 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return (string.Equals(x.UniqueName, y.UniqueName, StringComparison.OrdinalIgnoreCase));
+            return StringComparer.OrdinalIgnoreCase.Equals(x.UniqueName, y.UniqueName)
+                && IdentityDescriptorComparer.Instance.Equals(x.Descriptor, y.Descriptor);
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

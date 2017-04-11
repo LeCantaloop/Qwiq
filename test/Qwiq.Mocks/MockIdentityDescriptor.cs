@@ -1,6 +1,8 @@
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockIdentityDescriptor : Qwiq.IdentityDescriptor
+    public class MockIdentityDescriptor : IdentityDescriptor
     {
         public const string Domain = "domain.local";
 
@@ -11,7 +13,8 @@ namespace Microsoft.Qwiq.Mocks
         /// </summary>
         /// <param name="alias">The sAMAccountName of the user (e.g. ftotten)</param>
         public MockIdentityDescriptor(string alias, string domain = Domain, string tenantId = TenantId)
-            : base("Microsoft.IdentityModel.Claims.ClaimsIdentity", $"{tenantId}\\{alias}@{domain}")
+            : base(IdentityConstants.ClaimsType, $"{tenantId}\\{alias}@{domain}")
         {
-        }}
+        }
+    }
 }

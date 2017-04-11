@@ -3,7 +3,7 @@ namespace Microsoft.Qwiq.Mocks
     public class MockWorkItemLinkInfo : WorkItemLinkInfo
     {
         public MockWorkItemLinkInfo(int sourceId, int targetId)
-            : this(sourceId, targetId, 0)
+            : this(sourceId, targetId, CoreLinkTypes.Related)
         {
         }
 

@@ -2,13 +2,11 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface INode
+    public interface INode : IIdentifiable<int>
     {
         INodeCollection ChildNodes { get; }
 
         bool HasChildNodes { get; }
-
-        int Id { get; }
 
         bool IsAreaNode { get; }
 

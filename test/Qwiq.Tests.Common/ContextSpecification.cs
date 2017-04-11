@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -111,14 +112,26 @@ namespace Microsoft.Qwiq.Tests.Common
     /// http://channel9.msdn.com/Events/TechEd/NorthAmerica/2010/DPR302
     ///
     /// </remarks>
-    [DebuggerStepThrough]
+    //[DebuggerStepThrough]
     public abstract class ContextSpecification : IContextSpecification
     {
         [TestInitialize]
         public void TestInitialize()
         {
-            Given();
-            When();
+            try
+            {
+                Given();
+                When();
+            }
+            catch (Exception)
+            {
+                // This is very, very bad.
+
+                if (!Debugger.IsAttached) Debugger.Launch();
+                if (Debugger.IsAttached) Debugger.Break();
+
+                Cleanup();
+            }
         }
 
         [TestCleanup]

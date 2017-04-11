@@ -19,6 +19,8 @@ namespace Microsoft.Qwiq
 
         new int ExternalLinkCount { get; }
 
+        IFieldCollection Fields { get; }
+
         new int HyperLinkCount { get; }
 
         /// <summary>

@@ -1,116 +1,165 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class ReadOnlyList : IList, ICollection, IEnumerable
+    /// <summary>
+    ///     Base class for common operations for Collections.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class ReadOnlyList<T> : IReadOnlyList<T>
     {
-        public abstract int Count { get; }
+        private readonly IList<T> _list;
 
-        public bool IsFixedSize => true;
+        private readonly object _lockObj = new object();
 
-        public bool IsReadOnly => true;
+        private readonly IDictionary<string, int> _mapByName;
 
-        public bool IsSynchronized => false;
+        private readonly Func<T, string> _nameFunc;
 
-        public object SyncRoot => null;
+        private bool _alreadyInit;
 
-        public object this[int index]
+        private IEnumerable<T> _items;
+
+        protected ReadOnlyList(IEnumerable<T> items, Func<T, string> nameFunc)
         {
-            get => GetItem(index);
-            set => throw new NotSupportedException();
+            _items = items ?? Enumerable.Empty<T>();
+            _nameFunc = nameFunc;
+            _list = new List<T>();
+            _mapByName = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public int Add(object value)
+        public virtual int Count
         {
-            throw new NotSupportedException();
+            get
+            {
+                Ensure();
+                return _list.Count;
+            }
         }
 
-        public void Clear()
+        public virtual T this[int index]
         {
-            throw new NotSupportedException();
+            get
+            {
+                Ensure();
+                if (index < 0 || index >= _list.Count) throw new ArgumentOutOfRangeException(nameof(index));
+                return _list[index];
+            }
         }
 
-        public bool Contains(object value)
+        public virtual T this[string name]
+        {
+            get
+            {
+                if (name == null) throw new ArgumentNullException(nameof(name));
+                Ensure();
+                int num;
+                if (_mapByName.TryGetValue(name, out num)) return _list[num];
+
+                throw new DeniedOrNotExistException();
+            }
+        }
+
+        public virtual bool Contains(T value)
         {
             return IndexOf(value) != -1;
         }
 
-        public void CopyTo(Array array, int index)
+        public virtual bool Contains(string name)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
-            if (array.Rank != 1) throw new ArgumentException();
-            if (index < 0) throw new ArgumentOutOfRangeException(nameof(index));
-            if (array.Length - index < Count) throw new ArgumentException();
-            foreach (var obj in this) array.SetValue(obj, index++);
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            Ensure();
+            return _mapByName.ContainsKey(name);
+        }
+
+        public virtual IEnumerator<T> GetEnumerator()
+        {
+            Ensure();
+            return _list.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new Enumerator<object>(this);
+            return GetEnumerator();
         }
 
-        public int IndexOf(object value)
+        T IReadOnlyList<T>.GetItem(int index)
         {
-            for (var i = 0; i < Count; i++) if (Equals(this[i], value)) return i;
+            return GetItem(index);
+        }
+
+        public virtual int IndexOf(T value)
+        {
+            Ensure();
+            for (var i = 0; i < Count; i++) if (GenericComparer<T>.Default.Equals(this[i], value)) return i;
 
             return -1;
         }
 
-        public void Insert(int index, object value)
+        public virtual bool TryGetByName(string name, out T value)
         {
-            throw new NotSupportedException();
+            Ensure();
+            int num;
+            if (_mapByName.TryGetValue(name, out num))
+            {
+                value = _list[num];
+                return true;
+            }
+            value = default(T);
+            return false;
         }
 
-        public void Remove(object value)
+        protected virtual void Add(T value, int index)
         {
-            throw new NotSupportedException();
+            if (_nameFunc != null)
+            {
+                var name = _nameFunc(value);
+                AddByName(name, index);
+            }
         }
 
-        public void RemoveAt(int index)
+        protected void AddByName(string name, int index)
         {
-            throw new NotSupportedException();
+            try
+            {
+                _mapByName.Add(name, index);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ArgumentException($"An item with the name {name} already exists.", e);
+            }
         }
 
-        protected abstract object GetItem(int index);
-
-        private sealed class Enumerator<T> : IEnumerator
+        protected void Ensure()
         {
-            private readonly IList _list;
+            if (!_alreadyInit)
+                lock (_lockObj)
+                {
+                    if (!_alreadyInit)
+                    {
+                        foreach (var item in _items) Add(item);
 
-            private int _index;
+                        _alreadyInit = true;
+                        _items = null;
+                    }
+                }
+        }
 
-            private int _version;
+        protected virtual T GetItem(int index)
+        {
+            return this[index];
+        }
 
-            internal Enumerator(IList list)
-            {
-                _index = -1;
-                _list = list;
-                _version = GetVersionTag();
-            }
+        private void Add(T value)
+        {
+            var index = _list.Count;
 
-            public T Current => (T)_list[_index];
+            Add(value, index);
 
-            object IEnumerator.Current => _list[_index];
-
-            public bool MoveNext()
-            {
-                if (GetVersionTag() != _version) throw new InvalidOperationException();
-                var num = _index + 1;
-                _index = num;
-                return num < _list.Count;
-            }
-
-            public void Reset()
-            {
-                _index = -1;
-                _version = GetVersionTag();
-            }
-
-            private int GetVersionTag()
-            {
-                return _list.Count;
-            }
+            _list.Add(value);
         }
     }
 }

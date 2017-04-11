@@ -6,7 +6,8 @@ namespace Microsoft.Qwiq.Soap
     {
         private readonly Tfs.Hyperlink _hyperLink;
 
-        internal Hyperlink(Tfs.Hyperlink hyperLink) : base(hyperLink)
+        internal Hyperlink(Tfs.Hyperlink hyperLink)
+            : base(hyperLink)
         {
             _hyperLink = hyperLink;
         }
@@ -14,4 +15,3 @@ namespace Microsoft.Qwiq.Soap
         public string Location => _hyperLink.Location;
     }
 }
-

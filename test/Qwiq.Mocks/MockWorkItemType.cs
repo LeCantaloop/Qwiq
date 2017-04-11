@@ -14,7 +14,7 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItemType(string name, string description = null)
-            : this(name, CoreFieldDefinitions.All, description)
+            : this(name, new MockFieldDefinitionCollection(CoreFieldDefinitions.All), description)
         {
         }
 
@@ -23,7 +23,7 @@ namespace Microsoft.Qwiq.Mocks
         {
             if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
             WorkItemFactory = () => new MockWorkItem(this);
-            FieldDefinitionFactory = () => new MockFieldDefinitionCollection(fieldDefinitions.Union(new[] { CoreFieldDefinitions.Id, CoreFieldDefinitions.WorkItemType }));
+            FieldDefinitionFactory = () => new MockFieldDefinitionCollection(fieldDefinitions.Union(new[] { CoreFieldDefinitions.Id, CoreFieldDefinitions.WorkItemType }).Distinct());
         }
 
         public MockWorkItemType(string name, IFieldDefinitionCollection fieldDefinitions, string description = null)

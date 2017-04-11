@@ -47,32 +47,38 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
-            : this(
-                type,
-                fields?.Select(p => new MockField(type.FieldDefinitions[p.Key], p.Value, p.Value))
-                ?? Enumerable.Empty<IField>())
+        public MockWorkItem(IWorkItemType type, int id)
+            :this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
         {
         }
 
-        public MockWorkItem(IWorkItemType type, IEnumerable<IField> fields)
-            : base(type)
+        public MockWorkItem(IWorkItemType type, params KeyValuePair<string, object>[] fieldValues)
+            :this(type, fieldValues == null ? null : fieldValues.ToDictionary(k=>k.Key, e=>e.Value, StringComparer.OrdinalIgnoreCase))
         {
-            if (fields == null) throw new ArgumentNullException(nameof(fields));
+        }
 
-            foreach (var field in fields)
+        public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
+            :base(type)
+        {
+            // set any values coming into
+            if (fields != null)
             {
-                var f = Fields[field.ReferenceName ?? field.Name];
-                f.Value = field.Value;
-                f.OriginalValue = field.OriginalValue;
+                foreach (var field in fields)
+                {
+                    Fields[field.Key].Value = field.Value;
+                }
             }
 
+            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
+
             Links = new MockLinkCollection();
-            Uri = new Uri($"vstfs:///WorkItemTracking/WorkItem/{Id}");
-            Url = Uri.ToString();
             Revisions = Enumerable.Empty<IRevision>();
             ApplyRules();
         }
+
+
+
+
 
         public string ReproSteps
         {
@@ -119,9 +125,9 @@ namespace Microsoft.Qwiq.Mocks
 
         public override IEnumerable<IRevision> Revisions { get; }
 
-        public override Uri Uri { get; }
+        public override Uri Uri => new Uri($"vstfs:///WorkItemTracking/WorkItem/{Id}");
 
-        public override string Url { get; }
+        public override string Url => Uri.ToString();
 
         public override void ApplyRules(bool doNotUpdateChangedBy = false)
         {
@@ -192,16 +198,6 @@ namespace Microsoft.Qwiq.Mocks
                                        .Single(s => s.ReferenceName == CoreLinkTypeReferenceNames.Related)
                                        .ForwardEnd,
                 target);
-        }
-
-        protected override object GetValue(string field)
-        {
-            return Fields[field].Value;
-        }
-
-        protected override void SetValue(string field, object value)
-        {
-            Fields[field].Value = value;
         }
     }
 }

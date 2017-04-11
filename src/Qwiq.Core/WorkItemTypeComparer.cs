@@ -23,8 +23,8 @@ namespace Microsoft.Qwiq
             unchecked
             {
                 var hash = 27;
-                hash = (13 * hash) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
-                hash = (13 * hash) ^ (obj.Description != null ? obj.Description.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
+                hash = (13 * hash) ^ (obj.Description != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Description) : 0);
                 hash = (13 * hash) ^ (obj.FieldDefinitions != null ? obj.FieldDefinitions.GetHashCode() : 0);
 
                 return hash;

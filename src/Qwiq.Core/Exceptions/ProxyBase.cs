@@ -24,7 +24,9 @@ namespace Microsoft.Qwiq.Exceptions
         /// </remarks>
         public override bool Equals(object obj)
         {
+            // ReSharper disable SuspiciousTypeConversion.Global
             var proxy = this as IProxyTargetAccessor;
+            // ReSharper restore SuspiciousTypeConversion.Global
             if (proxy == null)
             {
                 return base.Equals(obj);
@@ -39,7 +41,9 @@ namespace Microsoft.Qwiq.Exceptions
 
         public override int GetHashCode()
         {
+            // ReSharper disable SuspiciousTypeConversion.Global
             var proxy = this as IProxyTargetAccessor;
+            // ReSharper restore SuspiciousTypeConversion.Global
             if (proxy == null)
             {
                 return base.GetHashCode();
@@ -54,7 +58,9 @@ namespace Microsoft.Qwiq.Exceptions
 
         public override string ToString()
         {
+            // ReSharper disable SuspiciousTypeConversion.Global
             var proxy = this as IProxyTargetAccessor;
+            // ReSharper restore SuspiciousTypeConversion.Global
             if (proxy == null)
             {
                 return base.ToString();
