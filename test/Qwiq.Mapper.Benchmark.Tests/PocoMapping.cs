@@ -1,37 +1,35 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-using Microsoft.Qwiq.Identity.Mapper;
-using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Qwiq.Benchmark;
-using Qwiq.Identity.Tests.Mocks;
 
-using B = Microsoft.Qwiq.Identity.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_a_BulkIdentityAwareAttributeMapperStrategy;
+using B = Microsoft.Qwiq.Mapper.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy;
 
-namespace Microsoft.Qwiq.Identity.Benchmark.Tests
+namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
 {
     [TestClass]
-    public class BENCHMARK_Given_a_set_of_WorkItems_with_a_BulkIdentityAwareAttributeMapperStrategy : BenchmarkContextSpecification
+    public class BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : BenchmarkContextSpecification
     {
-        /// <inheritdoc />
         public override void When()
         {
             BenchmarkRunner.Run<Benchmark>();
         }
 
+
         [TestMethod]
         [TestCategory(Constants.TestCategory.Benchmark)]
         [TestCategory(Constants.TestCategory.Performance)]
         [TestCategory("localOnly")]
-        public void Execute_Identity_Mapping_Performance_Benchmark()
+        public void Execute_Mapping_Performance_Benchmark()
         {
             // Intentionally left blank
         }
@@ -39,36 +37,31 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
         [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
-            private IWorkItemMapperStrategy _strategy;
-            private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
+            private WorkItemMapper _mapper;
+            private IEnumerable<IWorkItem> _items;
 
             [Setup]
             public void SetupData()
             {
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
-                _strategy = new BulkIdentityAwareAttributeMapperStrategy(
-                                                                         propertyInspector,
-                                                                         new MockIdentityManagementService()
-                                                                        );
+                var typeParser = TypeParser.Default;
+                var mappingStrategies = new IWorkItemMapperStrategy[]
+                                            { new AttributeMapperStrategy(propertyInspector, typeParser) };
+                _mapper = new WorkItemMapper(mappingStrategies);
 
                 var wis = new MockWorkItemStore();
                 var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
-                wis.Add(generator.Generate());
-                
-                _workItemMappings = generator.Items.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
-
+                _items = generator.Generate();
+                wis.Add(_items);
             }
 
             [Benchmark]
-            public IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> Execute()
+            public IList Execute()
             {
-                _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
-                return _workItemMappings;
+                return _mapper.Create<MockModel>(_items).ToList();
             }
         }
     }
-
-    
 }
 
 namespace Microsoft.Qwiq.Mapper.Tests

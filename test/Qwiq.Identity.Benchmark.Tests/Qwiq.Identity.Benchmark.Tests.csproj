@@ -150,6 +150,10 @@
       <Project>{DB07E690-4B77-414F-91C7-1A48C9F01F24}</Project>
       <Name>Qwiq.Mocks</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
+      <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>
+      <Name>Qwiq.Tests.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

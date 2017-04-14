@@ -6,6 +6,27 @@ namespace Microsoft.Qwiq.Mocks
 {
     public static class Extensions
     {
+        internal static void BatchSave(this MockWorkItemStore store, params IWorkItem[] workItems)
+        {
+            store.BatchSave(workItems);
+        }
+
+        public static MockWorkItem Create(this MockWorkItemStore store, IEnumerable<KeyValuePair<string, object>> values = null)
+        {
+            var project = store.Projects[0];
+            var wit = project.WorkItemTypes[0];
+
+            var tp = new KeyValuePair<string, object>(CoreFieldRefNames.TeamProject, project.Name);
+            var wp = new KeyValuePair<string, object>(CoreFieldRefNames.WorkItemType, wit.Name);
+            var a = new[] { tp, wp };
+
+            values = values?.Union(a) ?? a;
+
+            var wi = wit.NewWorkItem(values);
+            store.BatchSave(wi);
+            return (MockWorkItem)wi;
+        }
+
         public static MockWorkItemStore Add(this MockWorkItemStore store, IEnumerable<IWorkItem> workItems)
         {
             return store.Add(workItems, null);
@@ -18,17 +39,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public static MockWorkItemStore Add(this MockWorkItemStore store, IEnumerable<KeyValuePair<string, object>> values)
         {
-            var project = store.Projects[0];
-            var wit = project.WorkItemTypes[0];
-
-            var tp = new KeyValuePair<string, object>(CoreFieldRefNames.TeamProject, project.Name);
-            var wp = new KeyValuePair<string, object>(CoreFieldRefNames.WorkItemType, wit.Name);
-            var a = new[] { tp, wp };
-
-            values = values == null ? a : values.Union(a);
-
-            var wi = wit.NewWorkItem(values);
-            store.BatchSave(wi);
+            Create(store, values);
             return store;
         }
 
@@ -74,7 +85,7 @@ namespace Microsoft.Qwiq.Mocks
             return store;
         }
 
-        public static MockWorkItemStore Add(this MockWorkItemStore store, params IWorkItemLinkType[] linkTypes)
+        public static MockWorkItemStore WithLinkType(this MockWorkItemStore store, params IWorkItemLinkType[] linkTypes)
         {
             store.WorkItemLinkTypes = new WorkItemLinkTypeCollection(store.WorkItemLinkTypes.Union(linkTypes));
             return store;

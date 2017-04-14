@@ -94,6 +94,6 @@ namespace Microsoft.Qwiq
 
         string WorkItemType { get; }
 
-        // Team Project?
+        string TeamProject { get; }
     }
 }

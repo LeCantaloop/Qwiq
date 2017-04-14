@@ -153,7 +153,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                         new MockWorkItem(wit) {Id = 233 },
                         new MockWorkItem(wit) {Id = 144 }
                     }
-                ).Add(related);
+                ).WithLinkType(related);
 
 
 

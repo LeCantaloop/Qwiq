@@ -268,8 +268,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PerformanceTests.cs" />
+    <Compile Include="MockModel.cs" />
+    <Compile Include="PocoMapping.cs" />
+    <Compile Include="PocoMappingWithLinks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubMockModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

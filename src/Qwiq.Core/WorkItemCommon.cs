@@ -97,7 +97,7 @@ namespace Microsoft.Qwiq
 
         public virtual string WorkItemType => GetValue<string>(CoreFieldRefNames.WorkItemType);
 
-        
+        public virtual string TeamProject => GetValue<string>(CoreFieldRefNames.TeamProject);
 
         public bool Equals(IWorkItemCommon other)
         {

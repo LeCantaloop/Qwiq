@@ -120,21 +120,28 @@ namespace Microsoft.Qwiq.Mocks
 
         public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
 
-        internal void BatchSave(params IWorkItem[] workItems)
-        {
-            BatchSave(workItems as IEnumerable<IWorkItem>);
-        }
+        
 
         internal void BatchSave(IEnumerable<IWorkItem> workItems)
         {
-            var missingWits = new Dictionary<IProject, HashSet<IWorkItemType>>();
+            
+
+            // First: Fix up the work items and save them to our dictionary
 
             foreach (var item in workItems)
             {
-
                 Save(item);
             }
 
+            // Second: Update the links for the work items
+            // We need to save first so we can create recipricol links if required (e.g. parent -> child also needs a child -> parent)
+            foreach (var item in workItems)
+            {
+                SaveLinks(item);
+            }
+
+            // Third: If any of the work items have types that are missing from their project, add those
+            var missingWits = new Dictionary<IProject, HashSet<IWorkItemType>>();
             foreach (var item in workItems)
             {
                 var projectName = item[CoreFieldRefNames.TeamProject].ToString();
@@ -153,6 +160,7 @@ namespace Microsoft.Qwiq.Mocks
                 }
             }
 
+            // Fourth: If there are any missing wits update the project and reset the project collection
             if (!missingWits.Any()) return;
             var changesRequired = false;
 
@@ -200,64 +208,18 @@ namespace Microsoft.Qwiq.Mocks
 
             var id = item.Id;
 
-            // Remove any existing links for this item
-            //foreach (var link in _links.ToArray()) if (link.SourceId == id) _links.Remove(link);
-
             var l = new Dictionary<BaseLinkType, int>
                         {
                             { BaseLinkType.RelatedLink, 0 },
                             { BaseLinkType.ExternalLink, 0 },
                             { BaseLinkType.Hyperlink, 0 }
                         };
-
-            // If there are new links add them back
+            
             if (item.Links != null && item.Links.Any())
             {
                 foreach (var link in item.Links)
                 {
                     l[link.BaseType]++;
-
-                    // We only support related links at the moment
-                    if (link.BaseType != BaseLinkType.RelatedLink) continue;
-                    var rl = link as IRelatedLink;
-                    if (rl == null) continue;
-
-                    var mrl = rl as MockRelatedLink;
-                    if (mrl != null)
-                    {
-                        var li = mrl.LinkInfo;
-                        if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Instance))
-                        {
-                            Trace.TraceWarning(
-                                               $"Warning: Duplicate link. (Type: {li.LinkType?.ImmutableName ?? "NULL"}; Source: {li.SourceId}; Target: {li.TargetId})");
-                        }
-                        else
-                        {
-                            LinkInfo.Add(li);
-                        }
-
-                        if (rl.LinkTypeEnd == null) continue;
-
-                        // Check to see if a recipricol link is required
-                        if (rl.LinkTypeEnd.LinkType.IsDirectional)
-                        {
-                            var t = _lookup[rl.RelatedWorkItemId];
-                            var e = rl.LinkTypeEnd.OppositeEnd;
-
-                            // Check to see if an existing link exists
-                            if (!t.Links.OfType<IRelatedLink>().Any(p => p.RelatedWorkItemId == id && Equals(p.LinkTypeEnd, e)))
-                            {
-                                // There is not--create one
-                                var tl = t.CreateRelatedLink(id, rl.LinkTypeEnd.OppositeEnd);
-                                t.Links.Add(tl);
-                                Save(t);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
-                    }
                 }
             }
 
@@ -273,6 +235,72 @@ namespace Microsoft.Qwiq.Mocks
                 item[CoreFieldRefNames.TeamProject] = projectName;
             }
             _lookup[id] = item;
+        }
+
+        private void SaveLinks(IWorkItem item)
+        {
+            var id = item.Id;
+            // If there are new links add them back
+            if (item.Links != null && item.Links.Any())
+            {
+                foreach (var link in item.Links)
+                {
+                    SaveLink(link, id);
+                }
+            }
+        }
+
+        private void SaveLink(ILink link, int id)
+        {
+            // We only support related links at the moment
+            if (link.BaseType != BaseLinkType.RelatedLink) return;
+            var rl = link as IRelatedLink;
+            if (rl == null) return;
+
+            var mrl = rl as MockRelatedLink;
+            if (mrl != null)
+            {
+                var li = mrl.LinkInfo;
+                if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Instance))
+                {
+                    Trace.TraceWarning(
+                                       $"Warning: Duplicate link. (Type: {li.LinkType?.ImmutableName ?? "NULL"}; Source: {li.SourceId}; Target: {li.TargetId})");
+                }
+                else
+                {
+                    LinkInfo.Add(li);
+                }
+
+                if (rl.LinkTypeEnd == null) return;
+
+                // Check to see if a recipricol link is required
+                if (rl.LinkTypeEnd.LinkType.IsDirectional)
+                {
+                    try
+                    {
+                        var t = _lookup[rl.RelatedWorkItemId];
+                        var e = rl.LinkTypeEnd.OppositeEnd;
+
+                        // Check to see if an existing link exists
+                        if (!t.Links.OfType<IRelatedLink>().Any(p => p.RelatedWorkItemId == id && Equals(p.LinkTypeEnd, e)))
+                        {
+                            // There is not--create one
+                            var tl = t.CreateRelatedLink(id, rl.LinkTypeEnd.OppositeEnd);
+                            t.Links.Add(tl);
+                            Save(t);
+                        }
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        Trace.TraceWarning($"Work item {id} contains a {rl.LinkTypeEnd} to an item that does not exist: {rl.RelatedWorkItemId}.");
+
+                    }
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         protected void Dispose(bool disposing)
