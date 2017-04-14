@@ -5,8 +5,6 @@ namespace Microsoft.Qwiq
 {
     public class RegisteredLinkTypeCollection : ReadOnlyList<IRegisteredLinkType>, IRegisteredLinkTypeCollection
     {
-
-
         public RegisteredLinkTypeCollection(IEnumerable<IRegisteredLinkType> linkTypes)
             : base(linkTypes, type => type.Name)
         {
