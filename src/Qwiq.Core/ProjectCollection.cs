@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Microsoft.Qwiq
 {
@@ -18,6 +19,7 @@ namespace Microsoft.Qwiq
 
         public IProject this[Guid id] => GetById(id);
 
+        [DebuggerStepThrough]
         public static implicit operator ProjectCollection(Project project)
         {
             return new ProjectCollection(project);

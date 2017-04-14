@@ -509,11 +509,8 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                 for (var i = 0; i < Randomizer.Instance.Next(0, 10); i++)
                                 {
                                     retval.Add(
-                                        new MockWorkItemLink
-                                        {
-                                            LinkTypeEnd = _linkType.ForwardEnd,
-                                            RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
-                                        });
+                                        new MockRelatedLink(0, Randomizer.Instance.Next(1, 36), _linkType.ForwardEnd)
+                                        );
                                 }
                             }
 
@@ -522,11 +519,8 @@ namespace Microsoft.Qwiq.Mapper.Tests
                                 for (var i = 0; i < Randomizer.Instance.Next(0, 10); i++)
                                 {
                                     retval.Add(
-                                        new MockWorkItemLink
-                                        {
-                                            LinkTypeEnd = _linkType.ReverseEnd,
-                                            RelatedWorkItemId = Randomizer.Instance.Next(1, 36)
-                                        });
+                                        new MockRelatedLink(0, Randomizer.Instance.Next(1, 36), _linkType.ReverseEnd)
+                                        );
                                 }
                             }
 

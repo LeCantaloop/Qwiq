@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -13,6 +14,7 @@ namespace Microsoft.Qwiq.Mocks
 
         internal bool PartialOpenWasCalled;
 
+        [DebuggerStepThrough]
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem()
@@ -20,6 +22,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
+        [DebuggerStepThrough]
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null)
@@ -27,6 +30,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
+        [DebuggerStepThrough]
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(IDictionary<string, object> fields)
@@ -48,17 +52,27 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItem(IWorkItemType type, int id)
-            :this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
+            : this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type, int id, params KeyValuePair<string, object>[] fieldValues)
+            : this(
+                   type,
+                   fieldValues == null
+                       ? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) { { CoreFieldRefNames.Id, id } }
+                       : fieldValues.Union(new[] { new KeyValuePair<string, object>(CoreFieldRefNames.Id, id) })
+                                    .ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
         {
         }
 
         public MockWorkItem(IWorkItemType type, params KeyValuePair<string, object>[] fieldValues)
-            :this(type, fieldValues == null ? null : fieldValues.ToDictionary(k=>k.Key, e=>e.Value, StringComparer.OrdinalIgnoreCase))
+            : this(type, fieldValues == null ? null : fieldValues.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
         {
         }
 
         public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
-            :base(type)
+            : base(type)
         {
             // set any values coming into
             if (fields != null)
@@ -70,15 +84,31 @@ namespace Microsoft.Qwiq.Mocks
             }
 
             SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
+            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
 
-            Links = new MockLinkCollection();
-            Revisions = Enumerable.Empty<IRevision>();
+            Links = new HashSet<ILink>();
+            Revisions = new HashSet<IRevision>();
             ApplyRules();
         }
 
+        public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        {
+            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
+        }
 
+        public override IRelatedLink CreateRelatedLink(int id, IWorkItemLinkTypeEnd linkTypeEnd = null)
+        {
+            if (IsNew) throw new InvalidOperationException("Save first");
+            if (id != 0
+                && linkTypeEnd == null)
+            {
+                throw new ArgumentException($"Value cannot be zero when no {nameof(IWorkItemLinkTypeEnd)} specified.", nameof(id));
+            }
 
-
+            if (id == 0 && linkTypeEnd == null) return new MockRelatedLink(null, Id);
+            
+            return new MockRelatedLink(linkTypeEnd, Id, id);
+        }
 
         public string ReproSteps
         {
@@ -146,13 +176,21 @@ namespace Microsoft.Qwiq.Mocks
                 stream.Position = 0;
 
                 var newItem = (MockWorkItem)formatter.Deserialize(stream);
+
+                var s = Type.Store();
+                if (s != null)
+                {
+                    var e = s.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related];
+                    newItem.Links.Add(newItem.CreateRelatedLink(e.ForwardEnd, this));
+                }
+                else
+                {
+                    var link = newItem.CreateRelatedLink(this);
+                    newItem.Links.Add(link);
+                }
+
                 newItem.Id = 0;
-
-                var link = newItem.CreateRelatedLink(this);
-                newItem.Links.Add(link);
-
                 newItem.ApplyRules();
-
                 return newItem;
             }
         }
@@ -177,10 +215,35 @@ namespace Microsoft.Qwiq.Mocks
 
         public override void Save()
         {
+            Save(SaveFlags.None);
         }
+
+        public bool IsNew => Id == 0;
 
         public override void Save(SaveFlags flags)
         {
+            if (IsDirty || IsNew)
+            {
+                if (!IsValid())
+                {
+                    throw new Exception("Work item is not ready to save.");
+                }
+
+                if (!(Type is MockWorkItemType))
+                {
+                    throw new NotSupportedException();
+                }
+
+                var t = (MockWorkItemType)Type;
+                if (!(t.Store is MockWorkItemStore))
+                {
+                    throw new NotSupportedException();
+                }
+
+                var s = (MockWorkItemStore)t.Store;
+
+                s.BatchSave(new[] { this });
+            }
         }
 
         public override IEnumerable<IField> Validate()
@@ -193,11 +256,21 @@ namespace Microsoft.Qwiq.Mocks
             "This method is deprecated and will be removed in a future version. See CreateRelatedLink(IWorkItemLinkTypeEnd, IWorkItem) instead.")]
         public IRelatedLink CreateRelatedLink(IWorkItem target)
         {
-            return CreateRelatedLink(
-                new MockWorkItemStore().WorkItemLinkTypes
-                                       .Single(s => s.ReferenceName == CoreLinkTypeReferenceNames.Related)
-                                       .ForwardEnd,
-                target);
+            var store = Type.Store();
+            if (store != null)
+            {
+                var e = store.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd;
+                return CreateRelatedLink(e, target);
+            }
+
+            using (var wis = new MockWorkItemStore())
+            {
+                return CreateRelatedLink(
+                    wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd,
+                    target);
+            }
         }
     }
+
+
 }

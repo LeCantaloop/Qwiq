@@ -40,7 +40,7 @@ namespace Qwiq.Identity.Tests
             var sourceWorkItems = new[]
             {
                 new MockWorkItem(
-                    new MockWorkItemType("Baz", new[]{MockFieldDefinition.Create(MockIdentityType.BackingField)}),
+                    new MockWorkItemType("Baz", MockIdentityType.BackingField),
                     new Dictionary<string, object>
                     {
                         { MockIdentityType.BackingField, IdentityFieldBackingValue }

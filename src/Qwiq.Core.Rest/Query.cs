@@ -18,33 +18,29 @@ namespace Microsoft.Qwiq.Rest
         // This is defined in Microsoft.TeamFoundation.WorkItemTracking.Client.PageSizes
         internal const int MinimumBatchSize = 50;
 
-        private readonly List<string> _fields;
-
-        private readonly bool _timePrecision;
-
-        private readonly Wiql _query;
-
-        private readonly WorkItemStore _workItemStore;
+        private static readonly Regex AsOfRegex = new Regex(
+                                                            @"(?<operand>asof\s)\'(?<date>.*)\'",
+                                                            RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         private readonly DateTime? _asOf;
 
+        private readonly List<string> _fields;
+
+        private readonly Wiql _query;
+
+        private readonly bool _timePrecision;
+
+        private readonly WorkItemStore _workItemStore;
+
         private IEnumerable<int> _ids;
 
-        private static readonly Regex AsOfRegex = new Regex(@"(?<operand>asof\s)\'(?<date>.*)\'", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        internal Query(
-            IEnumerable<int> ids,
-            Wiql query,
-            WorkItemStore workItemStore)
+        internal Query(IEnumerable<int> ids, Wiql query, WorkItemStore workItemStore)
             : this(query, false, workItemStore)
         {
             _ids = ids;
         }
 
-        internal Query(
-            Wiql query,
-            bool timePrecision,
-            WorkItemStore workItemStore)
+        internal Query(Wiql query, bool timePrecision, WorkItemStore workItemStore)
 
         {
             _workItemStore = workItemStore ?? throw new ArgumentNullException(nameof(workItemStore));
@@ -52,20 +48,6 @@ namespace Microsoft.Qwiq.Rest
             _query = query;
             _asOf = ExtractAsOf(query.Query);
         }
-        private static DateTime? ExtractAsOf(string wiql)
-        {
-            var m = AsOfRegex.Match(wiql);
-            if (!m.Success) return null;
-
-            DateTime retval;
-            if (!DateTime.TryParse(m.Groups["date"].Value, out retval))
-            {
-                throw new Exception();
-            }
-
-            return retval;
-        }
-
 
         public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
         {
@@ -88,8 +70,14 @@ namespace Microsoft.Qwiq.Rest
             foreach (var workItemLink in result.WorkItemRelations)
             {
                 yield return new WorkItemLinkInfo(
-                    workItemLink,
-                    new Lazy<int>(() => ends.Value.TryGetByName(workItemLink.Rel, out IWorkItemLinkTypeEnd end) ? end.Id : 0));
+                                                  workItemLink.Source?.Id ?? 0,
+                                                  workItemLink.Target?.Id ?? 0,
+                                                  new Lazy<IWorkItemLinkTypeEnd>(
+                                                                                 () => ends.Value.TryGetByName(
+                                                                                                               workItemLink.Rel,
+                                                                                                               out IWorkItemLinkTypeEnd end)
+                                                                                           ? end
+                                                                                           : null));
             }
         }
 
@@ -108,23 +96,43 @@ namespace Microsoft.Qwiq.Rest
 
             var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.All;
             var qry = _ids.Partition(_workItemStore.PageSize);
-            var ts = qry.Select(s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, _fields, _asOf, expand, WorkItemErrorPolicy.Omit));
-            
+            var ts = qry.Select(
+                                s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(
+                                                                                                s,
+                                                                                                _fields,
+                                                                                                _asOf,
+                                                                                                expand,
+                                                                                                WorkItemErrorPolicy.Omit));
+
             // This is done in parallel so keep performance similar to the SOAP client
             foreach (var workItem in Task.WhenAll(ts).GetAwaiter().GetResult().SelectMany(s => s.Select(f => f)))
             {
-               
-                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(workItem, new Lazy<IWorkItemType>(
-                                                                                                          () =>
-                                                                                                              {
-                                                                                                                  // REST API does not return the WIT with the item
-                                                                                                                  // Eagerly loading requires several trips to the server at a cost of 50-2500ms for each trip
-                                                                                                                  var proj = (string)workItem.Fields[CoreFieldRefNames.TeamProject];
-                                                                                                                  var witName = (string)workItem.Fields[CoreFieldRefNames.WorkItemType];
-                                                                                                                  var wit = _workItemStore.Projects[proj].WorkItemTypes[witName];
-                                                                                                                  return wit;
-                                                                                                              })));
+                IWorkItemType WorkItemTypeFactory()
+                {
+                    // REST API does not return the WIT with the item
+                    // Eagerly loading requires several trips to the server at a cost of 50-2500ms for each trip
+                    var proj = (string)workItem.Fields[CoreFieldRefNames.TeamProject];
+                    var witName = (string)workItem.Fields[CoreFieldRefNames.WorkItemType];
+                    return _workItemStore.Projects[proj].WorkItemTypes[witName];
+                }
+
+                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(
+                                                                                    new WorkItem(
+                                                                                                 workItem,
+                                                                                                 new Lazy<IWorkItemType>(WorkItemTypeFactory),
+                                                                                                 s => _workItemStore.WorkItemLinkTypes[s]));
             }
+        }
+
+        private static DateTime? ExtractAsOf(string wiql)
+        {
+            var m = AsOfRegex.Match(wiql);
+            if (!m.Success) return null;
+
+            DateTime retval;
+            if (!DateTime.TryParse(m.Groups["date"].Value, out retval)) throw new Exception();
+
+            return retval;
         }
     }
 }

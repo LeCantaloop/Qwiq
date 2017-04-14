@@ -33,6 +33,12 @@ namespace Microsoft.Qwiq.Rest
 
         public Uri Uri { get; }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public T GetClient<T>()
             where T : VssHttpClientBase
         {
@@ -45,14 +51,9 @@ namespace Microsoft.Qwiq.Rest
             return _connection.GetService<T>();
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
+            if (disposing) _connection.Disconnect();
         }
     }
 }

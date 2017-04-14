@@ -1,21 +1,15 @@
-using System;
+using System.Diagnostics;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal class Link : ILink
+    internal class Link : Qwiq.Link
     {
-        private readonly Tfs.Link _link;
-
+        [DebuggerStepThrough]
         internal Link(Tfs.Link link)
+            : base(link.Comment, (BaseLinkType)link.BaseType)
         {
-            _link = link ?? throw new ArgumentNullException(nameof(link));
         }
-
-        public string Comment => _link.Comment;
-
-        public BaseLinkType BaseType => (BaseLinkType) _link.BaseType;
     }
 }
-

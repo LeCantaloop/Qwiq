@@ -1,17 +1,15 @@
+using System.Diagnostics;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal class Hyperlink : Link, IHyperlink
+    public class Hyperlink : Qwiq.Hyperlink
     {
-        private readonly Tfs.Hyperlink _hyperLink;
-
+        [DebuggerStepThrough]
         internal Hyperlink(Tfs.Hyperlink hyperLink)
-            : base(hyperLink)
+            : base(hyperLink.Location, hyperLink.Comment)
         {
-            _hyperLink = hyperLink;
         }
-
-        public string Location => _hyperLink.Location;
     }
 }

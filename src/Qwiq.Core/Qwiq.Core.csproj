@@ -114,6 +114,7 @@
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="ExternalLink.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldCollection.cs" />
     <Compile Include="FieldDefinition.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="FieldDefinitionNotExistException.cs" />
     <Compile Include="FieldRefNames.cs" />
     <Compile Include="GenericComparer.cs" />
+    <Compile Include="Hyperlink.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
     <Compile Include="IdentifiableComparer.cs" />
@@ -154,6 +156,8 @@
     <Compile Include="IReadOnlyField.cs" />
     <Compile Include="IReadOnlyList.cs" />
     <Compile Include="IReadOnlyListWithId.cs" />
+    <Compile Include="IRegisteredLinkType.cs" />
+    <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="IRevisionInternal.cs" />
@@ -176,6 +180,7 @@
     <Compile Include="IWorkItemStoreFactory.cs" />
     <Compile Include="IWorkItemType.cs" />
     <Compile Include="IWorkItemTypeCollection.cs" />
+    <Compile Include="Link.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeComparer.cs" />
@@ -188,6 +193,9 @@
     <Compile Include="ReadOnlyList.cs" />
     <Compile Include="ReadOnlyListWithId.cs" />
     <Compile Include="ReadOnlyListWithIdComparer.cs" />
+    <Compile Include="RegisteredLinkType.cs" />
+    <Compile Include="RegisteredLinkTypeCollection.cs" />
+    <Compile Include="RelatedLink.cs" />
     <Compile Include="Revision.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
@@ -200,6 +208,7 @@
     <Compile Include="WorkItemComparer.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemCore.cs" />
+    <Compile Include="WorkItemExtensions.cs" />
     <Compile Include="WorkItemFields.cs" />
     <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkInfoComparer.cs" />

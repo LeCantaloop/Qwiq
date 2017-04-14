@@ -86,7 +86,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegrationContextSpecificationSpecification.cs" />
+    <Compile Include="IntegrationSettings.cs" />
     <Compile Include="LargeWiqlHierarchyQueryTests.cs" />
+    <Compile Include="LinkTests.cs" />
     <Compile Include="MultipleIdTests.cs" />
     <Compile Include="ProjectComparisonContextSpecification.cs" />
     <Compile Include="ProjectContextSpecificationSpecification.cs" />
@@ -119,6 +121,18 @@
     <ProjectReference Include="..\..\src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj">
       <Project>{6f5ffc42-0539-4161-b348-a54adb57c2bd}</Project>
       <Name>Qwiq.Core.Soap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Qwiq.Linq\Qwiq.Linq.csproj">
+      <Project>{1EDEB333-3084-42BD-B273-4009B4B18541}</Project>
+      <Name>Qwiq.Linq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj">
+      <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
+      <Name>Qwiq.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
+      <Project>{DB07E690-4B77-414F-91C7-1A48C9F01F24}</Project>
+      <Name>Qwiq.Mocks</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>

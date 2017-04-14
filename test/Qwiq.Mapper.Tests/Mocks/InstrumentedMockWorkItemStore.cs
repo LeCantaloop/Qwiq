@@ -45,6 +45,8 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             }
         }
 
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
+
         public ITfsTeamProjectCollection TeamProjectCollection
         {
             get
@@ -62,7 +64,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public string UserSid => _innerWorkItemStore.UserSid;
 
-        public WorkItemLinkTypeCollection WorkItemLinkTypes
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {

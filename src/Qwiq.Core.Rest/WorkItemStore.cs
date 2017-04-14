@@ -16,7 +16,7 @@ namespace Microsoft.Qwiq.Rest
             "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
             RegexOptions.Singleline | RegexOptions.Compiled);
 
-        private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
+        private readonly Lazy<IWorkItemLinkTypeCollection> _linkTypes;
 
         private readonly Lazy<IProjectCollection> _projects;
 
@@ -24,7 +24,7 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
 
-        private readonly Lazy<FieldDefinitionCollection> _fieldDefinitions;
+        private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
@@ -50,7 +50,7 @@ namespace Microsoft.Qwiq.Rest
             // Boundary check the batch size
 
             if (pageSize < Rest.Query.MinimumBatchSize || pageSize > Rest.Query.MaximumBatchSize) throw new PageSizeRangeException();
-            
+
 
             PageSize = pageSize;
 
@@ -59,7 +59,9 @@ namespace Microsoft.Qwiq.Rest
                 return GetLinks(NativeWorkItemStore.Value);
             }
 
-            _linkTypes = new Lazy<WorkItemLinkTypeCollection>(ValueFactory);
+            
+
+            _linkTypes = new Lazy<IWorkItemLinkTypeCollection>(ValueFactory);
             _projects = new Lazy<IProjectCollection>(
                 () =>
                     {
@@ -69,7 +71,7 @@ namespace Microsoft.Qwiq.Rest
                             return new ProjectCollection(projects.Select(project => new Project(project, this)).Cast<IProject>().ToList());
                         }
                     });
-            _fieldDefinitions = new Lazy<FieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
+            _fieldDefinitions = new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
         }
 
         public int PageSize { get; }
@@ -94,7 +96,7 @@ namespace Microsoft.Qwiq.Rest
 
         public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
-        public WorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
 
         public void Dispose()
         {
@@ -131,6 +133,8 @@ namespace Microsoft.Qwiq.Rest
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
             return query.RunLinkQuery();
         }
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
 
         private static WorkItemLinkTypeCollection GetLinks(WorkItemTrackingHttpClient workItemStore)
         {

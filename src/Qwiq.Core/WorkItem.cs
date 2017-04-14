@@ -6,8 +6,8 @@ namespace Microsoft.Qwiq
     /// <summary>
     ///     A compatability class
     /// </summary>
-    /// <seealso cref="Microsoft.Qwiq.WorkItemCommon" />
-    /// <seealso cref="Microsoft.Qwiq.IWorkItem" />
+    /// <seealso cref="WorkItemCommon" />
+    /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IEquatable<IWorkItem>
     {
         private readonly IWorkItemType _type;
@@ -53,7 +53,7 @@ namespace Microsoft.Qwiq
         public virtual IFieldCollection Fields => _fields == null ? throw new NotSupportedException() : _fields.Value;
 
         public int Index => -2;
-        
+
 
         public new virtual int HyperLinkCount => base.HyperLinkCount.GetValueOrDefault(0);
 
@@ -80,7 +80,7 @@ namespace Microsoft.Qwiq
         public virtual IWorkItemType Type => _type ?? throw new NotSupportedException();
 
         public abstract Uri Uri { get; }
-        
+
         public override object this[string name]
         {
             get
@@ -116,7 +116,7 @@ namespace Microsoft.Qwiq
 
         public string GetTagLine()
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public virtual void ApplyRules(bool doNotUpdateChangedBy = false)
@@ -140,6 +140,11 @@ namespace Microsoft.Qwiq
         }
 
         public virtual IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
+        {
+            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
+        }
+
+        public virtual IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)
         {
             throw new NotSupportedException();
         }

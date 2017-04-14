@@ -1,18 +1,15 @@
+using System.Diagnostics;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal class ExternalLink : Link, IExternalLink
+    internal class ExternalLink : Qwiq.ExternalLink
     {
+        [DebuggerStepThrough]
         internal ExternalLink(Tfs.ExternalLink externalLink)
-            : base(externalLink)
+            : base(externalLink.LinkedArtifactUri, externalLink.ArtifactLinkType.Name, externalLink.Comment)
         {
-            LinkedArtifactUri = externalLink.LinkedArtifactUri;
-            ArtifactLinkTypeName = externalLink.ArtifactLinkType.Name;
         }
-
-        public string ArtifactLinkTypeName { get; }
-
-        public string LinkedArtifactUri { get; }
     }
 }

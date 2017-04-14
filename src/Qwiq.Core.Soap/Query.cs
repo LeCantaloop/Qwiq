@@ -18,8 +18,26 @@ namespace Microsoft.Qwiq.Soap
             _pageSize = pageSize;
             _query = query ?? throw new ArgumentNullException(nameof(query));
 
-            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize)
-                throw new PageSizeRangeException();
+            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
+        }
+
+        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        {
+            return _query.GetLinkTypes().Select(item => new WorkItemLinkTypeEnd(item));
+        }
+
+        public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
+        {
+            var ends = new Lazy<WorkItemLinkTypeEndCollection>(() => new WorkItemLinkTypeEndCollection(GetLinkTypes()));
+
+            return _query.RunLinkQuery()
+                         .Select(
+                                 item =>
+                                     {
+                                         IWorkItemLinkTypeEnd LinkTypeEndFactory() => ends.Value.TryGetById(item.LinkTypeId, out IWorkItemLinkTypeEnd end) ? end : null;
+
+                                         return new WorkItemLinkInfo(item.SourceId, item.TargetId, new Lazy<IWorkItemLinkTypeEnd>(LinkTypeEndFactory));
+                                     });
         }
 
         public IEnumerable<IWorkItem> RunQuery()
@@ -29,18 +47,6 @@ namespace Microsoft.Qwiq.Soap
 
             return wic.Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>()
                       .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)item));
-        }
-
-        public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
-        {
-            return _query.RunLinkQuery()
-                         .Select(item => new WorkItemLinkInfo(item));
-        }
-
-        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
-        {
-            return _query.GetLinkTypes()
-                         .Select(item => new WorkItemLinkTypeEnd(item));
         }
     }
 }

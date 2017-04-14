@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Qwiq
@@ -17,27 +18,29 @@ namespace Microsoft.Qwiq
             bool isAreaNode,
             bool isIterationNode,
             string name,
+            Uri uri,
             Func<INode> parentFactory,
             Func<INode, IEnumerable<INode>> childrenFactory)
         {
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+            if (parentFactory == null) throw new ArgumentNullException(nameof(parentFactory));
+            if (childrenFactory == null) throw new ArgumentNullException(nameof(childrenFactory));
+
             Id = id;
             IsAreaNode = isAreaNode;
             IsIterationNode = isIterationNode;
             Name = name;
+            Uri = uri;
 
             _parent = new Lazy<INode>(parentFactory);
             _children = new Lazy<INodeCollection>(() => new NodeCollection(childrenFactory(this)));
             _path = new Lazy<string>(() => ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\'));
         }
 
-        internal Node(int id, bool isAreaNode, bool isIterationNode, string name)
-            : this(id, isAreaNode, isIterationNode, name, () => null, n => Enumerable.Empty<INode>())
+        internal Node(int id, bool isAreaNode, bool isIterationNode, string name, Uri uri)
+            : this(id, isAreaNode, isIterationNode, name, uri, () => null, n => Enumerable.Empty<INode>())
         {
-        }
-
-        public bool Equals(INode other)
-        {
-            return NodeComparer.Instance.Equals(this, other);
         }
 
         public virtual INodeCollection ChildNodes => _children.Value;
@@ -58,16 +61,25 @@ namespace Microsoft.Qwiq
 
         public virtual Uri Uri { get; }
 
+        [DebuggerStepThrough]
+        public bool Equals(INode other)
+        {
+            return NodeComparer.Instance.Equals(this, other);
+        }
+
+        [DebuggerStepThrough]
         public override bool Equals(object obj)
         {
             return NodeComparer.Instance.Equals(this, obj as INode);
         }
 
+        [DebuggerStepThrough]
         public override int GetHashCode()
         {
             return NodeComparer.Instance.GetHashCode(this);
         }
 
+        [DebuggerStepThrough]
         public override string ToString()
         {
             return Path;

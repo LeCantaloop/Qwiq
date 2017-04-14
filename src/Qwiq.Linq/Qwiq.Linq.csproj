@@ -216,8 +216,10 @@
     <Compile Include="TeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="TranslatedQuery.cs" />
     <Compile Include="TypeSystem.cs" />
+    <Compile Include="Visitors\LocalCollectionExpander.cs" />
     <Compile Include="Visitors\PartialEvaluator.cs" />
     <Compile Include="Visitors\QueryRewriter.cs" />
+    <Compile Include="Visitors\Utility.cs" />
     <Compile Include="Visitors\WiqlQueryBuilder.cs" />
     <Compile Include="WiqlExpressions\AsOfExpression.cs" />
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />

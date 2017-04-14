@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 
 namespace Microsoft.Qwiq
 {
@@ -26,8 +26,6 @@ namespace Microsoft.Qwiq
             _cache = new Dictionary<int, IField>();
         }
 
-        
-
         public int Count => _definitions.Count;
 
         public IField this[string name]
@@ -48,11 +46,13 @@ namespace Microsoft.Qwiq
             }
         }
 
+        [DebuggerStepThrough]
         public bool Contains(int id)
         {
             return _definitions.Contains(id);
         }
 
+        [DebuggerStepThrough]
         public bool Contains(IField value)
         {
             return IndexOf(value) != -1;
@@ -71,20 +71,22 @@ namespace Microsoft.Qwiq
             }
         }
 
+        [DebuggerStepThrough]
+        public bool Equals(IReadOnlyListWithId<IField, int> other)
+        {
+            return Comparer.FieldCollectionComparer.Equals(this, other);
+        }
+
         public virtual IField GetById(int id)
         {
             if (!TryGetById(id, out IField byId)) throw new DeniedOrNotExistException();
             return byId;
         }
 
+        [DebuggerStepThrough]
         public IEnumerator<IField> GetEnumerator()
         {
             return _cache.Values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public IField GetItem(int index)
@@ -134,9 +136,10 @@ namespace Microsoft.Qwiq
             return TryGetById(def.Id, out value);
         }
 
-        public bool Equals(IReadOnlyListWithId<IField, int> other)
+        [DebuggerStepThrough]
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return Comparer.FieldCollectionComparer.Equals(this, other);
+            return GetEnumerator();
         }
     }
 }

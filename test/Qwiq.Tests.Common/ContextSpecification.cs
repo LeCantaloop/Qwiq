@@ -112,7 +112,7 @@ namespace Microsoft.Qwiq.Tests.Common
     /// http://channel9.msdn.com/Events/TechEd/NorthAmerica/2010/DPR302
     ///
     /// </remarks>
-    //[DebuggerStepThrough]
+    [DebuggerStepThrough]
     public abstract class ContextSpecification : IContextSpecification
     {
         [TestInitialize]
@@ -123,14 +123,29 @@ namespace Microsoft.Qwiq.Tests.Common
                 Given();
                 When();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // This is very, very bad.
+                Debug.Print($"{this.GetType().FullName} encountered an exception during Given/When: {e.Message}\r\n{e}");
 
-                if (!Debugger.IsAttached) Debugger.Launch();
-                if (Debugger.IsAttached) Debugger.Break();
+                try
+                {
+                    Cleanup();
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print($"{GetType().FullName} encountered a problem during cleanup: {ex.Message}\r\n{ex}");
+                }
 
-                Cleanup();
+                if (!Debugger.IsAttached)
+                {
+                    Assert.Fail($"{this.GetType().FullName} encountered an exception: {e.Message}");
+                }
+                else
+                {
+                    Debugger.Break();
+                    Assert.Fail($"{this.GetType().FullName} encountered an exception: {e.Message}");
+                }
             }
         }
 

@@ -57,14 +57,15 @@ namespace Microsoft.Qwiq.Mocks
             string referenceName,
             bool isDirectional,
             string forwardEndName,
-            string reverseEndName)
+            string reverseEndName,
+            int id = 0)
             : base(referenceName)
         {
             if (string.IsNullOrEmpty(forwardEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(forwardEndName));
             if (string.IsNullOrEmpty(reverseEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(reverseEndName));
             IsDirectional = isDirectional;
-            _forward = new MockWorkItemLinkTypeEnd(this, forwardEndName, true);
-            _reverse = new MockWorkItemLinkTypeEnd(this, reverseEndName, false);
+            _forward = new MockWorkItemLinkTypeEnd(this, forwardEndName, true, id);
+            _reverse = new MockWorkItemLinkTypeEnd(this, reverseEndName, false, -id);
         }
 
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.Qwiq
@@ -20,7 +21,7 @@ namespace Microsoft.Qwiq
         ///     by Id, Name, and ImmutableName.
         /// </summary>
         public IWorkItemLinkTypeEndCollection LinkTypeEnds => _ltCol.Value;
-
+        [DebuggerStepThrough]
         public bool Equals(IWorkItemLinkTypeCollection other)
         {
             return Equals((object)other);
@@ -40,6 +41,7 @@ namespace Microsoft.Qwiq
         {
             unchecked
             {
+                // REVIEW: Order must be the same to generate equivilent hash codes
                 return this.Aggregate(27, (current, l) => (13 * current) ^ l.GetHashCode());
             }
         }

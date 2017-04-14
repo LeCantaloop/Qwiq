@@ -16,7 +16,9 @@ namespace Microsoft.Qwiq.Soap
     /// </summary>
     internal class WorkItemStore : IWorkItemStore
     {
-        private readonly Lazy<WorkItemLinkTypeCollection> _linkTypes;
+        private readonly Lazy<IWorkItemLinkTypeCollection> _workItemLinkTypes;
+
+        private readonly Lazy<IRegisteredLinkTypeCollection> _linkTypes;
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
@@ -25,17 +27,6 @@ namespace Microsoft.Qwiq.Soap
         private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
 
         private readonly Lazy<IProjectCollection> _projects;
-
-        internal WorkItemStore(
-            TeamFoundation.Client.TfsTeamProjectCollection tfsNative,
-            Func<WorkItemStore, IQueryFactory> queryFactory,
-            int pageSize = PageSizeLimits.MaxPageSize)
-            : this(
-                () => ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
-                    new TfsTeamProjectCollection(tfsNative)),
-                queryFactory, pageSize)
-        {
-        }
 
         internal WorkItemStore(
             Func<IInternalTfsTeamProjectCollection> tpcFactory,
@@ -54,14 +45,17 @@ namespace Microsoft.Qwiq.Soap
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
-            _linkTypes = new Lazy<WorkItemLinkTypeCollection>(
+            _workItemLinkTypes = new Lazy<IWorkItemLinkTypeCollection>(
                 () =>
                     {
                         return new WorkItemLinkTypeCollection(
                             _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
                     });
 
-            _projects = new Lazy<IProjectCollection>(()=>new ProjectCollection(_workItemStore.Value.Projects));
+
+            _linkTypes = new Lazy<IRegisteredLinkTypeCollection>(() => new RegisteredLinkTypeCollection(_workItemStore.Value.RegisteredLinkTypes.OfType<TfsWorkItem.RegisteredLinkType>().Select(item => new RegisteredLinkType(item.Name))));
+
+            _projects = new Lazy<IProjectCollection>(() => new ProjectCollection(_workItemStore.Value.Projects));
 
             PageSize = pageSize;
         }
@@ -98,7 +92,7 @@ namespace Microsoft.Qwiq.Soap
 
         public string UserSid => _workItemStore.Value.UserSid;
 
-        public WorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
 
         public void Dispose()
         {
@@ -153,6 +147,8 @@ namespace Microsoft.Qwiq.Soap
                 throw new ValidationException(ex);
             }
         }
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _linkTypes.Value;
 
         protected virtual void Dispose(bool disposing)
         {

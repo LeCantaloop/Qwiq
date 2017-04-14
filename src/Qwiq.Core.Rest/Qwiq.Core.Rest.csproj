@@ -99,6 +99,7 @@
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IInternalTfsTeamProjectCollection.cs" />
+    <Compile Include="LinkCollection.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -107,7 +108,6 @@
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="VssConnectionAdapter.cs" />
     <Compile Include="WorkItem.cs" />
-    <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkType.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemStore.cs" />

@@ -65,8 +65,7 @@ namespace Microsoft.Qwiq
         /// <summary>
         ///     Gets the uniform resource identifier (System.Uri) of this work item.
         /// </summary>
-        [Obsolete(
-            "This property is deprecated and will be removed in a future release. See IWorkItemReference.Url instead.")]
+        [Obsolete("This property is deprecated and will be removed in a future release. See IWorkItemReference.Url instead.")]
         Uri Uri { get; }
 
         /// <summary>
@@ -94,7 +93,10 @@ namespace Microsoft.Qwiq
 
         IHyperlink CreateHyperlink(string location);
 
+        [Obsolete("This method is deprecated and will be removed in a future release.")]
         IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
+
+        IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null);
 
         /// <summary>
         ///     Validates the fields of this work item.
