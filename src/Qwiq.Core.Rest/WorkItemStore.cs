@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -78,9 +77,9 @@ namespace Microsoft.Qwiq.Rest
 
         internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
 
-        public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
+        
 
-        public ClientType ClientType => ClientType.Rest;
+        
 
         public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
 
@@ -90,11 +89,7 @@ namespace Microsoft.Qwiq.Rest
 
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
-        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
+   
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
 

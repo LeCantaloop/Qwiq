@@ -1,12 +1,12 @@
-using Microsoft.Qwiq;
-using Microsoft.Qwiq.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace Qwiq.Benchmark
+using Microsoft.Qwiq.Mocks;
+
+namespace Microsoft.Qwiq.Benchmark
 {
     public class WorkItemGenerator<T>
         where T : IWorkItem
@@ -15,7 +15,7 @@ namespace Qwiq.Benchmark
 
         private readonly Func<T> _create;
 
-        private string[] _assignees
+        private readonly string[] _assignees
             ;
 
         public WorkItemGenerator(Func<T> createFunc, IEnumerable<string> propertiesToSkip = null)

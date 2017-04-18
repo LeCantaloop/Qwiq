@@ -1,0 +1,139 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+        With UseCommonOutputDirectory turned on, any copy-local projects/references break
+        csproj's up-to-date check because they aren't copied to the output directory.
+        Turn it off.
+    -->
+  <ItemDefinitionGroup Condition="'$(UseCommonOutputDirectory)' == 'true'">
+    <Reference>
+      <Private>false</Private>
+    </Reference>
+    <ProjectReference>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+
+  <!-- This file is imported by all projects at the end of the project files -->
+  <!-- Update common properties -->
+  <PropertyGroup>
+    <OutputPath>$(OutDir)</OutputPath>
+
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisRuleSet)' == '' AND '$(NonShipping)' == 'true'">$(QwiqTargetsPath)\..\rulesets\noship.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(CodeAnalysisRuleSet)' == ''">$(QwiqTargetsPath)\..\rulesets\ship.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- While UseCommonOutputDirectory will prevent NuGet implementations from being copied,
+         we still need to turn off CopyNuGetImplementations to prevent the build task from complaining about a
+         lack of a runtime section in our project.json. -->
+
+    <CopyNuGetImplementations Condition="'$(UseCommonOutputDirectory)' == 'true'">false</CopyNuGetImplementations>
+  </PropertyGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- Generate Assembly Version -->
+  <Import Project="$(QwiqTargetsPath)\GitVersionTask.targets" />
+
+  <!-- Common NuGet package properties -->
+  <PropertyGroup Condition="'$(NonShipping)' == '' OR '$(NonShipping)' == 'false'">
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Authors>Microsoft</Authors>
+    <Company>Microsoft Corporation</Company>
+    <Product>Microsoft.Qwiq</Product>
+    <PackageTags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</PackageTags>
+    <PackageLicenseUrl>https://github.com/MicrosoftEdge/Microsoft.Qwiq/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/MicrosoftEdge/Microsoft.Qwiq</PackageProjectUrl>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <Description>Provides Quick Work Item Queries to Microsoft Team Foundation Server and Visual Studio Online.</Description>
+    <IncludeSymbols>true</IncludeSymbols>
+  </PropertyGroup>
+
+  <!-- Generate InternalsVisibleTo -->
+  <PropertyGroup>
+    <GeneratedInternalsVisibleToFile>$(IntermediateOutputPath)GeneratedInternalsVisibleTo$(DefaultLanguageSourceExtension)</GeneratedInternalsVisibleToFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CoreCompileDependsOn>GenerateInternalsVisibleToFile;$(CoreCompileDependsOn)</CoreCompileDependsOn>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <InternalsVisibleTo>
+      <Visible>false</Visible>
+    </InternalsVisibleTo>
+    <InternalsVisibleToTest>
+      <Visible>false</Visible>
+    </InternalsVisibleToTest>
+    <InternalsVisibleToTypeScript>
+      <Visible>false</Visible>
+    </InternalsVisibleToTypeScript>
+    <InternalsVisibleToFSharp>
+      <Visible>false</Visible>
+    </InternalsVisibleToFSharp>
+    <InternalsVisibleToMoq>
+      <Visible>false</Visible>
+    </InternalsVisibleToMoq>
+  </ItemDefinitionGroup>
+
+  <!-- Dependency on PrepareForBuild is necessary so that we don't accidentally get ordered before it.
+  We rely on PrepareForBuild to create the IntermediateOutputDirectory if it doesn't exist. -->
+  <Target Name="GenerateInternalsVisibleToFile"
+          Inputs="$(MSBuildThisFileFullPath);$(MSBuildProjectFile)"
+          Outputs="$(GeneratedInternalsVisibleToFile)"
+          DependsOnTargets="PrepareForBuild"
+          Condition="'@(InternalsVisibleTo)' != '' OR '@(InternalsVisibleToTest)' != '' OR '@(InternalsVisibleToTypeScript)' != '' OR '@(InternalsVisibleToFSharp)' != '' OR '@(InternalsVisibleToMoq)' != ''">
+
+    <!--
+         This is a slightly evil trick. What we have is a group of InternalsVisibleTo items which
+         we need to convert to the items that the WriteCodeFragment expects. They look like this:
+
+         <InternalsVisibleTo Include="Foo" />
+
+         And need to convert it to:
+
+         <InternalsVisibleToAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+           <_Parameter1>Foo</Parameter1>
+         </InternalsVisibleToAttribute>
+
+         One way (although a bit evil) is to use the old CreateItem task. Since we use the well-defined
+         "Identity" metadata on each of our itemgroups, MSBuild batching will take effect and this task
+         will be invoked once for each InternalsVisibleTo item.
+    -->
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleTo.Identity)$(InternalsVisibleToSuffix)"
+                Condition="'@(InternalsVisibleTo)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleToTest.Identity)$(InternalsVisibleToTestSuffix)"
+                Condition="'@(InternalsVisibleToTest)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleToTypeScript.Identity), PublicKey=002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293"
+                Condition="'@(InternalsVisibleToTypeScript)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleToFSharp.Identity), PublicKey=002400000480000094000000060200000024000052534131000400000100010007D1FA57C4AED9F0A32E84AA0FAEFD0DE9E8FD6AEC8F87FB03766C834C99921EB23BE79AD9D5DCC1DD9AD236132102900B723CF980957FC4E177108FC607774F29E8320E92EA05ECE4E821C0A5EFE8F1645C4C0C93C1AB99285D622CAA652C1DFAD63D745D6F2DE5F17E5EAF0FC4963D261C8A12436518206DC093344D5AD293"
+                Condition="'@(InternalsVisibleToFSharp)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+    <CreateItem Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute"
+                AdditionalMetadata="_Parameter1=%(InternalsVisibleToMoq.Identity)$(InternalsVisibleToMoqSuffix)"
+                Condition="'@(InternalsVisibleToMoq)' != ''">
+      <Output TaskParameter="Include" ItemName="InternalsVisibleToAttribute" />
+    </CreateItem>
+
+    <WriteCodeFragment
+        AssemblyAttributes="@(InternalsVisibleToAttribute)"
+        Language="$(Language)"
+        OutputFile="$(GeneratedInternalsVisibleToFile)">
+      <Output TaskParameter="OutputFile" ItemName="Compile" />
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </WriteCodeFragment>
+
+  </Target>
+</Project>

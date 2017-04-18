@@ -5,12 +5,11 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
+using Microsoft.Qwiq.Benchmark;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Qwiq.Benchmark;
 
 using B = Microsoft.Qwiq.Mapper.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy;
 

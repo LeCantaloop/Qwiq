@@ -3,7 +3,7 @@
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Benchmark
 {
     public abstract class BenchmarkContextSpecification : ContextSpecification
     {

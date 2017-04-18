@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Credentials;
-
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     internal class InstrumentedMockWorkItemStore : IWorkItemStore
@@ -30,10 +28,6 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public int WorkItemLinkTypesCallCount { get; private set; }
 
-        public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
-
-        public ClientType ClientType => _innerWorkItemStore.ClientType;
-
         public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
         public IProjectCollection Projects
@@ -57,12 +51,6 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
         }
 
         public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
-
-        public string UserAccountName => _innerWorkItemStore.UserAccountName;
-
-        public string UserDisplayName => _innerWorkItemStore.UserDisplayName;
-
-        public string UserSid => _innerWorkItemStore.UserSid;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {

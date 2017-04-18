@@ -2,8 +2,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Should;
-
 namespace Microsoft.Qwiq.Integration.Tests
 {
     [TestClass]

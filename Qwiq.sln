@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Rest", "src\Qwiq.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Integration.Tests", "test\Qwiq.Integration.Tests\Qwiq.Integration.Tests.csproj", "{E4130432-C890-41E0-8407-C4142CAF59D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeployTestDependencies", "test\DeployTestDependencies\DeployTestDependencies.csproj", "{B216C0C1-C6A7-498C-99B0-768B52C516D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Credentials", "src\Qwiq.Credentials\Qwiq.Credentials.csproj", "{7C1E8400-81FF-4C66-B342-70B8A3386571}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B216C0C1-C6A7-498C-99B0-768B52C516D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B216C0C1-C6A7-498C-99B0-768B52C516D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B216C0C1-C6A7-498C-99B0-768B52C516D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B216C0C1-C6A7-498C-99B0-768B52C516D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C1E8400-81FF-4C66-B342-70B8A3386571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C1E8400-81FF-4C66-B342-70B8A3386571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C1E8400-81FF-4C66-B342-70B8A3386571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C1E8400-81FF-4C66-B342-70B8A3386571}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

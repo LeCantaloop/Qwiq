@@ -4,7 +4,7 @@ using Microsoft.Qwiq.Identity.Attributes;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Qwiq.Identity.Tests.Mocks
+namespace Microsoft.Qwiq.Identity.Tests.Mocks
 {
     public class MockIdentityType : IIdentifiable
     {

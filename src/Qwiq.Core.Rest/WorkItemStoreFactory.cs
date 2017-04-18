@@ -4,7 +4,6 @@ using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Rest
 {
@@ -16,7 +15,7 @@ namespace Microsoft.Qwiq.Rest
         {
         }
 
-        public IWorkItemStore Create(AuthenticationOptions options)
+        public IWorkItemStore Create(IAuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
             var credentials = options.Credentials;
@@ -24,24 +23,15 @@ namespace Microsoft.Qwiq.Rest
             foreach (var credential in credentials)
                 try
                 {
-                    var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
+                    var tfsNative = ConnectToTfsCollection(options.Uri, credential);
                     var tfsProxy =
                         ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
                             new VssConnectionAdapter(tfsNative));
 
-                    options.Notifications.AuthenticationSuccess(
-                        new AuthenticationSuccessNotification(credential, tfsProxy));
+                    options.Notifications.AuthenticationSuccess(new AuthenticationSuccessNotification(credential, tfsProxy));
 
-                    IWorkItemStore wis;
-                    switch (options.ClientType)
-                    {
-                        case ClientType.Rest:
-                            wis = CreateRestWorkItemStore(tfsProxy);
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(options.ClientType));
-                    }
+                    var wis = CreateRestWorkItemStore(tfsProxy);
+                    
 
                     return ExceptionHandlingDynamicProxyFactory.Create(wis);
                 }
@@ -53,40 +43,6 @@ namespace Microsoft.Qwiq.Rest
             var nocreds = new AccessDeniedException("Invalid credentials");
             options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
             throw nocreds;
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default)
-        {
-            return Create(endpoint, new[] { credentials }, type);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(
-            Uri endpoint,
-            IEnumerable<TfsCredentials> credentials,
-            ClientType type = ClientType.Default)
-        {
-            var options =
-                new AuthenticationOptions(endpoint, AuthenticationType.Windows, type)
-                    {
-                        CreateCredentials =
-                            t => credentials
-                    };
-
-            return Create(options);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See property Instance instead.",
-            false)]
-        public static IWorkItemStoreFactory GetInstance()
-        {
-            return Instance;
         }
 
         private static VssConnection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)

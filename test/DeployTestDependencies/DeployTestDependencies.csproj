@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsDeployment>true</IsDeployment>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
+  <Import Project="..\..\build\targets\settings.targets" />
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+    <OutDir>$(OutDir)Tests\</OutDir>
+    <Nonshipping>true</Nonshipping>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Qwiq.Core.Rest\Qwiq.Core.Rest.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Credentials\Qwiq.Credentials.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Linq\Qwiq.Linq.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj" />
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.3" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.10.3" />
+    <PackageReference Include="Castle.Core" Version="4.0.0" />
+    <PackageReference Include="FastMember" Version="1.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="15.112.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="15.112.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.14" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.14" />
+    <PackageReference Include="Should" Version="1.1.20" />
+  </ItemGroup>
+  <Import Project="..\..\build\targets\imports.targets" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>b216c0c1-c6a7-498c-99b0-768b52c516d5</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetPath />
+    <!-- Prevent projects referencing this from trying to pass us to the compiler -->
+  </PropertyGroup>
+  <!-- Return this back when up-to-date bug is fixed (projects are being build everytime) -->
+  <!-- <Target Name="CoreCompile" /> -->
+  <!-- Prevent Csc from being called -->
+  <!-- <Target Name="GenerateTargetFrameworkMonikerAttribute" /> -->
+  <!-- Don't generate TFM attribute -->
+  <Target Name="RuntimeImplementationProjectOutputGroup" />
+  <!-- Group always attempts resolve runtime, regardless of <CopyNuGetImplementations>-->
+</Project>

@@ -1,7 +1,5 @@
 using System;
 
-using Microsoft.Qwiq.Credentials;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockTfsTeamProjectCollection : ITfsTeamProjectCollection
@@ -17,18 +15,12 @@ namespace Microsoft.Qwiq.Mocks
             TimeZone = TimeZone.CurrentTimeZone;
         }
 
-        public TfsCredentials AuthorizedCredentials { get; set; }
-
-        public ITeamFoundationIdentity AuthorizedIdentity { get; set; }
-
         public ICommonStructureService CommonStructureService { get; set; }
-
-        public bool HasAuthenticated { get; set; }
 
         public IIdentityManagementService IdentityManagementService { get; set; }
 
-        public Uri Uri { get; set; }
-
         public TimeZone TimeZone { get; }
+
+        public Uri Uri { get; set; }
     }
 }
