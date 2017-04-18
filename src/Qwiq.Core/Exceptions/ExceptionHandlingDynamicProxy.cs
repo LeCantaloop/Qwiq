@@ -1,8 +1,12 @@
 using System;
+using System.Diagnostics;
+using System.Runtime.ExceptionServices;
+
 using Castle.DynamicProxy;
 
 namespace Microsoft.Qwiq.Exceptions
 {
+    [DebuggerStepThrough]
     public class ExceptionHandlingDynamicProxy<T> : IInterceptor
     {
         private readonly IExceptionMapper _exceptionMapper;
@@ -20,7 +24,8 @@ namespace Microsoft.Qwiq.Exceptions
             }
             catch (Exception e)
             {
-                throw _exceptionMapper.Map(e);
+                // .NET 4.5 feature: Capture an exception and re-throw it without changing the stack trace
+                ExceptionDispatchInfo.Capture(_exceptionMapper.Map(e)).Throw();
             }
         }
     }

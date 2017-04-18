@@ -5,10 +5,10 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
     [WorkItemType("SimpleMockWorkItem")]
     public class SimpleMockModel : IIdentifiable
     {
-        [FieldDefinition("ID")]
-        public int Id { get; internal set; }
+        [FieldDefinition(CoreFieldRefNames.Id)]
+        public int? Id { get; internal set; }
 
-        [FieldDefinition("IntField")]
+        [FieldDefinition(CoreFieldRefNames.IterationId)]
         public int IntField { get; internal set; }
     }
 }

@@ -1,9 +1,10 @@
 using System.Linq;
-using Microsoft.Qwiq.Core.Tests;
+
 using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Linq.Visitors;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Tests.Common;
 
 namespace Microsoft.Qwiq.Mapper.Tests
 {
@@ -35,7 +36,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             var mapperStrategies = new IWorkItemMapperStrategy[]
             {
-                new AttributeMapperStrategy(propertyInspector, new TypeParser()),
+                new AttributeMapperStrategy(propertyInspector, TypeParser.Default),
                 new WorkItemLinksMapperStrategy(propertyInspector, workItemStore)
             };
 

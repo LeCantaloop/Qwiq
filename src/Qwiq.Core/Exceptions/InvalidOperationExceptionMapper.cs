@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Microsoft.Qwiq.Exceptions
 {
+    [DebuggerStepThrough]
     internal class InvalidOperationExceptionMapper : VssExceptionMapper
     {
         private static readonly int[] TfsBadRequestIds = {

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Should;
 using Microsoft.Qwiq;
-using Microsoft.Qwiq.Core.Tests;
 using Microsoft.Qwiq.Identity;
 using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Qwiq.Identity.Tests
@@ -50,7 +50,7 @@ namespace Qwiq.Identity.Tests
         public override void Given()
         {
             ExpectedIdentity = MockIdentityManagementService.Chrisj;
-            Alias = ExpectedIdentity.UniqueName;
+            Alias = ExpectedIdentity.GetUserAlias();
             base.Given();
         }
     }
@@ -104,8 +104,8 @@ namespace Qwiq.Identity.Tests
             var contestant2 = MockIdentityManagementService.Danj;
             ExpectedIdentities = new Dictionary<string, ITeamFoundationIdentity>
             {
-                { contestant1.UniqueName, contestant1 },
-                { contestant2.UniqueName, contestant2 }
+                { contestant1.GetUserAlias(), contestant1 },
+                { contestant2.GetUserAlias(), contestant2 }
             };
             Aliases = ExpectedIdentities.Keys.ToArray();
             base.Given();
@@ -150,7 +150,7 @@ namespace Qwiq.Identity.Tests
             var danj = MockIdentityManagementService.Chrisj;
             ExpectedIdentities = new Dictionary<string, ITeamFoundationIdentity>
             {
-                { danj.UniqueName, danj },
+                { danj.GetUserAlias(), danj },
                 { KnownSearchAliasForChrisjoh, MockIdentityManagementService.Chrisjoh },
                 { UnknownAliasB, null }
             };

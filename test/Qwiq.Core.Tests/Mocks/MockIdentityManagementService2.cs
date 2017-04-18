@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 
@@ -7,211 +8,279 @@ namespace Microsoft.Qwiq.Core.Tests.Mocks
 {
     public class MockIdentityManagementService2 : IIdentityManagementService2
     {
-        private TeamFoundationIdentity[] GetNullIdentities()
+        private static readonly TeamFoundation.Framework.Client.TeamFoundationIdentity[] NullIdentities = { null };
+
+        public string IdentityDomainScope => throw new NotSupportedException();
+
+        public void AddMemberToApplicationGroup(
+            TeamFoundation.Framework.Client.IdentityDescriptor groupDescriptor,
+            TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
         {
-            return new TeamFoundationIdentity[]
-            {
-                null
-            };
+            throw new NotSupportedException();
         }
 
-        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions)
+        public void AddRecentUser(TeamFoundation.Framework.Client.TeamFoundationIdentity identity)
         {
-            return GetNullIdentities();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, MembershipQuery queryMembership)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            return new []{ GetNullIdentities() };
-        }
-
-        public TeamFoundationIdentity ReadIdentity(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IdentityDescriptor CreateApplicationGroup(string scopeId, string groupName, string groupDescription)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteApplicationGroup(IdentityDescriptor groupDescriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddMemberToApplicationGroup(IdentityDescriptor groupDescriptor, IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveMemberFromApplicationGroup(IdentityDescriptor groupDescriptor, IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsMember(IdentityDescriptor groupDescriptor, IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RefreshIdentity(IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetScopeName(string scopeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsOwner(IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsOwnedWellKnownGroup(IdentityDescriptor descriptor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string IdentityDomainScope
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public void UpdateApplicationGroup(IdentityDescriptor groupDescriptor, GroupProperty groupProperty, string newValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ListApplicationGroups(string scopeId, ReadIdentityOptions readOptions)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] GetMostRecentlyUsedUsers()
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] GetMostRecentlyUsedUsersEx(Guid teamId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddRecentUser(TeamFoundationIdentity identity)
-        {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void AddRecentUser(Guid teamFoundationId)
         {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(string generalSearchValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public FilteredIdentitiesList ReadFilteredIdentities(string expression, int suggestedPageSize, string lastSearchResult,
-            bool lookForward, int queryMembership)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetCustomDisplayName(string customDisplayName)
-        {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public void ClearCustomDisplayName()
         {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.IdentityDescriptor CreateApplicationGroup(
+            string scopeId,
+            string groupName,
+            string groupDescription)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void DeleteApplicationGroup(TeamFoundation.Framework.Client.IdentityDescriptor groupDescriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] GetMostRecentlyUsedUsers()
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] GetMostRecentlyUsedUsersEx(Guid teamId)
+        {
+            throw new NotSupportedException();
+        }
+
+        public string GetScopeName(string scopeId)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool IsMember(
+            TeamFoundation.Framework.Client.IdentityDescriptor groupDescriptor,
+            TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool IsOwnedWellKnownGroup(TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool IsOwner(TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ListApplicationGroups(
+            string scopeId,
+            ReadIdentityOptions readOptions)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ListApplicationGroups(
+            string scopeId,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotSupportedException();
+        }
+
+        public FilteredIdentitiesList ReadFilteredIdentities(
+            string expression,
+            int suggestedPageSize,
+            string lastSearchResult,
+            bool lookForward,
+            int queryMembership)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+            TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
+            return NullIdentities;
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+            Guid[] teamFoundationIds,
+            MembershipQuery queryMembership)
+        {
+            return NullIdentities;
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+            TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
+            string[] searchFactorValues,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
+            return new[] { NullIdentities };
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+            Guid[] teamFoundationIds,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            return NullIdentities;
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+            TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
+            string[] searchFactorValues,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            return new[] { NullIdentities };
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+            TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            return NullIdentities;
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
+            string searchFactorValue,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
             throw new NotImplementedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(string generalSearchValue)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
+            string searchFactorValue,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotSupportedException();
+        }
+
+        public bool RefreshIdentity(TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void RemoveMemberFromApplicationGroup(
+            TeamFoundation.Framework.Client.IdentityDescriptor groupDescriptor,
+            TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void SetCustomDisplayName(string customDisplayName)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void UpdateApplicationGroup(
+            TeamFoundation.Framework.Client.IdentityDescriptor groupDescriptor,
+            GroupProperty groupProperty,
+            string newValue)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void UpdateExtendedProperties(TeamFoundation.Framework.Client.TeamFoundationIdentity identity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void AddRecentUser(TeamFoundationIdentity identity)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+            IdentitySearchFactor searchFactor,
+            string[] searchFactorValues,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
+            return new[] { NullIdentities };
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+            IdentitySearchFactor searchFactor,
+            string[] searchFactorValues,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            IdentitySearchFactor searchFactor,
+            string searchFactorValue,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions)
+        {
+            throw new NotSupportedException();
+        }
+
+        public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+            IdentitySearchFactor searchFactor,
+            string searchFactorValue,
+            MembershipQuery queryMembership,
+            ReadIdentityOptions readOptions,
+            IEnumerable<string> propertyNameFilters,
+            IdentityPropertyScope propertyScope)
+        {
+            throw new NotSupportedException();
         }
 
         public void UpdateExtendedProperties(TeamFoundationIdentity identity)
         {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ListApplicationGroups(string scopeId, ReadIdentityOptions readOptions,
-            IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ReadIdentities(Guid[] teamFoundationIds, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[][] ReadIdentities(TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor, string[] searchFactorValues,
-            MembershipQuery queryMembership, ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters,
-            IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity ReadIdentity(IdentityDescriptor descriptor, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TeamFoundationIdentity[] ReadIdentities(IdentityDescriptor[] descriptors, MembershipQuery queryMembership,
-            ReadIdentityOptions readOptions, IEnumerable<string> propertyNameFilters, IdentityPropertyScope propertyScope)
-        {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

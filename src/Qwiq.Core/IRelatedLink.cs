@@ -1,10 +1,13 @@
+using System;
+
 namespace Microsoft.Qwiq
 {
-    public interface IRelatedLink : ILink
+    public interface IRelatedLink : ILink, IEquatable<IRelatedLink>
     {
-        int RelatedWorkItemId { get; }
-        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
         string LinkSubType { get; }
+
+        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
+
+        int RelatedWorkItemId { get; }
     }
 }
-

@@ -14,26 +14,9 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             _innerWorkItemStore = innerWorkItemStore;
         }
 
-        public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
-
-        public IEnumerable<IProject> Projects
-        {
-            get
-            {
-                ProjectsCallCount += 1;
-                return _innerWorkItemStore.Projects;
-            }
-        }
-
         public int ProjectsCallCount { get; private set; }
 
-        public int QueryCallCount
-        {
-            get
-            {
-                return QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
-            }
-        }
+        public int QueryCallCount => QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
 
         public int QueryIdCallCount { get; private set; }
 
@@ -42,6 +25,27 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
         public int QueryLinksCallCount { get; private set; }
 
         public int QueryStringCallCount { get; private set; }
+
+        public int TeamProjectCollectionCallCount { get; private set; }
+
+        public int WorkItemLinkTypesCallCount { get; private set; }
+
+        public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
+
+        public ClientType ClientType => _innerWorkItemStore.ClientType;
+
+        public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
+
+        public IProjectCollection Projects
+        {
+            get
+            {
+                ProjectsCallCount += 1;
+                return _innerWorkItemStore.Projects;
+            }
+        }
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
 
         public ITfsTeamProjectCollection TeamProjectCollection
         {
@@ -52,17 +56,15 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             }
         }
 
-        public int TeamProjectCollectionCallCount { get; private set; }
-
         public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
+
+        public string UserAccountName => _innerWorkItemStore.UserAccountName;
 
         public string UserDisplayName => _innerWorkItemStore.UserDisplayName;
 
-        public string UserIdentityName => _innerWorkItemStore.UserIdentityName;
-
         public string UserSid => _innerWorkItemStore.UserSid;
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {
@@ -70,8 +72,6 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
                 return _innerWorkItemStore.WorkItemLinkTypes;
             }
         }
-
-        public int WorkItemLinkTypesCallCount { get; private set; }
 
         public void Dispose()
         {

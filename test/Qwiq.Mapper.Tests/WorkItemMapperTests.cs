@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Qwiq.Core.Tests;
+
 using Should;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mapper.Tests.Mocks;
 using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Qwiq.Mapper.Tests
@@ -61,7 +63,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void Given()
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
-            var typeParser = new TypeParser();
+            var typeParser = TypeParser.Default;
             var mappingStrategies = new IWorkItemMapperStrategy[]
                                         {
                                             new AttributeMapperStrategy(propertyInspector, typeParser),
@@ -86,8 +88,8 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
-            SourceWorkItems = new[] { new MockWorkItem("MissingFields", WorkItemBackingStore) };
-            WorkItemStore = new MockWorkItemStore(SourceWorkItems);
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("MissingFields", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
             base.Given();
         }
 
@@ -101,7 +103,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public class MockModelWithMissingField : IIdentifiable
         {
             [FieldDefinition("Id")]
-            public virtual int Id { get; internal set; }
+            public virtual int? Id { get; internal set; }
 
             [FieldDefinition("NullableField", -1)]
             public virtual int DoesNotExist { get; internal set; }
@@ -113,7 +115,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
-            SourceWorkItems = new[] { new MockWorkItem("Default", WorkItemBackingStore) };
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("MissingFields", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
             WorkItemStore = new MockWorkItemStore(SourceWorkItems);
             base.Given();
         }
@@ -128,7 +130,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public class MockModelWithMissingField : IIdentifiable
         {
             [FieldDefinition("Id")]
-            public int Id { get; internal set; }
+            public int? Id { get; internal set; }
 
             [FieldDefinition("NullableField", true, -1)]
             public int DoesNotExist { get; internal set; }
@@ -141,44 +143,34 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         public override void Given()
         {
-            WorkItemStore =
-                new MockWorkItemStore(
-                    new[]
+            var wit = new MockWorkItemType("Baz", WorkItemBackingStore.Keys);
+
+            var related = new MockWorkItemLinkType("NS.SampleLink", true, "Taker", "Giver");
+
+            WorkItemStore = new MockWorkItemStore().Add(
+                new[]
                     {
-                        new MockWorkItem {Id = 233, Type = new MockWorkItemType {Name = "Baz"}},
-                        new MockWorkItem {Id = 144, Type = new MockWorkItemType {Name = "Baz"}}
-                    });
+                        new MockWorkItem(wit) {Id = 233 },
+                        new MockWorkItem(wit) {Id = 144 }
+                    }
+                ).WithLinkType(related);
+
+
+
+
+
 
             var links = new ILink[]
             {
-                new MockWorkItemLink
-                {
-                    LinkTypeEnd =
-                        new MockWorkItemLinkTypeEnd(
-                            MockModelWithLinks.ForwardLinkName,
-                            null),
-                    RelatedWorkItemId = 233
-                },
-                new MockWorkItemLink
-                {
-                    LinkTypeEnd =
-                        new MockWorkItemLinkTypeEnd(
-                            MockModelWithLinks.ReverseLinkName,
-                            null),
-                    RelatedWorkItemId = 144
-                }
+                new MockRelatedLink(related.ForwardEnd, 0, 233),
+                new MockRelatedLink(related.ReverseEnd, 0, 144)
             };
 
             SourceWorkItems = new IWorkItem[]
             {
-                new MockWorkItem(WorkItemBackingStore)
+                new MockWorkItem(wit, WorkItemBackingStore)
                 {
-                    Type =
-                        new MockWorkItemType
-                        {
-                            Name = "Baz"
-                        },
-                    Links = new MockLinkCollection(links)
+                    Links = new Collection<ILink>(links)
                 }
             };
 
@@ -230,9 +222,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void Given()
         {
-            WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
+            WorkItemStore = new MockWorkItemStore();
 
-            SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("Baz", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
 
             _expected = new MockModelSubclass
             {
@@ -281,9 +273,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
             public override void Given()
             {
-                WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
+                WorkItemStore = new MockWorkItemStore();
 
-                SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
+                SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("Baz", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
 
                 _expected = new MockModelWithNoType
                 {
@@ -315,9 +307,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void Given()
         {
-            WorkItemStore = new MockWorkItemStore(Enumerable.Empty<IWorkItem>());
+            WorkItemStore = new MockWorkItemStore();
 
-            SourceWorkItems = new[] { new MockWorkItem("Baz", WorkItemBackingStore) };
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("Baz", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
 
             _expected = new MockModelWithNoBacking { Id = int.Parse(WorkItemBackingStore["Id"].ToString()) };
             base.Given();
