@@ -16,7 +16,7 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void Given()
         {
-            TypeParser = Microsoft.Qwiq.TypeParser.Default;
+            TypeParser = Qwiq.TypeParser.Default;
         }
     }
 

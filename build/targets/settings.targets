@@ -1,0 +1,124 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="OutDir;Configuration">
+  <PropertyGroup>
+    <SolutionDir>$(MSBuildThisFileDirectory)..\..\</SolutionDir>
+    <QwiqTargetsPath Condition="'$(QwiqTargetsPath)' == ''">$(MSBuildThisFileDirectory)</QwiqTargetsPath>
+    <QwiqToolsPath Condition="'$(QwiqToolsPath)' == ''">$([System.IO.Path]::GetFullPath('$(SolutionDir)\.tools\'))</QwiqToolsPath>
+    <NuGetToolPath Condition="">$(QwiqToolsPath)nuget.exe</NuGetToolPath>
+    <!-- Respect environment variable if set -->
+    <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(NUGET_PACKAGES)</NuGetPackageRoot>
+    <NuGetPackageRoot Condition="'$(NuGetPackageRoot)' == ''">$(SolutionDir)\packages\</NuGetPackageRoot>
+
+    <!--
+        $(OS) is only specific enough for windows builds.  For non-windows builds the identifier
+        is specified on the command line of MSBuild
+    -->
+    <BaseNuGetRuntimeIdentifier Condition="'$(OS)' == 'Windows_NT'">win7</BaseNuGetRuntimeIdentifier>
+  </PropertyGroup>
+
+  <!-- Set the BaseIntermediateOutputPath before importing the common.props because that's where msbuild looks for generated nuget targets -->
+  <PropertyGroup>
+    <OutDir Condition="'$(OutDir)' == ''">$([System.IO.Path]::GetFullPath('$(SolutionDir)bin\$(Configuration)'))\</OutDir>
+    <BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(SolutionDir)bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <!-- This imports the .NET SDK which will pull in Microsoft.Common.props -->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <VisualStudioReferenceMajorVersion Condition="'$(VisualStudioReferenceMajorVersion)' == ''">$(VisualStudioVersion.Substring(0, $(VisualStudioVersion.IndexOf('.'))))</VisualStudioReferenceMajorVersion>
+    <VisualStudioReferenceAssemblyVersion Condition="'$(VisualStudioReferenceAssemblyVersion)' == ''">$(VisualStudioReferenceMajorVersion).0.0.0</VisualStudioReferenceAssemblyVersion>
+    <VisualStudioCodename>Dev$(VisualStudioReferenceMajorVersion)</VisualStudioCodename>
+    <MinimumVisualStudioVersion>$(VisualStudioVersion)</MinimumVisualStudioVersion>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <UseRoslynAnalyzers Condition="'$(UseRoslynAnalyzers)' == ''">true</UseRoslynAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(VSCOMNTOOLS)' == ''">
+    <VSCOMNTOOLS>$([System.Environment]::ExpandEnvironmentVariables("%VS$(VisualStudioReferenceMajorVersion)0COMNTOOLS%"))</VSCOMNTOOLS>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DevEnvDir)' == ''">
+    <DevEnvDir>$(VSCOMNTOOLS)\..\IDE</DevEnvDir>
+    <DevEnvDir>$([System.IO.Path]::GetFullPath('$(DevEnvDir)'))</DevEnvDir>
+  </PropertyGroup>
+
+  <!-- Project language -->
+  <PropertyGroup Condition="'$(ProjectLanguage)' == ''">
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.csproj' OR '$(Language)' == 'C#'">CSharp</ProjectLanguage>
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vbproj' OR '$(Language)' == 'VB'">VB</ProjectLanguage>
+    <ProjectLanguage Condition="'$(MSBuildProjectExtension)' == '.vcxproj' OR '$(Language)' == 'C++'">C++</ProjectLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <!-- Use the compiler server -->
+    <UseSharedCompilation>true</UseSharedCompilation>
+  </PropertyGroup>
+
+  <!-- Build reliability -->
+  <PropertyGroup>
+    <OverwriteReadOnlyFiles Condition="'$(OverwriteReadOnlyFiles)' == ''">true</OverwriteReadOnlyFiles>
+  </PropertyGroup>
+
+  <!-- Common project settings -->
+  <PropertyGroup>
+    <RootNamespace>Microsoft.Qwiq</RootNamespace>
+    <FileAlignment>512</FileAlignment>
+    <HighEntropyVA>true</HighEntropyVA>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <UpdateAssemblyInfo>true</UpdateAssemblyInfo>
+    <UpdateVersionProperties>true</UpdateVersionProperties>
+    <RootNamespace>Microsoft.Qwiq</RootNamespace>
+
+    <!-- Only portable PDBs are supported xplat -->
+    <DebugType Condition="'$(OS)' != 'Windows_NT'">portable</DebugType>
+    <DebugType Condition="'$(OS)' == 'Windows_NT'">pdbonly</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Capture the root, so we'll always have it even if we're building to a sub-folder -->
+    <QwiqOutDir>$(OutDir)</QwiqOutDir>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CompilerGeneratorToolsDir>$(OutDir)CompilerGeneratorTools\</CompilerGeneratorToolsDir>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DeployToSamplesSubfolder)' == 'true'">
+    <OutDir>$(OutDir)\Samples\$(MSBuildProjectName)</OutDir>
+  </PropertyGroup>
+
+  <Choose>
+    <!-- C# Specific settings -->
+    <When Condition="'$(ProjectLanguage)' == 'CSharp'">
+      <PropertyGroup>
+        <WarningLevel>4</WarningLevel>
+        <ErrorReport>prompt</ErrorReport>
+        <NoWarn>1591</NoWarn>
+        <!--
+            <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+            -->
+        <WarningsAsErrors>CS0108</WarningsAsErrors>
+      </PropertyGroup>
+      <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+      </PropertyGroup>
+      <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugType>pdbonly</DebugType>
+        <DefineConstants>TRACE</DefineConstants>
+        <Optimize>true</Optimize>
+      </PropertyGroup>
+    </When>
+  </Choose>
+</Project>

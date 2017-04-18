@@ -126,7 +126,7 @@ namespace Microsoft.Qwiq.Tests.Common
             catch (Exception e)
             {
                 // This is very, very bad.
-                Debug.Print($"{this.GetType().FullName} encountered an exception during Given/When: {e.Message}\r\n{e}");
+                Debug.Print($"{GetType().FullName} encountered an exception during Given/When: {e.Message}\r\n{e}");
 
                 try
                 {
@@ -139,12 +139,12 @@ namespace Microsoft.Qwiq.Tests.Common
 
                 if (!Debugger.IsAttached)
                 {
-                    Assert.Fail($"{this.GetType().FullName} encountered an exception: {e.Message}");
+                    Assert.Fail($"{GetType().FullName} encountered an exception: {e.Message}");
                 }
                 else
                 {
                     Debugger.Break();
-                    Assert.Fail($"{this.GetType().FullName} encountered an exception: {e.Message}");
+                    Assert.Fail($"{GetType().FullName} encountered an exception: {e.Message}");
                 }
             }
         }

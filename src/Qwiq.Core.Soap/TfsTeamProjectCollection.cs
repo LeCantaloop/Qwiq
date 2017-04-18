@@ -1,6 +1,5 @@
 using System;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Server;
@@ -22,12 +21,12 @@ namespace Microsoft.Qwiq.Soap
         ///     Initializes a new instance of the <see cref="TfsTeamProjectCollection" /> class.
         /// </summary>
         /// <param name="teamProjectCollection">The TFS.</param>
-        /// <exception cref="System.ArgumentNullException">tfs</exception>
+        /// <exception cref="ArgumentNullException">tfs</exception>
         internal TfsTeamProjectCollection(TeamFoundation.Client.TfsTeamProjectCollection teamProjectCollection)
         {
             _tfs = teamProjectCollection ?? throw new ArgumentNullException(nameof(teamProjectCollection));
 
-            AuthorizedCredentials = new TfsCredentials(_tfs.ClientCredentials);
+            
             AuthorizedIdentity = new TeamFoundationIdentity(_tfs.AuthorizedIdentity);
             Uri = _tfs.Uri;
 
@@ -39,11 +38,7 @@ namespace Microsoft.Qwiq.Soap
                     new IdentityManagementService(_tfs.GetService<IIdentityManagementService2>())));
         }
 
-        /// <summary>
-        ///     Gets the credentials for this project collection.
-        /// </summary>
-        /// <value>The authorized credentials.</value>
-        public TfsCredentials AuthorizedCredentials { get; }
+       
 
         /// <summary>
         ///     The identity who the calls to the server are being made for.
@@ -56,12 +51,6 @@ namespace Microsoft.Qwiq.Soap
         /// </summary>
         /// <value>The common structure service.</value>
         public ICommonStructureService CommonStructureService => _css.Value;
-
-        /// <summary>
-        ///     Returns true if this object has successfully authenticated.
-        /// </summary>
-        /// <value><c>true</c> if this instance has authenticated; otherwise, <c>false</c>.</value>
-        public bool HasAuthenticated => _tfs.HasAuthenticated;
 
         /// <summary>
         ///     Gets the identity management service.

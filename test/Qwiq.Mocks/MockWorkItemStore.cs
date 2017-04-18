@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Credentials;
-
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
@@ -58,10 +56,6 @@ namespace Microsoft.Qwiq.Mocks
 
         private int WaitTime => Instance.Next(0, 3000);
 
-        public TfsCredentials AuthorizedCredentials => null;
-
-        public ClientType ClientType => ClientType.None;
-
         public IFieldDefinitionCollection FieldDefinitions => _storeDefinitions.Value;
 
         public IProjectCollection Projects => _projects.Value;
@@ -69,12 +63,6 @@ namespace Microsoft.Qwiq.Mocks
         public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => _tfs.Value.TimeZone;
-
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
-        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes { get; internal set; }
 
@@ -256,9 +244,7 @@ namespace Microsoft.Qwiq.Mocks
             if (link.BaseType != BaseLinkType.RelatedLink) return;
             var rl = link as IRelatedLink;
             if (rl == null) return;
-
-            var mrl = rl as MockRelatedLink;
-            if (mrl != null)
+            if (rl is MockRelatedLink mrl)
             {
                 var li = mrl.LinkInfo;
                 if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Instance))

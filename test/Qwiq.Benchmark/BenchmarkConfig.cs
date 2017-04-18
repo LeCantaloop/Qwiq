@@ -1,9 +1,10 @@
 ﻿using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnostics.Windows;
+using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Benchmark
 {
     public class BenchmarkConfig : ManualConfig
     {
@@ -15,7 +16,7 @@ namespace Qwiq.Benchmark
             Add(Job.Clr.With(Jit.RyuJit).With(Platform.X86).With(new GcMode { Server = true }));
             Add(Job.Clr.With(Jit.LegacyJit).With(Platform.X86).With(new GcMode { Server = true }));
 
-            Add(new MemoryDiagnoser());
+            Add(new BenchmarkDotNet.Diagnosers.MemoryDiagnoser());
             Add(new InliningDiagnoser());
 
             Add(StatisticColumn.AllStatistics);

@@ -1,6 +1,6 @@
 using System;
 
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Benchmark
 {
     public class Randomizer : Random
     {

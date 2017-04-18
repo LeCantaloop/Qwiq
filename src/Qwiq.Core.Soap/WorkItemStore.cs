@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
@@ -70,10 +69,6 @@ namespace Microsoft.Qwiq.Soap
 
         public int PageSize { get; }
 
-        public ClientType ClientType => ClientType.Soap;
-
-        public TfsCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
-
         internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
 
         public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory
@@ -85,12 +80,6 @@ namespace Microsoft.Qwiq.Soap
         public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => _workItemStore.Value.TimeZone;
-
-        public string UserDisplayName => _workItemStore.Value.UserDisplayName;
-
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserSid => _workItemStore.Value.UserSid;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
 

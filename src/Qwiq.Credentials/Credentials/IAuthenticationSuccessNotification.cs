@@ -1,0 +1,4 @@
+﻿namespace Microsoft.Qwiq.Credentials
+{
+   
+}

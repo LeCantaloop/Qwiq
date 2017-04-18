@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.Qwiq.Credentials;
+using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Microsoft.Qwiq.Rest
@@ -12,14 +13,14 @@ namespace Microsoft.Qwiq.Rest
         internal VssConnectionAdapter(VssConnection connection)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
-            AuthorizedCredentials = new TfsCredentials(connection.Credentials);
+
             AuthorizedIdentity = new TeamFoundationIdentity(_connection.AuthorizedIdentity);
             HasAuthenticated = connection.HasAuthenticated;
             Uri = connection.Uri;
             TimeZone = TimeZone.CurrentTimeZone;
         }
 
-        public TfsCredentials AuthorizedCredentials { get; }
+        public VssCredentials AuthorizedCredentials { get; }
 
         public ITeamFoundationIdentity AuthorizedIdentity { get; }
 
