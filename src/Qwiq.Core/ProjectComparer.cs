@@ -1,11 +1,10 @@
 using System;
-using System.Linq;
 
 namespace Microsoft.Qwiq
 {
     public class ProjectComparer : GenericComparer<IProject>
     {
-        public static ProjectComparer Instance => Nested.Instance;
+        internal new static ProjectComparer Default => Nested.Instance;
 
         public override bool Equals(IProject x, IProject y)
         {
@@ -17,7 +16,7 @@ namespace Microsoft.Qwiq
                    && x.Guid.Equals(y.Guid)
                    && Equals(x.AreaRootNodes, y.AreaRootNodes)
                    && Equals(x.IterationRootNodes, y.IterationRootNodes)
-                   && WorkItemTypeCollectionComparer.Instance.Equals(x.WorkItemTypes, y.WorkItemTypes);
+                   && WorkItemTypeCollectionComparer.Default.Equals(x.WorkItemTypes, y.WorkItemTypes);
         }
 
         public override int GetHashCode(IProject obj)
@@ -29,14 +28,15 @@ namespace Microsoft.Qwiq
                 var hash = 27;
                 hash = (13 * hash) ^ obj.Guid.GetHashCode();
                 hash = (13 * hash) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
-                hash = (13 * hash) ^ Comparer.NodeCollectionComparer.GetHashCode(obj.AreaRootNodes);
-                hash = (13 * hash) ^ Comparer.NodeCollectionComparer.GetHashCode(obj.IterationRootNodes);
-                hash = (13 * hash) ^ WorkItemTypeCollectionComparer.Instance.GetHashCode(obj.WorkItemTypes);
+                hash = (13 * hash) ^ Comparer.NodeCollection.GetHashCode(obj.AreaRootNodes);
+                hash = (13 * hash) ^ Comparer.NodeCollection.GetHashCode(obj.IterationRootNodes);
+                hash = (13 * hash) ^ WorkItemTypeCollectionComparer.Default.GetHashCode(obj.WorkItemTypes);
 
                 return hash;
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
@@ -45,6 +45,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

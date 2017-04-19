@@ -1,9 +1,11 @@
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Credentials
 {
     public class CredentialNotification
     {
-        public TfsCredentials Credentials { get; }
-        public CredentialNotification(TfsCredentials credentials)
+        public VssCredentials Credentials { get; }
+        public CredentialNotification(VssCredentials credentials)
         {
             Credentials = credentials;
         }

@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq.Mapper
     {
         public IEnumerable<IWorkItemMapperStrategy> MapperStrategies { get; }
 
-        private delegate IIdentifiable ObjectActivator();
+        private delegate IIdentifiable<int?> ObjectActivator();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator> OptimizedCtorExpression = new ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator>();
 
         public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
@@ -23,7 +23,7 @@ namespace Microsoft.Qwiq.Mapper
             return new T();
         }
 
-        public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable, new()
+        public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable<int?>, new()
         {
             var workItemsToMap = new Dictionary<IWorkItem, T>();
             foreach (var item in collection)
@@ -39,12 +39,12 @@ namespace Microsoft.Qwiq.Mapper
             return workItemsToMap.Select(wi => wi.Value);
         }
 
-        public IEnumerable<IIdentifiable> Create(Type type, IEnumerable<IWorkItem> collection)
+        public IEnumerable<IIdentifiable<int?>> Create(Type type, IEnumerable<IWorkItem> collection)
         {
             // Activator.CreateInstance is about 0.2 ms per 1,000
             // Compiled expression is about 0.04 ms per 1,000
             var compiled = OptimizedCtorExpressionCache(type);
-            var workItemsToMap = new Dictionary<IWorkItem, IIdentifiable>();
+            var workItemsToMap = new Dictionary<IWorkItem, IIdentifiable<int?>>();
             foreach (var item in collection)
             {
                 workItemsToMap[item] = compiled.Invoke();

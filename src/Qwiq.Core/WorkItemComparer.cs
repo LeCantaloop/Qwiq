@@ -6,7 +6,7 @@
         {
         }
 
-        public static WorkItemComparer Instance => Nested.Instance;
+        internal new static WorkItemComparer Default => Nested.Instance;
 
         public override bool Equals(IWorkItem x, IWorkItem y)
         {
@@ -14,12 +14,12 @@
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return IdentifiableComparer.Instance.Equals(x, y);
+            return Comparer.Identifiable.Equals(x, y);
         }
 
         public override int GetHashCode(IWorkItem obj)
         {
-            return IdentifiableComparer.Instance.GetHashCode(obj);
+            return IdentifiableComparer.Default.GetHashCode(obj);
         }
 
         private class Nested

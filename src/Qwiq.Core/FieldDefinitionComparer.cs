@@ -4,7 +4,12 @@ namespace Microsoft.Qwiq
 {
     public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {
-        public static FieldDefinitionComparer Instance => Nested.Instance;
+        private FieldDefinitionComparer()
+        {
+            
+        }
+
+        internal new static FieldDefinitionComparer Default => Nested.Instance;
 
         public override bool Equals(IFieldDefinition x, IFieldDefinition y)
         {
@@ -34,6 +39,7 @@ namespace Microsoft.Qwiq
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
@@ -43,6 +49,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

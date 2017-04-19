@@ -37,7 +37,7 @@ namespace Microsoft.Qwiq
 
         public bool Equals(IWorkItem other)
         {
-            return WorkItemComparer.Instance.Equals(this, other);
+            return WorkItemComparer.Default.Equals(this, other);
         }
 
         public new virtual int AttachedFileCount => base.AttachedFileCount.GetValueOrDefault(0);
@@ -55,7 +55,7 @@ namespace Microsoft.Qwiq
         public int Index => -2;
 
 
-        public new virtual int HyperLinkCount => base.HyperLinkCount.GetValueOrDefault(0);
+        public new virtual int HyperlinkCount => base.HyperlinkCount.GetValueOrDefault(0);
 
         public new virtual int Id => base.Id.GetValueOrDefault(0);
 
@@ -186,12 +186,12 @@ namespace Microsoft.Qwiq
 
         public override bool Equals(object obj)
         {
-            return WorkItemComparer.Instance.Equals(this, obj as IWorkItem);
+            return WorkItemComparer.Default.Equals(this, obj as IWorkItem);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemComparer.Instance.GetHashCode(this);
+            return WorkItemComparer.Default.GetHashCode(this);
         }
     }
 }

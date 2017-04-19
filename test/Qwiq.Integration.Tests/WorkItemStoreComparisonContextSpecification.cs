@@ -30,8 +30,8 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         public override void Cleanup()
         {
-            Rest?.Dispose();
-            Soap?.Dispose();
+            RestResult?.Dispose();
+            SoapResult?.Dispose();
 
             base.Cleanup();
         }

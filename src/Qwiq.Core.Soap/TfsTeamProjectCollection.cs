@@ -1,16 +1,16 @@
 using System;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Server;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Soap
 {
     /// <summary>
     /// </summary>
     /// <seealso cref="ITfsTeamProjectCollection" />
-    internal class TfsTeamProjectCollection : IInternalTfsTeamProjectCollection
+    internal class TfsTeamProjectCollection : IInternalTeamProjectCollection
     {
         private readonly Lazy<ICommonStructureService> _css;
 
@@ -22,12 +22,12 @@ namespace Microsoft.Qwiq.Soap
         ///     Initializes a new instance of the <see cref="TfsTeamProjectCollection" /> class.
         /// </summary>
         /// <param name="teamProjectCollection">The TFS.</param>
-        /// <exception cref="System.ArgumentNullException">tfs</exception>
+        /// <exception cref="ArgumentNullException">tfs</exception>
         internal TfsTeamProjectCollection(TeamFoundation.Client.TfsTeamProjectCollection teamProjectCollection)
         {
             _tfs = teamProjectCollection ?? throw new ArgumentNullException(nameof(teamProjectCollection));
 
-            AuthorizedCredentials = new TfsCredentials(_tfs.ClientCredentials);
+            AuthorizedCredentials = _tfs.ClientCredentials;
             AuthorizedIdentity = new TeamFoundationIdentity(_tfs.AuthorizedIdentity);
             Uri = _tfs.Uri;
 
@@ -43,7 +43,7 @@ namespace Microsoft.Qwiq.Soap
         ///     Gets the credentials for this project collection.
         /// </summary>
         /// <value>The authorized credentials.</value>
-        public TfsCredentials AuthorizedCredentials { get; }
+        public VssCredentials AuthorizedCredentials { get; }
 
         /// <summary>
         ///     The identity who the calls to the server are being made for.

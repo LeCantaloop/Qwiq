@@ -1,10 +1,12 @@
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Credentials
 {
     public class AuthenticationSuccessNotification : CredentialNotification
     {
-        public ITfsTeamProjectCollection TeamProjectCollection { get; }
+        public ITeamProjectCollection TeamProjectCollection { get; }
 
-        public AuthenticationSuccessNotification(TfsCredentials credentials, ITfsTeamProjectCollection teamProjectCollection)
+        public AuthenticationSuccessNotification(VssCredentials credentials, ITeamProjectCollection teamProjectCollection)
             : base(credentials)
         {
             TeamProjectCollection = teamProjectCollection;

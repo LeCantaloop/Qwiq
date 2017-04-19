@@ -24,14 +24,14 @@ namespace Microsoft.Qwiq
         public abstract string Url { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// Gets or sets the <see cref="object"/> with the specified name.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        /// The <see cref="object"/>.
         /// </value>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         /// name is null
         /// </exception>
         public virtual object this[string name]
@@ -61,34 +61,33 @@ namespace Microsoft.Qwiq
 
         protected virtual void SetValue(string name, object value)
         {
-            if (_fields != null)
-            {
-                _fields[name] = value;
-            }
+            _fields[name] = value;
         }
 
         public bool Equals(IWorkItemCore other)
         {
-            return NullableIdentifiableComparer.Instance.Equals(this, other);
+            return NullableIdentifiableComparer.Default.Equals(this, other);
         }
 
         public override bool Equals(object obj)
         {
-            return NullableIdentifiableComparer.Instance.Equals(this, obj as IWorkItemCore);
+            return NullableIdentifiableComparer.Default.Equals(this, obj as IWorkItemCore);
         }
 
         public override int GetHashCode()
         {
-            return NullableIdentifiableComparer.Instance.GetHashCode(this);
+            return NullableIdentifiableComparer.Default.GetHashCode(this);
         }
 
         public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
+            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
             return GetValue(fieldDefinition.ReferenceName);
         }
 
         public void SetFieldValue(IFieldDefinition fieldDefinition, object value)
         {
+            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
             SetValue(fieldDefinition.ReferenceName, value);
         }
     }

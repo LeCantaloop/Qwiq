@@ -26,7 +26,7 @@ namespace Microsoft.Qwiq
 
         public bool Equals(IWorkItemType other)
         {
-            return WorkItemTypeComparer.Instance.Equals(this, other);
+            return WorkItemTypeComparer.Default.Equals(this, other);
         }
 
         public string Description { get; }
@@ -42,12 +42,12 @@ namespace Microsoft.Qwiq
 
         public override bool Equals(object obj)
         {
-            return WorkItemTypeComparer.Instance.Equals(this, obj as IWorkItemType);
+            return WorkItemTypeComparer.Default.Equals(this, obj as IWorkItemType);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemTypeComparer.Instance.GetHashCode(this);
+            return WorkItemTypeComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()

@@ -4,7 +4,7 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemLinkTypeEndComparer : GenericComparer<IWorkItemLinkTypeEnd>
     {
-        public static WorkItemLinkTypeEndComparer Instance => Nested.Instance;
+        internal new static WorkItemLinkTypeEndComparer Default => Nested.Instance;
 
         public override bool Equals(IWorkItemLinkTypeEnd x, IWorkItemLinkTypeEnd y)
         {
@@ -33,6 +33,7 @@ namespace Microsoft.Qwiq
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
         // ReSharper restore ClassNeverInstantiated.Local
         {
@@ -42,6 +43,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Credentials;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
@@ -30,7 +30,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public int WorkItemLinkTypesCallCount { get; private set; }
 
-        public TfsCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
+        public VssCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
 
         public ClientType ClientType => _innerWorkItemStore.ClientType;
 
@@ -47,7 +47,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
 
-        public ITfsTeamProjectCollection TeamProjectCollection
+        public ITeamProjectCollection TeamProjectCollection
         {
             get
             {

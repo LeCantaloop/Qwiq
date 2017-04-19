@@ -1,21 +1,28 @@
 using System;
 
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Credentials
 {
     public class AuthenticationFailedNotification : CredentialNotification
     {
-        public AuthenticationFailedNotification(TfsCredentials credentials, Exception exception)
+        public AuthenticationFailedNotification(VssCredentials credentials, Exception exception)
             : this(credentials)
         {
             Exception = exception;
         }
 
-        public AuthenticationFailedNotification(TfsCredentials credentials)
+        public AuthenticationFailedNotification(VssCredentials credentials)
             : base(credentials)
         {
-
         }
 
-        public Exception Exception { get; set; }
+        public AuthenticationFailedNotification(Exception exception)
+            :base(null)
+        {
+            Exception = exception;
+        }
+
+        public Exception Exception { get; }
     }
 }

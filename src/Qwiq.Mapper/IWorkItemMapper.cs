@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.Qwiq.Mapper
@@ -16,9 +15,9 @@ namespace Microsoft.Qwiq.Mapper
         ///  <typeparam name="T">The subclass of Issue that the work items should become</typeparam>
         ///  <param name="collection">The set of TFS WorkItems to convert</param>
         /// <returns>A cloned set of <see cref="IWorkItem"/>-subclassed items.</returns>
-        IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable, new();
+        IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable<int?>, new();
 
-        IEnumerable<IIdentifiable> Create(Type type, IEnumerable<IWorkItem> collection);
+        IEnumerable<IIdentifiable<int?>> Create(Type type, IEnumerable<IWorkItem> collection);
 
         /// <summary>
         /// Create a new, empty work item sub-class.

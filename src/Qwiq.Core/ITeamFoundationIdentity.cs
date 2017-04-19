@@ -72,7 +72,7 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <remarks>
         ///     If the current user is active (e.g. not deleted), the value is equal to
-        ///     <see cref="Microsoft.VisualStudio.Services.Common.IdentityConstants.ActiveUniqueId" />.
+        ///     <see cref="VisualStudio.Services.Common.IdentityConstants.ActiveUniqueId" />.
         /// </remarks>
         /// <value>The unique user identifier.</value>
         int UniqueUserId { get; }

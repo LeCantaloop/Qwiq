@@ -21,9 +21,9 @@ namespace Microsoft.Qwiq.Identity.Mapper
             _identityManagementService = identityManagementService;
         }
 
-        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
-            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Instance);
+            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Default);
             if (!workingSet.Any()) return;
 
             var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targeWorkItemType, _inspector);
@@ -54,7 +54,7 @@ namespace Microsoft.Qwiq.Identity.Mapper
             return ims.GetAliasesForDisplayNames(searchTerms.ToArray()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.FirstOrDefault());
         }
 
-        internal static ICollection<WorkItemWithFields> GetWorkItemsWithIdentityFieldValues(IEnumerable<IWorkItem> workItems, IReadOnlyCollection<string> witFieldNames)
+        internal static ICollection<WorkItemWithFields> GetWorkItemsWithIdentityFieldValues(IEnumerable<IWorkItem> workItems, System.Collections.Generic.IReadOnlyCollection<string> witFieldNames)
         {
             return
                 workItems.Select(

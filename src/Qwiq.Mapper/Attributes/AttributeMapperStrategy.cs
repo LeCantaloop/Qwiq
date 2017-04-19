@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
 

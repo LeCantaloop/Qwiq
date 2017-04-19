@@ -4,7 +4,11 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemLinkTypeComparer : GenericComparer<IWorkItemLinkType>
     {
-        public static WorkItemLinkTypeComparer Instance => Nested.Instance;
+        internal new static WorkItemLinkTypeComparer Default => Nested.Instance;
+
+        private WorkItemLinkTypeComparer()
+        {
+        }
 
         public override bool Equals(IWorkItemLinkType x, IWorkItemLinkType y)
         {
@@ -15,20 +19,22 @@ namespace Microsoft.Qwiq
             return x.IsActive == y.IsActive
                 && x.IsDirectional == y.IsDirectional
                 && string.Equals(x.ReferenceName, y.ReferenceName, StringComparison.OrdinalIgnoreCase)
-                && WorkItemLinkTypeEndComparer.Instance.Equals(x.ForwardEnd, y.ForwardEnd)
-                && WorkItemLinkTypeEndComparer.Instance.Equals(x.ReverseEnd, y.ReverseEnd);
+                && WorkItemLinkTypeEndComparer.Default.Equals(x.ForwardEnd, y.ForwardEnd)
+                && WorkItemLinkTypeEndComparer.Default.Equals(x.ReverseEnd, y.ReverseEnd);
         }
 
         public override int GetHashCode(IWorkItemLinkType obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
                 var hash = 27;
-                hash = (13 * hash) ^ (obj.ReferenceName != null ? obj.ReferenceName.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.ReferenceName != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.ReferenceName) : 0);
                 hash = (13 * hash) ^ obj.IsActive.GetHashCode();
                 hash = (13 * hash) ^ obj.IsDirectional.GetHashCode();
-                hash = (13 * hash) ^ (obj.ForwardEnd != null ? WorkItemLinkTypeEndComparer.Instance.GetHashCode(obj.ForwardEnd) : 0);
-                hash = (13 * hash) ^ (obj.ReverseEnd != null ? WorkItemLinkTypeEndComparer.Instance.GetHashCode(obj.ReverseEnd) : 0);
+                hash = (13 * hash) ^ (obj.ForwardEnd != null ? WorkItemLinkTypeEndComparer.Default.GetHashCode(obj.ForwardEnd) : 0);
+                hash = (13 * hash) ^ (obj.ReverseEnd != null ? WorkItemLinkTypeEndComparer.Default.GetHashCode(obj.ReverseEnd) : 0);
 
                 return hash;
             }
@@ -40,6 +46,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq
     ///     Base class for common operations for Collections.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ReadOnlyList<T> : IReadOnlyList<T>
+    public abstract class ReadOnlyCollection<T> : IReadOnlyCollection<T>
     {
         private readonly object _lockObj = new object();
 
@@ -24,7 +24,7 @@ namespace Microsoft.Qwiq
 
         private IDictionary<string, int> _mapByName;
 
-        protected ReadOnlyList(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
+        protected ReadOnlyCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
         {
             if (itemFactory == null) throw new ArgumentNullException(nameof(itemFactory));
             if (nameFunc == null) throw new ArgumentNullException(nameof(nameFunc));
@@ -32,12 +32,12 @@ namespace Microsoft.Qwiq
             _nameFunc = nameFunc;
         }
 
-        protected ReadOnlyList(IEnumerable<T> items, Func<T, string> nameFunc)
+        protected ReadOnlyCollection(IEnumerable<T> items, Func<T, string> nameFunc)
             : this(() => items ?? Enumerable.Empty<T>(), nameFunc)
         {
         }
 
-        protected ReadOnlyList()
+        protected ReadOnlyCollection()
         {
             Initialize();
         }
@@ -83,8 +83,7 @@ namespace Microsoft.Qwiq
             {
                 if (name == null) throw new ArgumentNullException(nameof(name));
                 Ensure();
-                int num;
-                if (_mapByName.TryGetValue(name, out num)) return List[num];
+                if (_mapByName.TryGetValue(name, out int num)) return List[num];
 
                 throw new DeniedOrNotExistException();
             }
@@ -121,8 +120,7 @@ namespace Microsoft.Qwiq
         public virtual bool TryGetByName(string name, out T value)
         {
             Ensure();
-            int num;
-            if (_mapByName.TryGetValue(name, out num))
+            if (_mapByName.TryGetValue(name, out int num))
             {
                 value = List[num];
                 return true;
@@ -137,7 +135,7 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        T IReadOnlyList<T>.GetItem(int index)
+        T IReadOnlyCollection<T>.GetItem(int index)
         {
             return GetItem(index);
         }

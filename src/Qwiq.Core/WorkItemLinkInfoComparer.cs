@@ -2,7 +2,7 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemLinkInfoComparer : GenericComparer<IWorkItemLinkInfo>
     {
-        public static WorkItemLinkInfoComparer Instance => Nested.Instance;
+        internal new static WorkItemLinkInfoComparer Default => Nested.Instance;
 
         public override bool Equals(IWorkItemLinkInfo x, IWorkItemLinkInfo y)
         {
@@ -16,6 +16,8 @@ namespace Microsoft.Qwiq
 
         public override int GetHashCode(IWorkItemLinkInfo obj)
         {
+            if (ReferenceEquals(obj, null)) return 0;
+
             unchecked
             {
                 var hash = 27;
@@ -27,6 +29,7 @@ namespace Microsoft.Qwiq
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
             // ReSharper restore ClassNeverInstantiated.Local
         {

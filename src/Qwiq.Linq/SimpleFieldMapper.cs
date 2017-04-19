@@ -32,8 +32,7 @@ namespace Microsoft.Qwiq.Linq
 
         public string GetFieldName(Type type, string propertyName)
         {
-            string name;
-            return Mappings.TryGetValue(propertyName, out name) ? name : propertyName;
+            return Mappings.TryGetValue(propertyName, out string name) ? name : propertyName;
         }
     }
 }

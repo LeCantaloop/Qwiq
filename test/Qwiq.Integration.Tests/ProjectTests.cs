@@ -17,7 +17,7 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("REST")]
         public void Each_project_equals_eachother()
         {
-            RestProject.ShouldEqual(SoapProject, ProjectComparer.Instance);
+            RestProject.ShouldEqual(SoapProject, ProjectComparer.Default);
             RestProject.GetHashCode().ShouldEqual(SoapProject.GetHashCode());
         }
 
@@ -27,8 +27,8 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("REST")]
         public void Each_project_contains_the_same_Area_paths()
         {
-            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Instance);
-            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, Comparer.NodeCollectionComparer);
+            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Default);
+            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, Comparer.NodeCollection);
             RestProject.AreaRootNodes.GetHashCode().ShouldEqual(SoapProject.AreaRootNodes.GetHashCode());
         }
 
@@ -38,8 +38,8 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("REST")]
         public void Each_project_contains_the_same_Iteration_paths()
         {
-            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Instance);
-            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, Comparer.NodeCollectionComparer);
+            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Default);
+            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, Comparer.NodeCollection);
             RestProject.IterationRootNodes.GetHashCode().ShouldEqual(SoapProject.IterationRootNodes.GetHashCode());
         }
 
@@ -85,7 +85,7 @@ namespace Microsoft.Qwiq.Integration.Tests
                             .ShouldEqual(swfd.GetHashCode(), $"{rw.Name}:{rwfd.ReferenceName}:GetHashCode");
                     }
 
-                    rw.FieldDefinitions.ShouldEqual(sw.FieldDefinitions, FieldDefinitionCollectionComparer.Instance);
+                    rw.FieldDefinitions.ShouldEqual(sw.FieldDefinitions, Comparer.FieldDefinitionCollection);
                     rw.FieldDefinitions.GetHashCode()
                       .ShouldEqual(
                           sw.FieldDefinitions.GetHashCode(),
@@ -101,7 +101,7 @@ namespace Microsoft.Qwiq.Integration.Tests
             {
                 RestProject.WorkItemTypes.ShouldEqual(
                     SoapProject.WorkItemTypes,
-                    WorkItemTypeCollectionComparer.Instance);
+                    WorkItemTypeCollectionComparer.Default);
                 RestProject.WorkItemTypes.GetHashCode()
                            .ShouldEqual(
                                SoapProject.WorkItemTypes.GetHashCode(),

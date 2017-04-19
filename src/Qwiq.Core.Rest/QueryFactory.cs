@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -31,15 +32,18 @@ namespace Microsoft.Qwiq.Rest
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            var wiql = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
+            FormattableString ws = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
+            var wiql = ws.ToString(CultureInfo.InvariantCulture);
+
             if (asOf.HasValue)
             {
                 // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
                 if (asOf.Value.Kind != DateTimeKind.Utc)
                     asOf = DateTime.SpecifyKind(
-                        asOf.Value - _store.TimeZone.GetUtcOffset(asOf.Value),
-                        DateTimeKind.Utc);
-                wiql += $" ASOF \'{asOf.Value:u}\'";
+                                                asOf.Value - _store.TimeZone.GetUtcOffset(asOf.Value),
+                                                DateTimeKind.Utc);
+                FormattableString ao = $" ASOF \'{asOf.Value:u}\'";
+                wiql += ao.ToString(CultureInfo.InvariantCulture);
             }
 
             return Create(ids, wiql);

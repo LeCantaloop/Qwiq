@@ -21,7 +21,7 @@ namespace Microsoft.Qwiq
 
         public bool Equals(ITeamFoundationIdentity other)
         {
-            return TeamFoundationIdentityComparer.Instance.Equals(this, other);
+            return TeamFoundationIdentityComparer.Default.Equals(this, other);
         }
 
         public abstract IIdentityDescriptor Descriptor { get; }
@@ -97,7 +97,7 @@ namespace Microsoft.Qwiq
 
         public override int GetHashCode()
         {
-            return TeamFoundationIdentityComparer.Instance.GetHashCode(this);
+            return TeamFoundationIdentityComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()

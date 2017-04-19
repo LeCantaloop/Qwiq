@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq;
-
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Mocks
 {
     public class WorkItemLinkGenerator<T> : WorkItemGenerator<T>
         where T : IWorkItem
@@ -11,6 +9,14 @@ namespace Qwiq.Benchmark
         private readonly Func<IWorkItemLinkTypeEnd, int, int, ILink> _linkFunc;
 
         private readonly IWorkItemLinkType _linkType;
+
+        public WorkItemLinkGenerator(
+            Func<T> createFunc,
+            IWorkItemLinkType linkType,
+            Func<IWorkItemLinkTypeEnd, int, int, ILink> linkFunc)
+            : this(createFunc, linkType, linkFunc, null)
+        {
+        }
 
         public WorkItemLinkGenerator(
             Func<T> createFunc,

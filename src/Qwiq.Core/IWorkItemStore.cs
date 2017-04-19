@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Credentials;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
     /// <summary>
     ///     Represents the work item store resource.
     /// </summary>
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IDisposable" />
     public interface IWorkItemStore : IDisposable
     {
         /// <summary>Gets the credentials for this project collection.</summary>
         /// <value>The authorized credentials.</value>
-        TfsCredentials AuthorizedCredentials { get; }
+        VssCredentials AuthorizedCredentials { get; }
 
         /// <summary>
         ///     Indicates the communication type used for the work item store.
@@ -38,7 +38,7 @@ namespace Microsoft.Qwiq
         ///     Gets the team project collection.
         /// </summary>
         /// <value>The team project collection.</value>
-        ITfsTeamProjectCollection TeamProjectCollection { get; }
+        ITeamProjectCollection TeamProjectCollection { get; }
 
         /// <summary>
         ///     Gets the time zone.

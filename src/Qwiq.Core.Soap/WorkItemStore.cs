@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
+using Microsoft.VisualStudio.Services.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -22,14 +22,14 @@ namespace Microsoft.Qwiq.Soap
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
-        private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
+        private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
         private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
 
         private readonly Lazy<IProjectCollection> _projects;
 
         internal WorkItemStore(
-            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<IInternalTeamProjectCollection> tpcFactory,
             Func<TfsWorkItem.WorkItemStore> wisFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
             int pageSize = PageSizeLimits.MaxPageSize)
@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq.Soap
             if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize)
                 throw new PageSizeRangeException();
 
-            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
+            _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
@@ -61,7 +61,7 @@ namespace Microsoft.Qwiq.Soap
         }
 
         internal WorkItemStore(
-            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<IInternalTeamProjectCollection> tpcFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
             int pageSize = PageSizeLimits.MaxPageSize)
             : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory, pageSize)
@@ -72,7 +72,7 @@ namespace Microsoft.Qwiq.Soap
 
         public ClientType ClientType => ClientType.Soap;
 
-        public TfsCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
+        public VssCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
         internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
 
@@ -82,7 +82,7 @@ namespace Microsoft.Qwiq.Soap
 
         public IProjectCollection Projects => _projects.Value;
 
-        public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
+        public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => _workItemStore.Value.TimeZone;
 

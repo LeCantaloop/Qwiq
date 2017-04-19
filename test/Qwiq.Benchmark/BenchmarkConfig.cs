@@ -4,7 +4,7 @@ using BenchmarkDotNet.Diagnostics.Windows;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Benchmark
 {
     public class BenchmarkConfig : ManualConfig
     {

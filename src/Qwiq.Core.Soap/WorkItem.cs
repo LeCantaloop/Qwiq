@@ -107,7 +107,7 @@ namespace Microsoft.Qwiq.Soap
         /// <summary>
         ///     Gets the number of hyperlinks in this work item.
         /// </summary>
-        public new int HyperLinkCount => _item.HyperLinkCount;
+        public new int HyperlinkCount => _item.HyperLinkCount;
 
         /// <summary>
         ///     Gets the ID of this work item.

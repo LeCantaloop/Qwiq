@@ -28,11 +28,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 
         private static IEnumerable<PropertyInfo> AnnotatedPropertiesCache(IPropertyReflector reflector, Type workItemType, Type attributeType)
         {
-            ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> f;
-            if (AnnotatedProperties.TryGetValue(workItemType.TypeHandle, out f))
+            if (AnnotatedProperties.TryGetValue(workItemType.TypeHandle, out ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>> f))
             {
-                IEnumerable<PropertyInfo> pis;
-                if (f.TryGetValue(attributeType.TypeHandle, out pis))
+                if (f.TryGetValue(attributeType.TypeHandle, out IEnumerable<PropertyInfo> pis))
                 {
                     return pis;
                 }

@@ -20,8 +20,7 @@
         /// <returns></returns>
         public static IFieldDefinition Create(string name)
         {
-            IFieldDefinition field;
-            if (CoreFieldDefinitions.NameLookup.TryGetValue(name, out field)) return field;
+            if (CoreFieldDefinitions.NameLookup.TryGetValue(name, out IFieldDefinition field)) return field;
 
             if (CoreFieldDefinitions.ReferenceNameLookup.TryGetValue(name, out field)) return field;
 

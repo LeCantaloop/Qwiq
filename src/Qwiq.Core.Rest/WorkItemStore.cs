@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Rest
 {
@@ -22,12 +22,12 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
-        private readonly Lazy<IInternalTfsTeamProjectCollection> _tfs;
+        private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
         private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
 
         internal WorkItemStore(
-            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<IInternalTeamProjectCollection> tpcFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
             int pageSize = Rest.Query.MaximumBatchSize)
             : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, pageSize)
@@ -35,7 +35,7 @@ namespace Microsoft.Qwiq.Rest
         }
 
         internal WorkItemStore(
-            Func<IInternalTfsTeamProjectCollection> tpcFactory,
+            Func<IInternalTeamProjectCollection> tpcFactory,
             Func<WorkItemTrackingHttpClient> wisFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory,
             int pageSize = Rest.Query.MaximumBatchSize)
@@ -43,7 +43,7 @@ namespace Microsoft.Qwiq.Rest
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
-            _tfs = new Lazy<IInternalTfsTeamProjectCollection>(tpcFactory);
+            _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             NativeWorkItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
@@ -78,7 +78,7 @@ namespace Microsoft.Qwiq.Rest
 
         internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
 
-        public TfsCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
+        public VssCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
         public ClientType ClientType => ClientType.Rest;
 
@@ -86,7 +86,7 @@ namespace Microsoft.Qwiq.Rest
 
         public IProjectCollection Projects => _projects.Value;
 
-        public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
+        public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 

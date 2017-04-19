@@ -24,8 +24,6 @@ namespace Microsoft.Qwiq.Rest
 
         private readonly DateTime? _asOf;
 
-        private readonly List<string> _fields;
-
         private readonly Wiql _query;
 
         private readonly bool _timePrecision;
@@ -94,12 +92,12 @@ namespace Microsoft.Qwiq.Rest
 
             if (_ids == null) yield break;
 
-            var expand = _fields != null ? (WorkItemExpand?)null : WorkItemExpand.All;
+            var expand = WorkItemExpand.All;
             var qry = _ids.Partition(_workItemStore.PageSize);
             var ts = qry.Select(
                                 s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(
                                                                                                 s,
-                                                                                                _fields,
+                                                                                                null,
                                                                                                 _asOf,
                                                                                                 expand,
                                                                                                 WorkItemErrorPolicy.Omit));
@@ -119,7 +117,8 @@ namespace Microsoft.Qwiq.Rest
                 yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(
                                                                                     new WorkItem(
                                                                                                  workItem,
-                                                                                                 new Lazy<IWorkItemType>(WorkItemTypeFactory),
+                                                                                                 new Lazy<IWorkItemType>(
+                                                                                                                         WorkItemTypeFactory),
                                                                                                  s => _workItemStore.WorkItemLinkTypes[s]));
             }
         }
@@ -129,8 +128,7 @@ namespace Microsoft.Qwiq.Rest
             var m = AsOfRegex.Match(wiql);
             if (!m.Success) return null;
 
-            DateTime retval;
-            if (!DateTime.TryParse(m.Groups["date"].Value, out retval)) throw new Exception();
+            if (!DateTime.TryParse(m.Groups["date"].Value, out DateTime retval)) throw new Exception();
 
             return retval;
         }

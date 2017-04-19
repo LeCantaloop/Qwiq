@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq.Rest
     internal class WorkItemLinkTypeEnd : Qwiq.WorkItemLinkTypeEnd
     {
         internal WorkItemLinkTypeEnd(WorkItemRelationType item)
-            : base(item?.ReferenceName)
+            : base(item.ReferenceName)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             Name = item.Name;

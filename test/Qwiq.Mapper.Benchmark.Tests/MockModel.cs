@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
 {
     [WorkItemType("Task")]
-    public class MockModel : IIdentifiable
+    public class MockModel : IIdentifiable<int?>
     {
         public const string ForwardLinkName = "NS.SampleLink-Forward";
 

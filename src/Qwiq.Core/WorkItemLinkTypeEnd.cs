@@ -2,9 +2,8 @@
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeEnd : IWorkItemLinkTypeEnd,
-                                       IEquatable<IWorkItemLinkTypeEnd>,
-                                       IComparable<IWorkItemLinkTypeEnd>
+    public class WorkItemLinkTypeEnd : IWorkItemLinkTypeEnd, IEquatable<IWorkItemLinkTypeEnd>
+
     {
         private readonly Lazy<IWorkItemLinkTypeEnd> _opposite;
 
@@ -19,18 +18,7 @@ namespace Microsoft.Qwiq
             ImmutableName = immutableName;
             if (string.IsNullOrWhiteSpace(immutableName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(immutableName));
-            _opposite = new Lazy<IWorkItemLinkTypeEnd>(
-                () => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd);
-        }
-
-        public int CompareTo(IWorkItemLinkTypeEnd other)
-        {
-            return WorkItemLinkTypeEndComparer.Instance.Compare(this, other);
-        }
-
-        public bool Equals(IWorkItemLinkTypeEnd other)
-        {
-            return WorkItemLinkTypeEndComparer.Instance.Equals(this, other);
+            _opposite = new Lazy<IWorkItemLinkTypeEnd>(() => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd);
         }
 
         public int Id { get; internal set; }
@@ -45,14 +33,19 @@ namespace Microsoft.Qwiq
 
         public IWorkItemLinkTypeEnd OppositeEnd => _opposite.Value;
 
+        public bool Equals(IWorkItemLinkTypeEnd other)
+        {
+            return WorkItemLinkTypeEndComparer.Default.Equals(this, other);
+        }
+
         public override bool Equals(object obj)
         {
-            return WorkItemLinkTypeEndComparer.Instance.Equals(this, obj as IWorkItemLinkTypeEnd);
+            return WorkItemLinkTypeEndComparer.Default.Equals(this, obj as IWorkItemLinkTypeEnd);
         }
 
         public override int GetHashCode()
         {
-            return WorkItemLinkTypeEndComparer.Instance.GetHashCode(this);
+            return WorkItemLinkTypeEndComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()

@@ -4,7 +4,7 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemTypeCollectionComparer : GenericComparer<IWorkItemTypeCollection>
     {
-        public static WorkItemTypeCollectionComparer Instance => Nested.Instance;
+        internal new static WorkItemTypeCollectionComparer Default => Nested.Instance;
 
         public override bool Equals(IWorkItemTypeCollection x, IWorkItemTypeCollection y)
         {
@@ -20,7 +20,7 @@ namespace Microsoft.Qwiq
             {
                 if (!y.Contains(wit.Name)) return false;
                 var tw = y[wit.Name];
-                if (!WorkItemTypeComparer.Instance.Equals(wit, tw)) return false;
+                if (!WorkItemTypeComparer.Default.Equals(wit, tw)) return false;
 
                 // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch
                 source.Remove(wit);
@@ -43,6 +43,7 @@ namespace Microsoft.Qwiq
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
         // ReSharper restore ClassNeverInstantiated.Local
         {
@@ -53,6 +54,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

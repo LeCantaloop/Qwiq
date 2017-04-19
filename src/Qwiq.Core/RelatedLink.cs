@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Microsoft.Qwiq
 {
@@ -12,6 +13,7 @@ namespace Microsoft.Qwiq
             LinkTypeEnd = linkTypeEnd;
         }
 
+        [Obsolete("This property is deprecated and will be removed in a future release. Use LinkTypeEnd.Name instead.")]
         public string LinkSubType => LinkTypeEnd?.Name;
 
         public IWorkItemLinkTypeEnd LinkTypeEnd { get; }
@@ -31,7 +33,7 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(other, null)) return false;
 
             return RelatedWorkItemId.Equals(other.RelatedWorkItemId)
-                   && WorkItemLinkTypeEndComparer.Instance.Equals(LinkTypeEnd, other.LinkTypeEnd);
+                   && WorkItemLinkTypeEndComparer.Default.Equals(LinkTypeEnd, other.LinkTypeEnd);
         }
 
         /// <inheritdoc />
@@ -41,7 +43,7 @@ namespace Microsoft.Qwiq
             {
                 var hash = 27;
                 hash = (13 * hash) ^ RelatedWorkItemId.GetHashCode();
-                hash = (13 * hash) ^ (LinkTypeEnd != null ? WorkItemLinkTypeEndComparer.Instance.GetHashCode(LinkTypeEnd) : 0);
+                hash = (13 * hash) ^ (LinkTypeEnd != null ? WorkItemLinkTypeEndComparer.Default.GetHashCode(LinkTypeEnd) : 0);
 
                 return hash;
             }

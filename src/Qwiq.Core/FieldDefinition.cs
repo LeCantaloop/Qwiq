@@ -21,7 +21,7 @@ namespace Microsoft.Qwiq
             if (id == 0)
             {
                 if (!CoreFieldRefNames.CoreFieldIdLookup.TryGetValue(referenceName, out int fid))
-                    fid = FieldDefinitionComparer.Instance.GetHashCode(this);
+                    fid = FieldDefinitionComparer.Default.GetHashCode(this);
                 Id = fid;
             }
             else
@@ -42,14 +42,14 @@ namespace Microsoft.Qwiq
             ReferenceName = referenceName;
 
             if (!CoreFieldRefNames.CoreFieldIdLookup.TryGetValue(referenceName, out int id))
-                id = FieldDefinitionComparer.Instance.GetHashCode(this);
+                id = FieldDefinitionComparer.Default.GetHashCode(this);
 
             Id = id;
         }
 
         public bool Equals(IFieldDefinition other)
         {
-            return FieldDefinitionComparer.Instance.Equals(this, other);
+            return FieldDefinitionComparer.Default.Equals(this, other);
         }
 
         public int Id { get; }
@@ -60,12 +60,12 @@ namespace Microsoft.Qwiq
 
         public override bool Equals(object obj)
         {
-            return FieldDefinitionComparer.Instance.Equals(this, obj as IFieldDefinition);
+            return FieldDefinitionComparer.Default.Equals(this, obj as IFieldDefinition);
         }
 
         public override int GetHashCode()
         {
-            return FieldDefinitionComparer.Instance.GetHashCode(this);
+            return FieldDefinitionComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()

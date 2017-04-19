@@ -123,9 +123,9 @@ namespace Microsoft.Qwiq.Soap
             }
         }
 
-        public bool Equals(IReadOnlyListWithId<IField, int> other)
+        public bool Equals(IReadOnlyCollectionWithId<IField, int> other)
         {
-            return Comparer.FieldCollectionComparer.Equals(this, other);
+            return Comparer.FieldCollection.Equals(this, other);
         }
     }
 }

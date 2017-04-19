@@ -3,7 +3,7 @@ namespace Microsoft.Qwiq
     /// <summary>
     /// Enum ClientType
     /// </summary>
-    public enum ClientType : short
+    public enum ClientType
     {
         /// <summary>
         /// No remote communications are made.

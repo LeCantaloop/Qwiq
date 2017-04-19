@@ -1,12 +1,12 @@
 using System;
 
+using Microsoft.Qwiq;
 using Microsoft.Qwiq.Identity.Attributes;
-using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Qwiq.Identity.Tests.Mocks
 {
-    public class MockIdentityType : IIdentifiable
+    public class MockIdentityType : IIdentifiable<int?>
     {
         internal const string BackingField = "Identity WorkItemField";
 

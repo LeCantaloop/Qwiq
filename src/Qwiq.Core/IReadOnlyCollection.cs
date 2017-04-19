@@ -1,6 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public interface IReadOnlyList<T> : System.Collections.Generic.IReadOnlyList<T>
+    public interface IReadOnlyCollection<T> : System.Collections.Generic.IReadOnlyList<T>
     {
         T this[string name] { get; }
 

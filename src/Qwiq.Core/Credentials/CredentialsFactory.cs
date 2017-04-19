@@ -18,9 +18,6 @@ namespace Microsoft.Qwiq.Credentials
     ///     can try them
     ///     in order and just go with the first one that succeeds.
     /// </summary>
-    [Obsolete(
-        "This class is deprecated and will be removed in a future release. See AuthenticationOptions instead.",
-        false)]
     public static class CredentialsFactory
     {
         [Obsolete(
@@ -84,7 +81,7 @@ namespace Microsoft.Qwiq.Credentials
             };
         }
 
-        private static IEnumerable<VssCredentials> GetBasicCredentials(string username = null, string password = null)
+        internal static IEnumerable<VssCredentials> GetBasicCredentials(string username = null, string password = null)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) yield break;
 
@@ -94,7 +91,7 @@ namespace Microsoft.Qwiq.Credentials
             };
         }
 
-        private static IEnumerable<VssCredentials> GetOAuthCredentials(string accessToken = null)
+        internal static IEnumerable<VssCredentials> GetOAuthCredentials(string accessToken = null)
         {
             if (string.IsNullOrEmpty(accessToken)) yield break;
 
@@ -105,7 +102,7 @@ namespace Microsoft.Qwiq.Credentials
             };
         }
 
-        private static IEnumerable<VssCredentials> GetServiceIdentityCredentials(
+        internal static IEnumerable<VssCredentials> GetServiceIdentityCredentials(
             string username = null,
             string password = null)
         {
@@ -120,7 +117,7 @@ namespace Microsoft.Qwiq.Credentials
                 CredentialPromptType.DoNotPrompt);
         }
 
-        private static IEnumerable<VssCredentials> GetServiceIdentityPatCredentials(string password = null)
+        internal static IEnumerable<VssCredentials> GetServiceIdentityPatCredentials(string password = null)
         {
             if (string.IsNullOrEmpty(password)) yield break;
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeCollection : ReadOnlyList<IWorkItemLinkType>, IWorkItemLinkTypeCollection
+    public class WorkItemLinkTypeCollection : ReadOnlyCollection<IWorkItemLinkType>, IWorkItemLinkTypeCollection
     {
         private readonly Lazy<IWorkItemLinkTypeEndCollection> _ltCol;
 
@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq
             var ltc = obj as IEnumerable<IWorkItemLinkType>;
             if (ltc == null) return false;
 
-            return this.All(p => ltc.Contains(p, WorkItemLinkTypeComparer.Instance));
+            return this.All(p => ltc.Contains(p, WorkItemLinkTypeComparer.Default));
         }
 
         public override int GetHashCode()

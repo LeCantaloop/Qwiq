@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace Microsoft.Qwiq
 {
     [Serializable]
-    public class DeniedOrNotExistException : ApplicationException
+    public class DeniedOrNotExistException : Exception
     {
-        private static readonly string ErrorFormat =
-            "TF26193: The team project {0} does not exist. Check the team project name and try again.";
+        private const string ErrorFormat = "TF26193: The team project {0} does not exist. Check the team project name and try again.";
 
         public DeniedOrNotExistException()
             : base("TF237090: Does not exist or access is denied.")
@@ -15,12 +15,13 @@ namespace Microsoft.Qwiq
         }
 
         public DeniedOrNotExistException(string projectName)
-            : base(string.Format(ErrorFormat, projectName))
+            : base(string.Format(CultureInfo.InvariantCulture, ErrorFormat, projectName))
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "guid")]
         public DeniedOrNotExistException(Guid projectGuid)
-            : base(string.Format(ErrorFormat, projectGuid))
+            : base(string.Format(CultureInfo.InvariantCulture, ErrorFormat, projectGuid))
         {
         }
 
