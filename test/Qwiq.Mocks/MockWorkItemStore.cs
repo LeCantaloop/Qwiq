@@ -84,26 +84,26 @@ namespace Microsoft.Qwiq.Mocks
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = false)
         {
             Trace.TraceInformation("Querying for work items " + wiql);
 
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
-            return query.RunQuery().ToList().AsReadOnly();
+            return query.RunQuery();
         }
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             if (ids == null) throw new ArgumentNullException(nameof(ids));
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>();
+            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
 
 
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", ids2));
 
             var query = _queryFactory.Value.Create(ids2, asOf);
-            return query.RunQuery().ToList().AsReadOnly();
+            return query.RunQuery();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)

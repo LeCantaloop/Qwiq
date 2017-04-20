@@ -78,13 +78,13 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             _innerWorkItemStore.Dispose();
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = false)
         {
             QueryStringCallCount += 1;
             return _innerWorkItemStore.Query(wiql, dayPrecision);
         }
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             QueryIdsCallCount += 1;
             return _innerWorkItemStore.Query(ids, asOf);

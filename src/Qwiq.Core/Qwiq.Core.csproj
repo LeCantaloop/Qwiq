@@ -169,6 +169,7 @@
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItem.Extensions.cs" />
+    <Compile Include="IWorkItemCollection.cs" />
     <Compile Include="IWorkItemCommon.cs" />
     <Compile Include="IWorkItemCore.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
@@ -206,6 +207,8 @@
     <Compile Include="TypeParser.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemCollection.cs" />
+    <Compile Include="WorkItemCollectionComparer.cs" />
     <Compile Include="WorkItemCommon.cs" />
     <Compile Include="WorkItemComparer.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />

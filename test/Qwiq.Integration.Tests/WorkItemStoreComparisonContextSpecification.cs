@@ -18,6 +18,9 @@ namespace Microsoft.Qwiq.Integration.Tests
         }
     }
 
+    [DeploymentItem("Microsoft.WITDataStore32.dll")]
+    [DeploymentItem("Microsoft.WITDataStore64.dll")]
+    [DeploymentItem("Microsoft.TeamFoundation.WorkItemTracking.Client.dll")]
     public abstract class WorkItemStoreComparisonContextSpecification : TimedContextSpecification
     {
         protected IWorkItemStore Rest => RestResult.WorkItemStore;

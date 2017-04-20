@@ -104,19 +104,19 @@ namespace Microsoft.Qwiq.Rest
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = false)
         {
             // REVIEW: SOAP client catches a ValidationException here
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
             return query.RunQuery();
         }
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             // Same behavior as SOAP version
             if (ids == null) throw new ArgumentNullException(nameof(ids));
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>();
+            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
             var query = _queryFactory.Value.Create(ids2, asOf);
             return query.RunQuery();

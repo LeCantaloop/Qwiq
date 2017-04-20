@@ -21,9 +21,13 @@ namespace Microsoft.Qwiq.Soap
             if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
         }
 
-        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {
-            return _query.GetLinkTypes().Select(item => new WorkItemLinkTypeEnd(item));
+            return new WorkItemLinkTypeEndCollection(
+                _query
+                    .GetLinkTypes()
+                    .Select(item => new WorkItemLinkTypeEnd(item))
+                    .ToList());
         }
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
@@ -40,13 +44,17 @@ namespace Microsoft.Qwiq.Soap
                                      });
         }
 
-        public IEnumerable<IWorkItem> RunQuery()
+        public IWorkItemCollection RunQuery()
         {
             var wic = _query.RunQuery();
             wic.PageSize = _pageSize;
 
-            return wic.Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>()
-                      .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)item));
+            return
+                    wic
+                        .Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>()
+                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)item))
+                        .ToList()
+                        .ToWorkItemCollection();
         }
     }
 }

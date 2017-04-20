@@ -5,9 +5,19 @@ namespace Microsoft.Qwiq.Integration.Tests
 {
     public class Result : IDisposable
     {
-        public IWorkItem WorkItem { get; set; }
+        private IWorkItem _workItem;
 
-        public IEnumerable<IWorkItem> WorkItems { get; set; }
+        public IWorkItem WorkItem
+        {
+            get => _workItem;
+            set
+            {
+                _workItem = value;
+                WorkItems = new WorkItemCollection(new[]{value});
+            }
+        }
+
+        public IWorkItemCollection WorkItems { get; set; }
 
         public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
 

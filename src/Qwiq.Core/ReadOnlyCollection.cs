@@ -33,8 +33,15 @@ namespace Microsoft.Qwiq
         }
 
         protected ReadOnlyCollection(IEnumerable<T> items, Func<T, string> nameFunc)
-            : this(() => items ?? Enumerable.Empty<T>(), nameFunc)
         {
+            ItemFactory = () => items ?? Enumerable.Empty<T>();
+            _nameFunc = nameFunc;
+        }
+
+        protected ReadOnlyCollection(IEnumerable<T> items)
+            :this(items, null)
+        {
+
         }
 
         protected ReadOnlyCollection()

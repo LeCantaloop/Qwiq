@@ -47,7 +47,7 @@ namespace Microsoft.Qwiq.Rest
             _asOf = ExtractAsOf(query.Query);
         }
 
-        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {
             //TODO: Verify this is a links query
             // if (!IsLinkQuery) return null;
@@ -79,10 +79,15 @@ namespace Microsoft.Qwiq.Rest
             }
         }
 
-        public IEnumerable<IWorkItem> RunQuery()
+        public IWorkItemCollection RunQuery()
         {
             if (_ids == null && _query == null) throw new InvalidOperationException();
 
+            return new WorkItemCollection(RunQueryImpl().ToList());
+        }
+
+        private IEnumerable<IWorkItem> RunQueryImpl()
+        {
             if (_ids == null && _query != null)
             {
                 var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
@@ -94,13 +99,7 @@ namespace Microsoft.Qwiq.Rest
 
             var expand = WorkItemExpand.All;
             var qry = _ids.Partition(_workItemStore.PageSize);
-            var ts = qry.Select(
-                                s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(
-                                                                                                s,
-                                                                                                null,
-                                                                                                _asOf,
-                                                                                                expand,
-                                                                                                WorkItemErrorPolicy.Omit));
+            var ts = qry.Select(s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, null, _asOf, expand, WorkItemErrorPolicy.Omit));
 
             // This is done in parallel so keep performance similar to the SOAP client
             foreach (var workItem in Task.WhenAll(ts).GetAwaiter().GetResult().SelectMany(s => s.Select(f => f)))
@@ -117,8 +116,7 @@ namespace Microsoft.Qwiq.Rest
                 yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(
                                                                                     new WorkItem(
                                                                                                  workItem,
-                                                                                                 new Lazy<IWorkItemType>(
-                                                                                                                         WorkItemTypeFactory),
+                                                                                                 new Lazy<IWorkItemType>(WorkItemTypeFactory),
                                                                                                  s => _workItemStore.WorkItemLinkTypes[s]));
             }
         }

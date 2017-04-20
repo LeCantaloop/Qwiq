@@ -100,7 +100,7 @@ namespace Microsoft.Qwiq.Soap
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = true)
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = true)
         {
             try
             {
@@ -113,11 +113,11 @@ namespace Microsoft.Qwiq.Soap
             }
         }
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             if (ids == null) throw new ArgumentNullException(nameof(ids));
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>();
+            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
             try
             {

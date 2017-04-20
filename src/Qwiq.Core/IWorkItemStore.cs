@@ -79,7 +79,7 @@ namespace Microsoft.Qwiq
         ///     <c>false</c>.
         /// </param>
         /// <returns>IEnumerable&lt;IWorkItem&gt;.</returns>
-        IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false);
+        IWorkItemCollection Query(string wiql, bool dayPrecision = false);
 
         /// <summary>
         ///     Queries the specified work item IDs.
@@ -87,7 +87,7 @@ namespace Microsoft.Qwiq
         /// <param name="ids">A collection of work item IDs.</param>
         /// <param name="asOf">Optional: The date of the desired work item state.</param>
         /// <returns>IEnumerable&lt;IWorkItem&gt;.</returns>
-        IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null);
+        IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null);
 
         /// <summary>
         ///     Queries the specified work item ID.

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq
 {
@@ -15,8 +17,12 @@ namespace Microsoft.Qwiq
             foreach (var id in targets) workItem.Links.Add(workItem.CreateRelatedLink(id, end));
         }
 
-       
+        public static IWorkItemCollection ToWorkItemCollection(this IEnumerable<IWorkItem> items)
+        {
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items is IWorkItemCollection items2) return items2;
 
-        
+            return new WorkItemCollection(items.Distinct(Comparer.WorkItem));
+        }
     }
 }

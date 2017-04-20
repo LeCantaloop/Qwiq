@@ -32,7 +32,7 @@ mode(Recursive)
                 "REST",
                 "QueryLinks - WIQL");
             RestResult.WorkItems = TimedAction(
-                () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))),
                 "REST",
                 "Query - IDs");
 
@@ -43,7 +43,7 @@ mode(Recursive)
                 "SOAP",
                 "QueryLinks - WIQL");
             SoapResult.WorkItems = TimedAction(
-                () => SoapResult.WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                () => SoapResult.WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))),
                 "SOAP",
                 "Query - IDs");
         }

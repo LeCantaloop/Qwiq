@@ -36,6 +36,10 @@ namespace Microsoft.Qwiq.Rest
                     var l = new ExternalLink(relation.Url, ExtractProperty(relation.Attributes, "name"), ExtractComment(relation.Attributes));
                     Add(l);
                 }
+                else if ("AttachedFile".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
+                {
+
+                }
                 else
                 {
                     if (relation.Rel.IndexOf('-') > -1)
