@@ -128,7 +128,6 @@
       <HintPath>..\..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
@@ -154,14 +153,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj">
-      <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
-      <Name>Qwiq.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj">
-      <Project>{DB07E690-4B77-414F-91C7-1A48C9F01F24}</Project>
-      <Name>Qwiq.Mocks</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>
       <Name>Qwiq.Tests.Common</Name>
