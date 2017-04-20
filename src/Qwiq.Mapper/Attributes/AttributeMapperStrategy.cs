@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
 
@@ -84,41 +84,76 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 #if DEBUG
             Trace.TraceInformation("{0}: Mapping {1}", GetType().Name, sourceWorkItem.Id);
 #endif
+            var properties = PropertiesOnWorkItemCache(
+                _inspector,
+                sourceWorkItem,
+                targetWorkItemType,
+                typeof(FieldDefinitionAttribute));
 
-            foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType, typeof(FieldDefinitionAttribute)))
+            foreach (var property in properties)
             {
                 var a = PropertyInfoFieldCache(_inspector, property);
                 if (a == null) continue;
 
                 var fieldName = a.FieldName;
                 var convert = a.RequireConversion;
+                var nullSub = a.NullSubstitute;
+                var fieldValue = sourceWorkItem[fieldName];
 
                 try
                 {
                     if (convert)
                     {
-                        var value = _typeParser.Parse(property.PropertyType, sourceWorkItem[fieldName]);
-                        accessor[targetWorkItem, property.Name] = value;
+                        try
+                        {
+                            fieldValue = _typeParser.Parse(property.PropertyType, fieldValue, nullSub);
+                        }
+                        catch (Exception)
+                        {
+                            try
+                            {
+                                Trace.TraceWarning(
+                                    "Could not convert value of field '{0}' ({1}) to type {2}",
+                                    fieldName,
+                                    fieldValue.GetType().Name,
+                                    property.PropertyType.Name);
+                            }
+                            catch (Exception)
+                            {
+                                // Best effort
+                            }
+                        }
                     }
-                    else
+
+                    if (fieldValue == null && nullSub != null)
                     {
-                        accessor[targetWorkItem, property.Name] = sourceWorkItem[fieldName];
+                        fieldValue = nullSub;
+                    }
+
+                    accessor[targetWorkItem, property.Name] = fieldValue;
+
+                }
+                catch(NullReferenceException) when (fieldValue == null)
+                {
+                    // This is most likely the cause of the field being null and the target property type not accepting nulls
+                    // For example: mapping null to an int instead of int?
+
+                    try
+                    {
+                        Trace.TraceWarning(
+                            "Could not map field '{0}' from type '{1}' to type '{2}'. Target '{2}.{3}' does not accept null values.",
+                            fieldName,
+                            sourceWorkItem.Type.Name,
+                            targetWorkItemType.Name,
+                            $"{property.Name} ({property.PropertyType.FullName})");
+                    }
+                    catch (Exception)
+                    {
+                        // Best effort
                     }
                 }
                 catch (Exception e)
                 {
-                    try
-                    {
-                        Trace.TraceWarning(
-                            "Could not convert value of field '{0}' ({1}) to type {2}",
-                            fieldName,
-                            sourceWorkItem[fieldName].GetType().Name,
-                            property.PropertyType.Name);
-                    }
-                    catch (Exception)
-                    {
-                    }
-
                     try
                     {
                         Trace.TraceWarning(
@@ -130,6 +165,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                     }
                     catch (Exception)
                     {
+                        // Best effort
                     }
                 }
             }

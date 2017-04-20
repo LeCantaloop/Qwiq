@@ -29,12 +29,12 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<Mocks.MockModel>
+    public class when_a_query_is_on_a_field_that_is_nullable : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
             base.When();
-            Expected += " WHERE (([NullableField] = 1) AND ([Work Item Type] = 'MockWorkItem'))";
+            Expected += $" WHERE (([NullableField] = 1) AND ([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
             Actual = Query.Where(item => item.NullableField.Value == 1).ToString();
         }
 
@@ -47,7 +47,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<Mocks.MockModel>
+    public class when_a_where_clause_filters_on_a_field_with_no_field_definition_attribute : GenericQueryBuilderTestsBase<MockModel>
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -60,12 +60,12 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<Mocks.MockModel>
+    public class when_a_select_clause_is_used : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
             base.When();
-            Expected += " WHERE (([Work Item Type] = 'MockWorkItem'))";
+            Expected += $" WHERE (([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToString();
         }
 
@@ -78,12 +78,12 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<Mocks.MockModel>
+    public class when_two_select_clauses_are_chained : GenericQueryBuilderTestsBase<MockModel>
     {
         public override void When()
         {
             base.When();
-            Expected += " WHERE (([Work Item Type] = 'MockWorkItem'))";
+            Expected += $" WHERE (([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
             Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToString();
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void When()
         {
             base.When();
-            Expected += " WHERE (([IntField] > 1) AND ([Work Item Type] IN ('Baz', 'Buzz', 'Fizz')))";
+            Expected += $" WHERE (([IntField] > 1) AND ([{CoreFieldRefNames.WorkItemType}] IN ('Baz', 'Buzz', 'Fizz')))";
             Actual = Query.Where(item => item.IntField > 1).ToString();
         }
 

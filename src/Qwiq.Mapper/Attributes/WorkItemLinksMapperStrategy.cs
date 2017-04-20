@@ -58,10 +58,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             return Store.Query(ids);
         }
 
-        public override void Map(
-            Type targetWorkItemType,
-            IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings,
-            IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var linksLookup = BuildLinksRelationships(targetWorkItemType, workItemMappings);
 
@@ -81,7 +78,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 
             // REVIEW: The recursion of links can cause mapping multiple times on the same values
             // For example, a common ancestor
-            var previouslyMapped = new Dictionary<Tuple<int, RuntimeTypeHandle>, IIdentifiable>();
+            var previouslyMapped = new Dictionary<Tuple<int, RuntimeTypeHandle>, IIdentifiable<int?>>();
 
             // Enumerate through items requiring a VSO lookup and map the objects
             // There are n-passes to map, where n=number of link types
@@ -107,9 +104,8 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         var propertyType = def.WorkItemType;
                         var linkType = def.LinkName;
                         var key = new Tuple<int, string>(sourceWorkItem.Id, linkType);
-                        List<int> linkIds;
 
-                        if (!linksLookup.TryGetValue(key, out linkIds))
+                        if (!linksLookup.TryGetValue(key, out List<int> linkIds))
                         {
                             // Could not find any IDs for the given ID/LinkType
                             continue;
@@ -122,8 +118,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                             .Select(
                             s =>
                                 {
-                                    IWorkItem val;
-                                    workItems.TryGetValue(s, out val);
+                                    workItems.TryGetValue(s, out IWorkItem val);
                                     return val;
                                 }).Where(p => p != null)
                                 .ToList();
@@ -134,7 +129,8 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         // This allows for lazy creation of common parents
                         foreach (var createdItem in createdItems)
                         {
-                            var key2 = new Tuple<int, RuntimeTypeHandle>(createdItem.Id, propertyType.TypeHandle);
+                            if (!createdItem.Id.HasValue) continue;
+                            var key2 = new Tuple<int, RuntimeTypeHandle>(createdItem.Id.Value, propertyType.TypeHandle);
                             previouslyMapped[key2] = createdItem;
                         }
 
@@ -166,7 +162,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
-        private Dictionary<Tuple<int, string>, List<int>> BuildLinksRelationships(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings)
+        private Dictionary<Tuple<int, string>, List<int>> BuildLinksRelationships(
+            Type targetWorkItemType,
+            IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings)
         {
             var linksLookup = new Dictionary<Tuple<int, string>, List<int>>();
 

@@ -4,10 +4,10 @@ using Microsoft.Qwiq.Mapper.Attributes;
 namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 {
     [WorkItemType("MockWorkItem")]
-    public class MockModel : IIdentifiable
+    public class MockModel : IIdentifiable<int?>
     {
         [FieldDefinition("Id")]
-        public virtual int Id { get; internal set; }
+        public virtual int? Id { get; internal set; }
 
         [FieldDefinition("IntField")]
         public int IntField { get; internal set; }

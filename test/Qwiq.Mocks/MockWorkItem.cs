@@ -1,209 +1,118 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
-
 namespace Microsoft.Qwiq.Mocks
 {
     [Serializable]
-    public class MockWorkItem : IWorkItem
+    public class MockWorkItem : WorkItem, IWorkItem
     {
-        internal bool PartialOpenWasCalled = false;
-        private readonly ICollection<ILink> _links;
-        private readonly Dictionary<string, IField> _properties;
+        private IFieldCollection _fields;
 
-        private IWorkItemType _type;
+        internal bool PartialOpenWasCalled;
 
+        [DebuggerStepThrough]
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem()
-            : this(null, null as IEnumerable<IField>)
+            : this("Mock")
         {
         }
 
+        [DebuggerStepThrough]
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null)
-            : this(workItemType, null as IEnumerable<IField>)
+            : this(workItemType, null)
         {
         }
 
-        public MockWorkItem(IDictionary<string, object> properties)
-            : this(null, properties)
+        [DebuggerStepThrough]
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        public MockWorkItem(IDictionary<string, object> fields)
+            : this((string)null, fields)
         {
         }
 
-        public MockWorkItem(string workItemType = null, IDictionary<string, object> properties = null)
-            : this(workItemType, properties?.Select(p => new MockField(p.Value, p.Value) { Name = p.Key }))
+        [Obsolete(
+            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
+        public MockWorkItem(string workItemType = null, IDictionary<string, object> fields = null)
+            : this(
+                new MockWorkItemType(
+                    workItemType ?? "Mock",
+                    CoreFieldDefinitions.All.Union(
+                        fields?.Keys.Select(MockFieldDefinition.Create)
+                        ?? Enumerable.Empty<IFieldDefinition>())),
+                fields)
         {
         }
 
-        internal MockWorkItem(string workItemType = null, IEnumerable<IField> properties = null)
+        public MockWorkItem(IWorkItemType type, int id)
+            : this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
         {
-            _links = new MockLinkCollection();
-            _properties = new Dictionary<string, IField>(StringComparer.OrdinalIgnoreCase);
+        }
 
-            if (properties != null)
+        public MockWorkItem(IWorkItemType type, int id, params KeyValuePair<string, object>[] fieldValues)
+            : this(
+                   type,
+                   fieldValues == null
+                       ? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) { { CoreFieldRefNames.Id, id } }
+                       : fieldValues.Union(new[] { new KeyValuePair<string, object>(CoreFieldRefNames.Id, id) })
+                                    .ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type, params KeyValuePair<string, object>[] fieldValues)
+            : this(type, fieldValues == null ? null : fieldValues.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
+        {
+        }
+
+        public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
+            : base(type)
+        {
+            // set any values coming into
+            if (fields != null)
             {
-                foreach (var prop in properties)
+                foreach (var field in fields)
                 {
-                    _properties[prop.Name] = prop;
+                    Fields[field.Key].Value = field.Value;
                 }
             }
 
-            Type = new MockWorkItemType(workItemType);
-            Revisions = Enumerable.Empty<IRevision>();
+            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
+            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
 
+            Links = new HashSet<ILink>();
+            Revisions = new HashSet<IRevision>();
+            ApplyRules();
         }
 
-        public string AreaPath
+        public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
         {
-            get { return (string)GetValue("Area Path"); }
-            set
+            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
+        }
+
+        public override IRelatedLink CreateRelatedLink(int id, IWorkItemLinkTypeEnd linkTypeEnd = null)
+        {
+            if (IsNew) throw new InvalidOperationException("Save first");
+            if (id != 0
+                && linkTypeEnd == null)
             {
-                SetValue("Area Path", value);
-                SetValue("System.AreaPath", value);
+                throw new ArgumentException($"Value cannot be zero when no {nameof(IWorkItemLinkTypeEnd)} specified.", nameof(id));
             }
+
+            if (id == 0 && linkTypeEnd == null) return new MockRelatedLink(null, Id);
+
+            return new MockRelatedLink(linkTypeEnd, Id, id);
         }
-
-        public string AssignedTo
-        {
-            get
-            {
-                return (string)GetValue("Assigned To");
-            }
-            set
-            {
-                SetValue("Assigned To", value);
-                SetValue("System.AssignedTo", value);
-            }
-        }
-
-        public int AttachedFileCount
-        {
-            get { return (int)GetValue("Attached File Count"); }
-            set { SetValue("Attached File Count", value); }
-        }
-
-        public IEnumerable<IAttachment> Attachments
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string ChangedBy
-        {
-            get { return (string)GetValue("Changed By"); }
-            set
-            {
-                SetValue("Changed By", value);
-                SetValue("System.ChangedBy", value);
-            }
-        }
-
-        public DateTime ChangedDate
-        {
-            get { return (DateTime)GetValue("Changed Date"); }
-            set
-            {
-                SetValue("Changed Date", value);
-                SetValue("System.ChangedDate", value);
-            }
-        }
-
-        public string CreatedBy
-        {
-            get { return (string)GetValue("Created By"); }
-            set
-            {
-                SetValue("Created By", value);
-                SetValue("Microsoft.VSTS.Common.CreatedBy", value);
-            }
-        }
-
-        public DateTime CreatedDate
-        {
-            get { return (DateTime)GetValue("Created Date"); }
-            set
-            {
-                SetValue("Created Date", value);
-                SetValue("Microsoft.VSTS.Common.CreatedDate", value);
-            }
-        }
-
-        public string Description
-        {
-            get { return (string)GetValue("Description"); }
-            set
-            {
-                SetValue("Description", value);
-                SetValue("System.Description", value);
-            }
-        }
-
-        public int ExternalLinkCount
-        {
-            get { return (int)GetValue("External Link Count"); }
-            set { SetValue("External Link Count", value); }
-        }
-
-        public IFieldCollection Fields => new MockFieldCollection(_properties);
-
-        public string History
-        {
-            get { return GetValue("History") as string ?? string.Empty; }
-            set
-            {
-                SetValue("History", value);
-                SetValue("System.History", value);
-            }
-        }
-
-        public int HyperLinkCount
-        {
-            get { return (int)GetValue("Hyper Link Count"); }
-            set { SetValue("Hyper Link Count", value); }
-        }
-
-        public int Id
-        {
-            get { return ((int?)GetValue("Id")).GetValueOrDefault(0); }
-            set
-            {
-                SetValue("Id", value);
-                SetValue("System.Id", value);
-            }
-        }
-
-        public bool IsDirty
-        {
-            get { return _properties.Select(p => p.Value.IsDirty).Any(); }
-        }
-
-        public string IterationPath
-        {
-            get
-            {
-                return (string)GetValue("Iteration Path");
-            }
-            set
-            {
-                SetValue("Iteration Path", value);
-                SetValue("System.IterationPath", value);
-            }
-        }
-
-        public string Keywords
-        {
-            get { return (string)GetValue("Keywords"); }
-            set { SetValue("Keywords", value); }
-        }
-
-        public ICollection<ILink> Links { get; set; }
-
-        public int RelatedLinkCount => Links.OfType<IRelatedLink>().Count();
 
         public string ReproSteps
         {
-            get { return (string)GetValue("Repro Steps"); }
+            get => GetValue<string>("Repro Steps");
             set
             {
                 SetValue("Repro Steps", value);
@@ -211,94 +120,54 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public int Rev
+        public new DateTime? ChangedDate
+        {
+            get => base.ChangedDate;
+            set => this[CoreFieldRefNames.ChangedDate] = value;
+        }
+
+        public sealed override IFieldCollection Fields => _fields
+                                                          ?? (_fields = new MockFieldCollection(this, Type.FieldDefinitions));
+
+        public new int Id
+        {
+            get => base.Id;
+            set => this[CoreFieldRefNames.Id] = value;
+        }
+
+        public override bool IsDirty
         {
             get
             {
-                return (int)GetValue("Rev");
-            }
-            set
-            {
-                SetValue("Rev", value);
-                SetValue("System.Rev", value);
+                return Fields.Any(p => p.IsDirty);
             }
         }
 
-        public DateTime RevisedDate
+        public override string Keywords
         {
-            get { return (DateTime)GetValue("Revised Date"); }
-            set { SetValue("Revised Date", value); }
+            get => GetValue<string>(WorkItemFields.Keywords);
+            set => SetValue(WorkItemFields.Keywords, value);
         }
 
-        public int Revision
-        {
-            get { return (int)GetValue("Revision"); }
-            set { SetValue("Revision", value); }
-        }
+        public new ICollection<ILink> Links { get; set; }
 
-        public IEnumerable<IRevision> Revisions
-        {
-            get { return (IEnumerable<IRevision>)GetValue("Revisions"); }
-            set { SetValue("Revisions", value); }
-        }
+        public new int RelatedLinkCount => Links.OfType<IRelatedLink>().Count();
 
-        public string State
-        {
-            get { return (string)GetValue("State"); }
-            set
-            {
-                SetValue("State", value);
-                SetValue("System.State", value);
-            }
-        }
+        public override IEnumerable<IRevision> Revisions { get; }
 
-        public string Tags
-        {
-            get { return (string)GetValue("Tags"); }
-            set { SetValue("Tags", value); }
-        }
+        public override Uri Uri => new Uri($"vstfs:///WorkItemTracking/WorkItem/{Id}");
 
-        public string Title
-        {
-            get { return (string)GetValue("Title"); }
-            set
-            {
-                SetValue("Title", value);
-                SetValue("System.Title", value);
-            }
-        }
+        public override string Url => Uri.ToString();
 
-        public IWorkItemType Type
-        {
-            get
-            {
-                return _type;
-            }
-            set
-            {
-                _type = value;
-                SetValue("System.WorkItemType", value.Name);
-                SetValue("Work Item Type", value.Name);
-            }
-        }
-
-        public Uri Uri
-        {
-            get { return (Uri)GetValue("Uri"); }
-            set { SetValue("Uri", value); }
-        }
-
-        public object this[string name]
-        {
-            get { return GetValue(name); }
-            set { SetValue(name, value); }
-        }
-
-        public void Close()
+        public override void ApplyRules(bool doNotUpdateChangedBy = false)
         {
         }
 
-        public IWorkItem Copy()
+        public override void Close()
+        {
+        }
+
+        public override IWorkItem Copy()
         {
             using (var stream = new MemoryStream())
             {
@@ -307,96 +176,103 @@ namespace Microsoft.Qwiq.Mocks
                 stream.Position = 0;
 
                 var newItem = (MockWorkItem)formatter.Deserialize(stream);
+
+                var s = Type.Store();
+                if (s != null)
+                {
+                    var e = s.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related];
+                    newItem.Links.Add(newItem.CreateRelatedLink(e.ForwardEnd, this));
+                }
+                else
+                {
+                    using (var wis = new MockWorkItemStore())
+                    {
+                        newItem.Links.Add(newItem.CreateRelatedLink(wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd, this));
+                    }
+                }
+
                 newItem.Id = 0;
-
-                var link = newItem.CreateRelatedLink(this);
-                newItem.Links.Add(link);
-
+                newItem.ApplyRules();
                 return newItem;
             }
         }
 
-        public IHyperlink CreateHyperlink(string location)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRelatedLink CreateRelatedLink(IWorkItem target)
-        {
-            return CreateRelatedLink(new MockWorkItemStore().WorkItemLinkTypes.Single(s => s.ReferenceName == CoreLinkTypeReferenceNames.Related).ForwardEnd, target);
-        }
-
-        public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsValid()
+        public override bool IsValid()
         {
             return Validate() == null;
         }
 
-        public void Open()
+        public override void Open()
         {
         }
 
-        public void PartialOpen()
+        public override void PartialOpen()
         {
             PartialOpenWasCalled = true;
         }
 
-        public void Reset()
+        public override void Reset()
         {
         }
 
-        public void Save()
+        public override void Save()
         {
+            Save(SaveFlags.None);
         }
 
-        public void Save(SaveFlags flags)
-        {
-        }
+        public bool IsNew => Id == 0;
 
-        public IEnumerable<IField> Validate()
+        public override void Save(SaveFlags flags)
         {
-            var invalidFields = _properties.Where(p => !p.Value.IsValid).Select(p => p.Value).ToArray();
-            return invalidFields.Any()
-                ? invalidFields
-                : null;
-        }
-        //public IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd end, IWorkItem target)
-        //{
-        //    return new MockWorkItemLink(end)
-        //    {
-        //        RelatedWorkItemId = target.Id,
-        //        LinkSubType = "Related"
-        //    };
-        //}
-
-        //public IHyperlink CreateHyperlink(string location)
-        //{
-        //    return new MockHyperlink(location);
-        //}
-
-        private object GetValue(string field)
-        {
-            IField val;
-            return _properties.TryGetValue(field, out val)
-                ? val.Value
-                : null;
-        }
-
-        private void SetValue(string field, object value)
-        {
-            IField val;
-            if (_properties.TryGetValue(field, out val))
+            if (IsDirty || IsNew)
             {
-                val.Value = value;
+                if (!IsValid())
+                {
+                    throw new Exception("Work item is not ready to save.");
+                }
+
+                if (!(Type is MockWorkItemType))
+                {
+                    throw new NotSupportedException();
+                }
+
+                var t = (MockWorkItemType)Type;
+                if (!(t.Store is MockWorkItemStore))
+                {
+                    throw new NotSupportedException();
+                }
+
+                var s = (MockWorkItemStore)t.Store;
+
+                s.BatchSave(new[] { this });
             }
-            else
+        }
+
+        public override IEnumerable<IField> Validate()
+        {
+            var invalidFields = Fields.Where(p => !p.IsValid).Select(p => p).ToArray();
+            return invalidFields.Any() ? invalidFields : null;
+        }
+
+        [Obsolete(
+            "This method is deprecated and will be removed in a future version. See CreateRelatedLink(IWorkItemLinkTypeEnd, IWorkItem) instead.")]
+        public IRelatedLink CreateRelatedLink(IWorkItem target)
+        {
+            var store = Type.Store();
+            if (store != null)
             {
-                _properties.Add(field, new MockField(value, value) { Name = field });
+                var e = store.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd;
+                return CreateRelatedLink(e, target);
+            }
+
+            using (var wis = new MockWorkItemStore())
+            {
+                return CreateRelatedLink(
+                    wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd,
+                    target);
             }
         }
     }
+
+
 }

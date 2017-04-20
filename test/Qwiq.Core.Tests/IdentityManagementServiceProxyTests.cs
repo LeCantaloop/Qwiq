@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Qwiq.Core.Tests.Mocks;
-using Microsoft.Qwiq.Proxies;
+using Microsoft.Qwiq.Soap;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
@@ -18,7 +19,7 @@ namespace Microsoft.Qwiq.Core.Tests
         public override void Given()
         {
             _identityManagementService2 = new MockIdentityManagementService2();
-            Service = new IdentityManagementServiceProxy(_identityManagementService2);
+            Service = new IdentityManagementService(_identityManagementService2);
         }
     }
 

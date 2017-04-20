@@ -35,8 +35,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 
         private static IEnumerable<PropertyInfo> TypePropertiesCache(Type type)
         {
-            IEnumerable<PropertyInfo> pis;
-            if (TypeProperties.TryGetValue(type.TypeHandle, out pis))
+            if (TypeProperties.TryGetValue(type.TypeHandle, out IEnumerable<PropertyInfo> pis))
             {
                 return pis;
             }
@@ -48,8 +47,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 
         private static IEnumerable<Attribute> CustomAttributesCache(PropertyInfo property)
         {
-            IEnumerable<Attribute> @as;
-            if (PropertyAttributes.TryGetValue(property, out @as))
+            if (PropertyAttributes.TryGetValue(property, out IEnumerable<Attribute> @as))
             {
                 return @as;
             }

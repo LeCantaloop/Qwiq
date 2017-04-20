@@ -21,23 +21,16 @@ namespace Microsoft.Qwiq.Identity.Mapper
             _identityManagementService = identityManagementService;
         }
 
-        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
-            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, new WorkItemKeyComparer());
-
-            if (!workingSet.Any())
-            {
-                return;
-            }
+            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Default);
+            if (!workingSet.Any()) return;
 
             var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targeWorkItemType, _inspector);
-
-            if (!validIdentityProperties.Any())
-            {
-                return;
-            }
+            if (!validIdentityProperties.Any())return;
+            
             var accessor = TypeAccessor.Create(targeWorkItemType, true);
-            var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workingSet.Keys.ToList(), validIdentityProperties.Keys.ToList());
+            var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workingSet.Keys, validIdentityProperties.Keys.ToList());
             var identitySearchTerms = GetIdentitySearchTerms(validIdentityFieldsWithWorkItems).ToList();
             var identitySearchResults = GetIdentityMap(_identityManagementService, identitySearchTerms);
 
@@ -61,7 +54,7 @@ namespace Microsoft.Qwiq.Identity.Mapper
             return ims.GetAliasesForDisplayNames(searchTerms.ToArray()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value.FirstOrDefault());
         }
 
-        internal static ICollection<WorkItemWithFields> GetWorkItemsWithIdentityFieldValues(IReadOnlyCollection<IWorkItem> workItems, IReadOnlyCollection<string> witFieldNames)
+        internal static ICollection<WorkItemWithFields> GetWorkItemsWithIdentityFieldValues(IEnumerable<IWorkItem> workItems, System.Collections.Generic.IReadOnlyCollection<string> witFieldNames)
         {
             return
                 workItems.Select(

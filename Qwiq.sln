@@ -1,17 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "test\Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Tests", "test\Qwiq.Mapper.Tests\Qwiq.Mapper.Tests.csproj", "{BECF2066-A6C5-475A-BA14-12890F284A12}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "test\Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives", "src\Qwiq.Relatives\Qwiq.Relatives.csproj", "{B6001D84-9BFC-40AB-A29C-3FAEF3154456}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Relatives.Tests", "test\Qwiq.Relatives.Tests\Qwiq.Relatives.Tests.csproj", "{92D314BC-B178-413D-8A38-A54DC0BD0261}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Tests", "test\Qwiq.Identity.Tests\Qwiq.Identity.Tests.csproj", "{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}"
 EndProject
@@ -26,6 +22,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mocks", "test\Qwiq.Mocks\Qwiq.Mocks.csproj", "{DB07E690-4B77-414F-91C7-1A48C9F01F24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Benchmark", "test\Qwiq.Benchmark\Qwiq.Benchmark.csproj", "{D9ED32D7-03FA-468B-AD1A-249CEF9C6CDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Tests.Common", "test\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj", "{B45C92B0-AC36-409D-86A5-5428C87384C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Benchmark.Tests", "test\Qwiq.Identity.Benchmark.Tests\Qwiq.Identity.Benchmark.Tests.csproj", "{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Benchmark.Tests", "test\Qwiq.Mapper.Benchmark.Tests\Qwiq.Mapper.Benchmark.Tests.csproj", "{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Soap", "src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj", "{6F5FFC42-0539-4161-B348-A54ADB57C2BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Rest", "src\Qwiq.Core.Rest\Qwiq.Core.Rest.csproj", "{0F70E1C2-D696-4749-8601-374A7C9C268A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Integration.Tests", "test\Qwiq.Integration.Tests\Qwiq.Integration.Tests.csproj", "{E4130432-C890-41E0-8407-C4142CAF59D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +53,6 @@ Global
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A26136B-A086-4CDF-BFF6-E0A83FB67446}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6001D84-9BFC-40AB-A29C-3FAEF3154456}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92D314BC-B178-413D-8A38-A54DC0BD0261}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +81,30 @@ Global
 		{D9ED32D7-03FA-468B-AD1A-249CEF9C6CDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9ED32D7-03FA-468B-AD1A-249CEF9C6CDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9ED32D7-03FA-468B-AD1A-249CEF9C6CDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B45C92B0-AC36-409D-86A5-5428C87384C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B45C92B0-AC36-409D-86A5-5428C87384C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B45C92B0-AC36-409D-86A5-5428C87384C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B45C92B0-AC36-409D-86A5-5428C87384C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F5FFC42-0539-4161-B348-A54ADB57C2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F5FFC42-0539-4161-B348-A54ADB57C2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F5FFC42-0539-4161-B348-A54ADB57C2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F5FFC42-0539-4161-B348-A54ADB57C2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F70E1C2-D696-4749-8601-374A7C9C268A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

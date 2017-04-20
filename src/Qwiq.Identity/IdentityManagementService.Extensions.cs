@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Identity
 {
     public static class IdentityManagementServiceExtensions
     {
         private const string TfsLoggedInIdentityType = "Microsoft.IdentityModel.Claims.ClaimsIdentity";
-        private const string TfsBindPendingIdentityType = "Microsoft.TeamFoundation.BindPendingIdentity";
 
         public static string[] GetAliasesForDisplayName(this IIdentityManagementService ims, string displayName)
         {
@@ -24,7 +25,7 @@ namespace Microsoft.Qwiq.Identity
                         kvp => kvp.Key,
                         kvp =>
                             kvp.Value
-                                .Where(identity => identity != null && !identity.IsContainer && identity.IsActive)
+                                .Where(identity => identity != null && !identity.IsContainer && identity.UniqueUserId == IdentityConstants.ActiveUniqueId)
                                 .Select(i => i.GetUserAlias())
                                 .Distinct(StringComparer.OrdinalIgnoreCase)
                                 .ToArray());
@@ -95,9 +96,9 @@ namespace Microsoft.Qwiq.Identity
                 {
                     var loggedInAccountString = $"{tenantId}\\{alias}@{domain}";
 
-                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(TfsLoggedInIdentityType, loggedInAccountString));
-                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(TfsBindPendingIdentityType,
-                        "upn:" + loggedInAccountString));
+                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(IdentityConstants.ClaimsType, loggedInAccountString));
+                    descriptorsForAlias.Add(ims.CreateIdentityDescriptor(IdentityConstants.BindPendingIdentityType,
+                        IdentityConstants.BindPendingSidPrefix + loggedInAccountString));
                 }
 
                 descriptors.Add(alias, descriptorsForAlias);

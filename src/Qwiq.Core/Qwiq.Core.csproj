@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,8 +12,16 @@
     <AssemblyName>Microsoft.Qwiq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <HighEntropyVA>true</HighEntropyVA>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors />
+    <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp />
   </PropertyGroup>
@@ -22,307 +31,201 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.10.305231913\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.13.5.907, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.5\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.10.305231913\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform, Version=3.13.5.907, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.5\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IdentityModel.Logging">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.1.0.0\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.IdentityModel.Tokens">
-      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.5.0.0\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.ServiceBus">
+    <Reference Include="Microsoft.ServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WindowsAzure.ServiceBus.3.3.2\lib\net45-full\Microsoft.ServiceBus.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Build.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Build.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.TeamFoundation.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.15.112.1\lib\net45\Microsoft.TeamFoundation.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Build.Common">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Build.Common.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.VisualStudio.Services.Client.Interactive, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.InteractiveClient.15.112.1\lib\net45\Microsoft.VisualStudio.Services.Client.Interactive.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Build2.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Build2.WebApi.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.VisualStudio.Services.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.15.112.1\lib\net45\Microsoft.VisualStudio.Services.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Chat.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Chat.WebApi.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.VisualStudio.Services.WebApi, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.15.112.1\lib\net45\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Common">
-      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Core.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Core.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.DeleteTeamProject">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.DeleteTeamProject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Diff">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Diff.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Discussion.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Discussion.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Git.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Git.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Lab.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Lab.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Lab.Common">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Lab.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Lab.TestIntegration.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Lab.TestIntegration.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.Lab.WorkflowIntegration.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Policy.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Policy.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.ProjectManagement">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.ProjectManagement.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.SharePointReporting.Integration">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.SharePointReporting.Integration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.SourceControl.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.SourceControl.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Test.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Test.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestImpact.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.TestImpact.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestManagement.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.TestManagement.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestManagement.Common">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.TestManagement.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.TestManagement.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.TestManagement.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.VersionControl.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.VersionControl.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.VersionControl.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.VersionControl.Common.Integration">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.VersionControl.Common.Integration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.Work.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.Work.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Client.DataStoreLoader.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Client.QueryLanguage.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Common">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Proxy">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.Proxy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.WebApi">
-      <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.14.102.0\lib\net45\Microsoft.TeamFoundation.WorkItemTracking.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Services.Client">
-      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.InteractiveClient.14.102.0\lib\net45\Microsoft.VisualStudio.Services.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Services.Common">
-      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.14.102.0\lib\net45\Microsoft.VisualStudio.Services.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.Services.WebApi">
-      <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.14.102.0\lib\net45\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.1\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.5.0.0\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.40306.1554, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.4.0.4.403061554\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Http">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseLinkType.cs" />
+    <Compile Include="ClientType.cs" />
+    <Compile Include="Comparer.cs" />
+    <Compile Include="CoreField.cs" />
+    <Compile Include="CoreFieldRefNames.cs" />
+    <Compile Include="CoreLinkTypeReferenceNames.cs" />
+    <Compile Include="CoreLinkTypes.cs" />
+    <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
+    <Compile Include="Credentials\AuthenticationOptions.cs" />
+    <Compile Include="Credentials\AuthenticationSuccessNotification.cs" />
+    <Compile Include="Credentials\AuthenticationTypes.cs" />
+    <Compile Include="Credentials\CredentialNotification.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
+    <Compile Include="Credentials\CredentialsNotifications.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
+    <Compile Include="Exceptions\DeniedOrNotExistException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
+    <Compile Include="Exceptions\FieldDefinitionNotExistException.cs" />
     <Compile Include="Exceptions\IExceptionExploder.cs" />
     <Compile Include="Exceptions\IExceptionMapper.cs" />
     <Compile Include="Exceptions\InnerExceptionExploder.cs" />
     <Compile Include="Exceptions\InvalidOperationExceptionMapper.cs" />
+    <Compile Include="Exceptions\PageSizeRangeException.cs" />
+    <Compile Include="Exceptions\ProxyBase.cs" />
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="Exceptions\WorkItemTypeDeniedOrNotExistException.cs" />
+    <Compile Include="ExternalLink.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="FieldCollection.cs" />
+    <Compile Include="FieldDefinition.cs" />
+    <Compile Include="FieldDefinitionCollection.cs" />
+    <Compile Include="FieldDefinitionCollectionComparer.cs" />
+    <Compile Include="FieldDefinitionComparer.cs" />
+    <Compile Include="FieldRefNames.cs" />
+    <Compile Include="GenericComparer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Hyperlink.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
+    <Compile Include="IdentifiableComparer.cs" />
+    <Compile Include="IdentityDescriptor.cs" />
+    <Compile Include="IdentityDescriptorComparer.cs" />
+    <Compile Include="IdentityFieldValue.cs" />
     <Compile Include="IdentitySearchFactor.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="IExternalLink.cs" />
     <Compile Include="IField.cs" />
     <Compile Include="IFieldCollection.cs" />
     <Compile Include="IFieldConflict.cs" />
-    <Compile Include="IExternalLink.cs" />
+    <Compile Include="IFieldDefinition.cs" />
+    <Compile Include="IFieldDefinitionCollection.cs" />
     <Compile Include="IHyperlink.cs" />
+    <Compile Include="IIdentifiable.cs" />
     <Compile Include="IIdentityDescriptor.cs" />
     <Compile Include="IIdentityManagementService.cs" />
     <Compile Include="ILink.cs" />
     <Compile Include="INode.cs" />
+    <Compile Include="INodeCollection.cs" />
     <Compile Include="INodeInfo.cs" />
     <Compile Include="IProject.cs" />
+    <Compile Include="IProjectCollection.cs" />
     <Compile Include="IProjectInfo.cs" />
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="IQueryFactory.cs" />
+    <Compile Include="IReadOnlyCollection.cs" />
+    <Compile Include="IReadOnlyCollectionWithId.cs" />
+    <Compile Include="IReadOnlyField.cs" />
+    <Compile Include="IRegisteredLinkType.cs" />
+    <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IRevision.cs" />
+    <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />
-    <Compile Include="ITeamFoundationIdentity.Extensions.cs">
-      <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
+    <Compile Include="ITeamFoundationIdentity.Extensions.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
+    <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItem.cs" />
+    <Compile Include="IWorkItem.Extensions.cs" />
+    <Compile Include="IWorkItemCollection.cs" />
+    <Compile Include="IWorkItemCommon.cs" />
+    <Compile Include="IWorkItemCore.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
     <Compile Include="IWorkItemLinkType.cs" />
+    <Compile Include="IWorkItemLinkTypeCollection.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
+    <Compile Include="IWorkItemLinkTypeEndCollection.cs" />
+    <Compile Include="IWorkItemReference.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="IWorkItemStore.Extensions.cs" />
+    <Compile Include="IWorkItemStoreFactory.cs" />
     <Compile Include="IWorkItemType.cs" />
-    <Compile Include="LinkHelper.cs" />
-    <Compile Include="LinkMapper.cs" />
-    <Compile Include="LinkTypeEndMapper.cs" />
+    <Compile Include="IWorkItemType.Extensions.cs" />
+    <Compile Include="IWorkItemTypeCollection.cs" />
+    <Compile Include="Link.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="NodeCollection.cs" />
+    <Compile Include="NodeComparer.cs" />
+    <Compile Include="NullableIdentifiableComparer.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectCollection.cs" />
+    <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Proxies\AttachmentProxy.cs" />
-    <Compile Include="Proxies\CommonStructureServiceProxy.cs" />
-    <Compile Include="Proxies\FieldCollectionProxy.cs" />
-    <Compile Include="Proxies\FieldConflictProxy.cs" />
-    <Compile Include="Proxies\FieldProxy.cs" />
-    <Compile Include="Proxies\ExternalLinkProxy.cs" />
-    <Compile Include="Proxies\HyperlinkProxy.cs" />
-    <Compile Include="Proxies\IdentityDescriptorProxy.cs" />
-    <Compile Include="Proxies\IdentityManagementServiceProxy.cs" />
-    <Compile Include="Proxies\LinkCollectionProxy.cs" />
-    <Compile Include="Proxies\LinkProxy.cs" />
-    <Compile Include="Proxies\NodeInfoProxy.cs" />
-    <Compile Include="Proxies\NodeProxy.cs" />
-    <Compile Include="Proxies\ProjectInfoProxy.cs" />
-    <Compile Include="Proxies\ProjectPropertyProxy.cs" />
-    <Compile Include="Proxies\ProjectProxy.cs" />
-    <Compile Include="Proxies\QueryProxy.cs" />
-    <Compile Include="Proxies\RelatedLinkProxy.cs" />
-    <Compile Include="Proxies\RevisionProxy.cs" />
-    <Compile Include="Proxies\TeamFoundationIdentityProxy.cs" />
-    <Compile Include="Proxies\TfsTeamProjectCollectionProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkInfoProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeEndProxy.cs" />
-    <Compile Include="Proxies\WorkItemLinkTypeProxy.cs" />
-    <Compile Include="Proxies\WorkItemProxy.cs" />
-    <Compile Include="Proxies\WorkItemStoreProxy.cs" />
-    <Compile Include="Proxies\WorkItemTypeProxy.cs" />
-    <Compile Include="QueryFactory.cs" />
-    <Compile Include="RegisteredLinkTypeMapper.cs" />
+    <Compile Include="ReadOnlyCollection.cs" />
+    <Compile Include="ReadOnlyCollectionWithId.cs" />
+    <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
+    <Compile Include="RegisteredLinkType.cs" />
+    <Compile Include="RegisteredLinkTypeCollection.cs" />
+    <Compile Include="RelatedLink.cs" />
+    <Compile Include="Revision.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
-    <Compile Include="ValidationException.cs" />
+    <Compile Include="TeamFoundationIdentity.cs" />
+    <Compile Include="TeamFoundationIdentityComparer.cs" />
+    <Compile Include="TypeParser.cs" />
     <Compile Include="ValidationState.cs" />
+    <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemCollection.cs" />
+    <Compile Include="WorkItemCollectionComparer.cs" />
+    <Compile Include="WorkItemCommon.cs" />
+    <Compile Include="WorkItemComparer.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
-    <Compile Include="WorkItemStoreFactory.cs" />
+    <Compile Include="WorkItemCore.cs" />
+    <Compile Include="WorkItemFields.cs" />
+    <Compile Include="WorkItemLinkInfo.cs" />
+    <Compile Include="WorkItemLinkInfoComparer.cs" />
+    <Compile Include="WorkItemLinkType.cs" />
+    <Compile Include="WorkItemLinkTypeCollection.cs" />
+    <Compile Include="WorkItemLinkTypeComparer.cs" />
+    <Compile Include="WorkItemLinkTypeEnd.cs" />
+    <Compile Include="WorkItemLinkTypeEndCollection.cs" />
+    <Compile Include="WorkItemLinkTypeEndComparer.cs" />
+    <Compile Include="WorkItemType.cs" />
+    <Compile Include="WorkItemTypeCollection.cs" />
+    <Compile Include="WorkItemTypeCollectionComparer.cs" />
+    <Compile Include="WorkItemTypeComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -330,20 +233,15 @@
     <None Include="Qwiq.Core.nuspec">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
-    <Error Condition="!Exists('..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets'))" />
-    <Error Condition="!Exists('..\..\packages\GitVersionTask.3.6.4\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.6.4\build\dotnet\GitVersionTask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <Import Project="..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.14.102.0\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />
-  <Import Project="..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets" Condition="Exists('..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets')" />
-  <Import Project="..\..\packages\GitVersionTask.3.6.4\build\dotnet\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.3.6.4\build\dotnet\GitVersionTask.targets')" />
 </Project>

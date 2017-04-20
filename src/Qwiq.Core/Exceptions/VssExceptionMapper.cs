@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Services.Common;
@@ -33,7 +34,7 @@ namespace Microsoft.Qwiq.Exceptions
                 return null;
             }
 
-            var errorCode = int.Parse(regexMatch.Groups[ErrorCode].Value);
+            var errorCode = int.Parse(regexMatch.Groups[ErrorCode].Value, CultureInfo.InvariantCulture);
 
             return _handledErrorCodes.Contains(errorCode) ? _newExceptionCreator(vssException.Message, vssException) : null;
         }
