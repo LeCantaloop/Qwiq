@@ -85,9 +85,9 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         private B.Benchmark _benchmark;
 
-        private IEnumerable<MockModel> _genericResult;
+        private MockModel _genericResult;
 
-        private IEnumerable<IIdentifiable<int?>> _nonGenericResult;
+        private IIdentifiable<int?> _nonGenericResult;
 
         public override void Given()
         {
@@ -97,14 +97,18 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void When()
         {
-            _genericResult = _benchmark.Generic();
-            _nonGenericResult = _benchmark.NonGeneric();
+            _genericResult = _benchmark.Generic().First();
+            _nonGenericResult = _benchmark.NonGeneric().First();
         }
 
         [TestMethod]
         public void Execute()
         {
-            _genericResult.ShouldContainOnly(_nonGenericResult);
+            var ng = (MockModel)_nonGenericResult;
+            var g = _genericResult;
+
+            ng.WorkItemType.ShouldEqual(g.WorkItemType);
+            ng.Milestone.ShouldEqual(g.Milestone);
         }
     }
 }
