@@ -18,8 +18,8 @@ test:
   categories:
     except:
     - localOnly
-    - Benchmark
-    - Performance
+    - SOAP
+    - REST
 artifacts:
 - path: '*.nupkg'
   name: NuGet
