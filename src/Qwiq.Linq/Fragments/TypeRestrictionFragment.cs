@@ -6,16 +6,16 @@ namespace Microsoft.Qwiq.Linq.Fragments
 {
     internal class TypeRestrictionFragment : IFragment
     {
-        private readonly ICollection<string> _workItemTypes;
+        private readonly HashSet<string> _workItemTypes;
 
-        public TypeRestrictionFragment(ICollection<string> workItemTypes)
+        public TypeRestrictionFragment(IEnumerable<string> workItemTypes)
         {
-            _workItemTypes = workItemTypes;
+            _workItemTypes = new HashSet<string>(workItemTypes, Comparer.OrdinalIgnoreCase);
         }
 
         public string Get(Type queryType)
         {
-            var numberOfTypesGreaterThanOne = _workItemTypes.Count() > 1;
+            var numberOfTypesGreaterThanOne = _workItemTypes.Count > 1;
 
             var format = numberOfTypesGreaterThanOne ? $"([{CoreFieldRefNames.WorkItemType}] IN ({{0}}))" : $"([{CoreFieldRefNames.WorkItemType}] = {{0}})";
             var replacement = string.Join(", ", _workItemTypes.Select(t => "'" + t + "'"));
