@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Core.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -26,7 +23,7 @@ WHERE
 mode(Recursive)
 ";
 
-            var start = Clock.GetTimestamp();
+
             RestResult.Links = TimedAction(
                 () => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(),
                 "REST",
@@ -63,7 +60,7 @@ mode(Recursive)
         [TestCategory("REST")]
         public void WorkItem_Count_Equal()
         {
-            RestResult.WorkItems.Count().ShouldEqual(SoapResult.WorkItems.Count(), "WorkItems.Count");
+            RestResult.WorkItems.Count.ShouldEqual(SoapResult.WorkItems.Count(), "WorkItems.Count");
         }
 
         [TestMethod]

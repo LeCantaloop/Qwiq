@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Globalization;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
@@ -10,7 +12,7 @@ namespace Microsoft.Qwiq.Integration.Tests
     }
 
     [TestClass]
-    public class Given_a_WorkItem_from_SOAP : RestWorkItemContextSpecification
+    public class Given_a_WorkItem_from_SOAP : SoapWorkItemContextSpecification
     {
     }
 
@@ -25,7 +27,7 @@ namespace Microsoft.Qwiq.Integration.Tests
         [TestCategory("localOnly")]
         public void Reading_Id_from_Fields_property_with_ReferenceName_equals_the_property_value()
         {
-            Result.Fields[CoreFieldRefNames.Id]?.Value?.ToString().ShouldEqual(Result.Id.ToString());
+            Result.Fields[CoreFieldRefNames.Id]?.Value?.ToString().ShouldEqual(Result.Id.ToString(CultureInfo.InvariantCulture));
         }
 
         [TestMethod]

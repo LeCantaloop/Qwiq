@@ -1,4 +1,4 @@
-﻿using Microsoft.Qwiq.Core.Tests;
+﻿using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -39,6 +39,7 @@ namespace Microsoft.Qwiq.Integration.Tests
             base.Cleanup();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public override void Given()
         {
             SoapResult = new Result { WorkItemStore = TimedAction(() => IntegrationSettings.CreateSoapStore(), "SOAP", "Create WIS") };

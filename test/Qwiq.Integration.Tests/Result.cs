@@ -7,25 +7,36 @@ namespace Microsoft.Qwiq.Integration.Tests
     {
         private IWorkItem _workItem;
 
+        public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
+
         public IWorkItem WorkItem
         {
             get => _workItem;
             set
             {
                 _workItem = value;
-                WorkItems = new WorkItemCollection(new[]{value});
+                WorkItems = new WorkItemCollection(new[] { value });
             }
         }
 
         public IWorkItemCollection WorkItems { get; set; }
 
-        public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
-
         public IWorkItemStore WorkItemStore { get; set; }
 
         public void Dispose()
         {
-            WorkItemStore?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing) WorkItemStore?.Dispose();
+
+            WorkItemStore = null;
+            _workItem = null;
+            WorkItems = null;
+            Links = null;
         }
     }
 }

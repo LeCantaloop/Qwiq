@@ -203,6 +203,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IntegrationContextSpecificationSpecification.cs" />
     <Compile Include="IntegrationSettings.cs" />
     <Compile Include="LargeWiqlHierarchyQueryTests.cs" />
