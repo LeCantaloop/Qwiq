@@ -26,7 +26,6 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
         [TestMethod]
         [TestCategory(Constants.TestCategory.Benchmark)]
         [TestCategory(Constants.TestCategory.Performance)]
-        [TestCategory("localOnly")]
         public void Execute_Mapping_with_Links_Performance_Benchmark()
         {
             // Intentionally left blank

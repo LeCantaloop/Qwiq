@@ -30,7 +30,6 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
         [TestMethod]
         [TestCategory(Constants.TestCategory.Benchmark)]
         [TestCategory(Constants.TestCategory.Performance)]
-        [TestCategory("localOnly")]
         public void Execute_Identity_Mapping_Performance_Benchmark()
         {
             // Intentionally left blank
