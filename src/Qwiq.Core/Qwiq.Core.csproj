@@ -204,8 +204,10 @@
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="TeamFoundationIdentityComparer.cs" />
+    <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="TypeParser.cs" />
     <Compile Include="ValidationState.cs" />
+    <Compile Include="WiqlConstants.cs" />
     <Compile Include="WorkItem.cs" />
     <Compile Include="WorkItemCollection.cs" />
     <Compile Include="WorkItemCollectionComparer.cs" />
