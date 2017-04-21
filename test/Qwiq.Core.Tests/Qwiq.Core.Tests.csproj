@@ -217,6 +217,7 @@
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyTests.cs" />
     <Compile Include="Exceptions\ExceptionMapperTests.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IdentityFieldValueTests.cs" />
     <Compile Include="IdentityManagementServiceProxyTests.cs" />
     <Compile Include="LinkIntegrationTests.cs" />
     <Compile Include="Mocks\ExceptionThrower.cs" />

@@ -1,14 +1,37 @@
-﻿using Microsoft.VisualStudio.Services.Common;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text.RegularExpressions;
+
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
     /// <summary>
     ///     Class IdentityFieldValue.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DisplayName) + "}")]
     public class IdentityFieldValue
     {
+        // "Chris Johnson <chrisjohns@contoso.com>"
+        private static readonly Regex AccountNameRegex = new Regex("^.+<(.+@.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // "Chris Johnson"
+        private static readonly Regex DisplayNameRegex = new Regex(
+                                                                    @"^[^<\\]*(?:<[^>]*)?$",
+                                                                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        // "Chris Johnson <CONTOSO\chrisjohns>"
+        private static readonly Regex DomainAccountRegex = new Regex(@"^.+<(.+\\.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex ScopeRegex = new Regex(
+                                                              @"^\[[0-9A-Za-z ]+\]\\(.+)<([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
+                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex VsidRegex = new Regex(
+                                                             @"^\[[0-9A-Za-z ]+\]\\(.+)<id:([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
+                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityFieldValue" /> class.
         /// </summary>
@@ -27,21 +50,25 @@ namespace Microsoft.Qwiq
         ///     The value from the descriptor identifier (e.g.
         ///     CD4C5751-F4E6-41D5-A4C9-EFFD66BC8E9C\chrisjohns@contoso.com).
         /// </param>
-        /// <param name="sid">The security identifier (SID) for the identity.</param>
-        public IdentityFieldValue(string displayName, string fullName, string sid)
+        /// <param name="teamFoundationId">The security identifier (SID) for the identity.</param>
+        public IdentityFieldValue(string displayName, string fullName, string teamFoundationId)
             : this(displayName)
         {
-            Sid = sid;
             FullName = fullName;
 
+            if (!string.IsNullOrEmpty(teamFoundationId))
+            {
+                if (Guid.TryParse(teamFoundationId, out Guid tfsid)) TeamFoundationId = teamFoundationId;
+            }
+
             var arr = FullName.Split(IdentityConstants.DomainAccountNameSeparator);
-            if (arr.Length != 2 || arr[1] == Sid) return;
+            if (arr.Length != 2 || arr[1] == TeamFoundationId) return;
 
             if (arr[1].Contains("@"))
             {
                 Email = arr[1];
                 Alias = arr[1].Split('@')[0];
-
+                AccountName = arr[1];
                 if (Guid.TryParse(arr[0], out Guid guid)) Domain = arr[0];
             }
             else
@@ -60,19 +87,48 @@ namespace Microsoft.Qwiq
 
         public IdentityFieldValue(string displayName)
         {
-            if (!string.IsNullOrEmpty(displayName))
-                if (displayName.Contains("<"))
-                {
-                    var arr = displayName.Split('<');
-                    if (arr[1].Contains("@"))
-                    {
-                        Email = arr[1].Trim('>');
-                        Alias = Email.Split('@')[0];
-                    }
-                }
-
             DisplayPart = displayName;
+
+            if (!string.IsNullOrEmpty(displayName))
+            {
+                if (TryGetVsid(displayName, out Guid guid2, out string str))
+                {
+                    DisplayPart = str;
+                    return;
+                }
+                if (TryGetDomainAndAccountName(displayName, out string str2))
+                {
+                    var strArray = str2.Split(IdentityConstants.DomainAccountNameSeparator);
+                    if (strArray.Length != 2)
+                    {
+                        DisplayPart = displayName;
+                        return;
+                    }
+
+                    Domain = strArray[0];
+                    Alias = strArray[1];
+                    DisplayPart = displayName;
+                    return;
+                }
+                if (TryGetAccountName(displayName, out str2))
+                {
+                    AccountName = str2;
+                    if (str2.Contains("@"))
+                    {
+                        Email = str2;
+                        Alias = str2.Split('@')[0];
+                    }
+                    DisplayPart = displayName;
+                    return;
+                }
+                if (TryGetDisplayName(displayName, out str2))
+                {
+                    DisplayPart = str2;
+                }
+            }
         }
+
+        public string AccountName { get; }
 
         /// <summary>
         ///     Gets the alias.
@@ -122,17 +178,79 @@ namespace Microsoft.Qwiq
             get
             {
                 if (!string.IsNullOrEmpty(Email)) return Email;
-                if (!string.IsNullOrEmpty(Domain)) return string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, Domain, Alias);
+                if (!string.IsNullOrEmpty(Domain))
+                    return string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, Domain, Alias);
                 if (!string.IsNullOrEmpty(Alias)) return Alias;
 
-                return string.Empty;
+                return null;
             }
         }
 
-        /// <summary>
-        ///     Gets the Security Identifier (SID).
-        /// </summary>
-        /// <value>The SID.</value>
-        public string Sid { get; }
+
+        public string TeamFoundationId { get; }
+
+        private static bool TryGetAccountName(string search, out string acccountName)
+        {
+            var match = AccountNameRegex.Match(search);
+            acccountName = null;
+            if (match.Success && match.Groups.Count > 1)
+            {
+                acccountName = match.Groups[1].Value;
+                return true;
+            }
+            return false;
+        }
+
+        private static bool TryGetDisplayName(string search, out string displayName)
+        {
+            var match = DisplayNameRegex.Match(search);
+            displayName = null;
+            if (match.Success && match.Groups.Count > 0)
+            {
+                displayName = match.Groups[0].Value;
+                return true;
+            }
+            return false;
+        }
+
+        private static bool TryGetDomainAndAccountName(string search, out string domainAndAcccountName)
+        {
+            var match = DomainAccountRegex.Match(search);
+            domainAndAcccountName = null;
+            if (match.Success && match.Groups.Count > 1 && match.Groups[1].Value.Contains(@"\"))
+            {
+                domainAndAcccountName = match.Groups[1].Value;
+                return true;
+            }
+            return false;
+        }
+
+        private static bool TryGetScope(string search, out Guid scopeId, out string displayName)
+        {
+            var match = ScopeRegex.Match(search);
+            if (match.Success && match.Groups.Count > 1)
+            {
+                displayName = match.Groups[1].Value;
+                Guid.TryParse(match.Groups[2].Value, out scopeId);
+                return true;
+            }
+            scopeId = Guid.Empty;
+            displayName = string.Empty;
+            return false;
+        }
+
+        private static bool TryGetVsid(string search, out Guid vsid, out string displayName)
+        {
+            var match = VsidRegex.Match(search);
+            if (match.Success && match.Groups.Count > 1)
+            {
+                displayName = match.Groups[1].Value;
+                Guid.TryParse(match.Groups[2].Value, out vsid);
+                return true;
+            }
+            vsid = Guid.Empty;
+            displayName = string.Empty;
+            return false;
+        }
     }
 }
