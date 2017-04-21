@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq
         ///     Gets a collection of <see cref="IWorkItemLinkTypeEnd" /> objects associated with this query.
         /// </summary>
         /// <returns>IEnumerable&lt;IWorkItemLinkTypeEnd&gt;.</returns>
-        IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes();
+        IWorkItemLinkTypeEndCollection GetLinkTypes();
 
         /// <summary>
         ///     Executes a query that gets a collection of <see cref="IWorkItemLinkInfo" /> objects that satisfy the WIQL.
@@ -23,6 +23,6 @@ namespace Microsoft.Qwiq
         ///     Executes a query that gets a collection of <see cref="IWorkItem" /> objects that satisfy the WIQL.
         /// </summary>
         /// <returns>IEnumerable&lt;IWorkItem&gt;.</returns>
-        IEnumerable<IWorkItem> RunQuery();
+        IWorkItemCollection RunQuery();
     }
 }

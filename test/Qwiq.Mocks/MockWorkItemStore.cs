@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Credentials;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -19,9 +19,9 @@ namespace Microsoft.Qwiq.Mocks
 
         private Lazy<IProjectCollection> _projects;
 
-        private Lazy<ITfsTeamProjectCollection> _tfs;
+        private readonly Lazy<ITeamProjectCollection> _tfs;
 
-        private Lazy<IQueryFactory> _queryFactory;
+        private readonly Lazy<IQueryFactory> _queryFactory;
 
         public MockWorkItemStore()
             : this(() => new MockTfsTeamProjectCollection(), store => new MockQueryFactory(store))
@@ -37,14 +37,14 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockWorkItemStore(
-            Func<ITfsTeamProjectCollection> tpcFactory,
+            Func<ITeamProjectCollection> tpcFactory,
             Func<MockWorkItemStore, IQueryFactory> queryFactory
             )
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
 
-            _tfs = new Lazy<ITfsTeamProjectCollection>(tpcFactory);
+            _tfs = new Lazy<ITeamProjectCollection>(tpcFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
             _projects = new Lazy<IProjectCollection>(() => new MockProjectCollection(this));
 
@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq.Mocks
 
         private int WaitTime => Instance.Next(0, 3000);
 
-        public TfsCredentials AuthorizedCredentials => null;
+        public VssCredentials AuthorizedCredentials => null;
 
         public ClientType ClientType => ClientType.None;
 
@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public IProjectCollection Projects => _projects.Value;
 
-        public ITfsTeamProjectCollection TeamProjectCollection => _tfs.Value;
+        public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => _tfs.Value.TimeZone;
 
@@ -84,26 +84,26 @@ namespace Microsoft.Qwiq.Mocks
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = false)
         {
             Trace.TraceInformation("Querying for work items " + wiql);
 
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
-            return query.RunQuery().ToList().AsReadOnly();
+            return query.RunQuery();
         }
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             if (ids == null) throw new ArgumentNullException(nameof(ids));
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>();
+            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
 
 
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", ids2));
 
             var query = _queryFactory.Value.Create(ids2, asOf);
-            return query.RunQuery().ToList().AsReadOnly();
+            return query.RunQuery();
         }
 
         public IWorkItem Query(int id, DateTime? asOf = null)
@@ -151,7 +151,7 @@ namespace Microsoft.Qwiq.Mocks
                 if (!project.WorkItemTypes.Contains(witName))
                 {
                     Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
-                    missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Instance));
+                    missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
 
                     var t = item.Type as MockWorkItemType;
                     if (t?.Store != this) t.Store = this;
@@ -225,7 +225,7 @@ namespace Microsoft.Qwiq.Mocks
 
             item[CoreFieldRefNames.RelatedLinkCount] = l[BaseLinkType.RelatedLink];
             item[CoreFieldRefNames.ExternalLinkCount] = l[BaseLinkType.ExternalLink];
-            item[CoreFieldRefNames.HyperLinkCount] = l[BaseLinkType.Hyperlink];
+            item[CoreFieldRefNames.HyperlinkCount] = l[BaseLinkType.Hyperlink];
 
             // Fix up Team Project if needed
             var projectName = item[CoreFieldRefNames.TeamProject]?.ToString();
@@ -257,11 +257,10 @@ namespace Microsoft.Qwiq.Mocks
             var rl = link as IRelatedLink;
             if (rl == null) return;
 
-            var mrl = rl as MockRelatedLink;
-            if (mrl != null)
+            if (rl is MockRelatedLink mrl)
             {
                 var li = mrl.LinkInfo;
-                if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Instance))
+                if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Default))
                 {
                     Trace.TraceWarning(
                                        $"Warning: Duplicate link. (Type: {li.LinkType?.ImmutableName ?? "NULL"}; Source: {li.SourceId}; Target: {li.TargetId})");

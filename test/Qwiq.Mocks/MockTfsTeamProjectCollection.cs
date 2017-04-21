@@ -1,10 +1,10 @@
 using System;
 
-using Microsoft.Qwiq.Credentials;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockTfsTeamProjectCollection : ITfsTeamProjectCollection
+    public class MockTfsTeamProjectCollection : ITeamProjectCollection
     {
         public MockTfsTeamProjectCollection()
             : this(new MockIdentityManagementService())
@@ -17,7 +17,7 @@ namespace Microsoft.Qwiq.Mocks
             TimeZone = TimeZone.CurrentTimeZone;
         }
 
-        public TfsCredentials AuthorizedCredentials { get; set; }
+        public VssCredentials AuthorizedCredentials { get; set; }
 
         public ITeamFoundationIdentity AuthorizedIdentity { get; set; }
 

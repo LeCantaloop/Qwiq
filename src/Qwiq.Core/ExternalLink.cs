@@ -7,8 +7,26 @@ namespace Microsoft.Qwiq
         public ExternalLink(string uri, string name, string comment = null)
             : base(comment, BaseLinkType.ExternalLink)
         {
-            if (string.IsNullOrEmpty(uri)) throw new ArgumentException("Value cannot be null or empty.", nameof(uri));
-            if (string.IsNullOrEmpty(name)) throw new ArgumentException("Value cannot be null or empty.", nameof(name));
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (name.Trim().Length < 1) throw new ArgumentNullException(nameof(name));
+
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+            if (uri.Trim().Length < 1) throw new ArgumentNullException(nameof(uri));
+
+            if (uri.Length > 2083) throw new ArgumentException("Uri too long.");
+
+            if (Comparer.OrdinalIgnoreCase.Equals("Related Workitem", name)
+                || Comparer.OrdinalIgnoreCase.Equals("Workitem Hyperlink", name))
+            {
+                throw new ArgumentException(nameof(name));
+            }
+
+            if (Comparer.OrdinalIgnoreCase.Equals("Fixed in Changeset", name)
+                || Comparer.OrdinalIgnoreCase.Equals("Source Code File", name)
+                || Comparer.OrdinalIgnoreCase.Equals("Test Result", name))
+            {
+                throw new ArgumentException(nameof(uri));
+            }
 
             LinkedArtifactUri = uri;
             ArtifactLinkTypeName = name;

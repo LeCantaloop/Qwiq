@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Microsoft.Qwiq.Mapper.Tests
 {
     public abstract class WorkItemMapperContext<T> : ContextSpecification
-        where T : IIdentifiable, new()
+        where T : IIdentifiable<int?>, new()
     {
         protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
         {
@@ -79,7 +79,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void Cleanup()
         {
-            WorkItemStore.Dispose();
+            WorkItemStore?.Dispose();
         }
     }
 
@@ -100,7 +100,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         }
 
         [WorkItemType("MissingFields")]
-        public class MockModelWithMissingField : IIdentifiable
+        public class MockModelWithMissingField : IIdentifiable<int?>
         {
             [FieldDefinition("Id")]
             public virtual int? Id { get; internal set; }
@@ -116,7 +116,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         public override void Given()
         {
             SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("MissingFields", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
-            WorkItemStore = new MockWorkItemStore(SourceWorkItems);
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
             base.Given();
         }
 
@@ -127,7 +127,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         }
 
         [WorkItemType("Default")]
-        public class MockModelWithMissingField : IIdentifiable
+        public class MockModelWithMissingField : IIdentifiable<int?>
         {
             [FieldDefinition("Id")]
             public int? Id { get; internal set; }
@@ -252,8 +252,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
                 var expectedVal = property.GetValue(expected);
                 var actualVal = property.GetValue(actual);
 
-                var val = expectedVal as ICollection;
-                if (val != null)
+                if (expectedVal is ICollection val)
                 {
                     CollectionAssert.AreEqual(val, (ICollection)actualVal);
                 }

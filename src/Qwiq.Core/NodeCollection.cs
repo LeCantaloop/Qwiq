@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class NodeCollection : ReadOnlyListWithId<INode, int>, INodeCollection
+    public class NodeCollection : ReadOnlyCollectionWithId<INode, int>, INodeCollection
     {
         internal NodeCollection(params INode[] nodes)
             : this(nodes as IEnumerable<INode>)
@@ -16,17 +16,17 @@ namespace Microsoft.Qwiq
 
         public bool Equals(INodeCollection other)
         {
-            return Comparer.NodeCollectionComparer.Equals(this, other);
+            return Comparer.NodeCollection.Equals(this, other);
         }
 
         public override bool Equals(object obj)
         {
-            return Comparer.NodeCollectionComparer.Equals(this, obj as INodeCollection);
+            return Comparer.NodeCollection.Equals(this, obj as INodeCollection);
         }
 
         public override int GetHashCode()
         {
-            return Comparer.NodeCollectionComparer.GetHashCode(this);
+            return Comparer.NodeCollection.GetHashCode(this);
         }
     }
 }

@@ -1,68 +1,113 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+using Microsoft.VisualStudio.Services.Client;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Credentials
 {
     public class AuthenticationOptions
     {
-        public Uri Uri { get; }
-
-        public AuthenticationType AuthenticationType { get; }
-
-        public ClientType ClientType { get; set; }
+        private readonly Func<AuthenticationTypes, IEnumerable<VssCredentials>> _createCredentials;
 
         public AuthenticationOptions(string uri)
             : this(new Uri(uri, UriKind.Absolute))
         {
         }
 
-        public AuthenticationOptions(Uri uri, AuthenticationType authenticationType = AuthenticationType.All, ClientType clientType = ClientType.Default)
+        public AuthenticationOptions(
+            string uri,
+            AuthenticationTypes authenticationTypes = AuthenticationTypes.All,
+            ClientType clientType = ClientType.Default)
+            : this(new Uri(uri, UriKind.Absolute), authenticationTypes, clientType)
         {
-            if (uri == null) throw new ArgumentNullException(nameof(uri));
+        }
 
+        public AuthenticationOptions(Uri uri)
+            : this(uri, AuthenticationTypes.All, ClientType.Default)
+        {
+        }
 
-            AuthenticationType = authenticationType;
+        public AuthenticationOptions(
+            Uri uri,
+            AuthenticationTypes authenticationTypes,
+            ClientType clientType,
+            Func<AuthenticationTypes, IEnumerable<VssCredentials>> credentialsFactory = null)
+        {
+            AuthenticationTypes = authenticationTypes;
             ClientType = clientType;
             Notifications = new CredentialsNotifications();
-            Uri = uri;
+            Uri = uri ?? throw new ArgumentNullException(nameof(uri));
+            _createCredentials = credentialsFactory ?? CredentialsFactory;
+        }
+
+        public AuthenticationTypes AuthenticationTypes { get; }
+
+        public ClientType ClientType { get; }
+
+        public IEnumerable<VssCredentials> Credentials
+        {
+            get
+            {
+                foreach (var credential in EnumerateCredentials(this, AuthenticationTypes.OpenAuthorization)) yield return credential;
+                foreach (var credential in EnumerateCredentials(this, AuthenticationTypes.PersonalAccessToken)) yield return credential;
+                foreach (var credential in EnumerateCredentials(this, AuthenticationTypes.Basic)) yield return credential;
+                foreach (var credential in EnumerateCredentials(this, AuthenticationTypes.Windows)) yield return credential;
+                foreach (var credential in EnumerateCredentials(this, AuthenticationTypes.None)) yield return credential;
+            }
         }
 
         public CredentialsNotifications Notifications { get; set; }
 
-        public Func<AuthenticationType, IEnumerable<TfsCredentials>> CreateCredentials { get; set; }
+        public Uri Uri { get; }
 
-        public IEnumerable<TfsCredentials> Credentials
+        private static IEnumerable<VssCredentials> CredentialsFactory(AuthenticationTypes t)
         {
-            get
+            if (t.HasFlag(AuthenticationTypes.OpenAuthorization))
+                foreach (var cred in Qwiq.Credentials.CredentialsFactory.GetOAuthCredentials()) yield return cred;
+
+            if (t.HasFlag(AuthenticationTypes.PersonalAccessToken))
+                foreach (var cred in Qwiq.Credentials.CredentialsFactory.GetServiceIdentityPatCredentials()) yield return cred;
+
+            if (t.HasFlag(AuthenticationTypes.Windows))
+                foreach (var cred in Qwiq.Credentials.CredentialsFactory.GetServiceIdentityCredentials()) yield return cred;
+
+            if (t.HasFlag(AuthenticationTypes.Basic))
+                foreach (var cred in Qwiq.Credentials.CredentialsFactory.GetBasicCredentials()) yield return cred;
+
+            if (t.HasFlag(AuthenticationTypes.Windows))
             {
-                foreach (var credential in EnumerateCredentials(this, AuthenticationType.OAuth)) yield return credential;
-                foreach (var credential in EnumerateCredentials(this, AuthenticationType.PersonalAccessToken))
-                    yield return credential;
-                foreach (var credential in EnumerateCredentials(this, AuthenticationType.Basic)) yield return credential;
-                foreach (var credential in EnumerateCredentials(this, AuthenticationType.Windows))
-                    yield return credential;
-                foreach (var credential in EnumerateCredentials(this, AuthenticationType.Anonymous))
-                    yield return credential;
+                // User did not specify a username or a password, so use the process identity
+                yield return new VssClientCredentials(new WindowsCredential(false))
+                                 {
+                                     Storage = new VssClientCredentialStorage(),
+                                     PromptType = CredentialPromptType.DoNotPrompt
+                                 };
+
+                // Use the Windows identity of the logged on user
+                yield return new VssClientCredentials(true)
+                                 {
+                                     Storage = new VssClientCredentialStorage(),
+                                     PromptType = CredentialPromptType.PromptIfNeeded
+                                 };
             }
         }
 
-        private static IEnumerable<TfsCredentials> EnumerateCredentials(
+        private static IEnumerable<VssCredentials> EnumerateCredentials(
             AuthenticationOptions authenticationOptions,
-            AuthenticationType authenticationType)
+            AuthenticationTypes authenticationTypes)
         {
-            if (!authenticationOptions.AuthenticationType.HasFlag(authenticationType)) yield break;
+            if (!authenticationOptions.AuthenticationTypes.HasFlag(authenticationTypes)) yield break;
 
-            var credentials = Enumerable.Empty<TfsCredentials>();
+            IEnumerable<VssCredentials> credentials;
 
             try
             {
-                credentials = authenticationOptions.CreateCredentials(authenticationType);
+                credentials = authenticationOptions._createCredentials(authenticationTypes);
             }
             catch (Exception e)
             {
-                authenticationOptions.Notifications.AuthenticationFailed(
-                    new AuthenticationFailedNotification(null) { Exception = e });
+                authenticationOptions.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(e));
                 throw;
             }
 

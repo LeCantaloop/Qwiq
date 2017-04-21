@@ -57,7 +57,7 @@ namespace Microsoft.Qwiq
             set => SetValue(CoreFieldRefNames.History, value);
         }
 
-        public virtual int? HyperLinkCount => GetValue<int?>(CoreFieldRefNames.HyperLinkCount);
+        public virtual int? HyperlinkCount => GetValue<int?>(CoreFieldRefNames.HyperlinkCount);
 
         public virtual int? IterationId
         {
@@ -101,7 +101,7 @@ namespace Microsoft.Qwiq
 
         public bool Equals(IWorkItemCommon other)
         {
-            return NullableIdentifiableComparer.Instance.Equals(this, other);
+            return NullableIdentifiableComparer.Default.Equals(this, other);
         }
     }
 }

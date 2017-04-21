@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Qwiq.Core.Tests
+namespace Microsoft.Qwiq.Tests.Common
 {
     public static class Clock
     {

@@ -6,25 +6,25 @@ namespace Microsoft.Qwiq
 {
     public class GenericComparer<T> : IComparer<T>, IEqualityComparer<T>
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
         public static readonly GenericComparer<T> Default = new GenericComparer<T>();
 
         public virtual int Compare(T x, T y)
         {
-            Type type = typeof(T);
-
             // Enumerable?
             var enumerableX = x as IEnumerable;
             var enumerableY = y as IEnumerable;
 
             if (enumerableX != null && enumerableY != null)
             {
-                IEnumerator enumeratorX = enumerableX.GetEnumerator();
-                IEnumerator enumeratorY = enumerableY.GetEnumerator();
+                var enumeratorX = enumerableX.GetEnumerator();
+                var enumeratorY = enumerableY.GetEnumerator();
 
                 while (true)
                 {
-                    bool hasNextX = enumeratorX.MoveNext();
-                    bool hasNextY = enumeratorY.MoveNext();
+                    var hasNextX = enumeratorX.MoveNext();
+                    var hasNextY = enumeratorY.MoveNext();
 
                     if (!hasNextX || !hasNextY)
                     {
@@ -37,6 +37,8 @@ namespace Microsoft.Qwiq
                     }
                 }
             }
+
+            var type = typeof(T);
 
             // Null?
             if (!type.IsValueType
@@ -59,25 +61,22 @@ namespace Microsoft.Qwiq
             }
 
             // Implements IComparable<T>?
-            var comparable1 = x as IComparable<T>;
 
-            if (comparable1 != null)
+            if (x is IComparable<T> comparable1)
             {
                 return comparable1.CompareTo(y);
             }
 
             // Implements IComparable?
-            var comparable2 = x as IComparable;
 
-            if (comparable2 != null)
+            if (x is IComparable comparable2)
             {
                 return comparable2.CompareTo(y);
             }
 
             // Implements IEquatable<T>?
-            var equatable = x as IEquatable<T>;
 
-            if (equatable != null)
+            if (x is IEquatable<T> equatable)
             {
                 return equatable.Equals(y) ? 0 : -1;
             }

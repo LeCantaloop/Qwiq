@@ -23,8 +23,8 @@ namespace Microsoft.Qwiq.Core.Tests
 
         public override void Given()
         {
-            _instance = WorkItemLinkTypeComparer.Instance;
-            _instance2 = WorkItemLinkTypeEndComparer.Instance;
+            _instance = WorkItemLinkTypeComparer.Default;
+            _instance2 = WorkItemLinkTypeEndComparer.Default;
 
             _first = new MockWorkItemLinkType(CoreLinkTypeReferenceNames.Hierarchy);
             _second = new MockWorkItemLinkType(CoreLinkTypeReferenceNames.Hierarchy);

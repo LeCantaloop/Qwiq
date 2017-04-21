@@ -4,7 +4,11 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemTypeComparer : GenericComparer<IWorkItemType>
     {
-        public static WorkItemTypeComparer Instance => Nested.Instance;
+        internal new static WorkItemTypeComparer Default => Nested.Instance;
+
+        private WorkItemTypeComparer()
+        {
+        }
 
         public override bool Equals(IWorkItemType x, IWorkItemType y)
         {
@@ -14,18 +18,20 @@ namespace Microsoft.Qwiq
 
             return string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
                    && string.Equals(x.Description, y.Description, StringComparison.OrdinalIgnoreCase)
-                   && FieldDefinitionCollectionComparer.Instance.Equals(x.FieldDefinitions, y.FieldDefinitions);
+                   && FieldDefinitionCollectionComparer.Default.Equals(x.FieldDefinitions, y.FieldDefinitions);
         }
 
         public override int GetHashCode(IWorkItemType obj)
         {
-            // Disable overflow compiler check
+            if (ReferenceEquals(obj, null)) return 0;
+
+
             unchecked
             {
                 var hash = 27;
                 hash = (13 * hash) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
                 hash = (13 * hash) ^ (obj.Description != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Description) : 0);
-                hash = (13 * hash) ^ (obj.FieldDefinitions != null ? obj.FieldDefinitions.GetHashCode() : 0);
+                hash = (13 * hash) ^ (obj.FieldDefinitions != null ? Comparer.FieldDefinitionCollection.GetHashCode(obj.FieldDefinitions) : 0);
 
                 return hash;
             }

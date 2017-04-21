@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -7,24 +8,25 @@ namespace Microsoft.Qwiq.Mocks
     {
         private readonly MockWorkItemStore _store;
 
-        private readonly List<string> _wiqls = new List<string>();
+        private IList<string> _queries;
 
         public MockQueryFactory(MockWorkItemStore store)
         {
             _store = store ?? throw new ArgumentNullException(nameof(store));
+            _queries = new List<string>();
         }
 
         public IQuery Create(string wiql, bool dayPrecision)
         {
             CreateCallCount++;
-            _wiqls.Add(wiql);
+            _queries.Add(wiql);
             return new MockQueryByWiql(wiql, _store);
         }
 
         public IQuery Create(IEnumerable<int> ids, string wiql)
         {
             CreateCallCount++;
-            _wiqls.Add(wiql);
+            _queries.Add(wiql);
             return new MockQueryByWiql(ids, wiql, _store);
         }
 
@@ -32,7 +34,9 @@ namespace Microsoft.Qwiq.Mocks
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            var wiql = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
+            FormattableString ws = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
+            var wiql = ws.ToString(CultureInfo.InvariantCulture);
+
             if (asOf.HasValue)
             {
                 // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
@@ -40,7 +44,8 @@ namespace Microsoft.Qwiq.Mocks
                     asOf = DateTime.SpecifyKind(
                                                 asOf.Value - _store.TimeZone.GetUtcOffset(asOf.Value),
                                                 DateTimeKind.Utc);
-                wiql += $" ASOF \'{asOf.Value:u}\'";
+                FormattableString ao = $" ASOF \'{asOf.Value:u}\'";
+                wiql += ao.ToString(CultureInfo.InvariantCulture);
             }
 
             return Create(ids, wiql);
@@ -48,6 +53,6 @@ namespace Microsoft.Qwiq.Mocks
 
         public int CreateCallCount { get; private set; }
 
-        public IEnumerable<string> QueryWiqls => _wiqls;
+        public IEnumerable<string> Queries => _queries;
     }
 }

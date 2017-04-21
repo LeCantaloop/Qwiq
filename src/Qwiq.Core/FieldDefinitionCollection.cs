@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class FieldDefinitionCollection : ReadOnlyListWithId<IFieldDefinition, int>,
-                                                      IFieldDefinitionCollection
+    public abstract class FieldDefinitionCollection : ReadOnlyCollectionWithId<IFieldDefinition, int>, IFieldDefinitionCollection
     {
         protected internal FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
             : base(fieldDefinitions, definition => definition.Name)
@@ -12,21 +12,22 @@ namespace Microsoft.Qwiq
 
         public bool Equals(IFieldDefinitionCollection other)
         {
-            return FieldDefinitionCollectionComparer.Instance.Equals(this, other);
+            return Comparer.FieldDefinitionCollection.Equals(this, other);
         }
 
         public override bool Equals(object obj)
         {
-            return FieldDefinitionCollectionComparer.Instance.Equals(this, obj as IFieldDefinitionCollection);
+            return Comparer.FieldDefinitionCollection.Equals(this, obj as IFieldDefinitionCollection);
         }
 
         public override int GetHashCode()
         {
-            return FieldDefinitionCollectionComparer.Instance.GetHashCode(this);
+            return Comparer.FieldDefinitionCollection.GetHashCode(this);
         }
 
         protected override void Add(IFieldDefinition value, int index)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
             base.Add(value, index);
             AddByName(value.ReferenceName, index);
         }

@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq
         {
         }
 
-        public static FieldDefinitionCollectionComparer Instance => Nested.Instance;
+        internal new static FieldDefinitionCollectionComparer Default => Nested.Instance;
 
         public override bool Equals(IFieldDefinitionCollection x, IFieldDefinitionCollection y)
         {
@@ -44,7 +44,7 @@ namespace Microsoft.Qwiq
                 if (!y.Contains(field.ReferenceName)) return false;
 
                 var tf = y[field.ReferenceName];
-                if (!FieldDefinitionComparer.Instance.Equals(field, tf)) return false;
+                if (!FieldDefinitionComparer.Default.Equals(field, tf)) return false;
 
                 // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch
                 source.Remove(field);
@@ -71,6 +71,7 @@ namespace Microsoft.Qwiq
             return hash;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
@@ -81,6 +82,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

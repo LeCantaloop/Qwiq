@@ -1,26 +1,35 @@
-using Microsoft.Qwiq;
-using Microsoft.Qwiq.Mocks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace Qwiq.Benchmark
+namespace Microsoft.Qwiq.Mocks
 {
-    public class WorkItemGenerator<T>
+    public class PropertyValueGenerator<T>
         where T : IWorkItem
     {
+        private readonly string[] _assignees;
         private readonly HashSet<string> _propertiesToSkip;
+        protected const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
 
-        private readonly Func<T> _create;
-
-        private string[] _assignees
-            ;
-
-        public WorkItemGenerator(Func<T> createFunc, IEnumerable<string> propertiesToSkip = null)
+        public PropertyValueGenerator()
+            :this(null)
         {
-            _create = createFunc ?? throw new ArgumentNullException(nameof(createFunc));
+        }
+
+        public PropertyValueGenerator(IEnumerable<string> propertiesToSkip)
+        {
+            _assignees = new[]
+                             {
+                                 Identities.Danj.DisplayName,
+                                 Identities.Adamb.DisplayName,
+                                 Identities.Chrisj.DisplayName,
+                                 Identities.Chrisjoh.DisplayName,
+                                 Identities.Chrisjohn.DisplayName,
+                                 Identities.Chrisjohns.DisplayName
+                             };
+
             _propertiesToSkip = propertiesToSkip == null
                                     ? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
                                     : new HashSet<string>(propertiesToSkip, StringComparer.OrdinalIgnoreCase);
@@ -46,108 +55,13 @@ namespace Qwiq.Benchmark
             _propertiesToSkip.Add("RevisedDate");
             _propertiesToSkip.Add("History");
             _propertiesToSkip.Add("Watermark");
-
-            //// Identity fields
-            //_propertiesToSkip.Add("AssignedTo");
-            //_propertiesToSkip.Add("ChangedBy");
-            //_propertiesToSkip.Add("CreatedBy");
-
-            _assignees = new[]
-                                {
-                                    MockIdentityManagementService.Danj.DisplayName,
-                                    MockIdentityManagementService.Adamb.DisplayName,
-                                    MockIdentityManagementService.Chrisj.DisplayName,
-                                    MockIdentityManagementService.Chrisjoh.DisplayName,
-                                    MockIdentityManagementService.Chrisjohn.DisplayName,
-                                    MockIdentityManagementService.Chrisjohns.DisplayName
-                                };
         }
 
-        public IReadOnlyCollection<T> Generate(int quantity = 50)
-        {
-            // After generating the parent/child links, this can grow an order of magnitude
-            var items = new List<T>(quantity * 10);
-            var generatedItems = new HashSet<int>();
-
-            int GenerateUnusedWorkItemId()
-            {
-                // ID needs to be populated prior to other properties (as they may depend on that value)
-                var id = Randomizer.Instance.NextSystemId(quantity);
-                while (generatedItems.Contains(id))
-                {
-                    id = Randomizer.Instance.NextSystemId(quantity * 10);
-                }
-
-                return id;
-            }
-
-            for (var i = 0; i < quantity; i++)
-            {
-                GenerateItem(_create, GenerateUnusedWorkItemId, generatedItems, items);
-            }
-
-            Items = items.AsReadOnly();
-            return Items;
-        }
-
-        // Generates an item and link references
-        private T GenerateItem(Func<T> createFunc, Func<int> idFunc, ISet<int> generatedItems, ICollection<T> items)
-        {
-            var instance = GenerateItem(createFunc, idFunc);
-
-            if (generatedItems.Contains(instance.Id))
-            {
-                // Item has already been generated
-                var id = instance.Id;
-                return items.Single(p => p.Id == id);
-            }
-
-
-            items.Add(instance);
-            generatedItems.Add(instance.Id);
-
-            foreach (var link in instance.Links.OfType<IRelatedLink>().ToArray())
-            {
-                var linked = default(T);
-
-                if (!generatedItems.Contains(link.RelatedWorkItemId))
-                {
-                    linked = GenerateItem(createFunc, () => link.RelatedWorkItemId, generatedItems, items);
-                }
-
-                // Determine if we need to create a recipricol link
-                if (!(link.LinkTypeEnd?.LinkType.IsDirectional ?? false)) continue;
-
-                // Look up the item if it was not previously generated
-                if (linked == null)
-                {
-                    linked = items.Single(p => p.Id == link.RelatedWorkItemId);
-                }
-
-                // Add the recipricol link
-                linked.Links.Add(linked.CreateRelatedLink(instance.Id, link.LinkTypeEnd.OppositeEnd));
-            }
-
-            return instance;
-        }
-
-        /// Generates a single item
-        private T GenerateItem(Func<T> createFunc, Func<int> idFunc)
-        {
-            var instance = createFunc();
-            var id = idFunc();
-            instance[CoreFieldRefNames.Id] = id;
-            PopulatePropertiesOnInstance(instance);
-            return instance;
-        }
-
-        public IReadOnlyCollection<T> Items { get; private set; }
-
-        private void PopulatePropertiesOnInstance(T instance)
+        public virtual T PopulateInstance(T instance)
         {
             foreach (
                 var property in
-                    typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
+                typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty))
             {
                 // If we can't set the property, don't bother
                 if (property.GetSetMethod() == null) continue;
@@ -171,13 +85,12 @@ namespace Qwiq.Benchmark
                     // May fail because the setter is not available
                 }
             }
+
+            return instance;
         }
 
-        protected const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
-
-        protected virtual object GetRandomValue(T instance, string propertyName, Type propertyType)
+        public virtual object GetRandomValue(T instance, string propertyName, Type propertyType)
         {
-
             var randomizer = Randomizer.Instance;
 
             object value;
@@ -239,12 +152,12 @@ namespace Qwiq.Benchmark
                 case "System.Uri":
                     var c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/";
                     value =
-                        new Uri(
-                            "http://tempuri.org/"
-                            + new string(
-                                  Enumerable.Repeat(c, randomizer.Next(5, 250))
-                                            .Select(s => s[randomizer.Next(s.Length)])
-                                            .ToArray()));
+                            new Uri(
+                                    "http://tempuri.org/"
+                                    + new string(
+                                                 Enumerable.Repeat(c, randomizer.Next(5, 250))
+                                                           .Select(s => s[randomizer.Next(s.Length)])
+                                                           .ToArray()));
                     break;
 
                 case "Microsoft.Qwiq.IWorkItemType":

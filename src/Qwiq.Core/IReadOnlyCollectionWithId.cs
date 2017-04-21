@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IReadOnlyListWithId<T, TId> : IReadOnlyList<T>, IEquatable<IReadOnlyListWithId<T, TId>>
+    public interface IReadOnlyCollectionWithId<T, TId> : IReadOnlyCollection<T>, IEquatable<IReadOnlyCollectionWithId<T, TId>>
         where T : IIdentifiable<TId>
     {
         T GetById(TId id);

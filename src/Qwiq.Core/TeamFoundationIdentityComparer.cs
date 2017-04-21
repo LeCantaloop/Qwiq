@@ -4,13 +4,13 @@ namespace Microsoft.Qwiq
 {
     public class TeamFoundationIdentityComparer : GenericComparer<ITeamFoundationIdentity>
     {
-        public static TeamFoundationIdentityComparer Instance => Nested.Instance;
+        internal new static TeamFoundationIdentityComparer Default => Nested.Instance;
 
         public override int GetHashCode(ITeamFoundationIdentity obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 
-            return IdentityDescriptorComparer.Instance.GetHashCode(obj.Descriptor);
+            return IdentityDescriptorComparer.Default.GetHashCode(obj.Descriptor);
         }
 
         public override bool Equals(ITeamFoundationIdentity x, ITeamFoundationIdentity y)
@@ -20,7 +20,7 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(y, null)) return false;
 
             return StringComparer.OrdinalIgnoreCase.Equals(x.UniqueName, y.UniqueName)
-                && IdentityDescriptorComparer.Instance.Equals(x.Descriptor, y.Descriptor);
+                && IdentityDescriptorComparer.Default.Equals(x.Descriptor, y.Descriptor);
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
@@ -33,6 +33,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

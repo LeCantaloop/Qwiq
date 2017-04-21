@@ -4,7 +4,7 @@ namespace Microsoft.Qwiq
 {
     public class NodeComparer : GenericComparer<INode>
     {
-        public static readonly NodeComparer Instance = Nested.Instance;
+        internal new static readonly NodeComparer Default = Nested.Instance;
 
         private NodeComparer()
         {
@@ -50,6 +50,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

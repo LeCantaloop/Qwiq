@@ -49,8 +49,8 @@ namespace Microsoft.Qwiq.Mocks
                     "Reference name not supported in mock object.");
             }
 
-            _forward = new MockWorkItemLinkTypeEnd(this, forwardName, true, -forwardId);
-            _reverse = new MockWorkItemLinkTypeEnd(this, reverseName, false, -reverseId);
+            SetForwardEnd(new MockWorkItemLinkTypeEnd(this, forwardName, true, -forwardId));
+            SetReverseEnd(new MockWorkItemLinkTypeEnd(this, reverseName, false, -reverseId));
         }
 
         public MockWorkItemLinkType(
@@ -64,8 +64,8 @@ namespace Microsoft.Qwiq.Mocks
             if (string.IsNullOrEmpty(forwardEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(forwardEndName));
             if (string.IsNullOrEmpty(reverseEndName)) throw new ArgumentException("Value cannot be null or empty.", nameof(reverseEndName));
             IsDirectional = isDirectional;
-            _forward = new MockWorkItemLinkTypeEnd(this, forwardEndName, true, id);
-            _reverse = new MockWorkItemLinkTypeEnd(this, reverseEndName, false, -id);
+            SetForwardEnd(new MockWorkItemLinkTypeEnd(this, forwardEndName, true, id));
+            SetReverseEnd(new MockWorkItemLinkTypeEnd(this, reverseEndName, false, -id));
         }
 
 

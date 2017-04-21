@@ -1,4 +1,4 @@
-﻿using Microsoft.Qwiq.Core.Tests;
+﻿using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -18,6 +18,9 @@ namespace Microsoft.Qwiq.Integration.Tests
         }
     }
 
+    [DeploymentItem("Microsoft.WITDataStore32.dll")]
+    [DeploymentItem("Microsoft.WITDataStore64.dll")]
+    [DeploymentItem("Microsoft.TeamFoundation.WorkItemTracking.Client.dll")]
     public abstract class WorkItemStoreComparisonContextSpecification : TimedContextSpecification
     {
         protected IWorkItemStore Rest => RestResult.WorkItemStore;
@@ -30,12 +33,13 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         public override void Cleanup()
         {
-            Rest?.Dispose();
-            Soap?.Dispose();
+            RestResult?.Dispose();
+            SoapResult?.Dispose();
 
             base.Cleanup();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         public override void Given()
         {
             SoapResult = new Result { WorkItemStore = TimedAction(() => IntegrationSettings.CreateSoapStore(), "SOAP", "Create WIS") };

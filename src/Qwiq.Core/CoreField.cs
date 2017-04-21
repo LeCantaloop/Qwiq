@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq
         IterationId = -104,
         ExternalLinkCount = -57,
         TeamProject = -42,
-        HyperLinkCount = -32,
+        HyperlinkCount = -32,
         AttachedFileCount = -31,
         NodeName = -12,
         AreaPath = -7,

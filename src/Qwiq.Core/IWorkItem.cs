@@ -21,7 +21,7 @@ namespace Microsoft.Qwiq
 
         IFieldCollection Fields { get; }
 
-        new int HyperLinkCount { get; }
+        new int HyperlinkCount { get; }
 
         /// <summary>
         ///     Gets the ID of this work item.
@@ -57,7 +57,7 @@ namespace Microsoft.Qwiq
         ///     Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object
         ///     that represents the type of this work item.
         /// </summary>
-        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
+        /// <exception cref="TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
         ///     The Type property is null.
         /// </exception>
         IWorkItemType Type { get; }

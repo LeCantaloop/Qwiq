@@ -36,12 +36,73 @@ namespace Microsoft.Qwiq.Integration.Tests
             SoapResult.WorkItem[CoreFieldRefNames.AreaPath].ShouldEqual(SoapResult.WorkItem.AreaPath);
         }
 
-        public override void Cleanup()
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Core_identity_fields_contain_similar_information()
         {
-            SoapResult?.Dispose();
-            RestResult?.Dispose();
+            var exceptions = new List<Exception>();
+            var identityFields = new[]
+                                     {
+                                         CoreFieldRefNames.AssignedTo, CoreFieldRefNames.AuthorizedAs,
+                                         CoreFieldRefNames.ChangedBy, CoreFieldRefNames.CreatedBy
+                                     };
 
-            base.Cleanup();
+            foreach (var field in identityFields)
+            {
+                try
+                {
+                    var restValue = RestResult.WorkItem[field]?.ToString();
+                    var soapValue = SoapResult.WorkItem[field]?.ToString();
+
+                    // If there is an identity field, drop the account name that REST returns to us
+                    restValue = new IdentityFieldValue(restValue).DisplayName;
+                    soapValue = new IdentityFieldValue(soapValue).DisplayName;
+
+                    restValue.ShouldEqual(soapValue, field);
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+            }
+
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Core_DateTime_fields_contain_similar_information()
+        {
+            var exceptions = new List<Exception>();
+            var dateTimeFields = new[] { CoreFieldRefNames.ChangedDate, CoreFieldRefNames.CreatedDate, };
+
+            foreach (var field in dateTimeFields)
+            {
+                try
+                {
+                    var restValue = (DateTime?)RestResult.WorkItem[field];
+                    var soapValue = (DateTime)SoapResult.WorkItem[field];
+
+                    restValue.GetValueOrDefault().ShouldEqual(soapValue.ToUniversalTime(), field);
+                }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+            }
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            }
         }
 
         [TestMethod]
@@ -51,26 +112,30 @@ namespace Microsoft.Qwiq.Integration.Tests
         public void CoreFields_are_equal()
         {
             var exceptions = new List<Exception>();
-            var identityFields = new[]
-                                     {
-                                         CoreFieldRefNames.AssignedTo, CoreFieldRefNames.AuthorizedAs,
-                                         CoreFieldRefNames.ChangedBy, CoreFieldRefNames.CreatedBy
-                                     };
-            foreach (var field in CoreFieldRefNames.All)
+
+
+            var fieldsWithKnownDifferences = new[]
+                                                 {
+                                                     CoreFieldRefNames.AttachedFileCount,
+                                                     CoreFieldRefNames.AuthorizedDate,
+                                                     CoreFieldRefNames.BoardColumn,
+                                                     CoreFieldRefNames.BoardLane,
+                                                     CoreFieldRefNames.ChangedDate,
+                                                     CoreFieldRefNames.CreatedDate,
+                                                     CoreFieldRefNames.ExternalLinkCount,
+                                                     CoreFieldRefNames.HyperlinkCount,
+                                                     CoreFieldRefNames.RelatedLinkCount,
+                                                     CoreFieldRefNames.AssignedTo, CoreFieldRefNames.AuthorizedAs,
+                                                     CoreFieldRefNames.ChangedBy, CoreFieldRefNames.CreatedBy
+                                                 };
+
+            foreach (var field in CoreFieldRefNames.All.Except(fieldsWithKnownDifferences))
             {
                 try
                 {
 
                     var restValue = RestResult.WorkItem[field]?.ToString();
                     var soapValue = SoapResult.WorkItem[field]?.ToString();
-
-                    // If there is an identity field, drop the account name that REST returns to us
-                    if (identityFields.Contains(field))
-                    {
-                        restValue = new IdentityFieldValue(restValue).DisplayName;
-                        soapValue = new IdentityFieldValue(soapValue).DisplayName;
-                    }
-
 
 
                     restValue.ShouldEqual(soapValue, field);

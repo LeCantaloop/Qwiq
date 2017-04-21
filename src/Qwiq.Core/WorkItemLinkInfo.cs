@@ -31,31 +31,31 @@ namespace Microsoft.Qwiq
         [DebuggerStepThrough]
         public bool Equals(IWorkItemLinkInfo other)
         {
-            return WorkItemLinkInfoComparer.Instance.Equals(this, other);
+            return WorkItemLinkInfoComparer.Default.Equals(this, other);
         }
 
         [DebuggerStepThrough]
         public static bool operator !=(WorkItemLinkInfo x, WorkItemLinkInfo y)
         {
-            return !WorkItemLinkInfoComparer.Instance.Equals(x, y);
+            return !WorkItemLinkInfoComparer.Default.Equals(x, y);
         }
 
         [DebuggerStepThrough]
         public static bool operator ==(WorkItemLinkInfo x, WorkItemLinkInfo y)
         {
-            return WorkItemLinkInfoComparer.Instance.Equals(x, y);
+            return WorkItemLinkInfoComparer.Default.Equals(x, y);
         }
 
         [DebuggerStepThrough]
         public override bool Equals(object obj)
         {
-            return WorkItemLinkInfoComparer.Instance.Equals(this, obj as IWorkItemLinkInfo);
+            return WorkItemLinkInfoComparer.Default.Equals(this, obj as IWorkItemLinkInfo);
         }
 
         [DebuggerStepThrough]
         public override int GetHashCode()
         {
-            return WorkItemLinkInfoComparer.Instance.GetHashCode(this);
+            return WorkItemLinkInfoComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()

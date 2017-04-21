@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,7 +11,7 @@ namespace Microsoft.Qwiq.Integration.Tests
     {
         private const int Id = 10726528;
 
-        private static readonly string Wiql = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems WHERE [System.Id] = {Id}";
+        private static readonly string Wiql = ((FormattableString)$"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems WHERE [System.Id] = {Id}").ToString(CultureInfo.InvariantCulture);
 
         public override void When()
         {

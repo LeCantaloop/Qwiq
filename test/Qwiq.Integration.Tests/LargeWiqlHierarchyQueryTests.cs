@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq.Core.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -26,13 +23,13 @@ WHERE
 mode(Recursive)
 ";
 
-            var start = Clock.GetTimestamp();
+
             RestResult.Links = TimedAction(
                 () => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(),
                 "REST",
                 "QueryLinks - WIQL");
             RestResult.WorkItems = TimedAction(
-                () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))),
                 "REST",
                 "Query - IDs");
 
@@ -43,7 +40,7 @@ mode(Recursive)
                 "SOAP",
                 "QueryLinks - WIQL");
             SoapResult.WorkItems = TimedAction(
-                () => SoapResult.WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))).ToList(),
+                () => SoapResult.WorkItemStore.Query(new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))),
                 "SOAP",
                 "Query - IDs");
         }
@@ -63,7 +60,7 @@ mode(Recursive)
         [TestCategory("REST")]
         public void WorkItem_Count_Equal()
         {
-            RestResult.WorkItems.Count().ShouldEqual(SoapResult.WorkItems.Count(), "WorkItems.Count");
+            RestResult.WorkItems.Count.ShouldEqual(SoapResult.WorkItems.Count(), "WorkItems.Count");
         }
 
         [TestMethod]

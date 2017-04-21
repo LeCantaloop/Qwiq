@@ -107,7 +107,7 @@ namespace Microsoft.Qwiq.Soap
         /// <summary>
         ///     Gets the number of hyperlinks in this work item.
         /// </summary>
-        public new int HyperLinkCount => _item.HyperLinkCount;
+        public new int HyperlinkCount => _item.HyperLinkCount;
 
         /// <summary>
         ///     Gets the ID of this work item.
@@ -253,10 +253,10 @@ namespace Microsoft.Qwiq.Soap
         /// <summary>
         ///     Opens this work item for modification when transmitting minimal amounts of data over the network.
         /// </summary>
-        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.ValidationException">
+        /// <exception cref="Tfs.ValidationException">
         ///     This WorkItem instance does not belong to a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemCollection.
         /// </exception>
-        /// <exception cref="Microsoft.TeamFoundation.WorkItemTracking.Client.DeniedOrNotExistException">
+        /// <exception cref="Tfs.DeniedOrNotExistException">
         ///     This WorkItem instance could not be opened for edit correctly.
         /// </exception>
         public override void PartialOpen()
@@ -331,7 +331,7 @@ namespace Microsoft.Qwiq.Soap
         ///     A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
         ///     that is a copy of this WorkItem instance.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         ///     Thrown when targetType is null.
         /// </exception>
         public IWorkItem Copy(IWorkItemType targetType)
@@ -350,7 +350,7 @@ namespace Microsoft.Qwiq.Soap
         ///     A new WorkItem instance of the specified Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType
         ///     that is a copy of this WorkItem instance.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">
+        /// <exception cref="ArgumentNullException">
         ///     Thrown when targetType is null.
         /// </exception>
         public IWorkItem Copy(IWorkItemType targetType, WorkItemCopyFlags flags)

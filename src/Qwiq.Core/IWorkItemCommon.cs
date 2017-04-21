@@ -55,7 +55,7 @@ namespace Microsoft.Qwiq
         /// <summary>
         ///     Gets the number of hyperlinks in this work item.
         /// </summary>
-        int? HyperLinkCount { get; }
+        int? HyperlinkCount { get; }
 
         int? IterationId { get; set; }
 

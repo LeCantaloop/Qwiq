@@ -1,8 +1,6 @@
-using System;
-
 namespace Microsoft.Qwiq
 {
-    public interface IFieldCollection : IReadOnlyListWithId<IField, int>
+    public interface IFieldCollection : IReadOnlyCollectionWithId<IField, int>
     {
     }
 }

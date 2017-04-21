@@ -5,17 +5,38 @@ namespace Microsoft.Qwiq.Integration.Tests
 {
     public class Result : IDisposable
     {
-        public IWorkItem WorkItem { get; set; }
-
-        public IEnumerable<IWorkItem> WorkItems { get; set; }
+        private IWorkItem _workItem;
 
         public IEnumerable<IWorkItemLinkInfo> Links { get; set; }
+
+        public IWorkItem WorkItem
+        {
+            get => _workItem;
+            set
+            {
+                _workItem = value;
+                WorkItems = new WorkItemCollection(new[] { value });
+            }
+        }
+
+        public IWorkItemCollection WorkItems { get; set; }
 
         public IWorkItemStore WorkItemStore { get; set; }
 
         public void Dispose()
         {
-            WorkItemStore?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing) WorkItemStore?.Dispose();
+
+            WorkItemStore = null;
+            _workItem = null;
+            WorkItems = null;
+            Links = null;
         }
     }
 }

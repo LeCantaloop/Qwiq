@@ -1,16 +1,18 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
+using Microsoft.Qwiq.Benchmark;
 using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Benchmark.Tests;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Qwiq.Benchmark;
+using Should;
 
 using B = Microsoft.Qwiq.Mapper.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy;
 
@@ -28,7 +30,6 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
         [TestMethod]
         [TestCategory(Constants.TestCategory.Benchmark)]
         [TestCategory(Constants.TestCategory.Performance)]
-        [TestCategory("localOnly")]
         public void Execute_Mapping_Performance_Benchmark()
         {
             // Intentionally left blank
@@ -39,6 +40,10 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
         {
             private WorkItemMapper _mapper;
             private IEnumerable<IWorkItem> _items;
+
+            private IEnumerable<IWorkItem> _item;
+
+            private Type _type;
 
             [Setup]
             public void SetupData()
@@ -51,14 +56,23 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
 
                 var wis = new MockWorkItemStore();
                 var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
-                _items = generator.Generate();
+                _items = generator.Generate(1);
                 wis.Add(_items);
+
+                _item = new[] { _items.First() };
+                _type = typeof(MockModel);
+            }
+
+            [Benchmark(Baseline = true)]
+            public IEnumerable<MockModel> Generic()
+            {
+                return _mapper.Create<MockModel>(_item).ToList();
             }
 
             [Benchmark]
-            public IList Execute()
+            public IEnumerable<IIdentifiable<int?>> NonGeneric()
             {
-                return _mapper.Create<MockModel>(_items).ToList();
+                return _mapper.Create(_type, _item).ToList();
             }
         }
     }
@@ -71,6 +85,10 @@ namespace Microsoft.Qwiq.Mapper.Tests
     {
         private B.Benchmark _benchmark;
 
+        private MockModel _genericResult;
+
+        private IIdentifiable<int?> _nonGenericResult;
+
         public override void Given()
         {
             _benchmark = new B.Benchmark();
@@ -79,13 +97,18 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
         public override void When()
         {
-            _benchmark.Execute();
+            _genericResult = _benchmark.Generic().First();
+            _nonGenericResult = _benchmark.NonGeneric().First();
         }
 
         [TestMethod]
         public void Execute()
         {
-            Assert.Inconclusive("There is no condition verified. This executes to ensure the benchmark code functions without exception.");
+            var ng = (MockModel)_nonGenericResult;
+            var g = _genericResult;
+
+            ng.WorkItemType.ShouldEqual(g.WorkItemType);
+            ng.Milestone.ShouldEqual(g.Milestone);
         }
     }
 }

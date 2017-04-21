@@ -106,7 +106,7 @@ namespace Microsoft.Qwiq.Mocks
             }
 
             if (id == 0 && linkTypeEnd == null) return new MockRelatedLink(null, Id);
-            
+
             return new MockRelatedLink(linkTypeEnd, Id, id);
         }
 
@@ -185,8 +185,10 @@ namespace Microsoft.Qwiq.Mocks
                 }
                 else
                 {
-                    var link = newItem.CreateRelatedLink(this);
-                    newItem.Links.Add(link);
+                    using (var wis = new MockWorkItemStore())
+                    {
+                        newItem.Links.Add(newItem.CreateRelatedLink(wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd, this));
+                    }
                 }
 
                 newItem.Id = 0;

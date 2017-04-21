@@ -2,12 +2,12 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class ReadOnlyListWithIdComparer<T, TId> : GenericComparer<IReadOnlyListWithId<T, TId>>
+    public class ReadOnlyCollectionWithIdComparer<T, TId> : GenericComparer<IReadOnlyCollectionWithId<T, TId>>
         where T : IIdentifiable<TId>
     {
-        public new static readonly ReadOnlyListWithIdComparer<T, TId> Default = new ReadOnlyListWithIdComparer<T, TId>();
+        public new static readonly ReadOnlyCollectionWithIdComparer<T, TId> Default = new ReadOnlyCollectionWithIdComparer<T, TId>();
 
-        public override bool Equals(IReadOnlyListWithId<T, TId> x, IReadOnlyListWithId<T, TId> y)
+        public override bool Equals(IReadOnlyCollectionWithId<T, TId> x, IReadOnlyCollectionWithId<T, TId> y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -31,7 +31,7 @@ namespace Microsoft.Qwiq
             return true;
         }
 
-        public override int GetHashCode(IReadOnlyListWithId<T, TId> obj)
+        public override int GetHashCode(IReadOnlyCollectionWithId<T, TId> obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 
@@ -39,11 +39,5 @@ namespace Microsoft.Qwiq
             return obj.OrderBy(p => p.Id)
                       .Aggregate(27, (current, node) => (13 * current) ^ GenericComparer<T>.Default.GetHashCode(node));
         }
-    }
-
-    public static class Comparer
-    {
-        public static readonly ReadOnlyListWithIdComparer<INode, int> NodeCollectionComparer = ReadOnlyListWithIdComparer<INode, int>.Default;
-        public static readonly ReadOnlyListWithIdComparer<IField, int> FieldCollectionComparer = ReadOnlyListWithIdComparer<IField, int>.Default;
     }
 }

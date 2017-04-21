@@ -64,19 +64,19 @@ namespace Microsoft.Qwiq
         [DebuggerStepThrough]
         public bool Equals(INode other)
         {
-            return NodeComparer.Instance.Equals(this, other);
+            return NodeComparer.Default.Equals(this, other);
         }
 
         [DebuggerStepThrough]
         public override bool Equals(object obj)
         {
-            return NodeComparer.Instance.Equals(this, obj as INode);
+            return NodeComparer.Default.Equals(this, obj as INode);
         }
 
         [DebuggerStepThrough]
         public override int GetHashCode()
         {
-            return NodeComparer.Instance.GetHashCode(this);
+            return NodeComparer.Default.GetHashCode(this);
         }
 
         [DebuggerStepThrough]

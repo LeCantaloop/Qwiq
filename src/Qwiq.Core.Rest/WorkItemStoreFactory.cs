@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Rest
 {
@@ -24,9 +25,9 @@ namespace Microsoft.Qwiq.Rest
             foreach (var credential in credentials)
                 try
                 {
-                    var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
+                    var tfsNative = ConnectToTfsCollection(options.Uri, credential);
                     var tfsProxy =
-                        ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
+                        ExceptionHandlingDynamicProxyFactory.Create<IInternalTeamProjectCollection>(
                             new VssConnectionAdapter(tfsNative));
 
                     options.Notifications.AuthenticationSuccess(
@@ -71,13 +72,7 @@ namespace Microsoft.Qwiq.Rest
             IEnumerable<TfsCredentials> credentials,
             ClientType type = ClientType.Default)
         {
-            var options =
-                new AuthenticationOptions(endpoint, AuthenticationType.Windows, type)
-                    {
-                        CreateCredentials =
-                            t => credentials
-                    };
-
+            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, type, types => credentials.Select(s=>s.Credentials));
             return Create(options);
         }
 
@@ -97,7 +92,7 @@ namespace Microsoft.Qwiq.Rest
             return tfsServer;
         }
 
-        private static IWorkItemStore CreateRestWorkItemStore(IInternalTfsTeamProjectCollection tfs)
+        private static IWorkItemStore CreateRestWorkItemStore(IInternalTeamProjectCollection tfs)
         {
             return new WorkItemStore(() => tfs, QueryFactory.GetInstance);
         }

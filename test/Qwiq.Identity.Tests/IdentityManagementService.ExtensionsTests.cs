@@ -49,7 +49,7 @@ namespace Qwiq.Identity.Tests
     {
         public override void Given()
         {
-            ExpectedIdentity = MockIdentityManagementService.Chrisj;
+            ExpectedIdentity = Identities.Chrisj;
             Alias = ExpectedIdentity.GetUserAlias();
             base.Given();
         }
@@ -60,7 +60,7 @@ namespace Qwiq.Identity.Tests
     {
         public override void Given()
         {
-            ExpectedIdentity = MockIdentityManagementService.Chrisjoh;
+            ExpectedIdentity = Identities.Chrisjoh;
             Alias = KnownSearchAliasForChrisjoh;
             base.Given();
         }
@@ -100,8 +100,8 @@ namespace Qwiq.Identity.Tests
     {
         public override void Given()
         {
-            var contestant1 = MockIdentityManagementService.Chrisj;
-            var contestant2 = MockIdentityManagementService.Danj;
+            var contestant1 = Identities.Chrisj;
+            var contestant2 = Identities.Danj;
             ExpectedIdentities = new Dictionary<string, ITeamFoundationIdentity>
             {
                 { contestant1.GetUserAlias(), contestant1 },
@@ -119,8 +119,8 @@ namespace Qwiq.Identity.Tests
         {
             ExpectedIdentities = new Dictionary<string, ITeamFoundationIdentity>
             {
-                { KnownSearchAliasForChrisjoh, MockIdentityManagementService.Chrisjoh },
-                { KnownSearchAliasForDanj, MockIdentityManagementService.Danj }
+                { KnownSearchAliasForChrisjoh, Identities.Chrisjoh },
+                { KnownSearchAliasForDanj, Identities.Danj }
             };
             Aliases = ExpectedIdentities.Keys.ToArray();
             base.Given();
@@ -147,11 +147,11 @@ namespace Qwiq.Identity.Tests
     {
         public override void Given()
         {
-            var danj = MockIdentityManagementService.Chrisj;
+            var danj = Identities.Chrisj;
             ExpectedIdentities = new Dictionary<string, ITeamFoundationIdentity>
             {
                 { danj.GetUserAlias(), danj },
-                { KnownSearchAliasForChrisjoh, MockIdentityManagementService.Chrisjoh },
+                { KnownSearchAliasForChrisjoh, Identities.Chrisjoh },
                 { UnknownAliasB, null }
             };
             Aliases = ExpectedIdentities.Keys.ToArray();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.Services.Common;
 using System;
+using System.Globalization;
 
 namespace Microsoft.Qwiq
 {
@@ -15,6 +16,7 @@ namespace Microsoft.Qwiq
         public IdentityFieldValue(ITeamFoundationIdentity identity)
             : this(identity.DisplayName, identity.Descriptor.Identifier, identity.TeamFoundationId.ToString())
         {
+            if (identity == null) throw new ArgumentNullException(nameof(identity));
         }
 
         /// <summary>
@@ -35,22 +37,16 @@ namespace Microsoft.Qwiq
             var arr = FullName.Split(IdentityConstants.DomainAccountNameSeparator);
             if (arr.Length != 2 || arr[1] == Sid) return;
 
-
             if (arr[1].Contains("@"))
             {
                 Email = arr[1];
                 Alias = arr[1].Split('@')[0];
 
-                Guid guid;
-                if (Guid.TryParse(arr[0], out guid))
-                {
-                    Domain = arr[0];
-                }
+                if (Guid.TryParse(arr[0], out Guid guid)) Domain = arr[0];
             }
             else
             {
-                Guid guid;
-                if (Guid.TryParse(arr[0], out guid))
+                if (Guid.TryParse(arr[0], out Guid guid))
                 {
                     Alias = arr[1];
                 }
@@ -60,21 +56,20 @@ namespace Microsoft.Qwiq
                     Alias = arr[1];
                 }
             }
-
-
         }
 
         public IdentityFieldValue(string displayName)
         {
-            if (displayName.Contains("<"))
-            {
-                var arr = displayName.Split('<');
-                if (arr[1].Contains("@"))
+            if (!string.IsNullOrEmpty(displayName))
+                if (displayName.Contains("<"))
                 {
-                    Email = arr[1].Trim('>');
-                    Alias = Email.Split('@')[0];
+                    var arr = displayName.Split('<');
+                    if (arr[1].Contains("@"))
+                    {
+                        Email = arr[1].Trim('>');
+                        Alias = Email.Split('@')[0];
+                    }
                 }
-            }
 
             DisplayPart = displayName;
         }
@@ -89,9 +84,7 @@ namespace Microsoft.Qwiq
         ///     Gets the display name.
         /// </summary>
         /// <value>The display name without the account name, if it exists.</value>
-        public string DisplayName => !string.IsNullOrEmpty(DisplayPart)
-                                         ? DisplayPart.Split('<')[0].Trim()
-                                         : DisplayPart;
+        public string DisplayName => !string.IsNullOrEmpty(DisplayPart) ? DisplayPart.Split('<')[0].Trim() : DisplayPart;
 
         /// <summary>
         ///     Gets the display part.
@@ -129,8 +122,7 @@ namespace Microsoft.Qwiq
             get
             {
                 if (!string.IsNullOrEmpty(Email)) return Email;
-                if (!string.IsNullOrEmpty(Domain))
-                    return string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, Domain, Alias);
+                if (!string.IsNullOrEmpty(Domain)) return string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, Domain, Alias);
                 if (!string.IsNullOrEmpty(Alias)) return Alias;
 
                 return string.Empty;

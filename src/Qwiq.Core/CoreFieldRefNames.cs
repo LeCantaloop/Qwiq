@@ -38,7 +38,7 @@ namespace Microsoft.Qwiq
 
         public const string History = "System.History";
 
-        public const string HyperLinkCount = "System.HyperLinkCount";
+        public const string HyperlinkCount = "System.HyperLinkCount";
 
         public const string Id = "System.Id";
 
@@ -93,7 +93,7 @@ namespace Microsoft.Qwiq
                     { Description, (int)CoreField.Description },
                     { ExternalLinkCount, (int)CoreField.ExternalLinkCount },
                     { History, (int)CoreField.History },
-                    { HyperLinkCount, (int)CoreField.HyperLinkCount },
+                    { HyperlinkCount, (int)CoreField.HyperlinkCount },
                     { Id, (int)CoreField.Id },
                     { IterationId, (int)CoreField.IterationId },
                     { IterationPath, (int)CoreField.IterationPath },
@@ -133,7 +133,7 @@ namespace Microsoft.Qwiq
                     { Description, "Description" },
                     { ExternalLinkCount, "External Link Count" },
                     { History, "History" },
-                    { HyperLinkCount, "Hyperlink Count" },
+                    { HyperlinkCount, "Hyperlink Count" },
                     { Id, "ID" },
                     { IterationId, "Iteration ID" },
                     { IterationPath, "Iteration Path" },

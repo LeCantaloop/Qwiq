@@ -12,6 +12,16 @@
     <AssemblyName>Microsoft.Qwiq.Core.Rest</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <HighEntropyVA>true</HighEntropyVA>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors>CS0108</WarningsAsErrors>
+    <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp />
   </PropertyGroup>
@@ -21,20 +31,15 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <WarningsAsErrors>CS0108</WarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.TeamFoundation.Build2.WebApi, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.TeamFoundationServer.Client.15.112.1\lib\net45\Microsoft.TeamFoundation.Build2.WebApi.dll</HintPath>
     </Reference>
@@ -98,7 +103,7 @@
     <Compile Include="FieldDefinition.cs" />
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="IdentityDescriptor.cs" />
-    <Compile Include="IInternalTfsTeamProjectCollection.cs" />
+    <Compile Include="IInternalTeamProjectCollection.cs" />
     <Compile Include="LinkCollection.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Project.cs" />
@@ -108,7 +113,6 @@
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="VssConnectionAdapter.cs" />
     <Compile Include="WorkItem.cs" />
-    <Compile Include="WorkItemLinkType.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemStore.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />

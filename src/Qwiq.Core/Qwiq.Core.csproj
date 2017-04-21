@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,8 +12,16 @@
     <AssemblyName>Microsoft.Qwiq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <HighEntropyVA>true</HighEntropyVA>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors />
+    <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp />
   </PropertyGroup>
@@ -23,22 +31,17 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <WarningsAsErrors>CS0108</WarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.13.5.907, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -62,10 +65,6 @@
     <Reference Include="Microsoft.VisualStudio.Services.WebApi, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.VisualStudio.Services.Client.15.112.1\lib\net45\Microsoft.VisualStudio.Services.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.1\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -88,6 +87,7 @@
   <ItemGroup>
     <Compile Include="BaseLinkType.cs" />
     <Compile Include="ClientType.cs" />
+    <Compile Include="Comparer.cs" />
     <Compile Include="CoreField.cs" />
     <Compile Include="CoreFieldRefNames.cs" />
     <Compile Include="CoreLinkTypeReferenceNames.cs" />
@@ -95,25 +95,27 @@
     <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
     <Compile Include="Credentials\AuthenticationOptions.cs" />
     <Compile Include="Credentials\AuthenticationSuccessNotification.cs" />
-    <Compile Include="Credentials\AuthenticationType.cs" />
+    <Compile Include="Credentials\AuthenticationTypes.cs" />
     <Compile Include="Credentials\CredentialNotification.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\CredentialsNotifications.cs" />
     <Compile Include="Credentials\TfsCredentials.cs" />
-    <Compile Include="Credentials\VssCredentialsComparer.cs" />
-    <Compile Include="DeniedOrNotExistException.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
+    <Compile Include="Exceptions\DeniedOrNotExistException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxyFactory.cs" />
     <Compile Include="Exceptions\ExceptionMapper.cs" />
+    <Compile Include="Exceptions\FieldDefinitionNotExistException.cs" />
     <Compile Include="Exceptions\IExceptionExploder.cs" />
     <Compile Include="Exceptions\IExceptionMapper.cs" />
     <Compile Include="Exceptions\InnerExceptionExploder.cs" />
     <Compile Include="Exceptions\InvalidOperationExceptionMapper.cs" />
+    <Compile Include="Exceptions\PageSizeRangeException.cs" />
     <Compile Include="Exceptions\ProxyBase.cs" />
     <Compile Include="Exceptions\TransientException.cs" />
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
+    <Compile Include="Exceptions\WorkItemTypeDeniedOrNotExistException.cs" />
     <Compile Include="ExternalLink.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldCollection.cs" />
@@ -121,9 +123,9 @@
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="FieldDefinitionCollectionComparer.cs" />
     <Compile Include="FieldDefinitionComparer.cs" />
-    <Compile Include="FieldDefinitionNotExistException.cs" />
     <Compile Include="FieldRefNames.cs" />
     <Compile Include="GenericComparer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hyperlink.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="ICommonStructureService.cs" />
@@ -153,21 +155,21 @@
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IQueryFactory.cs" />
+    <Compile Include="IReadOnlyCollection.cs" />
+    <Compile Include="IReadOnlyCollectionWithId.cs" />
     <Compile Include="IReadOnlyField.cs" />
-    <Compile Include="IReadOnlyList.cs" />
-    <Compile Include="IReadOnlyListWithId.cs" />
     <Compile Include="IRegisteredLinkType.cs" />
     <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />
-    <Compile Include="ITeamFoundationIdentity.Extensions.cs">
-      <DependentUpon>ITeamFoundationIdentity.cs</DependentUpon>
-    </Compile>
+    <Compile Include="ITeamFoundationIdentity.Extensions.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItem.cs" />
+    <Compile Include="IWorkItem.Extensions.cs" />
+    <Compile Include="IWorkItemCollection.cs" />
     <Compile Include="IWorkItemCommon.cs" />
     <Compile Include="IWorkItemCore.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
@@ -177,22 +179,23 @@
     <Compile Include="IWorkItemLinkTypeEndCollection.cs" />
     <Compile Include="IWorkItemReference.cs" />
     <Compile Include="IWorkItemStore.cs" />
+    <Compile Include="IWorkItemStore.Extensions.cs" />
     <Compile Include="IWorkItemStoreFactory.cs" />
     <Compile Include="IWorkItemType.cs" />
+    <Compile Include="IWorkItemType.Extensions.cs" />
     <Compile Include="IWorkItemTypeCollection.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeComparer.cs" />
     <Compile Include="NullableIdentifiableComparer.cs" />
-    <Compile Include="PageSizeRangeException.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadOnlyList.cs" />
-    <Compile Include="ReadOnlyListWithId.cs" />
-    <Compile Include="ReadOnlyListWithIdComparer.cs" />
+    <Compile Include="ReadOnlyCollection.cs" />
+    <Compile Include="ReadOnlyCollectionWithId.cs" />
+    <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
     <Compile Include="RegisteredLinkType.cs" />
     <Compile Include="RegisteredLinkTypeCollection.cs" />
     <Compile Include="RelatedLink.cs" />
@@ -204,11 +207,12 @@
     <Compile Include="TypeParser.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemCollection.cs" />
+    <Compile Include="WorkItemCollectionComparer.cs" />
     <Compile Include="WorkItemCommon.cs" />
     <Compile Include="WorkItemComparer.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemCore.cs" />
-    <Compile Include="WorkItemExtensions.cs" />
     <Compile Include="WorkItemFields.cs" />
     <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkInfoComparer.cs" />
@@ -229,20 +233,15 @@
     <None Include="Qwiq.Core.nuspec">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="readme.txt" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets'))" />
     <Error Condition="!Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
-  <Import Project="..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets" Condition="Exists('..\..\packages\NuSpec.ReferenceGenerator.1.4.2\build\dotnet\NuSpec.ReferenceGenerator.targets')" />
-  <Import Project="..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" />
 </Project>

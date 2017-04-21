@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
@@ -27,9 +28,9 @@ namespace Microsoft.Qwiq.Soap
                     foreach (var credential in credentials)
                         try
                         {
-                            var tfsNative = ConnectToTfsCollection(options.Uri, credential.Credentials);
+                            var tfsNative = ConnectToTfsCollection(options.Uri, credential);
                             var tfsProxy =
-                                ExceptionHandlingDynamicProxyFactory.Create<IInternalTfsTeamProjectCollection>(
+                                ExceptionHandlingDynamicProxyFactory.Create<IInternalTeamProjectCollection>(
                                     new TfsTeamProjectCollection(tfsNative));
 
                             options.Notifications.AuthenticationSuccess(
@@ -68,13 +69,7 @@ namespace Microsoft.Qwiq.Soap
             IEnumerable<TfsCredentials> credentials,
             ClientType type = ClientType.Default)
         {
-            var options =
-                new AuthenticationOptions(endpoint, AuthenticationType.Windows, type)
-                {
-                    CreateCredentials =
-                            t => credentials
-                };
-
+            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, type, types => credentials.Select(s=>s.Credentials));
             return Create(options);
         }
 
@@ -93,7 +88,7 @@ namespace Microsoft.Qwiq.Soap
             return tfsServer;
         }
 
-        private static IWorkItemStore CreateSoapWorkItemStore(IInternalTfsTeamProjectCollection tfs)
+        private static IWorkItemStore CreateSoapWorkItemStore(IInternalTeamProjectCollection tfs)
         {
             return new WorkItemStore(() => tfs, store =>  new QueryFactory(store));
         }

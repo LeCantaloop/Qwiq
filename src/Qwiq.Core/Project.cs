@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Microsoft.Qwiq
 {
@@ -32,7 +33,7 @@ namespace Microsoft.Qwiq
 
         public bool Equals(IProject other)
         {
-            return ProjectComparer.Instance.Equals(this, other);
+            return ProjectComparer.Default.Equals(this, other);
         }
 
         public INodeCollection AreaRootNodes => _area.Value;
@@ -49,17 +50,18 @@ namespace Microsoft.Qwiq
 
         public override bool Equals(object obj)
         {
-            return ProjectComparer.Instance.Equals(this, obj as IProject);
+            return ProjectComparer.Default.Equals(this, obj as IProject);
         }
 
         public override int GetHashCode()
         {
-            return ProjectComparer.Instance.GetHashCode(this);
+            return ProjectComparer.Default.GetHashCode(this);
         }
 
         public override string ToString()
         {
-            return $"{Guid} ({Name})";
+            FormattableString s = $"{Guid} ({Name})";
+            return s.ToString(CultureInfo.InvariantCulture);
         }
 
         public Guid Id => Guid;

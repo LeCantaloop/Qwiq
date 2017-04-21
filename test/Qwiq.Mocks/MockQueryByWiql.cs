@@ -69,7 +69,7 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public IEnumerable<IWorkItemLinkTypeEnd> GetLinkTypes()
+        public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {
             // TODO: Limit IWorkItemLinkTypeEnds to the links contained in WIQL
             return _store.WorkItemLinkTypes.LinkTypeEnds;
@@ -130,7 +130,7 @@ namespace Microsoft.Qwiq.Mocks
                                     //    var workItem = "Source".Equals(fieldPredicate.Item1, StringComparison.OrdinalIgnoreCase) ? source : target;
                                     //    match = MatchAggregate(match,  fieldPredicate, workItem);
 
-                                        
+
                                     //}
                                 }
                                 else
@@ -164,7 +164,12 @@ namespace Microsoft.Qwiq.Mocks
             return m;
         }
 
-        public IEnumerable<IWorkItem> RunQuery()
+        public IWorkItemCollection RunQuery()
+        {
+            return new WorkItemCollection(RunQueryImpl());
+        }
+
+        private IEnumerable<IWorkItem> RunQueryImpl()
         {
             if (_ids != null)
             {

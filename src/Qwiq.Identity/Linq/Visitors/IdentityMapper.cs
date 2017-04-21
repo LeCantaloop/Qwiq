@@ -24,14 +24,12 @@ namespace Microsoft.Qwiq.Identity.Linq.Visitors
 
         public object Map(object value)
         {
-            var stringValue = value as string;
-            if (stringValue != null)
+            if (value is string stringValue)
             {
                 return GetDisplayNames(stringValue).Single();
             }
 
-            var stringArray = value as IEnumerable<string>;
-            if (stringArray != null)
+            if (value is IEnumerable<string> stringArray)
             {
                 return GetDisplayNames(stringArray.ToArray());
             }

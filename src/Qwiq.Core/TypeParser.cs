@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Qwiq
 {
@@ -8,18 +9,15 @@ namespace Microsoft.Qwiq
     /// </summary>
     public class TypeParser : ITypeParser
     {
-        public static ITypeParser Default => Nested.Instance;
-
         private TypeParser()
         {
         }
 
+        public static ITypeParser Default => Nested.Instance;
+
         public object Parse(Type destinationType, object value, object defaultValue)
         {
-            return ParseImpl(
-                destinationType,
-                value,
-                new Lazy<object>(() => defaultValue ?? GetDefaultValueOfType(destinationType)));
+            return ParseImpl(destinationType, value, new Lazy<object>(() => defaultValue ?? GetDefaultValueOfType(destinationType)));
         }
 
         public object Parse(Type destinationType, object input)
@@ -44,8 +42,7 @@ namespace Microsoft.Qwiq
 
         private static bool IsGenericNullable(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition()
-                   == typeof(Nullable<>).GetGenericTypeDefinition();
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
         }
 
         private static object ParseImpl(Type destinationType, object value, Lazy<object> defaultValueFactory)
@@ -55,15 +52,9 @@ namespace Microsoft.Qwiq
 
             // Quit if no type conversion is actually required
             if (value.GetType() == destinationType) return value;
-
             if (destinationType.IsInstanceOfType(value)) return value;
-
-            object result;
-
-            if (TryConvert(destinationType, value, out result)) return result;
-
+            if (TryConvert(destinationType, value, out object result)) return result;
             if (IsGenericNullable(destinationType) && defaultValueFactory.Value == null) return null;
-
             if (TryConvert(destinationType, defaultValueFactory.Value, out result)) return result;
 
             return null;
@@ -72,7 +63,6 @@ namespace Microsoft.Qwiq
         private static bool TryConvert(Type destinationType, object value, out object result)
         {
             if (IsGenericNullable(destinationType))
-            {
                 try
                 {
                     var converter = new NullableConverter(destinationType);
@@ -81,10 +71,9 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                // ReSharper restore CatchAllClause
+                        // ReSharper restore CatchAllClause
                 {
                 }
-            }
 
             var valueType = value.GetType();
             var typeConverter = TypeDescriptor.GetConverter(valueType);
@@ -96,7 +85,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                // ReSharper restore CatchAllClause
+                        // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -109,7 +98,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                // ReSharper restore CatchAllClause
+                        // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -117,9 +106,7 @@ namespace Microsoft.Qwiq
             {
                 var val = value.ToString();
                 if (!string.IsNullOrEmpty(val))
-                {
                     if (typeConverter.IsValid(val))
-                    {
                         try
                         {
                             result = typeConverter.ConvertFromString(val);
@@ -127,11 +114,9 @@ namespace Microsoft.Qwiq
                         }
                         // ReSharper disable EmptyGeneralCatchClause
                         catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                                // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
-                    }
-                }
             }
 
             result = null;
@@ -145,7 +130,7 @@ namespace Microsoft.Qwiq
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-        // ReSharper restore ClassNeverInstantiated.Local
+                // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly ITypeParser Instance = new TypeParser();
@@ -154,6 +139,7 @@ namespace Microsoft.Qwiq
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit
+            [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {
             }

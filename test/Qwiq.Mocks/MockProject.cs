@@ -32,24 +32,24 @@ namespace Microsoft.Qwiq.Mocks
         private static INodeCollection CreateNodes(bool area)
         {
             var root = new Node(1, area, !area, "Root", new Uri("http://localhost/nodes/1"));
-            var l1 = new Node(
-                              2,
-                              area,
-                              !area,
-                              "L1",
-                              new Uri("http://localhost/nodes/2"),
-                              () => root,
-                              n => new[]
-                                       {
-                                           new Node(
-                                                    3,
-                                                    area,
-                                                    !area,
-                                                    "L2",
-                                                    new Uri("http://localhost/nodes/3"),
-                                                    () => n,
-                                                    c => Enumerable.Empty<INode>())
-                                       });
+            new Node(
+                     2,
+                     area,
+                     !area,
+                     "L1",
+                     new Uri("http://localhost/nodes/2"),
+                     () => root,
+                     n => new[]
+                              {
+                                  new Node(
+                                           3,
+                                           area,
+                                           !area,
+                                           "L2",
+                                           new Uri("http://localhost/nodes/3"),
+                                           () => n,
+                                           c => Enumerable.Empty<INode>())
+                              });
 
             return new NodeCollection(root);
         }

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeEndCollection : ReadOnlyListWithId<IWorkItemLinkTypeEnd, int>,
+    public class WorkItemLinkTypeEndCollection : ReadOnlyCollectionWithId<IWorkItemLinkTypeEnd, int>,
                                                  IWorkItemLinkTypeEndCollection
     {
         internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkType> linkTypes)

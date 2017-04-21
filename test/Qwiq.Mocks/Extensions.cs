@@ -4,11 +4,18 @@ using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public static class Extensions
+
+
+    public static partial class Extensions
     {
         internal static void BatchSave(this MockWorkItemStore store, params IWorkItem[] workItems)
         {
             store.BatchSave(workItems);
+        }
+
+        public static MockWorkItem Create(this MockWorkItemStore store)
+        {
+            return Create(store, null);
         }
 
         public static MockWorkItem Create(this MockWorkItemStore store, IEnumerable<KeyValuePair<string, object>> values = null)
@@ -22,9 +29,15 @@ namespace Microsoft.Qwiq.Mocks
 
             values = values?.Union(a) ?? a;
 
-            var wi = wit.NewWorkItem(values);
+            var wi = (MockWorkItem)wit.NewWorkItem(values);
             store.BatchSave(wi);
             return (MockWorkItem)wi;
+        }
+
+        public static MockWorkItem Generate(this MockWorkItemStore store)
+        {
+            var g = new WorkItemGenerator<MockWorkItem>(store.Create, new []{"Revisions", "Item"});
+            return g.Generate(1).Single();
         }
 
         public static MockWorkItemStore Add(this MockWorkItemStore store, IEnumerable<IWorkItem> workItems)

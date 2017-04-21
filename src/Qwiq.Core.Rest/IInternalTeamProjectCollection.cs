@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Rest
 {
-    internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection
+    internal interface IInternalTeamProjectCollection : ITeamProjectCollection
     {
         T GetClient<T>()
             where T : VssHttpClientBase;

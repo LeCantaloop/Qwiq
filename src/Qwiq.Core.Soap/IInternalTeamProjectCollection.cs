@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.Soap
 {
-    internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable
+    internal interface IInternalTeamProjectCollection : ITeamProjectCollection, IDisposable
     {
         T GetClient<T>();
 
