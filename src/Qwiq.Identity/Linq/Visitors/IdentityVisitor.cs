@@ -16,12 +16,6 @@ namespace Microsoft.Qwiq.Identity.Linq.Visitors
             _mapper = mapper;
         }
 
-        [Obsolete("Use the overload which takes an IIdentityMapper.")]
-        public IdentityVisitor(IIdentityManagementService identityManagementService, string tenantId,
-            params string[] domains) : this(new IdentityMapper(identityManagementService, tenantId, domains))
-        {
-        }
-
         protected override Expression VisitBinary(BinaryExpression node)
         {
             _needsIdentityMapping = NeedsIdentityMapping(new[] { node.Left, node.Right });
