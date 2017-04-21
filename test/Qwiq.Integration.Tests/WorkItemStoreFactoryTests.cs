@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         public override void Given()
         {
-            Instance = WorkItemStoreFactory.Instance;
+            Instance = WorkItemStoreFactory.Default;
             WorkItemStore = TimedAction(Create, "SOAP", "WIS Create");
             base.Given();
         }

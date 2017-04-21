@@ -111,6 +111,7 @@
     <Compile Include="Query.cs" />
     <Compile Include="QueryFactory.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
+    <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="VssConnectionAdapter.cs" />
     <Compile Include="WorkItem.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />

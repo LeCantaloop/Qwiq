@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation;
-using Microsoft.TeamFoundation.Build.Client;
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Soap
 {
     public class WorkItemStoreFactory : IWorkItemStoreFactory
     {
-        public static readonly IWorkItemStoreFactory Instance = Nested.Instance;
+        public static readonly IWorkItemStoreFactory Default = Nested.Instance;
 
         private WorkItemStoreFactory()
         {
@@ -21,36 +17,8 @@ namespace Microsoft.Qwiq.Soap
         public IWorkItemStore Create(AuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
-            switch (options.ClientType)
-            {
-                case ClientType.Soap:
-                    var credentials = options.Credentials;
-                    foreach (var credential in credentials)
-                        try
-                        {
-                            var tfsNative = ConnectToTfsCollection(options.Uri, credential);
-                            var tfsProxy =
-                                ExceptionHandlingDynamicProxyFactory.Create<IInternalTeamProjectCollection>(
-                                    new TfsTeamProjectCollection(tfsNative));
-
-                            options.Notifications.AuthenticationSuccess(
-                                new AuthenticationSuccessNotification(credential, tfsProxy));
-                            return CreateSoapWorkItemStore(tfsProxy);
-                        }
-                        catch (TeamFoundationServerUnauthorizedException e)
-                        {
-                            options.Notifications.AuthenticationFailed(
-                                new AuthenticationFailedNotification(credential, e));
-                        }
-                    var nocreds = new AccessDeniedException("Invalid credentials");
-                    options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
-                    throw nocreds;
-                case ClientType.Rest:
-                    return Rest.WorkItemStoreFactory.Instance.Create(options);
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(options.ClientType));
-            }
+            var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
+            return CreateSoapWorkItemStore(tfsProxy);
         }
 
         [Obsolete(
@@ -74,18 +42,11 @@ namespace Microsoft.Qwiq.Soap
         }
 
         [Obsolete(
-            "This method is deprecated and will be removed in a future release. See property Instance instead.",
+            "This method is deprecated and will be removed in a future release. See property Default instead.",
             false)]
         public static IWorkItemStoreFactory GetInstance()
         {
-            return Instance;
-        }
-
-        private static TeamFoundation.Client.TfsTeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
-        {
-            var tfsServer = new TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
-            tfsServer.EnsureAuthenticated();
-            return tfsServer;
+            return Default;
         }
 
         private static IWorkItemStore CreateSoapWorkItemStore(IInternalTeamProjectCollection tfs)

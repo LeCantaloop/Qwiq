@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq.Soap
 {
     /// <summary>
     /// </summary>
-    /// <seealso cref="ITfsTeamProjectCollection" />
+    /// <seealso cref="ITeamProjectCollection" />
     internal class TfsTeamProjectCollection : IInternalTeamProjectCollection
     {
         private readonly Lazy<ICommonStructureService> _css;

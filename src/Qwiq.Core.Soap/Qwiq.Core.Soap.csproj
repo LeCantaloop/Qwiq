@@ -227,6 +227,7 @@
     <Compile Include="RelatedLink.cs" />
     <Compile Include="Revision.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
+    <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="TfsTeamProjectCollection.cs" />
     <Compile Include="ValidationException.cs" />
     <Compile Include="WorkItem.cs" />
