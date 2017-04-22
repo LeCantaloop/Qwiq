@@ -21,7 +21,8 @@ namespace Microsoft.Qwiq.Linq
     {
         protected readonly IFieldMapper FieldMapper;
 
-        public WiqlTranslator() : this(new SimpleFieldMapper())
+        public WiqlTranslator()
+            : this(new CachingFieldMapper(new SimpleFieldMapper()))
         {
         }
 
@@ -293,7 +294,7 @@ namespace Microsoft.Qwiq.Linq
                             _expressionInProgress.Enqueue(new DateTimeFragment(((DateTime)node.Value)));
                             break;
                         case "System.Int32[]":
-                            var originalIntVals = ((int[])node.Value);
+                            var originalIntVals = (int[])node.Value;
                             _expressionInProgress.Enqueue(new NumberListFragment(originalIntVals));
                             break;
                         case "System.String[]":
