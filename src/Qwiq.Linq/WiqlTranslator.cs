@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Linq
 
         public WiqlTranslator(IFieldMapper fieldMapper)
         {
-            FieldMapper = fieldMapper;
+            FieldMapper = fieldMapper ?? throw new ArgumentNullException(nameof(fieldMapper));
         }
 
         protected virtual Translator GetTranslator()
@@ -44,9 +44,19 @@ namespace Microsoft.Qwiq.Linq
             var query = translator.Query;
 
             query.UnderlyingQueryType = query.UnderlyingQueryType ?? TypeSystem.GetElementType(expression.Type);
-            query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
 
-            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
+            if (!query.Projections.Any())
+            {
+                query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
+            }
+            else
+            {
+                // TODO: Enumerate the projections and build the list of fields
+                query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
+            }
+
+
+        var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
             if (workItemTypeRestriction.Any())
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
