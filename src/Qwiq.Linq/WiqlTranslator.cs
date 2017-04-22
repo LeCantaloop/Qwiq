@@ -273,8 +273,7 @@ namespace Microsoft.Qwiq.Linq
 
             protected override Expression VisitConstant(ConstantExpression node)
             {
-                var queryable = node.Value as IQueryable;
-                if (queryable != null)
+                if (node.Value is IQueryable)
                 {
                     // Assume constant nodes with IQueryables are table references
                     _expressionInProgress = new Queue<IFragment>();
