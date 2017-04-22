@@ -73,7 +73,7 @@ namespace Microsoft.Qwiq.Core.Tests
         [TestMethod]
         public void IdentityName_is_empty()
         {
-            Result.IdentityName.ShouldEqual(string.Empty);
+            Result.IdentityName.ShouldBeNull();
         }
     }
 

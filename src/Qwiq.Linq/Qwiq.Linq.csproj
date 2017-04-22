@@ -70,6 +70,7 @@
     <Compile Include="TeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="TranslatedQuery.cs" />
     <Compile Include="TypeSystem.cs" />
+    <Compile Include="Visitors\IdentityVisitor.cs" />
     <Compile Include="Visitors\LocalCollectionExpander.cs" />
     <Compile Include="Visitors\PartialEvaluator.cs" />
     <Compile Include="Visitors\QueryRewriter.cs" />
