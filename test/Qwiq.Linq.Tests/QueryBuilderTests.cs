@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using Microsoft.Qwiq.Linq.Visitors;
@@ -7,6 +8,7 @@ using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
+using Should.Core.Exceptions;
 
 namespace Microsoft.Qwiq.Linq.Tests
 {
@@ -16,12 +18,16 @@ namespace Microsoft.Qwiq.Linq.Tests
         protected string Actual;
         protected IOrderedQueryable<IWorkItem> Query;
 
+        protected WiqlQueryBuilder _builder;
+
+        protected TeamFoundationServerWorkItemQueryProvider _queryProvider;
+
         public override void Given()
         {
             base.Given();
-            var builder = new WiqlQueryBuilder(new WiqlTranslator(), new PartialEvaluator(), new QueryRewriter());
-            var queryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), builder);
-            Query = new Query<IWorkItem>(queryProvider, builder);
+            _builder = new WiqlQueryBuilder();
+            _queryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), _builder);
+            Query = new Query<IWorkItem>(_queryProvider, _builder);
         }
     }
 
@@ -130,7 +136,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : QueryBuilderTests
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_string_array_values : QueryBuilderTests
     {
         private string[] _values;
 
@@ -151,6 +157,76 @@ namespace Microsoft.Qwiq.Linq.Tests
         public void it_is_translated_to_an_in_operator()
         {
             Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_IEnumerable_string_values : QueryBuilderTests
+    {
+        private IEnumerable<string> _values;
+
+        public override void Given()
+        {
+            _values = new[] { "person1", "person2" }.AsEnumerable();
+            base.Given();
+        }
+
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Keywords] IN ('person1', 'person2')))";
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+        }
+
+        [TestMethod]
+        public void it_is_translated_to_an_in_operator()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_Collection_string_values : QueryBuilderTests
+    {
+        private Collection<string> _values;
+
+        public override void Given()
+        {
+            _values = new Collection<string> { "person1", "person2" };
+            base.Given();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void it_is_not_supported()
+        {
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_HashSet_string_values : QueryBuilderTests
+    {
+        private HashSet<string> _values;
+
+        public override void Given()
+        {
+            _values = new HashSet<string>
+            {
+                "person1",
+                "person2"
+            };
+            base.Given();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void it_is_not_supported()
+        {
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
         }
     }
 
@@ -304,7 +380,7 @@ namespace Microsoft.Qwiq.Linq.Tests
         public void a_NotSupportedException_is_thrown_to_notify_the_developer_that_text_matches_are_case_insensitive()
         {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Query.Where(item => item.Title.ToUpper() == "TEST").ToString();
+            Actual = Query.Where(item => item.Title.ToUpper() == "TEST").ToString();
         }
     }
 
@@ -412,6 +488,141 @@ namespace Microsoft.Qwiq.Linq.Tests
 
         [TestMethod]
         public void the_index_name_is_used_as_a_field_name()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_where_clause_with_an_enum : QueryBuilderTests
+    {
+        enum Sample { One, Two, Three}
+
+        interface IWorkItem2 : IWorkItem
+        {
+            Sample EnumProperty { get; }
+        }
+
+        private new IOrderedQueryable<IWorkItem2> Query;
+
+        /// <inheritdoc />
+        public override void Given()
+        {
+            base.Given();
+            Query = new Query<IWorkItem2>(_queryProvider, _builder);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void the_enum_is_translated()
+        {
+            Actual = Query.Where(item => item.EnumProperty == Sample.Three).ToString();
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_single_variable : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] = 1))";
+            int id = 1;
+            Actual = Query.Where(item => item.Id == id).ToString();
+        }
+
+        [TestMethod]
+        public void the_variable_value_is_written_to_the_wiql()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_known_identity_property_with_a_combo_value : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'Dan Jump <danj@contoso.com>'))";
+            Actual = Query.Where(item => item.AssignedTo == "Dan Jump <danj@contoso.com>").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_known_identity_property_with_an_alias : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item.AssignedTo == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_identity_via_indexer : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item["Assigned To"].ToString() == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_identity_via_fields_indexer : QueryBuilderTests
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item.Fields["Assigned To"].ToString() == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_projection : QueryBuilderTests
+    {
+        /// <inheritdoc />
+        public override void When()
+        {
+            Expected = "SELECT Id FROM WorkItems WHERE (([Id] = 1))";
+            Actual = Query.Where(item => item.Id == 1).Select(s => s.Id).ToString();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EqualException))]
+        public void the_column_written_to_WIQL_in_SELECT_is_the_projected_property()
         {
             Actual.ShouldEqual(Expected);
         }
