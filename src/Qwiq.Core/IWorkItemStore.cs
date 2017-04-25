@@ -15,6 +15,8 @@ namespace Microsoft.Qwiq
         /// <value>The authorized credentials.</value>
         VssCredentials AuthorizedCredentials { get; }
 
+        ITeamFoundationIdentity AuthorizedIdentity { get; }
+
         /// <summary>
         ///     Indicates the communication type used for the work item store.
         /// </summary>
@@ -45,24 +47,6 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <value>The time zone.</value>
         TimeZone TimeZone { get; }
-
-        /// <summary>
-        ///     Gets the name of the user account.
-        /// </summary>
-        /// <value>The name of the user account.</value>
-        string UserAccountName { get; }
-
-        /// <summary>
-        ///     Gets the display name of the user.
-        /// </summary>
-        /// <value>The display name of the user.</value>
-        string UserDisplayName { get; }
-
-        /// <summary>
-        ///     Gets the user sid.
-        /// </summary>
-        /// <value>The user sid.</value>
-        string UserSid { get; }
 
         /// <summary>
         ///     Gets the work item link types associated with this instance.

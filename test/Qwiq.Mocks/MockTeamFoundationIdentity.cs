@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockTeamFoundationIdentity(string displayName, string uniqueName)
-            : this(new MockIdentityDescriptor(uniqueName), displayName, Guid.Empty)
+            : this(MockIdentityDescriptor.Create(uniqueName), displayName, Guid.Empty)
         {
         }
 

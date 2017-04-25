@@ -58,11 +58,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
 
         public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
 
-        public string UserAccountName => _innerWorkItemStore.UserAccountName;
-
-        public string UserDisplayName => _innerWorkItemStore.UserDisplayName;
-
-        public string UserSid => _innerWorkItemStore.UserSid;
+        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {

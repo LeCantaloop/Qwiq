@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.Identity;
 
 namespace Microsoft.Qwiq.Rest
@@ -25,18 +24,9 @@ namespace Microsoft.Qwiq.Rest
 
             IsContainer = identity.IsContainer;
 
-            _descriptor = new Lazy<IIdentityDescriptor>(
-                () => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                    new IdentityDescriptor(identity.Descriptor)));
-            _memberOf = new Lazy<IEnumerable<IIdentityDescriptor>>(
-                () => identity.MemberOf.Select(
-                    item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                        new IdentityDescriptor(item))));
-
-            _members = new Lazy<IEnumerable<IIdentityDescriptor>>(
-                () => identity.Members.Select(
-                    item => ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(
-                        new IdentityDescriptor(item))));
+            _descriptor = new Lazy<IIdentityDescriptor>(() => identity.Descriptor.AsProxy());
+            _memberOf = new Lazy<IEnumerable<IIdentityDescriptor>>(() => identity.MemberOf.Select(item => item.AsProxy()));
+            _members = new Lazy<IEnumerable<IIdentityDescriptor>>(() => identity.Members.Select(item => item.AsProxy()));
         }
 
         public override IIdentityDescriptor Descriptor => _descriptor.Value;

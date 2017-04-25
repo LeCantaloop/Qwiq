@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Build.WebApi;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -27,10 +26,7 @@ namespace Microsoft.Qwiq.Rest
                 try
                 {
                     var tfsNative = ConnectToTfsCollection(options.Uri, credential);
-                    var tfsProxy =
-                            ExceptionHandlingDynamicProxyFactory
-                                    .Create<IInternalTeamProjectCollection>(new VssConnectionAdapter(tfsNative));
-
+                    var tfsProxy = tfsNative.AsProxy();
                     options.Notifications.AuthenticationSuccess(new AuthenticationSuccessNotification(credential, tfsProxy));
 
                     return tfsProxy;

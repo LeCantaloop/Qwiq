@@ -59,7 +59,7 @@ namespace Microsoft.Qwiq.Rest
                 return GetLinks(NativeWorkItemStore.Value);
             }
 
-            
+
 
             _linkTypes = new Lazy<IWorkItemLinkTypeCollection>(ValueFactory);
             _projects = new Lazy<IProjectCollection>(
@@ -88,13 +88,9 @@ namespace Microsoft.Qwiq.Rest
 
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
+
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
-
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
-        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
 

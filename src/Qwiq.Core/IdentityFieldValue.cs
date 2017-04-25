@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -10,7 +9,6 @@ namespace Microsoft.Qwiq
     /// <summary>
     ///     Class IdentityFieldValue.
     /// </summary>
-    [DebuggerDisplay("{" + nameof(DisplayName) + "}")]
     public class IdentityFieldValue
     {
         // "Chris Johnson <chrisjohns@contoso.com>"
@@ -251,6 +249,22 @@ namespace Microsoft.Qwiq
             vsid = Guid.Empty;
             displayName = string.Empty;
             return false;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(IdentityName))
+            {
+                return DisplayName;
+            }
+
+            return ($"{DisplayName} <{AccountName}>").ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static explicit operator string(IdentityFieldValue value)
+        {
+            return value.IdentityName;
         }
     }
 }

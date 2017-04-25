@@ -5,13 +5,21 @@ using System.Linq.Expressions;
 
 namespace Microsoft.Qwiq.Linq.Visitors
 {
-    public class IdentityVisitor : ExpressionVisitor
+    /// <summary>
+    /// Represents a visitor to detect identity values in the expression tree.
+    /// </summary>
+    /// <seealso cref="ExpressionVisitor" />
+    public class IdentityComboStringVisitor : ExpressionVisitor
     {
         private static readonly HashSet<string> IdentityProperties;
 
-        private bool _needsIdentityMapping;
+        /// <summary>
+        /// Gets a value indicating whether the visited expression needs identity mapping.
+        /// </summary>
+        /// <value><c>true</c> if the expression needs identity mapping; otherwise, <c>false</c>.</value>
+        protected virtual bool NeedsIdentityMapping { get; private set; }
 
-        static IdentityVisitor()
+        static IdentityComboStringVisitor()
         {
             IdentityProperties =
                     new HashSet<string>(Comparer.OrdinalIgnoreCase)
@@ -28,19 +36,29 @@ namespace Microsoft.Qwiq.Linq.Visitors
                         };
         }
 
+        /// <summary>
+        /// Visits the children of the <see cref="T:System.Linq.Expressions.BinaryExpression" />.
+        /// </summary>
+        /// <param name="node">The expression to visit.</param>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
         protected override Expression VisitBinary(BinaryExpression node)
         {
-            _needsIdentityMapping = NeedsIdentityMapping(new[] { node.Left, node.Right });
+            NeedsIdentityMapping = ExpressionsNeedIdentityMapping(new[] { node.Left, node.Right });
 
             var newNode = base.VisitBinary(node);
-            _needsIdentityMapping = false;
+            NeedsIdentityMapping = false;
 
             return newNode;
         }
 
+        /// <summary>
+        /// Visits the <see cref="T:System.Linq.Expressions.ConstantExpression" />.
+        /// </summary>
+        /// <param name="node">The expression to visit.</param>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
         protected override Expression VisitConstant(ConstantExpression node)
         {
-            if (!_needsIdentityMapping) return base.VisitConstant(node);
+            if (!NeedsIdentityMapping) return base.VisitConstant(node);
 
             void Validate(string identity)
             {
@@ -59,18 +77,23 @@ namespace Microsoft.Qwiq.Linq.Visitors
             return base.VisitConstant(node);
         }
 
+        /// <summary>
+        /// Visits the children of the <see cref="T:System.Linq.Expressions.MethodCallExpression" />.
+        /// </summary>
+        /// <param name="node">The expression to visit.</param>
+        /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            _needsIdentityMapping = NeedsIdentityMapping(node.Arguments);
+            NeedsIdentityMapping = ExpressionsNeedIdentityMapping(node.Arguments);
 
             // TODO: Support cases: item["Assigned To"] and item.Fields["Assigned To"]
             var newNode = base.VisitMethodCall(node);
-            _needsIdentityMapping = false;
+            NeedsIdentityMapping = false;
 
             return newNode;
         }
 
-        private static bool NeedsIdentityMapping(IEnumerable<Expression> expressions)
+        private static bool ExpressionsNeedIdentityMapping(IEnumerable<Expression> expressions)
         {
             return expressions.OfType<MemberExpression>().Any(arg => IdentityProperties.Contains(arg.Member.Name));
         }

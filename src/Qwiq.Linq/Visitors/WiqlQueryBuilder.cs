@@ -15,7 +15,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         /// </summary>
         /// <param name="translator">The translator used to visit the <see cref="Expression"/> tree.</param>
         public WiqlQueryBuilder(IWiqlTranslator translator)
-            : this(translator, new PartialEvaluator(), new IdentityVisitor(), new QueryRewriter())
+            : this(translator, new PartialEvaluator(), new IdentityComboStringVisitor(), new QueryRewriter())
         {
         }
 

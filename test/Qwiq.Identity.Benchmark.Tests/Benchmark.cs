@@ -5,7 +5,6 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 using Microsoft.Qwiq.Benchmark;
-using Microsoft.Qwiq.Identity.Mapper;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;

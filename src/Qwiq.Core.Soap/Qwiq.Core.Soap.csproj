@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -194,8 +194,12 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.Common.cs">
+      <Link>Properties\AssemblyInfo.Common.cs</Link>
+    </Compile>
     <Compile Include="Attachment.cs" />
     <Compile Include="CommonStructureService.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ExternalLink.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldCollection.cs" />
@@ -204,7 +208,6 @@
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="Hyperlink.cs" />
     <Compile Include="IdentityDescriptor.cs" />
-    <Compile Include="IdentityManagementService.cs" />
     <Compile Include="IInternalTeamProjectCollection.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
@@ -215,7 +218,6 @@
     <Compile Include="LinkTypeEndMapper.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeInfo.cs" />
-    <Compile Include="NodeSelectExtensions.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectInfo.cs" />
@@ -262,8 +264,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.3.6.5\build\dotnet\GitVersionTask.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.0.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets" Condition="Exists('..\..\packages\Microsoft.TeamFoundationServer.ExtendedClient.15.112.1\build\Microsoft.TeamFoundationServer.ExtendedClient.targets')" />
 </Project>

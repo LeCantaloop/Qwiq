@@ -7,20 +7,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("Microsoft.Qwiq.Identity")]
 [assembly: AssemblyDescription("Provides identity extension methods on top of Microsoft.Qwiq.Core")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Microsoft.Qwiq")]
-[assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible
-// to COM components.  If you need to access a type in this assembly from
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("648010b4-a84b-4ae0-81f6-2de6cf16de69")]
 
-[assembly: InternalsVisibleTo("Qwiq.Identity.Tests")]
-
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Integration.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.Tests")]

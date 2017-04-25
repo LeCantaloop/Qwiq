@@ -27,8 +27,6 @@ namespace Microsoft.Qwiq.Rest
 
         public bool HasAuthenticated { get; }
 
-        public IIdentityManagementService IdentityManagementService { get; }
-
         public TimeZone TimeZone { get; }
 
         public Uri Uri { get; }

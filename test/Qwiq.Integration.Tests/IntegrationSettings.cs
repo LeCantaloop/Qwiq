@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Soap;
 
 namespace Microsoft.Qwiq.Integration.Tests
 {
@@ -12,13 +11,13 @@ namespace Microsoft.Qwiq.Integration.Tests
         public static Func<IWorkItemStore> CreateRestStore { get; } = () =>
                                                                           {
                                                                               var options = RestOptions;
-                                                                              return WorkItemStoreFactory.Default.Create(options);
+                                                                              return Rest.WorkItemStoreFactory.Default.Create(options);
                                                                           };
 
         public static Func<IWorkItemStore> CreateSoapStore { get; } = () =>
                                                                           {
                                                                               var options = SoapOptions;
-                                                                              return WorkItemStoreFactory.Default.Create(options);
+                                                                              return Soap.WorkItemStoreFactory.Default.Create(options);
                                                                           };
 
         public static AuthenticationOptions RestOptions { get; } =

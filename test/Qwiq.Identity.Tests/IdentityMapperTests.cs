@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+
+using Microsoft.Qwiq;
+using Microsoft.Qwiq.Identity;
 
 using Should;
-using Microsoft.Qwiq;
-using Microsoft.Qwiq.Identity.Linq.Visitors;
+
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,26 +16,30 @@ namespace Qwiq.Identity.Tests
     [TestClass]
     public abstract class IdentityMapperTests<T> : ContextSpecification
     {
-        protected IdentityMapper Instance { get; set; }
+        protected IdentityAliasValueConverter Instance { get; set; }
         protected T Input { get; set; }
         protected T ActualOutput { get; set; }
         protected T ExpectedOutput { get; set; }
         public override void Given()
         {
             Instance =
-                new IdentityMapper(
-                    new MockIdentityManagementService(new Dictionary<string, ITeamFoundationIdentity>
-                    {
-                        {"alias", new MockTeamFoundationIdentity("An Alias", "alias")},
-                        {"other", new MockTeamFoundationIdentity("AnOther Alias", "other")}
-                    }), "tenant", "domain");
+                    new IdentityAliasValueConverter(
+                                       new MockIdentityManagementService(new Dictionary<string, ITeamFoundationIdentity>
+                                                                             {
+                                                                                 {"alias", new MockTeamFoundationIdentity(MockIdentityDescriptor.Create("alias", "domain", "tenant"), "An Alias", Guid.Empty)},
+                                                                                 {"other", new MockTeamFoundationIdentity(MockIdentityDescriptor.Create("other", "domain", "tenant"), "AnOther Alias", Guid.Empty)}
+                                                                             }), "tenant", "domain");
 
             base.Given();
         }
 
         public override void When()
         {
-            ActualOutput = (T)Instance.Map(Input);
+            var result = Instance.Map(Input);
+
+            Debug.Print("Result: " + result.ToUsefulString());
+
+            ActualOutput = (T)result;
         }
 
         [TestMethod]
@@ -48,7 +56,7 @@ namespace Qwiq.Identity.Tests
         {
             base.Given();
             Input = "alias";
-            ExpectedOutput = "An Alias";
+            ExpectedOutput = "alias@domain";
         }
     }
 
@@ -69,8 +77,8 @@ namespace Qwiq.Identity.Tests
         public override void Given()
         {
             base.Given();
-            Input = new [] { "alias", "other" };
-            ExpectedOutput = new[] { "An Alias", "AnOther Alias" };
+            Input = new[] { "alias", "other" };
+            ExpectedOutput = new[] { "alias@domain", "other@domain" };
         }
     }
 
@@ -81,7 +89,7 @@ namespace Qwiq.Identity.Tests
         {
             base.Given();
             Input = new[] { "alias", "noidentity2" };
-            ExpectedOutput = new[] { "An Alias", "noidentity2" };
+            ExpectedOutput = new[] { "alias@domain", "noidentity2" };
         }
     }
 

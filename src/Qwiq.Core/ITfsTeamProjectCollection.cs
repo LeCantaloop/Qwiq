@@ -24,8 +24,6 @@ namespace Microsoft.Qwiq
         /// <summary> Returns true if this object has successfully authenticated. </summary>
         bool HasAuthenticated { get; }
 
-        IIdentityManagementService IdentityManagementService { get; }
-
         /// <summary> This is used to convert dates and times to UTC. </summary>
         TimeZone TimeZone { get; }
 

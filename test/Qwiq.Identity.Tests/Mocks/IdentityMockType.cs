@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Qwiq;
-using Microsoft.Qwiq.Identity.Attributes;
 using Microsoft.Qwiq.Mapper.Attributes;
 
 namespace Qwiq.Identity.Tests.Mocks

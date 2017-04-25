@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
-namespace Microsoft.Qwiq.Identity.Mapper
+namespace Microsoft.Qwiq.Mapper
 {
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
     internal struct WorkItemWithFields
     {
         public IWorkItem WorkItem { get; set; }
