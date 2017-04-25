@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("Microsoft Corporation")]
-[assembly: AssemblyProduct("Microsoft.Qwiq")]
+[assembly: AssemblyProduct("Microsoft\x00ae Quick Work Item Queries")]
 [assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
 
 [assembly: ComVisible(false)]
