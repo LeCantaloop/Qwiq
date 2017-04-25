@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Core.Tests.Mocks;
 using Microsoft.Qwiq.Identity.Soap;
+using Microsoft.Qwiq.Identity.Tests.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-using MockIdentityDescriptor = Microsoft.Qwiq.Core.Tests.Mocks.MockIdentityDescriptor;
+using MockIdentityDescriptor = Microsoft.Qwiq.Identity.Tests.Mocks.MockIdentityDescriptor;
 
-namespace Microsoft.Qwiq.Identity.Soap.Tests
+namespace Microsoft.Qwiq.Identity.Tests
 {
     public abstract class IdentityManagementServiceProxyTests<T> : ContextSpecification
     {

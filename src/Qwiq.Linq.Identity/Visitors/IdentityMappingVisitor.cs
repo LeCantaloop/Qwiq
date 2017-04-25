@@ -9,7 +9,7 @@ using Microsoft.Qwiq.Mapper.Attributes;
 namespace Microsoft.Qwiq.Linq.Visitors
 {
     /// <summary>
-    ///     Represents a visitor used to detect and rewrite identitiy values in the expression tree.
+    ///     Represents a visitor used to detect and rewrite identity values in the expression tree.
     /// </summary>
     /// <seealso cref="IdentityComboStringVisitor" />
     public class IdentityMappingVisitor : IdentityComboStringVisitor
