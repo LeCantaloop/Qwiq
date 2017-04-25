@@ -4,7 +4,7 @@ using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Microsoft.Qwiq")]
 [assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
 
