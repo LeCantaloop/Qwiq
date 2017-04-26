@@ -95,12 +95,8 @@ namespace Microsoft.Qwiq
                 {
                     AccountName = str2;
 
-
                     var strArray = str2.Split(IdentityConstants.DomainAccountNameSeparator);
-                    if (strArray.Length != 2)
-                    {
-                        return;
-                    }
+                    if (strArray.Length != 2) return;
 
                     Domain = strArray[0];
                     LogonName = strArray[1];
@@ -123,16 +119,13 @@ namespace Microsoft.Qwiq
         }
 
         /// <summary>
-        /// Gets the the User principal name (UPN) or the down-level login name.
+        ///     Gets the the User principal name (UPN) or the down-level login name.
         /// </summary>
-        /// <remarks>This can be in the UPN format (e.g. UserName@Example.Microsoft.com) or the down-level logon name format (e.g. EXAMPLE\UserName).</remarks>
+        /// <remarks>
+        ///     This can be in the UPN format (e.g. UserName@Example.Microsoft.com) or the down-level logon name format (e.g.
+        ///     EXAMPLE\UserName).
+        /// </remarks>
         public string AccountName { get; }
-
-        /// <summary>
-        ///     Gets the user account (logon) name.
-        /// </summary>
-        /// <value>The logon name parsed from <see cref="Identifier" />, User Principal Name, or down-level logon name.</value>
-        public string LogonName { get; }
 
         /// <summary>
         ///     Gets the display name.
@@ -162,7 +155,7 @@ namespace Microsoft.Qwiq
         ///     Gets the full name.
         /// </summary>
         /// <value>The full name as determined by the descriptor identifier.</value>
-        /// <seealso cref="IIdentityDescriptor.Identifier"/>
+        /// <seealso cref="IIdentityDescriptor.Identifier" />
         public string Identifier { get; }
 
         /// <summary>
@@ -178,12 +171,22 @@ namespace Microsoft.Qwiq
             {
                 if (!string.IsNullOrEmpty(Email)) return Email;
                 if (!string.IsNullOrEmpty(Domain))
-                    return string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, Domain, LogonName);
+                    return string.Format(
+                                         CultureInfo.InvariantCulture,
+                                         IdentityConstants.DomainQualifiedAccountNameFormat,
+                                         Domain,
+                                         LogonName);
                 if (!string.IsNullOrEmpty(LogonName)) return LogonName;
 
                 return null;
             }
         }
+
+        /// <summary>
+        ///     Gets the user account (logon) name.
+        /// </summary>
+        /// <value>The logon name parsed from <see cref="Identifier" />, User Principal Name, or down-level logon name.</value>
+        public string LogonName { get; }
 
         public string TeamFoundationId { get; }
 
@@ -196,8 +199,8 @@ namespace Microsoft.Qwiq
         public override string ToString()
         {
             return string.IsNullOrEmpty(IdentityName)
-                ? DisplayName
-                : $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
+                       ? DisplayName
+                       : $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
         }
 
         private static bool TryGetAccountName(string search, out string acccountName)
