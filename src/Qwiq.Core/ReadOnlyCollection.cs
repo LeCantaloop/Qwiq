@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq
     ///     Base class for common operations for Collections.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ReadOnlyCollection<T> : IReadOnlyCollection<T>
+    public abstract class ReadOnlyCollection<T> : IReadOnlyObjectList<T>
     {
         private readonly object _lockObj = new object();
 
@@ -142,7 +142,7 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        T IReadOnlyCollection<T>.GetItem(int index)
+        T IReadOnlyObjectList<T>.GetItem(int index)
         {
             return GetItem(index);
         }

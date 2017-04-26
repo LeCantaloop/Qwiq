@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface INodeCollection : IReadOnlyCollectionWithId<INode, int>, IEquatable<INodeCollection>
+    public interface INodeCollection : IReadOnlyObjectWithIdList<INode, int>, IEquatable<INodeCollection>
     {
     }
 }

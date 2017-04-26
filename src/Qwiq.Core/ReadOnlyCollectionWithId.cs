@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class ReadOnlyCollectionWithId<T, TId> : ReadOnlyCollection<T>, IReadOnlyCollectionWithId<T, TId>
+    public abstract class ReadOnlyCollectionWithId<T, TId> : ReadOnlyCollection<T>, IReadOnlyObjectWithIdList<T, TId>
         where T : IIdentifiable<TId>
     {
         private readonly Func<T, TId> _idFunc;
@@ -72,14 +72,14 @@ namespace Microsoft.Qwiq
             }
         }
 
-        public virtual bool Equals(IReadOnlyCollectionWithId<T, TId> other)
+        public virtual bool Equals(IReadOnlyObjectWithIdList<T, TId> other)
         {
             return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, other);
         }
 
         public override bool Equals(object obj)
         {
-            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyCollectionWithId<T, TId>);
+            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdList<T, TId>);
         }
 
         public override int GetHashCode()

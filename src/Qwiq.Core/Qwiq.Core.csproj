@@ -157,9 +157,9 @@
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IQueryFactory.cs" />
-    <Compile Include="IReadOnlyCollection.cs" />
-    <Compile Include="IReadOnlyCollectionWithId.cs" />
     <Compile Include="IReadOnlyField.cs" />
+    <Compile Include="IReadOnlyObjectList.cs" />
+    <Compile Include="IReadOnlyObjectWithIdList.cs" />
     <Compile Include="IRegisteredLinkType.cs" />
     <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
