@@ -13,7 +13,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = (int?)1;
-            Actual = TypeParser.Parse<int?>(1L);
+            Actual = Parser.Parse<int?>(1L);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = Formatting.Indented;
-            Actual = TypeParser.Parse("Indented", Formatting.None);
+            Actual = Parser.Parse("Indented", Formatting.None);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 11d;
-            Actual = TypeParser.Parse<double>(null, 11);
+            Actual = Parser.Parse<double>(null, 11);
         }
 
         [TestMethod]
@@ -64,7 +64,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = null;
-            Actual = TypeParser.Parse(typeof(double?), (object)"blarg");
+            Actual = Parser.Parse(typeof(double?), (object)"blarg");
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 0d;
-            Actual = TypeParser.Parse(typeof(double), (object)"blarg");
+            Actual = Parser.Parse(typeof(double), (object)"blarg");
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 0;
-            Actual = TypeParser.Parse(typeof(int), (object)"0x7FFFFFFFFFFFFFFF");
+            Actual = Parser.Parse(typeof(int), (object)"0x7FFFFFFFFFFFFFFF");
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 0d;
-            Actual = TypeParser.Parse(typeof(double), null);
+            Actual = Parser.Parse(typeof(double), null);
         }
 
         [TestMethod]
@@ -132,7 +132,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = new DateTime(2014, 1, 1);
-            Actual = TypeParser.Parse(typeof(DateTime), null, Expected);
+            Actual = Parser.Parse(typeof(DateTime), null, Expected);
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 11d;
-            Actual = TypeParser.Parse<double>("", 11);
+            Actual = Parser.Parse<double>("", 11);
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 7d;
-            Actual = TypeParser.Parse<double>("7");
+            Actual = Parser.Parse<double>("7");
         }
 
         [TestMethod]
@@ -183,7 +183,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = null;
-            Actual = TypeParser.Parse<double?>(null);
+            Actual = Parser.Parse<double?>(null);
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 7d;
-            Actual = TypeParser.Parse<double?>("7");
+            Actual = Parser.Parse<double?>("7");
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 7d;
-            Actual = TypeParser.Parse<double?>("7");
+            Actual = Parser.Parse<double?>("7");
         }
 
         [TestMethod]
@@ -234,7 +234,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = null;
-            Actual = TypeParser.Parse<int?>(null);
+            Actual = Parser.Parse<int?>(null);
         }
 
         [TestMethod]
@@ -251,7 +251,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 7;
-            Actual = TypeParser.Parse<int?>("7");
+            Actual = Parser.Parse<int?>("7");
         }
 
         [TestMethod]
@@ -268,7 +268,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = null;
-            Actual = TypeParser.Parse<DateTime?>(null);
+            Actual = Parser.Parse<DateTime?>(null);
         }
 
         [TestMethod]
@@ -285,7 +285,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = DateTime.Today;
-            Actual = TypeParser.Parse<DateTime?>(Expected.ToString());
+            Actual = Parser.Parse<DateTime?>(Expected.ToString());
         }
 
         [TestMethod]
@@ -302,7 +302,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = "";
-            Actual = TypeParser.Parse<string>(null, "");
+            Actual = Parser.Parse<string>(null, "");
         }
 
         [TestMethod]
@@ -319,7 +319,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = "test string";
-            Actual = TypeParser.Parse<string>("test string");
+            Actual = Parser.Parse<string>("test string");
         }
 
         [TestMethod]
@@ -336,7 +336,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 14;
-            Actual = TypeParser.Parse<int>(null, 14);
+            Actual = Parser.Parse<int>(null, 14);
         }
 
         [TestMethod]
@@ -353,7 +353,7 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = 7;
-            Actual = TypeParser.Parse<int>(7);
+            Actual = Parser.Parse<int>(7);
         }
 
         [TestMethod]

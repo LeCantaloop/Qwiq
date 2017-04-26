@@ -4,15 +4,15 @@ namespace Microsoft.Qwiq
 {
     public abstract class TypeParserTestsContext : ContextSpecification
     {
-        protected object Actual;
+        protected object Actual { get; set; }
 
-        protected object Expected;
+        protected object Expected { get; set; }
 
-        protected ITypeParser TypeParser;
+        protected ITypeParser Parser { get; set; }
 
         public override void Given()
         {
-            TypeParser = Qwiq.TypeParser.Default;
+            Parser = TypeParser.Default;
         }
     }
 }
