@@ -43,6 +43,9 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JetBrains.dotMemoryUnit.2.3.20160517.113140\lib\dotMemory.Unit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory, Version=3.13.5.907, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.5\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
@@ -221,6 +224,7 @@
     <Compile Include="Result.cs" />
     <Compile Include="WorkItemStore\LargeWiqlHierarchyQueryTests.cs" />
     <Compile Include="WorkItemStore\Linq\LinqTests.cs" />
+    <Compile Include="WorkItemStore\MemoryTests.cs" />
     <Compile Include="WorkItemStore\RestWorkItemContextSpecification.cs" />
     <Compile Include="WorkItemStore\Soap\SoapWorkItemContextSpecification.cs" />
     <Compile Include="WorkItemStore\Soap\WorkItemStoreFactoryContextSpecification.cs" />
