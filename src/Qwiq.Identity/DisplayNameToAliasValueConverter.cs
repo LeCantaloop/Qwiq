@@ -49,7 +49,7 @@ namespace Microsoft.Qwiq.Identity
                                     var retval = kvp.Value.FirstOrDefault();
                                     if (kvp.Value.Length > 1)
                                     {
-                                        Trace.TraceWarning("Display Name '{0}' contains more than one alias; choosing '{1}'.", kvp.Key, retval);
+                                        Trace.TraceWarning("Multiple identities found matching '{0}':\r\n\r\n- {1}\r\n\r\nChoosing '{2}'.", kvp.Key, string.Join("\r\n- ", kvp.Value), retval);
                                     }
                                     return retval;
                                 },
