@@ -1,28 +1,43 @@
-version: 1.0.{build}
+version: '{build}'
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
+init:
+- ps: IF ($env:APPVEYOR_REPO_BRANCH -eq "develop") {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
 install:
 - cmd: choco install gitversion.portable -pre -y
+cache:
+- packages -> **\packages.config
+- .tools -> .tools\nuget.exe.ETag
+nuget:
+  account_feed: true
+  project_feed: true
 before_build:
 - ps: >-
     .\init.ps1;
     & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
-    gitversion /l console /output buildserver
+    gitversion /l console /output buildserver;
 build:
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
+  parallel: true
   verbosity: minimal
 test:
+  assemblies:
+    except:
+    - '**\*IntegrationTests.dll'
   categories:
     except:
     - localOnly
+    - Benchmark
     - SOAP
     - REST
 artifacts:
 - path: '*.nupkg'
   name: NuGet
+- path: Benchmark-report.html
+  name: BDN
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/qwiq/api/v2/package
@@ -31,6 +46,6 @@ deploy:
   symbol_server: https://www.myget.org/F/qwiq/symbols/api/v2/package
 notifications:
 - provider: GitHubPullRequest
-  on_build_success: true
+  on_build_success: false
   on_build_failure: true
   on_build_status_changed: true
