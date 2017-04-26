@@ -9,9 +9,6 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
-        public static readonly ITeamFoundationIdentity Danj =Identities.Danj;
-
         [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Adamb instead.")]
         public static readonly ITeamFoundationIdentity Adamb = Identities.Adamb;
 
@@ -27,12 +24,15 @@ namespace Microsoft.Qwiq.Mocks
         [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohns instead.")]
         public static readonly ITeamFoundationIdentity Chrisjohns = Identities.Chrisjohns;
 
+        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
+        public static readonly ITeamFoundationIdentity Danj = Identities.Danj;
 
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
+
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;
 
         /// <summary>
-        /// Initializes a new instance of the IMS with Contoso users (danj, adamb, chrisj, chrisjoh, chrisjohn, chrisjohns)
+        ///     Initializes a new instance of the IMS with Contoso users (danj, adamb, chrisj, chrisjoh, chrisjohn, chrisjohns)
         /// </summary>
         public MockIdentityManagementService()
             : this(Identities.All)
@@ -44,13 +44,11 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-
-
         /// <summary>
-        /// Creates a new instance of the IMS
+        ///     Creates a new instance of the IMS
         /// </summary>
         /// <param name="accountNameMappings">
-        /// Collection of alias to <see cref="ITeamFoundationIdentity"/>.
+        ///     Collection of alias to <see cref="ITeamFoundationIdentity" />.
         /// </param>
         public MockIdentityManagementService(IDictionary<string, ITeamFoundationIdentity> accountNameMappings)
         {
@@ -76,31 +74,35 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         /// <summary>
-        /// Creates a new instance of the IMS
+        ///     Creates a new instance of the IMS
         /// </summary>
         /// <param name="userMappings">
-        /// Collection of alias and display names for which to initialize the IMS
+        ///     Collection of alias and display names for which to initialize the IMS
         /// </param>
         public MockIdentityManagementService(IDictionary<string, string> userMappings)
-            : this(userMappings.ToDictionary(kvp => kvp.Key, kvp => new MockTeamFoundationIdentity(kvp.Value, kvp.Key + "@" + MockIdentityDescriptor.Domain) as ITeamFoundationIdentity))
+            : this(
+                   userMappings.ToDictionary(
+                                             kvp => kvp.Key,
+                                             kvp => new MockTeamFoundationIdentity(
+                                                                                   kvp.Value,
+                                                                                   kvp.Key
+                                                                                   + "@"
+                                                                                   + MockIdentityDescriptor
+                                                                                           .Domain) as ITeamFoundationIdentity))
         {
         }
 
         public MockIdentityManagementService(IDictionary<string, IEnumerable<ITeamFoundationIdentity>> accountMappings)
         {
             _accountNameMappings = accountMappings?.ToDictionary(k => k.Key, e => e.Value.ToArray())
-                                    ?? new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
+                                   ?? new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
             _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(IdentityDescriptorComparer.Default);
 
             foreach (var accounts in _accountNameMappings.Values)
             {
-                foreach (var account in accounts)
-                {
-                    _descriptorMappings.Add(account.Descriptor, account);
-                }
+                foreach (var account in accounts) _descriptorMappings.Add(account.Descriptor, account);
             }
         }
-
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
@@ -108,18 +110,16 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         /// <summary>
-        /// Read identities for given descriptors.
+        ///     Read identities for given descriptors.
         /// </summary>
-        /// <param name="descriptors">Collection of <see cref="IIdentityDescriptor"/></param>
+        /// <param name="descriptors">Collection of <see cref="IIdentityDescriptor" /></param>
         /// <returns>
-        /// An array of <see cref="ITeamFoundationIdentity"/>, corresponding 1 to 1 with input descriptor array.
+        ///     An array of <see cref="ITeamFoundationIdentity" />, corresponding 1 to 1 with input descriptor array.
         /// </returns>
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
         {
             foreach (var descriptor in descriptors)
             {
-
-
                 var success = _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity identity);
 
                 Trace.TraceInformation($"{nameof(MockIdentityManagementService)}: Searching for {descriptor}; Success: {success}");
@@ -128,7 +128,9 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, IEnumerable<string> searchFactorValues)
+        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(
+            IdentitySearchFactor searchFactor,
+            IEnumerable<string> searchFactorValues)
         {
             Trace.TraceInformation($"Searching for {searchFactor}: {string.Join(", ", searchFactorValues)}");
 
@@ -136,47 +138,52 @@ namespace Microsoft.Qwiq.Mocks
             {
                 // Alternate login username
                 case IdentitySearchFactor.Alias:
-                    foreach (var value in searchFactorValues)
-                    {
-                        if (_accountNameMappings.ContainsKey(value))
-                        {
-                            yield return
-                                new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                                    value,
-                                    _accountNameMappings[value]);
-                        }
-                        else
-                        {
-                            yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(value, new ITeamFoundationIdentity[0]);
-                        }
-                    }
+                    foreach (var keyValuePair in SearchByAlias(searchFactorValues)) yield return keyValuePair;
                     break;
                 // Windows NT account name: domain\alias.
                 case IdentitySearchFactor.AccountName:
-                    foreach (var value in searchFactorValues)
-                    {
-                        yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                            value,
-                            Locate(identity => identity.GetAttribute("Account", string.Empty).StartsWith(value, StringComparison.OrdinalIgnoreCase)));
-                    }
+                    foreach (var keyValuePair1 in SearchByAccountName(searchFactorValues)) yield return keyValuePair1;
                     break;
                 // Display name
                 case IdentitySearchFactor.DisplayName:
-                    foreach (var value in searchFactorValues)
-                    {
-                        yield return
-                            new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                                value,
-                                Locate(identity =>
-                                value.Equals(identity.DisplayName, StringComparison.OrdinalIgnoreCase) ||
-                                identity.DisplayName.StartsWith(value, StringComparison.OrdinalIgnoreCase)));
-                    }
+                    foreach (var keyValuePair2 in SearchByDisplayName(searchFactorValues)) yield return keyValuePair2;
                     break;
+
                 case IdentitySearchFactor.AdministratorsGroup:
                 case IdentitySearchFactor.Identifier:
                 case IdentitySearchFactor.MailAddress:
                 case IdentitySearchFactor.General:
                     throw new NotSupportedException();
+            }
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByDisplayName(IEnumerable<string> searchFactors)
+        {
+            return searchFactors.Select(searchFactor =>
+                                            {
+                                                bool Predicate(ITeamFoundationIdentity identity) => Comparer.OrdinalIgnoreCase.Equals(identity.DisplayName, searchFactor) || identity.DisplayName.StartsWith(searchFactor, StringComparison.OrdinalIgnoreCase);
+
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
+                                            });
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAccountName(IEnumerable<string> searchFactors)
+        {
+            return searchFactors.Select(searchFactor =>
+                                            {
+                                                bool Predicate(ITeamFoundationIdentity identity) => identity.GetUserAccountName().StartsWith(searchFactor, StringComparison.OrdinalIgnoreCase);
+
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
+                                            });
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAlias(IEnumerable<string> searchFactors)
+        {
+            foreach (var searchFactor in searchFactors)
+            {
+                if (_accountNameMappings.ContainsKey(searchFactor))
+                    yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, _accountNameMappings[searchFactor]);
+                else yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, new ITeamFoundationIdentity[0]);
             }
         }
 
@@ -188,13 +195,10 @@ namespace Microsoft.Qwiq.Mocks
 
         private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)
         {
-            return _accountNameMappings
-                        .Values
-                        .SelectMany(a => a, (a, i) => new { a, i })
-                        .Where(t => predicate(t.i))
-                        .Select(t => t.i)
-                        .ToArray();
+            return _accountNameMappings.Values.SelectMany(a => a, (a, i) => new { a, i })
+                                       .Where(t => predicate(t.i))
+                                       .Select(t => t.i)
+                                       .ToArray();
         }
     }
 }
-

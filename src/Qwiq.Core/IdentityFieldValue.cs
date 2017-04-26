@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.Services.Common;
 namespace Microsoft.Qwiq
 {
     /// <summary>
-    ///     Class IdentityFieldValue.
+    ///     Represents an identity
     /// </summary>
     public class IdentityFieldValue
     {
@@ -15,20 +15,19 @@ namespace Microsoft.Qwiq
         private static readonly Regex AccountNameRegex = new Regex("^.+<(.+@.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // "Chris Johnson"
-        private static readonly Regex DisplayNameRegex = new Regex(
-                                                                    @"^[^<\\]*(?:<[^>]*)?$",
-                                                                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex DisplayNameRegex =
+                new Regex(@"^[^<\\]*(?:<[^>]*)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         // "Chris Johnson <CONTOSO\chrisjohns>"
         private static readonly Regex DomainAccountRegex = new Regex(@"^.+<(.+\\.+)>$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ScopeRegex = new Regex(
-                                                              @"^\[[0-9A-Za-z ]+\]\\(.+)<([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
-                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                                             @"^\[[0-9A-Za-z ]+\]\\(.+)<([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
+                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex VsidRegex = new Regex(
-                                                             @"^\[[0-9A-Za-z ]+\]\\(.+)<id:([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
-                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
+                                                            @"^\[[0-9A-Za-z ]+\]\\(.+)<id:([0-9A-Fa-f]{8}(?:-[0-9A-Fa-f]{4}){3}-[0-9A-Fa-f]{12})>$",
+                                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityFieldValue" /> class.
@@ -54,10 +53,8 @@ namespace Microsoft.Qwiq
         {
             FullName = fullName;
 
-            if (!string.IsNullOrEmpty(teamFoundationId))
-            {
-                if (Guid.TryParse(teamFoundationId, out Guid tfsid)) TeamFoundationId = teamFoundationId;
-            }
+            if (!string.IsNullOrEmpty(teamFoundationId) && Guid.TryParse(teamFoundationId, out Guid tfsid))
+                TeamFoundationId = teamFoundationId;
 
             var arr = FullName.Split(IdentityConstants.DomainAccountNameSeparator);
             if (arr.Length != 2 || arr[1] == TeamFoundationId) return;
@@ -119,10 +116,7 @@ namespace Microsoft.Qwiq
                     DisplayPart = displayName;
                     return;
                 }
-                if (TryGetDisplayName(displayName, out str2))
-                {
-                    DisplayPart = str2;
-                }
+                if (TryGetDisplayName(displayName, out str2)) DisplayPart = str2;
             }
         }
 
@@ -184,8 +178,20 @@ namespace Microsoft.Qwiq
             }
         }
 
-
         public string TeamFoundationId { get; }
+
+        public static explicit operator string(IdentityFieldValue value)
+        {
+            return value.IdentityName;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            if (string.IsNullOrEmpty(IdentityName)) return DisplayName;
+
+            return $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
+        }
 
         private static bool TryGetAccountName(string search, out string acccountName)
         {
@@ -249,22 +255,6 @@ namespace Microsoft.Qwiq
             vsid = Guid.Empty;
             displayName = string.Empty;
             return false;
-        }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
-            if (string.IsNullOrEmpty(IdentityName))
-            {
-                return DisplayName;
-            }
-
-            return ($"{DisplayName} <{AccountName}>").ToString(CultureInfo.InvariantCulture);
-        }
-
-        public static explicit operator string(IdentityFieldValue value)
-        {
-            return value.IdentityName;
         }
     }
 }
