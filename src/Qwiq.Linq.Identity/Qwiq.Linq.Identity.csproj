@@ -62,10 +62,6 @@
       <Project>{1edeb333-3084-42bd-b273-4009b4b18541}</Project>
       <Name>Qwiq.Linq</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj">
-      <Project>{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}</Project>
-      <Name>Qwiq.Mapper.Identity</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

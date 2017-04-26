@@ -1,7 +1,6 @@
-using Microsoft.Qwiq.Identity.Soap;
 using Microsoft.Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.Identity
+namespace Microsoft.Qwiq.Identity.Soap
 {
     public abstract class SoapIdentityManagementServiceContextSpecification : TimedContextSpecification
     {

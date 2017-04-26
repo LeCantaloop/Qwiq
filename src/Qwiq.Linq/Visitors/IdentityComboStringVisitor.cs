@@ -6,18 +6,12 @@ using System.Linq.Expressions;
 namespace Microsoft.Qwiq.Linq.Visitors
 {
     /// <summary>
-    /// Represents a visitor to detect identity values in the expression tree.
+    ///     Represents a visitor to detect identity values in the expression tree.
     /// </summary>
     /// <seealso cref="ExpressionVisitor" />
     public class IdentityComboStringVisitor : ExpressionVisitor
     {
         private static readonly HashSet<string> IdentityProperties;
-
-        /// <summary>
-        /// Gets a value indicating whether the visited expression needs identity mapping.
-        /// </summary>
-        /// <value><c>true</c> if the expression needs identity mapping; otherwise, <c>false</c>.</value>
-        protected virtual bool NeedsIdentityMapping { get; private set; }
 
         static IdentityComboStringVisitor()
         {
@@ -37,7 +31,23 @@ namespace Microsoft.Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        /// Visits the children of the <see cref="T:System.Linq.Expressions.BinaryExpression" />.
+        ///     Gets a value indicating whether the visited expression needs identity mapping.
+        /// </summary>
+        /// <value><c>true</c> if the expression needs identity mapping; otherwise, <c>false</c>.</value>
+        protected virtual bool NeedsIdentityMapping { get; private set; }
+
+        /// <summary>
+        /// Determine if the <paramref name="expressions"/> need identity mapping.
+        /// </summary>
+        /// <param name="expressions">The expressions.</param>
+        /// <returns><c>true</c> if any of the expressions need identity mapping; otherwise, <c>false</c>.</returns>
+        protected virtual bool ExpressionsNeedIdentityMapping(IEnumerable<Expression> expressions)
+        {
+            return expressions.OfType<MemberExpression>().Any(arg => IdentityProperties.Contains(arg.Member.Name));
+        }
+
+        /// <summary>
+        ///     Visits the children of the <see cref="T:System.Linq.Expressions.BinaryExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
@@ -52,7 +62,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        /// Visits the <see cref="T:System.Linq.Expressions.ConstantExpression" />.
+        ///     Visits the <see cref="T:System.Linq.Expressions.ConstantExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
@@ -78,7 +88,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        /// Visits the children of the <see cref="T:System.Linq.Expressions.MethodCallExpression" />.
+        ///     Visits the children of the <see cref="T:System.Linq.Expressions.MethodCallExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
@@ -91,11 +101,6 @@ namespace Microsoft.Qwiq.Linq.Visitors
             NeedsIdentityMapping = false;
 
             return newNode;
-        }
-
-        private static bool ExpressionsNeedIdentityMapping(IEnumerable<Expression> expressions)
-        {
-            return expressions.OfType<MemberExpression>().Any(arg => IdentityProperties.Contains(arg.Member.Name));
         }
     }
 }

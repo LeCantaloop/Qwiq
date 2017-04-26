@@ -9,6 +9,7 @@ namespace Microsoft.Qwiq.Identity
     /// Converts a <see cref="string"/> representing an alias to a user principal name.
     /// </summary>
     /// <seealso cref="IIdentityValueConverter" />
+    /// <seealso cref="IIdentityManagementService"/>
     public class IdentityAliasValueConverter : IIdentityValueConverter
     {
         private readonly string[] _domains;

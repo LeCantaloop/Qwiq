@@ -213,10 +213,14 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Identity\IdentityMapperTests.cs" />
     <Compile Include="Identity\Soap\IdentityManagementServiceExtensionsTests.cs" />
+    <Compile Include="Identity\Soap\SoapIdentityManagementServiceContextSpecification.cs" />
     <Compile Include="Identity\Soap\SoapIdentityMapperContextSpecification.cs" />
-    <Compile Include="Identity\SoapIdentityManagementServiceContextSpecification.cs" />
     <Compile Include="IntegrationSettings.cs" />
     <Compile Include="Linq\LinqContextSpecification.cs" />
+    <Compile Include="Mapper\Identity\DisplayNameToAliasConverterContextSpecification.cs" />
+    <Compile Include="Mapper\Identity\DisplayNameToAliasConverterTests.cs" />
+    <Compile Include="Mapper\Identity\MultipleDisplayNameContextSpecification.cs" />
+    <Compile Include="Mapper\Identity\SingleDisplayNameContextSpecification.cs" />
     <Compile Include="Project\ProjectComparisonContextSpecification.cs" />
     <Compile Include="Project\ProjectContextSpecificationSpecification.cs" />
     <Compile Include="Project\ProjectTests.cs" />
@@ -275,6 +279,10 @@
     <ProjectReference Include="..\..\src\Qwiq.Linq.Identity\Qwiq.Linq.Identity.csproj">
       <Project>{0451D5EA-0206-48A6-A759-DC6572C4CD39}</Project>
       <Name>Qwiq.Linq.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj">
+      <Project>{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}</Project>
+      <Name>Qwiq.Mapper.Identity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>

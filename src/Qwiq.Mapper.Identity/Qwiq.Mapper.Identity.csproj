@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Attributes\IdentityFieldAttribute.cs" />
     <Compile Include="BulkIdentityAwareAttributeMapperStrategy.cs" />
+    <Compile Include="IdentityFieldAttributeVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkItemField.cs" />
     <Compile Include="WorkItemWithFields.cs" />
@@ -72,6 +73,10 @@
     <ProjectReference Include="..\Qwiq.Identity\Qwiq.Identity.csproj">
       <Project>{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}</Project>
       <Name>Qwiq.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Linq\Qwiq.Linq.csproj">
+      <Project>{1EDEB333-3084-42BD-B273-4009B4B18541}</Project>
+      <Name>Qwiq.Linq</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Mapper\Qwiq.Mapper.csproj">
       <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
