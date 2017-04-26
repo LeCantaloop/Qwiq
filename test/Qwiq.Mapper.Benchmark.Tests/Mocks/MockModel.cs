@@ -102,15 +102,10 @@ namespace Microsoft.Qwiq.Mapper.Mocks
             set => _history = value;
         }
 
-        [JsonIgnore]
-        public int? Id
-        {
-            get => ID;
-            set => ID = value.GetValueOrDefault();
-        }
+        
 
         [FieldDefinition("Id")]
-        public virtual int ID { get; set; }
+        public virtual int? Id { get; set; }
 
         /// <summary>
         ///     Type of issue this object represents (e.g. "Code Bug", "Dev Task", "Spec Bug", "Buffer", etc.)
