@@ -37,7 +37,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void Alias_is_null()
         {
-            Result.Alias.ShouldBeNull();
+            Result.LogonName.ShouldBeNull();
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void FullName_is_null()
         {
-            Result.FullName.ShouldBeNull();
+            Result.Identifier.ShouldBeNull();
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void Alias_is_null()
         {
-            Result.Alias.ShouldEqual("chrisjohns");
+            Result.LogonName.ShouldEqual("chrisjohns");
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void FullName_is_null()
         {
-            Result.FullName.ShouldBeNull();
+            Result.Identifier.ShouldBeNull();
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void Alias_is_null()
         {
-            Result.Alias.ShouldEqual("chrisjohns");
+            Result.LogonName.ShouldEqual("chrisjohns");
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void FullName_is_null()
         {
-            Result.FullName.ShouldEqual("CD4C5751-F4E6-41D5-A4C9-EFFD66BC8E9C\\chrisjohns@contoso.com");
+            Result.Identifier.ShouldEqual("CD4C5751-F4E6-41D5-A4C9-EFFD66BC8E9C\\chrisjohns@contoso.com");
         }
 
         [TestMethod]

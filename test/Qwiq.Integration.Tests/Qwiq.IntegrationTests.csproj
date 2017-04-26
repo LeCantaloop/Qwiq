@@ -190,7 +190,6 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Identity\IdentityMapperTests.cs" />
-    <Compile Include="Identity\Soap\IdentityManagementServiceExtensionsTests.cs" />
     <Compile Include="Identity\Soap\SoapIdentityManagementServiceContextSpecification.cs" />
     <Compile Include="Identity\Soap\SoapIdentityMapperContextSpecification.cs" />
     <Compile Include="IntegrationSettings.cs" />

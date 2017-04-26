@@ -23,7 +23,6 @@
     </Compile>
     <Compile Include="DisplayNameToAliasValueConverter.cs" />
     <Compile Include="IdentityAliasValueConverter.cs" />
-    <Compile Include="IdentityManagementService.Extensions.cs" />
     <Compile Include="IIdentityManagementService.cs" />
     <Compile Include="IIdentityValueConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

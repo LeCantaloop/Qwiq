@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq.Identity
 {
     /// <summary>
@@ -39,8 +41,8 @@ namespace Microsoft.Qwiq.Identity
 
         private Dictionary<string, string> GetIdentityNames(params string[] displayNames)
         {
-            return _identityManagementService
-                        .GetAliasesForDisplayNames(displayNames)
+            return
+                        GetAliasesForDisplayNames(displayNames)
                         .ToDictionary(
                             kvp => kvp.Key,
                             kvp =>
@@ -54,6 +56,23 @@ namespace Microsoft.Qwiq.Identity
                                     return retval;
                                 },
                             Comparer.OrdinalIgnoreCase);
+        }
+
+        private IDictionary<string, string[]> GetAliasesForDisplayNames(string[] displayNames)
+        {
+            if (displayNames == null) throw new ArgumentNullException(nameof(displayNames));
+
+            return _identityManagementService.ReadIdentities(IdentitySearchFactor.DisplayName, displayNames)
+                      .ToDictionary(
+                                    kvp => kvp.Key,
+                                    kvp => kvp
+                                            .Value.Where(
+                                                         identity => identity != null
+                                                                     && !identity.IsContainer
+                                                                     && identity.UniqueUserId == IdentityConstants.ActiveUniqueId)
+                                            .Select(i => i.GetUserAlias())
+                                            .Distinct(StringComparer.OrdinalIgnoreCase)
+                                            .ToArray());
         }
     }
 }
