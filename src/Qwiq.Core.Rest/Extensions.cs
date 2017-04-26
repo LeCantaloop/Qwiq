@@ -1,7 +1,7 @@
 ﻿using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal static class Extensions
     {

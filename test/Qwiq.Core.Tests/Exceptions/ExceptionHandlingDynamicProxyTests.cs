@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
-using Microsoft.Qwiq.Core.Tests.Mocks;
+
 using Microsoft.Qwiq.Tests.Common;
+using Microsoft.Qwiq.UnitTests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Exceptions.Tests
+namespace Microsoft.Qwiq.Exceptions
 {
     public class ExceptionHandlingDynamicProxyFactoryContextSpecification : ContextSpecification
     {

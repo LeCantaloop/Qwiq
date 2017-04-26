@@ -1,11 +1,11 @@
-﻿using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Exceptions;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Rest
+using Microsoft.Qwiq.Credentials;
+using Microsoft.Qwiq.Exceptions;
+
+namespace Microsoft.Qwiq.Client.Rest
 {
     public class WorkItemStoreFactory : IWorkItemStoreFactory
     {

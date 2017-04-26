@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity.Tests
+namespace Microsoft.Qwiq.Identity
 {
     public abstract class IdentityManagementServiceExtensionsTests : ContextSpecification
     {

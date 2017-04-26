@@ -1,8 +1,9 @@
 using System;
 
+using Microsoft.Qwiq.Client.Rest;
 using Microsoft.Qwiq.Credentials;
 
-namespace Microsoft.Qwiq.Integration.Tests
+namespace Microsoft.Qwiq
 {
     public static class IntegrationSettings
     {
@@ -11,13 +12,13 @@ namespace Microsoft.Qwiq.Integration.Tests
         public static Func<IWorkItemStore> CreateRestStore { get; } = () =>
                                                                           {
                                                                               var options = RestOptions;
-                                                                              return Rest.WorkItemStoreFactory.Default.Create(options);
+                                                                              return WorkItemStoreFactory.Default.Create(options);
                                                                           };
 
         public static Func<IWorkItemStore> CreateSoapStore { get; } = () =>
                                                                           {
                                                                               var options = SoapOptions;
-                                                                              return Soap.WorkItemStoreFactory.Default.Create(options);
+                                                                              return Client.Soap.WorkItemStoreFactory.Default.Create(options);
                                                                           };
 
         public static AuthenticationOptions RestOptions { get; } =
@@ -25,5 +26,11 @@ namespace Microsoft.Qwiq.Integration.Tests
 
         public static AuthenticationOptions SoapOptions { get; } =
             new AuthenticationOptions(Uri, AuthenticationTypes.Windows, ClientType.Soap);
+
+        public static Guid ProjectGuid = Guid.Parse("8d47e068-03c8-4cdc-aa9b-fc6929290322");
+
+        public static string TenantId = "72F988BF-86F1-41AF-91AB-2D7CD011DB47";
+
+        public static string[] Domains = new[] { "microsoft.com" };
     }
 }

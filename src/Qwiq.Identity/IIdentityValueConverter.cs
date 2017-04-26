@@ -8,7 +8,7 @@ namespace Microsoft.Qwiq.Identity
         /// <summary>
         /// Converts the specified <paramref name="value"/> to an <see cref="object"/>.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The value to convert.</param>
         /// <returns>An <see cref="object"/> instance whose value is equivilent to the value of <paramref name="value"/>.</returns>
         object Map(object value);
     }

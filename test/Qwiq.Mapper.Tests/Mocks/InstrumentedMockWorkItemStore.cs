@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Mocks
 {
     internal class InstrumentedMockWorkItemStore : IWorkItemStore
     {

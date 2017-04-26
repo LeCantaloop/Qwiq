@@ -11,9 +11,11 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1f6293cb-bcca-4038-a696-4358d285b986")]
 
-[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.UnitTests")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Mocks")]
-[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Soap")]
-[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.Rest")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Client.Soap")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Client.Rest")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Integration.Tests")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Relatives.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.IntegrationTests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.UnitTests")]

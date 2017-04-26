@@ -1,6 +1,6 @@
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Mocks
 {
     [WorkItemType("MockWorkItem")]
     public class MockModelSubclass : MockModel

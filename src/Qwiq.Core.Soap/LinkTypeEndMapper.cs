@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal static class LinkTypeEndMapper
     {

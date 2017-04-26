@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Query : IQuery
     {

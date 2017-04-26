@@ -4,7 +4,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.Services.Identity;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity
     {

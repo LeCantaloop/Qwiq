@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity.Tests
+namespace Microsoft.Qwiq.Identity
 {
     [TestClass]
     public abstract class IdentityMapperTests<T> : ContextSpecification

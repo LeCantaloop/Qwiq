@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class WorkItemType : Qwiq.WorkItemType
     {

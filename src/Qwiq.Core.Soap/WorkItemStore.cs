@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Services.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
     ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference

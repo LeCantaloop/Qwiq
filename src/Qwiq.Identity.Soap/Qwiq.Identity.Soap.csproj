@@ -199,13 +199,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Qwiq.Core.Soap\Qwiq.Client.Soap.csproj">
+      <Project>{6F5FFC42-0539-4161-B348-A54ADB57C2BD}</Project>
+      <Name>Qwiq.Client.Soap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj">
       <Project>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</Project>
       <Name>Qwiq.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj">
-      <Project>{6F5FFC42-0539-4161-B348-A54ADB57C2BD}</Project>
-      <Name>Qwiq.Core.Soap</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Identity\Qwiq.Identity.csproj">
       <Project>{B3654D2D-B4D4-405C-9AEC-FC1859A87E74}</Project>

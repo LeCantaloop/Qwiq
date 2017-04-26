@@ -4,7 +4,7 @@ using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     public class WorkItemStoreFactory : IWorkItemStoreFactory
     {

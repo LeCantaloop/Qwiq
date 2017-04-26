@@ -8,6 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Microsoft\x00ae Quick Work Item Queries")]
 [assembly: AssemblyCopyright("\x00a9 Microsoft Corporation. All rights reserved.")]
 
+[assembly: AssemblyMetadata("ImplicitNullability.AppliesTo", "InputParameters, RefParameters, OutParametersAndResult, Fields")]
+[assembly: AssemblyMetadata("ImplicitNullability.Fields", "RestrictToReadonly, RestrictToReferenceTypes")]
+
 [assembly: ComVisible(false)]
 
 [assembly: CLSCompliant(true)]

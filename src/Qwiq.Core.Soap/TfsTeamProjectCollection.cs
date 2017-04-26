@@ -4,7 +4,7 @@ using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
     /// </summary>

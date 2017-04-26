@@ -1,9 +1,10 @@
-using Microsoft.TeamFoundation.Core.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Rest
+using Microsoft.TeamFoundation.Core.WebApi;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Project : Qwiq.Project
     {

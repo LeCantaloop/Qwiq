@@ -1,6 +1,6 @@
 ﻿using Microsoft.Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal static class Extensions
     {

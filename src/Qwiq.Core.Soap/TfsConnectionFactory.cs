@@ -4,7 +4,7 @@ using Microsoft.Qwiq.Credentials;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     public class TfsConnectionFactory : Qwiq.TfsConnectionFactory
     {

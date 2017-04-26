@@ -5,7 +5,7 @@ using System.Linq;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class LinkCollection : ReadOnlyCollection<ILink>, ICollection<ILink>
     {

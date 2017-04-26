@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Mapper.Tests.Mocks;
+using Microsoft.Qwiq.Mapper.Linq;
+using Microsoft.Qwiq.Mapper.Mocks;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper.Tests
+namespace Microsoft.Qwiq.Mapper
 {
     [TestClass]
     // ReSharper disable once InconsistentNaming
@@ -54,7 +55,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
         }
     }
 
-    public abstract class SelectTests : QueryTestsBase<SimpleMockModel>
+    public abstract class SelectTests : QueryableContextSpecification<SimpleMockModel>
     {
         protected object Actual;
 
@@ -100,7 +101,7 @@ namespace Microsoft.Qwiq.Mapper.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_includes_an_empty_contains_clause : QueryTestsBase<SimpleMockModel>
+    public class when_a_where_clause_includes_an_empty_contains_clause : QueryableContextSpecification<SimpleMockModel>
     {
         private IEnumerable<SimpleMockModel> _actual;
 

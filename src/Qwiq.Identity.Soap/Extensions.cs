@@ -1,4 +1,5 @@
-﻿using Microsoft.Qwiq.Exceptions;
+﻿using Microsoft.Qwiq.Client.Soap;
+using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Framework.Client;
 
 namespace Microsoft.Qwiq.Identity.Soap
@@ -7,7 +8,7 @@ namespace Microsoft.Qwiq.Identity.Soap
     {
         internal static IIdentityDescriptor AsProxy(this TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new Microsoft.Qwiq.Soap.IdentityDescriptor(descriptor));
+            return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new Client.Soap.IdentityDescriptor(descriptor));
         }
 
         internal static IIdentityManagementService AsProxy(this IIdentityManagementService2 ims)
@@ -19,7 +20,7 @@ namespace Microsoft.Qwiq.Identity.Soap
 
         public static IIdentityManagementService GetIdentityManagementService(this ITeamProjectCollection tpc)
         {
-            return ((Qwiq.Soap.IInternalTeamProjectCollection)tpc).GetService<IIdentityManagementService2>().AsProxy();
+            return ((IInternalTeamProjectCollection)tpc).GetService<IIdentityManagementService2>().AsProxy();
         }
 
         public static IIdentityManagementService GetIdentityManagementService(this IWorkItemStore wis)

@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq.Identity.Tests.Mocks
+namespace Microsoft.Qwiq.Identity.Mocks
 {
     public class MockIdentityDescriptor : IIdentityDescriptor
     {

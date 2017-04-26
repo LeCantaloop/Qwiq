@@ -2,7 +2,7 @@
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class FieldDefinition : Qwiq.FieldDefinition
     {

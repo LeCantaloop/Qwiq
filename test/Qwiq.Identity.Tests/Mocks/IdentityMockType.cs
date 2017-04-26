@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Identity.Tests.Mocks
+namespace Microsoft.Qwiq.Identity.Mocks
 {
     public class MockIdentityType : IIdentifiable<int?>
     {

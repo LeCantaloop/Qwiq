@@ -1,6 +1,6 @@
 using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     public class IdentityDescriptor : Qwiq.IdentityDescriptor
     {

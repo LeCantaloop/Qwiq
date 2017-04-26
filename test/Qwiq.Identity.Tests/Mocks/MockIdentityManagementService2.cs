@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 
-namespace Microsoft.Qwiq.Identity.Tests.Mocks
+namespace Microsoft.Qwiq.Identity.Mocks
 {
     public class MockIdentityManagementService2 : IIdentityManagementService2
     {

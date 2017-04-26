@@ -12,4 +12,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("be25cf2d-fa53-4455-85b1-4eec1d979fb1")]
 
-[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.UnitTests")]
