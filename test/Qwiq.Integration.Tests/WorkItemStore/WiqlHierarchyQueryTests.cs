@@ -28,6 +28,8 @@ mode(recursive)
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void SOAP_Links_returned()
         {
             SoapResult.Links.ShouldNotBeNull();
@@ -35,6 +37,8 @@ mode(recursive)
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void REST_Links_returned()
         {
             RestResult.Links.ShouldNotBeNull();
@@ -42,6 +46,8 @@ mode(recursive)
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void Same_number_of_links_returned()
         {
             RestResult.Links.Count().ShouldEqual(SoapResult.Links.Count());
@@ -49,6 +55,8 @@ mode(recursive)
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
             RestResult.Links.ShouldContainOnly(SoapResult.Links);

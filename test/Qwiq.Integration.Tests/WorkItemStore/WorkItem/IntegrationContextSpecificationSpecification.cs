@@ -155,6 +155,8 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void CreatedDate_is_equal()
         {
             RestResult.WorkItem.CreatedDate.ShouldEqual(SoapResult.WorkItem.CreatedDate.ToUniversalTime());
@@ -162,6 +164,8 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
 
         [TestMethod]
         [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void RelatedLinkCount_is_equal()
         {
             RestResult.WorkItem.RelatedLinkCount.ShouldEqual(SoapResult.WorkItem.RelatedLinkCount);

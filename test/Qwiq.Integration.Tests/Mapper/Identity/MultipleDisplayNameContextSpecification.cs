@@ -9,6 +9,8 @@ namespace Microsoft.Qwiq.Mapper.Identity
         protected internal string[] DisplayNames { get; set; }
 
         [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
         public void Converted_value_contains_a_expected_number_of_results()
         {
             var kvp = (Dictionary<string, string>)ConvertedValue;

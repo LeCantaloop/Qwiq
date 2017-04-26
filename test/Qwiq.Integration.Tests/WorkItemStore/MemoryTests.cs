@@ -22,6 +22,9 @@ namespace Microsoft.Qwiq.WorkItemStore
 
         [TestMethod]
         [DotMemoryUnit(CollectAllocations = true, FailIfRunWithoutSupport = false)]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        [TestCategory("localOnly")]
         public void The_instances_are_removed_from_memory_after_Dispose()
         {
             dotMemory.Check(
