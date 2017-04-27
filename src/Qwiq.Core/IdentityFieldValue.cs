@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Services.Common;
+using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
@@ -33,8 +32,9 @@ namespace Microsoft.Qwiq
         ///     Initializes a new instance of the <see cref="IdentityFieldValue" /> class.
         /// </summary>
         /// <param name="identity">The identity.</param>
+        /// <exception cref="ArgumentNullException">identity</exception>
         public IdentityFieldValue(ITeamFoundationIdentity identity)
-            : this(identity.DisplayName, identity.Descriptor.Identifier, identity.TeamFoundationId.ToString())
+            : this(identity?.DisplayName, identity?.Descriptor?.Identifier, identity?.TeamFoundationId.ToString())
         {
             if (identity == null) throw new ArgumentNullException(nameof(identity));
         }
@@ -190,8 +190,14 @@ namespace Microsoft.Qwiq
 
         public string TeamFoundationId { get; }
 
+        /// <summary>
+        /// Performs an explicit conversion from <see cref="IdentityFieldValue"/> to <see cref="string"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>If <paramref name="value"/> is null, null; otherwise, <see cref="IdentityName"/>.</returns>
         public static explicit operator string(IdentityFieldValue value)
         {
+            if (value == null) return null;
             return value.IdentityName;
         }
 

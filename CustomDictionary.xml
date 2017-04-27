@@ -5,6 +5,7 @@
          </Unrecognized>
          <Recognized>
             <Word>Tfs</Word>
+            <Word>wiql</Word>
          </Recognized>
          <Deprecated>
             <Term PreferredAlternate=""></Term>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace Microsoft.Qwiq
 {
@@ -67,13 +68,13 @@ namespace Microsoft.Qwiq
 
         internal void SetReverseEnd(IWorkItemLinkTypeEnd value)
         {
-            if (_reverse != null) throw new InvalidOperationException($"{nameof(ReverseEnd)} already contains a value.");
+            if (_reverse != null) throw new InvalidOperationException($"{nameof(ReverseEnd)} already contains a value.".ToString(CultureInfo.InvariantCulture));
             _reverse = value ?? throw new ArgumentNullException(nameof(value));
         }
 
         internal void SetForwardEnd(IWorkItemLinkTypeEnd value)
         {
-            if (_forward != null) throw new InvalidOperationException($"{nameof(ForwardEnd)} already contains a value.");
+            if (_forward != null) throw new InvalidOperationException($"{nameof(ForwardEnd)} already contains a value.".ToString(CultureInfo.InvariantCulture));
             _forward = value ?? throw new ArgumentNullException(nameof(value));
         }
 
