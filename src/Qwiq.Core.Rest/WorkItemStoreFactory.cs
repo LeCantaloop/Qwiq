@@ -18,7 +18,6 @@ namespace Microsoft.Qwiq.Client.Rest
         public IWorkItemStore Create(AuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
-            if (options.ClientType != ClientType.Rest) throw new InvalidOperationException();
 
             var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
             var wis = CreateRestWorkItemStore(tfsProxy);
@@ -28,9 +27,9 @@ namespace Microsoft.Qwiq.Client.Rest
         [Obsolete(
             "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
             false)]
-        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default)
+        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials)
         {
-            return Create(endpoint, new[] { credentials }, type);
+            return Create(endpoint, new[] { credentials });
         }
 
         [Obsolete(
@@ -38,10 +37,9 @@ namespace Microsoft.Qwiq.Client.Rest
             false)]
         public IWorkItemStore Create(
             Uri endpoint,
-            IEnumerable<TfsCredentials> credentials,
-            ClientType type = ClientType.Default)
+            IEnumerable<TfsCredentials> credentials)
         {
-            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, type, types => credentials.Select(s=>s.Credentials));
+            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, types => credentials.Select(s=>s.Credentials));
             return Create(options);
         }
 

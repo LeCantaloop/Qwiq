@@ -15,27 +15,30 @@ namespace Microsoft.Qwiq.Credentials
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationOptions"/> class.
+        /// </summary>
+        /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
+        /// <param name="authenticationTypes">The authentication types to use against the server.</param>
+        /// <param name="clientType">Type of the client.</param>
         public AuthenticationOptions(
             string uri,
-            AuthenticationTypes authenticationTypes = AuthenticationTypes.All,
-            ClientType clientType = ClientType.Default)
-            : this(new Uri(uri, UriKind.Absolute), authenticationTypes, clientType)
+            AuthenticationTypes authenticationTypes = AuthenticationTypes.All)
+            : this(new Uri(uri, UriKind.Absolute), authenticationTypes)
         {
         }
 
         public AuthenticationOptions(Uri uri)
-            : this(uri, AuthenticationTypes.All, ClientType.Default)
+            : this(uri, AuthenticationTypes.All)
         {
         }
 
         public AuthenticationOptions(
             Uri uri,
             AuthenticationTypes authenticationTypes,
-            ClientType clientType,
             Func<AuthenticationTypes, IEnumerable<VssCredentials>> credentialsFactory = null)
         {
             AuthenticationTypes = authenticationTypes;
-            ClientType = clientType;
             Notifications = new CredentialsNotifications();
             Uri = uri ?? throw new ArgumentNullException(nameof(uri));
             _createCredentials = credentialsFactory ?? CredentialsFactory;
@@ -43,7 +46,7 @@ namespace Microsoft.Qwiq.Credentials
 
         public AuthenticationTypes AuthenticationTypes { get; }
 
-        public ClientType ClientType { get; }
+
 
         public IEnumerable<VssCredentials> Credentials
         {

@@ -70,8 +70,6 @@ namespace Microsoft.Qwiq.Client.Soap
 
         public int PageSize { get; }
 
-        public ClientType ClientType => ClientType.Soap;
-
         public VssCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
         internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;

@@ -18,11 +18,6 @@ namespace Microsoft.Qwiq
         ITeamFoundationIdentity AuthorizedIdentity { get; }
 
         /// <summary>
-        ///     Indicates the communication type used for the work item store.
-        /// </summary>
-        ClientType ClientType { get; }
-
-        /// <summary>
         ///     Returns the collection of all known <see cref="IFieldDefinition" />s associated with this instance.
         /// </summary>
         /// <value>The field definitions.</value>

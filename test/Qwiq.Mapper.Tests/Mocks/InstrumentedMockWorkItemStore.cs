@@ -14,25 +14,9 @@ namespace Microsoft.Qwiq.Mapper.Mocks
             _innerWorkItemStore = innerWorkItemStore;
         }
 
-        public int ProjectsCallCount { get; private set; }
-
-        public int QueryCallCount => QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
-
-        public int QueryIdCallCount { get; private set; }
-
-        public int QueryIdsCallCount { get; private set; }
-
-        public int QueryLinksCallCount { get; private set; }
-
-        public int QueryStringCallCount { get; private set; }
-
-        public int TeamProjectCollectionCallCount { get; private set; }
-
-        public int WorkItemLinkTypesCallCount { get; private set; }
-
         public VssCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
 
-        public ClientType ClientType => _innerWorkItemStore.ClientType;
+        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
 
         public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
@@ -45,6 +29,18 @@ namespace Microsoft.Qwiq.Mapper.Mocks
             }
         }
 
+        public int ProjectsCallCount { get; private set; }
+
+        public int QueryCallCount => QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
+
+        public int QueryIdCallCount { get; private set; }
+
+        public int QueryIdsCallCount { get; private set; }
+
+        public int QueryLinksCallCount { get; private set; }
+
+        public int QueryStringCallCount { get; private set; }
+
         public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
 
         public ITeamProjectCollection TeamProjectCollection
@@ -56,9 +52,9 @@ namespace Microsoft.Qwiq.Mapper.Mocks
             }
         }
 
-        public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
+        public int TeamProjectCollectionCallCount { get; private set; }
 
-        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
+        public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {
@@ -68,6 +64,8 @@ namespace Microsoft.Qwiq.Mapper.Mocks
                 return _innerWorkItemStore.WorkItemLinkTypes;
             }
         }
+
+        public int WorkItemLinkTypesCallCount { get; private set; }
 
         public void Dispose()
         {
