@@ -26,10 +26,8 @@ namespace Microsoft.Qwiq
 
         protected ReadOnlyCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
         {
-            if (itemFactory == null) throw new ArgumentNullException(nameof(itemFactory));
-            if (nameFunc == null) throw new ArgumentNullException(nameof(nameFunc));
-            ItemFactory = itemFactory;
-            _nameFunc = nameFunc;
+            ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
+            _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
         }
 
         protected ReadOnlyCollection(IEnumerable<T> items, Func<T, string> nameFunc)
@@ -39,9 +37,8 @@ namespace Microsoft.Qwiq
         }
 
         protected ReadOnlyCollection(IEnumerable<T> items)
-            :this(items, null)
+            : this(items, null)
         {
-
         }
 
         protected ReadOnlyCollection()

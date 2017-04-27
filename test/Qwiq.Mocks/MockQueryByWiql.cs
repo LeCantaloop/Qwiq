@@ -24,12 +24,10 @@ namespace Microsoft.Qwiq.Mocks
 
         public MockQueryByWiql(string query, MockWorkItemStore store)
         {
-            if (store == null)
-                throw new ArgumentNullException(nameof(store));
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(query));
 
-            _store = store;
+            _store = store ?? throw new ArgumentNullException(nameof(store));
 
             _parts = new List<Tuple<string, string, string>>();
             foreach (Match m in EqualsRegex.Matches(query))

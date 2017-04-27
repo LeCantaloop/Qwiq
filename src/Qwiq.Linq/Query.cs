@@ -27,11 +27,10 @@ namespace Microsoft.Qwiq.Linq
 
         public Query(IQueryProvider provider, IWiqlQueryBuilder builder, Expression expression)
         {
-            if (provider == null) throw new ArgumentNullException(nameof(provider));
             if (expression == null) throw new ArgumentNullException(nameof(expression));
             if (!typeof(IQueryable<T>).IsAssignableFrom(expression.Type)) throw new ArgumentOutOfRangeException(nameof(expression));
 
-            _provider = provider;
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _builder = builder;
             _expression = expression;
         }
