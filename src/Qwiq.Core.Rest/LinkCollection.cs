@@ -50,7 +50,7 @@ namespace Microsoft.Qwiq.Client.Rest
                                        ? lt.ForwardEnd
                                        : lt.ReverseEnd);
 
-                        Debug.Assert(StringComparer.OrdinalIgnoreCase.Equals(lte.ImmutableName, relation.Rel));
+                        Debug.Assert(StringComparer.OrdinalIgnoreCase.Equals(lte.ImmutableName, relation.Rel), "LinkTypeEnd.ImmutableName != WorkItemRelation.Rel");
 
                         var l = new RelatedLink(ExtractId(relation.Url), lte, ExtractComment(relation.Attributes));
                         Add(l);
