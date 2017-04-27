@@ -32,7 +32,7 @@ namespace Microsoft.Qwiq
         public static Func<IWorkItemStore> CreateRestStore { get; } = () =>
                                                                           {
                                                                               var options = AuthenticationOptions;
-                                                                              return WorkItemStoreFactory.Default.Create(options);
+                                                                              return Client.Rest.WorkItemStoreFactory.Default.Create(options);
                                                                           };
 
         /// <exclude />

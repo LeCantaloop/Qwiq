@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq.WorkItemStore.Soap
 
         public override void Given()
         {
-            Instance = WorkItemStoreFactory.Default;
+            Instance = Client.Soap.WorkItemStoreFactory.Default;
             WorkItemStore = TimedAction(Create, "SOAP", "WIS Create");
             base.Given();
         }

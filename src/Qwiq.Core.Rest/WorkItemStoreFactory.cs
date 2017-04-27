@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 using Microsoft.Qwiq.Exceptions;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
-    public class WorkItemStoreFactory : IWorkItemStoreFactory
+    public class WorkItemStoreFactory : Qwiq.WorkItemStoreFactory
     {
         public static readonly IWorkItemStoreFactory Default = Nested.Instance;
 
@@ -15,40 +13,19 @@ namespace Microsoft.Qwiq.Client.Rest
         {
         }
 
-        public IWorkItemStore Create(AuthenticationOptions options)
+        [Obsolete("This method is deprecated and will be removed in a future release. See property Default instead.", false)]
+        public static IWorkItemStoreFactory GetInstance()
+        {
+            return Default;
+        }
+
+        public override IWorkItemStore Create(AuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
             var wis = CreateRestWorkItemStore(tfsProxy);
             return ExceptionHandlingDynamicProxyFactory.Create(wis);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials)
-        {
-            return Create(endpoint, new[] { credentials });
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(
-            Uri endpoint,
-            IEnumerable<TfsCredentials> credentials)
-        {
-            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, types => credentials.Select(s=>s.Credentials));
-            return Create(options);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See property Default instead.",
-            false)]
-        public static IWorkItemStoreFactory GetInstance()
-        {
-            return Default;
         }
 
         private static IWorkItemStore CreateRestWorkItemStore(IInternalTeamProjectCollection tfs)
@@ -58,10 +35,11 @@ namespace Microsoft.Qwiq.Client.Rest
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-            // ReSharper restore ClassNeverInstantiated.Local
+                // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemStoreFactory Instance = new WorkItemStoreFactory();
+
             // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
