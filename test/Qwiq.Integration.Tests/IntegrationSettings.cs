@@ -1,4 +1,3 @@
-using Microsoft.Qwiq.Client.Rest;
 using Microsoft.Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
