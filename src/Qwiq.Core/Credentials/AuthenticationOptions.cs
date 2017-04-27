@@ -1,42 +1,66 @@
+using Microsoft.VisualStudio.Services.Client;
+using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
 
-using Microsoft.VisualStudio.Services.Client;
-using Microsoft.VisualStudio.Services.Common;
-
 namespace Microsoft.Qwiq.Credentials
 {
+    /// <summary>
+    /// Represents options for authentication against a Team Foundation Server.
+    /// </summary>
     public class AuthenticationOptions
     {
         private readonly Func<AuthenticationTypes, IEnumerable<VssCredentials>> _createCredentials;
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthenticationOptions" /> class.
+        /// </summary>
+        /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
         public AuthenticationOptions(string uri)
-            : this(new Uri(uri, UriKind.Absolute))
+            : this(uri, AuthenticationTypes.All)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationOptions"/> class.
+        ///     Initializes a new instance of the <see cref="AuthenticationOptions" /> class.
         /// </summary>
         /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
         /// <param name="authenticationTypes">The authentication types to use against the server.</param>
-        /// <param name="clientType">Type of the client.</param>
-        public AuthenticationOptions(
-            string uri,
-            AuthenticationTypes authenticationTypes = AuthenticationTypes.All)
+        public AuthenticationOptions(string uri, AuthenticationTypes authenticationTypes)
             : this(new Uri(uri, UriKind.Absolute), authenticationTypes)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthenticationOptions" /> class.
+        /// </summary>
+        /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
         public AuthenticationOptions(Uri uri)
             : this(uri, AuthenticationTypes.All)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthenticationOptions" /> class.
+        /// </summary>
+        /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
+        /// <param name="authenticationTypes">The authentication types.</param>
+        public AuthenticationOptions(Uri uri, AuthenticationTypes authenticationTypes)
+            : this(uri, authenticationTypes, null)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuthenticationOptions" /> class.
+        /// </summary>
+        /// <param name="uri">The URI of the Team Foundation Server, including the project collection.</param>
+        /// <param name="authenticationTypes">The authentication types.</param>
+        /// <param name="credentialsFactory">The credentials factory.</param>
+        /// <exception cref="ArgumentNullException">uri</exception>
         public AuthenticationOptions(
             Uri uri,
             AuthenticationTypes authenticationTypes,
-            Func<AuthenticationTypes, IEnumerable<VssCredentials>> credentialsFactory = null)
+            Func<AuthenticationTypes, IEnumerable<VssCredentials>> credentialsFactory)
         {
             AuthenticationTypes = authenticationTypes;
             Notifications = new CredentialsNotifications();
@@ -45,8 +69,6 @@ namespace Microsoft.Qwiq.Credentials
         }
 
         public AuthenticationTypes AuthenticationTypes { get; }
-
-
 
         public IEnumerable<VssCredentials> Credentials
         {
@@ -80,17 +102,19 @@ namespace Microsoft.Qwiq.Credentials
 
             if (t.HasFlag(AuthenticationTypes.Windows))
             {
+                var storage = new VssClientCredentialStorage();
+
                 // User did not specify a username or a password, so use the process identity
                 yield return new VssClientCredentials(new WindowsCredential(false))
                                  {
-                                     Storage = new VssClientCredentialStorage(),
+                                     Storage = storage,
                                      PromptType = CredentialPromptType.DoNotPrompt
                                  };
 
                 // Use the Windows identity of the logged on user
                 yield return new VssClientCredentials(true)
                                  {
-                                     Storage = new VssClientCredentialStorage(),
+                                     Storage = storage,
                                      PromptType = CredentialPromptType.PromptIfNeeded
                                  };
             }
