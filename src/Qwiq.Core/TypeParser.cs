@@ -17,12 +17,12 @@ namespace Microsoft.Qwiq
 
         public object Parse(Type destinationType, object value, object defaultValue)
         {
-            return ParseImpl(destinationType, value, new Lazy<object>(() => defaultValue ?? GetDefaultValueOfType(destinationType)));
+            return ParseImpl(destinationType, value, defaultValue);
         }
 
         public object Parse(Type destinationType, object input)
         {
-            return ParseImpl(destinationType, input, new Lazy<object>(() => GetDefaultValueOfType(destinationType)));
+            return ParseImpl(destinationType, input);
         }
 
         public T Parse<T>(object value)
@@ -45,8 +45,10 @@ namespace Microsoft.Qwiq
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
         }
 
-        private static object ParseImpl(Type destinationType, object value, Lazy<object> defaultValueFactory)
+        private static object ParseImpl(Type destinationType, object value)
         {
+            var defaultValueFactory = new Lazy<object>(() => GetDefaultValueOfType(destinationType));
+
             // If the incoming value is null, return the default value
             if (ValueRepresentsNull(value)) return defaultValueFactory.Value;
 
@@ -56,6 +58,21 @@ namespace Microsoft.Qwiq
             if (TryConvert(destinationType, value, out object result)) return result;
             if (IsGenericNullable(destinationType) && defaultValueFactory.Value == null) return null;
             if (TryConvert(destinationType, defaultValueFactory.Value, out result)) return result;
+
+            return null;
+        }
+
+        private static object ParseImpl(Type destinationType, object value, object defaultValue)
+        {
+            // If the incoming value is null, return the default value
+            if (ValueRepresentsNull(value)) return defaultValue;
+
+            // Quit if no type conversion is actually required
+            if (value.GetType() == destinationType) return value;
+            if (destinationType.IsInstanceOfType(value)) return value;
+            if (TryConvert(destinationType, value, out object result)) return result;
+            if (IsGenericNullable(destinationType) && defaultValue == null) return null;
+            if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
         }
