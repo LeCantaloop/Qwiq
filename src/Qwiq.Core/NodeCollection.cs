@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class NodeCollection : ReadOnlyCollectionWithId<INode, int>, INodeCollection
+    public class NodeCollection : ReadOnlyObjectWithIdCollection<INode, int>, INodeCollection
     {
         internal NodeCollection(params INode[] nodes)
             : this(nodes as IEnumerable<INode>)

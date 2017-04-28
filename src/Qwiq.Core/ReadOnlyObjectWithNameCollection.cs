@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq
     ///     Base class for common operations for Collections.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ReadOnlyCollection<T> : IReadOnlyObjectList<T>
+    public abstract class ReadOnlyObjectWithNameCollection<T> : IReadOnlyObjectWithNameCollection<T>
     {
         private readonly object _lockObj = new object();
 
@@ -24,24 +24,24 @@ namespace Microsoft.Qwiq
 
         private IDictionary<string, int> _mapByName;
 
-        protected ReadOnlyCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
         {
             ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
             _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
         }
 
-        protected ReadOnlyCollection(IEnumerable<T> items, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection(IEnumerable<T> items, Func<T, string> nameFunc)
         {
             ItemFactory = () => items ?? Enumerable.Empty<T>();
             _nameFunc = nameFunc;
         }
 
-        protected ReadOnlyCollection(IEnumerable<T> items)
+        protected ReadOnlyObjectWithNameCollection(IEnumerable<T> items)
             : this(items, null)
         {
         }
 
-        protected ReadOnlyCollection()
+        protected ReadOnlyObjectWithNameCollection()
         {
             Initialize();
         }
@@ -139,7 +139,7 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        T IReadOnlyObjectList<T>.GetItem(int index)
+        T IReadOnlyObjectWithNameCollection<T>.GetItem(int index)
         {
             return GetItem(index);
         }

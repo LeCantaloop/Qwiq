@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq
     public abstract class TeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
         private string _uniqueName;
-        protected static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
+        protected internal static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
 
         private TeamFoundationIdentity()
         {

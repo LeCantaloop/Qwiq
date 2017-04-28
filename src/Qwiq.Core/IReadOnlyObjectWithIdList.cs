@@ -7,7 +7,7 @@ namespace Microsoft.Qwiq
     /// </summary>
     /// <typeparam name="T">The type of elements in the read-only list.</typeparam>
     /// <typeparam name="TId">The type of the identifier of elements in the read-only list.</typeparam>
-    public interface IReadOnlyObjectWithIdList<T, TId> : IReadOnlyObjectList<T>, IEquatable<IReadOnlyObjectWithIdList<T, TId>>
+    public interface IReadOnlyObjectWithIdCollection<T, TId> : IReadOnlyObjectWithNameCollection<T>, IEquatable<IReadOnlyObjectWithIdCollection<T, TId>>
         where T : IIdentifiable<TId>
     {
         /// <summary>

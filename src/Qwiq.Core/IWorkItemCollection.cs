@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemCollection : IReadOnlyObjectWithIdList<IWorkItem, int>, IEquatable<IWorkItemCollection>
+    public interface IWorkItemCollection : IReadOnlyObjectWithIdCollection<IWorkItem, int>, IEquatable<IWorkItemCollection>
     {
 
     }

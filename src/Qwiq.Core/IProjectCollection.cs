@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IProjectCollection : IReadOnlyObjectList<IProject>
+    public interface IProjectCollection : IReadOnlyObjectWithNameCollection<IProject>
     {
         IProject this[Guid id] { get; }
     }

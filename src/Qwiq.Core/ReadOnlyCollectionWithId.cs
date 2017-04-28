@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class ReadOnlyCollectionWithId<T, TId> : ReadOnlyCollection<T>, IReadOnlyObjectWithIdList<T, TId>
+    public abstract class ReadOnlyObjectWithIdCollection<T, TId> : ReadOnlyObjectWithNameCollection<T>, IReadOnlyObjectWithIdCollection<T, TId>
         where T : IIdentifiable<TId>
     {
         private readonly Func<T, TId> _idFunc;
         private readonly IDictionary<TId, int> _mapById;
 
-        protected ReadOnlyCollectionWithId(IEnumerable<T> items, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items, Func<T, string> nameFunc)
             :this(items, nameFunc, arg => arg.Id)
         {
         }
 
-        protected ReadOnlyCollectionWithId(IEnumerable<T> items, Func<T, string> nameFunc, Func<T, TId> idFunc)
+        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items, Func<T, string> nameFunc, Func<T, TId> idFunc)
             :base(items, nameFunc)
         {
             _idFunc = idFunc ?? throw new ArgumentNullException(nameof(idFunc));
             _mapById = new Dictionary<TId, int>();
         }
 
-        protected ReadOnlyCollectionWithId(IEnumerable<T> items)
+        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items)
             :base(items)
         {
             _idFunc = a => a.Id;
@@ -30,7 +30,7 @@ namespace Microsoft.Qwiq
 
         public virtual bool Contains(TId id)
         {
-            Ensure();
+            base.Ensure();
             return _mapById.ContainsKey(id);
         }
 
@@ -72,14 +72,14 @@ namespace Microsoft.Qwiq
             }
         }
 
-        public virtual bool Equals(IReadOnlyObjectWithIdList<T, TId> other)
+        public virtual bool Equals(IReadOnlyObjectWithIdCollection<T, TId> other)
         {
             return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, other);
         }
 
         public override bool Equals(object obj)
         {
-            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdList<T, TId>);
+            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdCollection<T, TId>);
         }
 
         public override int GetHashCode()

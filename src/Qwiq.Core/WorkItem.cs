@@ -52,9 +52,6 @@ namespace Microsoft.Qwiq
 
         public virtual IFieldCollection Fields => _fields == null ? throw new NotSupportedException() : _fields.Value;
 
-        public int Index => -2;
-
-
         public new virtual int HyperlinkCount => base.HyperlinkCount.GetValueOrDefault(0);
 
         public new virtual int Id => base.Id.GetValueOrDefault(0);
@@ -112,11 +109,6 @@ namespace Microsoft.Qwiq
                     }
                 SetValue(name, value);
             }
-        }
-
-        public string GetTagLine()
-        {
-            throw new NotSupportedException();
         }
 
         public virtual void ApplyRules(bool doNotUpdateChangedBy = false)

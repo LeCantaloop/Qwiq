@@ -13,7 +13,7 @@ namespace Microsoft.Qwiq.UnitTests.Mocks
 
         public void ThrowException()
         {
-            throw new ArgumentException(null, _argumentName); ;
+            throw new ArgumentException(null, _argumentName);
         }
     }
 

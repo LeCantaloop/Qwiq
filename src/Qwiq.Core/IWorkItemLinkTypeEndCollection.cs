@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Qwiq
 {
-    public interface IWorkItemLinkTypeEndCollection : IReadOnlyObjectWithIdList<IWorkItemLinkTypeEnd, int>
+    public interface IWorkItemLinkTypeEndCollection : IReadOnlyObjectWithIdCollection<IWorkItemLinkTypeEnd, int>
     {
         
     }

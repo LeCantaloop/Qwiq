@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemCollection : ReadOnlyCollectionWithId<IWorkItem, int>, IWorkItemCollection
+    public class WorkItemCollection : ReadOnlyObjectWithIdCollection<IWorkItem, int>, IWorkItemCollection
     {
         public WorkItemCollection(IEnumerable<IWorkItem> workItems)
             :base(workItems)

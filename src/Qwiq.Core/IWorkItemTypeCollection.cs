@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemTypeCollection : IReadOnlyObjectList<IWorkItemType>, IEquatable<IWorkItemTypeCollection>
+    public interface IWorkItemTypeCollection : IReadOnlyObjectWithNameCollection<IWorkItemType>, IEquatable<IWorkItemTypeCollection>
     {
     }
 }

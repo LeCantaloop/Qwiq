@@ -122,8 +122,8 @@ namespace Microsoft.Qwiq
         ///     Gets the the User principal name (UPN) or the down-level login name.
         /// </summary>
         /// <remarks>
-        ///     This can be in the UPN format (e.g. UserName@Example.Microsoft.com) or the down-level logon name format (e.g.
-        ///     EXAMPLE\UserName).
+        ///     This can be in the UPN format (e.g. user@domain.com) or the down-level logon name format (e.g.
+        ///     domain\user).
         /// </remarks>
         public string AccountName { get; }
 

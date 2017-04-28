@@ -5,7 +5,7 @@ namespace Microsoft.Qwiq
 {
     public static class Comparer
     {
-        public static IEqualityComparer<IReadOnlyObjectWithIdList<IField, int>> FieldCollection { get; } =
+        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<IField, int>> FieldCollection { get; } =
             ReadOnlyCollectionWithIdComparer<IField, int>.Default;
 
         public static IEqualityComparer<IFieldDefinition> FieldDefinition { get; } = FieldDefinitionComparer.Default;
@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq
 
         public static IEqualityComparer<INode> Node { get; } = NodeComparer.Default;
 
-        public static IEqualityComparer<IReadOnlyObjectWithIdList<INode, int>> NodeCollection { get; } =
+        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<INode, int>> NodeCollection { get; } =
             ReadOnlyCollectionWithIdComparer<INode, int>.Default;
 
         public static IEqualityComparer<IIdentifiable<int?>> NullableIdentity { get; } = NullableIdentifiableComparer.Default;
