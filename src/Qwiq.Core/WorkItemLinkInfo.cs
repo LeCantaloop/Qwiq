@@ -1,29 +1,36 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
     public class WorkItemLinkInfo : IWorkItemLinkInfo
     {
+        [CanBeNull]
         private readonly IWorkItemLinkTypeEnd _id;
 
+        [CanBeNull]
         private readonly Lazy<IWorkItemLinkTypeEnd> _lazyId;
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, IWorkItemLinkTypeEnd id)
+        internal WorkItemLinkInfo(int sourceId, int targetId, [NotNull] IWorkItemLinkTypeEnd id)
             : this(sourceId, targetId, (Lazy<IWorkItemLinkTypeEnd>) null)
         {
+            Contract.Requires(id != null);
+            
             _id = id ?? throw new ArgumentNullException(nameof(id));
         }
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, Lazy<IWorkItemLinkTypeEnd> lazyId)
+        internal WorkItemLinkInfo(int sourceId, int targetId, [CanBeNull] Lazy<IWorkItemLinkTypeEnd> lazyId)
         {
             SourceId = sourceId;
             TargetId = targetId;
             _lazyId = lazyId;
         }
 
-        public IWorkItemLinkTypeEnd LinkType => _id ?? _lazyId.Value;
+        public IWorkItemLinkTypeEnd LinkType => _id ?? _lazyId?.Value ?? throw new InvalidOperationException();
 
         public int SourceId { get; }
 
