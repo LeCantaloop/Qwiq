@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq.Identity
 {
     /// <summary>
@@ -10,6 +12,7 @@ namespace Microsoft.Qwiq.Identity
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>An <see cref="object"/> instance whose value is equivalent to the value of <paramref name="value"/>.</returns>
-        object Map(object value);
+        [ContractAnnotation("null => null; notnull => notnull")]
+        object Map([CanBeNull] object value);
     }
 }

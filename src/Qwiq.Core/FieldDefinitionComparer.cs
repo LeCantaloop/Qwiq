@@ -1,17 +1,20 @@
 using System;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {
         private FieldDefinitionComparer()
         {
-            
+
         }
 
+        [NotNull]
         internal new static FieldDefinitionComparer Default => Nested.Instance;
 
-        public override bool Equals(IFieldDefinition x, IFieldDefinition y)
+        public override bool Equals([CanBeNull] IFieldDefinition x, [CanBeNull] IFieldDefinition y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -23,7 +26,7 @@ namespace Microsoft.Qwiq
                 && StringComparer.OrdinalIgnoreCase.Equals(x.ReferenceName, y.ReferenceName);
         }
 
-        public override int GetHashCode(IFieldDefinition obj)
+        public override int GetHashCode([CanBeNull] IFieldDefinition obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -7,11 +10,15 @@ namespace Microsoft.Qwiq
         private IFieldDefinitionCollection _fdc;
 
         internal WorkItemType(
-            string name,
-            string description,
-            Lazy<IFieldDefinitionCollection> fieldDefinitions,
+            [NotNull] string name,
+            [CanBeNull] string description,
+            [NotNull] Lazy<IFieldDefinitionCollection> fieldDefinitions,
             Func<IWorkItem> workItemFactory = null)
         {
+            Contract.Requires(name != null);
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            Contract.Requires(fieldDefinitions != null);
+
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
             FieldDefinitionFactory = () => fieldDefinitions.Value;
@@ -24,7 +31,7 @@ namespace Microsoft.Qwiq
 
         protected internal Func<IWorkItem> WorkItemFactory { get; internal set; }
 
-        public bool Equals(IWorkItemType other)
+        public bool Equals([CanBeNull] IWorkItemType other)
         {
             return WorkItemTypeComparer.Default.Equals(this, other);
         }
@@ -50,6 +57,7 @@ namespace Microsoft.Qwiq
             return WorkItemTypeComparer.Default.GetHashCode(this);
         }
 
+        [NotNull]
         public override string ToString()
         {
             return Name;

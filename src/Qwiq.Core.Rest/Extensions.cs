@@ -1,32 +1,40 @@
-﻿using Microsoft.Qwiq.Exceptions;
+﻿using JetBrains.Annotations;
+
+using Microsoft.Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
     internal static class Extensions
     {
-        internal static IWorkItem AsProxy(this WorkItem item)
+        [CanBeNull]
+        [Pure]
+        [ContractAnnotation("null => null; notnull => notnull")]
+        internal static IWorkItem AsProxy([CanBeNull] this WorkItem item)
         {
-            return item == null
-                ? null
-                : ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(item);
+            return item == null ? null : ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(item);
         }
 
-        internal static IQuery AsProxy(this Query query)
+        [CanBeNull]
+        [Pure]
+        [ContractAnnotation("null => null; notnull => notnull")]
+        internal static IQuery AsProxy([CanBeNull] this Query query)
         {
-            return query == null
-                ? null
-                : ExceptionHandlingDynamicProxyFactory.Create<IQuery>(query);
+            return query == null ? null : ExceptionHandlingDynamicProxyFactory.Create<IQuery>(query);
         }
 
-        internal static IIdentityDescriptor AsProxy(this VisualStudio.Services.Identity.IdentityDescriptor value)
+        [CanBeNull]
+        [Pure]
+        [ContractAnnotation("null => null; notnull => notnull")]
+        internal static IIdentityDescriptor AsProxy([CanBeNull] this VisualStudio.Services.Identity.IdentityDescriptor value)
         {
-            return value == null
-                ? null
-                : ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptor(value));
+            return value == null ? null : ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptor(value));
         }
 
-        internal static IInternalTeamProjectCollection AsProxy(this VssConnection tfsNative)
+        [CanBeNull]
+        [Pure]
+        [ContractAnnotation("null => null; notnull => notnull")]
+        internal static IInternalTeamProjectCollection AsProxy([CanBeNull] this VssConnection tfsNative)
         {
             return tfsNative == null
                        ? null

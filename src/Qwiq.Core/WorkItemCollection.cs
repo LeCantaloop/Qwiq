@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class WorkItemCollection : ReadOnlyObjectWithIdCollection<IWorkItem, int>, IWorkItemCollection
@@ -10,13 +12,13 @@ namespace Microsoft.Qwiq
         }
 
         /// <inheritdoc />
-        public bool Equals(IWorkItemCollection other)
+        public bool Equals([CanBeNull] IWorkItemCollection other)
         {
             return Comparer.WorkItemCollection.Equals(this, other);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return Comparer.WorkItemCollection.Equals(this, obj as IWorkItemCollection);
         }

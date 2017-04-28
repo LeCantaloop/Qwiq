@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -21,14 +24,18 @@ namespace Microsoft.Qwiq
         {
         }
 
-        protected internal WorkItem(IWorkItemType type)
+        protected internal WorkItem([NotNull] IWorkItemType type)
         {
+            Contract.Requires(type != null);
+
             _type = type ?? throw new ArgumentNullException(nameof(type));
             _fields = new Lazy<IFieldCollection>(()=> new FieldCollection(this, Type.FieldDefinitions, (revision, definition) => new Field(revision, definition)));
         }
 
-        protected internal WorkItem(IWorkItemType type, Func<IFieldCollection> fieldCollectionFactory)
+        protected internal WorkItem([NotNull] IWorkItemType type, Func<IFieldCollection> fieldCollectionFactory)
         {
+            Contract.Requires(type != null);
+
             _type = type ?? throw new ArgumentNullException(nameof(type));
             _fields = new Lazy<IFieldCollection>(fieldCollectionFactory);
         }

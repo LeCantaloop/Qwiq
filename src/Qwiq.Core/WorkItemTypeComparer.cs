@@ -1,5 +1,7 @@
 using System;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class WorkItemTypeComparer : GenericComparer<IWorkItemType>
@@ -10,7 +12,7 @@ namespace Microsoft.Qwiq
         {
         }
 
-        public override bool Equals(IWorkItemType x, IWorkItemType y)
+        public override bool Equals([CanBeNull] IWorkItemType x, [CanBeNull] IWorkItemType y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

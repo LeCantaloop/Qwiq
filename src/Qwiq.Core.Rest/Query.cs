@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -31,15 +34,19 @@ namespace Microsoft.Qwiq.Client.Rest
 
         private IEnumerable<int> _ids;
 
-        internal Query(IEnumerable<int> ids, Wiql query, WorkItemStore workItemStore)
+        internal Query(IEnumerable<int> ids, Wiql query, [NotNull] WorkItemStore workItemStore)
             : this(query, false, workItemStore)
         {
+            Contract.Requires(workItemStore != null);
+            
             _ids = ids;
         }
 
-        internal Query(Wiql query, bool timePrecision, WorkItemStore workItemStore)
+        internal Query(Wiql query, bool timePrecision, [NotNull] WorkItemStore workItemStore)
 
         {
+            Contract.Requires(workItemStore != null);
+            
             _workItemStore = workItemStore ?? throw new ArgumentNullException(nameof(workItemStore));
             _timePrecision = timePrecision;
             _query = query;
@@ -58,6 +65,7 @@ namespace Microsoft.Qwiq.Client.Rest
             return wit.LinkTypeEnds;
         }
 
+        [ItemNotNull]
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
             // Eager loading for the link type ID (which is not returned by the REST API) causes ~250ms delay
@@ -85,8 +93,11 @@ namespace Microsoft.Qwiq.Client.Rest
             return new WorkItemCollection(RunQueryImpl().ToList());
         }
 
+        [NotNull]
         private IEnumerable<IWorkItem> RunQueryImpl()
         {
+            Contract.Ensures(Contract.Result<IEnumerable<IWorkItem>>() != null);
+            
             if (_ids == null && _query != null)
             {
                 var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();

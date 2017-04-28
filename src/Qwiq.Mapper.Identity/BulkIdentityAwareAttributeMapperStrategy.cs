@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
@@ -46,6 +47,9 @@ namespace Microsoft.Qwiq.Mapper
             IIdentityValueConverter identityValueConverter
             )
         {
+            Contract.Requires(inspector != null);
+            Contract.Requires(identityValueConverter != null);
+
             _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
             _displayNameToAliasValueConverter = identityValueConverter ?? throw new ArgumentNullException(nameof(identityValueConverter));
         }

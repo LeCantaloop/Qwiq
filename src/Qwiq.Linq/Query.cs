@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Linq
 {
@@ -18,21 +21,29 @@ namespace Microsoft.Qwiq.Linq
 
         private readonly IQueryProvider _provider;
 
-        public Query(IQueryProvider provider, IWiqlQueryBuilder builder)
+        public Query([NotNull] IQueryProvider provider, [NotNull] IWiqlQueryBuilder builder)
         {
+            Contract.Requires(provider != null);
+            Contract.Requires(builder != null);
+
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            _builder = builder;
+            _builder = builder ?? throw new ArgumentNullException(nameof(builder));
             _expression = Expression.Constant(this);
         }
 
-        public Query(IQueryProvider provider, IWiqlQueryBuilder builder, Expression expression)
+        public Query([NotNull] IQueryProvider provider, [NotNull] IWiqlQueryBuilder builder, [NotNull] Expression expression)
         {
+            Contract.Requires(provider != null);
+            Contract.Requires(builder != null);
+            Contract.Requires(expression != null);
+
             if (expression == null) throw new ArgumentNullException(nameof(expression));
             if (!typeof(IQueryable<T>).IsAssignableFrom(expression.Type)) throw new ArgumentOutOfRangeException(nameof(expression));
 
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            _builder = builder;
-            _expression = expression;
+            _builder = builder ?? throw new ArgumentNullException(nameof(builder));
+            _expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            ;
         }
 
         Type IQueryable.ElementType => typeof(T);

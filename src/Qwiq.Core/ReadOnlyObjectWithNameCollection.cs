@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -14,6 +17,7 @@ namespace Microsoft.Qwiq
     {
         private readonly object _lockObj = new object();
 
+        [CanBeNull]
         private readonly Func<T, string> _nameFunc;
 
         private bool _alreadyInit;
@@ -24,19 +28,22 @@ namespace Microsoft.Qwiq
 
         private IDictionary<string, int> _mapByName;
 
-        protected ReadOnlyObjectWithNameCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([NotNull] Func<IEnumerable<T>> itemFactory, [NotNull] Func<T, string> nameFunc)
         {
+            Contract.Requires(itemFactory != null);
+            Contract.Requires(nameFunc != null);
+
             ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
             _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
         }
 
-        protected ReadOnlyObjectWithNameCollection(IEnumerable<T> items, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items, [CanBeNull] Func<T, string> nameFunc)
         {
             ItemFactory = () => items ?? Enumerable.Empty<T>();
             _nameFunc = nameFunc;
         }
 
-        protected ReadOnlyObjectWithNameCollection(IEnumerable<T> items)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items)
             : this(items, null)
         {
         }

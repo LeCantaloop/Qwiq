@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -22,6 +23,8 @@ namespace Microsoft.Qwiq.Linq.Visitors
         /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
         public IdentityFieldAttributeVisitor(IIdentityValueConverter valueConverter)
         {
+            Contract.Requires(valueConverter != null);
+            
             _valueConverter = valueConverter ?? throw new ArgumentNullException(nameof(valueConverter));
         }
 

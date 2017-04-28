@@ -1,28 +1,37 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class ReadOnlyObjectWithIdCollection<T, TId> : ReadOnlyObjectWithNameCollection<T>, IReadOnlyObjectWithIdCollection<T, TId>
+    public abstract class ReadOnlyObjectWithIdCollection<T, TId> : ReadOnlyObjectWithNameCollection<T>,
+                                                                   IReadOnlyObjectWithIdCollection<T, TId>
         where T : IIdentifiable<TId>
     {
         private readonly Func<T, TId> _idFunc;
+
         private readonly IDictionary<TId, int> _mapById;
 
-        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items, Func<T, string> nameFunc)
-            :this(items, nameFunc, arg => arg.Id)
+        protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items, [CanBeNull] Func<T, string> nameFunc)
+            : this(items, nameFunc, arg => arg.Id)
         {
         }
 
-        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items, Func<T, string> nameFunc, Func<T, TId> idFunc)
-            :base(items, nameFunc)
+        protected ReadOnlyObjectWithIdCollection(
+            [CanBeNull] IEnumerable<T> items,
+            [CanBeNull] Func<T, string> nameFunc,
+            [NotNull] Func<T, TId> idFunc)
+            : base(items, nameFunc)
         {
+            Contract.Requires(idFunc != null);
+
             _idFunc = idFunc ?? throw new ArgumentNullException(nameof(idFunc));
             _mapById = new Dictionary<TId, int>();
         }
 
-        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items)
-            :base(items)
+        protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items)
+            : base(items)
         {
             _idFunc = a => a.Id;
             _mapById = new Dictionary<TId, int>();
@@ -30,8 +39,29 @@ namespace Microsoft.Qwiq
 
         public virtual bool Contains(TId id)
         {
-            base.Ensure();
+            Ensure();
             return _mapById.ContainsKey(id);
+        }
+
+        public virtual bool Equals(IReadOnlyObjectWithIdCollection<T, TId> other)
+        {
+            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdCollection<T, TId>);
+        }
+
+        public virtual T GetById(TId id)
+        {
+            if (!TryGetById(id, out T byId)) throw new DeniedOrNotExistException();
+            return byId;
+        }
+
+        public override int GetHashCode()
+        {
+            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.GetHashCode(this);
         }
 
         public virtual bool TryGetById(TId id, out T value)
@@ -44,12 +74,6 @@ namespace Microsoft.Qwiq
             }
             value = default(T);
             return false;
-        }
-
-        public virtual T GetById(TId id)
-        {
-            if (!TryGetById(id, out T byId)) throw new DeniedOrNotExistException();
-            return byId;
         }
 
         protected override void Add(T value, int index)
@@ -70,21 +94,6 @@ namespace Microsoft.Qwiq
             {
                 throw new ArgumentException($"An item with the ID {id} already exists.", e);
             }
-        }
-
-        public virtual bool Equals(IReadOnlyObjectWithIdCollection<T, TId> other)
-        {
-            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, other);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdCollection<T, TId>);
-        }
-
-        public override int GetHashCode()
-        {
-            return ReadOnlyCollectionWithIdComparer<T, TId>.Default.GetHashCode(this);
         }
     }
 }

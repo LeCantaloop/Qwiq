@@ -1,5 +1,7 @@
 ﻿using System;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class NodeComparer : GenericComparer<INode>
@@ -23,7 +25,7 @@ namespace Microsoft.Qwiq
                 && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override int GetHashCode(INode obj)
+        public override int GetHashCode([CanBeNull] INode obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 

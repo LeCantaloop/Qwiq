@@ -23,7 +23,11 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\ReSharper.Annotations.cs">
+      <Link>Properties\ReSharper.Annotations.cs</Link>
+    </Compile>
     <Compile Include="CachingFieldMapper.cs" />
+    <Compile Include="FieldMapperContract.cs" />
     <Compile Include="Fragments\CompoundFragment.cs" />
     <Compile Include="Fragments\ConstantFragment.cs" />
     <Compile Include="Fragments\ConstantListFragment.cs" />

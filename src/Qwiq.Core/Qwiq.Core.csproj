@@ -64,6 +64,9 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\ReSharper.Annotations.cs">
+      <Link>Properties\ReSharper.Annotations.cs</Link>
+    </Compile>
     <Compile Include="AccessDeniedException.cs" />
     <Compile Include="BaseLinkType.cs" />
     <Compile Include="Comparer.cs" />
@@ -179,6 +182,7 @@
     <Compile Include="RegisteredLinkTypeCollection.cs" />
     <Compile Include="RelatedLink.cs" />
     <Compile Include="Revision.cs" />
+    <Compile Include="RevisionInternalContract.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />

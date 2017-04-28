@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -6,9 +9,12 @@ namespace Microsoft.Qwiq
     /// </summary>
     public class FieldDefinition : IFieldDefinition, IEquatable<IFieldDefinition>
     {
-        internal FieldDefinition(int id, string referenceName, string name)
+        internal FieldDefinition(int id, [NotNull] string referenceName, [NotNull] string name)
 
         {
+            Contract.Requires(!string.IsNullOrWhiteSpace(referenceName));
+            Contract.Requires(!string.IsNullOrWhiteSpace(name));
+
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
 
@@ -30,8 +36,11 @@ namespace Microsoft.Qwiq
             }
         }
 
-        internal FieldDefinition(string referenceName, string name)
+        internal FieldDefinition([NotNull] string referenceName, [NotNull] string name)
         {
+            Contract.Requires(!string.IsNullOrWhiteSpace(referenceName));
+            Contract.Requires(!string.IsNullOrWhiteSpace(name));
+
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
 

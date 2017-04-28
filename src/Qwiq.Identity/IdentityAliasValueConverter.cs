@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 using Microsoft.VisualStudio.Services.Common;
 
@@ -32,10 +35,16 @@ namespace Microsoft.Qwiq.Identity
         /// var mapper = new IdentityAliasMapper(ims, "CD4C5751-F4E6-41D5-A4C9-EFFD66BC8E9C", "contoso.com");
         /// </example>
         public IdentityAliasValueConverter(
-            IIdentityManagementService identityManagementService,
-            string tenantId,
-            params string[] domains)
+            [NotNull] IIdentityManagementService identityManagementService,
+            [NotNull] string tenantId,
+            [NotNull] [ItemNotNull] params string[] domains)
         {
+            Contract.Requires(!string.IsNullOrEmpty(tenantId));
+            Contract.Requires(identityManagementService != null);
+            Contract.Requires(domains != null);
+            Contract.Requires(domains.Length > 0);
+            Contract.Requires(domains.All(item => item != null));
+
             if (domains == null) throw new ArgumentNullException(nameof(domains));
             if (string.IsNullOrEmpty(tenantId)) throw new ArgumentException("Value cannot be null or empty.", nameof(tenantId));
             if (domains.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(domains));
@@ -50,7 +59,8 @@ namespace Microsoft.Qwiq.Identity
         /// <param name="value">The value.</param>
         /// <returns>An <see cref="object" /> instance whose value is equivilent to the value of <paramref name="value" />.</returns>
         /// <example>"danj" becomes "danj@contoso.com"</example>
-        public object Map(object value)
+        [ContractAnnotation("null => null; notnull => notnull")]
+        public object Map([CanBeNull] object value)
         {
             if (value is string stringValue) return GetIdentityNames(stringValue).Single();
 
@@ -100,7 +110,7 @@ namespace Microsoft.Qwiq.Identity
                     var loggedInAccountString = $"{tenantId}\\{alias}@{domain}".ToString(CultureInfo.InvariantCulture);
 
                     descriptorsForAlias.Add(_identityManagementService.CreateIdentityDescriptor(IdentityConstants.ClaimsType, loggedInAccountString));
-                    descriptorsForAlias.Add(_identityManagementService.CreateIdentityDescriptor(IdentityConstants.BindPendingIdentityType,IdentityConstants.BindPendingSidPrefix + loggedInAccountString));
+                    descriptorsForAlias.Add(_identityManagementService.CreateIdentityDescriptor(IdentityConstants.BindPendingIdentityType, IdentityConstants.BindPendingSidPrefix + loggedInAccountString));
                 }
 
                 descriptors.Add(alias, descriptorsForAlias);

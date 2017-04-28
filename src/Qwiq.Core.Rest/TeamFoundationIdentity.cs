@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 using Microsoft.VisualStudio.Services.Identity;
 
@@ -16,9 +19,11 @@ namespace Microsoft.Qwiq.Client.Rest
 
         private readonly Lazy<IEnumerable<IIdentityDescriptor>> _members;
 
-        internal TeamFoundationIdentity(Identity identity)
+        internal TeamFoundationIdentity([NotNull] Identity identity)
             : base(identity.IsActive, identity.Id, identity.UniqueUserId)
         {
+            Contract.Requires(identity != null);
+            
             _identity = identity ?? throw new ArgumentNullException(nameof(identity));
             DisplayName = identity.DisplayName;
 
@@ -28,7 +33,7 @@ namespace Microsoft.Qwiq.Client.Rest
             _memberOf = new Lazy<IEnumerable<IIdentityDescriptor>>(() => identity.MemberOf.Select(item => item.AsProxy()));
             _members = new Lazy<IEnumerable<IIdentityDescriptor>>(() => identity.Members.Select(item => item.AsProxy()));
         }
-
+        
         public override IIdentityDescriptor Descriptor => _descriptor.Value;
 
         public override string DisplayName { get; }

@@ -1,9 +1,16 @@
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
+    [ContractClass(typeof(RevisionInternalContract))]
     internal interface IRevisionInternal
     {
-        object GetCurrentFieldValue(IFieldDefinition fieldDefinition);
+        [JetBrains.Annotations.Pure]
+        [CanBeNull]
+        object GetCurrentFieldValue([NotNull] IFieldDefinition fieldDefinition);
 
-        void SetFieldValue(IFieldDefinition fieldDefinition, object value);
+        void SetFieldValue([NotNull] IFieldDefinition fieldDefinition, [CanBeNull] object value);
     }
 }
