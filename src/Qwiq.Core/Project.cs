@@ -60,7 +60,7 @@ namespace Microsoft.Qwiq
 
         public override string ToString()
         {
-            FormattableString s = $"{Guid} ({Name})";
+            FormattableString s = $"{Guid.ToString()} ({Name})";
             return s.ToString(CultureInfo.InvariantCulture);
         }
 

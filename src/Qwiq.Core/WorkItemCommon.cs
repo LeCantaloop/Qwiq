@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq
         {
         }
 
-        protected internal WorkItemCommon(IDictionary<string, object> fields)
+        protected internal WorkItemCommon(Dictionary<string, object> fields)
             :base(fields)
         {
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Microsoft.Qwiq
 {
@@ -82,8 +83,8 @@ namespace Microsoft.Qwiq
                 else
                 {
                     _uniqueName = string.IsNullOrEmpty(domain)
-                                      ? $"{account}:{UniqueUserId}"
-                                      : $"{string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{ UniqueUserId}";
+                                      ? $"{account}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}"
+                                      : $"{string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}";
                 }
 
                 return _uniqueName;
@@ -110,7 +111,10 @@ namespace Microsoft.Qwiq
 
         public override string ToString()
         {
-            return $"Identity {TeamFoundationId} (IdentityType: {(Descriptor == null ? string.Empty : Descriptor.IdentityType)}; Identifier: {(Descriptor == null ? string.Empty : Descriptor.Identifier)}; DisplayName: {DisplayName})";
+            // Call of .ToString to avoid boxing Guid to Object
+            // ReSharper disable RedundantToStringCallForValueType
+            return $"Identity {TeamFoundationId.ToString()} (IdentityType: {(Descriptor == null ? string.Empty : Descriptor.IdentityType)}; Identifier: {(Descriptor == null ? string.Empty : Descriptor.Identifier)}; DisplayName: {DisplayName})";
+            // ReSharper restore RedundantToStringCallForValueType
         }
     }
 }

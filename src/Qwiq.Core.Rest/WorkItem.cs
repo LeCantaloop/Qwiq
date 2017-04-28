@@ -18,7 +18,7 @@ namespace Microsoft.Qwiq.Client.Rest
             TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
             Lazy<IWorkItemType> wit,
             Func<string, IWorkItemLinkType> linkFunc)
-            : base(item.Fields)
+            : base((Dictionary<string, object>)item.Fields)
         {
             _item = item;
             _wit = wit;

@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq
 
         private readonly Lazy<IFieldCollection> _fields;
 
-        protected internal WorkItem(IDictionary<string, object> fields)
+        protected internal WorkItem(Dictionary<string, object> fields)
             : base(fields)
         {
         }
