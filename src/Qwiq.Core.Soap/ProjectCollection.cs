@@ -1,8 +1,8 @@
-using Microsoft.Qwiq.Exceptions;
-
 using System.Linq;
 
-namespace Microsoft.Qwiq.Soap
+using Microsoft.Qwiq.Exceptions;
+
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class ProjectCollection : Qwiq.ProjectCollection
     {

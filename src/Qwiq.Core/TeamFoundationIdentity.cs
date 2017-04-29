@@ -7,12 +7,20 @@ namespace Microsoft.Qwiq
     public abstract class TeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
         private string _uniqueName;
+        protected static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
 
+        private TeamFoundationIdentity()
+        {
+            MemberOf = ZeroLengthArrayOfIdentityDescriptor;
+            Members = ZeroLengthArrayOfIdentityDescriptor;
+            TeamFoundationId = Guid.Empty;
+        }
         protected internal TeamFoundationIdentity(
             bool isActive,
             Guid teamFoundationId,
             int uniqueUserId
             )
+            : this()
         {
             IsActive = isActive;
             TeamFoundationId = teamFoundationId;
@@ -47,9 +55,9 @@ namespace Microsoft.Qwiq
             }
         }
 
-        public abstract IEnumerable<IIdentityDescriptor> MemberOf { get; }
+        public virtual IEnumerable<IIdentityDescriptor> MemberOf { get; }
 
-        public abstract IEnumerable<IIdentityDescriptor> Members { get; }
+        public virtual IEnumerable<IIdentityDescriptor> Members { get; }
 
         public virtual Guid TeamFoundationId { get; }
 

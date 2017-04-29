@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Integration.Tests
+namespace Microsoft.Qwiq
 {
     public class Result : IDisposable
     {

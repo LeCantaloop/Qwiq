@@ -7,7 +7,7 @@ using Microsoft.Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class FieldCollection : IFieldCollection
     {
@@ -123,7 +123,7 @@ namespace Microsoft.Qwiq.Soap
             }
         }
 
-        public bool Equals(IReadOnlyCollectionWithId<IField, int> other)
+        public bool Equals(IReadOnlyObjectWithIdList<IField, int> other)
         {
             return Comparer.FieldCollection.Equals(this, other);
         }

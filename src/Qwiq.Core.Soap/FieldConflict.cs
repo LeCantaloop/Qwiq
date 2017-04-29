@@ -2,7 +2,7 @@ using System;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class FieldConflict : IFieldConflict
     {

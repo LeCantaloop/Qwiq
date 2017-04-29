@@ -17,7 +17,9 @@ namespace Microsoft.Qwiq.Linq.Fragments
         {
             var numberOfTypesGreaterThanOne = _workItemTypes.Count > 1;
 
-            var format = numberOfTypesGreaterThanOne ? $"([{CoreFieldRefNames.WorkItemType}] IN ({{0}}))" : $"([{CoreFieldRefNames.WorkItemType}] = {{0}})";
+            var format = numberOfTypesGreaterThanOne
+                ? $"([{CoreFieldRefNames.WorkItemType}] IN ({{0}}))"
+                : $"([{CoreFieldRefNames.WorkItemType}] = {{0}})";
             var replacement = string.Join(", ", _workItemTypes.Select(t => "'" + t + "'"));
             return string.Format(format, replacement);
         }

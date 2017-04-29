@@ -4,9 +4,8 @@ using System.Linq;
 
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
-using Microsoft.TeamFoundation.WorkItemTracking.Internals;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class QueryFactory : IQueryFactory
     {

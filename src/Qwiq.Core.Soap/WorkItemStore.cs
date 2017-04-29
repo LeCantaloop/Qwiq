@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.Services.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
     ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
@@ -86,11 +86,7 @@ namespace Microsoft.Qwiq.Soap
 
         public TimeZone TimeZone => _workItemStore.Value.TimeZone;
 
-        public string UserDisplayName => _workItemStore.Value.UserDisplayName;
-
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserSid => _workItemStore.Value.UserSid;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
 

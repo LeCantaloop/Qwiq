@@ -70,11 +70,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public TimeZone TimeZone => _tfs.Value.TimeZone;
 
-        public string UserAccountName => TeamProjectCollection.AuthorizedIdentity.GetUserAlias();
-
-        public string UserDisplayName => TeamProjectCollection.AuthorizedIdentity.DisplayName;
-
-        public string UserSid => TeamProjectCollection.AuthorizedIdentity.Descriptor.Identifier;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes { get; internal set; }
 
@@ -120,11 +116,11 @@ namespace Microsoft.Qwiq.Mocks
 
         public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
 
-        
+
 
         internal void BatchSave(IEnumerable<IWorkItem> workItems)
         {
-            
+
 
             // First: Fix up the work items and save them to our dictionary
 
@@ -214,7 +210,7 @@ namespace Microsoft.Qwiq.Mocks
                             { BaseLinkType.ExternalLink, 0 },
                             { BaseLinkType.Hyperlink, 0 }
                         };
-            
+
             if (item.Links != null && item.Links.Any())
             {
                 foreach (var link in item.Links)

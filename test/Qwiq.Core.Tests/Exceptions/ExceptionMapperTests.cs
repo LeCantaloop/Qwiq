@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Core.Tests.Mocks;
+
+using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
+using Microsoft.Qwiq.UnitTests.Mocks;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Should;
 
-namespace Microsoft.Qwiq.Exceptions.Tests
+namespace Microsoft.Qwiq.Exceptions
 {
     public class ExceptionMapperTests : ContextSpecification
     {

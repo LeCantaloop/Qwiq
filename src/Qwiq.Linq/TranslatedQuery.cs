@@ -52,7 +52,7 @@ namespace Microsoft.Qwiq.Linq
             if (WhereClauses.Count > 0)
             {
                 result += " WHERE (";
-                result += String.Join(" AND ", WhereClauses.Select(wc => wc.Get(UnderlyingQueryType)));
+                result += string.Join(" AND ", WhereClauses.Select(wc => wc.Get(UnderlyingQueryType)));
                 result += ")";
             }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Qwiq.Linq
             if (ThenOrderClauses.Count > 0)
             {
                 result += " ORDER BY ";
-                result += String.Join(", ", ThenOrderClauses.Select(toc => toc.Get(UnderlyingQueryType)));
+                result += string.Join(", ", ThenOrderClauses.Select(toc => toc.Get(UnderlyingQueryType)));
             }
 
             return result;

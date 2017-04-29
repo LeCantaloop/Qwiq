@@ -9,6 +9,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
     /// <summary>
     ///     Enables cache key support for local collection values.
     /// </summary>
+    [Obsolete("This type has been deprecated and will be removed in a future version.")]
     public class LocalCollectionExpander : ExpressionVisitor
     {
         public static Expression Rewrite(Expression expression)

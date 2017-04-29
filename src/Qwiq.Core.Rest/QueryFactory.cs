@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class QueryFactory : IQueryFactory
     {
@@ -18,14 +17,12 @@ namespace Microsoft.Qwiq.Rest
 
         public IQuery Create(string wiql, bool dayPrecision)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create<IQuery>(
-                new Query(new Wiql { Query = wiql }, dayPrecision, _store));
+            return new Query(new Wiql { Query = wiql }, dayPrecision, _store).AsProxy();
         }
 
         public IQuery Create(IEnumerable<int> ids, string wiql)
         {
-            return ExceptionHandlingDynamicProxyFactory.Create<IQuery>(
-                new Query(ids, new Wiql { Query = wiql }, _store));
+            return new Query(ids, new Wiql { Query = wiql }, _store).AsProxy();
         }
 
         public IQuery Create(IEnumerable<int> ids, DateTime? asOf = null)

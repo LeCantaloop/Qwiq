@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Query : IQuery
     {
@@ -113,11 +112,10 @@ namespace Microsoft.Qwiq.Rest
                     return _workItemStore.Projects[proj].WorkItemTypes[witName];
                 }
 
-                yield return ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(
-                                                                                    new WorkItem(
+                yield return new WorkItem(
                                                                                                  workItem,
                                                                                                  new Lazy<IWorkItemType>(WorkItemTypeFactory),
-                                                                                                 s => _workItemStore.WorkItemLinkTypes[s]));
+                                                                                                 s => _workItemStore.WorkItemLinkTypes[s]).AsProxy();
             }
         }
 

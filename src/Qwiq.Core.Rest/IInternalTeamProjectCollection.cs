@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.Services.WebApi;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal interface IInternalTeamProjectCollection : ITeamProjectCollection
     {

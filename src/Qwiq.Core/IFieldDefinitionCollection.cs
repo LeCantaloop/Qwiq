@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IFieldDefinitionCollection : IReadOnlyCollectionWithId<IFieldDefinition, int>,
+    public interface IFieldDefinitionCollection : IReadOnlyObjectWithIdList<IFieldDefinition, int>,
                                                   IEquatable<IFieldDefinitionCollection>
     {
     }

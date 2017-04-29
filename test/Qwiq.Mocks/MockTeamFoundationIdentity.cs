@@ -20,20 +20,20 @@ namespace Microsoft.Qwiq.Mocks
             : base(isActive, teamFoundationId == Guid.Empty ? Guid.NewGuid() : teamFoundationId, isActive ? 0 : 1)
 
         {
-            DisplayName = displayName;
-            MemberOf = memberOf ?? Enumerable.Empty<IIdentityDescriptor>();
-            Members = members ?? Enumerable.Empty<IIdentityDescriptor>();
+            DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
+            MemberOf = memberOf ?? ZeroLengthArrayOfIdentityDescriptor;
+            Members = members ?? ZeroLengthArrayOfIdentityDescriptor;
             IsContainer = false;
-            Descriptor = descriptor;
+            Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
 
-            var f = new IdentityFieldValue(DisplayName, Descriptor.Identifier, null);
+            var f = new IdentityFieldValue(DisplayName, Descriptor.Identifier, TeamFoundationId.ToString());
             _properties =
                 new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
                     {
                         { IdentityAttributeTags.SchemaClassName, "User"},
                         { IdentityAttributeTags.Description, string.Empty },
                         { IdentityAttributeTags.Domain, f.Domain },
-                        { IdentityAttributeTags.AccountName, f.Alias },
+                        { IdentityAttributeTags.AccountName, f.AccountName },
                         { IdentityAttributeTags.DistinguishedName, string.Empty},
                         { IdentityAttributeTags.MailAddress, f.Email },
                         { IdentityAttributeTags.SpecialType, "Generic" },
@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockTeamFoundationIdentity(string displayName, string uniqueName)
-            : this(new MockIdentityDescriptor(uniqueName), displayName, Guid.Empty)
+            : this(MockIdentityDescriptor.Create(uniqueName), displayName, Guid.Empty)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public override string GetAttribute(string name, string defaultValue)
         {
-            return _properties != null && _properties.TryGetValue(name, out object obj)
+            return _properties.TryGetValue(name, out object obj)
                        ? obj?.ToString() ?? defaultValue
                        : defaultValue;
         }

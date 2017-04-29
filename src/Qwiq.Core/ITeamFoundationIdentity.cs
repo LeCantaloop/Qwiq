@@ -12,10 +12,12 @@ namespace Microsoft.Qwiq
         IIdentityDescriptor Descriptor { get; }
 
         /// <summary>
-        ///     Gets the full name of the identity for display purposes. The display name can come from the identity provider, or
+        ///     Gets the full name of the identity for display purposes. The display name can come from the identity provider (e.g. Active Directory), or
         ///     may have been set as a custom display name within TFS.
         /// </summary>
-        /// <value>The display name.</value>
+        /// <remarks>
+        /// If the identity provider does not supply a full name, and no custom display name is set, another property like account name or email address will be used as the display name.
+        /// </remarks>
         string DisplayName { get; }
 
         /// <summary>

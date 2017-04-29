@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Tests", "test\Qwiq.Core.Tests\Qwiq.Core.Tests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.UnitTests", "test\Qwiq.Core.Tests\Qwiq.Core.UnitTests.csproj", "{57407CCA-8444-4713-95E9-CFC1168D846B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Tests", "test\Qwiq.Mapper.Tests\Qwiq.Mapper.Tests.csproj", "{BECF2066-A6C5-475A-BA14-12890F284A12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.UnitTests", "test\Qwiq.Mapper.Tests\Qwiq.Mapper.UnitTests.csproj", "{BECF2066-A6C5-475A-BA14-12890F284A12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Tests", "test\Qwiq.Linq.Tests\Qwiq.Linq.Tests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.UnitTests", "test\Qwiq.Linq.Tests\Qwiq.Linq.UnitTests.csproj", "{0A26136B-A086-4CDF-BFF6-E0A83FB67446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Tests", "test\Qwiq.Identity.Tests\Qwiq.Identity.Tests.csproj", "{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.UnitTests", "test\Qwiq.Identity.Tests\Qwiq.Identity.UnitTests.csproj", "{CE68530E-EB8F-4BE2-9563-A09AC70EA8C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core", "src\Qwiq.Core\Qwiq.Core.csproj", "{8AC61B6E-BEC1-482D-A043-C65D2D343B35}"
 EndProject
@@ -25,15 +25,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Benchmark", "test\Qwiq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Tests.Common", "test\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj", "{B45C92B0-AC36-409D-86A5-5428C87384C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Benchmark.Tests", "test\Qwiq.Identity.Benchmark.Tests\Qwiq.Identity.Benchmark.Tests.csproj", "{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.BenchmarkTests", "test\Qwiq.Identity.Benchmark.Tests\Qwiq.Identity.BenchmarkTests.csproj", "{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Benchmark.Tests", "test\Qwiq.Mapper.Benchmark.Tests\Qwiq.Mapper.Benchmark.Tests.csproj", "{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.BenchmarkTests", "test\Qwiq.Mapper.Benchmark.Tests\Qwiq.Mapper.BenchmarkTests.csproj", "{DB2C0AC6-CF65-412E-93A3-D3F51857BED9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Soap", "src\Qwiq.Core.Soap\Qwiq.Core.Soap.csproj", "{6F5FFC42-0539-4161-B348-A54ADB57C2BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Client.Soap", "src\Qwiq.Core.Soap\Qwiq.Client.Soap.csproj", "{6F5FFC42-0539-4161-B348-A54ADB57C2BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Core.Rest", "src\Qwiq.Core.Rest\Qwiq.Core.Rest.csproj", "{0F70E1C2-D696-4749-8601-374A7C9C268A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Client.Rest", "src\Qwiq.Core.Rest\Qwiq.Client.Rest.csproj", "{0F70E1C2-D696-4749-8601-374A7C9C268A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Integration.Tests", "test\Qwiq.Integration.Tests\Qwiq.Integration.Tests.csproj", "{E4130432-C890-41E0-8407-C4142CAF59D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.IntegrationTests", "test\Qwiq.Integration.Tests\Qwiq.IntegrationTests.csproj", "{E4130432-C890-41E0-8407-C4142CAF59D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Identity.Soap", "src\Qwiq.Identity.Soap\Qwiq.Identity.Soap.csproj", "{2B588D8C-5E01-4B48-96A7-B961FC54A4AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Mapper.Identity", "src\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj", "{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qwiq.Linq.Identity", "src\Qwiq.Linq.Identity\Qwiq.Linq.Identity.csproj", "{0451D5EA-0206-48A6-A759-DC6572C4CD39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +111,18 @@ Global
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4130432-C890-41E0-8407-C4142CAF59D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B588D8C-5E01-4B48-96A7-B961FC54A4AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B588D8C-5E01-4B48-96A7-B961FC54A4AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B588D8C-5E01-4B48-96A7-B961FC54A4AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B588D8C-5E01-4B48-96A7-B961FC54A4AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0451D5EA-0206-48A6-A759-DC6572C4CD39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0451D5EA-0206-48A6-A759-DC6572C4CD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0451D5EA-0206-48A6-A759-DC6572C4CD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0451D5EA-0206-48A6-A759-DC6572C4CD39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

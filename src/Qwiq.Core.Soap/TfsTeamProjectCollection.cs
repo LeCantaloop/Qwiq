@@ -1,22 +1,17 @@
 using System;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
     /// </summary>
-    /// <seealso cref="ITfsTeamProjectCollection" />
+    /// <seealso cref="ITeamProjectCollection" />
     internal class TfsTeamProjectCollection : IInternalTeamProjectCollection
     {
         private readonly Lazy<ICommonStructureService> _css;
-
-        private readonly Lazy<IIdentityManagementService> _ims;
-
-        private readonly TeamFoundation.Client.TfsTeamProjectCollection _tfs;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TfsTeamProjectCollection" /> class.
@@ -25,18 +20,21 @@ namespace Microsoft.Qwiq.Soap
         /// <exception cref="ArgumentNullException">tfs</exception>
         internal TfsTeamProjectCollection(TeamFoundation.Client.TfsTeamProjectCollection teamProjectCollection)
         {
-            _tfs = teamProjectCollection ?? throw new ArgumentNullException(nameof(teamProjectCollection));
+            Native = teamProjectCollection ?? throw new ArgumentNullException(nameof(teamProjectCollection));
 
-            AuthorizedCredentials = _tfs.ClientCredentials;
-            AuthorizedIdentity = new TeamFoundationIdentity(_tfs.AuthorizedIdentity);
-            Uri = _tfs.Uri;
+            AuthorizedCredentials = Native.ClientCredentials;
+            AuthorizedIdentity = new TeamFoundationIdentity(Native.AuthorizedIdentity);
+            Uri = Native.Uri;
 
             _css = new Lazy<ICommonStructureService>(
-                () => ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(
-                    new CommonStructureService(_tfs.GetService<ICommonStructureService4>())));
-            _ims = new Lazy<IIdentityManagementService>(
-                () => ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(
-                    new IdentityManagementService(_tfs.GetService<IIdentityManagementService2>())));
+                                                     () => ExceptionHandlingDynamicProxyFactory.Create<ICommonStructureService>(
+                                                                                                                                new
+                                                                                                                                        CommonStructureService(
+                                                                                                                                                               Native
+                                                                                                                                                                       .GetService
+                                                                                                                                                                       <
+                                                                                                                                                                           ICommonStructureService4
+                                                                                                                                                                       >())));
         }
 
         /// <summary>
@@ -61,25 +59,21 @@ namespace Microsoft.Qwiq.Soap
         ///     Returns true if this object has successfully authenticated.
         /// </summary>
         /// <value><c>true</c> if this instance has authenticated; otherwise, <c>false</c>.</value>
-        public bool HasAuthenticated => _tfs.HasAuthenticated;
-
-        /// <summary>
-        ///     Gets the identity management service.
-        /// </summary>
-        /// <value>The identity management service.</value>
-        public IIdentityManagementService IdentityManagementService => _ims.Value;
+        public bool HasAuthenticated => Native.HasAuthenticated;
 
         /// <summary>
         ///     This is used to convert dates and times to UTC.
         /// </summary>
         /// <value>The time zone.</value>
-        public TimeZone TimeZone => _tfs.TimeZone;
+        public TimeZone TimeZone => Native.TimeZone;
 
         /// <summary>
         ///     The base url for this connection
         /// </summary>
         /// <value>The URI.</value>
         public Uri Uri { get; }
+
+        internal TeamFoundation.Client.TfsTeamProjectCollection Native { get; }
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -97,7 +91,7 @@ namespace Microsoft.Qwiq.Soap
         /// <returns>T.</returns>
         public T GetClient<T>()
         {
-            return _tfs.GetClient<T>();
+            return Native.GetClient<T>();
         }
 
         /// <summary>
@@ -107,7 +101,12 @@ namespace Microsoft.Qwiq.Soap
         /// <returns>T.</returns>
         public T GetService<T>()
         {
-            return _tfs.GetService<T>();
+            return Native.GetService<T>();
+        }
+
+        public override string ToString()
+        {
+            return Native.Name;
         }
 
         /// <summary>
@@ -119,12 +118,7 @@ namespace Microsoft.Qwiq.Soap
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing) _tfs?.Dispose();
-        }
-
-        public override string ToString()
-        {
-            return _tfs.Name;
+            if (disposing) Native?.Dispose();
         }
     }
 }

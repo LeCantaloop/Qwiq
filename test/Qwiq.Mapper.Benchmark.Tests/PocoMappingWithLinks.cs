@@ -7,6 +7,7 @@ using BenchmarkDotNet.Running;
 
 using Microsoft.Qwiq.Benchmark;
 using Microsoft.Qwiq.Mapper.Attributes;
+using Microsoft.Qwiq.Mapper.Mocks;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -70,7 +71,7 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
     }
 }
 
-namespace Microsoft.Qwiq.Mapper.Tests
+namespace Microsoft.Qwiq.Mapper
 {
     [TestClass]
     public class Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy : ContextSpecification

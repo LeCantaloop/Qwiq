@@ -6,7 +6,7 @@ using Microsoft.Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity
     {

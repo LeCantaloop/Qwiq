@@ -5,7 +5,7 @@ namespace Microsoft.Qwiq
 {
     public static class Comparer
     {
-        public static IEqualityComparer<IReadOnlyCollectionWithId<IField, int>> FieldCollection =
+        public static IEqualityComparer<IReadOnlyObjectWithIdList<IField, int>> FieldCollection =
                 ReadOnlyCollectionWithIdComparer<IField, int>.Default;
 
         public static IEqualityComparer<IFieldDefinitionCollection> FieldDefinitionCollection = FieldDefinitionCollectionComparer.Default;
@@ -14,7 +14,7 @@ namespace Microsoft.Qwiq
 
         public static IEqualityComparer<IIdentityDescriptor> IdentityDescriptor = IdentityDescriptorComparer.Default;
 
-        public static IEqualityComparer<IReadOnlyCollectionWithId<INode, int>> NodeCollection =
+        public static IEqualityComparer<IReadOnlyObjectWithIdList<INode, int>> NodeCollection =
                 ReadOnlyCollectionWithIdComparer<INode, int>.Default;
 
         public static IEqualityComparer<string> OrdinalIgnoreCase = StringComparer.OrdinalIgnoreCase;

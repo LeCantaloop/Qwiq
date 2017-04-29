@@ -1,33 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Should;
+using Should.Core.Exceptions;
 
-namespace Microsoft.Qwiq.Linq.Tests
+namespace Microsoft.Qwiq.Linq
 {
-    public abstract class QueryBuilderTests : ContextSpecification
-    {
-        protected string Expected;
-        protected string Actual;
-        protected IOrderedQueryable<IWorkItem> Query;
-
-        public override void Given()
-        {
-            base.Given();
-            var builder = new WiqlQueryBuilder(new WiqlTranslator(), new PartialEvaluator(), new QueryRewriter());
-            var queryProvider = new TeamFoundationServerWorkItemQueryProvider(new MockWorkItemStore(), builder);
-            Query = new Query<IWorkItem>(queryProvider, builder);
-        }
-    }
-
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_and_expression : QueryBuilderTests
+    public class when_a_query_has_a_where_clause_with_an_and_expression : WiqlQueryBuilderContextSpecification
     {
         private DateTime _date;
 
@@ -54,7 +39,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_an_asof_clause : QueryBuilderTests
+    public class when_a_query_has_an_asof_clause : WiqlQueryBuilderContextSpecification
     {
         private DateTime _date;
 
@@ -81,7 +66,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_chained_where_clauses : QueryBuilderTests
+    public class when_a_query_has_chained_where_clauses : WiqlQueryBuilderContextSpecification
     {
         private DateTime _date;
 
@@ -112,7 +97,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_an_or_expression : QueryBuilderTests
+    public class when_a_query_has_a_where_clause_with_an_or_expression : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -130,7 +115,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_that_should_be_in_a_list_of_values : QueryBuilderTests
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_string_array_values : WiqlQueryBuilderContextSpecification
     {
         private string[] _values;
 
@@ -154,10 +139,80 @@ namespace Microsoft.Qwiq.Linq.Tests
         }
     }
 
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_IEnumerable_string_values : WiqlQueryBuilderContextSpecification
+    {
+        private IEnumerable<string> _values;
+
+        public override void Given()
+        {
+            _values = new[] { "person1", "person2" }.AsEnumerable();
+            base.Given();
+        }
+
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Keywords] IN ('person1', 'person2')))";
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+        }
+
+        [TestMethod]
+        public void it_is_translated_to_an_in_operator()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_compared_with_null : QueryBuilderTests
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_Collection_string_values : WiqlQueryBuilderContextSpecification
+    {
+        private Collection<string> _values;
+
+        public override void Given()
+        {
+            _values = new Collection<string> { "person1", "person2" };
+            base.Given();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void it_is_not_supported()
+        {
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_that_should_be_in_a_list_of_HashSet_string_values : WiqlQueryBuilderContextSpecification
+    {
+        private HashSet<string> _values;
+
+        public override void Given()
+        {
+            _values = new HashSet<string>
+            {
+                "person1",
+                "person2"
+            };
+            base.Given();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void it_is_not_supported()
+        {
+            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+        }
+    }
+
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_query_has_a_field_compared_with_null : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -175,7 +230,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_field_comparison_of_greater_than : QueryBuilderTests
+    public class when_a_query_has_a_field_comparison_of_greater_than : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -193,7 +248,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_uses_the_not_equals_operator : QueryBuilderTests
+    public class when_a_query_uses_the_not_equals_operator : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -211,7 +266,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : QueryBuilderTests
+    public class when_a_where_clause_has_a_lazy_ienumerable_in_the_expression : WiqlQueryBuilderContextSpecification
     {
         private readonly string[] _aliases = {"person1", "person2"};
         private IEnumerable<string> _filteredAliases;
@@ -239,7 +294,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_constant_has_a_special_wiql_character : QueryBuilderTests
+    public class when_a_constant_has_a_special_wiql_character : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -258,7 +313,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : QueryBuilderTests
+    public class when_an_ienumerable_contains_constants_with_special_wiql_characters : WiqlQueryBuilderContextSpecification
     {
         private readonly string[] _values = {"Robert O'Sullivan", "Robert O'Laney"};
 
@@ -279,7 +334,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : QueryBuilderTests
+    public class when_a_query_contains_an_OrderByDescending_and_ThenBy_clauses : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -297,20 +352,20 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : QueryBuilderTests
+    public class when_a_where_clause_contains_a_ToUpper_call_on_a_string : WiqlQueryBuilderContextSpecification
     {
         [TestMethod]
         [ExpectedException(typeof(NotSupportedException))]
         public void a_NotSupportedException_is_thrown_to_notify_the_developer_that_text_matches_are_case_insensitive()
         {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Query.Where(item => item.Title.ToUpper() == "TEST").ToString();
+            Actual = Query.Where(item => item.Title.ToUpper() == "TEST").ToString();
         }
     }
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_StartsWith_string_function : QueryBuilderTests
+    public class when_a_where_clause_uses_the_StartsWith_string_function : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -328,7 +383,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_ever_function : QueryBuilderTests
+    public class when_a_where_clause_uses_the_ever_function : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -346,7 +401,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_uses_the_Contains_string_function : QueryBuilderTests
+    public class when_a_where_clause_uses_the_Contains_string_function : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -365,7 +420,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_is_chained_to_a_select_clause : QueryBuilderTests
+    public class when_a_where_clause_is_chained_to_a_select_clause : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -383,7 +438,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_a_ToString_in_it : QueryBuilderTests
+    public class when_a_query_has_a_where_clause_with_a_ToString_in_it : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -401,7 +456,7 @@ namespace Microsoft.Qwiq.Linq.Tests
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_query_has_a_where_clause_with_a_type_that_uses_an_indexer : QueryBuilderTests
+    public class when_a_query_has_a_where_clause_with_a_type_that_uses_an_indexer : WiqlQueryBuilderContextSpecification
     {
         public override void When()
         {
@@ -412,6 +467,141 @@ namespace Microsoft.Qwiq.Linq.Tests
 
         [TestMethod]
         public void the_index_name_is_used_as_a_field_name()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_where_clause_with_an_enum : WiqlQueryBuilderContextSpecification
+    {
+        enum Sample { One, Two, Three}
+
+        interface IWorkItem2 : IWorkItem
+        {
+            Sample EnumProperty { get; }
+        }
+
+        private new IOrderedQueryable<IWorkItem2> Query;
+
+        /// <inheritdoc />
+        public override void Given()
+        {
+            base.Given();
+            Query = new Query<IWorkItem2>(QueryProvider, WiqlQueryBuilder);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void the_enum_is_translated()
+        {
+            Actual = Query.Where(item => item.EnumProperty == Sample.Three).ToString();
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_single_variable : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Id] = 1))";
+            int id = 1;
+            Actual = Query.Where(item => item.Id == id).ToString();
+        }
+
+        [TestMethod]
+        public void the_variable_value_is_written_to_the_wiql()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_known_identity_property_with_a_combo_value : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'Dan Jump <danj@contoso.com>'))";
+            Actual = Query.Where(item => item.AssignedTo == "Dan Jump <danj@contoso.com>").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_known_identity_property_with_an_alias : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item.AssignedTo == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_identity_via_indexer : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item["Assigned To"].ToString() == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class Given_a_query_with_a_where_clause_on_a_identity_via_fields_indexer : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] = 'danj'))";
+            Actual = Query.Where(item => item.Fields["Assigned To"].ToString() == "danj").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    public class Given_a_query_with_a_projection : WiqlQueryBuilderContextSpecification
+    {
+        /// <inheritdoc />
+        public override void When()
+        {
+            Expected = "SELECT Id FROM WorkItems WHERE (([Id] = 1))";
+            Actual = Query.Where(item => item.Id == 1).Select(s => s.Id).ToString();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EqualException))]
+        public void the_column_written_to_WIQL_in_SELECT_is_the_projected_property()
         {
             Actual.ShouldEqual(Expected);
         }

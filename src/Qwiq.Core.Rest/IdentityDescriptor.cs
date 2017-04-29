@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     public class IdentityDescriptor : Qwiq.IdentityDescriptor
     {

@@ -6,7 +6,7 @@ using Microsoft.Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
     ///     Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference

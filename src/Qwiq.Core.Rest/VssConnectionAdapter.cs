@@ -3,7 +3,7 @@
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace Microsoft.Qwiq.Rest
+namespace Microsoft.Qwiq.Client.Rest
 {
     internal class VssConnectionAdapter : IInternalTeamProjectCollection
     {
@@ -26,8 +26,6 @@ namespace Microsoft.Qwiq.Rest
         public ICommonStructureService CommonStructureService { get; }
 
         public bool HasAuthenticated { get; }
-
-        public IIdentityManagementService IdentityManagementService { get; }
 
         public TimeZone TimeZone { get; }
 

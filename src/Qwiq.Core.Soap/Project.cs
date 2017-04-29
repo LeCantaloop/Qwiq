@@ -1,9 +1,11 @@
-using Microsoft.Qwiq.Exceptions;
 using System;
 using System.Linq;
+
+using Microsoft.Qwiq.Exceptions;
+
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Soap
+namespace Microsoft.Qwiq.Client.Soap
 {
     internal class Project : Qwiq.Project, IIdentifiable<int>
     {

@@ -1,9 +1,10 @@
-using Microsoft.Qwiq.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Soap
+using Microsoft.Qwiq.Exceptions;
+
+namespace Microsoft.Qwiq.Client.Soap
 {
     public class WorkItemTypeCollection : Qwiq.WorkItemTypeCollection
     {

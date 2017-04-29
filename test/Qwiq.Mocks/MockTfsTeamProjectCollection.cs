@@ -1,5 +1,6 @@
 using System;
 
+using Microsoft.Qwiq.Identity;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mocks

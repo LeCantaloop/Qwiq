@@ -3,56 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
+using Microsoft.Qwiq.Identity;
+
 namespace Microsoft.Qwiq.Mocks
 {
-    public static class Identities
-    {
-        public static readonly ITeamFoundationIdentity Danj = new MockTeamFoundationIdentity(
-                                                                                             new MockIdentityDescriptor("danj", "contoso.com"),
-                                                                                             "Dan Jump",
-                                                                                             Guid.Parse("b7de08a6-8417-491b-be62-85945a538f46"));
-
-        public static readonly ITeamFoundationIdentity Adamb = new MockTeamFoundationIdentity(
-                                                                                              new MockIdentityDescriptor("adamb", "contoso.com"),
-                                                                                              "Adam Barr",
-                                                                                              Guid.Parse("7846c22f-d3d8-4e02-8b62-d055d0284783"));
-
-        public static readonly ITeamFoundationIdentity Chrisj = new MockTeamFoundationIdentity(
-                                                                                               new MockIdentityDescriptor("chrisj", "contoso.com"),
-                                                                                               "Chris Johnson",
-                                                                                               Guid.Parse("f92c1baa-0038-4247-be68-12043fcc34e3"),
-                                                                                               false);
-
-        public static readonly ITeamFoundationIdentity Chrisjoh = new MockTeamFoundationIdentity(
-                                                                                                 new MockIdentityDescriptor("chrisjoh", "contoso.com"),
-                                                                                                 "Chris Johnson (FINANCE)",
-                                                                                                 Guid.Parse("41e97533-89f7-45d7-8246-eaa449b5651d"));
-
-        public static readonly ITeamFoundationIdentity Chrisjohn = new MockTeamFoundationIdentity(
-                                                                                                  new MockIdentityDescriptor("chrisjohn", "contoso.com"),
-                                                                                                  "Chris F. Johnson",
-                                                                                                  Guid.Parse("b3da460c-6191-4725-b08d-52bba48a574f"));
-
-        public static readonly ITeamFoundationIdentity Chrisjohns = new MockTeamFoundationIdentity(
-                                                                                                   new MockIdentityDescriptor("chrisjohns", "contoso.com"),
-                                                                                                   "Chris Johnson <chrisjohns@contoso.com>",
-                                                                                                   Guid.Parse("67b42b6c-6bd8-40e2-a622-fe69eacd3d47"));
-
-        public static readonly ITeamFoundationIdentity[] All = {
-                                                                       Danj,
-                                                                       Adamb,
-                                                                       Chrisj,
-                                                                       Chrisjoh,
-                                                                       Chrisjohn,
-                                                                       Chrisjohns
-                                                                   };
-    }
-
     public class MockIdentityManagementService : IIdentityManagementService
     {
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
-        public static readonly ITeamFoundationIdentity Danj =Identities.Danj;
-
         [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Adamb instead.")]
         public static readonly ITeamFoundationIdentity Adamb = Identities.Adamb;
 
@@ -68,12 +24,15 @@ namespace Microsoft.Qwiq.Mocks
         [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohns instead.")]
         public static readonly ITeamFoundationIdentity Chrisjohns = Identities.Chrisjohns;
 
+        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
+        public static readonly ITeamFoundationIdentity Danj = Identities.Danj;
 
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
+
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;
 
         /// <summary>
-        /// Initializes a new instance of the IMS with Contoso users (danj, adamb, chrisj, chrisjoh, chrisjohn, chrisjohns)
+        ///     Initializes a new instance of the IMS with Contoso users (danj, adamb, chrisj, chrisjoh, chrisjohn, chrisjohns)
         /// </summary>
         public MockIdentityManagementService()
             : this(Identities.All)
@@ -81,17 +40,15 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockIdentityManagementService(IEnumerable<ITeamFoundationIdentity> identities)
-            : this(identities.ToDictionary(k => k.GetUserAlias(), e => e, StringComparer.OrdinalIgnoreCase))
+            : this(identities.ToDictionary(k => new IdentityFieldValue(k).LogonName, e => e, StringComparer.OrdinalIgnoreCase))
         {
         }
 
-
-
         /// <summary>
-        /// Creates a new instance of the IMS
+        ///     Creates a new instance of the IMS
         /// </summary>
         /// <param name="accountNameMappings">
-        /// Collection of alias to <see cref="ITeamFoundationIdentity"/>.
+        ///     Collection of alias to <see cref="ITeamFoundationIdentity" />.
         /// </param>
         public MockIdentityManagementService(IDictionary<string, ITeamFoundationIdentity> accountNameMappings)
         {
@@ -117,95 +74,81 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         /// <summary>
-        /// Creates a new instance of the IMS
+        ///     Creates a new instance of the IMS
         /// </summary>
         /// <param name="userMappings">
-        /// Collection of alias and display names for which to initialize the IMS
+        ///     Collection of alias and display names for which to initialize the IMS
         /// </param>
         public MockIdentityManagementService(IDictionary<string, string> userMappings)
-            : this(userMappings.ToDictionary(kvp => kvp.Key, kvp => new MockTeamFoundationIdentity(kvp.Value, kvp.Key + "@domain.local") as ITeamFoundationIdentity))
+            : this(
+                   userMappings.ToDictionary(
+                                             kvp => kvp.Key,
+                                             kvp => new MockTeamFoundationIdentity(
+                                                                                   kvp.Value,
+                                                                                   kvp.Key
+                                                                                   + "@"
+                                                                                   + MockIdentityDescriptor
+                                                                                           .Domain) as ITeamFoundationIdentity))
         {
         }
 
         public MockIdentityManagementService(IDictionary<string, IEnumerable<ITeamFoundationIdentity>> accountMappings)
         {
             _accountNameMappings = accountMappings?.ToDictionary(k => k.Key, e => e.Value.ToArray())
-                                    ?? new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
+                                   ?? new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
             _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(IdentityDescriptorComparer.Default);
 
             foreach (var accounts in _accountNameMappings.Values)
             {
-                foreach (var account in accounts)
-                {
-                    _descriptorMappings.Add(account.Descriptor, account);
-                }
+                foreach (var account in accounts) _descriptorMappings.Add(account.Descriptor, account);
             }
         }
 
-
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
-            return new MockIdentityDescriptor(identityType, identifier);
+            return new IdentityDescriptor(identityType, identifier);
         }
 
         /// <summary>
-        /// Read identities for given descriptors.
+        ///     Read identities for given descriptors.
         /// </summary>
-        /// <param name="descriptors">Collection of <see cref="IIdentityDescriptor"/></param>
+        /// <param name="descriptors">Collection of <see cref="IIdentityDescriptor" /></param>
         /// <returns>
-        /// An array of <see cref="ITeamFoundationIdentity"/>, corresponding 1 to 1 with input descriptor array.
+        ///     An array of <see cref="ITeamFoundationIdentity" />, corresponding 1 to 1 with input descriptor array.
         /// </returns>
-        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(ICollection<IIdentityDescriptor> descriptors)
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
         {
             foreach (var descriptor in descriptors)
             {
-                _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity identity);
+                var success = _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity identity);
+
+                Trace.TraceInformation($"{nameof(MockIdentityManagementService)}: Searching for {descriptor}; Success: {success}");
+
                 yield return identity;
             }
         }
 
-        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(IdentitySearchFactor searchFactor, ICollection<string> searchFactorValues)
+        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(
+            IdentitySearchFactor searchFactor,
+            IEnumerable<string> searchFactorValues)
         {
+            Trace.TraceInformation($"Searching for {searchFactor}: {string.Join(", ", searchFactorValues)}");
+
             switch (searchFactor)
             {
                 // Alternate login username
                 case IdentitySearchFactor.Alias:
-                    foreach (var value in searchFactorValues)
-                    {
-                        if (_accountNameMappings.ContainsKey(value))
-                        {
-                            yield return
-                                new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                                    value,
-                                    _accountNameMappings[value]);
-                        }
-                        else
-                        {
-                            yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(value, new ITeamFoundationIdentity[0]);
-                        }
-                    }
+                    foreach (var keyValuePair in SearchByAlias(searchFactorValues)) yield return keyValuePair;
                     break;
-                // Windows NT account name: domain\alias.
+                // Windows NT account name: domain\alias or user@domain.tld
                 case IdentitySearchFactor.AccountName:
-                    foreach (var value in searchFactorValues)
-                    {
-                        yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                            value,
-                            Locate(identity => identity.GetAttribute("Account", string.Empty).StartsWith(value, StringComparison.OrdinalIgnoreCase)));
-                    }
+                    foreach (var keyValuePair1 in SearchByAccountName(searchFactorValues)) yield return keyValuePair1;
                     break;
                 // Display name
                 case IdentitySearchFactor.DisplayName:
-                    foreach (var value in searchFactorValues)
-                    {
-                        yield return
-                            new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
-                                value,
-                                Locate(identity =>
-                                value.Equals(identity.DisplayName, StringComparison.OrdinalIgnoreCase) ||
-                                identity.DisplayName.StartsWith(value, StringComparison.OrdinalIgnoreCase)));
-                    }
+                    foreach (var keyValuePair2 in SearchByDisplayName(searchFactorValues)) yield return keyValuePair2;
                     break;
+
                 case IdentitySearchFactor.AdministratorsGroup:
                 case IdentitySearchFactor.Identifier:
                 case IdentitySearchFactor.MailAddress:
@@ -214,15 +157,53 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByDisplayName(IEnumerable<string> searchFactors)
+        {
+            // TFS Matches, ignoring case, the property "Display Name" on the identity
+
+            return searchFactors.Select(searchFactor =>
+                                            {
+                                                bool Predicate(ITeamFoundationIdentity identity) => Comparer.OrdinalIgnoreCase.Equals(identity.DisplayName, searchFactor);
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
+                                            });
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAccountName(IEnumerable<string> searchFactors)
+        {
+            // TFS Matches, ignoring case, the property "Account", which is in the property bag of the identity
+
+            return searchFactors.Select(searchFactor =>
+                                            {
+                                                bool Predicate(ITeamFoundationIdentity identity) => Comparer.OrdinalIgnoreCase.Equals(identity.GetUserAccountName(),  searchFactor);
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
+                                            });
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAlias(IEnumerable<string> searchFactors)
+        {
+            // TFS Matches, ignoring case, the property "Alias", which is in the property bag of the identity
+            // NOTE: This may not be populated for all identities
+
+            foreach (var searchFactor in searchFactors)
+            {
+                if (_accountNameMappings.ContainsKey(searchFactor))
+                    yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, _accountNameMappings[searchFactor]);
+                else yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, new ITeamFoundationIdentity[0]);
+            }
+        }
+
+        /// <inheritdoc />
+        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue)
+        {
+            return ReadIdentities(searchFactor, new[] { searchFactorValue }).First().Value.SingleOrDefault();
+        }
+
         private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)
         {
-            return _accountNameMappings
-                        .Values
-                        .SelectMany(a => a, (a, i) => new { a, i })
-                        .Where(t => predicate(t.i))
-                        .Select(t => t.i)
-                        .ToArray();
+            return _accountNameMappings.Values.SelectMany(a => a, (a, i) => new { a, i })
+                                       .Where(t => predicate(t.i))
+                                       .Select(t => t.i)
+                                       .ToArray();
         }
     }
 }
-

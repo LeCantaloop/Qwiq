@@ -1,28 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.Qwiq.Tests.Common;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Should;
 
-namespace Microsoft.Qwiq.Exceptions.Tests
+namespace Microsoft.Qwiq.Exceptions
 {
-    public class AggregateExceptionContextSpecification : ContextSpecification
-    {
-        protected IExceptionExploder Instance { get; set; }
-        protected Exception Exception { get; set; }
-        protected IEnumerable<Exception> Result { get; set; }
-
-        public override void Given()
-        {
-            Instance = new AggregateExceptionExploder();
-        }
-
-        public override void When()
-        {
-            Result = Instance.Explode(Exception);
-        }
-    }
-
     [TestClass]
     public class given_a_non_AggregateException_when_exploded : AggregateExceptionContextSpecification
     {
