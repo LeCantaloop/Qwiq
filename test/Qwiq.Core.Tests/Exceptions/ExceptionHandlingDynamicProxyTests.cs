@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.Qwiq.UnitTests.Mocks;
@@ -18,8 +17,8 @@ namespace Microsoft.Qwiq.Exceptions
             ProxiedInstance =
                 ExceptionHandlingDynamicProxyFactory.Create(
                         InstanceToProxy,
-                            Enumerable.Empty<IExceptionExploder>(),
-                            new[]
+                            new IExceptionExploder[0],
+                            new IExceptionMapper[]
                             {
                                 new MockArgumentExceptionMapper()
                             });
