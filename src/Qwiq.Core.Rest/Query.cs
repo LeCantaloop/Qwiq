@@ -14,15 +14,15 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Query : IQuery
     {
-        // TODO: Make this configurable
-        private const WorkItemExpand Expand = WorkItemExpand.All;
-
         internal const int MaximumBatchSize = 200;
 
         internal const int MaximumFieldSize = 100;
 
         // This is defined in Microsoft.TeamFoundation.WorkItemTracking.Client.PageSizes
         internal const int MinimumBatchSize = 50;
+
+        // TODO: Make this configurable
+        private const WorkItemExpand Expand = WorkItemExpand.All;
 
         private static readonly Regex AsOfRegex = new Regex(
                                                             @"(?<operand>asof\s)\'(?<date>.*)\'",
@@ -126,10 +126,11 @@ namespace Microsoft.Qwiq.Client.Rest
                     return ends.Value.TryGetByName(workItemLink.Rel, out IWorkItemLinkTypeEnd end) ? end : null;
                 }
 
-                retval.Add(new WorkItemLinkInfo(
-                                                  workItemLink.Source?.Id ?? 0,
-                                                  workItemLink.Target?.Id ?? 0,
-                                                  new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory)));
+                retval.Add(
+                           new WorkItemLinkInfo(
+                                                workItemLink.Source?.Id ?? 0,
+                                                workItemLink.Target?.Id ?? 0,
+                                                new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory)));
             }
 
             return retval.AsReadOnly();
@@ -157,18 +158,12 @@ namespace Microsoft.Qwiq.Client.Rest
 
             var retval = new List<IWorkItem>(_ids.Count);
 
-            var ts =
-                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
-                                                                                                 (_ids.Count % _workItemStore.PageSize)
-                                                                                                 + 1);
+            var ts = new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(_ids.Count % _workItemStore.PageSize + 1);
             var qry = _ids.Partition(_workItemStore.PageSize);
             foreach (var s in qry)
-            {
                 ts.Add(_workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, null, _asOf, Expand, WorkItemErrorPolicy.Omit));
-            }
 
             var results = Task.WhenAll(ts).GetAwaiter().GetResult();
-
 
             // This is done in parallel so keep performance similar to the SOAP client
             for (var i = 0; i < results.Length; i++)
