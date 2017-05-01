@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using JetBrains.dotMemoryUnit;
+using JetBrains.dotMemoryUnit.Kernel;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -10,9 +13,7 @@ namespace Microsoft.Qwiq.WorkItemStore
     [TestClass]
     public class LargeWiqlHierarchyQueryTests : WorkItemStoreComparisonContextSpecification
     {
-        public override void When()
-        {
-            const string WIQL = @"
+        internal const string WIQL = @"
 SELECT [System.Id]
 FROM WorkItemLinks
 WHERE
@@ -24,6 +25,8 @@ mode(Recursive)
 ";
 
 
+        public override void When()
+        {
             RestResult.Links = TimedAction(
                 () => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(),
                 "REST",
@@ -32,8 +35,6 @@ mode(Recursive)
                 () => RestResult.WorkItemStore.Query(new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }).Where(i => i != 0))),
                 "REST",
                 "Query - IDs");
-
-
 
             SoapResult.Links = TimedAction(
                 () => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(),
@@ -81,4 +82,6 @@ mode(Recursive)
             RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
         }
     }
+
+    
 }
