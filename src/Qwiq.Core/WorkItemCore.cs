@@ -11,7 +11,6 @@ namespace Microsoft.Qwiq
         private readonly Dictionary<string, object> _fields;
 
         protected internal WorkItemCore()
-            :this(null)
         {
         }
 
@@ -72,7 +71,7 @@ namespace Microsoft.Qwiq
         protected virtual object GetValue([NotNull] string name)
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
-            
+
             return _fields.TryGetValue(name, out object val) ? val : null;
         }
 

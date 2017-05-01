@@ -59,12 +59,14 @@ namespace Microsoft.Qwiq.Client.Soap
             var wic = _query.RunQuery();
             wic.PageSize = _pageSize;
 
-            return
-                    wic
-                        .Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>()
-                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)item))
-                        .ToList()
-                        .ToWorkItemCollection();
+            var items = new List<IWorkItem>(wic.Count);
+            for (var i = 0; i < wic.Count; i++)
+            {
+                var item = ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)wic[i]);
+                items.Add(item);
+            }
+
+            return new WorkItemCollection(items);
         }
     }
 }

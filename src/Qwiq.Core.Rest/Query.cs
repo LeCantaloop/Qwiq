@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,6 +14,9 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Query : IQuery
     {
+        // TODO: Make this configurable
+        private const WorkItemExpand Expand = WorkItemExpand.All;
+
         internal const int MaximumBatchSize = 200;
 
         internal const int MaximumFieldSize = 100;
@@ -24,12 +28,15 @@ namespace Microsoft.Qwiq.Client.Rest
                                                             @"(?<operand>asof\s)\'(?<date>.*)\'",
                                                             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        private static readonly ReadOnlyCollection<IWorkItem> EmptyWorkItems = new ReadOnlyCollection<IWorkItem>(new List<IWorkItem>());
+
         private readonly DateTime? _asOf;
 
         private readonly Wiql _query;
 
         private readonly bool _timePrecision;
 
+        [NotNull]
         private readonly WorkItemStore _workItemStore;
 
         [CanBeNull]
@@ -70,7 +77,7 @@ namespace Microsoft.Qwiq.Client.Rest
         [ItemNotNull]
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
-            return RunkLinkQueryImpl().ToList().AsReadOnly();
+            return RunkLinkQueryImpl();
         }
 
         public IWorkItemCollection RunQuery()
@@ -78,7 +85,7 @@ namespace Microsoft.Qwiq.Client.Rest
             if (_ids == null && _query == null) throw new InvalidOperationException();
 
             // Allocate for method iterator and WorkItemCollection object
-            return new WorkItemCollection(RunQueryImpl().ToList());
+            return new WorkItemCollection(RunQueryImpl());
         }
 
         private static DateTime? ExtractAsOf(string wiql)
@@ -96,7 +103,7 @@ namespace Microsoft.Qwiq.Client.Rest
             return _workItemStore.WorkItemLinkTypes[s];
         }
 
-        private IEnumerable<IWorkItemLinkInfo> RunkLinkQueryImpl()
+        private ReadOnlyCollection<IWorkItemLinkInfo> RunkLinkQueryImpl()
         {
             // Eager loading for the link type ID (which is not returned by the REST API) causes ~250ms delay
 
@@ -106,76 +113,87 @@ namespace Microsoft.Qwiq.Client.Rest
             var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
 
             // To avoid an enumerator allocation we are forcing the cast
-            for (var index = 0; index < ((List<WorkItemLink>)result.WorkItemRelations).Count; index++)
+            var result2 = (List<WorkItemLink>)result.WorkItemRelations;
+            var retval = new List<IWorkItemLinkInfo>(result2.Count);
+
+            for (var index = 0; index < result2.Count; index++)
             {
                 // REVIEW: Closure allocation: workItemLink + ends outer closure
-                var workItemLink = ((List<WorkItemLink>)result.WorkItemRelations)[index];
+                var workItemLink = result2[index];
 
                 IWorkItemLinkTypeEnd EndValueFactory()
                 {
                     return ends.Value.TryGetByName(workItemLink.Rel, out IWorkItemLinkTypeEnd end) ? end : null;
                 }
 
-                yield return new WorkItemLinkInfo(
+                retval.Add(new WorkItemLinkInfo(
                                                   workItemLink.Source?.Id ?? 0,
                                                   workItemLink.Target?.Id ?? 0,
-                                                  new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory));
+                                                  new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory)));
             }
+
+            return retval.AsReadOnly();
         }
 
         [NotNull]
-        private IEnumerable<IWorkItem> RunQueryImpl()
+        private ReadOnlyCollection<IWorkItem> RunQueryImpl()
         {
             Contract.Ensures(Contract.Result<IEnumerable<IWorkItem>>() != null);
 
             if (_ids == null && _query != null)
             {
                 var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
-                if (!result.WorkItems.Any()) yield break;
+                if (!result.WorkItems.Any()) return EmptyWorkItems;
                 _ids = new HashSet<int>();
-                // REVIEW: Possible iterator allocation
-                foreach (var wir in result.WorkItems)
+                var items = (List<WorkItemReference>)result.WorkItems;
+                for (var i = 0; i < items.Count; i++)
                 {
+                    var wir = items[i];
                     _ids.Add(wir.Id);
                 }
             }
 
-            if (_ids == null) yield break;
+            if (_ids == null) return EmptyWorkItems;
 
-            const WorkItemExpand Expand = WorkItemExpand.All;
+            var retval = new List<IWorkItem>(_ids.Count);
+
+            var ts =
+                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
+                                                                                                 (_ids.Count % _workItemStore.PageSize)
+                                                                                                 + 1);
             var qry = _ids.Partition(_workItemStore.PageSize);
-            var ts = qry.Select(
-                                s => _workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(
-                                                                                                s,
-                                                                                                null,
-                                                                                                _asOf,
-                                                                                                Expand,
-                                                                                                WorkItemErrorPolicy.Omit));
+            foreach (var s in qry)
+            {
+                ts.Add(_workItemStore.NativeWorkItemStore.Value.GetWorkItemsAsync(s, null, _asOf, Expand, WorkItemErrorPolicy.Omit));
+            }
+
+            var results = Task.WhenAll(ts).GetAwaiter().GetResult();
+
 
             // This is done in parallel so keep performance similar to the SOAP client
-            foreach (var workItemsPartition in Task.WhenAll(ts).GetAwaiter().GetResult())
+            for (var i = 0; i < results.Length; i++)
             {
+                var workItemsPartition = results[i];
                 // REIVEW: Allocate for workItem variable
-                foreach (var workItem in workItemsPartition)
+                for (var j = 0; j < workItemsPartition.Count; j++)
                 {
-                    IWorkItemType WorkItemTypeFactory()
-                    {
-                        // REST API does not return the WIT with the item
-                        // Eagerly loading requires several trips to the server at a cost of 50-2500ms for each trip
-                        var proj = (string)workItem.Fields[CoreFieldRefNames.TeamProject];
-                        var witName = (string)workItem.Fields[CoreFieldRefNames.WorkItemType];
-                        return _workItemStore.Projects[proj].WorkItemTypes[witName];
-                    }
+                    var workItem = workItemsPartition[j];
 
                     // REIVEW: Allocate for WorkItem reference type
-                    yield return new WorkItem(
-                                              workItem,
-                                              // REVIEW: Allocate for reference type
-                                              new Lazy<IWorkItemType>(WorkItemTypeFactory),
-                                              // REVIEW: Delegate allocation from method group
-                                              LinkFunc).AsProxy();
+                    var wi = new WorkItem(
+                                          workItem,
+                                          // REVIEW: Allocate for reference type
+                                          _workItemStore
+                                                  .Projects[(string)workItem.Fields[CoreFieldRefNames.TeamProject]]
+                                                  .WorkItemTypes[(string)workItem.Fields[CoreFieldRefNames.WorkItemType]],
+                                          // REVIEW: Delegate allocation from method group
+                                          LinkFunc).AsProxy();
+
+                    retval.Add(wi);
                 }
             }
+
+            return retval.AsReadOnly();
         }
 
         private WorkItemLinkTypeEndCollection WorkItemLinkTypeEndValueFactory()

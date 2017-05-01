@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -9,13 +12,17 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class LinkCollection : ReadOnlyObjectWithNameCollection<ILink>, ICollection<ILink>
     {
-        public LinkCollection(IEnumerable<WorkItemRelation> relations, Func<string, IWorkItemLinkType> linkFunc)
+        public LinkCollection([CanBeNull] List<WorkItemRelation> relations, [NotNull] Func<string, IWorkItemLinkType> linkFunc)
         {
-            if (relations == null) throw new ArgumentNullException(nameof(relations));
+
+            Contract.Requires(linkFunc != null);
+
+            if (relations == null) return;
             if (linkFunc == null) throw new ArgumentNullException(nameof(linkFunc));
 
-            foreach (var relation in relations)
+            for (var i = 0; i < relations.Count; i++)
             {
+                var relation = relations[i];
                 if (CoreLinkTypeReferenceNames.Related.Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
                 {
                     // Last part of the Url is the ID
