@@ -1,9 +1,8 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -37,7 +36,6 @@ namespace Microsoft.Qwiq
 
             if (wit == null) throw new ArgumentNullException(nameof(wit));
             if (values == null) throw new ArgumentNullException(nameof(values));
-
 
             return values.Select(wit.NewWorkItem);
         }

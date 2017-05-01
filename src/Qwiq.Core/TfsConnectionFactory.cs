@@ -1,13 +1,11 @@
-﻿using System;
-
-using Microsoft.Qwiq.Credentials;
+﻿using Microsoft.Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Common;
+using System;
 
 namespace Microsoft.Qwiq
 {
     public abstract class TfsConnectionFactory<TConnection> : ITfsConnectionFactory
         where TConnection : ITeamProjectCollection
-
     {
         public virtual ITeamProjectCollection Create(AuthenticationOptions options)
         {
@@ -19,17 +17,17 @@ namespace Microsoft.Qwiq
                 try
                 {
                     var tfs = ConnectToTfsCollection(options.Uri, credential);
-                    options.Notifications.AuthenticationSuccess(new AuthenticationSuccessNotification(credential, tfs));
+                    options.Notifications?.AuthenticationSuccess(new AuthenticationSuccessNotification(credential, tfs));
                     return tfs;
                 }
                 catch (Exception e)
                 {
-                    options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(credential, e));
+                    options.Notifications?.AuthenticationFailed(new AuthenticationFailedNotification(credential, e));
                 }
             }
 
             var nocreds = new AccessDeniedException("Invalid credentials");
-            options.Notifications.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
+            options.Notifications?.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
             throw nocreds;
         }
 

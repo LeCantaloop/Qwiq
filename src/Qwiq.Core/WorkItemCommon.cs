@@ -10,7 +10,7 @@ namespace Microsoft.Qwiq
         }
 
         protected internal WorkItemCommon(Dictionary<string, object> fields)
-            :base(fields)
+            : base(fields)
         {
         }
 
@@ -86,6 +86,8 @@ namespace Microsoft.Qwiq
             set => SetValue(CoreFieldRefNames.Tags, value);
         }
 
+        public virtual string TeamProject => GetValue<string>(CoreFieldRefNames.TeamProject);
+
         public virtual string Title
         {
             get => GetValue<string>(CoreFieldRefNames.Title);
@@ -95,8 +97,6 @@ namespace Microsoft.Qwiq
         public virtual int? Watermark => GetValue<int?>(CoreFieldRefNames.Watermark);
 
         public virtual string WorkItemType => GetValue<string>(CoreFieldRefNames.WorkItemType);
-
-        public virtual string TeamProject => GetValue<string>(CoreFieldRefNames.TeamProject);
 
         public bool Equals(IWorkItemCommon other)
         {

@@ -14,7 +14,6 @@ namespace Microsoft.Qwiq.Client.Rest
     {
         public LinkCollection([CanBeNull] List<WorkItemRelation> relations, [NotNull] Func<string, IWorkItemLinkType> linkFunc)
         {
-
             Contract.Requires(linkFunc != null);
 
             if (relations == null) return;

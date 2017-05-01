@@ -6,7 +6,6 @@ using System.Linq;
 using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
