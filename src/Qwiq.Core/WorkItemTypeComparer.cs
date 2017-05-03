@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemTypeComparer : GenericComparer<IWorkItemType>
+    internal class WorkItemTypeComparer : GenericComparer<IWorkItemType>
     {
         internal new static WorkItemTypeComparer Default => Nested.Instance;
 

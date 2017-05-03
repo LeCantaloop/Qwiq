@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class ReadOnlyCollectionWithIdComparer<T, TId> : GenericComparer<IReadOnlyObjectWithIdCollection<T, TId>>
+    internal class ReadOnlyCollectionWithIdComparer<T, TId> : GenericComparer<IReadOnlyObjectWithIdCollection<T, TId>>
         where T : IIdentifiable<TId>
     {
         public new static readonly ReadOnlyCollectionWithIdComparer<T, TId> Default = new ReadOnlyCollectionWithIdComparer<T, TId>();

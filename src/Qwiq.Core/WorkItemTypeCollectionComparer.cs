@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemTypeCollectionComparer : GenericComparer<IWorkItemTypeCollection>
+    internal class WorkItemTypeCollectionComparer : GenericComparer<IWorkItemTypeCollection>
     {
         internal new static WorkItemTypeCollectionComparer Default => Nested.Instance;
 
