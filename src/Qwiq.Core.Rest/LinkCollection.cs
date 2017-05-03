@@ -22,23 +22,26 @@ namespace Microsoft.Qwiq.Client.Rest
             for (var i = 0; i < relations.Count; i++)
             {
                 var relation = relations[i];
-                if (CoreLinkTypeReferenceNames.Related.Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
+                var rel = string.Intern(relation.Rel);
+
+                if (CoreLinkTypeReferenceNames.Related.Equals(rel, StringComparison.OrdinalIgnoreCase))
                 {
                     // Last part of the Url is the ID
-                    var lte = linkFunc(relation.Rel).ForwardEnd;
+                    var lte = linkFunc(rel).ForwardEnd;
                     var l = new RelatedLink(ExtractId(relation.Url), lte, ExtractComment(relation.Attributes));
                     Add(l);
                 }
-                else if ("Hyperlink".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
+                else if ("Hyperlink".Equals(rel, StringComparison.OrdinalIgnoreCase))
                 {
                     var l = new Hyperlink(relation.Url, ExtractComment(relation.Attributes));
                     Add(l);
                 }
-                else if ("ArtifactLink".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
+                else if ("ArtifactLink".Equals(rel, StringComparison.OrdinalIgnoreCase))
                 {
+                    const string Name = "name";
                     var l = new ExternalLink(
                                              relation.Url,
-                                             ExtractProperty(relation.Attributes, "name"),
+                                             ExtractProperty(relation.Attributes, Name),
                                              ExtractComment(relation.Attributes));
                     Add(l);
                 }
@@ -49,9 +52,9 @@ namespace Microsoft.Qwiq.Client.Rest
                 {
                     if (relation.Rel.IndexOf('-') > -1)
                     {
-                        var arrRel = relation.Rel.Split('-');
+                        var arrRel = rel.Split('-');
                         var lt = linkFunc(arrRel[0]);
-                        var lte = relation.Rel.Equals(lt.ForwardEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
+                        var lte = rel.Equals(lt.ForwardEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
                                       ? lt.ForwardEnd
                                       : lt.ReverseEnd;
 
@@ -64,7 +67,7 @@ namespace Microsoft.Qwiq.Client.Rest
                     }
                     else
                     {
-                        throw new NotSupportedException($"{relation.Rel} is not supported.");
+                        throw new NotSupportedException($"{rel} is not supported.");
                     }
                 }
             }
@@ -98,7 +101,8 @@ namespace Microsoft.Qwiq.Client.Rest
 
         private static string ExtractComment(IDictionary<string, object> relationAttributes)
         {
-            return ExtractProperty(relationAttributes, "comment");
+            const string Comment = "comment";
+            return ExtractProperty(relationAttributes, Comment);
         }
 
         private static int ExtractId(string uri)
