@@ -72,6 +72,7 @@
     <Compile Include="Comparer.cs" />
     <Compile Include="CoreField.cs" />
     <Compile Include="CoreFieldRefNames.cs" />
+    <Compile Include="CoreLinkTypeEndReferenceNames.cs" />
     <Compile Include="CoreLinkTypeReferenceNames.cs" />
     <Compile Include="CoreLinkTypes.cs" />
     <Compile Include="Credentials\AuthenticationFailedNotification.cs" />
