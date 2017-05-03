@@ -32,6 +32,9 @@
     <Compile Include="..\..\src\Qwiq.Core\GenericComparer.cs">
       <Link>GenericComparer.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\ReSharper.Annotations.cs">
+      <Link>Properties\ReSharper.Annotations.cs</Link>
+    </Compile>
     <Compile Include="Clock.cs" />
     <Compile Include="ContextSpecification.cs" />
     <Compile Include="IContextSpecification.cs" />

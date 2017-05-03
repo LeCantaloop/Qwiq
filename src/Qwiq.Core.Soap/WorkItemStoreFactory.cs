@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Qwiq.Credentials;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
-    public class WorkItemStoreFactory : IWorkItemStoreFactory
+    public class WorkItemStoreFactory : Qwiq.WorkItemStoreFactory
     {
         public static readonly IWorkItemStoreFactory Default = Nested.Instance;
 
@@ -14,52 +12,31 @@ namespace Microsoft.Qwiq.Client.Soap
         {
         }
 
-        public IWorkItemStore Create(AuthenticationOptions options)
+        [Obsolete("This method is deprecated and will be removed in a future release. See property Default instead.", false)]
+        public static IWorkItemStoreFactory GetInstance()
+        {
+            return Default;
+        }
+
+        public override IWorkItemStore Create(AuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
             var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
             return CreateSoapWorkItemStore(tfsProxy);
         }
 
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default)
-        {
-            return Create(endpoint, new[] { credentials }, type);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
-            false)]
-        public IWorkItemStore Create(
-            Uri endpoint,
-            IEnumerable<TfsCredentials> credentials,
-            ClientType type = ClientType.Default)
-        {
-            var options = new AuthenticationOptions(endpoint, AuthenticationTypes.Windows, type, types => credentials.Select(s=>s.Credentials));
-            return Create(options);
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See property Default instead.",
-            false)]
-        public static IWorkItemStoreFactory GetInstance()
-        {
-            return Default;
-        }
-
         private static IWorkItemStore CreateSoapWorkItemStore(IInternalTeamProjectCollection tfs)
         {
-            return new WorkItemStore(() => tfs, store =>  new QueryFactory(store));
+            return new WorkItemStore(() => tfs, store => new QueryFactory(store));
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-        // ReSharper restore ClassNeverInstantiated.Local
+                // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemStoreFactory Instance = new WorkItemStoreFactory();
+
             // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler

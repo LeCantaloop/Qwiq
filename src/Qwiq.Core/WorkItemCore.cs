@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public abstract class WorkItemCore : IWorkItemCore, IEquatable<IWorkItemCore>, IRevisionInternal
@@ -12,7 +14,7 @@ namespace Microsoft.Qwiq
         {
         }
 
-        protected internal WorkItemCore(IDictionary<string, object> fields)
+        protected internal WorkItemCore([CanBeNull] IDictionary<string, object> fields)
         {
             _fields = fields ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
@@ -79,6 +81,7 @@ namespace Microsoft.Qwiq
             return NullableIdentifiableComparer.Default.GetHashCode(this);
         }
 
+        [CanBeNull]
         public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
             if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));

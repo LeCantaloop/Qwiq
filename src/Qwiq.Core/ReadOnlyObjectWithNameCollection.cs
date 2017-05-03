@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -10,10 +13,11 @@ namespace Microsoft.Qwiq
     ///     Base class for common operations for Collections.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ReadOnlyCollection<T> : IReadOnlyObjectList<T>
+    public abstract class ReadOnlyObjectWithNameCollection<T> : IReadOnlyObjectWithNameCollection<T>
     {
         private readonly object _lockObj = new object();
 
+        [CanBeNull]
         private readonly Func<T, string> _nameFunc;
 
         private bool _alreadyInit;
@@ -24,27 +28,27 @@ namespace Microsoft.Qwiq
 
         private IDictionary<string, int> _mapByName;
 
-        protected ReadOnlyCollection(Func<IEnumerable<T>> itemFactory, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([NotNull] Func<IEnumerable<T>> itemFactory, [NotNull] Func<T, string> nameFunc)
         {
-            if (itemFactory == null) throw new ArgumentNullException(nameof(itemFactory));
-            if (nameFunc == null) throw new ArgumentNullException(nameof(nameFunc));
-            ItemFactory = itemFactory;
-            _nameFunc = nameFunc;
+            Contract.Requires(itemFactory != null);
+            Contract.Requires(nameFunc != null);
+
+            ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
+            _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
         }
 
-        protected ReadOnlyCollection(IEnumerable<T> items, Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items, [CanBeNull] Func<T, string> nameFunc)
         {
             ItemFactory = () => items ?? Enumerable.Empty<T>();
             _nameFunc = nameFunc;
         }
 
-        protected ReadOnlyCollection(IEnumerable<T> items)
-            :this(items, null)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items)
+            : this(items, null)
         {
-
         }
 
-        protected ReadOnlyCollection()
+        protected ReadOnlyObjectWithNameCollection()
         {
             Initialize();
         }
@@ -142,7 +146,7 @@ namespace Microsoft.Qwiq
             return GetEnumerator();
         }
 
-        T IReadOnlyObjectList<T>.GetItem(int index)
+        T IReadOnlyObjectWithNameCollection<T>.GetItem(int index)
         {
             return GetItem(index);
         }

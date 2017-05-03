@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq.Exceptions
         /// <param name="obj"></param>
         /// <returns></returns>
         /// <remarks>
-        /// Intercepted interfaces can provide IEquatable<> implementations, but that will not forward calls to
+        /// Intercepted interfaces can provide IEquatable`1 implementations, but that will not forward calls to
         /// Object.Equals(Object) or Object.GetHashCode() since neither is part of the interface.
         /// </remarks>
         public override bool Equals(object obj)

@@ -12,14 +12,13 @@ namespace Microsoft.Qwiq
         [Obsolete(
             "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
             false)]
-        IWorkItemStore Create(Uri endpoint, TfsCredentials credentials, ClientType type = ClientType.Default);
+        IWorkItemStore Create(Uri endpoint, TfsCredentials credentials);
 
         [Obsolete(
             "This method is deprecated and will be removed in a future release. See Create(AuthenticationOptions) instead.",
             false)]
         IWorkItemStore Create(
             Uri endpoint,
-            IEnumerable<TfsCredentials> credentials,
-            ClientType type = ClientType.Default);
+            IEnumerable<TfsCredentials> credentials);
     }
 }

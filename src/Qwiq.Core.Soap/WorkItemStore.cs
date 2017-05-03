@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Microsoft.Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
 using Microsoft.VisualStudio.Services.Common;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
@@ -16,17 +14,17 @@ namespace Microsoft.Qwiq.Client.Soap
     /// </summary>
     internal class WorkItemStore : IWorkItemStore
     {
-        private readonly Lazy<IWorkItemLinkTypeCollection> _workItemLinkTypes;
-
         private readonly Lazy<IRegisteredLinkTypeCollection> _linkTypes;
+
+        private readonly Lazy<IProjectCollection> _projects;
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
-        private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
+        private readonly Lazy<IWorkItemLinkTypeCollection> _workItemLinkTypes;
 
-        private readonly Lazy<IProjectCollection> _projects;
+        private readonly Lazy<TfsWorkItem.WorkItemStore> _workItemStore;
 
         internal WorkItemStore(
             Func<IInternalTeamProjectCollection> tpcFactory,
@@ -38,22 +36,28 @@ namespace Microsoft.Qwiq.Client.Soap
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
 
-            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize)
-                throw new PageSizeRangeException();
+            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
 
             _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
 
-            _workItemLinkTypes = new Lazy<IWorkItemLinkTypeCollection>(
-                () =>
-                    {
-                        return new WorkItemLinkTypeCollection(
-                            _workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
-                    });
+            IWorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
+            {
+                return new WorkItemLinkTypeCollection(_workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
+            }
 
+            _workItemLinkTypes = new Lazy<IWorkItemLinkTypeCollection>(WorkItemLinkTypeCollectionFactory);
 
-            _linkTypes = new Lazy<IRegisteredLinkTypeCollection>(() => new RegisteredLinkTypeCollection(_workItemStore.Value.RegisteredLinkTypes.OfType<TfsWorkItem.RegisteredLinkType>().Select(item => new RegisteredLinkType(item.Name))));
+            IRegisteredLinkTypeCollection RegisteredLinkTypeCollectionFactory()
+            {
+                return new RegisteredLinkTypeCollection(
+                                                        _workItemStore
+                                                                .Value.RegisteredLinkTypes.OfType<TfsWorkItem.RegisteredLinkType>()
+                                                                .Select(item => new RegisteredLinkType(item.Name)));
+            }
+
+            _linkTypes = new Lazy<IRegisteredLinkTypeCollection>(RegisteredLinkTypeCollectionFactory);
 
             _projects = new Lazy<IProjectCollection>(() => new ProjectCollection(_workItemStore.Value.Projects));
 
@@ -68,27 +72,30 @@ namespace Microsoft.Qwiq.Client.Soap
         {
         }
 
-        public int PageSize { get; }
-
-        public ClientType ClientType => ClientType.Soap;
-
         public VssCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
-        internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity;
 
-        public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory
-            .Create<IFieldDefinitionCollection>(
-                new FieldDefinitionCollection(_workItemStore.Value.FieldDefinitions));
+        public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(
+                                                                                                                                      new
+                                                                                                                                              FieldDefinitionCollection(
+                                                                                                                                                                        _workItemStore
+                                                                                                                                                                                .Value
+                                                                                                                                                                                .FieldDefinitions));
+
+        public int PageSize { get; }
 
         public IProjectCollection Projects => _projects.Value;
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _linkTypes.Value;
 
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
         public TimeZone TimeZone => _workItemStore.Value.TimeZone;
 
-        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity;
-
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
+
+        internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
 
         public void Dispose()
         {
@@ -143,8 +150,6 @@ namespace Microsoft.Qwiq.Client.Soap
                 throw new ValidationException(ex);
             }
         }
-
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _linkTypes.Value;
 
         protected virtual void Dispose(bool disposing)
         {

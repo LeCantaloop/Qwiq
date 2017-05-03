@@ -1,14 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
+    [ContractClass(typeof(TeamFoundationIdentityContract))]
     public interface ITeamFoundationIdentity
     {
         /// <summary>
         ///     Gets the unique identifier for the identity's provider.
         /// </summary>
         /// <value>The descriptor.</value>
+        [NotNull]
         IIdentityDescriptor Descriptor { get; }
 
         /// <summary>
@@ -18,6 +23,7 @@ namespace Microsoft.Qwiq
         /// <remarks>
         /// If the identity provider does not supply a full name, and no custom display name is set, another property like account name or email address will be used as the display name.
         /// </remarks>
+        [NotNull]
         string DisplayName { get; }
 
         /// <summary>
@@ -35,12 +41,14 @@ namespace Microsoft.Qwiq
         ///     Gets the set of <see cref="IIdentityDescriptor" /> of groups containing this identity.
         /// </summary>
         /// <value>The member of.</value>
+        [NotNull]
         IEnumerable<IIdentityDescriptor> MemberOf { get; }
 
         /// <summary>
         ///     Gets the set of <see cref="IIdentityDescriptor" />s for members of this identity.
         /// </summary>
         /// <value>The members.</value>
+        [NotNull]
         IEnumerable<IIdentityDescriptor> Members { get; }
 
         /// <summary>
@@ -67,6 +75,7 @@ namespace Microsoft.Qwiq
         ///     CONTOSO\DanJ:1
         /// </example>
         /// <value>The unique name of the identity.</value>
+        [NotNull]
         string UniqueName { get; }
 
         /// <summary>
@@ -94,5 +103,80 @@ namespace Microsoft.Qwiq
         /// some based on pattern matching property names.
         /// </summary>
         IEnumerable<KeyValuePair<string, object>> GetProperties();
+    }
+
+    [ContractClassFor(typeof(ITeamFoundationIdentity))]
+    internal abstract class TeamFoundationIdentityContract : ITeamFoundationIdentity
+    {
+        public IIdentityDescriptor Descriptor
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IIdentityDescriptor>() != null);
+
+                return default(IIdentityDescriptor);
+            }
+        }
+
+        /// <inheritdoc />
+        public abstract bool IsContainer { get; }
+
+        public IEnumerable<IIdentityDescriptor> MemberOf
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IIdentityDescriptor>>() != null);
+
+                return default(IEnumerable<IIdentityDescriptor>);
+            }
+        }
+
+        public IEnumerable<IIdentityDescriptor> Members
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<IEnumerable<IIdentityDescriptor>>() != null);
+
+                return default(IEnumerable<IIdentityDescriptor>);
+            }
+        }
+
+        /// <inheritdoc />
+        public abstract Guid TeamFoundationId { get; }
+
+        public string DisplayName
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return default(string);
+            }
+        }
+
+        /// <inheritdoc />
+        public abstract bool IsActive { get; }
+
+        public string UniqueName
+        {
+            get
+            {
+                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
+
+                return default(string);
+            }
+        }
+
+        /// <inheritdoc />
+        public abstract int UniqueUserId { get; }
+
+        /// <inheritdoc />
+        public abstract string GetAttribute(string name, string defaultValue);
+
+        /// <inheritdoc />
+        public abstract object GetProperty(string name);
+
+        /// <inheritdoc />
+        public abstract IEnumerable<KeyValuePair<string, object>> GetProperties();
     }
 }

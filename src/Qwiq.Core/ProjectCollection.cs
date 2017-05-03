@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Microsoft.Qwiq
 {
-    internal class ProjectCollection : ReadOnlyCollectionWithId<IProject, Guid>, IProjectCollection
+    internal class ProjectCollection : ReadOnlyObjectWithIdCollection<IProject, Guid>, IProjectCollection
     {
         internal ProjectCollection(params IProject[] projects)
             : this(projects as IEnumerable<IProject>)

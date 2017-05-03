@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public class RegisteredLinkTypeCollection : ReadOnlyCollection<IRegisteredLinkType>, IRegisteredLinkTypeCollection
+    public class RegisteredLinkTypeCollection : ReadOnlyObjectWithNameCollection<IRegisteredLinkType>, IRegisteredLinkTypeCollection
     {
         public RegisteredLinkTypeCollection(IEnumerable<IRegisteredLinkType> linkTypes)
             : base(linkTypes, type => type.Name)

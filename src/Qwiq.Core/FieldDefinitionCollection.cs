@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public abstract class FieldDefinitionCollection : ReadOnlyCollectionWithId<IFieldDefinition, int>, IFieldDefinitionCollection
+    public abstract class FieldDefinitionCollection : ReadOnlyObjectWithIdCollection<IFieldDefinition, int>, IFieldDefinitionCollection
     {
         protected internal FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
             : base(fieldDefinitions, definition => definition.Name)

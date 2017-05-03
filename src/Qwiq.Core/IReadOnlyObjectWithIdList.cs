@@ -1,5 +1,7 @@
 using System;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     /// <summary>
@@ -7,7 +9,7 @@ namespace Microsoft.Qwiq
     /// </summary>
     /// <typeparam name="T">The type of elements in the read-only list.</typeparam>
     /// <typeparam name="TId">The type of the identifier of elements in the read-only list.</typeparam>
-    public interface IReadOnlyObjectWithIdList<T, TId> : IReadOnlyObjectList<T>, IEquatable<IReadOnlyObjectWithIdList<T, TId>>
+    public interface IReadOnlyObjectWithIdCollection<T, TId> : IReadOnlyObjectWithNameCollection<T>, IEquatable<IReadOnlyObjectWithIdCollection<T, TId>>
         where T : IIdentifiable<TId>
     {
         /// <summary>
@@ -15,14 +17,14 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <param name="id">The identity of an element.</param>
         /// <returns><c>true</c> if the item is found; otherwise, <c>false</c>.</returns>
-        bool Contains(TId id);
+        bool Contains([NotNull] TId id);
 
         /// <summary>
         ///     Gets the element with the specified id from the read-only collection.
         /// </summary>
         /// <param name="id">The identity of an element.</param>
         /// <returns>The element with the specified <paramref name="id" /> in the read-only list.</returns>
-        T GetById(TId id);
+        T GetById([NotNull] TId id);
 
         /// <summary>
         ///     Attempts to get the value associated with the specified name from the read-only list.
@@ -33,6 +35,6 @@ namespace Microsoft.Qwiq
         ///     or the default value of the type if the operation failed.
         /// </param>
         /// <returns><c>true</c> if the name was found in the read-only list; otherwise, <c>false</c>.</returns>
-        bool TryGetById(TId id, out T value);
+        bool TryGetById([NotNull] TId id, [CanBeNull] out T value);
     }
 }

@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Exceptions
 {
@@ -9,10 +12,13 @@ namespace Microsoft.Qwiq.Exceptions
         private readonly IEnumerable<IExceptionExploder> _exploders;
         private readonly IEnumerable<IExceptionMapper> _mappers;
 
-        public ExceptionMapper(IEnumerable<IExceptionExploder> exploders, IEnumerable<IExceptionMapper> mappers)
+        public ExceptionMapper([NotNull] IEnumerable<IExceptionExploder> exploders, [NotNull] IEnumerable<IExceptionMapper> mappers)
         {
-            _exploders = exploders;
-            _mappers = mappers;
+            Contract.Requires(exploders != null);
+            Contract.Requires(mappers != null);
+
+            _exploders = exploders ?? throw new ArgumentNullException(nameof(exploders));
+            _mappers = mappers ?? throw new ArgumentNullException(nameof(mappers));
         }
 
         public Exception Map(Exception ex)

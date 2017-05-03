@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Services.Common;
+using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-using Microsoft.VisualStudio.Services.Common;
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -33,9 +35,12 @@ namespace Microsoft.Qwiq
         ///     Initializes a new instance of the <see cref="IdentityFieldValue" /> class.
         /// </summary>
         /// <param name="identity">The identity.</param>
-        public IdentityFieldValue(ITeamFoundationIdentity identity)
-            : this(identity.DisplayName, identity.Descriptor.Identifier, identity.TeamFoundationId.ToString())
+        /// <exception cref="ArgumentNullException">identity</exception>
+        public IdentityFieldValue([NotNull] ITeamFoundationIdentity identity)
+            : this(identity.DisplayName, identity.Descriptor?.Identifier, identity.TeamFoundationId.ToString())
         {
+            Contract.Requires(identity != null);
+            
             if (identity == null) throw new ArgumentNullException(nameof(identity));
         }
 
@@ -84,55 +89,48 @@ namespace Microsoft.Qwiq
         {
             DisplayPart = displayName;
 
-            if (!string.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(displayName)) return;
+
+
+            if (TryGetVsid(displayName, out Guid guid2, out string str))
             {
-                if (TryGetVsid(displayName, out Guid guid2, out string str))
-                {
-                    DisplayPart = str;
-                    return;
-                }
-                if (TryGetDomainAndAccountName(displayName, out string str2))
-                {
-                    AccountName = str2;
-
-
-                    var strArray = str2.Split(IdentityConstants.DomainAccountNameSeparator);
-                    if (strArray.Length != 2)
-                    {
-                        return;
-                    }
-
-                    Domain = strArray[0];
-                    LogonName = strArray[1];
-
-                    return;
-                }
-                if (TryGetAccountName(displayName, out str2))
-                {
-                    AccountName = str2;
-                    if (str2.Contains("@"))
-                    {
-                        Email = str2;
-                        LogonName = str2.Split('@')[0];
-                    }
-                    DisplayPart = displayName;
-                    return;
-                }
-                if (TryGetDisplayName(displayName, out str2)) DisplayPart = str2;
+                DisplayPart = str;
+                return;
             }
+            if (TryGetDomainAndAccountName(displayName, out string str2))
+            {
+                AccountName = str2;
+
+                var strArray = str2.Split(IdentityConstants.DomainAccountNameSeparator);
+                if (strArray.Length != 2) return;
+
+                Domain = strArray[0];
+                LogonName = strArray[1];
+
+                return;
+            }
+            if (TryGetAccountName(displayName, out str2))
+            {
+                AccountName = str2;
+                if (str2.Contains("@"))
+                {
+                    Email = str2;
+                    LogonName = str2.Split('@')[0];
+                }
+                DisplayPart = displayName;
+                return;
+            }
+            if (TryGetDisplayName(displayName, out str2)) DisplayPart = str2;
         }
 
         /// <summary>
-        /// Gets the the User principal name (UPN) or the down-level login name.
+        ///     Gets the the User principal name (UPN) or the down-level login name.
         /// </summary>
-        /// <remarks>This can be in the UPN format (e.g. UserName@Example.Microsoft.com) or the down-level logon name format (e.g. EXAMPLE\UserName).</remarks>
+        /// <remarks>
+        ///     This can be in the UPN format (e.g. user@domain.com) or the down-level logon name format (e.g.
+        ///     domain\user).
+        /// </remarks>
         public string AccountName { get; }
-
-        /// <summary>
-        ///     Gets the user account (logon) name.
-        /// </summary>
-        /// <value>The logon name parsed from <see cref="Identifier" />, User Principal Name, or down-level logon name.</value>
-        public string LogonName { get; }
 
         /// <summary>
         ///     Gets the display name.
@@ -162,7 +160,7 @@ namespace Microsoft.Qwiq
         ///     Gets the full name.
         /// </summary>
         /// <value>The full name as determined by the descriptor identifier.</value>
-        /// <seealso cref="IIdentityDescriptor.Identifier"/>
+        /// <seealso cref="IIdentityDescriptor.Identifier" />
         public string Identifier { get; }
 
         /// <summary>
@@ -178,17 +176,33 @@ namespace Microsoft.Qwiq
             {
                 if (!string.IsNullOrEmpty(Email)) return Email;
                 if (!string.IsNullOrEmpty(Domain))
-                    return string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, Domain, LogonName);
+                    return string.Format(
+                                         CultureInfo.InvariantCulture,
+                                         IdentityConstants.DomainQualifiedAccountNameFormat,
+                                         Domain,
+                                         LogonName);
                 if (!string.IsNullOrEmpty(LogonName)) return LogonName;
 
                 return null;
             }
         }
 
+        /// <summary>
+        ///     Gets the user account (logon) name.
+        /// </summary>
+        /// <value>The logon name parsed from <see cref="Identifier" />, User Principal Name, or down-level logon name.</value>
+        public string LogonName { get; }
+
         public string TeamFoundationId { get; }
 
+        /// <summary>
+        /// Performs an explicit conversion from <see cref="IdentityFieldValue"/> to <see cref="string"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>If <paramref name="value"/> is null, null; otherwise, <see cref="IdentityName"/>.</returns>
         public static explicit operator string(IdentityFieldValue value)
         {
+            if (value == null) return null;
             return value.IdentityName;
         }
 
@@ -196,8 +210,8 @@ namespace Microsoft.Qwiq
         public override string ToString()
         {
             return string.IsNullOrEmpty(IdentityName)
-                ? DisplayName
-                : $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
+                       ? DisplayName
+                       : $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
         }
 
         private static bool TryGetAccountName(string search, out string acccountName)

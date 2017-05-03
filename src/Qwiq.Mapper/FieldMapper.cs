@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
+
 using Microsoft.Qwiq.Linq;
 using Microsoft.Qwiq.Mapper.Attributes;
 
@@ -10,6 +14,7 @@ namespace Microsoft.Qwiq.Mapper
     {
         public IEnumerable<string> GetWorkItemType(Type type)
         {
+            if (type == null) throw new ArgumentNullException(nameof(type));
             var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
             return customAttributes.Select(ca => ca.GetTypeName()).OrderBy(name => name);
             // Order alphabetically so string comparisons work and we don't needlessly permute our queries
@@ -41,8 +46,12 @@ namespace Microsoft.Qwiq.Mapper
             return fieldName;
         }
 
-        private static T GetFieldAttribute<T>(Type type, string propertyName)
+        [CanBeNull]
+        private static T GetFieldAttribute<T>([NotNull] Type type, [NotNull] string propertyName)
         {
+            Contract.Requires(type != null);
+            Contract.Requires(!string.IsNullOrEmpty(propertyName));
+
             var property = type.GetProperty(propertyName);
 
             var customAttributes = Enumerable.Empty<T>();

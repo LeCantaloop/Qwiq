@@ -21,6 +21,9 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\ReSharper.Annotations.cs">
+      <Link>Properties\ReSharper.Annotations.cs</Link>
+    </Compile>
     <Compile Include="DisplayNameToAliasValueConverter.cs" />
     <Compile Include="IdentityAliasValueConverter.cs" />
     <Compile Include="IIdentityManagementService.cs" />

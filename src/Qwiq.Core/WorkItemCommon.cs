@@ -6,7 +6,6 @@ namespace Microsoft.Qwiq
     public abstract class WorkItemCommon : WorkItemCore, IWorkItemCommon, IEquatable<IWorkItemCommon>
     {
         protected internal WorkItemCommon()
-            :base()
         {
         }
 

@@ -64,8 +64,11 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\ReSharper.Annotations.cs">
+      <Link>Properties\ReSharper.Annotations.cs</Link>
+    </Compile>
+    <Compile Include="AccessDeniedException.cs" />
     <Compile Include="BaseLinkType.cs" />
-    <Compile Include="ClientType.cs" />
     <Compile Include="Comparer.cs" />
     <Compile Include="CoreField.cs" />
     <Compile Include="CoreFieldRefNames.cs" />
@@ -143,6 +146,7 @@
     <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />
     <Compile Include="ITeamFoundationIdentity.Extensions.cs" />
+    <Compile Include="ITfsConnectionFactory.cs" />
     <Compile Include="ITfsTeamProjectCollection.cs" />
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItem.cs" />
@@ -171,13 +175,14 @@
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadOnlyCollection.cs" />
     <Compile Include="ReadOnlyCollectionWithId.cs" />
     <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
+    <Compile Include="ReadOnlyObjectWithNameCollection.cs" />
     <Compile Include="RegisteredLinkType.cs" />
     <Compile Include="RegisteredLinkTypeCollection.cs" />
     <Compile Include="RelatedLink.cs" />
     <Compile Include="Revision.cs" />
+    <Compile Include="RevisionInternalContract.cs" />
     <Compile Include="SaveFlags.cs" />
     <Compile Include="ServerRejectedChangesException.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
@@ -202,6 +207,7 @@
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemLinkTypeEndCollection.cs" />
     <Compile Include="WorkItemLinkTypeEndComparer.cs" />
+    <Compile Include="WorkItemStoreFactory.cs" />
     <Compile Include="WorkItemType.cs" />
     <Compile Include="WorkItemTypeCollection.cs" />
     <Compile Include="WorkItemTypeCollectionComparer.cs" />

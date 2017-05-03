@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
+
+using JetBrains.Annotations;
 
 using Microsoft.VisualStudio.Services.Common;
 
@@ -20,8 +23,10 @@ namespace Microsoft.Qwiq.Identity
         /// </summary>
         /// <param name="identityManagementService">The identity management service.</param>
         /// <exception cref="ArgumentNullException">identityManagementService</exception>
-        public DisplayNameToAliasValueConverter(IIdentityManagementService identityManagementService)
+        public DisplayNameToAliasValueConverter([NotNull] IIdentityManagementService identityManagementService)
         {
+            Contract.Requires(identityManagementService != null);
+            
             _identityManagementService = identityManagementService ?? throw new ArgumentNullException(nameof(identityManagementService));
         }
 
@@ -30,7 +35,7 @@ namespace Microsoft.Qwiq.Identity
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>A <see cref="T:Dictionary{string, object}" /> instance whose key is the <paramref name="value"/> and value is is equivalent to the value of <paramref name="value" />.</returns>
-        public object Map(object value)
+        public object Map([CanBeNull] object value)
         {
             if (value is string stringValue) return GetIdentityNames(stringValue);
 

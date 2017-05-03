@@ -80,8 +80,6 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public VssCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
-        public ClientType ClientType => ClientType.Rest;
-
         public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
 
         public IProjectCollection Projects => _projects.Value;

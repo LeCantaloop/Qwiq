@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Mapper
 {
@@ -13,9 +16,11 @@ namespace Microsoft.Qwiq.Mapper
         private delegate IIdentifiable<int?> ObjectActivator();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator> OptimizedCtorExpression = new ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator>();
 
-        public WorkItemMapper(IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
+        public WorkItemMapper([NotNull] IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
-            MapperStrategies = mapperStrategies.ToList();
+            Contract.Requires(mapperStrategies != null);
+
+            MapperStrategies = mapperStrategies?.ToList() ?? throw new ArgumentNullException(nameof(mapperStrategies));
         }
 
         public T Default<T>() where T : new()
@@ -59,8 +64,12 @@ namespace Microsoft.Qwiq.Mapper
             return workItemsToMap.Select(wi => wi.Value);
         }
 
-        private static ObjectActivator OptimizedCtorExpressionCache(Type type)
+        [NotNull]
+        private static ObjectActivator OptimizedCtorExpressionCache([NotNull] Type type)
         {
+            Contract.Requires(type != null);
+            Contract.Ensures(Contract.Result<ObjectActivator>() != null);
+
             return OptimizedCtorExpression.GetOrAdd(
                 type.TypeHandle,
                 handle =>

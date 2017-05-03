@@ -1,22 +1,28 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Runtime.ExceptionServices;
 
 using Castle.DynamicProxy;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq.Exceptions
 {
     [DebuggerStepThrough]
-    public class ExceptionHandlingDynamicProxy<T> : IInterceptor
+    public class ExceptionHandlingDynamicProxy : IInterceptor
     {
+        [NotNull]
         private readonly IExceptionMapper _exceptionMapper;
 
-        public ExceptionHandlingDynamicProxy(IExceptionMapper exceptionMapper)
+        public ExceptionHandlingDynamicProxy([NotNull] IExceptionMapper exceptionMapper)
         {
+            Contract.Requires(exceptionMapper != null);
+
             _exceptionMapper = exceptionMapper;
         }
 
-        public void Intercept(IInvocation invocation)
+        public void Intercept([NotNull] IInvocation invocation)
         {
             try
             {
@@ -28,6 +34,11 @@ namespace Microsoft.Qwiq.Exceptions
                 ExceptionDispatchInfo.Capture(_exceptionMapper.Map(e)).Throw();
             }
         }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_exceptionMapper != null);
+        }
     }
 }
-

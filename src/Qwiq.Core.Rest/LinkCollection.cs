@@ -7,22 +7,19 @@ using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
-    internal class LinkCollection : ReadOnlyCollection<ILink>, ICollection<ILink>
+    internal class LinkCollection : ReadOnlyObjectWithNameCollection<ILink>, ICollection<ILink>
     {
         public LinkCollection(IEnumerable<WorkItemRelation> relations, Func<string, IWorkItemLinkType> linkFunc)
         {
-            if (relations == null)
-                throw new ArgumentNullException(nameof(relations));
-            if (linkFunc == null)
-                throw new ArgumentNullException(nameof(linkFunc));
+            if (relations == null) throw new ArgumentNullException(nameof(relations));
+            if (linkFunc == null) throw new ArgumentNullException(nameof(linkFunc));
 
             foreach (var relation in relations)
             {
                 if (CoreLinkTypeReferenceNames.Related.Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
                 {
                     // Last part of the Url is the ID
-                    var lte = linkFunc(relation.Rel)
-                            .ForwardEnd;
+                    var lte = linkFunc(relation.Rel).ForwardEnd;
                     var l = new RelatedLink(ExtractId(relation.Url), lte, ExtractComment(relation.Attributes));
                     Add(l);
                 }
@@ -33,12 +30,14 @@ namespace Microsoft.Qwiq.Client.Rest
                 }
                 else if ("ArtifactLink".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
                 {
-                    var l = new ExternalLink(relation.Url, ExtractProperty(relation.Attributes, "name"), ExtractComment(relation.Attributes));
+                    var l = new ExternalLink(
+                                             relation.Url,
+                                             ExtractProperty(relation.Attributes, "name"),
+                                             ExtractComment(relation.Attributes));
                     Add(l);
                 }
                 else if ("AttachedFile".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
                 {
-
                 }
                 else
                 {
@@ -46,11 +45,13 @@ namespace Microsoft.Qwiq.Client.Rest
                     {
                         var arrRel = relation.Rel.Split('-');
                         var lt = linkFunc(arrRel[0]);
-                        var lte = (relation.Rel.Equals(lt.ForwardEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
-                                       ? lt.ForwardEnd
-                                       : lt.ReverseEnd);
+                        var lte = relation.Rel.Equals(lt.ForwardEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
+                                      ? lt.ForwardEnd
+                                      : lt.ReverseEnd;
 
-                        Debug.Assert(StringComparer.OrdinalIgnoreCase.Equals(lte.ImmutableName, relation.Rel));
+                        Debug.Assert(
+                                     StringComparer.OrdinalIgnoreCase.Equals(lte.ImmutableName, relation.Rel),
+                                     "LinkTypeEnd.ImmutableName != WorkItemRelation.Rel");
 
                         var l = new RelatedLink(ExtractId(relation.Url), lte, ExtractComment(relation.Attributes));
                         Add(l);
@@ -63,47 +64,15 @@ namespace Microsoft.Qwiq.Client.Rest
             }
         }
 
-        private static int ExtractId(string uri)
-        {
-            var arr = uri.Split('/');
-            return Convert.ToInt32(arr.Last());
-        }
-
-        private static string ExtractComment(IDictionary<string, object> relationAttributes)
-        {
-            return ExtractProperty(relationAttributes, "comment");
-        }
-
-        private static string ExtractProperty(IDictionary<string, object> relationAttributes, string property)
-        {
-            relationAttributes.TryGetValue(property, out object val);
-            return val?.ToString();
-        }
-
         public bool IsReadOnly => true;
 
         public void CopyTo(ILink[] array, int arrayIndex)
         {
-            if (array == null)
-            {
-                throw new ArgumentNullException(nameof(array));
-            }
-            if (array.Rank != 1)
-            {
-                throw new ArgumentException(nameof(array));
-            }
-            if (arrayIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            }
-            if ((array.Length - arrayIndex) < Count)
-            {
-                throw new ArgumentException(nameof(array));
-            }
-            foreach (var value in this)
-            {
-                array.SetValue(value, arrayIndex++);
-            }
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (array.Rank != 1) throw new ArgumentException(nameof(array));
+            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            if (array.Length - arrayIndex < Count) throw new ArgumentException(nameof(array));
+            foreach (var value in this) array.SetValue(value, arrayIndex++);
         }
 
         void ICollection<ILink>.Add(ILink item)
@@ -119,6 +88,23 @@ namespace Microsoft.Qwiq.Client.Rest
         bool ICollection<ILink>.Remove(ILink item)
         {
             throw new NotSupportedException();
+        }
+
+        private static string ExtractComment(IDictionary<string, object> relationAttributes)
+        {
+            return ExtractProperty(relationAttributes, "comment");
+        }
+
+        private static int ExtractId(string uri)
+        {
+            var arr = uri.Split('/');
+            return Convert.ToInt32(arr.Last());
+        }
+
+        private static string ExtractProperty(IDictionary<string, object> relationAttributes, string property)
+        {
+            relationAttributes.TryGetValue(property, out object val);
+            return val?.ToString();
         }
     }
 }

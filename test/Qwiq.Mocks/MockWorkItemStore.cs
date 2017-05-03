@@ -60,8 +60,6 @@ namespace Microsoft.Qwiq.Mocks
 
         public VssCredentials AuthorizedCredentials => null;
 
-        public ClientType ClientType => ClientType.None;
-
         public IFieldDefinitionCollection FieldDefinitions => _storeDefinitions.Value;
 
         public IProjectCollection Projects => _projects.Value;

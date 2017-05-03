@@ -22,7 +22,6 @@ namespace Microsoft.Qwiq
             Func<INode> parentFactory,
             Func<INode, IEnumerable<INode>> childrenFactory)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
             if (uri == null) throw new ArgumentNullException(nameof(uri));
             if (parentFactory == null) throw new ArgumentNullException(nameof(parentFactory));
             if (childrenFactory == null) throw new ArgumentNullException(nameof(childrenFactory));
@@ -30,7 +29,7 @@ namespace Microsoft.Qwiq
             Id = id;
             IsAreaNode = isAreaNode;
             IsIterationNode = isIterationNode;
-            Name = name;
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             Uri = uri;
 
             _parent = new Lazy<INode>(parentFactory);

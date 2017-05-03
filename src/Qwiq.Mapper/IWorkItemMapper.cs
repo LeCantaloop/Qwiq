@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Mapper
 {
+    [ContractClass(typeof(WorkItemMapperContract))]
     public interface IWorkItemMapper
     {
         ///  <summary>
@@ -15,17 +19,19 @@ namespace Microsoft.Qwiq.Mapper
         ///  <typeparam name="T">The subclass of Issue that the work items should become</typeparam>
         ///  <param name="collection">The set of TFS WorkItems to convert</param>
         /// <returns>A cloned set of <see cref="IWorkItem"/>-subclassed items.</returns>
-        IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable<int?>, new();
+        IEnumerable<T> Create<T>([NotNull] IEnumerable<IWorkItem> collection) where T : IIdentifiable<int?>, new();
 
-        IEnumerable<IIdentifiable<int?>> Create(Type type, IEnumerable<IWorkItem> collection);
+        IEnumerable<IIdentifiable<int?>> Create([NotNull] Type type, [NotNull] IEnumerable<IWorkItem> collection);
 
         /// <summary>
         /// Create a new, empty work item sub-class.
         /// </summary>
         /// <typeparam name="T">The type of sub-class to create</typeparam>
         /// <returns>A new work item of type T with the default value for all fields.</returns>
+        [NotNull]
         T Default<T>() where T : new();
 
+        [ItemNotNull]
         IEnumerable<IWorkItemMapperStrategy> MapperStrategies { get; }
     }
 }

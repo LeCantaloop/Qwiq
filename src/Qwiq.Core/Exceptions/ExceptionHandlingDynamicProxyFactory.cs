@@ -1,39 +1,46 @@
-using System.Collections.Generic;
 using Castle.DynamicProxy;
+using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace Microsoft.Qwiq.Exceptions
 {
     public static class ExceptionHandlingDynamicProxyFactory
     {
         private static readonly ProxyGenerator Generator = new ProxyGenerator();
-        private static readonly ProxyGenerationOptions Options = new ProxyGenerationOptions { BaseTypeForInterfaceProxy = typeof(ProxyBase) };
 
-        public static T Create<T>(T instance) where T : class
+        private static readonly ProxyGenerationOptions Options =
+                new ProxyGenerationOptions { BaseTypeForInterfaceProxy = typeof(ProxyBase) };
+
+        [JetBrains.Annotations.Pure]
+        [NotNull]
+        public static T Create<T>([NotNull] T instance)
+            where T : class
         {
+            Contract.Requires(instance != null);
+            Contract.Ensures(Contract.Result<T>() != null);
+
             return Create(
-                    instance,
-                    new IExceptionExploder[]
-                    {
-                        new AggregateExceptionExploder(),
-                        new InnerExceptionExploder()
-                    },
-                    new IExceptionMapper[]
-                    {
-                        new InvalidOperationExceptionMapper(),
-                        new TransientExceptionMapper()
-                    });
+                          instance,
+                          new IExceptionExploder[] { new AggregateExceptionExploder(), new InnerExceptionExploder() },
+                          new IExceptionMapper[] { new InvalidOperationExceptionMapper(), new TransientExceptionMapper() });
         }
 
-        internal static T Create<T>(T instance, IEnumerable<IExceptionExploder> exploders, IEnumerable<IExceptionMapper> mappers) where T : class
+        [NotNull]
+        [JetBrains.Annotations.Pure]
+        internal static T Create<T>(
+            [NotNull] T instance,
+            [NotNull] IEnumerable<IExceptionExploder> exploders,
+            [NotNull] IEnumerable<IExceptionMapper> mappers)
+            where T : class
         {
-            var proxy =
-                new ExceptionHandlingDynamicProxy<T>(
-                    new ExceptionMapper(
-                        exploders,
-                        mappers));
+            Contract.Requires(instance != null);
+            Contract.Requires(exploders != null);
+            Contract.Requires(mappers != null);
+
+            var proxy = new ExceptionHandlingDynamicProxy(new ExceptionMapper(exploders, mappers));
 
             return (T)Generator.CreateInterfaceProxyWithTarget(typeof(T), instance, Options, proxy);
         }
     }
 }
-

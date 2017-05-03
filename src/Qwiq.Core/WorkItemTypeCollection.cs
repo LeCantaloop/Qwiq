@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemTypeCollection : ReadOnlyCollection<IWorkItemType>, IWorkItemTypeCollection
+    public class WorkItemTypeCollection : ReadOnlyObjectWithNameCollection<IWorkItemType>, IWorkItemTypeCollection
     {
         [DebuggerStepThrough]
         internal WorkItemTypeCollection(Func<IEnumerable<IWorkItemType>> workItemTypesFactory)

@@ -6,7 +6,7 @@ namespace Microsoft.Qwiq
     ///     Represents a read-only collection of elements that can be accessed by index or name.
     /// </summary>
     /// <typeparam name="T">The type of elements in the read-only list. </typeparam>
-    public interface IReadOnlyObjectList<T> : IReadOnlyList<T>
+    public interface IReadOnlyObjectWithNameCollection<T> : IReadOnlyList<T>
     {
         /// <summary>
         ///     Gets the element of the specified name in the read-only list.

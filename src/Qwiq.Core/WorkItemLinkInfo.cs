@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Microsoft.Qwiq
 {
@@ -60,7 +61,7 @@ namespace Microsoft.Qwiq
 
         public override string ToString()
         {
-            return $"S:{SourceId} T:{TargetId} Type:{LinkType}";
+            return $"S:{SourceId} T:{TargetId} Type:{LinkType}".ToString(CultureInfo.InvariantCulture);
         }
     }
 }

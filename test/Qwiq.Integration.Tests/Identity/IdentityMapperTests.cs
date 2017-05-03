@@ -37,7 +37,7 @@ namespace Microsoft.Qwiq.Identity
 
             var soapIms = ((IInternalTeamProjectCollection)Soap.TeamProjectCollection).GetService<IIdentityManagementService2>().AsProxy();
             var translator = new WiqlTranslator();
-            var idMapper = new IdentityAliasValueConverter(soapIms, "72F988BF-86F1-41AF-91AB-2D7CD011DB47", "microsoft.com");
+            var idMapper = new IdentityAliasValueConverter(soapIms, IntegrationSettings.TenantId, IntegrationSettings.Domains);
             var visitors = new ExpressionVisitor[] { new PartialEvaluator(), new IdentityMappingVisitor(idMapper), new QueryRewriter() };
 
             var soapBuilder = new WiqlQueryBuilder(translator, visitors);

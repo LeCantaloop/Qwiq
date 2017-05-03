@@ -1,13 +1,18 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
     public class Hyperlink : Link, IHyperlink
     {
-        internal Hyperlink(string location, string comment = null)
+        internal Hyperlink([NotNull] string location, [CanBeNull] string comment = null)
             : base(comment, BaseLinkType.Hyperlink)
         {
+            Contract.Requires(!string.IsNullOrEmpty(location));
+
             if (string.IsNullOrEmpty(location)) throw new ArgumentException("Value cannot be null or empty.", nameof(location));
             Location = location;
         }
@@ -16,7 +21,7 @@ namespace Microsoft.Qwiq
         public string Location { get; }
 
         /// <inheritdoc />
-        public bool Equals(IHyperlink other)
+        public bool Equals([CanBeNull] IHyperlink other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(other, null)) return false;
@@ -25,7 +30,7 @@ namespace Microsoft.Qwiq
         }
 
         [DebuggerStepThrough]
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return Equals(obj as IHyperlink);
         }

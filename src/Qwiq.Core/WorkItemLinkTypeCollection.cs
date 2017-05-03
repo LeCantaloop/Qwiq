@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeCollection : ReadOnlyCollection<IWorkItemLinkType>, IWorkItemLinkTypeCollection
+    public class WorkItemLinkTypeCollection : ReadOnlyObjectWithNameCollection<IWorkItemLinkType>, IWorkItemLinkTypeCollection
     {
         private readonly Lazy<IWorkItemLinkTypeEndCollection> _ltCol;
 

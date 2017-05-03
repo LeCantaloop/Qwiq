@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -8,7 +10,7 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class Project : Qwiq.Project
     {
-        internal Project(TeamProjectReference project, WorkItemStore store)
+        internal Project([NotNull] TeamProjectReference project, [NotNull] WorkItemStore store)
             : base(
                 project.Id,
                 project.Name,
