@@ -44,7 +44,7 @@ namespace Microsoft.Qwiq.Client.Soap
 
             IWorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
             {
-                return new WorkItemLinkTypeCollection(_workItemStore.Value.WorkItemLinkTypes.Select(item => new WorkItemLinkType(item)));
+                return new WorkItemLinkTypeCollection(_workItemStore.Value.WorkItemLinkTypes.Select(item => (IWorkItemLinkType)new WorkItemLinkType(item)).ToList());
             }
 
             _workItemLinkTypes = new Lazy<IWorkItemLinkTypeCollection>(WorkItemLinkTypeCollectionFactory);
@@ -54,7 +54,8 @@ namespace Microsoft.Qwiq.Client.Soap
                 return new RegisteredLinkTypeCollection(
                                                         _workItemStore
                                                                 .Value.RegisteredLinkTypes.OfType<TfsWorkItem.RegisteredLinkType>()
-                                                                .Select(item => new RegisteredLinkType(item.Name)));
+                                                                .Select(item => (IRegisteredLinkType)new RegisteredLinkType(item.Name))
+                                                                .ToList());
             }
 
             _linkTypes = new Lazy<IRegisteredLinkTypeCollection>(RegisteredLinkTypeCollectionFactory);

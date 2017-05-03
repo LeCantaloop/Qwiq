@@ -15,7 +15,7 @@ namespace Microsoft.Qwiq
             set
             {
                 _workItem = value;
-                WorkItems = new WorkItemCollection(new[] { value });
+                WorkItems = new WorkItemCollection(new List<IWorkItem>(new[] { value }));
             }
         }
 

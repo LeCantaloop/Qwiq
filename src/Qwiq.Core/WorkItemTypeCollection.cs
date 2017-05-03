@@ -13,13 +13,7 @@ namespace Microsoft.Qwiq
         }
 
         [DebuggerStepThrough]
-        internal WorkItemTypeCollection(params IWorkItemType[] workItemTypes)
-            : this(workItemTypes as IEnumerable<IWorkItemType>)
-        {
-        }
-
-        [DebuggerStepThrough]
-        internal WorkItemTypeCollection(IEnumerable<IWorkItemType> workItemTypes)
+        internal WorkItemTypeCollection(List<IWorkItemType> workItemTypes)
             : base(workItemTypes, type => type.Name)
         {
         }

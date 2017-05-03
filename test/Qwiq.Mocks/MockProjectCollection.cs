@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
     internal class MockProjectCollection : ProjectCollection
     {
         public MockProjectCollection(IWorkItemStore store)
-            : base(new MockProject(store, new Node(1, false, false, MockProject.ProjectName, new Uri("http://localhost/projects/1"))))
+            : this(new MockProject(store))
         {
         }
 
-        public MockProjectCollection(IEnumerable<IProject> projects)
+        public MockProjectCollection(MockProject project)
+            : this(new[] { (IProject)project }.ToList())
+        {
+        }
+
+        public MockProjectCollection(List<IProject> projects)
             : base(projects)
         {
         }
@@ -19,7 +25,7 @@ namespace Microsoft.Qwiq.Mocks
     internal class MockWorkItemTypeCollection : WorkItemTypeCollection
     {
         public MockWorkItemTypeCollection(IWorkItemStore store)
-            : base((IWorkItemType[])null)
+            : base((List<IWorkItemType>)null)
         {
             ItemFactory = () => new[]
                                     {

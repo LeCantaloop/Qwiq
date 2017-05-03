@@ -16,15 +16,15 @@ namespace Microsoft.Qwiq.Client.Rest
             "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
             RegexOptions.Singleline | RegexOptions.Compiled);
 
-        private readonly Lazy<IWorkItemLinkTypeCollection> _linkTypes;
+        private IWorkItemLinkTypeCollection _linkTypes;
 
-        private readonly Lazy<IProjectCollection> _projects;
+        private IProjectCollection _projects;
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
-        private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
+        private IFieldDefinitionCollection _fieldDefinitions;
 
         internal WorkItemStore(
             Func<IInternalTeamProjectCollection> tpcFactory,
@@ -54,24 +54,33 @@ namespace Microsoft.Qwiq.Client.Rest
 
             PageSize = pageSize;
 
-            WorkItemLinkTypeCollection ValueFactory()
+
+
+
+
+        }
+
+        private WorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
+        {
+            return GetLinks(NativeWorkItemStore.Value);
+        }
+
+        private IProjectCollection ProjectCollectionFactory()
+        {
+            using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
             {
-                return GetLinks(NativeWorkItemStore.Value);
+                var projects = (List<TeamProjectReference>)projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
+                var projects2 = new List<IProject>(projects.Count + 1);
+
+                for (var i = 0; i < projects.Count; i++)
+                {
+                    var project = projects[i];
+                    var p = new Project(project, this);
+                    projects2.Add(p);
+                }
+
+                return new ProjectCollection(projects2);
             }
-
-
-
-            _linkTypes = new Lazy<IWorkItemLinkTypeCollection>(ValueFactory);
-            _projects = new Lazy<IProjectCollection>(
-                () =>
-                    {
-                        using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
-                        {
-                            var projects = projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
-                            return new ProjectCollection(projects.Select(project => new Project(project, this)).Cast<IProject>().ToList());
-                        }
-                    });
-            _fieldDefinitions = new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
         }
 
         public int PageSize { get; }
@@ -80,9 +89,9 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public VssCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
-        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
+        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions ?? (_fieldDefinitions = new FieldDefinitionCollection(this));
 
-        public IProjectCollection Projects => _projects.Value;
+        public IProjectCollection Projects => _projects ?? (_projects = ProjectCollectionFactory());
 
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
@@ -90,7 +99,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 
-        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes ?? (_linkTypes = WorkItemLinkTypeCollectionFactory());
 
         public void Dispose()
         {
@@ -202,7 +211,7 @@ namespace Microsoft.Qwiq.Client.Rest
                 }
             }
 
-            return new WorkItemLinkTypeCollection(d2.Values);
+            return new WorkItemLinkTypeCollection(d2.Values.OfType<IWorkItemLinkType>().ToList());
         }
 
         private void Dispose(bool disposing)

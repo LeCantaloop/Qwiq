@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
     public class WorkItemCollection : ReadOnlyObjectWithIdCollection<IWorkItem, int>, IWorkItemCollection
     {
-        public WorkItemCollection(IEnumerable<IWorkItem> workItems)
-            :base(workItems)
+        public WorkItemCollection(List<IWorkItem> workItems)
+            : base(workItems)
         {
         }
 
@@ -28,7 +27,5 @@ namespace Microsoft.Qwiq
         {
             return Comparer.WorkItemCollection.GetHashCode(this);
         }
-
-
     }
 }

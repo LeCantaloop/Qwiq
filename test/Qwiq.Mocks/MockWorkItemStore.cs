@@ -48,7 +48,7 @@ namespace Microsoft.Qwiq.Mocks
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
             _projects = new Lazy<IProjectCollection>(() => new MockProjectCollection(this));
 
-            WorkItemLinkTypes = new WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => new MockWorkItemLinkType(s)));
+            WorkItemLinkTypes = new WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => (IWorkItemLinkType)new MockWorkItemLinkType(s)).ToList());
             _lookup = new Dictionary<int, IWorkItem>();
             LinkInfo = new List<IWorkItemLinkInfo>();
             _storeDefinitions = new Lazy<IFieldDefinitionCollection>(() => new MockFieldDefinitionCollection(this));
@@ -140,18 +140,28 @@ namespace Microsoft.Qwiq.Mocks
             {
                 var projectName = item[CoreFieldRefNames.TeamProject].ToString();
                 var witName = item[CoreFieldRefNames.WorkItemType].ToString();
-                var project = Projects[projectName];
+                IProject project;
+                try
+                {
+                    project =  Projects[projectName];
+                }
+                catch (DeniedOrNotExistException)
+                {
+                    Trace.TraceWarning("Project {0} missing from work item store.", projectName);
+                    project = new MockProject(this);
+                }
 
                 if (!project.WorkItemTypes.Contains(witName))
-                {
-                    Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
-                    missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
+                    {
+                        Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
+                        missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
 
-                    var t = item.Type as MockWorkItemType;
-                    if (t?.Store != this) t.Store = this;
+                        var t = item.Type as MockWorkItemType;
+                        if (t?.Store != this) t.Store = this;
 
-                    missingWits[project].Add(item.Type);
-                }
+                        missingWits[project].Add(item.Type);
+                    }
+
             }
 
             // Fourth: If there are any missing wits update the project and reset the project collection
@@ -177,7 +187,7 @@ namespace Microsoft.Qwiq.Mocks
                 {
                     changesRequired = true;
                     wits.UnionWith(project.WorkItemTypes);
-                    var w = new WorkItemTypeCollection(wits);
+                    var w = new WorkItemTypeCollection(wits.ToList());
                     var p = new MockProject(
                         project.Guid,
                         project.Name,
@@ -188,6 +198,8 @@ namespace Microsoft.Qwiq.Mocks
                     newProjects.Add(p);
                 }
             }
+
+
 
             if (changesRequired) _projects = new Lazy<IProjectCollection>(() => new MockProjectCollection(newProjects));
         }

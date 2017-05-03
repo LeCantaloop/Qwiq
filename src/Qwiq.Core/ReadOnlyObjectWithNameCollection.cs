@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -24,7 +23,7 @@ namespace Microsoft.Qwiq
 
         private Func<IEnumerable<T>> _itemFactory;
 
-        private Lazy<IEnumerable<T>> _items;
+        private Lazy<IEnumerable<T>> _lazyItems;
 
         private IDictionary<string, int> _mapByName;
 
@@ -37,13 +36,15 @@ namespace Microsoft.Qwiq
             _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
         }
 
-        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items, [CanBeNull] Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] List<T> items, [CanBeNull] Func<T, string> nameFunc)
         {
-            ItemFactory = () => items ?? Enumerable.Empty<T>();
+            List = items ?? new List<T>(0);
+            _mapByName = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             _nameFunc = nameFunc;
+            _alreadyInit = false;
         }
 
-        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items)
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] List<T> items)
             : this(items, null)
         {
         }
@@ -62,7 +63,7 @@ namespace Microsoft.Qwiq
             }
         }
 
-        protected internal IList<T> List { get; private set; }
+        protected internal List<T> List { get; private set; }
 
         protected Func<IEnumerable<T>> ItemFactory
         {
@@ -72,7 +73,7 @@ namespace Microsoft.Qwiq
                 _itemFactory = value;
                 lock (_lockObj)
                 {
-                    _items = new Lazy<IEnumerable<T>>(_itemFactory);
+                    _lazyItems = new Lazy<IEnumerable<T>>(_itemFactory);
                     Initialize();
                 }
             }
@@ -151,11 +152,6 @@ namespace Microsoft.Qwiq
             return GetItem(index);
         }
 
-        protected internal void Clear()
-        {
-            Initialize();
-        }
-
         protected virtual void Add(T value, int index)
         {
             if (_nameFunc != null)
@@ -194,10 +190,11 @@ namespace Microsoft.Qwiq
                 {
                     if (!_alreadyInit)
                     {
-                        if (_items != null) foreach (var item in _items.Value) Add(item);
+                        if (_lazyItems != null) foreach (var item in _lazyItems.Value) Add(item);
+                        else for (var i = 0; i < List.Count; i++) Add(List[i], i);
 
                         _alreadyInit = true;
-                        _items = null;
+                        _lazyItems = null;
                     }
                 }
         }

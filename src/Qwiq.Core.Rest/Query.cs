@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Client.Rest
                                                             @"(?<operand>asof\s)\'(?<date>.*)\'",
                                                             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private static readonly ReadOnlyCollection<IWorkItem> EmptyWorkItems = new ReadOnlyCollection<IWorkItem>(new List<IWorkItem>());
+        private static readonly List<IWorkItem> EmptyWorkItems = new List<IWorkItem>(0);
 
         private readonly DateTime? _asOf;
 
@@ -114,7 +114,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
             // To avoid an enumerator allocation we are forcing the cast
             var result2 = (List<WorkItemLink>)result.WorkItemRelations;
-            var retval = new List<IWorkItemLinkInfo>(result2.Count);
+            var retval = new List<IWorkItemLinkInfo>(result2.Count + 1);
 
             for (var index = 0; index < result2.Count; index++)
             {
@@ -137,7 +137,7 @@ namespace Microsoft.Qwiq.Client.Rest
         }
 
         [NotNull]
-        private ReadOnlyCollection<IWorkItem> RunQueryImpl()
+        private List<IWorkItem> RunQueryImpl()
         {
             Contract.Ensures(Contract.Result<IEnumerable<IWorkItem>>() != null);
 
@@ -188,7 +188,7 @@ namespace Microsoft.Qwiq.Client.Rest
                 }
             }
 
-            return retval.AsReadOnly();
+            return retval;
         }
 
         private WorkItemLinkTypeEndCollection WorkItemLinkTypeEndValueFactory()

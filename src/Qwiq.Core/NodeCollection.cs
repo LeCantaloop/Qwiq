@@ -1,15 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
     public class NodeCollection : ReadOnlyObjectWithIdCollection<INode, int>, INodeCollection
     {
-        internal NodeCollection(params INode[] nodes)
-            : this(nodes as IEnumerable<INode>)
+        internal NodeCollection([InstantHandle] [NotNull] IEnumerable<INode> nodes)
+            :this(nodes.ToList())
         {
+            Contract.Requires(nodes != null);
         }
 
-        internal NodeCollection(IEnumerable<INode> nodes)
+        internal NodeCollection(List<INode> nodes)
             : base(nodes, node => node.Name)
         {
         }

@@ -28,25 +28,36 @@ namespace Microsoft.Qwiq.Client.Soap
             if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
         }
 
+        private IWorkItemLinkTypeEndCollection _linkTypes;
+
         public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {
-            return new WorkItemLinkTypeEndCollection(
-                _query
-                    .GetLinkTypes()
-                    .Select(item => new WorkItemLinkTypeEnd(item))
-                    .ToList());
+            if (_linkTypes != null) return _linkTypes;
+
+            var lt = _query.GetLinkTypes();
+            var lte = new List<IWorkItemLinkTypeEnd>(lt.Length);
+            foreach (var l in lt)
+            {
+                var item = new WorkItemLinkTypeEnd(l);
+                lte.Add(item);
+            }
+
+            var retval = new WorkItemLinkTypeEndCollection(lte);
+            _linkTypes = retval;
+
+            return _linkTypes;
         }
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
             // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
-            var ends = new Lazy<WorkItemLinkTypeEndCollection>(() => new WorkItemLinkTypeEndCollection(GetLinkTypes()));
+
 
             return _query.RunLinkQuery()
                          .Select(
                                  item =>
                                      {
-                                         IWorkItemLinkTypeEnd LinkTypeEndFactory() => ends.Value.TryGetById(item.LinkTypeId, out IWorkItemLinkTypeEnd end) ? end : null;
+                                         IWorkItemLinkTypeEnd LinkTypeEndFactory() => GetLinkTypes().TryGetById(item.LinkTypeId, out IWorkItemLinkTypeEnd end) ? end : null;
 
                                          return new WorkItemLinkInfo(item.SourceId, item.TargetId, new Lazy<IWorkItemLinkTypeEnd>(LinkTypeEndFactory));
                                      })

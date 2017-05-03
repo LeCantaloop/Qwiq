@@ -100,7 +100,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public static MockWorkItemStore WithLinkType(this MockWorkItemStore store, params IWorkItemLinkType[] linkTypes)
         {
-            store.WorkItemLinkTypes = new WorkItemLinkTypeCollection(store.WorkItemLinkTypes.Union(linkTypes));
+            store.WorkItemLinkTypes = new WorkItemLinkTypeCollection(store.WorkItemLinkTypes.Union(linkTypes).ToList());
             return store;
         }
 

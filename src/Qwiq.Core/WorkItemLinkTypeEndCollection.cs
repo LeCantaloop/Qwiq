@@ -9,14 +9,15 @@ namespace Microsoft.Qwiq
         internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkType> linkTypes)
             : this(
                 linkTypes.SelectMany(s => new[] { s.ForwardEnd, s.IsDirectional ? s.ReverseEnd : null })
-                         .Where(p => p != null))
+                         .Where(p => p != null).ToList())
         {
         }
 
-        internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkTypeEnd> linkEndTypes)
+        internal WorkItemLinkTypeEndCollection(List<IWorkItemLinkTypeEnd> linkEndTypes)
             : base(linkEndTypes, e => e.Name, e => e.Id)
         {
         }
+
 
         protected override void Add(IWorkItemLinkTypeEnd value, int index)
         {

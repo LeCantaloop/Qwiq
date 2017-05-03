@@ -18,7 +18,7 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        internal MockProject(IWorkItemStore store, INode node)
+        public MockProject(IWorkItemStore store, INode node)
             : base(
                    Guid.NewGuid(),
                    node.Name,
@@ -26,6 +26,11 @@ namespace Microsoft.Qwiq.Mocks
                    new Lazy<IWorkItemTypeCollection>(() => new MockWorkItemTypeCollection(store)),
                    new Lazy<INodeCollection>(() => CreateNodes(true)),
                    new Lazy<INodeCollection>(() => CreateNodes(false)))
+        {
+        }
+
+        public MockProject(IWorkItemStore store)
+            :this(store, new Node(1, false, false, ProjectName, new Uri("http://localhost/projects/1")))
         {
         }
 
@@ -51,7 +56,7 @@ namespace Microsoft.Qwiq.Mocks
                                            c => Enumerable.Empty<INode>())
                               });
 
-            return new NodeCollection(root);
+            return new NodeCollection(new[] { root }.ToList().AsReadOnly());
         }
     }
 }
