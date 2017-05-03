@@ -21,8 +21,8 @@ namespace Microsoft.Qwiq
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
-            Name = name;
-            ReferenceName = referenceName;
+            Name = string.Intern(name);
+            ReferenceName = string.Intern(referenceName);
 
             if (id == 0)
             {
@@ -47,8 +47,8 @@ namespace Microsoft.Qwiq
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
-            Name = name;
-            ReferenceName = referenceName;
+            Name = string.Intern(name);
+            ReferenceName = string.Intern(referenceName);
 
             if (!CoreFieldRefNames.CoreFieldIdLookup.TryGetValue(referenceName, out int id))
                 id = FieldDefinitionComparer.Default.GetHashCode(this);
