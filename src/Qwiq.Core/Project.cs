@@ -20,7 +20,7 @@ namespace Microsoft.Qwiq
             Lazy<INodeCollection> iteration)
         {
             Guid = guid;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Name = name != null ? string.Intern(name) : throw new ArgumentNullException(nameof(name));
             Uri = uri ?? throw new ArgumentNullException(nameof(uri));
             _wits = wits ?? throw new ArgumentNullException(nameof(wits));
             _area = area ?? throw new ArgumentNullException(nameof(area));
