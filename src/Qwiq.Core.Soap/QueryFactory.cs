@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 
 using JetBrains.Annotations;
@@ -52,9 +53,16 @@ namespace Microsoft.Qwiq.Client.Soap
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            var wiql =
-                $"SELECT {string.Join(", ", CoreFieldRefNames.All.Select(WiqlHelpers.GetEnclosedField))} FROM {WiqlConstants.WorkItemTable}";
-            if (asOf.HasValue) wiql += $" {QueryPackageNames.QueryAsOf} \'{asOf.Value:u}\'";
+            FormattableString ws = $"SELECT {string.Join(", ", (_store.Configuration.DefaultFields ?? new[] { CoreFieldRefNames.Id }).Select(WiqlHelpers.GetEnclosedField))} FROM {WiqlConstants.WorkItemTable}";
+            var wiql = ws.ToString(CultureInfo.InvariantCulture);
+
+            if (asOf.HasValue)
+            {
+                // If specified DateTime is not UTC convert it to local time based on TFS client TimeZone
+                if (asOf.Value.Kind != DateTimeKind.Utc) asOf = _store.NativeWorkItemStore.TimeZone.ToUniversalTime(asOf.Value);
+                FormattableString ao = $" ASOF \'{asOf.Value:u}\'";
+                wiql += ao.ToString(CultureInfo.InvariantCulture);
+            }
             return Create(ids, wiql);
         }
     }
