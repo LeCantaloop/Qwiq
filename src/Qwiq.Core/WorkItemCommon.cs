@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public abstract class WorkItemCommon : WorkItemCore, IWorkItemCommon, IEquatable<IWorkItemCommon>
@@ -9,7 +11,7 @@ namespace Microsoft.Qwiq
         {
         }
 
-        protected internal WorkItemCommon(Dictionary<string, object> fields)
+        protected internal WorkItemCommon([CanBeNull] Dictionary<string, object> fields)
             : base(fields)
         {
         }

@@ -8,6 +8,7 @@ namespace Microsoft.Qwiq
 {
     public abstract class WorkItemCore : IWorkItemCore, IEquatable<IWorkItemCore>, IRevisionInternal
     {
+        [CanBeNull]
         private readonly Dictionary<string, object> _fields;
 
         protected internal WorkItemCore()
@@ -51,7 +52,9 @@ namespace Microsoft.Qwiq
             }
         }
 
-        protected virtual T GetValue<T>(string name)
+        [JetBrains.Annotations.Pure]
+        [CanBeNull]
+        protected virtual T GetValue<T>([NotNull] string name)
         {
             var value = GetValue(name);
 
@@ -71,12 +74,13 @@ namespace Microsoft.Qwiq
         protected virtual object GetValue([NotNull] string name)
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
-
+            if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
             return _fields.TryGetValue(name, out object val) ? val : null;
         }
 
-        protected virtual void SetValue(string name, object value)
+        protected virtual void SetValue([NotNull] string name, [CanBeNull] object value)
         {
+            if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
             _fields[name] = value;
         }
 
@@ -95,7 +99,6 @@ namespace Microsoft.Qwiq
             return NullableIdentifiableComparer.Default.GetHashCode(this);
         }
 
-        [CanBeNull]
         public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
             if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
