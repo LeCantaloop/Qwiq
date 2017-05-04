@@ -8,16 +8,16 @@ namespace Microsoft.Qwiq
 {
     public static class Extensions
     {
-        public static string EachToUsefulString<T>(this IEnumerable<T> enumerable)
+        public static string EachToUsefulString<T>(this IEnumerable<T> enumerable, int limit = 10)
         {
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append(string.Join(",\n", enumerable.Select(x => ToUsefulString(x).Tab()).Take(20).ToArray()));
-            if (enumerable.Count() > 20)
+            sb.Append(string.Join(",\n", enumerable.Select(x => ToUsefulString(x).Tab()).Take(limit).ToArray()));
+            if (enumerable.Count() > limit)
             {
-                if (enumerable.Count() > 21)
+                if (enumerable.Count() > (limit+1))
                 {
-                    sb.AppendLine($",\n  ...({enumerable.Count() - 20} more elements)");
+                    sb.AppendLine($",\n  ...({enumerable.Count() - limit} more elements)");
                 }
                 else
                 {
