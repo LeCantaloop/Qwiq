@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+
+using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -10,8 +13,10 @@ namespace Microsoft.Qwiq.Client.Rest
     {
         private readonly WorkItemStore _store;
 
-        private QueryFactory(WorkItemStore store)
+        private QueryFactory([NotNull] WorkItemStore store)
         {
+            Contract.Requires(store != null);
+
             _store = store ?? throw new ArgumentNullException(nameof(store));
         }
 
@@ -29,7 +34,7 @@ namespace Microsoft.Qwiq.Client.Rest
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            FormattableString ws = $"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems";
+            FormattableString ws = $"SELECT {string.Join(", ", _store.Configuration.DefaultFields ?? new[] { CoreFieldRefNames.Id })} FROM WorkItems";
             var wiql = ws.ToString(CultureInfo.InvariantCulture);
 
             if (asOf.HasValue)
@@ -46,8 +51,10 @@ namespace Microsoft.Qwiq.Client.Rest
             return Create(ids, wiql);
         }
 
-        public static IQueryFactory GetInstance(WorkItemStore store)
+        public static IQueryFactory GetInstance([NotNull] WorkItemStore store)
         {
+            Contract.Requires(store != null);
+
             return new QueryFactory(store);
         }
     }

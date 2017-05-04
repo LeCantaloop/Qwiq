@@ -10,27 +10,27 @@ namespace Microsoft.Qwiq
     public class WorkItemLinkInfo : IWorkItemLinkInfo
     {
         [CanBeNull]
-        private readonly IWorkItemLinkTypeEnd _id;
+        private readonly IWorkItemLinkTypeEnd _linkTypeEnd;
 
         [CanBeNull]
-        private readonly Lazy<IWorkItemLinkTypeEnd> _lazyId;
+        private readonly Lazy<IWorkItemLinkTypeEnd> _lazyLinkTypeEnd;
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, [NotNull] IWorkItemLinkTypeEnd id)
+        internal WorkItemLinkInfo(int sourceId, int targetId, [NotNull] IWorkItemLinkTypeEnd linkTypeEnd)
             : this(sourceId, targetId, (Lazy<IWorkItemLinkTypeEnd>) null)
         {
-            Contract.Requires(id != null);
-            
-            _id = id ?? throw new ArgumentNullException(nameof(id));
+            Contract.Requires(linkTypeEnd != null);
+
+            _linkTypeEnd = linkTypeEnd ?? throw new ArgumentNullException(nameof(linkTypeEnd));
         }
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, [CanBeNull] Lazy<IWorkItemLinkTypeEnd> lazyId)
+        internal WorkItemLinkInfo(int sourceId, int targetId, [CanBeNull] Lazy<IWorkItemLinkTypeEnd> linkTypeEnd)
         {
             SourceId = sourceId;
             TargetId = targetId;
-            _lazyId = lazyId;
+            _lazyLinkTypeEnd = linkTypeEnd;
         }
 
-        public IWorkItemLinkTypeEnd LinkType => _id ?? _lazyId?.Value ?? throw new InvalidOperationException();
+        public IWorkItemLinkTypeEnd LinkType => _linkTypeEnd ?? _lazyLinkTypeEnd?.Value ?? throw new InvalidOperationException();
 
         public int SourceId { get; }
 

@@ -27,13 +27,13 @@ namespace Microsoft.Qwiq
 
         private IDictionary<string, int> _mapByName;
 
-        protected ReadOnlyObjectWithNameCollection([NotNull] Func<IEnumerable<T>> itemFactory, [NotNull] Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithNameCollection([NotNull] Func<IEnumerable<T>> itemFactory, [CanBeNull] Func<T, string> nameFunc)
         {
             Contract.Requires(itemFactory != null);
             Contract.Requires(nameFunc != null);
 
             ItemFactory = itemFactory ?? throw new ArgumentNullException(nameof(itemFactory));
-            _nameFunc = nameFunc ?? throw new ArgumentNullException(nameof(nameFunc));
+            _nameFunc = nameFunc;
         }
 
         protected ReadOnlyObjectWithNameCollection([CanBeNull] List<T> items, [CanBeNull] Func<T, string> nameFunc)
@@ -42,6 +42,11 @@ namespace Microsoft.Qwiq
             _mapByName = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             _nameFunc = nameFunc;
             _alreadyInit = false;
+        }
+
+        protected ReadOnlyObjectWithNameCollection([CanBeNull] IEnumerable<T> items)
+            : this(()=> items, null)
+        {
         }
 
         protected ReadOnlyObjectWithNameCollection([CanBeNull] List<T> items)
@@ -131,6 +136,12 @@ namespace Microsoft.Qwiq
 
         public virtual bool TryGetByName(string name, out T value)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                value = default(T);
+                return false;
+            }
+
             Ensure();
             if (_mapByName.TryGetValue(name, out int num))
             {

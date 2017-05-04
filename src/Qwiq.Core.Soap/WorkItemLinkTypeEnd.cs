@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
@@ -6,9 +9,11 @@ namespace Microsoft.Qwiq.Client.Soap
 {
     internal class WorkItemLinkTypeEnd : Qwiq.WorkItemLinkTypeEnd
     {
-        internal WorkItemLinkTypeEnd(Tfs.WorkItemLinkTypeEnd end)
-            : base(end?.ImmutableName, new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(end?.OppositeEnd)))
+        internal WorkItemLinkTypeEnd([NotNull] Tfs.WorkItemLinkTypeEnd end)
+            : base(end.ImmutableName, new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(end.OppositeEnd)))
         {
+            Contract.Requires(end != null);
+
             if (end == null) throw new ArgumentNullException(nameof(end));
             Id = end.Id;
             LinkType = new WorkItemLinkType(end.LinkType);

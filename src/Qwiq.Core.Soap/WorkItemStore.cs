@@ -1,5 +1,4 @@
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.WorkItemTracking.Common;
 using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
@@ -29,14 +28,11 @@ namespace Microsoft.Qwiq.Client.Soap
         internal WorkItemStore(
             Func<IInternalTeamProjectCollection> tpcFactory,
             Func<TfsWorkItem.WorkItemStore> wisFactory,
-            Func<WorkItemStore, IQueryFactory> queryFactory,
-            int pageSize = PageSizeLimits.MaxPageSize)
+            Func<WorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
-
-            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
 
             _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
@@ -62,14 +58,15 @@ namespace Microsoft.Qwiq.Client.Soap
 
             _projects = new Lazy<IProjectCollection>(() => new ProjectCollection(_workItemStore.Value.Projects));
 
-            PageSize = pageSize;
+            Configuration = new WorkItemStoreConfiguration();
+
+
         }
 
         internal WorkItemStore(
             Func<IInternalTeamProjectCollection> tpcFactory,
-            Func<WorkItemStore, IQueryFactory> queryFactory,
-            int pageSize = PageSizeLimits.MaxPageSize)
-            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory, pageSize)
+            Func<WorkItemStore, IQueryFactory> queryFactory)
+            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
         {
         }
 
@@ -84,7 +81,7 @@ namespace Microsoft.Qwiq.Client.Soap
                                                                                                                                                                                 .Value
                                                                                                                                                                                 .FieldDefinitions));
 
-        public int PageSize { get; }
+
 
         public IProjectCollection Projects => _projects.Value;
 
@@ -151,6 +148,9 @@ namespace Microsoft.Qwiq.Client.Soap
                 throw new ValidationException(ex);
             }
         }
+
+        /// <inheritdoc />
+        public WorkItemStoreConfiguration Configuration { get; }
 
         protected virtual void Dispose(bool disposing)
         {

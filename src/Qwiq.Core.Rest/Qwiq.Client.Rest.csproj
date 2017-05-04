@@ -95,6 +95,7 @@
     <Compile Include="WorkItem.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemStore.cs" />
+    <Compile Include="WorkItemStoreConfiguration.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
     <Compile Include="WorkItemType.cs" />
   </ItemGroup>

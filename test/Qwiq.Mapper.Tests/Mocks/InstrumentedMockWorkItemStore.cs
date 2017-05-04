@@ -18,6 +18,9 @@ namespace Microsoft.Qwiq.Mapper.Mocks
 
         public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
 
+        /// <inheritdoc />
+        public WorkItemStoreConfiguration Configuration => _innerWorkItemStore.Configuration;
+
         public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
         public IProjectCollection Projects

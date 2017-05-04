@@ -52,6 +52,8 @@ namespace Microsoft.Qwiq.Mocks
             _lookup = new Dictionary<int, IWorkItem>();
             LinkInfo = new List<IWorkItemLinkInfo>();
             _storeDefinitions = new Lazy<IFieldDefinitionCollection>(() => new MockFieldDefinitionCollection(this));
+
+            Configuration = new WorkItemStoreConfiguration();
         }
 
         public bool SimulateQueryTimes { get; set; }
@@ -111,6 +113,9 @@ namespace Microsoft.Qwiq.Mocks
             var query = _queryFactory.Value.Create(wiql, dayPrecision);
             return query.RunLinkQuery().ToList().AsReadOnly();
         }
+
+        /// <inheritdoc />
+        public WorkItemStoreConfiguration Configuration { get; }
 
         public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
 

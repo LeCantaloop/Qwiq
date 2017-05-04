@@ -13,6 +13,7 @@ namespace Microsoft.Qwiq
     /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IEquatable<IWorkItem>
     {
+        [CanBeNull]
         private readonly IWorkItemType _type;
 
         private bool _useFields = true;
@@ -21,6 +22,9 @@ namespace Microsoft.Qwiq
 
         [CanBeNull]
         private Func<IFieldCollection> _fieldFactory;
+
+        [CanBeNull]
+        private readonly Lazy<IWorkItemType> _lazyType;
 
         protected internal WorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields)
             : base(fields)
@@ -36,6 +40,12 @@ namespace Microsoft.Qwiq
 
             _type = type ?? throw new ArgumentNullException(nameof(type));
 
+        }
+
+        protected internal WorkItem([NotNull] Lazy<IWorkItemType> type)
+        {
+            Contract.Requires(type != null);
+            _lazyType = type;
         }
 
         protected internal WorkItem([NotNull] IWorkItemType type, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
@@ -110,7 +120,7 @@ namespace Microsoft.Qwiq
 
         public virtual IEnumerable<IRevision> Revisions => throw new NotSupportedException();
 
-        public virtual IWorkItemType Type => _type ?? throw new NotSupportedException();
+        public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new NotSupportedException();
 
         public abstract Uri Uri { get; }
 
@@ -220,6 +230,12 @@ namespace Microsoft.Qwiq
         public override int GetHashCode()
         {
             return WorkItemComparer.Default.GetHashCode(this);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{WorkItemType} {Id} {Title}";
         }
     }
 }

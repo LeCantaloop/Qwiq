@@ -6,7 +6,6 @@ using System.Linq;
 using JetBrains.Annotations;
 
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
@@ -16,18 +15,14 @@ namespace Microsoft.Qwiq.Client.Soap
 
         private readonly TeamFoundation.WorkItemTracking.Client.Query _query;
 
-        internal Query([NotNull] TeamFoundation.WorkItemTracking.Client.Query query, int pageSize = PageSizeLimits.DefaultPageSize)
+        internal Query([NotNull] TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
         {
             Contract.Requires(query != null);
-            Contract.Requires(pageSize < PageSizeLimits.MaxPageSize);
-            Contract.Requires(pageSize > PageSizeLimits.DefaultPageSize);
-
+            _query = query;
             _pageSize = pageSize;
-            _query = query ?? throw new ArgumentNullException(nameof(query));
-
-            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
         }
 
+        [CanBeNull]
         private IWorkItemLinkTypeEndCollection _linkTypes;
 
         public IWorkItemLinkTypeEndCollection GetLinkTypes()
@@ -51,18 +46,21 @@ namespace Microsoft.Qwiq.Client.Soap
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
             // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
+            var wili = _query.RunLinkQuery();
+            var retval = new List<IWorkItemLinkInfo>(wili.Length);
+            var lt = GetLinkTypes().ToDictionary(k=>k.Id, e=>e);
+            for (var i = 0; i < wili.Length; i++)
+            {
+                if (wili[i].LinkTypeId == 0) continue;
+
+                // TODO: Use Lazy config options
 
 
-            return _query.RunLinkQuery()
-                         .Select(
-                                 item =>
-                                     {
-                                         IWorkItemLinkTypeEnd LinkTypeEndFactory() => GetLinkTypes().TryGetById(item.LinkTypeId, out IWorkItemLinkTypeEnd end) ? end : null;
+                var lte = lt[wili[i].LinkTypeId];
+                retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, lte));
+            }
 
-                                         return new WorkItemLinkInfo(item.SourceId, item.TargetId, new Lazy<IWorkItemLinkTypeEnd>(LinkTypeEndFactory));
-                                     })
-                        .ToList()
-                        .AsReadOnly();
+            return retval.AsReadOnly();
         }
 
         public IWorkItemCollection RunQuery()
@@ -70,9 +68,11 @@ namespace Microsoft.Qwiq.Client.Soap
             var wic = _query.RunQuery();
             wic.PageSize = _pageSize;
 
+            // TODO: Use Lazy config options
             var items = new List<IWorkItem>(wic.Count);
             for (var i = 0; i < wic.Count; i++)
             {
+                // TODO: Use proxy config options
                 var item = ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)wic[i]);
                 items.Add(item);
             }

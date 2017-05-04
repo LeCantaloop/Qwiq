@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -34,6 +35,47 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
             RestResult.WorkItem.Fields[CoreFieldRefNames.AreaPath].Value.ShouldEqual(RestResult.WorkItem.AreaPath);
 
             SoapResult.WorkItem[CoreFieldRefNames.AreaPath].ShouldEqual(SoapResult.WorkItem.AreaPath);
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Properties_of_IWorkItem_contain_similar_information()
+        {
+            var exceptions = new List<Exception>();
+
+            Action<object, object> AssertAreEqual = (restValue, soapValue) =>
+                                                        {
+                                                            try
+                                                            {
+                                                                restValue.ShouldEqual(soapValue, Qwiq.GenericComparer<object>.Default);
+                                                            }
+                                                            catch (Exception e)
+                                                            {
+                                                                exceptions.Add(e);
+                                                            }
+                                                        };
+
+
+
+
+                try
+                {
+                    AssertAreEqual(RestResult.WorkItem.Id, SoapResult.WorkItem.Id);
+                    AssertAreEqual(RestResult.WorkItem.Title, SoapResult.WorkItem.Title);
+                    AssertAreEqual(RestResult.WorkItem.WorkItemType, SoapResult.WorkItem.WorkItemType);
+            }
+                catch (Exception e)
+                {
+                    exceptions.Add(e);
+                }
+
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            }
         }
 
         [TestMethod]
@@ -168,6 +210,9 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void RelatedLinkCount_is_equal()
         {
+            if (((Client.Rest.WorkItemStoreConfiguration)RestResult.WorkItemStore.Configuration).WorkItemExpand != WorkItemExpand.Links)
+                Assert.Inconclusive("The links could not tested because the expand configuration was not set.");
+
             RestResult.WorkItem.RelatedLinkCount.ShouldEqual(SoapResult.WorkItem.RelatedLinkCount);
         }
     }

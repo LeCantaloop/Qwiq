@@ -23,6 +23,8 @@ namespace Microsoft.Qwiq.Client.Rest
         [CanBeNull]
         private LinkCollection _links;
 
+        private Uri _uri;
+
         public WorkItem(
             [NotNull] TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
             [NotNull] IWorkItemType wit,
@@ -35,7 +37,21 @@ namespace Microsoft.Qwiq.Client.Rest
             _item = item ?? throw new ArgumentNullException(nameof(item));
             _linkFunc = linkFunc ?? throw new ArgumentNullException(nameof(linkFunc));
             Url = _item.Url;
-            Uri = new Uri(_item.Url, UriKind.Absolute);
+            _uri = new Uri(_item.Url, UriKind.Absolute);
+        }
+
+        public WorkItem(
+            TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
+            Lazy<IWorkItemType> wit,
+            Func<string, IWorkItemLinkType> linkFunc)
+            : base(wit)
+        {
+            Contract.Requires(item != null);
+            Contract.Requires(wit != null);
+            Contract.Requires(linkFunc != null);
+            _item = item ?? throw new ArgumentNullException(nameof(item));
+            _linkFunc = linkFunc ?? throw new ArgumentNullException(nameof(linkFunc));
+            Url = _item.Url;
         }
 
         public override int AttachedFileCount
@@ -118,7 +134,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public override int Rev => _item.Rev.GetValueOrDefault(0);
 
-        public override Uri Uri { get; }
+        public override Uri Uri => _uri ?? (_uri = new Uri(_item.Url, UriKind.Absolute));
 
         public override string Url { get; }
 

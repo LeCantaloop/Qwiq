@@ -85,5 +85,10 @@ namespace Microsoft.Qwiq
         /// <param name="dayPrecision">if set to <c>true</c> [day precision].</param>
         /// <returns>IEnumerable&lt;IWorkItemLinkInfo&gt;.</returns>
         IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false);
+
+        /// <summary>
+        /// Provides access to configuration options for this instance.
+        /// </summary>
+        WorkItemStoreConfiguration Configuration { get; }
     }
 }

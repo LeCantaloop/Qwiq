@@ -208,6 +208,7 @@
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemLinkTypeEndCollection.cs" />
     <Compile Include="WorkItemLinkTypeEndComparer.cs" />
+    <Compile Include="WorkItemStoreConfiguration.cs" />
     <Compile Include="WorkItemStoreFactory.cs" />
     <Compile Include="WorkItemType.cs" />
     <Compile Include="WorkItemTypeCollection.cs" />

@@ -37,6 +37,13 @@ namespace Microsoft.Qwiq
             _mapById = new Dictionary<TId, int>(items?.Count ?? 0);
         }
 
+        protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items)
+            :base(items)
+        {
+            _idFunc = a => a.Id;
+            _mapById = new Dictionary<TId, int>();
+        }
+
         public virtual bool Contains(TId id)
         {
             Ensure();
