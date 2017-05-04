@@ -1,5 +1,9 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using System;
+
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Should;
 
 namespace Microsoft.Qwiq.WorkItemStore
 {
@@ -30,6 +34,18 @@ namespace Microsoft.Qwiq.WorkItemStore
             SoapResult = new Result { WorkItemStore = TimedAction(() => IntegrationSettings.CreateSoapStore(), "SOAP", "Create WIS") };
 
             RestResult = new Result { WorkItemStore = TimedAction(() => IntegrationSettings.CreateRestStore(), "REST", "Create WIS") };
+        }
+
+        [TestMethod]
+        [TestCategory("REST")]
+        [TestCategory("SOAP")]
+        [TestCategory("localOnly")]
+        public void REST_implementation_is_faster_than_SOAP()
+        {
+            Durations.TryGetValue("SOAP", out TimeSpan soapTime);
+            Durations.TryGetValue("REST", out TimeSpan restTime);
+
+            restTime.ShouldBeLessThan(soapTime);
         }
     }
 }
