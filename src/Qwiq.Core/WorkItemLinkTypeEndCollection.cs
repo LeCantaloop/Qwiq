@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeEndCollection : ReadOnlyObjectWithIdCollection<IWorkItemLinkTypeEnd, int>,
+    public class WorkItemLinkTypeEndCollection : ReadOnlyObjectWithNameCollection<IWorkItemLinkTypeEnd>,
                                                  IWorkItemLinkTypeEndCollection
     {
         internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkType> linkTypes)
@@ -14,10 +14,9 @@ namespace Microsoft.Qwiq
         }
 
         internal WorkItemLinkTypeEndCollection(List<IWorkItemLinkTypeEnd> linkEndTypes)
-            : base(linkEndTypes, e => e.Name, e => e.Id)
+            : base(linkEndTypes, e => e.Name)
         {
         }
-
 
         protected override void Add(IWorkItemLinkTypeEnd value, int index)
         {
