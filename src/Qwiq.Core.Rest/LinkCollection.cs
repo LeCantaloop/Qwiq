@@ -12,7 +12,7 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class LinkCollection : ReadOnlyObjectWithNameCollection<ILink>, ICollection<ILink>
     {
-        public LinkCollection([CanBeNull] List<WorkItemRelation> relations, [NotNull] Func<string, IWorkItemLinkType> linkFunc)
+        internal LinkCollection([CanBeNull] List<WorkItemRelation> relations, [NotNull] Func<string, IWorkItemLinkType> linkFunc)
         {
             Contract.Requires(linkFunc != null);
 
