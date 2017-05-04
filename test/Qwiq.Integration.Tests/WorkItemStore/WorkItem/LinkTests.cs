@@ -1,6 +1,5 @@
 ﻿using System;
 
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -14,7 +13,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         public override void Given()
         {
             base.Given();
-            ((Client.Rest.WorkItemStoreConfiguration)Rest.Configuration).WorkItemExpand = WorkItemExpand.Relations;
+            Rest.Configuration.WorkItemExpand = WorkItemExpand.All;
         }
 
         [TestMethod]
@@ -71,8 +70,9 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
 
         private void AssertWorkItemExpandConfiguration()
         {
-            if (((Client.Rest.WorkItemStoreConfiguration)RestResult.WorkItemStore.Configuration).WorkItemExpand != WorkItemExpand.Links)
-                Assert.Inconclusive("The links could not tested because the expand configuration was not set.");
+            if (RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.None
+                || RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.Fields)
+                Assert.Inconclusive("The links could not tested because the expand configuration was not set to include links.");
         }
     }
 }

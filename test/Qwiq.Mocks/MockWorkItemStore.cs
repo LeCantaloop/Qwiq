@@ -9,19 +9,16 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
     {
-        private static readonly Random Instance = new Random();
-
-        internal readonly IList<IWorkItemLinkInfo> LinkInfo;
-
         internal readonly IDictionary<int, IWorkItem> _lookup;
+        internal readonly IList<IWorkItemLinkInfo> LinkInfo;
+        private static readonly Random Instance = new Random();
+        private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IFieldDefinitionCollection> _storeDefinitions;
 
-        private Lazy<IProjectCollection> _projects;
-
         private readonly Lazy<ITeamProjectCollection> _tfs;
 
-        private readonly Lazy<IQueryFactory> _queryFactory;
+        private Lazy<IProjectCollection> _projects;
 
         public MockWorkItemStore()
             : this(() => new MockTfsTeamProjectCollection(), store => new MockQueryFactory(store))
@@ -36,10 +33,7 @@ namespace Microsoft.Qwiq.Mocks
             this.Add(workItems, links);
         }
 
-        public MockWorkItemStore(
-            Func<ITeamProjectCollection> tpcFactory,
-            Func<MockWorkItemStore, IQueryFactory> queryFactory
-            )
+        public MockWorkItemStore(Func<ITeamProjectCollection> tpcFactory, Func<MockWorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
@@ -48,31 +42,32 @@ namespace Microsoft.Qwiq.Mocks
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
             _projects = new Lazy<IProjectCollection>(() => new MockProjectCollection(this));
 
-            WorkItemLinkTypes = new WorkItemLinkTypeCollection(CoreLinkTypeReferenceNames.All.Select(s => (IWorkItemLinkType)new MockWorkItemLinkType(s)).ToList());
+            WorkItemLinkTypes = new WorkItemLinkTypeCollection(
+                                                               CoreLinkTypeReferenceNames
+                                                                       .All.Select(s => (IWorkItemLinkType)new MockWorkItemLinkType(s))
+                                                                       .ToList());
             _lookup = new Dictionary<int, IWorkItem>();
             LinkInfo = new List<IWorkItemLinkInfo>();
             _storeDefinitions = new Lazy<IFieldDefinitionCollection>(() => new MockFieldDefinitionCollection(this));
 
-            Configuration = new WorkItemStoreConfiguration();
+            Configuration = new MockWorkItemStoreConfiguration();
         }
-
-        public bool SimulateQueryTimes { get; set; }
-
-        private int WaitTime => Instance.Next(0, 3000);
 
         public VssCredentials AuthorizedCredentials => null;
 
+        /// <inheritdoc/>
+        ///
+        public WorkItemStoreConfiguration Configuration { get; }
+
         public IFieldDefinitionCollection FieldDefinitions => _storeDefinitions.Value;
-
         public IProjectCollection Projects => _projects.Value;
-
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
+        public bool SimulateQueryTimes { get; set; }
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
-
-        public TimeZone TimeZone => _tfs.Value.TimeZone;
-
-        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
-
         public IWorkItemLinkTypeCollection WorkItemLinkTypes { get; internal set; }
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
+        public TimeZone TimeZone => _tfs.Value.TimeZone;
+        private int WaitTime => Instance.Next(0, 3000);
 
         public void Dispose()
         {
@@ -94,8 +89,6 @@ namespace Microsoft.Qwiq.Mocks
             var ids2 = (int[])ids.ToArray().Clone();
             if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
-
-
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", ids2));
 
             var query = _queryFactory.Value.Create(ids2, asOf);
@@ -114,30 +107,14 @@ namespace Microsoft.Qwiq.Mocks
             return query.RunLinkQuery().ToList().AsReadOnly();
         }
 
-        /// <inheritdoc />
-        public WorkItemStoreConfiguration Configuration { get; }
-
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
-
-
-
         internal void BatchSave(IEnumerable<IWorkItem> workItems)
         {
-
-
             // First: Fix up the work items and save them to our dictionary
 
-            foreach (var item in workItems)
-            {
-                Save(item);
-            }
+            foreach (var item in workItems) Save(item);
 
-            // Second: Update the links for the work items
-            // We need to save first so we can create recipricol links if required (e.g. parent -> child also needs a child -> parent)
-            foreach (var item in workItems)
-            {
-                SaveLinks(item);
-            }
+            // Second: Update the links for the work items We need to save first so we can create recipricol links if required (e.g. parent -> child also needs a child -> parent)
+            foreach (var item in workItems) SaveLinks(item);
 
             // Third: If any of the work items have types that are missing from their project, add those
             var missingWits = new Dictionary<IProject, HashSet<IWorkItemType>>();
@@ -148,7 +125,7 @@ namespace Microsoft.Qwiq.Mocks
                 IProject project;
                 try
                 {
-                    project =  Projects[projectName];
+                    project = Projects[projectName];
                 }
                 catch (DeniedOrNotExistException)
                 {
@@ -157,16 +134,15 @@ namespace Microsoft.Qwiq.Mocks
                 }
 
                 if (!project.WorkItemTypes.Contains(witName))
-                    {
-                        Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
-                        missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
+                {
+                    Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
+                    missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
 
-                        var t = item.Type as MockWorkItemType;
-                        if (t?.Store != this) t.Store = this;
+                    var t = item.Type as MockWorkItemType;
+                    if (t?.Store != this) t.Store = this;
 
-                        missingWits[project].Add(item.Type);
-                    }
-
+                    missingWits[project].Add(item.Type);
+                }
             }
 
             // Fourth: If there are any missing wits update the project and reset the project collection
@@ -193,29 +169,25 @@ namespace Microsoft.Qwiq.Mocks
                     changesRequired = true;
                     wits.UnionWith(project.WorkItemTypes);
                     var w = new WorkItemTypeCollection(wits.ToList());
-                    var p = new MockProject(
-                        project.Guid,
-                        project.Name,
-                        project.Uri,
-                        w,
-                        project.AreaRootNodes,
-                        project.IterationRootNodes);
+                    var p = new MockProject(project.Guid, project.Name, project.Uri, w, project.AreaRootNodes, project.IterationRootNodes);
                     newProjects.Add(p);
                 }
             }
 
-
-
             if (changesRequired) _projects = new Lazy<IProjectCollection>(() => new MockProjectCollection(newProjects));
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+            }
         }
 
         private void Save(IWorkItem item)
         {
             // Fix the ID
-            if (item.Id == 0)
-            {
-                item[CoreFieldRefNames.Id] = _lookup.Keys.Any() ? _lookup.Keys.Max() + 1 : 1;
-            }
+            if (item.Id == 0) item[CoreFieldRefNames.Id] = _lookup.Keys.Any() ? _lookup.Keys.Max() + 1 : 1;
 
             var id = item.Id;
 
@@ -226,13 +198,7 @@ namespace Microsoft.Qwiq.Mocks
                             { BaseLinkType.Hyperlink, 0 }
                         };
 
-            if (item.Links != null && item.Links.Any())
-            {
-                foreach (var link in item.Links)
-                {
-                    l[link.BaseType]++;
-                }
-            }
+            if (item.Links != null && item.Links.Any()) foreach (var link in item.Links) l[link.BaseType]++;
 
             item[CoreFieldRefNames.RelatedLinkCount] = l[BaseLinkType.RelatedLink];
             item[CoreFieldRefNames.ExternalLinkCount] = l[BaseLinkType.ExternalLink];
@@ -248,19 +214,6 @@ namespace Microsoft.Qwiq.Mocks
             _lookup[id] = item;
         }
 
-        private void SaveLinks(IWorkItem item)
-        {
-            var id = item.Id;
-            // If there are new links add them back
-            if (item.Links != null && item.Links.Any())
-            {
-                foreach (var link in item.Links)
-                {
-                    SaveLink(link, id);
-                }
-            }
-        }
-
         private void SaveLink(ILink link, int id)
         {
             // We only support related links at the moment
@@ -272,20 +225,14 @@ namespace Microsoft.Qwiq.Mocks
             {
                 var li = mrl.LinkInfo;
                 if (LinkInfo.Contains(li, WorkItemLinkInfoComparer.Default))
-                {
                     Trace.TraceWarning(
                                        $"Warning: Duplicate link. (Type: {li.LinkType?.ImmutableName ?? "NULL"}; Source: {li.SourceId}; Target: {li.TargetId})");
-                }
-                else
-                {
-                    LinkInfo.Add(li);
-                }
+                else LinkInfo.Add(li);
 
                 if (rl.LinkTypeEnd == null) return;
 
                 // Check to see if a recipricol link is required
                 if (rl.LinkTypeEnd.LinkType.IsDirectional)
-                {
                     try
                     {
                         var t = _lookup[rl.RelatedWorkItemId];
@@ -302,10 +249,9 @@ namespace Microsoft.Qwiq.Mocks
                     }
                     catch (KeyNotFoundException)
                     {
-                        Trace.TraceWarning($"Work item {id} contains a {rl.LinkTypeEnd} to an item that does not exist: {rl.RelatedWorkItemId}.");
-
+                        Trace.TraceWarning(
+                                           $"Work item {id} contains a {rl.LinkTypeEnd} to an item that does not exist: {rl.RelatedWorkItemId}.");
                     }
-                }
             }
             else
             {
@@ -313,11 +259,11 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        protected void Dispose(bool disposing)
+        private void SaveLinks(IWorkItem item)
         {
-            if (disposing)
-            {
-            }
+            var id = item.Id;
+            // If there are new links add them back
+            if (item.Links != null && item.Links.Any()) foreach (var link in item.Links) SaveLink(link, id);
         }
     }
 }

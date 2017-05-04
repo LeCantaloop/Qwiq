@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,10 +8,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
-using JetBrains.Annotations;
-
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
@@ -68,6 +66,7 @@ namespace Microsoft.Qwiq.Client.Rest
         [ItemNotNull]
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
+            // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
             return _workItemStore.Configuration.LazyLoadingEnabled ? RunkLinkQueryImplLazy() : RunkLinkQueryImpl();
         }
 
@@ -111,9 +110,54 @@ namespace Microsoft.Qwiq.Client.Rest
             return new WorkItem(workItem, new Lazy<IWorkItemType>(WorkItemTypeFactory), LinkFunc);
         }
 
+        private List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] FetchResults()
+        {
+            var t = new CancellationToken();
+            var ts =
+                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
+                                                                                                 _ids.Count
+                                                                                                 % _workItemStore.Configuration.PageSize
+                                                                                                 + 1);
+            var qry = _ids.Partition(_workItemStore.Configuration.PageSize);
+
+            var c = _workItemStore.NativeWorkItemStore.Value;
+            var o = _workItemStore.Configuration;
+
+            var e = (TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemExpand)o.WorkItemExpand;
+            var p = (TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemErrorPolicy)o.WorkItemErrorPolicy;
+            var f = o.WorkItemExpand == WorkItemExpand.None ? o.DefaultFields : null;
+
+            foreach (var s in qry) ts.Add(c.GetWorkItemsAsync(s, f, _asOf, e, p, null, t));
+            // This is done in parallel so keep performance similar to the SOAP client
+            var results = Task.WhenAll(ts.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
+            return results;
+        }
+
         private IWorkItemLinkType LinkFunc(string s)
         {
             return _workItemStore.WorkItemLinkTypes[s];
+        }
+
+        private List<IWorkItem> LoadWorkItemsEagerly(List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] results)
+        {
+            var retval = new List<IWorkItem>(_ids.Count);
+
+            // This is done in parallel so keep performance similar to the SOAP client
+            for (var i = 0; i < results.Length; i++)
+            {
+                var workItemsPartition = results[i];
+                // REIVEW: Allocate for workItem variable
+                for (var j = 0; j < workItemsPartition.Count; j++)
+                {
+                    var workItem = workItemsPartition[j];
+
+                    var wi = CreateItemEager(workItem);
+
+                    retval.Add(_workItemStore.Configuration.ProxyCreationEnabled ? wi.AsProxy() : wi);
+                }
+            }
+
+            return retval;
         }
 
         private ReadOnlyCollection<IWorkItemLinkInfo> RunkLinkQueryImpl()
@@ -124,15 +168,11 @@ namespace Microsoft.Qwiq.Client.Rest
             // To avoid an enumerator allocation we are forcing the cast
             var result2 = (List<WorkItemLink>)result.WorkItemRelations;
             var retval = new List<IWorkItemLinkInfo>(result2.Count + 1);
-            // REVIEW: Closure variable "ends" allocates, preventing local cache
             var ends = GetLinkTypes();
 
             for (var index = 0; index < result2.Count; index++)
             {
                 ends.TryGetByName(result2[index].Rel, out IWorkItemLinkTypeEnd end);
-
-                if (end == null) continue;
-
                 retval.Add(new WorkItemLinkInfo(result2[index].Source?.Id ?? 0, result2[index].Target?.Id ?? 0, end));
             }
 
@@ -151,24 +191,26 @@ namespace Microsoft.Qwiq.Client.Rest
             // To avoid an enumerator allocation we are forcing the cast
             var result2 = (List<WorkItemLink>)result.WorkItemRelations;
 
-            for (var index = 0; index < result2.Count; index++)
+            for (var i = 0; i < result2.Count; i++)
             {
+                WorkItemLink t = result2[i];
+
                 // REVIEW: Closure allocation: workItemLink + ends outer closure
                 IWorkItemLinkTypeEnd EndValueFactory()
                 {
-                    return ends.Value.TryGetByName(result2[index].Rel, out IWorkItemLinkTypeEnd end) ? end : null;
+                    return ends.Value.TryGetByName(t.Rel, out IWorkItemLinkTypeEnd end) ? end : null;
                 }
 
                 var ltEnd = new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory);
 
-                yield return new WorkItemLinkInfo(result2[index].Source?.Id ?? 0, result2[index].Target?.Id ?? 0, ltEnd);
+                yield return new WorkItemLinkInfo(t.Source?.Id ?? 0, t.Target?.Id ?? 0, ltEnd);
             }
         }
 
         [NotNull]
         private List<IWorkItem> RunQueryImpl()
         {
-            Contract.Ensures(Contract.Result<IEnumerable<IWorkItem>>() != null);
+            Contract.Ensures(Contract.Result<List<IWorkItem>>() != null);
 
             if (_ids == null && _query != null)
             {
@@ -185,41 +227,9 @@ namespace Microsoft.Qwiq.Client.Rest
 
             if (_ids == null) return EmptyWorkItems;
 
-            var retval = new List<IWorkItem>(_ids.Count);
-            var t = new CancellationToken();
-            var ts =
-                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
-                                                                                                 _ids.Count
-                                                                                                 % _workItemStore.Configuration.PageSize
-                                                                                                 + 1);
-            var qry = _ids.Partition(_workItemStore.Configuration.PageSize);
+            var results = FetchResults();
 
-            var c = _workItemStore.NativeWorkItemStore.Value;
-            var o = _workItemStore.Configuration;
-
-            foreach (var s in qry)
-            {
-                ts.Add(c.GetWorkItemsAsync(s, null, _asOf, o.WorkItemExpand, o.WorkItemErrorPolicy, null, t));
-            }
-
-            var results = Task.WhenAll(ts.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            // This is done in parallel so keep performance similar to the SOAP client
-            for (var i = 0; i < results.Length; i++)
-            {
-                var workItemsPartition = results[i];
-                // REIVEW: Allocate for workItem variable
-                for (var j = 0; j < workItemsPartition.Count; j++)
-                {
-                    var workItem = workItemsPartition[j];
-
-                    var wi = _workItemStore.Configuration.LazyLoadingEnabled ? CreateItemLazy(workItem) : CreateItemEager(workItem);
-
-                    retval.Add(_workItemStore.Configuration.ProxyCreationEnabled ? wi.AsProxy() : wi);
-                }
-            }
-
-            return retval;
+            return LoadWorkItemsEagerly(results);
         }
 
         [NotNull]
@@ -242,29 +252,13 @@ namespace Microsoft.Qwiq.Client.Rest
 
             if (_ids == null) yield break;
 
-            var t = new CancellationToken();
-            var ts =
-                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
-                                                                                                 _ids.Count
-                                                                                                 % _workItemStore.Configuration.PageSize
-                                                                                                 + 1);
-            var qry = _ids.Partition(_workItemStore.Configuration.PageSize);
-            var o = _workItemStore.Configuration;
-            var c = _workItemStore.NativeWorkItemStore.Value;
-            var f = o.WorkItemExpand == WorkItemExpand.Fields || o.WorkItemExpand == WorkItemExpand.All ? null : o.DefaultFields;
+            var results = FetchResults();
 
-            foreach (var s in qry)
-            {
-                ts.Add(c.GetWorkItemsAsync(s, f, _asOf, o.WorkItemExpand, o.WorkItemErrorPolicy, null, t));
-            }
-
-            var results = Task.WhenAll(ts.ToArray()).ConfigureAwait(false).GetAwaiter().GetResult();
-
-            // This is done in parallel so keep performance similar to the SOAP client
+            // This is not encapsulated in own method to avoid allocation of iterator
             for (var i = 0; i < results.Length; i++)
             {
                 var workItemsPartition = results[i];
-                // REIVEW: Allocate for workItem variable
+
                 for (var j = 0; j < workItemsPartition.Count; j++)
                 {
                     var workItem = workItemsPartition[j];

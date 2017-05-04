@@ -203,6 +203,7 @@
     <Compile Include="Project\ProjectTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
+    <Compile Include="WorkItemStore\LargeHierarchyContextSpecification.cs" />
     <Compile Include="WorkItemStore\LargeWiqlHierarchyQueryTests.cs" />
     <Compile Include="WorkItemStore\Linq\LinqTests.cs" />
     <Compile Include="WorkItemStore\MemoryTests.cs" />

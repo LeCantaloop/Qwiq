@@ -1,15 +1,16 @@
-using Microsoft.Qwiq.Exceptions;
-using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Microsoft.Qwiq.Exceptions;
+using Microsoft.VisualStudio.Services.Common;
+
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
     /// <summary>
-    ///     Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference
-    ///     all the TFS libraries.
+    /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference all the TFS libraries.
     /// </summary>
     internal class WorkItemStore : IWorkItemStore
     {
@@ -40,7 +41,10 @@ namespace Microsoft.Qwiq.Client.Soap
 
             IWorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
             {
-                return new WorkItemLinkTypeCollection(_workItemStore.Value.WorkItemLinkTypes.Select(item => (IWorkItemLinkType)new WorkItemLinkType(item)).ToList());
+                return new WorkItemLinkTypeCollection(
+                                                      _workItemStore
+                                                              .Value.WorkItemLinkTypes
+                                                              .Select(item => (IWorkItemLinkType)new WorkItemLinkType(item)).ToList());
             }
 
             _workItemLinkTypes = new Lazy<IWorkItemLinkTypeCollection>(WorkItemLinkTypeCollectionFactory);
@@ -59,41 +63,36 @@ namespace Microsoft.Qwiq.Client.Soap
             _projects = new Lazy<IProjectCollection>(() => new ProjectCollection(_workItemStore.Value.Projects));
 
             Configuration = new WorkItemStoreConfiguration();
-
-
         }
 
-        internal WorkItemStore(
-            Func<IInternalTeamProjectCollection> tpcFactory,
-            Func<WorkItemStore, IQueryFactory> queryFactory)
+        internal WorkItemStore(Func<IInternalTeamProjectCollection> tpcFactory, Func<WorkItemStore, IQueryFactory> queryFactory)
             : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
         {
         }
 
+
+
+        /// <inheritdoc/>
+        ///
+        public WorkItemStoreConfiguration Configuration { get; }
+
+        public IProjectCollection Projects => _projects.Value;
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _linkTypes.Value;
+        public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
         public VssCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
         public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity;
-
+        Qwiq.WorkItemStoreConfiguration IWorkItemStore.Configuration => Configuration;
+        internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
         public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(
-                                                                                                                                      new
+                                                                                                                                              new
                                                                                                                                               FieldDefinitionCollection(
                                                                                                                                                                         _workItemStore
                                                                                                                                                                                 .Value
                                                                                                                                                                                 .FieldDefinitions));
 
-
-
-        public IProjectCollection Projects => _projects.Value;
-
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _linkTypes.Value;
-
-        public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
-
         public TimeZone TimeZone => _workItemStore.Value.TimeZone;
-
-        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
-
-        internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
 
         public void Dispose()
         {
@@ -148,9 +147,6 @@ namespace Microsoft.Qwiq.Client.Soap
                 throw new ValidationException(ex);
             }
         }
-
-        /// <inheritdoc />
-        public WorkItemStoreConfiguration Configuration { get; }
 
         protected virtual void Dispose(bool disposing)
         {

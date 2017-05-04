@@ -13,12 +13,14 @@ namespace Microsoft.Qwiq.Client.Soap
     {
         private readonly int _pageSize;
 
+        [NotNull]
         private readonly TeamFoundation.WorkItemTracking.Client.Query _query;
 
         internal Query([NotNull] TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
         {
             Contract.Requires(query != null);
-            _query = query;
+
+            _query = query ?? throw new ArgumentNullException(nameof(query));
             _pageSize = pageSize;
         }
 
@@ -51,12 +53,7 @@ namespace Microsoft.Qwiq.Client.Soap
             var lt = GetLinkTypes().ToDictionary(k=>k.Id, e=>e);
             for (var i = 0; i < wili.Length; i++)
             {
-                if (wili[i].LinkTypeId == 0) continue;
-
-                // TODO: Use Lazy config options
-
-
-                var lte = lt[wili[i].LinkTypeId];
+                lt.TryGetValue(wili[i].LinkTypeId, out IWorkItemLinkTypeEnd lte) ;
                 retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, lte));
             }
 

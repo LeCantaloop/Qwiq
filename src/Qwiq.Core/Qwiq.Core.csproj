@@ -199,6 +199,8 @@
     <Compile Include="WorkItemComparer.cs" />
     <Compile Include="WorkItemCopyFlags.cs" />
     <Compile Include="WorkItemCore.cs" />
+    <Compile Include="WorkItemErrorPolicy.cs" />
+    <Compile Include="WorkItemExpand.cs" />
     <Compile Include="WorkItemFields.cs" />
     <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkInfoComparer.cs" />
