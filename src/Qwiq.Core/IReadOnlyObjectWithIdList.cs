@@ -24,6 +24,7 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <param name="id">The identity of an element.</param>
         /// <returns>The element with the specified <paramref name="id" /> in the read-only list.</returns>
+        [CanBeNull]
         T GetById([NotNull] TId id);
 
         /// <summary>
