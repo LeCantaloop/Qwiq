@@ -1,30 +1,19 @@
 using System;
+using System.Diagnostics;
 
 namespace Microsoft.Qwiq.Mocks
 {
     public class MockField : IField
     {
-        private readonly IRevisionInternal _revision;
-
-        private readonly IFieldDefinition _fieldDefinition;
-
         private const int MaxStringLength = 255;
+
+        private IRevisionInternal _revision;
 
         private object _value;
 
-        private ValidationState _validationState;
-
-        private bool _isDirty;
-
         public MockField(IFieldDefinition fieldDefinition)
         {
-            _fieldDefinition = fieldDefinition;
-        }
-
-        internal MockField(IRevisionInternal revision, IFieldDefinition definition)
-            :this(definition)
-        {
-            _revision = revision;
+            FieldDefinition = fieldDefinition;
         }
 
         public MockField(
@@ -37,7 +26,7 @@ namespace Microsoft.Qwiq.Mocks
         {
             Value = value;
             OriginalValue = originalValue;
-            _validationState = validationState;
+            ValidationState = validationState;
             IsChangedByUser = isChangedByUser;
             IsEditable = true;
         }
@@ -48,57 +37,71 @@ namespace Microsoft.Qwiq.Mocks
             object originalValue = null,
             ValidationState validationState = ValidationState.Valid,
             bool isChangedByUser = true)
-            :this(MockFieldDefinition.Create(Guid.NewGuid().ToString("N")), value, originalValue, validationState, isChangedByUser)
+            : this(MockFieldDefinition.Create(Guid.NewGuid().ToString("N")), value, originalValue, validationState, isChangedByUser)
         {
         }
 
+        internal MockField(IRevisionInternal revision, IFieldDefinition definition)
+            : this(definition)
+        {
+            Revision = revision;
+        }
 
+        public IFieldDefinition FieldDefinition { get; }
+
+        public virtual int Id => FieldDefinition.Id;
 
         public bool IsChangedByUser { get; }
 
-        public bool IsDirty => _isDirty;
+        public bool IsDirty { get; private set; }
 
-        public bool IsEditable { get;  }
+        public bool IsEditable { get; }
 
         public bool IsRequired { get; }
 
         public virtual bool IsValid => ValidationState == ValidationState.Valid;
 
-        public virtual string Name => _fieldDefinition.Name;
-
-        public virtual string ReferenceName => _fieldDefinition.ReferenceName;
-
-        public virtual int Id => _fieldDefinition.Id;
+        public virtual string Name => FieldDefinition.Name;
 
         public object OriginalValue { get; set; }
 
-        public ValidationState ValidationState => _validationState;
+        public virtual string ReferenceName => FieldDefinition.ReferenceName;
+
+        public ValidationState ValidationState { get; private set; }
 
         public object Value
         {
-            get => _revision != null ? _revision.GetCurrentFieldValue(_fieldDefinition) : _value;
+            get => Revision != null ? Revision.GetCurrentFieldValue(FieldDefinition) : _value;
             set
             {
-                if (_revision != null) _revision.SetFieldValue(_fieldDefinition, value);
-                else _value = value;
+                if (Revision != null)
+                {
+                    Revision.SetFieldValue(FieldDefinition, value);
+                }
+                else
+                {
+                    Trace.TraceWarning(
+                                       $"Value will be local to this field only. Use the {nameof(Revision)} property to attach a work item.");
+                    _value = value;
+                }
 
-                _isDirty = true;
+                IsDirty = true;
 
                 if (OriginalValue != null && _value != null && _value.Equals(OriginalValue))
                 {
-                    _isDirty = false;
-                    _validationState = ValidationState.Valid;
+                    IsDirty = false;
+                    ValidationState = ValidationState.Valid;
                 }
 
                 switch (ValidationState)
                 {
                     case ValidationState.InvalidNotEmpty:
-                        if (string.IsNullOrEmpty(value as string)) _validationState = ValidationState.Valid;
+                        if (string.IsNullOrEmpty(value as string)) ValidationState = ValidationState.Valid;
                         break;
 
                     case ValidationState.InvalidTooLong:
                         var str = value as string;
-                        if (str != null && str.Length <= MaxStringLength) _validationState = ValidationState.Valid;
+                        if (str != null && str.Length <= MaxStringLength) ValidationState = ValidationState.Valid;
                         break;
 
                     case ValidationState.Valid:
@@ -151,6 +154,21 @@ namespace Microsoft.Qwiq.Mocks
 
                     default:
                         throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        internal IRevisionInternal Revision
+        {
+            get => _revision;
+            set
+            {
+                if (_revision != null && _revision != value) throw new InvalidOperationException("Revision already set");
+                _revision = value;
+                if (_value != null)
+                {
+                    _revision.SetFieldValue(FieldDefinition, _value);
+                    _value = null;
                 }
             }
         }
