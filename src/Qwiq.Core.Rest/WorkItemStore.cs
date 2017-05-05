@@ -68,7 +68,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes ?? (_linkTypes = WorkItemLinkTypeCollectionFactory());
 
-        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
+        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; private set; }
 
         public void Dispose()
         {
@@ -182,7 +182,13 @@ namespace Microsoft.Qwiq.Client.Rest
 
         private void Dispose(bool disposing)
         {
-            if (disposing) if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
+            if (disposing)
+            {
+                if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
+                NativeWorkItemStore = null;
+
+
+            }
         }
 
         private IProjectCollection ProjectCollectionFactory()
