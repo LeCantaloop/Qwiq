@@ -8,13 +8,19 @@ namespace Microsoft.Qwiq.Mocks
 
         public const string TenantId = "CD4C5751-F4E6-41D5-A4C9-EFFD66BC8E9C";
 
+        public static IIdentityDescriptor Create(string userPrincipalName)
+        {
+            return Create(userPrincipalName, TenantId);
+        }
 
+        public static IIdentityDescriptor Create(string userPrincipalName, string tenantId)
+        {
+            return new IdentityDescriptor(IdentityConstants.ClaimsType, $"{tenantId}\\{userPrincipalName}");
+        }
 
         public static IIdentityDescriptor Create(string alias, string domain = Domain, string tenantId = TenantId)
         {
             return new IdentityDescriptor(IdentityConstants.ClaimsType, $"{tenantId}\\{alias}@{domain}");
         }
     }
-
-
 }
