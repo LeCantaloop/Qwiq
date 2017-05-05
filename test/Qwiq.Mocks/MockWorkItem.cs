@@ -1,10 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 
 using JetBrains.Annotations;
 
@@ -13,9 +13,15 @@ namespace Microsoft.Qwiq.Mocks
     [Serializable]
     public class MockWorkItem : WorkItem, IWorkItem
     {
+        private static int tempId = 0;
+
         private IFieldCollection _fields;
 
         internal bool PartialOpenWasCalled;
+
+        private IEnumerable<IRevision> _revisions;
+
+        private int _tempId;
 
         [DebuggerStepThrough]
         [Obsolete(
@@ -29,7 +35,7 @@ namespace Microsoft.Qwiq.Mocks
         [Obsolete(
             "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
         public MockWorkItem(string workItemType = null)
-            : this(workItemType, null)
+            : this(workItemType, (IDictionary<string, object>)null)
         {
         }
 
@@ -52,6 +58,28 @@ namespace Microsoft.Qwiq.Mocks
                         ?? Enumerable.Empty<IFieldDefinition>())),
                 (Dictionary<string, object>)fields)
         {
+        }
+
+        public MockWorkItem([CanBeNull] string workItemType, [CanBeNull] params IField[] fields)
+            : this(new MockWorkItemType(workItemType ?? "Mock", CoreFieldDefinitions.All.Union(fields.Select(f=>f.FieldDefinition))))
+        {
+            if (fields == null) return;
+
+            if (Fields is MockFieldCollection c)
+            {
+                foreach (var field in fields)
+                {
+                    c.SetField(field);
+                    if (field is MockField f)
+                    {
+                        var val = field.Value;
+                        f.Revision = this;
+                        SetFieldValue(field.FieldDefinition, val);
+                    }
+
+                    
+                }
+            }
         }
 
         public MockWorkItem([NotNull] IWorkItemType type, int id)
@@ -79,6 +107,11 @@ namespace Microsoft.Qwiq.Mocks
         {
             SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
             SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
+
+            if (IsNew)
+            {
+                _tempId = Interlocked.Decrement(ref tempId);
+            }
 
             Links = new HashSet<ILink>();
             Revisions = new HashSet<IRevision>();
@@ -140,8 +173,8 @@ namespace Microsoft.Qwiq.Mocks
 
         public new int Id
         {
-            get => base.Id;
-            set => this[CoreFieldRefNames.Id] = value;
+            get => GetValue<int>(CoreFieldRefNames.Id);
+            set => SetValue(CoreFieldRefNames.Id, value);
         }
 
         public override bool IsDirty
@@ -162,7 +195,20 @@ namespace Microsoft.Qwiq.Mocks
 
         public new int RelatedLinkCount => Links.OfType<IRelatedLink>().Count();
 
-        public override IEnumerable<IRevision> Revisions { get; }
+        IEnumerable<IRevision> IWorkItem.Revisions => Revisions;
+
+        public new IEnumerable<IRevision> Revisions
+        {
+            get => _revisions;
+            set
+            {
+                _revisions = value;
+                if (_revisions != null)
+                {
+                    SetFieldValue(Type.FieldDefinitions[CoreFieldRefNames.Rev], _revisions.Count() + 1);
+                }
+            }
+        }
 
         public override Uri Uri => new Uri($"vstfs:///WorkItemTracking/WorkItem/{Id}");
 
@@ -178,32 +224,60 @@ namespace Microsoft.Qwiq.Mocks
 
         public override IWorkItem Copy()
         {
-            using (var stream = new MemoryStream())
+            // Copy links
+            var target = new MockWorkItem(Type);
+            foreach (var definition in Type.FieldDefinitions)
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, this);
-                stream.Position = 0;
+                // Verify field is clonable
+                if (definition.IsCloneable())
+                {
+                    Fields.TryGetById(definition.Id, out IField field);
+                    if (field != null && field.Value != null && !Equals(field.Value, string.Empty))
+                    {
+                        var obj2 = field.Value;
+                        target.SetFieldValue(definition, obj2);
+                    }
+                }
+            }
+            target.History = $"Copied from Work Item {Id}";
 
-                var newItem = (MockWorkItem)formatter.Deserialize(stream);
+            // Copy links
+            IEnumerator enumerator = Links.GetEnumerator();
 
+            while (enumerator.MoveNext())
+            {
+                //TODO: Clone link
+            }
+
+            if (!IsNew)
+            {
                 var s = Type.Store();
+                IWorkItemLinkType e;
                 if (s != null)
                 {
-                    var e = s.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related];
-                    newItem.Links.Add(newItem.CreateRelatedLink(e.ForwardEnd, this));
+                    e = s.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related];
                 }
                 else
                 {
                     using (var wis = new MockWorkItemStore())
                     {
-                        newItem.Links.Add(newItem.CreateRelatedLink(wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd, this));
+                        e = wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related];
                     }
                 }
+                // Our limitation: need an ID to link so save before we do anything else
+                target.Id = target._tempId;
+                target.Links.Add(target.CreateRelatedLink(e.ForwardEnd, this));
 
-                newItem.Id = 0;
-                newItem.ApplyRules();
-                return newItem;
+                // Recipricol links are typically handled in Save operation
+                Links.Add(CreateRelatedLink(e.ReverseEnd, target));
+
+                target.Id = 0;
             }
+
+
+            target.ApplyRules();
+            return target;
+
         }
 
         public override bool IsValid()
@@ -218,6 +292,7 @@ namespace Microsoft.Qwiq.Mocks
         public override void PartialOpen()
         {
             PartialOpenWasCalled = true;
+            ApplyRules(false);
         }
 
         public override void Reset()
