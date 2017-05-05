@@ -39,6 +39,11 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
+        public MockIdentityManagementService(params ITeamFoundationIdentity[] identities)
+            : this(identities as IEnumerable<ITeamFoundationIdentity>)
+        {
+        }
+
         public MockIdentityManagementService(IEnumerable<ITeamFoundationIdentity> identities)
             : this(identities.ToDictionary(k => new IdentityFieldValue(k).LogonName, e => e, StringComparer.OrdinalIgnoreCase))
         {
@@ -83,12 +88,11 @@ namespace Microsoft.Qwiq.Mocks
             : this(
                    userMappings.ToDictionary(
                                              kvp => kvp.Key,
-                                             kvp => new MockTeamFoundationIdentity(
-                                                                                   kvp.Value,
-                                                                                   kvp.Key
-                                                                                   + "@"
-                                                                                   + MockIdentityDescriptor
-                                                                                           .Domain) as ITeamFoundationIdentity))
+                                             kvp => (ITeamFoundationIdentity)new MockTeamFoundationIdentity(
+                                                                                                            MockIdentityDescriptor
+                                                                                                                    .Create(kvp.Key),
+                                                                                                            kvp.Value,
+                                                                                                            Guid.Empty)))
         {
         }
 
@@ -112,7 +116,9 @@ namespace Microsoft.Qwiq.Mocks
         /// <summary>
         ///     Read identities for given descriptors.
         /// </summary>
-        /// <param name="descriptors">Collection of <see cref="IIdentityDescriptor" /></param>
+        /// <param name="descriptors">
+        ///     Collection of <see cref="IIdentityDescriptor" />
+        /// </param>
         /// <returns>
         ///     An array of <see cref="ITeamFoundationIdentity" />, corresponding 1 to 1 with input descriptor array.
         /// </returns>
@@ -157,25 +163,34 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByDisplayName(IEnumerable<string> searchFactors)
+        /// <inheritdoc />
+        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue)
         {
-            // TFS Matches, ignoring case, the property "Display Name" on the identity
-
-            return searchFactors.Select(searchFactor =>
-                                            {
-                                                bool Predicate(ITeamFoundationIdentity identity) => Comparer.OrdinalIgnoreCase.Equals(identity.DisplayName, searchFactor);
-                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
-                                            });
+            return ReadIdentities(searchFactor, new[] { searchFactorValue }).First().Value.SingleOrDefault();
         }
 
-        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAccountName(IEnumerable<string> searchFactors)
+        private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)
+        {
+            return _accountNameMappings.Values.SelectMany(a => a, (a, i) => new { a, i }).Where(t => predicate(t.i)).Select(t => t.i)
+                                       .ToArray();
+        }
+
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByAccountName(
+            IEnumerable<string> searchFactors)
         {
             // TFS Matches, ignoring case, the property "Account", which is in the property bag of the identity
 
-            return searchFactors.Select(searchFactor =>
+            return searchFactors.Select(
+                                        searchFactor =>
                                             {
-                                                bool Predicate(ITeamFoundationIdentity identity) => Comparer.OrdinalIgnoreCase.Equals(identity.GetUserAccountName(),  searchFactor);
-                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, Locate(Predicate));
+                                                bool Predicate(ITeamFoundationIdentity identity)
+                                                {
+                                                    return Comparer.OrdinalIgnoreCase.Equals(identity.GetUserAccountName(), searchFactor);
+                                                }
+
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
+                                                                                                                      searchFactor,
+                                                                                                                      Locate(Predicate));
                                             });
         }
 
@@ -187,23 +202,33 @@ namespace Microsoft.Qwiq.Mocks
             foreach (var searchFactor in searchFactors)
             {
                 if (_accountNameMappings.ContainsKey(searchFactor))
-                    yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, _accountNameMappings[searchFactor]);
-                else yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(searchFactor, new ITeamFoundationIdentity[0]);
+                    yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
+                                                                                                searchFactor,
+                                                                                                _accountNameMappings[searchFactor]);
+                else
+                    yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
+                                                                                                searchFactor,
+                                                                                                new ITeamFoundationIdentity[0]);
             }
         }
 
-        /// <inheritdoc />
-        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue)
+        private IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> SearchByDisplayName(
+            IEnumerable<string> searchFactors)
         {
-            return ReadIdentities(searchFactor, new[] { searchFactorValue }).First().Value.SingleOrDefault();
-        }
+            // TFS Matches, ignoring case, the property "Display Name" on the identity
 
-        private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)
-        {
-            return _accountNameMappings.Values.SelectMany(a => a, (a, i) => new { a, i })
-                                       .Where(t => predicate(t.i))
-                                       .Select(t => t.i)
-                                       .ToArray();
+            return searchFactors.Select(
+                                        searchFactor =>
+                                            {
+                                                bool Predicate(ITeamFoundationIdentity identity)
+                                                {
+                                                    return Comparer.OrdinalIgnoreCase.Equals(identity.DisplayName, searchFactor);
+                                                }
+
+                                                return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
+                                                                                                                      searchFactor,
+                                                                                                                      Locate(Predicate));
+                                            });
         }
     }
 }
