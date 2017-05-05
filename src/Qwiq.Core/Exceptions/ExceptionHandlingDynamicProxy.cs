@@ -1,11 +1,9 @@
+using Castle.DynamicProxy;
+using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.ExceptionServices;
-
-using Castle.DynamicProxy;
-
-using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Exceptions
 {
@@ -22,7 +20,7 @@ namespace Microsoft.Qwiq.Exceptions
             _exceptionMapper = exceptionMapper;
         }
 
-        public void Intercept([NotNull] IInvocation invocation)
+        public void Intercept(IInvocation invocation)
         {
             try
             {

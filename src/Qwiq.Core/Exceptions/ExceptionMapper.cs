@@ -1,8 +1,7 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-
-using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Exceptions
 {
@@ -22,11 +21,12 @@ namespace Microsoft.Qwiq.Exceptions
             _mappers = mappers ?? throw new ArgumentNullException(nameof(mappers));
         }
 
-        public Exception Map([CanBeNull] Exception ex)
+        public Exception Map(Exception ex)
         {
             return MapImpl(ex) ?? ex;
         }
 
+        [CanBeNull]
         private Exception MapImpl(Exception ex)
         {
             var q = new Queue<Exception>();
@@ -54,7 +54,6 @@ namespace Microsoft.Qwiq.Exceptions
 
                         if (exceptions == null) continue;
 
-
                         for (var j = 0; j < exceptions.Count; j++)
                         {
                             var childException = exceptions[j];
@@ -72,4 +71,3 @@ namespace Microsoft.Qwiq.Exceptions
         }
     }
 }
-

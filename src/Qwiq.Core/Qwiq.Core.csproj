@@ -99,6 +99,7 @@
     <Compile Include="Exceptions\TransientExceptionMapper.cs" />
     <Compile Include="Exceptions\VssExceptionMapper.cs" />
     <Compile Include="Exceptions\WorkItemTypeDeniedOrNotExistException.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ExternalLink.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="FieldCollection.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="IFieldCollection.cs" />
     <Compile Include="IFieldConflict.cs" />
     <Compile Include="IFieldDefinition.cs" />
+    <Compile Include="IFieldDefinition.Extensions.cs" />
     <Compile Include="IFieldDefinitionCollection.cs" />
     <Compile Include="IHyperlink.cs" />
     <Compile Include="IIdentifiable.cs" />

@@ -1,6 +1,5 @@
-using System;
-
 using JetBrains.Annotations;
+using System;
 
 namespace Microsoft.Qwiq
 {
@@ -8,13 +7,12 @@ namespace Microsoft.Qwiq
     {
         private FieldDefinitionComparer()
         {
-
         }
 
         [NotNull]
         internal new static FieldDefinitionComparer Default => Nested.Instance;
 
-        public override bool Equals([CanBeNull] IFieldDefinition x, [CanBeNull] IFieldDefinition y)
+        public override bool Equals(IFieldDefinition x, IFieldDefinition y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -50,8 +48,7 @@ namespace Microsoft.Qwiq
 
             // ReSharper restore MemberHidesStaticFromOuterClass
 
-            // Explicit static constructor to tell C# compiler
-            // not to mark type as beforefieldinit
+            // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
             static Nested()
             {

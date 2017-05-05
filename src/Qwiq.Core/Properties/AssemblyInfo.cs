@@ -22,3 +22,4 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.Soap")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Mapper")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Mapper.Identity")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.UnitTests")]
