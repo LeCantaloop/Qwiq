@@ -1,9 +1,8 @@
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: '{NuGetVersionV2}'
-mode: ContinuousDeployment
+mode: Mainline
 tag-prefix: '[vV]'
 continuous-delivery-fallback-tag: ci
-next-version: 8.0.0
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
@@ -18,42 +17,40 @@ branches:
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-  releases?[/-]:
+  release:
     mode: ContinuousDeployment
     tag: rc
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-  features?[/-]:
+  feature:
     mode: ContinuousDeployment
     tag: useBranchName
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-  (pull|pull\-requests|pr)[/-]:
+  pull-request:
     mode: ContinuousDeployment
     tag: alpha
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     track-merge-target: false
-  hotfix(es)?[/-]:
+  hotfix:
     mode: ContinuousDeployment
-    tag: rc
+    tag: qfe
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-  support[/-]:
+  support:
     mode: ContinuousDeployment
     tag: ''
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-  dev(elop)?(ment)?$:
+  develop:
     mode: ContinuousDeployment
-    tag: alpha
+    tag: beta
     increment: Minor
     prevent-increment-of-merged-branch-version: false
     track-merge-target: true
-ignore:
-  sha: []
