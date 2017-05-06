@@ -164,7 +164,7 @@ namespace Microsoft.Qwiq.Mocks
 
         public IWorkItemCollection RunQuery()
         {
-            return new WorkItemCollection(RunQueryImpl());
+            return new WorkItemCollection(RunQueryImpl().ToList());
         }
 
         private IEnumerable<IWorkItem> RunQueryImpl()

@@ -8,11 +8,11 @@ namespace Microsoft.Qwiq.WorkItemStore
     [DeploymentItem("Microsoft.TeamFoundation.WorkItemTracking.Client.dll")]
     public abstract class WorkItemStoreComparisonContextSpecification : TimedContextSpecification
     {
-        protected IWorkItemStore Rest => RestResult.WorkItemStore;
+        protected internal IWorkItemStore Rest => RestResult.WorkItemStore;
 
         protected Result RestResult { get; private set; }
 
-        protected IWorkItemStore Soap => SoapResult.WorkItemStore;
+        protected internal IWorkItemStore Soap => SoapResult.WorkItemStore;
 
         protected Result SoapResult { get; private set; }
 

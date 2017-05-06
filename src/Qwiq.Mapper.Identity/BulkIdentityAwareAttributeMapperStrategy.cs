@@ -62,9 +62,9 @@ namespace Microsoft.Qwiq.Mapper
         /// <param name="workItemMapper">The work item mapper.</param>
         public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
         {
-            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Default);
-            if (!workingSet.Any()) return;
+            if (!workItemMappings.Any()) return;
 
+            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Default);
             var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targeWorkItemType, _inspector);
             if (!validIdentityProperties.Any())return;
 

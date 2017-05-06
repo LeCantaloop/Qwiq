@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Qwiq
 {
-    public class IdentifiableComparer : GenericComparer<IIdentifiable<int>>
+    internal class IdentifiableComparer : GenericComparer<IIdentifiable<int>>
     {
         internal new static IdentifiableComparer Default => Nested.Instance;
 

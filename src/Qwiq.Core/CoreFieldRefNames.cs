@@ -72,7 +72,7 @@ namespace Microsoft.Qwiq
 
         public const string WorkItemType = "System.WorkItemType";
 
-        public static IEnumerable<string> All => NameLookup.Keys.Except(new[] { LinkType });
+        public static IEnumerable<string> All => NameLookup.Keys.Except(new[] { LinkType }).ToList();
 
         public static IReadOnlyDictionary<string, int> CoreFieldIdLookup { get; } =
             new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -117,38 +117,38 @@ namespace Microsoft.Qwiq
         public static IReadOnlyDictionary<string, string> NameLookup { get; } =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                 {
-                    { AreaId, "Area ID" },
-                    { AreaPath, "Area Path" },
-                    { AssignedTo, "Assigned To" },
-                    { AttachedFileCount, "Attached File Count"},
-                    { AuthorizedAs, "Authorized As" },
-                    { AuthorizedDate, "Authorized Date" },
-                    { BoardColumn, "Board Column" },
-                    { BoardColumnDone, "Board Column Done" },
-                    { BoardLane, "Board Lane" },
-                    { ChangedBy, "Changed By" },
-                    { ChangedDate, "Changed Date" },
-                    { CreatedBy, "Created By" },
-                    { CreatedDate, "Created Date" },
-                    { Description, "Description" },
-                    { ExternalLinkCount, "External Link Count" },
-                    { History, "History" },
-                    { HyperlinkCount, "Hyperlink Count" },
-                    { Id, "ID" },
-                    { IterationId, "Iteration ID" },
-                    { IterationPath, "Iteration Path" },
-                    { LinkType, "Link Type" },
-                    { NodeName, "Node Name" },
-                    { Reason, "Reason" },
-                    { RelatedLinkCount, "Related Link Count" },
-                    { Rev, "Rev" },
-                    { RevisedDate, "Revised Date" },
-                    { State, "State" },
-                    { Tags, "Tags" },
-                    { TeamProject, "Team Project" },
-                    { Title, "Title" },
-                    { Watermark, "Watermark" },
-                    { WorkItemType, "Work Item Type" }
+                    { AreaId, string.Intern("Area ID") },
+                    { AreaPath, string.Intern("Area Path") },
+                    { AssignedTo, string.Intern("Assigned To") },
+                    { AttachedFileCount, string.Intern("Attached File Count")},
+                    { AuthorizedAs, string.Intern("Authorized As") },
+                    { AuthorizedDate, string.Intern("Authorized Date") },
+                    { BoardColumn, string.Intern("Board Column") },
+                    { BoardColumnDone, string.Intern("Board Column Done") },
+                    { BoardLane, string.Intern("Board Lane") },
+                    { ChangedBy, string.Intern("Changed By") },
+                    { ChangedDate, string.Intern("Changed Date") },
+                    { CreatedBy, string.Intern("Created By") },
+                    { CreatedDate, string.Intern("Created Date") },
+                    { Description, string.Intern("Description") },
+                    { ExternalLinkCount, string.Intern("External Link Count") },
+                    { History, string.Intern("History") },
+                    { HyperlinkCount, string.Intern("Hyperlink Count") },
+                    { Id, string.Intern("ID") },
+                    { IterationId, string.Intern("Iteration ID") },
+                    { IterationPath, string.Intern("Iteration Path") },
+                    { LinkType, string.Intern("Link Type") },
+                    { NodeName, string.Intern("Node Name") },
+                    { Reason, string.Intern("Reason") },
+                    { RelatedLinkCount, string.Intern("Related Link Count") },
+                    { Rev, string.Intern("Rev") },
+                    { RevisedDate, string.Intern("Revised Date") },
+                    { State, string.Intern("State") },
+                    { Tags, string.Intern("Tags") },
+                    { TeamProject, string.Intern("Team Project") },
+                    { Title, string.Intern("Title") },
+                    { Watermark, string.Intern("Watermark") },
+                    { WorkItemType, string.Intern("Work Item Type") }
                 };
 
         /// <summary>

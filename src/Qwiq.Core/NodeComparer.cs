@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    public class NodeComparer : GenericComparer<INode>
+    internal class NodeComparer : GenericComparer<INode>
     {
         internal new static readonly NodeComparer Default = Nested.Instance;
 

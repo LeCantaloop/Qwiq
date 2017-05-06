@@ -4,8 +4,6 @@ using System.Linq;
 
 using Microsoft.Qwiq.Mapper.Attributes;
 
-using Newtonsoft.Json;
-
 namespace Microsoft.Qwiq.Mapper.Mocks
 {
     [WorkItemType("Task")]

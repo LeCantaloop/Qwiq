@@ -13,15 +13,25 @@ namespace Microsoft.Qwiq
     /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IEquatable<IWorkItem>
     {
+        [CanBeNull]
         private readonly IWorkItemType _type;
 
         private bool _useFields = true;
 
-        private readonly Lazy<IFieldCollection> _fields;
+        private IFieldCollection _fields;
 
-        protected internal WorkItem(IDictionary<string, object> fields)
+        [CanBeNull]
+        private Func<IFieldCollection> _fieldFactory;
+
+        [CanBeNull]
+        private readonly Lazy<IWorkItemType> _lazyType;
+
+        protected internal WorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields)
             : base(fields)
         {
+            Contract.Requires(type != null);
+
+            _type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
         protected internal WorkItem([NotNull] IWorkItemType type)
@@ -29,15 +39,22 @@ namespace Microsoft.Qwiq
             Contract.Requires(type != null);
 
             _type = type ?? throw new ArgumentNullException(nameof(type));
-            _fields = new Lazy<IFieldCollection>(()=> new FieldCollection(this, Type.FieldDefinitions, (revision, definition) => new Field(revision, definition)));
+
         }
 
-        protected internal WorkItem([NotNull] IWorkItemType type, Func<IFieldCollection> fieldCollectionFactory)
+        protected internal WorkItem([NotNull] Lazy<IWorkItemType> type)
         {
             Contract.Requires(type != null);
+            _lazyType = type;
+        }
 
+        protected internal WorkItem([NotNull] IWorkItemType type, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
+        {
+
+            Contract.Requires(type != null);
+            Contract.Requires(fieldCollectionFactory != null);
             _type = type ?? throw new ArgumentNullException(nameof(type));
-            _fields = new Lazy<IFieldCollection>(fieldCollectionFactory);
+            _fieldFactory = fieldCollectionFactory ?? throw new ArgumentNullException(nameof(fieldCollectionFactory));
         }
 
         public virtual int Revision => Rev;
@@ -57,7 +74,29 @@ namespace Microsoft.Qwiq
 
         public new virtual int ExternalLinkCount => base.ExternalLinkCount.GetValueOrDefault(0);
 
-        public virtual IFieldCollection Fields => _fields == null ? throw new NotSupportedException() : _fields.Value;
+        public virtual IFieldCollection Fields
+        {
+            get
+            {
+                if (_fields != null) return _fields;
+
+                if (_fieldFactory != null)
+                {
+                    _fields = _fieldFactory();
+                    _fieldFactory = null;
+                }
+                else
+                {
+                    _fields = new FieldCollection(
+                                                  this,
+                                                  Type.FieldDefinitions,
+                                                  (revision, definition) => new Field(revision, definition));
+                }
+
+                return _fields;
+
+            }
+        }
 
         public new virtual int HyperlinkCount => base.HyperlinkCount.GetValueOrDefault(0);
 
@@ -81,7 +120,7 @@ namespace Microsoft.Qwiq
 
         public virtual IEnumerable<IRevision> Revisions => throw new NotSupportedException();
 
-        public virtual IWorkItemType Type => _type ?? throw new NotSupportedException();
+        public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new NotSupportedException();
 
         public abstract Uri Uri { get; }
 
@@ -191,6 +230,12 @@ namespace Microsoft.Qwiq
         public override int GetHashCode()
         {
             return WorkItemComparer.Default.GetHashCode(this);
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $"{WorkItemType} {Id} {Title}";
         }
     }
 }

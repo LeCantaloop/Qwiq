@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq
 {
-    public class TeamFoundationIdentityComparer : GenericComparer<ITeamFoundationIdentity>
+    internal class TeamFoundationIdentityComparer : GenericComparer<ITeamFoundationIdentity>
     {
         internal new static TeamFoundationIdentityComparer Default => Nested.Instance;
 

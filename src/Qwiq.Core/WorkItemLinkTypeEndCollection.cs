@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeEndCollection : ReadOnlyObjectWithIdCollection<IWorkItemLinkTypeEnd, int>,
+    public class WorkItemLinkTypeEndCollection : ReadOnlyObjectWithNameCollection<IWorkItemLinkTypeEnd>,
                                                  IWorkItemLinkTypeEndCollection
     {
         internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkType> linkTypes)
             : this(
                 linkTypes.SelectMany(s => new[] { s.ForwardEnd, s.IsDirectional ? s.ReverseEnd : null })
-                         .Where(p => p != null))
+                         .Where(p => p != null).ToList())
         {
         }
 
-        internal WorkItemLinkTypeEndCollection(IEnumerable<IWorkItemLinkTypeEnd> linkEndTypes)
-            : base(linkEndTypes, e => e.Name, e => e.Id)
+        internal WorkItemLinkTypeEndCollection(List<IWorkItemLinkTypeEnd> linkEndTypes)
+            : base(linkEndTypes, e => e.Name)
         {
         }
 

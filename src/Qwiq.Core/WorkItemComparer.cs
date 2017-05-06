@@ -1,6 +1,6 @@
 ﻿namespace Microsoft.Qwiq
 {
-    public class WorkItemComparer : GenericComparer<IWorkItem>
+    internal class WorkItemComparer : GenericComparer<IWorkItem>
     {
         private WorkItemComparer()
         {

@@ -8,8 +8,8 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
-        public FieldDefinitionCollection(IWorkItemStore store)
-            : base(store?.Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s))
+        internal FieldDefinitionCollection(IWorkItemStore store)
+            : base(store?.Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s).ToList())
         {
             if (store == null) throw new ArgumentNullException(nameof(store));
         }
@@ -20,11 +20,11 @@ namespace Microsoft.Qwiq.Client.Rest
         }
 
         internal FieldDefinitionCollection(IEnumerable<WorkItemFieldReference> typeFields)
-            : this(typeFields.Where(p => p != null).Select(s => new FieldDefinition(s)))
+            : this(typeFields.Where(p => p != null).Select(s => (IFieldDefinition)new FieldDefinition(s)).ToList())
         {
         }
 
-        private FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
+        private FieldDefinitionCollection(List<IFieldDefinition> fieldDefinitions)
             : base(fieldDefinitions)
         {
         }

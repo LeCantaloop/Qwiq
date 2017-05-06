@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    public class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
+    internal class FieldDefinitionComparer : GenericComparer<IFieldDefinition>
     {
         private FieldDefinitionComparer()
         {

@@ -16,6 +16,12 @@ namespace Microsoft.Qwiq.Client.Rest
         protected override ITeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
         {
             var tfsServer = new VssConnection(endpoint, credentials);
+
+            tfsServer.Settings.BypassProxyOnLocal = true;
+            tfsServer.Settings.CompressionEnabled = true;
+
+
+
             tfsServer.ConnectAsync(VssConnectMode.Automatic).GetAwaiter().GetResult();
             if (!tfsServer.HasAuthenticated) throw new InvalidOperationException("Could not connect.");
             return tfsServer.AsProxy();

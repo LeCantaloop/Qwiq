@@ -6,6 +6,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
+    // REVIEW: Make this implement the interface for IFieldDefinitionCollection and pass everything to the native type
     internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
         internal FieldDefinitionCollection(Tfs.FieldDefinitionCollection innerCollection)
@@ -13,7 +14,8 @@ namespace Microsoft.Qwiq.Client.Soap
                 innerCollection.Cast<Tfs.FieldDefinition>()
                                .Select(
                                    field => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(
-                                       new FieldDefinition(field))))
+                                       new FieldDefinition(field)))
+                  .ToList())
         {
         }
     }

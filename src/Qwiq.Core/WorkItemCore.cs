@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
@@ -7,14 +8,14 @@ namespace Microsoft.Qwiq
 {
     public abstract class WorkItemCore : IWorkItemCore, IEquatable<IWorkItemCore>, IRevisionInternal
     {
-        private readonly IDictionary<string, object> _fields;
+        [CanBeNull]
+        private readonly Dictionary<string, object> _fields;
 
         protected internal WorkItemCore()
-            :this(null)
         {
         }
 
-        protected internal WorkItemCore([CanBeNull] IDictionary<string, object> fields)
+        protected internal WorkItemCore([CanBeNull] Dictionary<string, object> fields)
         {
             _fields = fields ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
@@ -51,18 +52,35 @@ namespace Microsoft.Qwiq
             }
         }
 
-        protected virtual T GetValue<T>(string name)
+        [JetBrains.Annotations.Pure]
+        [CanBeNull]
+        protected virtual T GetValue<T>([NotNull] string name)
         {
-            return TypeParser.Default.Parse<T>(GetValue(name));
+            var value = GetValue(name);
+
+            if (value == null)
+            {
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)string.Empty;
+                }
+            }
+
+            return TypeParser.Default.Parse(value, default(T));
         }
 
-        protected virtual object GetValue(string name)
+        [CanBeNull]
+        [JetBrains.Annotations.Pure]
+        protected virtual object GetValue([NotNull] string name)
         {
-            return _fields != null && _fields.TryGetValue(name, out object val) ? val : null;
+            Contract.Requires(!string.IsNullOrEmpty(name));
+            if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
+            return _fields.TryGetValue(name, out object val) ? val : null;
         }
 
-        protected virtual void SetValue(string name, object value)
+        protected virtual void SetValue([NotNull] string name, [CanBeNull] object value)
         {
+            if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
             _fields[name] = value;
         }
 
@@ -81,7 +99,6 @@ namespace Microsoft.Qwiq
             return NullableIdentifiableComparer.Default.GetHashCode(this);
         }
 
-        [CanBeNull]
         public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
             if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));

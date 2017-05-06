@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public abstract class WorkItemCommon : WorkItemCore, IWorkItemCommon, IEquatable<IWorkItemCommon>
@@ -9,8 +11,8 @@ namespace Microsoft.Qwiq
         {
         }
 
-        protected internal WorkItemCommon(IDictionary<string, object> fields)
-            :base(fields)
+        protected internal WorkItemCommon([CanBeNull] Dictionary<string, object> fields)
+            : base(fields)
         {
         }
 
@@ -86,6 +88,8 @@ namespace Microsoft.Qwiq
             set => SetValue(CoreFieldRefNames.Tags, value);
         }
 
+        public virtual string TeamProject => GetValue<string>(CoreFieldRefNames.TeamProject);
+
         public virtual string Title
         {
             get => GetValue<string>(CoreFieldRefNames.Title);
@@ -95,8 +99,6 @@ namespace Microsoft.Qwiq
         public virtual int? Watermark => GetValue<int?>(CoreFieldRefNames.Watermark);
 
         public virtual string WorkItemType => GetValue<string>(CoreFieldRefNames.WorkItemType);
-
-        public virtual string TeamProject => GetValue<string>(CoreFieldRefNames.TeamProject);
 
         public bool Equals(IWorkItemCommon other)
         {

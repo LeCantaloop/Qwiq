@@ -13,13 +13,13 @@ namespace Microsoft.Qwiq
 
         private readonly IDictionary<TId, int> _mapById;
 
-        protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items, [CanBeNull] Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithIdCollection([CanBeNull] List<T> items, [CanBeNull] Func<T, string> nameFunc)
             : this(items, nameFunc, arg => arg.Id)
         {
         }
 
         protected ReadOnlyObjectWithIdCollection(
-            [CanBeNull] IEnumerable<T> items,
+            [CanBeNull] List<T> items,
             [CanBeNull] Func<T, string> nameFunc,
             [NotNull] Func<T, TId> idFunc)
             : base(items, nameFunc)
@@ -27,11 +27,18 @@ namespace Microsoft.Qwiq
             Contract.Requires(idFunc != null);
 
             _idFunc = idFunc ?? throw new ArgumentNullException(nameof(idFunc));
-            _mapById = new Dictionary<TId, int>();
+            _mapById = new Dictionary<TId, int>(items?.Count ?? 0);
+        }
+
+        protected ReadOnlyObjectWithIdCollection([CanBeNull] List<T> items)
+            : base(items)
+        {
+            _idFunc = a => a.Id;
+            _mapById = new Dictionary<TId, int>(items?.Count ?? 0);
         }
 
         protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items)
-            : base(items)
+            :base(items)
         {
             _idFunc = a => a.Id;
             _mapById = new Dictionary<TId, int>();

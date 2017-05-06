@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
@@ -23,7 +23,15 @@ namespace Microsoft.Qwiq.Client.Rest
                                             .GetWorkItemTypesAsync(project.Name)
                                             .GetAwaiter()
                                             .GetResult();
-                            return new WorkItemTypeCollection(wits.Select(s => new WorkItemType(s)));
+
+                            var wits2 = new List<IWorkItemType>(wits.Count);
+                            for (var i = 0; i < wits.Count; i++)
+                            {
+                                var wit = wits[i];
+                                wits2.Add(new WorkItemType(wit));
+                            }
+
+                            return new WorkItemTypeCollection(wits2);
                         }),
                 new Lazy<INodeCollection>(
                     () =>
@@ -39,7 +47,8 @@ namespace Microsoft.Qwiq.Client.Rest
                                               .GetResult();
 
                             // SOAP Client does not return just the root, so return the root's children to match implementation
-                            return new NodeCollection(new Node(result).ChildNodes);
+                            var n = new Node(result).ChildNodes;
+                            return n;
                         }),
                 new Lazy<INodeCollection>(
                     () =>
@@ -54,7 +63,7 @@ namespace Microsoft.Qwiq.Client.Rest
                                               .GetAwaiter()
                                               .GetResult();
 
-                            return new NodeCollection(new Node(result).ChildNodes);
+                            return new Node(result).ChildNodes;
                         }))
         {
         }

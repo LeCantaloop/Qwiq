@@ -1,6 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public class IdentityDescriptorComparer : GenericComparer<IIdentityDescriptor>
+    internal class IdentityDescriptorComparer : GenericComparer<IIdentityDescriptor>
     {
         internal new static IdentityDescriptorComparer Default => Nested.Instance;
 

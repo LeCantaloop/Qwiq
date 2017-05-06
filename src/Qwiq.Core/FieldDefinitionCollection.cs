@@ -5,7 +5,7 @@ namespace Microsoft.Qwiq
 {
     public abstract class FieldDefinitionCollection : ReadOnlyObjectWithIdCollection<IFieldDefinition, int>, IFieldDefinitionCollection
     {
-        protected internal FieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
+        protected internal FieldDefinitionCollection(List<IFieldDefinition> fieldDefinitions)
             : base(fieldDefinitions, definition => definition.Name)
         {
         }

@@ -1,18 +1,34 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
     internal class WorkItemType : Qwiq.WorkItemType
     {
-        internal WorkItemType(TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemType type)
+
+        [NotNull]
+        private readonly TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemType _type;
+
+        [CanBeNull]
+        private IFieldDefinitionCollection _fdc;
+
+        internal WorkItemType([NotNull] TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemType type)
             : base(
-                type?.Name,
-                type?.Description,
-                new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollection(type?.Fields)),
+                type.Name,
+                type.Description,
+                null,
                 NewWorkItemImpl)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            Contract.Requires(type != null);
+            Contract.Requires(type != null);
+
+            _type = type ?? throw new ArgumentNullException(nameof(type));
         }
+
+        /// <inheritdoc />
+        public override IFieldDefinitionCollection FieldDefinitions => _fdc ?? (_fdc = new FieldDefinitionCollection(_type.Fields));
 
         private static IWorkItem NewWorkItemImpl()
         {
@@ -39,6 +55,12 @@ namespace Microsoft.Qwiq.Client.Rest
              * return new WorkItemProxy(result);
              *
              */
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(_type != null);
         }
     }
 }

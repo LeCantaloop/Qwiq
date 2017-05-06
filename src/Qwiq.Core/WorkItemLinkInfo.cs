@@ -2,28 +2,47 @@
 using System.Diagnostics;
 using System.Globalization;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class WorkItemLinkInfo : IWorkItemLinkInfo
     {
-        private readonly IWorkItemLinkTypeEnd _id;
+        [CanBeNull]
+        private Lazy<IWorkItemLinkTypeEnd> _lazyLinkTypeEnd;
 
-        private readonly Lazy<IWorkItemLinkTypeEnd> _lazyId;
+        [CanBeNull]
+        private IWorkItemLinkTypeEnd _linkTypeEnd;
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, IWorkItemLinkTypeEnd id)
-            : this(sourceId, targetId, (Lazy<IWorkItemLinkTypeEnd>) null)
-        {
-            _id = id ?? throw new ArgumentNullException(nameof(id));
-        }
-
-        internal WorkItemLinkInfo(int sourceId, int targetId, Lazy<IWorkItemLinkTypeEnd> lazyId)
+        internal WorkItemLinkInfo(int sourceId, int targetId, [CanBeNull] IWorkItemLinkTypeEnd linkTypeEnd)
         {
             SourceId = sourceId;
             TargetId = targetId;
-            _lazyId = lazyId;
+            _linkTypeEnd = linkTypeEnd;
         }
 
-        public IWorkItemLinkTypeEnd LinkType => _id ?? _lazyId.Value;
+        internal WorkItemLinkInfo(int sourceId, int targetId, [NotNull] Lazy<IWorkItemLinkTypeEnd> linkTypeEnd)
+        {
+            SourceId = sourceId;
+            TargetId = targetId;
+            _lazyLinkTypeEnd = linkTypeEnd ?? throw new ArgumentNullException(nameof(linkTypeEnd));
+        }
+
+        public IWorkItemLinkTypeEnd LinkType
+        {
+            get
+            {
+                if (_linkTypeEnd != null) return _linkTypeEnd;
+                if (_lazyLinkTypeEnd != null)
+                {
+                    _linkTypeEnd = _lazyLinkTypeEnd.Value;
+                    _lazyLinkTypeEnd = null;
+                    return _linkTypeEnd;
+                }
+
+                return null;
+            }
+        }
 
         public int SourceId { get; }
 
@@ -33,18 +52,6 @@ namespace Microsoft.Qwiq
         public bool Equals(IWorkItemLinkInfo other)
         {
             return WorkItemLinkInfoComparer.Default.Equals(this, other);
-        }
-
-        [DebuggerStepThrough]
-        public static bool operator !=(WorkItemLinkInfo x, WorkItemLinkInfo y)
-        {
-            return !WorkItemLinkInfoComparer.Default.Equals(x, y);
-        }
-
-        [DebuggerStepThrough]
-        public static bool operator ==(WorkItemLinkInfo x, WorkItemLinkInfo y)
-        {
-            return WorkItemLinkInfoComparer.Default.Equals(x, y);
         }
 
         [DebuggerStepThrough]
@@ -61,7 +68,7 @@ namespace Microsoft.Qwiq
 
         public override string ToString()
         {
-            return $"S:{SourceId} T:{TargetId} Type:{LinkType}".ToString(CultureInfo.InvariantCulture);
+            return $"S:{SourceId} T:{TargetId} Type:{LinkType?.ImmutableName ?? "UNKNOWN"}".ToString(CultureInfo.InvariantCulture);
         }
     }
 }

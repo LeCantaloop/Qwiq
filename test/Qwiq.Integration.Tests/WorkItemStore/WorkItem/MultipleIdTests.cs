@@ -18,6 +18,18 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
     }
 
     [TestClass]
+    public class Given_WorkItems_from_each_client_EagerLoad_by_IDs : Given_WorkItems_from_each_client_by_IDs
+    {
+        /// <inheritdoc />
+        public override void Given()
+        {
+            base.Given();
+            Rest.Configuration.LazyLoadingEnabled = false;
+            Soap.Configuration.LazyLoadingEnabled = false;
+        }
+    }
+
+    [TestClass]
     public class Given_WorkItems_from_each_client_by_IDs_at_AsOf : SingleWorkItemComparisonContextSpecification
     {
         private const int Id = 10726528;

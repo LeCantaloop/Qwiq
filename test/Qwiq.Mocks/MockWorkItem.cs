@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -47,48 +50,54 @@ namespace Microsoft.Qwiq.Mocks
                     CoreFieldDefinitions.All.Union(
                         fields?.Keys.Select(MockFieldDefinition.Create)
                         ?? Enumerable.Empty<IFieldDefinition>())),
-                fields)
+                (Dictionary<string, object>)fields)
         {
         }
 
-        public MockWorkItem(IWorkItemType type, int id)
+        public MockWorkItem([NotNull] IWorkItemType type, int id)
             : this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
         {
+            Contract.Requires(id > 0);
         }
 
-        public MockWorkItem(IWorkItemType type, int id, params KeyValuePair<string, object>[] fieldValues)
+        public MockWorkItem([NotNull] IWorkItemType type, int id, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
             : this(
                    type,
-                   fieldValues == null
-                       ? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) { { CoreFieldRefNames.Id, id } }
-                       : fieldValues.Union(new[] { new KeyValuePair<string, object>(CoreFieldRefNames.Id, id) })
-                                    .ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
+                   fieldValues?.Union(new[] { new KeyValuePair<string, object>(CoreFieldRefNames.Id, id) })
+                              .ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) { { CoreFieldRefNames.Id, id } })
+        {
+            Contract.Requires(id > 0);
+        }
+
+        public MockWorkItem([NotNull] IWorkItemType type, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
+            : this(type, fieldValues?.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
         {
         }
 
-        public MockWorkItem(IWorkItemType type, params KeyValuePair<string, object>[] fieldValues)
-            : this(type, fieldValues == null ? null : fieldValues.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
+        public MockWorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields = null)
+            : base(type, NormalizeFields(type, fields))
         {
-        }
-
-        public MockWorkItem(IWorkItemType type, IDictionary<string, object> fields = null)
-            : base(type)
-        {
-            // set any values coming into
-            if (fields != null)
-            {
-                foreach (var field in fields)
-                {
-                    Fields[field.Key].Value = field.Value;
-                }
-            }
-
             SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
             SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
 
             Links = new HashSet<ILink>();
             Revisions = new HashSet<IRevision>();
             ApplyRules();
+        }
+
+        private static Dictionary<string, object> NormalizeFields(IWorkItemType type, Dictionary<string, object> fields)
+        {
+            if (fields == null) return null;
+            var retval = new Dictionary<string, object>(fields.Comparer);
+
+            foreach (var field in fields)
+            {
+                var fieldDef = type.FieldDefinitions[field.Key];
+                retval.Add(fieldDef.ReferenceName, field.Value);
+
+            }
+
+            return retval;
         }
 
         public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)

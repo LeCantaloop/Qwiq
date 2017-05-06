@@ -27,9 +27,6 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
-    <Compile Include="..\ReSharper.Annotations.cs">
-      <Link>Properties\ReSharper.Annotations.cs</Link>
-    </Compile>
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />

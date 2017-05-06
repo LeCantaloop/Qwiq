@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -13,6 +13,7 @@ namespace Microsoft.Qwiq
         public const string Related = "System.LinkTypes.Related";
 
         /// <summary>Returns the set of all core link types.</summary>
-        public static readonly IEnumerable<string> All = new[] { Related, Hierarchy, Dependency, Duplicate };
+        [ItemNotNull]
+        public static readonly string[] All = { Related, Hierarchy, Dependency, Duplicate };
     }
 }

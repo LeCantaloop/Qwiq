@@ -6,7 +6,7 @@ namespace System.Collections.Generic
     internal static class IEnumerableExtensions
     // ReSharper restore InconsistentNaming
     {
-        public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> source, int size)
+        public static IEnumerable<T[]> Partition<T>(this HashSet<T> source, int size)
         {
             var count = 0;
             T[] group = null; // use arrays as buffer

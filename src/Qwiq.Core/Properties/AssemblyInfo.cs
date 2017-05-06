@@ -19,3 +19,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Relatives.Tests")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.IntegrationTests")]
 [assembly: InternalsVisibleTo("Microsoft.Qwiq.Core.UnitTests")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.Soap")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Mapper")]
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Mapper.Identity")]

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Microsoft.Qwiq
 {
-    public class FieldDefinitionCollectionComparer : GenericComparer<IFieldDefinitionCollection>
+    internal class FieldDefinitionCollectionComparer : GenericComparer<IFieldDefinitionCollection>
     {
         internal static readonly string[] SkippedFields =
             {

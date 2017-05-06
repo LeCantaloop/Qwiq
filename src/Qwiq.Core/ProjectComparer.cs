@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public class ProjectComparer : GenericComparer<IProject>
+    internal class ProjectComparer : GenericComparer<IProject>
     {
         internal new static ProjectComparer Default => Nested.Instance;
 

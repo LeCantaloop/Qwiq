@@ -1,15 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace Microsoft.Qwiq.Exceptions
 {
     internal class AggregateExceptionExploder : IExceptionExploder
     {
-        public IEnumerable<Exception> Explode(Exception exception)
+        private static readonly ReadOnlyCollection<Exception> Empty = new ReadOnlyCollection<Exception>(new List<Exception>());
+
+        public ReadOnlyCollection<Exception> Explode(Exception exception)
         {
-            return new [] {exception}.OfType<AggregateException>().Select(ae => ae.Flatten()).SelectMany(ae => ae.InnerExceptions);
+            if (exception is AggregateException ae)
+            {
+                var ae1 = ae.Flatten();
+                return ae1.InnerExceptions;
+            }
+
+            return Empty;
         }
     }
 }
-

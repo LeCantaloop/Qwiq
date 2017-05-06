@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -13,27 +16,38 @@ namespace Microsoft.Qwiq
 
         private IWorkItemLinkTypeEnd _reverse;
 
-        internal WorkItemLinkType(string referenceName, IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
+        internal WorkItemLinkType([NotNull] string referenceName, [NotNull] IWorkItemLinkTypeEnd forward, [NotNull] IWorkItemLinkTypeEnd reverse)
             : this(referenceName)
         {
+            Contract.Requires(!string.IsNullOrEmpty(referenceName));
+            Contract.Requires(forward != null);
+            Contract.Requires(reverse != null);
+
             _forward = forward ?? throw new ArgumentNullException(nameof(forward));
             _reverse = reverse ?? throw new ArgumentNullException(nameof(reverse));
             _forwardFac = null;
             _reverseFac = null;
         }
 
-        internal WorkItemLinkType(string referenceName, Lazy<IWorkItemLinkTypeEnd> forward, Lazy<IWorkItemLinkTypeEnd> reverse)
+        internal WorkItemLinkType([NotNull] string referenceName, [NotNull] Lazy<IWorkItemLinkTypeEnd> forward, [NotNull] Lazy<IWorkItemLinkTypeEnd> reverse)
             : this(referenceName)
         {
+            Contract.Requires(!string.IsNullOrEmpty(referenceName));
+            Contract.Requires(forward != null);
+            Contract.Requires(reverse != null);
+
             _forwardFac = forward ?? throw new ArgumentNullException(nameof(forward));
             _reverseFac = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
 
-        internal WorkItemLinkType(string referenceName)
+        internal WorkItemLinkType([NotNull] string referenceName)
         {
-            ReferenceName = referenceName;
+            Contract.Requires(!string.IsNullOrEmpty(referenceName));
+            
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
+
+            ReferenceName = string.Intern(referenceName);
         }
 
         public IWorkItemLinkTypeEnd ForwardEnd => CoerceForwardValue();

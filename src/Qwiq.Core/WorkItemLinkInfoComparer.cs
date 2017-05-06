@@ -1,6 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkInfoComparer : GenericComparer<IWorkItemLinkInfo>
+    internal class WorkItemLinkInfoComparer : GenericComparer<IWorkItemLinkInfo>
     {
         internal new static WorkItemLinkInfoComparer Default => Nested.Instance;
 

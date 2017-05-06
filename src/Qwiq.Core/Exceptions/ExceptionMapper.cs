@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -9,10 +8,12 @@ namespace Microsoft.Qwiq.Exceptions
 {
     internal class ExceptionMapper : IExceptionMapper
     {
-        private readonly IEnumerable<IExceptionExploder> _exploders;
-        private readonly IEnumerable<IExceptionMapper> _mappers;
+        private readonly IExceptionExploder[] _exploders;
+        private readonly IExceptionMapper[] _mappers;
 
-        public ExceptionMapper([NotNull] IEnumerable<IExceptionExploder> exploders, [NotNull] IEnumerable<IExceptionMapper> mappers)
+        public ExceptionMapper(
+            [NotNull] IExceptionExploder[] exploders,
+            [NotNull] IExceptionMapper[] mappers)
         {
             Contract.Requires(exploders != null);
             Contract.Requires(mappers != null);
@@ -21,7 +22,7 @@ namespace Microsoft.Qwiq.Exceptions
             _mappers = mappers ?? throw new ArgumentNullException(nameof(mappers));
         }
 
-        public Exception Map(Exception ex)
+        public Exception Map([CanBeNull] Exception ex)
         {
             return MapImpl(ex) ?? ex;
         }
@@ -34,17 +35,31 @@ namespace Microsoft.Qwiq.Exceptions
             while (q.Count > 0)
             {
                 var item = q.Dequeue();
-                var mappedException = _mappers
-                                        .Select(mapper => mapper.Map(item))
-                                        .FirstOrDefault(me => me != null);
+                Exception mappedException = null;
+                for (var i = 0; i < _mappers.Length; i++)
+                {
+                    var mapper = _mappers[i];
+                    var me = mapper.Map(item);
+                    if (me == null) continue;
+                    mappedException = me;
+                    break;
+                }
 
                 if (mappedException == null)
                 {
-                    foreach (var childException in _exploders
-                        .Select(exceptionExploder => exceptionExploder.Explode(item))
-                        .SelectMany(e => e))
+                    for (var i = 0; i < _exploders.Length; i++)
                     {
-                        q.Enqueue(childException);
+                        var exceptionExploder = _exploders[i];
+                        var exceptions = exceptionExploder.Explode(item);
+
+                        if (exceptions == null) continue;
+
+
+                        for (var j = 0; j < exceptions.Count; j++)
+                        {
+                            var childException = exceptions[j];
+                            q.Enqueue(childException);
+                        }
                     }
                 }
                 else

@@ -1,11 +1,14 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Exceptions
 {
     public interface IExceptionExploder
     {
-        IEnumerable<Exception> Explode(Exception exception);
+        [CanBeNull]
+        ReadOnlyCollection<Exception> Explode([CanBeNull] Exception exception);
     }
 }
 

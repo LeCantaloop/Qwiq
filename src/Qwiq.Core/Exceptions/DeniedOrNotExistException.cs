@@ -37,7 +37,7 @@ namespace Microsoft.Qwiq
         /// <param name="projectGuid">The project unique identifier.</param>
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "guid")]
         public DeniedOrNotExistException(Guid projectGuid)
-            : base(string.Format(CultureInfo.InvariantCulture, ErrorFormat, projectGuid))
+            : base(string.Format(CultureInfo.InvariantCulture, ErrorFormat, projectGuid.ToString()))
         {
         }
 

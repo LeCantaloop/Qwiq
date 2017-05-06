@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq
     {
         private readonly Lazy<IWorkItemLinkTypeEndCollection> _ltCol;
 
-        public WorkItemLinkTypeCollection(IEnumerable<IWorkItemLinkType> linkTypes)
+        internal WorkItemLinkTypeCollection(List<IWorkItemLinkType> linkTypes)
             : base(linkTypes, type => type.ReferenceName)
         {
             _ltCol = new Lazy<IWorkItemLinkTypeEndCollection>(() => new WorkItemLinkTypeEndCollection(this));

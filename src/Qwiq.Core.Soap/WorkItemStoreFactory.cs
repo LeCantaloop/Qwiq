@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Microsoft.Qwiq.Credentials;
+using Microsoft.Qwiq.Exceptions;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
@@ -22,7 +23,7 @@ namespace Microsoft.Qwiq.Client.Soap
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
             var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
-            return CreateSoapWorkItemStore(tfsProxy);
+            return ExceptionHandlingDynamicProxyFactory.Create(CreateSoapWorkItemStore(tfsProxy));
         }
 
         private static IWorkItemStore CreateSoapWorkItemStore(IInternalTeamProjectCollection tfs)

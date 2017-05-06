@@ -15,8 +15,8 @@ namespace Microsoft.Qwiq.Exceptions
     public class ExceptionMapperTests : ContextSpecification
     {
         protected IExceptionMapper ExceptionMapper { get; set; }
-        protected IEnumerable<IExceptionExploder> ExceptionExploders { get; set; }
-        protected IEnumerable<IExceptionMapper> ExceptionMappers { get; set; }
+        protected IExceptionExploder[] ExceptionExploders { get; set; }
+        protected IExceptionMapper[] ExceptionMappers { get; set; }
         protected Exception Input { get; set; }
         protected Exception ActualResult { get; set; }
 
@@ -36,7 +36,7 @@ namespace Microsoft.Qwiq.Exceptions
     {
         public override void Given()
         {
-            ExceptionExploders = Enumerable.Empty<IExceptionExploder>();
+            ExceptionExploders = new IExceptionExploder[0];
             ExceptionMappers = new[] {new MockArgumentExceptionMapper()};
             Input = new ArgumentException(null, MockArgumentExceptionMapper.MockParamName);
             base.Given();
@@ -54,7 +54,7 @@ namespace Microsoft.Qwiq.Exceptions
     {
         public override void Given()
         {
-            ExceptionExploders = Enumerable.Empty<IExceptionExploder>();
+            ExceptionExploders = new IExceptionExploder[0];
             ExceptionMappers = new[] { new MockArgumentExceptionMapper() };
             Input = new ArgumentNullException();
             base.Given();
@@ -94,7 +94,7 @@ namespace Microsoft.Qwiq.Exceptions
 
         public override void Given()
         {
-            ExceptionExploders = Enumerable.Empty<IExceptionExploder>();
+            ExceptionExploders = new IExceptionExploder[0];
             ExceptionMappers = new[] {new MockVssExceptionMapper<T>(HandledErrorCodes.ToArray())};
             base.Given();
         }

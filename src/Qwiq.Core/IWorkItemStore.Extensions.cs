@@ -20,7 +20,5 @@ namespace Microsoft.Qwiq
         {
             return store.GetChildLinkTypeEnd().OppositeEnd;
         }
-
-       
     }
 }

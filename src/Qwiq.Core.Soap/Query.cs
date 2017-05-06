@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.Qwiq.Exceptions;
-using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
@@ -11,37 +13,51 @@ namespace Microsoft.Qwiq.Client.Soap
     {
         private readonly int _pageSize;
 
+        [NotNull]
         private readonly TeamFoundation.WorkItemTracking.Client.Query _query;
 
-        internal Query(TeamFoundation.WorkItemTracking.Client.Query query, int pageSize = PageSizeLimits.DefaultPageSize)
+        internal Query([NotNull] TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
         {
-            _pageSize = pageSize;
-            _query = query ?? throw new ArgumentNullException(nameof(query));
+            Contract.Requires(query != null);
 
-            if (pageSize < PageSizeLimits.DefaultPageSize || pageSize > PageSizeLimits.MaxPageSize) throw new PageSizeRangeException();
+            _query = query ?? throw new ArgumentNullException(nameof(query));
+            _pageSize = pageSize;
         }
+
+        [CanBeNull]
+        private IWorkItemLinkTypeEndCollection _linkTypes;
 
         public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {
-            return new WorkItemLinkTypeEndCollection(
-                _query
-                    .GetLinkTypes()
-                    .Select(item => new WorkItemLinkTypeEnd(item))
-                    .ToList());
+            if (_linkTypes != null) return _linkTypes;
+
+            var lt = _query.GetLinkTypes();
+            var lte = new List<IWorkItemLinkTypeEnd>(lt.Length);
+            foreach (var l in lt)
+            {
+                var item = new WorkItemLinkTypeEnd(l);
+                lte.Add(item);
+            }
+
+            var retval = new WorkItemLinkTypeEndCollection(lte);
+            _linkTypes = retval;
+
+            return _linkTypes;
         }
 
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
-            var ends = new Lazy<WorkItemLinkTypeEndCollection>(() => new WorkItemLinkTypeEndCollection(GetLinkTypes()));
+            // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
+            var wili = _query.RunLinkQuery();
+            var retval = new List<IWorkItemLinkInfo>(wili.Length);
+            var lt = GetLinkTypes().ToDictionary(k=>k.Id, e=>e);
+            for (var i = 0; i < wili.Length; i++)
+            {
+                lt.TryGetValue(wili[i].LinkTypeId, out IWorkItemLinkTypeEnd lte) ;
+                retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, lte));
+            }
 
-            return _query.RunLinkQuery()
-                         .Select(
-                                 item =>
-                                     {
-                                         IWorkItemLinkTypeEnd LinkTypeEndFactory() => ends.Value.TryGetById(item.LinkTypeId, out IWorkItemLinkTypeEnd end) ? end : null;
-
-                                         return new WorkItemLinkInfo(item.SourceId, item.TargetId, new Lazy<IWorkItemLinkTypeEnd>(LinkTypeEndFactory));
-                                     });
+            return retval.AsReadOnly();
         }
 
         public IWorkItemCollection RunQuery()
@@ -49,12 +65,16 @@ namespace Microsoft.Qwiq.Client.Soap
             var wic = _query.RunQuery();
             wic.PageSize = _pageSize;
 
-            return
-                    wic
-                        .Cast<TeamFoundation.WorkItemTracking.Client.WorkItem>()
-                        .Select(item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)item))
-                        .ToList()
-                        .ToWorkItemCollection();
+            // TODO: Use Lazy config options
+            var items = new List<IWorkItem>(wic.Count);
+            for (var i = 0; i < wic.Count; i++)
+            {
+                // TODO: Use proxy config options
+                var item = ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>((WorkItem)wic[i]);
+                items.Add(item);
+            }
+
+            return new WorkItemCollection(items);
         }
     }
 }

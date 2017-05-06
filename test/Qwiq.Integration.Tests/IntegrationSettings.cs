@@ -31,14 +31,25 @@ namespace Microsoft.Qwiq
         public static Func<IWorkItemStore> CreateRestStore { get; } = () =>
                                                                           {
                                                                               var options = AuthenticationOptions;
-                                                                              return Client.Rest.WorkItemStoreFactory.Default.Create(options);
+                                                                              var wis = Client.Rest.WorkItemStoreFactory.Default.Create(options);
+                                                                              Configure(wis);
+                                                                              return wis;
                                                                           };
+
+        private static void Configure(IWorkItemStore wis)
+        {
+            wis.Configuration.PageSize = 200;
+            wis.Configuration.LazyLoadingEnabled = true;
+            wis.Configuration.ProxyCreationEnabled = true;
+        }
 
         /// <exclude />
         public static Func<IWorkItemStore> CreateSoapStore { get; } = () =>
                                                                           {
                                                                               var options = AuthenticationOptions;
-                                                                              return Client.Soap.WorkItemStoreFactory.Default.Create(options);
+                                                                              var wis = Client.Soap.WorkItemStoreFactory.Default.Create(options);
+                                                                              Configure(wis);
+                                                                              return wis;
                                                                           };
 
         /// <exclude />

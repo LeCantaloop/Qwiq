@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public class WorkItemLinkTypeEndComparer : GenericComparer<IWorkItemLinkTypeEnd>
+    internal class WorkItemLinkTypeEndComparer : GenericComparer<IWorkItemLinkTypeEnd>
     {
         internal new static WorkItemLinkTypeEndComparer Default => Nested.Instance;
 

@@ -6,11 +6,11 @@ using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    public class GenericComparer<T> : IComparer<T>, IEqualityComparer<T>
+    internal class GenericComparer<T> : IComparer<T>, IEqualityComparer<T>
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
-        public static readonly GenericComparer<T> Default = new GenericComparer<T>();
+        internal static readonly GenericComparer<T> Default = new GenericComparer<T>();
 
         public virtual int Compare(T x, T y)
         {

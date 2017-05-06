@@ -12,33 +12,28 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class WorkItemStore : IWorkItemStore
     {
-        private static readonly Regex ImmutableLinkTypeNameRegex = new Regex(
-            "(?<LinkTypeReferenceName>.*)-(?<Direction>.*)",
-            RegexOptions.Singleline | RegexOptions.Compiled);
-
-        private readonly Lazy<IWorkItemLinkTypeCollection> _linkTypes;
-
-        private readonly Lazy<IProjectCollection> _projects;
+        private static readonly Regex ImmutableLinkTypeNameRegex =
+                new Regex("(?<LinkTypeReferenceName>.*)-(?<Direction>.*)", RegexOptions.Singleline | RegexOptions.Compiled);
 
         private readonly Lazy<IQueryFactory> _queryFactory;
 
         private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
-        private readonly Lazy<IFieldDefinitionCollection> _fieldDefinitions;
+        private IFieldDefinitionCollection _fieldDefinitions;
 
-        internal WorkItemStore(
-            Func<IInternalTeamProjectCollection> tpcFactory,
-            Func<WorkItemStore, IQueryFactory> queryFactory,
-            int pageSize = Rest.Query.MaximumBatchSize)
-            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory, pageSize)
+        private IWorkItemLinkTypeCollection _linkTypes;
+
+        private IProjectCollection _projects;
+
+        internal WorkItemStore(Func<IInternalTeamProjectCollection> tpcFactory, Func<WorkItemStore, IQueryFactory> queryFactory)
+            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory)
         {
         }
 
         internal WorkItemStore(
             Func<IInternalTeamProjectCollection> tpcFactory,
             Func<WorkItemTrackingHttpClient> wisFactory,
-            Func<WorkItemStore, IQueryFactory> queryFactory,
-            int pageSize = Rest.Query.MaximumBatchSize)
+            Func<WorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
@@ -46,51 +41,34 @@ namespace Microsoft.Qwiq.Client.Rest
             _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             NativeWorkItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
-
-            // Boundary check the batch size
-
-            if (pageSize < Rest.Query.MinimumBatchSize || pageSize > Rest.Query.MaximumBatchSize) throw new PageSizeRangeException();
-
-
-            PageSize = pageSize;
-
-            WorkItemLinkTypeCollection ValueFactory()
-            {
-                return GetLinks(NativeWorkItemStore.Value);
-            }
-
-
-
-            _linkTypes = new Lazy<IWorkItemLinkTypeCollection>(ValueFactory);
-            _projects = new Lazy<IProjectCollection>(
-                () =>
-                    {
-                        using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
-                        {
-                            var projects = projectHttpClient.GetProjects(ProjectState.All).GetAwaiter().GetResult();
-                            return new ProjectCollection(projects.Select(project => new Project(project, this)).Cast<IProject>().ToList());
-                        }
-                    });
-            _fieldDefinitions = new Lazy<IFieldDefinitionCollection>(() => new FieldDefinitionCollection(this));
+            Configuration = new WorkItemStoreConfiguration();
         }
-
-        public int PageSize { get; }
-
-        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
 
         public VssCredentials AuthorizedCredentials => TeamProjectCollection.AuthorizedCredentials;
 
-        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions.Value;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
 
-        public IProjectCollection Projects => _projects.Value;
+        /// <inheritdoc />
+        Qwiq.WorkItemStoreConfiguration IWorkItemStore.Configuration => Configuration;
+
+        public WorkItemStoreConfiguration Configuration { get;}
+
+        public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions
+                                                              ?? (_fieldDefinitions = new FieldDefinitionCollection(this));
+
+
+
+        public IProjectCollection Projects => _projects ?? (_projects = ProjectCollectionFactory());
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
 
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
-        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
-
         public TimeZone TimeZone => TeamProjectCollection?.TimeZone ?? TimeZone.CurrentTimeZone;
 
-        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes.Value;
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes ?? (_linkTypes = WorkItemLinkTypeCollectionFactory());
+
+        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; }
 
         public void Dispose()
         {
@@ -128,8 +106,6 @@ namespace Microsoft.Qwiq.Client.Rest
             return query.RunLinkQuery();
         }
 
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
-
         private static WorkItemLinkTypeCollection GetLinks(WorkItemTrackingHttpClient workItemStore)
         {
             var types = workItemStore.GetRelationTypesAsync().GetAwaiter().GetResult();
@@ -165,33 +141,32 @@ namespace Microsoft.Qwiq.Client.Rest
 
                 type.SetForwardEnd(new WorkItemLinkTypeEnd(forwardEnd) { IsForwardLink = true, LinkType = type });
                 type.SetReverseEnd(
-                    type.IsDirectional
-                        ? new WorkItemLinkTypeEnd(
-                              ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))) { LinkType = type }
-                        : type.ForwardEnd);
+                                   type.IsDirectional
+                                       ? new WorkItemLinkTypeEnd(
+                                                                 ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse")))
+                                       {
+                                           LinkType
+                                                         = type
+                                       }
+                                       : type.ForwardEnd);
 
                 // The REST API does not return the ID of the link type. For well-known system links, we can populate the ID value
                 if (CoreLinkTypeReferenceNames.All.Contains(type.ReferenceName, StringComparer.OrdinalIgnoreCase))
                 {
-                    int forwardId = 0, reverseId = 0;
+                    int forwardId = 0,
+                        reverseId = 0;
 
-                    if (CoreLinkTypeReferenceNames.Hierarchy.Equals(
-                        type.ReferenceName,
-                        StringComparison.OrdinalIgnoreCase))
+                    if (CoreLinkTypeReferenceNames.Hierarchy.Equals(type.ReferenceName, StringComparison.OrdinalIgnoreCase))
                     {
                         // The forward should be Child, but the ID used in CoreLinkTypes is -2, should be 2
                         forwardId = CoreLinkTypes.Child;
                         reverseId = CoreLinkTypes.Parent;
                     }
-                    else if (CoreLinkTypeReferenceNames.Related.Equals(
-                        type.ReferenceName,
-                        StringComparison.OrdinalIgnoreCase))
+                    else if (CoreLinkTypeReferenceNames.Related.Equals(type.ReferenceName, StringComparison.OrdinalIgnoreCase))
                     {
                         forwardId = reverseId = CoreLinkTypes.Related;
                     }
-                    else if (CoreLinkTypeReferenceNames.Dependency.Equals(
-                        type.ReferenceName,
-                        StringComparison.OrdinalIgnoreCase))
+                    else if (CoreLinkTypeReferenceNames.Dependency.Equals(type.ReferenceName, StringComparison.OrdinalIgnoreCase))
                     {
                         forwardId = CoreLinkTypes.Successor;
                         reverseId = CoreLinkTypes.Predecessor;
@@ -202,12 +177,35 @@ namespace Microsoft.Qwiq.Client.Rest
                 }
             }
 
-            return new WorkItemLinkTypeCollection(d2.Values);
+            return new WorkItemLinkTypeCollection(d2.Values.OfType<IWorkItemLinkType>().ToList());
         }
 
         private void Dispose(bool disposing)
         {
             if (disposing) if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
+        }
+
+        private IProjectCollection ProjectCollectionFactory()
+        {
+            using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
+            {
+                var projects = (List<TeamProjectReference>)projectHttpClient.GetProjects(ProjectState.WellFormed).GetAwaiter().GetResult();
+                var projects2 = new List<IProject>(projects.Count + 1);
+
+                for (var i = 0; i < projects.Count; i++)
+                {
+                    var project = projects[i];
+                    var p = new Project(project, this);
+                    projects2.Add(p);
+                }
+
+                return new ProjectCollection(projects2);
+            }
+        }
+
+        private WorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
+        {
+            return GetLinks(NativeWorkItemStore.Value);
         }
     }
 }

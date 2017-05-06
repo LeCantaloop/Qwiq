@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
@@ -9,10 +10,15 @@ namespace Microsoft.Qwiq
     {
         private IFieldDefinitionCollection _fdc;
 
+        [CanBeNull]
+        private readonly Lazy<IFieldDefinitionCollection> _lazyFieldDefinitions;
+
+        private Func<IFieldDefinitionCollection> _fieldDefinitionFactory;
+
         internal WorkItemType(
             [NotNull] string name,
             [CanBeNull] string description,
-            [NotNull] Lazy<IFieldDefinitionCollection> fieldDefinitions,
+            [CanBeNull] Lazy<IFieldDefinitionCollection> fieldDefinitions,
             Func<IWorkItem> workItemFactory = null)
         {
             Contract.Requires(name != null);
@@ -21,13 +27,22 @@ namespace Microsoft.Qwiq
 
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            FieldDefinitionFactory = () => fieldDefinitions.Value;
+
+            _lazyFieldDefinitions = fieldDefinitions;
             WorkItemFactory = workItemFactory;
-            Name = name;
-            Description = description;
+            Name = string.Intern(name);
+            Description = description == null ? string.Empty : string.Intern(description);
         }
 
-        protected internal Func<IFieldDefinitionCollection> FieldDefinitionFactory { get; internal set; }
+        protected internal Func<IFieldDefinitionCollection> FieldDefinitionFactory
+        {
+            get => _fieldDefinitionFactory;
+            internal set
+            {
+                Debug.Assert(_lazyFieldDefinitions == null, "_lazyFieldDefinitions == null");
+                _fieldDefinitionFactory = value;
+            }
+        }
 
         protected internal Func<IWorkItem> WorkItemFactory { get; internal set; }
 
@@ -38,7 +53,7 @@ namespace Microsoft.Qwiq
 
         public string Description { get; }
 
-        public IFieldDefinitionCollection FieldDefinitions => _fdc ?? (_fdc = FieldDefinitionFactory());
+        public virtual IFieldDefinitionCollection FieldDefinitions => _fdc ?? (_fdc = FieldDefinitionFactory == null ? _lazyFieldDefinitions.Value : FieldDefinitionFactory());
 
         public string Name { get; }
 
