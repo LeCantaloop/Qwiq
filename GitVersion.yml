@@ -1,58 +1,87 @@
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: '{NuGetVersionV2}'
-mode: ContinuousDeployment
+mode: Mainline
 tag-prefix: '[vV]'
 continuous-delivery-fallback-tag: ci
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
+no-bump-message: '\+semver:\s?(none|skip)'
 legacy-semver-padding: 4
 build-metadata-padding: 4
 commits-since-version-source-padding: 4
 commit-message-incrementing: Enabled
 branches:
-  master:
-    mode: ContinuousDelivery
-    tag: ''
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-  releases?[/-]:
+  develop:
     mode: ContinuousDeployment
-    tag: rc
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-  features?[/-]:
+    tag: beta
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    regex: dev(elop)?(ment)?$
+    tracks-release-branches: true
+    is-release-branch: false
+    is-mainline: false
+  feature:
     mode: ContinuousDeployment
     tag: useBranchName
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
-  (pull|pull\-requests|pr)[/-]:
+    regex: features?[/-]
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+  hotfix:
+    mode: ContinuousDeployment
+    tag: qfe
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    regex: hotfix(es)?[/-]
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+  pull-request:
     mode: ContinuousDeployment
     tag: alpha
     increment: Inherit
     prevent-increment-of-merged-branch-version: false
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     track-merge-target: false
-  hotfix(es)?[/-]:
-    mode: ContinuousDeployment
-    tag: rc
-    increment: Patch
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: false
-  support[/-]:
+    regex: (pull|pull\-requests|pr)[/-]
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: false
+  master:
     mode: ContinuousDeployment
     tag: ''
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
-  dev(elop)?(ment)?$:
+    regex: master
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: true
+  release:
     mode: ContinuousDeployment
-    tag: alpha
-    increment: Minor
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
+    tag: rc
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: releases?[/-]
+    tracks-release-branches: false
+    is-release-branch: true
+    is-mainline: false
+  support:
+    mode: ContinuousDeployment
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    regex: support[/-]
+    tracks-release-branches: false
+    is-release-branch: false
+    is-mainline: true
 ignore:
   sha: []
