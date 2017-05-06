@@ -5,10 +5,9 @@ platform: Any CPU
 init:
 - ps: IF ($env:APPVEYOR_REPO_BRANCH -eq "develop") {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
 install:
-- cmd: choco install gitversion.portable -pre -y
+- choco install gitversion.portable -pre -y
 cache:
 - packages -> **\packages.config
-- .tools -> .tools\nuget.exe.ETag
 nuget:
   account_feed: true
   project_feed: true
@@ -16,7 +15,7 @@ before_build:
 - ps: >-
     .\init.ps1;
     & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
-    gitversion /l console /output buildserver;
+    C:\ProgramData\chocolatey\bin\gfv.exe /l console /output buildserver;
 build:
   publish_nuget: true
   publish_nuget_symbols: true
