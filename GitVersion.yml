@@ -1,6 +1,6 @@
 assembly-versioning-scheme: MajorMinorPatchTag
 assembly-informational-format: '{NuGetVersionV2}'
-mode: ContinuousDeployment
+mode: Mainline
 tag-prefix: '[vV]'
 continuous-delivery-fallback-tag: ci
 major-version-bump-message: '\+semver:\s?(breaking|major)'
@@ -38,7 +38,7 @@ branches:
     track-merge-target: false
   hotfix:
     mode: ContinuousDeployment
-    tag: rc
+    tag: qfe
     increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
@@ -54,5 +54,3 @@ branches:
     increment: Minor
     prevent-increment-of-merged-branch-version: false
     track-merge-target: true
-ignore:
-  sha: []
