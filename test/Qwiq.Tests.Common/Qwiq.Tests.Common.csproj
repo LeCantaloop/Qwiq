@@ -35,6 +35,9 @@
     <Compile Include="..\..\src\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Qwiq.Core\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Qwiq.Core\GenericComparer.cs">
       <Link>GenericComparer.cs</Link>
     </Compile>
@@ -43,7 +46,6 @@
     </Compile>
     <Compile Include="Clock.cs" />
     <Compile Include="ContextSpecification.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="IContextSpecification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShouldExtensions.cs" />

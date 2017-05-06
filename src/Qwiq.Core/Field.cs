@@ -1,43 +1,46 @@
 using System;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     internal class Field : IField
     {
         private readonly IRevisionInternal _revision;
 
-        private readonly IFieldDefinition _fieldDefinition;
-
-        protected internal Field(IRevisionInternal revision, IFieldDefinition fieldDefinition)
+        protected internal Field([NotNull] IRevisionInternal revision, [NotNull] IFieldDefinition fieldDefinition)
         {
             _revision = revision ?? throw new ArgumentNullException(nameof(revision));
-            _fieldDefinition = fieldDefinition ?? throw new ArgumentNullException(nameof(fieldDefinition));
+            FieldDefinition = fieldDefinition ?? throw new ArgumentNullException(nameof(fieldDefinition));
         }
 
-        public virtual bool IsValid => ValidationState == ValidationState.Valid;
+        /// <inheritdoc />
+        public IFieldDefinition FieldDefinition { get; }
 
-        public virtual string Name => _fieldDefinition.Name;
-
-        public virtual string ReferenceName => _fieldDefinition.ReferenceName;
-
-        public virtual object OriginalValue => throw new NotImplementedException();
-
-        public virtual ValidationState ValidationState => throw new NotImplementedException();
+        public virtual int Id => FieldDefinition.Id;
 
         public virtual bool IsChangedByUser => throw new NotImplementedException();
-
-        public virtual object Value
-        {
-            get => _revision.GetCurrentFieldValue(_fieldDefinition);
-            set => _revision.SetFieldValue(_fieldDefinition, value);
-        }
-
-        public virtual int Id => _fieldDefinition.Id;
 
         public virtual bool IsDirty => throw new NotImplementedException();
 
         public virtual bool IsEditable => throw new NotImplementedException();
 
         public virtual bool IsRequired => throw new NotImplementedException();
+
+        public virtual bool IsValid => ValidationState == ValidationState.Valid;
+
+        public virtual string Name => FieldDefinition.Name;
+
+        public virtual object OriginalValue => throw new NotImplementedException();
+
+        public virtual string ReferenceName => FieldDefinition.ReferenceName;
+
+        public virtual ValidationState ValidationState => throw new NotImplementedException();
+
+        public virtual object Value
+        {
+            get => _revision.GetCurrentFieldValue(FieldDefinition);
+            set => _revision.SetFieldValue(FieldDefinition, value);
+        }
     }
 }

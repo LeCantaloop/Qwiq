@@ -54,6 +54,7 @@
     <Compile Include="MockQueryByWiql.cs" />
     <Compile Include="MockQueryFactory.cs" />
     <Compile Include="MockRelatedLink.cs" />
+    <Compile Include="MockRevision.cs" />
     <Compile Include="MockTeamFoundationIdentity.cs" />
     <Compile Include="MockTfsTeamProjectCollection.cs" />
     <Compile Include="MockWorkItem.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="MockWorkItemStore.cs" />
     <Compile Include="MockWorkItemStoreConfiguration.cs" />
     <Compile Include="MockWorkItemType.cs" />
+    <Compile Include="MockWorkItemTypeCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyValueGenerator.cs" />
     <Compile Include="Random.Extensions.cs" />

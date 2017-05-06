@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class FieldCollection : IFieldCollection
@@ -16,9 +18,9 @@ namespace Microsoft.Qwiq
         private readonly IRevisionInternal _revision;
 
         internal FieldCollection(
-            IRevisionInternal revision,
-            IFieldDefinitionCollection definitions,
-            Func<IRevisionInternal, IFieldDefinition, IField> fieldFactory)
+            [NotNull] IRevisionInternal revision,
+            [NotNull] IFieldDefinitionCollection definitions,
+            [NotNull] Func<IRevisionInternal, IFieldDefinition, IField> fieldFactory)
         {
             _revision = revision;
             _definitions = definitions;
@@ -139,6 +141,14 @@ namespace Microsoft.Qwiq
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        protected internal void SetField([NotNull] IField field)
+        {
+            if (field == null) throw new ArgumentNullException(nameof(field));
+            if (!_definitions.Contains(field.ReferenceName)) throw new InvalidOperationException();
+
+            _cache[field.FieldDefinition.Id] = field;
         }
     }
 }

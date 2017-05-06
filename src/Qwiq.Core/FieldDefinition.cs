@@ -18,8 +18,7 @@ namespace Microsoft.Qwiq
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
 
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
             Name = string.Intern(name);
             ReferenceName = string.Intern(referenceName);
@@ -44,8 +43,7 @@ namespace Microsoft.Qwiq
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
 
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
 
             Name = string.Intern(name);
             ReferenceName = string.Intern(referenceName);
@@ -56,16 +54,16 @@ namespace Microsoft.Qwiq
             Id = id;
         }
 
-        public bool Equals(IFieldDefinition other)
-        {
-            return FieldDefinitionComparer.Default.Equals(this, other);
-        }
-
         public int Id { get; }
 
         public string Name { get; }
 
         public string ReferenceName { get; }
+
+        public bool Equals(IFieldDefinition other)
+        {
+            return FieldDefinitionComparer.Default.Equals(this, other);
+        }
 
         public override bool Equals(object obj)
         {

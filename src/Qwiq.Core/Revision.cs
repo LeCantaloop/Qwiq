@@ -1,30 +1,35 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
-    internal class Revision : IRevision
+    public class Revision : IRevision, IRevisionInternal
     {
-        private readonly Lazy<IFieldCollection> _fields;
+        internal IFieldDefinitionCollection FieldDefinitions { get; }
+
+        private Dictionary<int, object> _values;
+
+        private IFieldCollection _fields;
 
         internal Revision(
-            IFieldDefinitionCollection definitions,
-            int revision,
-            Func<IRevision, IFieldDefinitionCollection, IFieldCollection> fieldFactory)
+            [NotNull] IFieldDefinitionCollection definitions,
+            int revision)
         {
             Rev = revision;
-            new Dictionary<int, object>();
-            _fields = new Lazy<IFieldCollection>(() => fieldFactory(this, definitions));
+            _values = new Dictionary<int, object>();
+            FieldDefinitions = definitions;
         }
 
-        internal Revision(WorkItem workItem, int revision)
+        internal Revision([NotNull] IWorkItem workItem, int revision)
         {
             WorkItem = workItem ?? throw new ArgumentNullException(nameof(workItem));
             Rev = revision;
-            _fields = new Lazy<IFieldCollection>(() => WorkItem.Fields);
+            FieldDefinitions = workItem.Type.FieldDefinitions;
         }
 
-        public IFieldCollection Fields => _fields.Value;
+        public IFieldCollection Fields => _fields ?? (_fields = new FieldCollection(this, FieldDefinitions, (r, d) => new Field(r, d)));
 
         public int? Id => WorkItem?.Id;
 
@@ -32,7 +37,7 @@ namespace Microsoft.Qwiq
 
         public string Url => WorkItem?.Url;
 
-        private WorkItem WorkItem { get; }
+        private IWorkItem WorkItem { get; }
 
         public virtual object this[string name]
         {
@@ -48,5 +53,23 @@ namespace Microsoft.Qwiq
             get => this[name];
             set => throw new NotSupportedException();
         }
+
+        /// <inheritdoc />
+        public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
+        {
+            if (WorkItem != null) return WorkItem.Fields[fieldDefinition.ReferenceName];
+
+            return _values[fieldDefinition.Id];
+        }
+
+        /// <inheritdoc />
+        void IRevisionInternal.SetFieldValue(IFieldDefinition fieldDefinition, object value)
+        {
+            throw new InvalidOperationException();
+        }
+
+        internal bool HasValue(int fieldId) => _values.ContainsKey(fieldId);
+
+        internal void SetFieldValue(int fieldId, object value) => _values[fieldId] = value;
     }
 }

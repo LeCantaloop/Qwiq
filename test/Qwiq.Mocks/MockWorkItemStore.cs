@@ -211,6 +211,16 @@ namespace Microsoft.Qwiq.Mocks
                 projectName = Projects[0].Name;
                 item[CoreFieldRefNames.TeamProject] = projectName;
             }
+
+            // Fix up Store if needed
+            if (item.Type is MockWorkItemType t)
+            {
+                if (t.Store == null || t.Store != this)
+                {
+                    t.Store = this;
+                }
+            }
+
             _lookup[id] = item;
         }
 

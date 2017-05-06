@@ -10,21 +10,22 @@ namespace Microsoft.Qwiq
     ///     A compatability class
     /// </summary>
     /// <seealso cref="WorkItemCommon" />
+    /// ///
     /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IEquatable<IWorkItem>
     {
         [CanBeNull]
+        private readonly Lazy<IWorkItemType> _lazyType;
+
+        [CanBeNull]
         private readonly IWorkItemType _type;
-
-        private bool _useFields = true;
-
-        private IFieldCollection _fields;
 
         [CanBeNull]
         private Func<IFieldCollection> _fieldFactory;
 
-        [CanBeNull]
-        private readonly Lazy<IWorkItemType> _lazyType;
+        private IFieldCollection _fields;
+
+        private bool _useFields = true;
 
         protected internal WorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields)
             : base(fields)
@@ -39,7 +40,6 @@ namespace Microsoft.Qwiq
             Contract.Requires(type != null);
 
             _type = type ?? throw new ArgumentNullException(nameof(type));
-
         }
 
         protected internal WorkItem([NotNull] Lazy<IWorkItemType> type)
@@ -50,18 +50,10 @@ namespace Microsoft.Qwiq
 
         protected internal WorkItem([NotNull] IWorkItemType type, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
         {
-
             Contract.Requires(type != null);
             Contract.Requires(fieldCollectionFactory != null);
             _type = type ?? throw new ArgumentNullException(nameof(type));
             _fieldFactory = fieldCollectionFactory ?? throw new ArgumentNullException(nameof(fieldCollectionFactory));
-        }
-
-        public virtual int Revision => Rev;
-
-        public bool Equals(IWorkItem other)
-        {
-            return WorkItemComparer.Default.Equals(this, other);
         }
 
         public new virtual int AttachedFileCount => base.AttachedFileCount.GetValueOrDefault(0);
@@ -87,14 +79,10 @@ namespace Microsoft.Qwiq
                 }
                 else
                 {
-                    _fields = new FieldCollection(
-                                                  this,
-                                                  Type.FieldDefinitions,
-                                                  (revision, definition) => new Field(revision, definition));
+                    _fields = new FieldCollection(this, Type.FieldDefinitions, (revision, definition) => new Field(revision, definition));
                 }
 
                 return _fields;
-
             }
         }
 
@@ -117,6 +105,8 @@ namespace Microsoft.Qwiq
         public new virtual int Rev => base.Rev.GetValueOrDefault(0);
 
         public new virtual DateTime RevisedDate => base.RevisedDate.GetValueOrDefault(DateTime.MinValue);
+
+        public virtual int Revision => Rev;
 
         public virtual IEnumerable<IRevision> Revisions => throw new NotSupportedException();
 
@@ -187,6 +177,21 @@ namespace Microsoft.Qwiq
             throw new NotSupportedException();
         }
 
+        public bool Equals(IWorkItem other)
+        {
+            return WorkItemComparer.Default.Equals(this, other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return WorkItemComparer.Default.Equals(this, obj as IWorkItem);
+        }
+
+        public override int GetHashCode()
+        {
+            return WorkItemComparer.Default.GetHashCode(this);
+        }
+
         public virtual bool IsValid()
         {
             throw new NotSupportedException();
@@ -217,25 +222,15 @@ namespace Microsoft.Qwiq
             throw new NotSupportedException();
         }
 
-        public virtual IEnumerable<IField> Validate()
-        {
-            throw new NotSupportedException();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return WorkItemComparer.Default.Equals(this, obj as IWorkItem);
-        }
-
-        public override int GetHashCode()
-        {
-            return WorkItemComparer.Default.GetHashCode(this);
-        }
-
         /// <inheritdoc />
         public override string ToString()
         {
             return $"{WorkItemType} {Id} {Title}";
+        }
+
+        public virtual IEnumerable<IField> Validate()
+        {
+            throw new NotSupportedException();
         }
     }
 }

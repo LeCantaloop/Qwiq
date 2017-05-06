@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     public class WorkItemTypeCollection : ReadOnlyObjectWithNameCollection<IWorkItemType>, IWorkItemTypeCollection
     {
         [DebuggerStepThrough]
-        internal WorkItemTypeCollection(Func<IEnumerable<IWorkItemType>> workItemTypesFactory)
+        internal WorkItemTypeCollection([NotNull] Func<IEnumerable<IWorkItemType>> workItemTypesFactory)
             : base(workItemTypesFactory, type => type.Name)
         {
         }
 
         [DebuggerStepThrough]
-        internal WorkItemTypeCollection(List<IWorkItemType> workItemTypes)
+        internal WorkItemTypeCollection([CanBeNull] List<IWorkItemType> workItemTypes)
             : base(workItemTypes, type => type.Name)
         {
         }

@@ -5,12 +5,12 @@ namespace Microsoft.Qwiq
 {
     public class WorkItemCollection : ReadOnlyObjectWithIdCollection<IWorkItem, int>, IWorkItemCollection
     {
-        internal WorkItemCollection([CanBeNull] List<IWorkItem> workItems)
+        public WorkItemCollection([CanBeNull] List<IWorkItem> workItems)
             : base(workItems)
         {
         }
 
-        internal WorkItemCollection([CanBeNull] IEnumerable<IWorkItem> workItems)
+        public WorkItemCollection([CanBeNull] IEnumerable<IWorkItem> workItems)
             : base(workItems)
         {
         }
