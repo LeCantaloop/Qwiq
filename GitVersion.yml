@@ -3,7 +3,6 @@ assembly-informational-format: '{NuGetVersionV2}'
 mode: ContinuousDeployment
 tag-prefix: '[vV]'
 continuous-delivery-fallback-tag: ci
-next-version: 8.0.0
 major-version-bump-message: '\+semver:\s?(breaking|major)'
 minor-version-bump-message: '\+semver:\s?(feature|minor)'
 patch-version-bump-message: '\+semver:\s?(fix|patch)'
