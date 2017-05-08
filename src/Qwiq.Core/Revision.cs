@@ -9,7 +9,7 @@ namespace Microsoft.Qwiq
     {
         internal IFieldDefinitionCollection FieldDefinitions { get; }
 
-        private Dictionary<int, object> _values;
+        private readonly Dictionary<int, object> _values;
 
         private IFieldCollection _fields;
 
@@ -29,7 +29,16 @@ namespace Microsoft.Qwiq
             FieldDefinitions = workItem.Type.FieldDefinitions;
         }
 
+        /// <inheritdoc />
+        public virtual IEnumerable<IAttachment> Attachments => throw new NotSupportedException();
+
         public IFieldCollection Fields => _fields ?? (_fields = new FieldCollection(this, FieldDefinitions, (r, d) => new Field(r, d)));
+
+        /// <inheritdoc />
+        public int Index => Rev.GetValueOrDefault(0);
+
+        /// <inheritdoc />
+        public virtual IEnumerable<ILink> Links => throw new NotSupportedException();
 
         public int? Id => WorkItem?.Id;
 
@@ -37,7 +46,7 @@ namespace Microsoft.Qwiq
 
         public string Url => WorkItem?.Url;
 
-        private IWorkItem WorkItem { get; }
+        public IWorkItem WorkItem { get; }
 
         public virtual object this[string name]
         {
@@ -46,6 +55,12 @@ namespace Microsoft.Qwiq
                 if (name == null) throw new ArgumentNullException(nameof(name));
                 return Fields[name].Value;
             }
+        }
+
+        /// <inheritdoc />
+        public virtual string GetTagLine()
+        {
+            throw new NotSupportedException();
         }
 
         object IWorkItemCore.this[string name]

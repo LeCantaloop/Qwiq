@@ -184,7 +184,6 @@
     <Compile Include="Hyperlink.cs" />
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IInternalTeamProjectCollection.cs" />
-    <Compile Include="IRevision.cs" />
     <Compile Include="ItemAlreadyUpdatedOnServerException.cs" />
     <Compile Include="Link.cs" />
     <Compile Include="LinkCollection.cs" />

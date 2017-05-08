@@ -157,7 +157,7 @@ namespace Microsoft.Qwiq.Client.Soap
         ///     Gets an object that represents a collection of valid revision numbers for this work
         ///     item.
         /// </summary>
-        public new IEnumerable<IRevision> Revisions
+        public override IEnumerable<IRevision> Revisions
         {
             get
             {

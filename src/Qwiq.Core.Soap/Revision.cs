@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using JetBrains.Annotations;
+
 using Microsoft.Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
@@ -14,9 +16,10 @@ namespace Microsoft.Qwiq.Client.Soap
     /// </summary>
     internal class Revision : IRevision
     {
+        [NotNull]
         private readonly Tfs.Revision _rev;
 
-        internal Revision(Tfs.Revision revision)
+        internal Revision([NotNull] Tfs.Revision revision)
         {
             _rev = revision ?? throw new ArgumentNullException(nameof(revision));
         }
@@ -62,6 +65,16 @@ namespace Microsoft.Qwiq.Client.Soap
         public IWorkItem WorkItem => ExceptionHandlingDynamicProxyFactory
             .Create<IWorkItem>(new WorkItem(_rev.WorkItem));
 
+        /// <inheritdoc />
+        public int? Rev => Index;
+
+        /// <inheritdoc />
+        object IWorkItemCore.this[string name]
+        {
+            get =>_rev[name];
+            set => throw new NotSupportedException();
+        }
+
         /// <summary>
         ///     Gets the value of the specified field in the work item of this revision.
         /// </summary>
@@ -77,5 +90,11 @@ namespace Microsoft.Qwiq.Client.Soap
         {
             return _rev.GetTagLine();
         }
+
+        /// <inheritdoc />
+        public int? Id => _rev.WorkItem.Id;
+
+        /// <inheritdoc />
+        public string Url => throw new NotSupportedException();
     }
 }

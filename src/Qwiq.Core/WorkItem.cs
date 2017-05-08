@@ -12,7 +12,7 @@ namespace Microsoft.Qwiq
     /// <seealso cref="WorkItemCommon" />
     /// ///
     /// <seealso cref="IWorkItem" />
-    public abstract class WorkItem : WorkItemCommon, IWorkItem, IEquatable<IWorkItem>
+    public abstract class WorkItem : WorkItemCommon, IWorkItem, IRevisionInternal, IEquatable<IWorkItem>
     {
         [CanBeNull]
         private readonly Lazy<IWorkItemType> _lazyType;

@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
     /// <summary>
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference all the TFS libraries.
     /// </summary>
-    public interface IWorkItem : IWorkItemCommon, IRevision, IIdentifiable<int>
+    public interface IWorkItem : IWorkItemCommon, IIdentifiable<int>
     {
         new int AttachedFileCount { get; }
 
@@ -19,6 +21,9 @@ namespace Microsoft.Qwiq
         new int ExternalLinkCount { get; }
 
         new int HyperlinkCount { get; }
+
+        [NotNull]
+        IFieldCollection Fields { get; }
 
         /// <summary>
         /// Gets the ID of this work item.
