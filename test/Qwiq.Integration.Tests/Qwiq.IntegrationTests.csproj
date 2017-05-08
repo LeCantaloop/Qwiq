@@ -221,10 +221,10 @@
     <Compile Include="WorkItemStore\WorkItem\Soap\Given_a_WorkItem_from_SOAP.cs" />
     <Compile Include="WorkItemStore\WorkItem\Soap\RevisionTests.cs" />
     <Compile Include="WorkItemStore\WorkItem\WiqlFlatQueryTests.cs" />
+    <Compile Include="WorkItemStore\WorkItem\WorkItemTests.cs" />
     <Compile Include="WorkItemStore\WorkItem\WorkItemWithLinksContextSpecification.cs" />
     <Compile Include="WorkItemStore\WorkItemStoreComparisonContextSpecification.cs" />
     <Compile Include="WorkItemStore\WorkItemStoreContextSpecification.cs" />
-    <Compile Include="WorkItemStore\WorkItem\WorkItemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
