@@ -2,7 +2,7 @@
 
 namespace Microsoft.Qwiq.WorkItemStore
 {
-    public abstract class WorkItemStoreTests<T> : TimedContextSpecification
+    public abstract class WorkItemStoreContextSpecification<T> : TimedContextSpecification
         where T : IWorkItemStore
     {
         internal IQueryFactory QueryFactory;

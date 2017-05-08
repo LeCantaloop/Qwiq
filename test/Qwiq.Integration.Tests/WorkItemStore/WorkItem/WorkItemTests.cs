@@ -6,7 +6,7 @@ using Should;
 namespace Microsoft.Qwiq.WorkItemStore
 {
 
-    public abstract class WorkItemContextSpecification<T> : WorkItemStoreTests<T>
+    public abstract class WorkItemContextSpecification<T> : WorkItemStoreContextSpecification<T>
         where T : IWorkItemStore
     {
         private const int Id = 10726528;

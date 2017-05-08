@@ -222,8 +222,8 @@
     <Compile Include="WorkItemStore\WorkItem\WiqlFlatQueryTests.cs" />
     <Compile Include="WorkItemStore\WorkItem\WorkItemWithLinksContextSpecification.cs" />
     <Compile Include="WorkItemStore\WorkItemStoreComparisonContextSpecification.cs" />
-    <Compile Include="WorkItemStore\WorkItemStoreTests.cs" />
-    <Compile Include="WorkItemStore\WorkItemTests.cs" />
+    <Compile Include="WorkItemStore\WorkItemStoreContextSpecification.cs" />
+    <Compile Include="WorkItemStore\WorkItem\WorkItemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
