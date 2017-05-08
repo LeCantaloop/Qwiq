@@ -184,10 +184,11 @@ namespace Microsoft.Qwiq.Client.Rest
         {
             if (disposing)
             {
-                if (NativeWorkItemStore.IsValueCreated) NativeWorkItemStore.Value?.Dispose();
-                NativeWorkItemStore = null;
-
-
+                if (NativeWorkItemStore != null && NativeWorkItemStore.IsValueCreated)
+                {
+                    NativeWorkItemStore?.Value?.Dispose();
+                    NativeWorkItemStore = null;
+                }
             }
         }
 
