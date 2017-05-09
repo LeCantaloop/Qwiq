@@ -63,6 +63,7 @@
     <Compile Include="MockWorkItemLinkTypeEnd.cs" />
     <Compile Include="MockWorkItemStore.cs" />
     <Compile Include="MockWorkItemStoreConfiguration.cs" />
+    <Compile Include="MockWorkItemStoreFactory.cs" />
     <Compile Include="MockWorkItemType.cs" />
     <Compile Include="MockWorkItemTypeCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
