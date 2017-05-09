@@ -7,7 +7,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
-    internal class WorkItemLinkTypeEnd : Qwiq.WorkItemLinkTypeEnd
+    public class WorkItemLinkTypeEnd : Qwiq.WorkItemLinkTypeEnd, IIdentifiable<int>
     {
         internal WorkItemLinkTypeEnd([NotNull] Tfs.WorkItemLinkTypeEnd end)
             : base(end.ImmutableName, new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(end.OppositeEnd)))
@@ -20,5 +20,8 @@ namespace Microsoft.Qwiq.Client.Soap
             IsForwardLink = end.IsForwardLink;
             Name = end.Name;
         }
+
+        /// <inheritdoc />
+        public int Id { get; }
     }
 }

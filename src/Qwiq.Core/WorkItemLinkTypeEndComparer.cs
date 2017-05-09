@@ -21,15 +21,7 @@ namespace Microsoft.Qwiq
         {
             if (ReferenceEquals(obj, null)) return 0;
 
-            unchecked
-            {
-                var hash = 27;
-
-                hash = (13 * hash) ^ obj.Id.GetHashCode();
-                hash = (13 * hash) ^ StringComparer.OrdinalIgnoreCase.GetHashCode(obj.ImmutableName);
-
-                return hash;
-            }
+            return 351 ^ StringComparer.OrdinalIgnoreCase.GetHashCode(obj.ImmutableName);
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

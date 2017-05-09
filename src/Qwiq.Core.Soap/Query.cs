@@ -50,11 +50,11 @@ namespace Microsoft.Qwiq.Client.Soap
             // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
             var wili = _query.RunLinkQuery();
             var retval = new List<IWorkItemLinkInfo>(wili.Length);
-            var lt = GetLinkTypes().ToDictionary(k=>k.Id, e=>e);
+            var lt = GetLinkTypes().ToDictionary(k=>((WorkItemLinkTypeEnd)k).Id, e=>(WorkItemLinkTypeEnd)e);
             for (var i = 0; i < wili.Length; i++)
             {
-                lt.TryGetValue(wili[i].LinkTypeId, out IWorkItemLinkTypeEnd lte) ;
-                retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, lte));
+                lt.TryGetValue(wili[i].LinkTypeId, out WorkItemLinkTypeEnd lte) ;
+                retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, wili[i].LinkTypeId, lte));
             }
 
             return retval.AsReadOnly();

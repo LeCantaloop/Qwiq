@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkTypeEnd : WorkItemLinkTypeEnd
+    public class MockWorkItemLinkTypeEnd : WorkItemLinkTypeEnd, IIdentifiable<int>
     {
         public MockWorkItemLinkTypeEnd(IWorkItemLinkType linkType, string name, bool isForward, int id = 0)
             : base(GetValue(linkType, isForward))
@@ -20,5 +20,8 @@ namespace Microsoft.Qwiq.Mocks
             if (!linkType.IsDirectional) return referenceName;
             return referenceName + (isForward ? "-Forward" : "-Reverse");
         }
+
+        /// <inheritdoc />
+        public int Id { get; }
     }
 }

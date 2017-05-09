@@ -208,6 +208,7 @@
     <Compile Include="TfsTeamProjectCollection.cs" />
     <Compile Include="ValidationException.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemLinkInfo.cs" />
     <Compile Include="WorkItemLinkType.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemStore.cs" />

@@ -11,22 +11,36 @@ namespace Microsoft.Qwiq.Identity.Soap
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Gets the identity management service from an instance of <see cref="ITeamProjectCollection"/>.
+        /// </summary>
+        /// <param name="teamProjectCollection">An instance of <see cref="ITeamProjectCollection"/></param>
+        /// <returns><see cref="IIdentityManagementService" />.</returns>
+        /// <exception cref="ArgumentNullException">teamProjectCollection</exception>
         [NotNull]
         [JetBrains.Annotations.Pure]
-        public static IIdentityManagementService GetIdentityManagementService([NotNull] this ITeamProjectCollection tpc)
+        [PublicAPI]
+        public static IIdentityManagementService GetIdentityManagementService([NotNull] this ITeamProjectCollection teamProjectCollection)
         {
-            Contract.Requires(tpc != null);
+            Contract.Requires(teamProjectCollection != null);
 
-            if (tpc == null) throw new ArgumentNullException(nameof(tpc));
-            return ((IInternalTeamProjectCollection)tpc).GetService<IIdentityManagementService2>().AsProxy();
+            if (teamProjectCollection == null) throw new ArgumentNullException(nameof(teamProjectCollection));
+            return ((IInternalTeamProjectCollection)teamProjectCollection).GetService<IIdentityManagementService2>().AsProxy();
         }
 
+        /// <summary>
+        /// Gets the identity management service from an instance of <see cref="IWorkItemStore"/>.
+        /// </summary>
+        /// <param name="workItemStore">An instance of <see cref="IWorkItemStore"/>.</param>
+        /// <returns><see cref="IIdentityManagementService" />.</returns>
+        /// <exception cref="ArgumentNullException">workItemStore</exception>
         [NotNull]
         [JetBrains.Annotations.Pure]
-        public static IIdentityManagementService GetIdentityManagementService([NotNull] this IWorkItemStore wis)
+        [PublicAPI]
+        public static IIdentityManagementService GetIdentityManagementService([NotNull] this IWorkItemStore workItemStore)
         {
-            if (wis == null) throw new ArgumentNullException(nameof(wis));
-            return wis.TeamProjectCollection.GetIdentityManagementService();
+            if (workItemStore == null) throw new ArgumentNullException(nameof(workItemStore));
+            return workItemStore.TeamProjectCollection.GetIdentityManagementService();
         }
 
         [NotNull]

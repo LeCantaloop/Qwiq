@@ -4,6 +4,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 
+using JetBrains.Annotations;
+
 using Microsoft.Qwiq.Identity;
 using Microsoft.Qwiq.Mapper.Attributes;
 
@@ -15,13 +17,14 @@ namespace Microsoft.Qwiq.Linq.Visitors
     /// <seealso cref="IdentityComboStringVisitor" />
     public class IdentityFieldAttributeVisitor : ExpressionVisitor
     {
+        [NotNull]
         private readonly IIdentityValueConverter _valueConverter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityFieldAttributeVisitor" /> class.
         /// </summary>
         /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
-        public IdentityFieldAttributeVisitor(IIdentityValueConverter valueConverter)
+        public IdentityFieldAttributeVisitor([NotNull] IIdentityValueConverter valueConverter)
         {
             Contract.Requires(valueConverter != null);
             

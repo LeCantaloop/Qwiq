@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq
             _lazyOpposite = new Lazy<IWorkItemLinkTypeEnd>(() => !IsForwardLink ? LinkType.ForwardEnd : LinkType.ReverseEnd);
         }
 
-        public int Id { get; internal set; }
+
 
         public string ImmutableName { get; }
 

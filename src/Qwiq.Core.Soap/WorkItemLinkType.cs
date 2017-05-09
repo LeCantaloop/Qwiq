@@ -4,7 +4,7 @@ using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
-    internal class WorkItemLinkType : Qwiq.WorkItemLinkType
+    public class WorkItemLinkType : Qwiq.WorkItemLinkType
     {
         internal WorkItemLinkType(Tfs.WorkItemLinkType linkType)
             : base(
