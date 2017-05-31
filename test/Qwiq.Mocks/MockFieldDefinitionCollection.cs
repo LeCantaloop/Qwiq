@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq.Mocks
                     var def = MockFieldDefinition.Create(name);
                     Add(def);
 
-                    Trace.TraceWarning($"Added missing field {def.ReferenceName} ({def.Id})");
+                    Trace.TraceWarning($"Added missing field: (ID: {def.Id}; REF:{def.ReferenceName}");
 
                     return def;
                 }

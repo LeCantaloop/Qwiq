@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mocks
@@ -33,7 +33,7 @@ namespace Microsoft.Qwiq.Mocks
             this.Add(workItems, links);
         }
 
-        public MockWorkItemStore(Func<ITeamProjectCollection> tpcFactory, Func<MockWorkItemStore, IQueryFactory> queryFactory)
+        public MockWorkItemStore([InstantHandle] [NotNull] Func<ITeamProjectCollection> tpcFactory, [InstantHandle] [NotNull] Func<MockWorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
@@ -107,7 +107,7 @@ namespace Microsoft.Qwiq.Mocks
             return query.RunLinkQuery().ToList().AsReadOnly();
         }
 
-        internal void BatchSave(IEnumerable<IWorkItem> workItems)
+        public void BatchSave(IEnumerable<IWorkItem> workItems)
         {
             // First: Fix up the work items and save them to our dictionary
 

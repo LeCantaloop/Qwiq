@@ -40,6 +40,7 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="CoreFieldDefinitions.cs" />
+    <Compile Include="CreateCounterQueryFactory.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -52,7 +53,9 @@
     <Compile Include="MockIdentityManagementService.cs" />
     <Compile Include="MockProject.cs" />
     <Compile Include="MockProjectCollection.cs" />
+    <Compile Include="MockQuery.cs" />
     <Compile Include="MockQueryByWiql.cs" />
+    <Compile Include="MockQueryByWiqlFactory.cs" />
     <Compile Include="MockQueryFactory.cs" />
     <Compile Include="MockRelatedLink.cs" />
     <Compile Include="MockRevision.cs" />

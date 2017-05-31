@@ -66,6 +66,24 @@ namespace Microsoft.Qwiq.Mocks
             return store;
         }
 
+        public static MockWorkItemStore AddLink(this MockWorkItemStore store, int targetId, int sourceId, string linkType)
+        {
+            var child = store.Query(targetId);
+
+            if (child == null)
+
+                throw new ArgumentException($"Parameter {nameof(targetId)} ({targetId}) does not refer to a work item in the store.");
+
+            var lt = store.WorkItemLinkTypes[linkType];
+
+            child.Links.Add(child.CreateRelatedLink(sourceId, lt.ForwardEnd));
+
+            store.BatchSave(child);
+
+
+            return store;
+        }
+
         public static MockWorkItemStore AddChildLink(this MockWorkItemStore store, int parentId, int childId)
         {
             var child = store.Query(childId);
