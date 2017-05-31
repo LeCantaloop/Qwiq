@@ -11,7 +11,7 @@ namespace Microsoft.Qwiq.Client.Rest
 {
     internal class QueryFactory : IQueryFactory
     {
-        private readonly WorkItemStore _store;
+        [NotNull] private readonly WorkItemStore _store;
 
         private QueryFactory([NotNull] WorkItemStore store)
         {
@@ -22,19 +22,25 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public IQuery Create(string wiql, bool dayPrecision)
         {
-            return new Query(new Wiql { Query = wiql }, dayPrecision, _store).AsProxy();
+            var q = new Query(new Wiql { Query = wiql }, dayPrecision, _store);
+            return _store.Configuration.ProxyCreationEnabled
+                ? q.AsProxy()
+                : q;
         }
 
         public IQuery Create(IEnumerable<int> ids, string wiql)
         {
-            return new Query(ids, new Wiql { Query = wiql }, _store).AsProxy();
+            var q = new Query(ids, new Wiql { Query = wiql }, _store);
+            return _store.Configuration.ProxyCreationEnabled
+                ? q.AsProxy()
+                : q;
         }
 
         public IQuery Create(IEnumerable<int> ids, DateTime? asOf = null)
         {
             // The WIQL's WHERE and ORDER BY clauses are not used to filter (as we have specified IDs).
             // It is used for ASOF
-            FormattableString ws = $"SELECT {string.Join(", ", _store.Configuration.DefaultFields ?? new[] { CoreFieldRefNames.Id })} FROM WorkItems";
+            FormattableString ws = $"SELECT {string.Join(", ", _store.Configuration.DefaultFields ?? new[] { CoreFieldRefNames.Id })} FROM {WiqlConstants.WorkItemTable}";
             var wiql = ws.ToString(CultureInfo.InvariantCulture);
 
             if (asOf.HasValue)
