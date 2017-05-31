@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualStudio.Services.Identity;
 using System;
+using JetBrains.Annotations;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
     public class IdentityDescriptor : IIdentityDescriptor, IComparable<IdentityDescriptor>, IEquatable<IdentityDescriptor>
     {
-        private string _identifier;
+        [NotNull] private string _identifier;
 
         /// <summary>
         /// </summary>
@@ -21,7 +23,7 @@ namespace Microsoft.Qwiq
         ///     "Microsoft.TeamFoundation.Identity",
         ///     "S-1-9-1234567890-1234567890-123456789-1234567890-1234567890-1-1234567890-1234567890-1234567890-1234567890"
         /// </example>
-        public IdentityDescriptor(string identityType, string identifier)
+        public IdentityDescriptor([NotNull] string identityType, [NotNull] string identifier)
         {
             IdentityType = identityType;
             Identifier = identifier;
@@ -33,7 +35,7 @@ namespace Microsoft.Qwiq
             private set
             {
                 if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
-                if (value.Length > 256) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value.Length > IdentityConstants.MaxIdLength) throw new ArgumentOutOfRangeException(nameof(value));
                 _identifier = value;
             }
         }
@@ -44,16 +46,16 @@ namespace Microsoft.Qwiq
             private set
             {
                 if (string.IsNullOrEmpty(value)) throw new ArgumentNullException(nameof(value));
-                if (value.Length > 128) throw new ArgumentOutOfRangeException(nameof(value));
+                if (value.Length > IdentityConstants.MaxTypeLength) throw new ArgumentOutOfRangeException(nameof(value));
                 IdentityTypeId = IdentityTypeMapper.Instance.GetTypeIdFromName(value);
             }
         }
 
-        protected internal byte IdentityTypeId { get; set; }
+        protected internal byte IdentityTypeId { get; private set; }
 
         public int CompareTo(IdentityDescriptor other)
         {
-            if (this == other) return 0;
+            if (Equals(this, other)) return 0;
             if (this == null && other != null) return -1;
             if (this != null && other == null) return 1;
 
