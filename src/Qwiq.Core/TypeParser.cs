@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -17,11 +18,13 @@ namespace Microsoft.Qwiq
 
         public object Parse(Type destinationType, object value, object defaultValue)
         {
+            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
             return ParseImpl(destinationType, value, defaultValue);
         }
 
         public object Parse(Type destinationType, object input)
         {
+            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
             return ParseImpl(destinationType, input);
         }
 
@@ -45,31 +48,93 @@ namespace Microsoft.Qwiq
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
         }
 
-        private static object ParseImpl(Type destinationType, object value)
+        [CanBeNull]
+        private static object ParseImpl([NotNull] Type destinationType, [CanBeNull] object value)
         {
-            var defaultValueFactory = new Lazy<object>(() => GetDefaultValueOfType(destinationType));
-
             // If the incoming value is null, return the default value
-            if (ValueRepresentsNull(value)) return defaultValueFactory.Value;
+            if (ValueRepresentsNull(value)) return GetDefaultValueOfType(destinationType);
+
+            var valueType = value.GetType();
 
             // Quit if no type conversion is actually required
-            if (value.GetType() == destinationType) return value;
+            if (valueType == destinationType) return value;
             if (destinationType.IsInstanceOfType(value)) return value;
+
+            switch (Type.GetTypeCode(destinationType))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                case TypeCode.DateTime:
+                    var destNullable = IsGenericNullable(destinationType);
+                    if (!destNullable && valueType == typeof(string))
+                    {
+                        var val = (string)value;
+                        if (string.IsNullOrEmpty(val))
+                        {
+                            return GetDefaultValueOfType(destinationType);
+                        }
+                    }
+                    break;
+            }
+
             if (TryConvert(destinationType, value, out object result)) return result;
-            if (IsGenericNullable(destinationType) && defaultValueFactory.Value == null) return null;
-            if (TryConvert(destinationType, defaultValueFactory.Value, out result)) return result;
+
+            var defaultValue = GetDefaultValueOfType(destinationType);
+            if (IsGenericNullable(destinationType) && defaultValue == null) return null;
+            if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
         }
 
-        private static object ParseImpl(Type destinationType, object value, object defaultValue)
+        [CanBeNull]
+        private static object ParseImpl([NotNull] Type destinationType, [CanBeNull] object value, [CanBeNull] object defaultValue)
         {
             // If the incoming value is null, return the default value
             if (ValueRepresentsNull(value)) return defaultValue;
 
+            var valueType = value.GetType();
+
             // Quit if no type conversion is actually required
-            if (value.GetType() == destinationType) return value;
+            if (valueType == destinationType) return value;
             if (destinationType.IsInstanceOfType(value)) return value;
+
+            switch (Type.GetTypeCode(destinationType))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                case TypeCode.DateTime:
+                    var destNullable = IsGenericNullable(destinationType);
+                    if (!destNullable && valueType == typeof(string))
+                    {
+                        var val = (string)value;
+                        if (string.IsNullOrEmpty(val))
+                        {
+                            return defaultValue;
+                        }
+                    }
+                    break;
+            }
+
             if (TryConvert(destinationType, value, out object result)) return result;
             if (IsGenericNullable(destinationType) && defaultValue == null) return null;
             if (TryConvert(destinationType, defaultValue, out result)) return result;
@@ -88,7 +153,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -102,7 +167,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -115,7 +180,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -131,7 +196,7 @@ namespace Microsoft.Qwiq
                         }
                         // ReSharper disable EmptyGeneralCatchClause
                         catch
-                                // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
             }
@@ -140,14 +205,15 @@ namespace Microsoft.Qwiq
             return false;
         }
 
-        private static bool ValueRepresentsNull(object value)
+        [ContractAnnotation("value:null => true")]
+        private static bool ValueRepresentsNull([CanBeNull] object value)
         {
             return value == null || value == DBNull.Value;
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-                // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly ITypeParser Instance = new TypeParser();
