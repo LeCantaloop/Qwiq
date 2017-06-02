@@ -1,6 +1,6 @@
 using System;
 using System.Xml;
-
+using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -144,18 +144,253 @@ namespace Microsoft.Qwiq
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_parsing_an_empty_string_nonnullable_double : TypeParserTestsContext
+    public class when_parsing_an_empty_string_nonnullable_bool : TypeParserFirstChanceExceptionContext
     {
         public override void When()
         {
-            Expected = 11d;
-            Actual = Parser.Parse<double>("", 11);
+            Expected = false;
+            Actual = Parser.Parse<bool>("");
         }
 
         [TestMethod]
-        public void default_value_is_returned()
+        public void default_value_is_returned_without_exception()
         {
             Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_SByte : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (sbyte)0;
+            Actual = Parser.Parse<sbyte>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_byte : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (byte)0;
+            Actual = Parser.Parse<byte>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_short : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (short)0;
+            Actual = Parser.Parse<short>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_ushort : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (ushort)0;
+            Actual = Parser.Parse<ushort>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_double : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = 0d;
+            Actual = Parser.Parse<double>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_uint : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (uint)0;
+            Actual = Parser.Parse<uint>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_int : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = 0;
+            Actual = Parser.Parse<int>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_string : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = string.Empty;
+            Actual = Parser.Parse<string>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_long : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = 0L;
+            Actual = Parser.Parse<long>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_ulong : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (ulong)0;
+            Actual = Parser.Parse<ulong>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_float : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (float)0;
+            Actual = Parser.Parse<float>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_decimal : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = (decimal)0;
+            Actual = Parser.Parse<decimal>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_DateTime : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = DateTime.MinValue;
+            Actual = Parser.Parse<DateTime>("");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
         }
     }
 
