@@ -50,6 +50,10 @@ namespace Microsoft.Qwiq.Mapper
             {
                 "StringField",
                 "sample"
+            },
+            {
+                "EmptyStringField",
+                string.Empty
             }
         };
 
@@ -64,10 +68,9 @@ namespace Microsoft.Qwiq.Mapper
         public override void Given()
         {
             var propertyInspector = new PropertyInspector(new PropertyReflector());
-            var typeParser = TypeParser.Default;
             var mappingStrategies = new IWorkItemMapperStrategy[]
                                         {
-                                            new AttributeMapperStrategy(propertyInspector, typeParser),
+                                            new AttributeMapperStrategy(propertyInspector),
                                             new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
                                         };
             _workItemMapper = new WorkItemMapper(mappingStrategies);
@@ -81,6 +84,114 @@ namespace Microsoft.Qwiq.Mapper
         public override void Cleanup()
         {
             WorkItemStore?.Dispose();
+        }
+    }
+
+    [TestClass]
+    public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion : WorkItemMapperContext<Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion.EmptyStringModel>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("EmptyStringField", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoubleField.ShouldEqual(0.0d);
+        }
+
+        [WorkItemType("EmptyStringField")]
+        public class EmptyStringModel : IIdentifiable<int?>
+        {
+            [FieldDefinition("Id")]
+            public int? Id { get;set;}
+
+            [FieldDefinition("EmptyStringField", true)]
+            public double DoubleField { get;set;}
+        }
+    }
+
+    [TestClass]
+    public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_with_NullSub : WorkItemMapperContext<Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion.EmptyStringModel>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("EmptyStringField", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoubleField.ShouldEqual(0.0d);
+        }
+
+        [WorkItemType("EmptyStringField")]
+        public class EmptyStringModel : IIdentifiable<int?>
+        {
+            [FieldDefinition("Id")]
+            public int? Id { get; set; }
+
+            [FieldDefinition("EmptyStringField", 0.0d)]
+            public double DoubleField { get; set; }
+        }
+    }
+
+    [TestClass]
+    public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty : WorkItemMapperContext<Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty.EmptyStringModel>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("EmptyStringField", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoubleField.ShouldEqual(0.0d);
+        }
+
+        [WorkItemType("EmptyStringField")]
+        public class EmptyStringModel : IIdentifiable<int?>
+        {
+            [FieldDefinition("Id")]
+            public int? Id { get; set; }
+
+            [FieldDefinition("EmptyStringField")]
+            public double DoubleField { get; set; }
+        }
+    }
+
+    [TestClass]
+    public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion_with_Default : WorkItemMapperContext<Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion_with_Default.EmptyStringModel>
+    {
+        public override void Given()
+        {
+            SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("EmptyStringField", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
+            WorkItemStore = new MockWorkItemStore().Add(SourceWorkItems);
+            base.Given();
+        }
+
+        [TestMethod]
+        public void the_mapped_property_is_the_substituted_value()
+        {
+            Actual.DoubleField.ShouldEqual(0.0d);
+        }
+
+        [WorkItemType("EmptyStringField")]
+        public class EmptyStringModel : IIdentifiable<int?>
+        {
+            [FieldDefinition("Id")]
+            public int? Id { get; set; }
+
+            [FieldDefinition("EmptyStringField", true, 0.0d)]
+            public double DoubleField { get; set; }
         }
     }
 

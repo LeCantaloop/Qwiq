@@ -29,6 +29,7 @@
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
+    <Compile Include="Attributes\NoExceptionAttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />
     <Compile Include="Attributes\IPropertyReflector.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
+    <Compile Include="AttributeMapException.cs" />
     <Compile Include="MapperTeamFoundationServerWorkItemQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkItemMapper.cs" />

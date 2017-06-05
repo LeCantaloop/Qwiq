@@ -25,12 +25,58 @@ namespace Microsoft.Qwiq
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_parsing_an_enum_value : TypeParserTestsContext
+    public class when_parsing_an_enum_value_Generic : TypeParserTestsContext
     {
         public override void When()
         {
             Expected = Formatting.Indented;
             Actual = Parser.Parse("Indented", Formatting.None);
+        }
+
+        [TestMethod]
+        public void enum_value_is_returned()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_enum_value_null_with_defaultValue : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = (Formatting)0;
+            Actual = Parser.Parse(typeof(Formatting), null, Formatting.None);
+        }
+
+        [TestMethod]
+        public void enum_value_is_returned()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_enum_value_null_defaultValue_null : TypeParserTestsContext
+    {
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void enum_value_is_returned()
+        {
+            Parser.Parse(typeof(Formatting), null, null);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_enum_value_null : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = (Formatting)0;
+            Actual = Parser.Parse(typeof(Formatting), null);
         }
 
         [TestMethod]
@@ -252,6 +298,24 @@ namespace Microsoft.Qwiq
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_double_and_null_defaultvalue : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = 0d;
+            Actual = Parser.Parse(typeof(double), "", null);
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class when_parsing_an_empty_string_nonnullable_uint : TypeParserFirstChanceExceptionContext
     {
         public override void When()
@@ -383,6 +447,24 @@ namespace Microsoft.Qwiq
         public override void When()
         {
             Expected = DateTime.MinValue;
+            Actual = (DateTime)Parser.Parse(typeof(DateTime), (object)"");
+        }
+
+        [TestMethod]
+        public void default_value_is_returned_without_exception()
+        {
+            Actual.ShouldEqual(Expected);
+            FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_an_empty_string_nonnullable_DateTime_Generic : TypeParserFirstChanceExceptionContext
+    {
+        public override void When()
+        {
+            Expected = DateTime.MinValue;
             Actual = Parser.Parse<DateTime>("");
         }
 
@@ -391,6 +473,18 @@ namespace Microsoft.Qwiq
         {
             Actual.ShouldEqual(Expected);
             FirstChanceException.ShouldBeNull();
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_a_valid_nonnullable_double_with_nuill_for_value_and_defaultvalue : TypeParserTestsContext
+    {
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void value_is_parsed_as_double()
+        {
+            Parser.Parse(typeof(double), null, null);
         }
     }
 
@@ -423,6 +517,40 @@ namespace Microsoft.Qwiq
 
         [TestMethod]
         public void value_is_null()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_a_byte_to_decimal : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = (decimal)255;
+            Actual = Parser.Parse(typeof(decimal), (object)((byte)255));
+        }
+
+        [TestMethod]
+        public void decimal_value_is_expected()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_parsing_a_null_nullable_double_with_defaultValue_of_decimal : TypeParserTestsContext
+    {
+        public override void When()
+        {
+            Expected = 1.0M;
+            Actual = Parser.Parse(typeof(double?), null, 1.0M);
+        }
+
+        [TestMethod]
+        public void value_is_defaultValue()
         {
             Actual.ShouldEqual(Expected);
         }

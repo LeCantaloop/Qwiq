@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Qwiq
@@ -19,6 +20,12 @@ namespace Microsoft.Qwiq
         public object Parse(Type destinationType, object value, object defaultValue)
         {
             if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
+            var defaultValueType = defaultValue?.GetType();
+            if (defaultValueType != null && destinationType != defaultValueType)
+            {
+                Trace.TraceWarning($"The type of parameter {nameof(defaultValue)} ({defaultValueType}) does not match the destination type ({destinationType}. An additional conversion is required to convert to {destinationType}.");
+            }
+
             return ParseImpl(destinationType, value, defaultValue);
         }
 
@@ -38,21 +45,19 @@ namespace Microsoft.Qwiq
             return (T)Parse(typeof(T), value, defaultValue);
         }
 
-        private static object GetDefaultValueOfType(Type type)
-        {
-            return type.IsValueType ? Activator.CreateInstance(type) : null;
-        }
-
-        private static bool IsGenericNullable(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
-        }
-
         [CanBeNull]
         private static object ParseImpl([NotNull] Type destinationType, [CanBeNull] object value)
         {
-            // If the incoming value is null, return the default value
-            if (ValueRepresentsNull(value)) return GetDefaultValueOfType(destinationType);
+            var valueIsNull = ValueRepresentsNull(value);
+            var canAcceptNull = destinationType.CanAcceptNull();
+
+            if (valueIsNull)
+            {
+                if (canAcceptNull)
+                    return null;
+
+                return destinationType.GetDefaultValueOfType();
+            }
 
             var valueType = value.GetType();
 
@@ -75,13 +80,13 @@ namespace Microsoft.Qwiq
                 case TypeCode.Double:
                 case TypeCode.Decimal:
                 case TypeCode.DateTime:
-                    var destNullable = IsGenericNullable(destinationType);
+                    var destNullable = destinationType.IsGenericNullable();
                     if (!destNullable && valueType == typeof(string))
                     {
                         var val = (string)value;
                         if (string.IsNullOrEmpty(val))
                         {
-                            return GetDefaultValueOfType(destinationType);
+                            return destinationType.GetDefaultValueOfType();
                         }
                     }
                     break;
@@ -89,18 +94,48 @@ namespace Microsoft.Qwiq
 
             if (TryConvert(destinationType, value, out object result)) return result;
 
-            var defaultValue = GetDefaultValueOfType(destinationType);
-            if (IsGenericNullable(destinationType) && defaultValue == null) return null;
+            var defaultValue = destinationType.GetDefaultValueOfType();
+            if (destinationType.IsGenericNullable() && defaultValue == null) return null;
+
+            if (defaultValue != null)
+            {
+                var defaultValueType = defaultValue.GetType();
+                if (defaultValueType == destinationType)
+                {
+                    // No conversion required
+                    return defaultValue;
+                }
+            }
+
             if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
         }
 
         [CanBeNull]
-        private static object ParseImpl([NotNull] Type destinationType, [CanBeNull] object value, [CanBeNull] object defaultValue)
+        private static object ParseImpl(
+            [NotNull] Type destinationType,
+            [CanBeNull] object value,
+            [CanBeNull] object defaultValue)
         {
-            // If the incoming value is null, return the default value
-            if (ValueRepresentsNull(value)) return defaultValue;
+            var valueIsNull = ValueRepresentsNull(value);
+            var defaultValueIsNull = ValueRepresentsNull(defaultValue);
+            var canAcceptNull = destinationType.CanAcceptNull();
+
+            if (valueIsNull)
+            {
+                if (defaultValueIsNull)
+                {
+                    if (canAcceptNull)
+                        return null;
+
+                    // A value type cannot have a null return
+                    throw new InvalidOperationException($"The type {destinationType} cannot have a null value.", new ArgumentNullException(nameof(value), new ArgumentNullException(nameof(defaultValue))));
+                }
+
+                // If the incoming value is null, return the default value
+                return defaultValue;
+            }
 
             var valueType = value.GetType();
 
@@ -123,20 +158,38 @@ namespace Microsoft.Qwiq
                 case TypeCode.Double:
                 case TypeCode.Decimal:
                 case TypeCode.DateTime:
-                    var destNullable = IsGenericNullable(destinationType);
+                    var destNullable = destinationType.IsGenericNullable();
                     if (!destNullable && valueType == typeof(string))
                     {
                         var val = (string)value;
                         if (string.IsNullOrEmpty(val))
                         {
-                            return defaultValue;
+                            if (defaultValueIsNull)
+                            {
+                                return destinationType.GetDefaultValueOfType();
+                            }
+                            else
+                            {
+                                return defaultValue;
+                            }
                         }
                     }
                     break;
             }
 
             if (TryConvert(destinationType, value, out object result)) return result;
-            if (IsGenericNullable(destinationType) && defaultValue == null) return null;
+            if (destinationType.IsGenericNullable() && defaultValue == null) return null;
+
+            if (defaultValue != null)
+            {
+                var defaultValueType = defaultValue.GetType();
+                if (defaultValueType == destinationType)
+                {
+                    // No conversion required
+                    return defaultValue;
+                }
+            }
+
             if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
@@ -144,7 +197,7 @@ namespace Microsoft.Qwiq
 
         private static bool TryConvert(Type destinationType, object value, out object result)
         {
-            if (IsGenericNullable(destinationType))
+            if (destinationType.IsGenericNullable())
                 try
                 {
                     var converter = new NullableConverter(destinationType);
