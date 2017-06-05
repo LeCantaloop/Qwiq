@@ -192,6 +192,7 @@
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="TeamFoundationIdentityComparer.cs" />
     <Compile Include="TfsConnectionFactory.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeParser.cs" />
     <Compile Include="ValidationState.cs" />
     <Compile Include="WiqlConstants.cs" />
