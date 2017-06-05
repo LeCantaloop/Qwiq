@@ -36,7 +36,7 @@ namespace Microsoft.Qwiq.Mapper.Linq
 
             var mapperStrategies = new IWorkItemMapperStrategy[]
             {
-                new AttributeMapperStrategy(propertyInspector, TypeParser.Default),
+                new AttributeMapperStrategy(propertyInspector),
                 new WorkItemLinksMapperStrategy(propertyInspector, workItemStore)
             };
 

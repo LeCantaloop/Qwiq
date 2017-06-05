@@ -55,7 +55,7 @@ namespace Microsoft.Qwiq
 
         public int CompareTo(IdentityDescriptor other)
         {
-            if (Equals(this, other)) return 0;
+            if (this == other) return 0;
             if (this == null && other != null) return -1;
             if (this != null && other == null) return 1;
 

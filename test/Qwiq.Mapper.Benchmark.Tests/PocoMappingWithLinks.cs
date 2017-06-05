@@ -49,10 +49,9 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
                                                                         new[] { "Revisions", "Item" });
                 wis.Add(generator.Generate());
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
-                var typeParser = TypeParser.Default;
                 var mappingStrategies = new IWorkItemMapperStrategy[]
                                             {
-                                                new AttributeMapperStrategy(propertyInspector, typeParser),
+                                                new AttributeMapperStrategy(propertyInspector),
                                                 new WorkItemLinksMapperStrategy(propertyInspector, wis),
                                             };
                 _mapper = new WorkItemMapper(mappingStrategies);

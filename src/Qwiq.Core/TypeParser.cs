@@ -1,5 +1,7 @@
+using JetBrains.Annotations;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Qwiq
@@ -17,11 +19,19 @@ namespace Microsoft.Qwiq
 
         public object Parse(Type destinationType, object value, object defaultValue)
         {
+            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
+            var defaultValueType = defaultValue?.GetType();
+            if (defaultValueType != null && destinationType != defaultValueType)
+            {
+                Trace.TraceWarning($"The type of parameter {nameof(defaultValue)} ({defaultValueType}) does not match the destination type ({destinationType}. An additional conversion is required to convert to {destinationType}.");
+            }
+
             return ParseImpl(destinationType, value, defaultValue);
         }
 
         public object Parse(Type destinationType, object input)
         {
+            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
             return ParseImpl(destinationType, input);
         }
 
@@ -35,43 +45,151 @@ namespace Microsoft.Qwiq
             return (T)Parse(typeof(T), value, defaultValue);
         }
 
-        private static object GetDefaultValueOfType(Type type)
+        [CanBeNull]
+        private static object ParseImpl([NotNull] Type destinationType, [CanBeNull] object value)
         {
-            return type.IsValueType ? Activator.CreateInstance(type) : null;
-        }
+            var valueIsNull = ValueRepresentsNull(value);
+            var canAcceptNull = destinationType.CanAcceptNull();
 
-        private static bool IsGenericNullable(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>).GetGenericTypeDefinition();
-        }
+            if (valueIsNull)
+            {
+                if (canAcceptNull)
+                    return null;
 
-        private static object ParseImpl(Type destinationType, object value)
-        {
-            var defaultValueFactory = new Lazy<object>(() => GetDefaultValueOfType(destinationType));
+                return destinationType.GetDefaultValueOfType();
+            }
 
-            // If the incoming value is null, return the default value
-            if (ValueRepresentsNull(value)) return defaultValueFactory.Value;
+            var valueType = value.GetType();
 
             // Quit if no type conversion is actually required
-            if (value.GetType() == destinationType) return value;
+            if (valueType == destinationType) return value;
             if (destinationType.IsInstanceOfType(value)) return value;
+
+            switch (Type.GetTypeCode(destinationType))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                case TypeCode.DateTime:
+                    var destNullable = destinationType.IsGenericNullable();
+                    if (!destNullable && valueType == typeof(string))
+                    {
+                        var val = (string)value;
+                        if (string.IsNullOrEmpty(val))
+                        {
+                            return destinationType.GetDefaultValueOfType();
+                        }
+                    }
+                    break;
+            }
+
             if (TryConvert(destinationType, value, out object result)) return result;
-            if (IsGenericNullable(destinationType) && defaultValueFactory.Value == null) return null;
-            if (TryConvert(destinationType, defaultValueFactory.Value, out result)) return result;
+
+            var defaultValue = destinationType.GetDefaultValueOfType();
+            if (destinationType.IsGenericNullable() && defaultValue == null) return null;
+
+            if (defaultValue != null)
+            {
+                var defaultValueType = defaultValue.GetType();
+                if (defaultValueType == destinationType)
+                {
+                    // No conversion required
+                    return defaultValue;
+                }
+            }
+
+            if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
         }
 
-        private static object ParseImpl(Type destinationType, object value, object defaultValue)
+        [CanBeNull]
+        private static object ParseImpl(
+            [NotNull] Type destinationType,
+            [CanBeNull] object value,
+            [CanBeNull] object defaultValue)
         {
-            // If the incoming value is null, return the default value
-            if (ValueRepresentsNull(value)) return defaultValue;
+            var valueIsNull = ValueRepresentsNull(value);
+            var defaultValueIsNull = ValueRepresentsNull(defaultValue);
+            var canAcceptNull = destinationType.CanAcceptNull();
+
+            if (valueIsNull)
+            {
+                if (defaultValueIsNull)
+                {
+                    if (canAcceptNull)
+                        return null;
+
+                    // A value type cannot have a null return
+                    throw new InvalidOperationException($"The type {destinationType} cannot have a null value.", new ArgumentNullException(nameof(value), new ArgumentNullException(nameof(defaultValue))));
+                }
+
+                // If the incoming value is null, return the default value
+                return defaultValue;
+            }
+
+            var valueType = value.GetType();
 
             // Quit if no type conversion is actually required
-            if (value.GetType() == destinationType) return value;
+            if (valueType == destinationType) return value;
             if (destinationType.IsInstanceOfType(value)) return value;
+
+            switch (Type.GetTypeCode(destinationType))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                case TypeCode.DateTime:
+                    var destNullable = destinationType.IsGenericNullable();
+                    if (!destNullable && valueType == typeof(string))
+                    {
+                        var val = (string)value;
+                        if (string.IsNullOrEmpty(val))
+                        {
+                            if (defaultValueIsNull)
+                            {
+                                return destinationType.GetDefaultValueOfType();
+                            }
+                            else
+                            {
+                                return defaultValue;
+                            }
+                        }
+                    }
+                    break;
+            }
+
             if (TryConvert(destinationType, value, out object result)) return result;
-            if (IsGenericNullable(destinationType) && defaultValue == null) return null;
+            if (destinationType.IsGenericNullable() && defaultValue == null) return null;
+
+            if (defaultValue != null)
+            {
+                var defaultValueType = defaultValue.GetType();
+                if (defaultValueType == destinationType)
+                {
+                    // No conversion required
+                    return defaultValue;
+                }
+            }
+
             if (TryConvert(destinationType, defaultValue, out result)) return result;
 
             return null;
@@ -79,7 +197,7 @@ namespace Microsoft.Qwiq
 
         private static bool TryConvert(Type destinationType, object value, out object result)
         {
-            if (IsGenericNullable(destinationType))
+            if (destinationType.IsGenericNullable())
                 try
                 {
                     var converter = new NullableConverter(destinationType);
@@ -88,7 +206,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -102,7 +220,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -115,7 +233,7 @@ namespace Microsoft.Qwiq
                 }
                 // ReSharper disable CatchAllClause
                 catch
-                        // ReSharper restore CatchAllClause
+                // ReSharper restore CatchAllClause
                 {
                 }
 
@@ -131,7 +249,7 @@ namespace Microsoft.Qwiq
                         }
                         // ReSharper disable EmptyGeneralCatchClause
                         catch
-                                // ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
             }
@@ -140,14 +258,15 @@ namespace Microsoft.Qwiq
             return false;
         }
 
-        private static bool ValueRepresentsNull(object value)
+        [ContractAnnotation("value:null => true")]
+        private static bool ValueRepresentsNull([CanBeNull] object value)
         {
             return value == null || value == DBNull.Value;
         }
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-                // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly ITypeParser Instance = new TypeParser();

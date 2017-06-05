@@ -44,9 +44,8 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
             public void SetupData()
             {
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
-                var typeParser = TypeParser.Default;
                 var mappingStrategies = new IWorkItemMapperStrategy[]
-                                            { new AttributeMapperStrategy(propertyInspector, typeParser) };
+                                            { new AttributeMapperStrategy(propertyInspector) };
                 _mapper = new WorkItemMapper(mappingStrategies);
 
                 var wis = new MockWorkItemStore();
