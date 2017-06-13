@@ -71,29 +71,6 @@ namespace Microsoft.Qwiq.Identity
     }
 
     [TestClass]
-    public class when_the_backing_source_does_not_result_in_a_resolved_identity : BulkIdentityAwareAttributeMapperStrategyTests
-    {
-        public override void Given()
-        {
-            IdentityFieldBackingValue = "Anon Existant";
-            Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>();
-            base.Given();
-        }
-
-        [TestMethod]
-        public void the_actual_identity_value_should_be_null()
-        {
-            Actual.AnIdentity.ShouldBeNull();
-        }
-
-        [TestMethod]
-        public void set_on_an_identity_property_should_not_be_called()
-        {
-            Actual.AnIdentitySetCount.ShouldEqual(0);
-        }
-    }
-
-    [TestClass]
     public class when_the_backing_source_does_result_in_a_resolved_identity : BulkIdentityAwareAttributeMapperStrategyTests
     {
         private const string identityAlias = "jsmit";
