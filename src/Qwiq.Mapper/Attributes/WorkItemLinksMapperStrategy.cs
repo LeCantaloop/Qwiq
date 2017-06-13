@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             return Store.Query(ids);
         }
 
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var linksLookup = BuildLinksRelationships(targetWorkItemType, workItemMappings);
 

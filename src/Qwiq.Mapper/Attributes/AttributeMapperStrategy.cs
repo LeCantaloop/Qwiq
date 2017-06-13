@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
         }
 
-        public override void Map<T>(IEnumerable<KeyValuePair<IWorkItem, T>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper workItemMapper)
         {
             var targetWorkItemType = typeof(T);
 
@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             foreach (var workItemMapping in workItemMappings)
             {

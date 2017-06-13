@@ -62,22 +62,20 @@ namespace Microsoft.Qwiq.Mapper
         /// <param name="targeWorkItemType">Type of the targe work item.</param>
         /// <param name="workItemMappings">The work item mappings.</param>
         /// <param name="workItemMapper">The work item mapper.</param>
-        public override void Map(Type targeWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targeWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             if (!workItemMappings.Any()) return;
 
-            var workingSet = workItemMappings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, WorkItemComparer.Default);
             var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targeWorkItemType, _inspector);
             if (!validIdentityProperties.Any()) return;
 
-            var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workingSet.Keys, validIdentityProperties.Keys);
+            var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workItemMappings.Keys, validIdentityProperties.Keys);
             var identitySearchTerms = GetIdentitySearchTerms(validIdentityFieldsWithWorkItems);
             var identitySearchResults = MapIdentityValues(identitySearchTerms);
 
-
             foreach (var workItem in validIdentityFieldsWithWorkItems)
             {
-                var targetObject = workingSet[workItem.WorkItem];
+                var targetObject = workItemMappings[workItem.WorkItem];
                 foreach (var sourceField in workItem.ValidFields)
                 {
                     var targetProperties = validIdentityProperties[sourceField.Name];
