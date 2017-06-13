@@ -88,7 +88,6 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                 return;
             }
 
-            var sourceType = fieldValue.GetType();
             if (convert)
             {
                 try
@@ -97,12 +96,25 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                 }
                 catch (Exception e)
                 {
-                    throw new AttributeMapException($"Unable to convert field {fieldName} on work item {sourceWorkItem.Id}: {sourceWorkItem.WorkItemType} to property {property.Name} on {targetWorkItemType}.", e);
+                    var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                    var pm = new PropertyMap(property, fieldName);
+                    var message = $"Unable to convert field value on {sourceWorkItem.Id}.";
+                    throw new AttributeMapException(message, e, tm, pm);
                 }
             }
 
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
-            accessor[targetWorkItem, property.Name] = fieldValue;
+            try
+            {
+                accessor[targetWorkItem, property.Name] = fieldValue;
+            }
+            catch (Exception e)
+            {
+                var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                var pm = new PropertyMap(property, fieldName);
+                var message = $"Unable to set field value on {sourceWorkItem.Id}.";
+                throw new AttributeMapException(message, e, tm, pm);
+            }
         }
 
         protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
