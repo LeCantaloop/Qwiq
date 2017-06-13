@@ -40,7 +40,7 @@ namespace Microsoft.Qwiq
             : this(identity.DisplayName, identity.Descriptor?.Identifier, identity.TeamFoundationId.ToString())
         {
             Contract.Requires(identity != null);
-            
+
             if (identity == null) throw new ArgumentNullException(nameof(identity));
         }
 
@@ -196,14 +196,13 @@ namespace Microsoft.Qwiq
         public string TeamFoundationId { get; }
 
         /// <summary>
-        /// Performs an explicit conversion from <see cref="IdentityFieldValue"/> to <see cref="string"/>.
+        /// Performs an implicit conversion from <see cref="IdentityFieldValue"/> to <see cref="string"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>If <paramref name="value"/> is null, null; otherwise, <see cref="IdentityName"/>.</returns>
-        public static explicit operator string(IdentityFieldValue value)
+        public static implicit operator string(IdentityFieldValue value)
         {
-            if (value == null) return null;
-            return value.IdentityName;
+            return value?.ToString();
         }
 
         /// <inheritdoc />
@@ -211,7 +210,7 @@ namespace Microsoft.Qwiq
         {
             return string.IsNullOrEmpty(IdentityName)
                        ? DisplayName
-                       : $"{DisplayName} <{AccountName}>".ToString(CultureInfo.InvariantCulture);
+                       : IdentityName;
         }
 
         private static bool TryGetAccountName(string search, out string acccountName)
