@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -11,6 +12,8 @@ namespace Microsoft.Qwiq
     /// </summary>
     public class TypeParser : ITypeParser
     {
+        private static readonly Hashtable TypeConverters = new Hashtable();
+
         private TypeParser()
         {
         }
@@ -211,7 +214,8 @@ namespace Microsoft.Qwiq
                 }
 
             var valueType = value.GetType();
-            var typeConverter = TypeDescriptor.GetConverter(valueType);
+            var typeConverter = GetTypeConverter(valueType);
+
             if (typeConverter.CanConvertTo(destinationType))
                 try
                 {
@@ -224,7 +228,7 @@ namespace Microsoft.Qwiq
                 {
                 }
 
-            typeConverter = TypeDescriptor.GetConverter(destinationType);
+            typeConverter = GetTypeConverter(destinationType);
             if (typeConverter.CanConvertFrom(valueType))
                 try
                 {
@@ -256,6 +260,22 @@ namespace Microsoft.Qwiq
 
             result = null;
             return false;
+        }
+
+        [MustUseReturnValue]
+        private static TypeConverter GetTypeConverter([NotNull] Type valueType)
+        {
+            var hashtable = TypeConverters;
+
+            var typeConverter = (TypeConverter) hashtable[valueType];
+            if (typeConverter != null) return typeConverter;
+
+            lock (hashtable)
+            {
+                typeConverter = TypeDescriptor.GetConverter(valueType);
+                hashtable[valueType] = typeConverter;
+            }
+            return typeConverter;
         }
 
         [ContractAnnotation("value:null => true")]
