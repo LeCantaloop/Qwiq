@@ -40,6 +40,7 @@ namespace Microsoft.Qwiq.Mocks
                     };
         }
 
+        [Obsolete("This method has been deprecated and will be removed in a future release.")]
         public MockTeamFoundationIdentity(string displayName, string uniqueName)
             : this(MockIdentityDescriptor.Create(uniqueName), displayName, Guid.Empty)
         {
