@@ -14,10 +14,10 @@ namespace Microsoft.Qwiq.Identity
     /// <summary>
     /// Converts a <see cref="string"/> representing an alias to a user principal name.
     /// </summary>
-    /// <seealso cref="IIdentityValueConverter" />
     /// <seealso cref="IIdentityManagementService"/>
-    public class IdentityAliasValueConverter : IIdentityValueConverter
+    public class IdentityAliasValueConverter : IdentityValueConverterBase
     {
+        private static readonly IReadOnlyDictionary<string, object> Empty = new Dictionary<string, object>();
         private readonly string[] _domains;
 
         private readonly IIdentityManagementService _identityManagementService;
@@ -53,29 +53,33 @@ namespace Microsoft.Qwiq.Identity
             _domains = domains;
         }
 
-        /// <summary>
-        /// Converts the specified <paramref name="value" /> to an <see cref="object" />.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>An <see cref="object" /> instance whose value is equivilent to the value of <paramref name="value" />.</returns>
-        /// <example>"danj" becomes "danj@contoso.com"</example>
-        [ContractAnnotation("null => null; notnull => notnull")]
-        public object Map([CanBeNull] object value)
+        public override IReadOnlyDictionary<string, object> Map(IEnumerable<string> values)
         {
-            if (value is string stringValue) return GetIdentityNames(stringValue).Single();
+            if (values == null) return Empty;
+            var r = GetIdentityForAliases(values.ToList(), _tenantId, _domains);
+            var retval = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            foreach (var result in r)
+            {
+                var v = result.Value as ITeamFoundationIdentity;
+                retval.Add(result.Key, v?.GetIdentityName() ?? result.Key);
+            }
 
-            if (value is IEnumerable<string> stringArray) return GetIdentityNames(stringArray.ToArray());
+            return retval;
+        }
+
+        [Obsolete("This method is depreciated and will be removed in a future version.")]
+        public override object Map(object value)
+        {
+            if (value is string stringValue) return Map(stringValue);
+            if (value is IEnumerable<string> stringArray)
+            {
+                return Map(stringArray).Select(s => (string)s.Value).ToArray();
+            }
 
             return value;
         }
 
-        private string[] GetIdentityNames(params string[] aliases)
-        {
-            var identities = GetIdentityForAliases(aliases.ToList(), _tenantId, _domains);
-            return identities.Select(i => i.Value.GetIdentityName() ?? i.Key).ToArray();
-        }
-
-        private IDictionary<string, ITeamFoundationIdentity> GetIdentityForAliases(
+        private Dictionary<string, object> GetIdentityForAliases(
             ICollection<string> logonNames,
             string tenantId,
             params string[] domains)
@@ -96,7 +100,7 @@ namespace Microsoft.Qwiq.Identity
             return identities;
         }
 
-        private IDictionary<string, ICollection<IIdentityDescriptor>> CreatePossibleIdentityDescriptors(
+        private Dictionary<string, ICollection<IIdentityDescriptor>> CreatePossibleIdentityDescriptors(
             IEnumerable<string> aliases,
             string[] domains,
             string tenantId)
@@ -119,14 +123,14 @@ namespace Microsoft.Qwiq.Identity
             return descriptors;
         }
 
-        private IDictionary<string, ITeamFoundationIdentity> GetIdentitiesForAliases(
+        private Dictionary<string, object> GetIdentitiesForAliases(
             IDictionary<string, ICollection<IIdentityDescriptor>> aliasDescriptors)
         {
             var descriptors = aliasDescriptors.SelectMany(ad => ad.Value).ToList();
             var descriptorToAliasLookup = aliasDescriptors
                     .SelectMany(ad => ad.Value.Select(d => new KeyValuePair<string, string>(d.ToString(), ad.Key)))
                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
-            var validIdentities = new Dictionary<string, ITeamFoundationIdentity>(StringComparer.OrdinalIgnoreCase);
+            var validIdentities = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             var lookupResults = _identityManagementService.ReadIdentities(descriptors);
             foreach (var identity in lookupResults.Where(id => id != null))
             {

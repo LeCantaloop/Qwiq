@@ -103,7 +103,9 @@ namespace Microsoft.Qwiq.Identity
             IdentityFieldBackingValue = identityDisplay;
             Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
             {
+#pragma warning disable 0618
                 {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(identityDisplay, identityAlias) }}
+#pragma warning restore 0618
             };
             base.Given();
         }
@@ -119,22 +121,30 @@ namespace Microsoft.Qwiq.Identity
         {
             Actual.AnIdentitySetCount.ShouldEqual(1);
         }
+
+        [TestMethod]
+        public void the_IdentityFieldValue_contains_expected_value()
+        {
+            Actual.AnIdentityValue.ShouldNotBeNull();
+            Actual.AnIdentityValue.DisplayName.ShouldEqual(identityDisplay);
+            Actual.AnIdentityValue.IdentityName.ShouldEqual(identityAlias);
+        }
     }
 
     [TestClass]
     public class given_a_work_item_with_defined_fields_when_the_field_names_to_properties_are_retrieved : ContextSpecification
     {
         private readonly Type _identityType = typeof(MockIdentityType);
-        private IDictionary<string, PropertyInfo> Expected { get; set; }
-        private IDictionary<string, PropertyInfo> Actual { get; set; }
+        private Dictionary<string, List<PropertyInfo>> Expected { get; set; }
+        private Dictionary<string, List<PropertyInfo>> Actual { get; set; }
 
         public override void Given()
         {
-            Expected = new Dictionary<string, PropertyInfo>
+            Expected = new Dictionary<string, List<PropertyInfo>>
             {
-                { MockIdentityType.BackingField, _identityType.GetProperty("AnIdentity") },
-                { MockIdentityType.NonExistantField, _identityType.GetProperty("NonExistant") },
-                { MockIdentityType.UriIdentityField, _identityType.GetProperty("UriIdentity") }
+                [MockIdentityType.BackingField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.AnIdentity)), _identityType.GetProperty(nameof(MockIdentityType.AnIdentityValue)) },
+                [MockIdentityType.NonExistantField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.NonExistant)) },
+                [MockIdentityType.UriIdentityField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.UriIdentity)) }
             };
         }
 
@@ -149,7 +159,10 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void only_valid_fields_and_properties_are_retrieved()
         {
-            Actual.ShouldContainOnly(Expected);
+            Actual.Count.ShouldEqual(Expected.Count);
+            Actual[MockIdentityType.BackingField].ShouldContainOnly(Expected[MockIdentityType.BackingField]);
+            Actual[MockIdentityType.NonExistantField].ShouldContainOnly(Expected[MockIdentityType.NonExistantField]);
+            Actual[MockIdentityType.UriIdentityField].ShouldContainOnly(Expected[MockIdentityType.UriIdentityField]);
         }
     }
 
