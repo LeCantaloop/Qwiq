@@ -30,7 +30,7 @@ namespace Microsoft.Qwiq.Mapper
 
         public IEnumerable<T> Create<T>(IEnumerable<IWorkItem> collection) where T : IIdentifiable<int?>, new()
         {
-            var workItemsToMap = new Dictionary<IWorkItem, T>();
+            var workItemsToMap = new Dictionary<IWorkItem, T>(Comparer.WorkItem);
             foreach (var item in collection)
             {
                 workItemsToMap[item] = new T();
@@ -41,7 +41,10 @@ namespace Microsoft.Qwiq.Mapper
                 strategy.Map(workItemsToMap, this);
             }
 
-            return workItemsToMap.Select(wi => wi.Value);
+            foreach (var wi in workItemsToMap)
+            {
+                yield return wi.Value;
+            }
         }
 
         public IEnumerable<IIdentifiable<int?>> Create(Type type, IEnumerable<IWorkItem> collection)

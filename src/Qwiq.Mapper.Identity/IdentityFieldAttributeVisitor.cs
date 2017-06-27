@@ -18,13 +18,13 @@ namespace Microsoft.Qwiq.Linq.Visitors
     public class IdentityFieldAttributeVisitor : ExpressionVisitor
     {
         [NotNull]
-        private readonly IIdentityValueConverter _valueConverter;
+        private readonly IIdentityValueConverter<string, object> _valueConverter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityFieldAttributeVisitor" /> class.
         /// </summary>
-        /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
-        public IdentityFieldAttributeVisitor([NotNull] IIdentityValueConverter valueConverter)
+        /// <param name="valueConverter">An instance of IIdentityValueConverter used to convert identity values.</param>
+        public IdentityFieldAttributeVisitor([NotNull] IIdentityValueConverter<string, object> valueConverter)
         {
             Contract.Requires(valueConverter != null);
             
@@ -57,7 +57,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         {
             if (!NeedsIdentityMapping) return base.VisitConstant(node);
 
-            var newNode = _valueConverter.Map(node.Value);
+            var newNode = _valueConverter.Map(node.Value as string);
             return Expression.Constant(newNode);
         }
 

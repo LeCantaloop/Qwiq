@@ -37,7 +37,7 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
         public class Benchmark
         {
             private IWorkItemMapperStrategy _strategy;
-            private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable<int?>>> _workItemMappings;
+            private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings;
 
             [Setup]
             public void SetupData()
@@ -52,7 +52,7 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
                 var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
                 wis.Add(generator.Generate());
 
-                _workItemMappings = generator.Items.Select(t => new KeyValuePair<IWorkItem, IIdentifiable<int?>>(t, new MockIdentityType())).ToList();
+                _workItemMappings = generator.Items.ToDictionary(k => (IWorkItem) k, e => (IIdentifiable<int?>) new MockIdentityType());
 
             }
 
