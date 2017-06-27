@@ -32,7 +32,9 @@ namespace Microsoft.Qwiq.Identity
 
         public override void When()
         {
+#pragma warning disable 0618
             var result = Instance.Map(Input);
+#pragma warning restore 0618
 
             Debug.Print("Result: " + result.ToUsefulString());
 

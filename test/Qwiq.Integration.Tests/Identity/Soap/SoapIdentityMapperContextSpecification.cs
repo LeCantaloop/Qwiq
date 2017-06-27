@@ -27,7 +27,9 @@ namespace Microsoft.Qwiq.Identity.Soap
 
         public override void When()
         {
+#pragma warning disable 0618
             ActualOutput = TimedAction(() => (T)Instance.Map(Input), "SOAP", "Map");
+#pragma warning restore 0618
         }
 
         [TestMethod]

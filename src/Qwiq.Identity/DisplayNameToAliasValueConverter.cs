@@ -13,9 +13,9 @@ namespace Microsoft.Qwiq.Identity
     /// <summary>
     /// Converts a <see cref="string"/> representing an identity to an alias
     /// </summary>
-    /// <seealso cref="IIdentityValueConverter" />
-    public class DisplayNameToAliasValueConverter : IIdentityValueConverter
+    public class DisplayNameToAliasValueConverter : IdentityValueConverterBase
     {
+        private static readonly IReadOnlyDictionary<string, object> Empty = new Dictionary<string, object>();
         private readonly IIdentityManagementService _identityManagementService;
 
         /// <summary>
@@ -26,25 +26,19 @@ namespace Microsoft.Qwiq.Identity
         public DisplayNameToAliasValueConverter([NotNull] IIdentityManagementService identityManagementService)
         {
             Contract.Requires(identityManagementService != null);
-            
+
             _identityManagementService = identityManagementService ?? throw new ArgumentNullException(nameof(identityManagementService));
         }
 
-        /// <summary>
-        /// Converts the specified <paramref name="value" /> to an <see cref="T:Dictionary{string, string}" />.
-        /// </summary>
-        /// <param name="value">The value to convert.</param>
-        /// <returns>A <see cref="T:Dictionary{string, object}" /> instance whose key is the <paramref name="value"/> and value is is equivalent to the value of <paramref name="value" />.</returns>
-        public object Map([CanBeNull] object value)
+        public override IReadOnlyDictionary<string, object> Map(IEnumerable<string> values)
         {
-            if (value is string stringValue) return GetIdentityNames(stringValue);
-
-            if (value is IEnumerable<string> stringArray) return GetIdentityNames(stringArray.ToArray());
-
-            return value;
+            if (values == null) return Empty;
+            return GetIdentityNames(values.ToArray());
         }
 
-        private Dictionary<string, string> GetIdentityNames(params string[] displayNames)
+
+
+        private Dictionary<string, object> GetIdentityNames(params string[] displayNames)
         {
             return
                         GetAliasesForDisplayNames(displayNames)
@@ -56,9 +50,12 @@ namespace Microsoft.Qwiq.Identity
                                     var retval = kvp.Value.FirstOrDefault();
                                     if (kvp.Value.Length > 1)
                                     {
-                                        Trace.TraceWarning("Multiple identities found matching '{0}':\r\n\r\n- {1}\r\n\r\nChoosing '{2}'.", kvp.Key, string.Join("\r\n- ", kvp.Value), retval);
+                                        var m =
+                                            $"Multiple identities found matching '{kvp.Key}'. Please specify one of the following identities:{string.Join("\r\n- ", kvp.Value)}";
+
+                                        throw new MultipleIdentitiesFoundException(m);
                                     }
-                                    return retval;
+                                    return (object)retval;
                                 },
                             Comparer.OrdinalIgnoreCase);
         }

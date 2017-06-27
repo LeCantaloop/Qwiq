@@ -14,14 +14,14 @@ namespace Microsoft.Qwiq.Linq.Visitors
     public class IdentityMappingVisitor : IdentityComboStringVisitor
     {
         [NotNull]
-        private readonly IIdentityValueConverter _valueConverter;
+        private readonly IIdentityValueConverter<string, object> _valueConverter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityMappingVisitor" /> class.
         /// </summary>
         /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
         /// <exception cref="ArgumentNullException">valueConverter</exception>
-        public IdentityMappingVisitor([NotNull] IIdentityValueConverter valueConverter)
+        public IdentityMappingVisitor([NotNull] IIdentityValueConverter<string, object> valueConverter)
         {
             _valueConverter = valueConverter ?? throw new ArgumentNullException(nameof(valueConverter));
         }
@@ -35,7 +35,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         {
             if (!NeedsIdentityMapping) return base.VisitConstant(node);
 
-            var newNode = _valueConverter.Map(node.Value);
+            var newNode = _valueConverter.Map(node.Value as string);
             return Expression.Constant(newNode);
         }
     }

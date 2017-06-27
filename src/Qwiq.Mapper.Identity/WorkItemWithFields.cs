@@ -7,6 +7,6 @@ namespace Microsoft.Qwiq.Mapper
     internal struct WorkItemWithFields
     {
         public IWorkItem WorkItem { get; set; }
-        public IEnumerable<WorkItemField> ValidFields { get; set; }
+        public List<WorkItemField> ValidFields { get; set; }
     }
 }
