@@ -143,7 +143,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         {
             // Composite key: work item type and target type
 
-            var workItemType = workItem.Type.Name;
+            var workItemType = workItem.WorkItemType;
             var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
 
             return PropertiesThatExistOnWorkItem.GetOrAdd(
