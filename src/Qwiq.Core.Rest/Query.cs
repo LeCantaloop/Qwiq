@@ -92,9 +92,7 @@ namespace Microsoft.Qwiq.Client.Rest
         {
             return new WorkItem(
                                 workItem,
-                                // REVIEW: Allocate for reference type
-                                _workItemStore.Projects[(string)workItem.Fields[CoreFieldRefNames.TeamProject]]
-                                              .WorkItemTypes[(string)workItem.Fields[CoreFieldRefNames.WorkItemType]],
+                                LookUpWorkItemType(workItem),
                                 // REVIEW: Delegate allocation from method group
                                 LinkFunc);
         }
@@ -103,8 +101,7 @@ namespace Microsoft.Qwiq.Client.Rest
         {
             IWorkItemType WorkItemTypeFactory()
             {
-                return _workItemStore.Projects[(string)workItem.Fields[CoreFieldRefNames.TeamProject]]
-                                     .WorkItemTypes[(string)workItem.Fields[CoreFieldRefNames.WorkItemType]];
+                return LookUpWorkItemType(workItem);
             }
 
             return new WorkItem(workItem, new Lazy<IWorkItemType>(WorkItemTypeFactory), LinkFunc);
@@ -158,6 +155,45 @@ namespace Microsoft.Qwiq.Client.Rest
             }
 
             return retval;
+        }
+
+        [JetBrains.Annotations.Pure]
+        [NotNull]
+        private IWorkItemType LookUpWorkItemType([NotNull] TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
+        {
+            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.TeamProject, out object tp))
+            {
+                throw new InvalidOperationException($"Field '{CoreFieldRefNames.TeamProject}' is required.");
+            }
+            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.WorkItemType, out object wit))
+            {
+                throw new InvalidOperationException($"Field '{CoreFieldRefNames.WorkItemType}' is required.");
+            }
+
+            var tps = tp as string;
+            var wits = wit as string;
+
+            if (string.IsNullOrWhiteSpace(tps))
+            {
+                throw new InvalidOperationException(
+                    $"Value for field '{CoreFieldRefNames.TeamProject}' cannot be null or empty.");
+            }
+            if (string.IsNullOrWhiteSpace(wits))
+            {
+                throw new InvalidOperationException(
+                    $"Value for field '{CoreFieldRefNames.WorkItemType}' cannot be null or empty.");
+            }
+
+            if (!_workItemStore.Projects.Contains(tps))
+            {
+                throw new InvalidOperationException($"No project for specified value '{tps}'.");
+            }
+            var proj = _workItemStore.Projects[tps];
+            if (!proj.WorkItemTypes.Contains(wits))
+            {
+                throw new InvalidOperationException($"No work item type for specified value '{wits}'.");
+            }
+            return proj.WorkItemTypes[wits];
         }
 
         private ReadOnlyCollection<IWorkItemLinkInfo> RunkLinkQueryImpl()

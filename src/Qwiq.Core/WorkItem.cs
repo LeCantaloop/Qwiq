@@ -27,19 +27,19 @@ namespace Microsoft.Qwiq
 
         private bool _useFields = true;
 
-        protected internal WorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields)
+        protected internal WorkItem([NotNull] IWorkItemType workItemType, [CanBeNull] Dictionary<string, object> fields)
             : base(fields)
         {
-            Contract.Requires(type != null);
+            Contract.Requires(workItemType != null);
 
-            _type = type ?? throw new ArgumentNullException(nameof(type));
+            _type = workItemType ?? throw new ArgumentNullException(nameof(workItemType));
         }
 
-        protected internal WorkItem([NotNull] IWorkItemType type)
+        protected internal WorkItem([NotNull] IWorkItemType workItemType)
         {
-            Contract.Requires(type != null);
+            Contract.Requires(workItemType != null);
 
-            _type = type ?? throw new ArgumentNullException(nameof(type));
+            _type = workItemType ?? throw new ArgumentNullException(nameof(workItemType));
         }
 
         protected internal WorkItem([NotNull] Lazy<IWorkItemType> type)
@@ -48,11 +48,11 @@ namespace Microsoft.Qwiq
             _lazyType = type;
         }
 
-        protected internal WorkItem([NotNull] IWorkItemType type, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
+        protected internal WorkItem([NotNull] IWorkItemType workItemType, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
         {
-            Contract.Requires(type != null);
+            Contract.Requires(workItemType != null);
             Contract.Requires(fieldCollectionFactory != null);
-            _type = type ?? throw new ArgumentNullException(nameof(type));
+            _type = workItemType ?? throw new ArgumentNullException(nameof(workItemType));
             _fieldFactory = fieldCollectionFactory ?? throw new ArgumentNullException(nameof(fieldCollectionFactory));
         }
 
@@ -110,7 +110,7 @@ namespace Microsoft.Qwiq
 
         public virtual IEnumerable<IRevision> Revisions => throw new NotSupportedException();
 
-        public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new NotSupportedException();
+        public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new InvalidOperationException($"No value specified for {nameof(Type)}.");
 
         public abstract Uri Uri { get; }
 

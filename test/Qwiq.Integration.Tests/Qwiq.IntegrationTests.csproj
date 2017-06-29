@@ -195,6 +195,8 @@
     <Compile Include="Identity\Soap\SoapIdentityMapperContextSpecification.cs" />
     <Compile Include="IntegrationSettings.cs" />
     <Compile Include="Linq\LinqContextSpecification.cs" />
+    <Compile Include="Mapper\AttributeMapperTests.cs" />
+    <Compile Include="Mapper\WiqlAttributeMapperContextSpecification.cs" />
     <Compile Include="Mapper\Identity\DisplayNameToAliasConverterContextSpecification.cs" />
     <Compile Include="Mapper\Identity\DisplayNameToAliasConverterTests.cs" />
     <Compile Include="Mapper\Identity\MultipleDisplayNameContextSpecification.cs" />
@@ -263,6 +265,10 @@
     <ProjectReference Include="..\..\src\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj">
       <Project>{BE25CF2D-FA53-4455-85B1-4EEC1D979FB1}</Project>
       <Name>Qwiq.Mapper.Identity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj">
+      <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
+      <Name>Qwiq.Mapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>
