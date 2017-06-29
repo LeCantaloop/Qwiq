@@ -61,6 +61,9 @@ namespace Microsoft.Qwiq.Mapper
 
             [FieldDefinition(CoreFieldRefNames.State)]
             public string State { get; set; }
+
+            [FieldDefinition("InvalidField")]
+            public string Invalid { get; set; }
         }
     }
 }

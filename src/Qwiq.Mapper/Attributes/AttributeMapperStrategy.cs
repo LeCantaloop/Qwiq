@@ -156,9 +156,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                                          property =>
                                          new { property, fieldName = PropertyInfoFieldCache(inspector, property)?.FieldName })
                                      .Where(
-                                         @t =>
-                                         !string.IsNullOrEmpty(@t.fieldName) && workItem.Fields.Contains(@t.fieldName))
-                                     .Select(@t => @t.property)
+                                         t =>
+                                         !string.IsNullOrEmpty(t.fieldName))
+                                     .Select(t => t.property)
                                      .ToList();
                     });
         }

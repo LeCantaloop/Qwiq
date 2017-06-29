@@ -124,6 +124,10 @@ namespace Microsoft.Qwiq
                     {
                         return Fields[name].Value;
                     }
+                    catch (InvalidOperationException ioex) when (ioex.Source == "Microsoft.Qwiq.Client.Rest")
+                    {
+                        _useFields = false;
+                    }
                     catch (NotSupportedException)
                     {
                         _useFields = false;
