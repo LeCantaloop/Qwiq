@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Mapper.Tests.Mocks
+using Microsoft.VisualStudio.Services.Common;
+
+namespace Microsoft.Qwiq.Mapper.Mocks
 {
-    class InstrumentedMockWorkItemStore : IWorkItemStore
+    internal class InstrumentedMockWorkItemStore : IWorkItemStore
     {
         private readonly IWorkItemStore _innerWorkItemStore;
 
@@ -12,55 +14,16 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             _innerWorkItemStore = innerWorkItemStore;
         }
 
-        public void Dispose()
-        {
-            _innerWorkItemStore.Dispose();
-        }
+        public VssCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
 
-        public IEnumerable<IWorkItem> Query(string wiql, bool dayPrecision = false)
-        {
-            QueryStringCallCount += 1;
-            return _innerWorkItemStore.Query(wiql, dayPrecision);
-        }
-        public int QueryStringCallCount { get; private set; }
+        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
 
-        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
-        {
-            QueryLinksCallCount += 1;
-            return _innerWorkItemStore.QueryLinks(wiql, dayPrecision);
-        }
-        public int QueryLinksCallCount { get; private set; }
+        /// <inheritdoc />
+        public WorkItemStoreConfiguration Configuration => _innerWorkItemStore.Configuration;
 
-        public IEnumerable<IWorkItem> Query(IEnumerable<int> ids, DateTime? asOf = null)
-        {
-            QueryIdsCallCount += 1;
-            return _innerWorkItemStore.Query(ids, asOf);
-        }
-        public int QueryIdsCallCount { get; private set; }
+        public IFieldDefinitionCollection FieldDefinitions => _innerWorkItemStore.FieldDefinitions;
 
-        public IWorkItem Query(int id, DateTime? asOf = null)
-        {
-            QueryIdCallCount += 1;
-            return _innerWorkItemStore.Query(id, asOf);
-        }
-        public int QueryIdCallCount { get; private set; }
-
-        public int QueryCallCount
-        {
-            get { return QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount; }
-        }
-
-        public ITfsTeamProjectCollection TeamProjectCollection
-        {
-            get
-            {
-                TeamProjectCollectionCallCount += 1;
-                return _innerWorkItemStore.TeamProjectCollection;
-            }
-        }
-        public int TeamProjectCollectionCallCount { get; private set; }
-
-        public IEnumerable<IProject> Projects
+        public IProjectCollection Projects
         {
             get
             {
@@ -68,9 +31,35 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
                 return _innerWorkItemStore.Projects;
             }
         }
+
         public int ProjectsCallCount { get; private set; }
 
-        public IEnumerable<IWorkItemLinkType> WorkItemLinkTypes
+        public int QueryCallCount => QueryIdCallCount + QueryIdsCallCount + QueryLinksCallCount + QueryStringCallCount;
+
+        public int QueryIdCallCount { get; private set; }
+
+        public int QueryIdsCallCount { get; private set; }
+
+        public int QueryLinksCallCount { get; private set; }
+
+        public int QueryStringCallCount { get; private set; }
+
+        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
+
+        public ITeamProjectCollection TeamProjectCollection
+        {
+            get
+            {
+                TeamProjectCollectionCallCount += 1;
+                return _innerWorkItemStore.TeamProjectCollection;
+            }
+        }
+
+        public int TeamProjectCollectionCallCount { get; private set; }
+
+        public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
+
+        public IWorkItemLinkTypeCollection WorkItemLinkTypes
         {
             get
             {
@@ -79,9 +68,35 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
             }
         }
 
-        public TimeZone TimeZone => _innerWorkItemStore.TimeZone;
-
         public int WorkItemLinkTypesCallCount { get; private set; }
+
+        public void Dispose()
+        {
+            _innerWorkItemStore.Dispose();
+        }
+
+        public IWorkItemCollection Query(string wiql, bool dayPrecision = false)
+        {
+            QueryStringCallCount += 1;
+            return _innerWorkItemStore.Query(wiql, dayPrecision);
+        }
+
+        public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
+        {
+            QueryIdsCallCount += 1;
+            return _innerWorkItemStore.Query(ids, asOf);
+        }
+
+        public IWorkItem Query(int id, DateTime? asOf = null)
+        {
+            QueryIdCallCount += 1;
+            return _innerWorkItemStore.Query(id, asOf);
+        }
+
+        public IEnumerable<IWorkItemLinkInfo> QueryLinks(string wiql, bool dayPrecision = false)
+        {
+            QueryLinksCallCount += 1;
+            return _innerWorkItemStore.QueryLinks(wiql, dayPrecision);
+        }
     }
 }
-

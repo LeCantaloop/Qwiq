@@ -1,47 +1,62 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockProject : IProject
+    public class MockProject : Project
     {
-        public MockProject()
-        {
-            WorkItemTypes = new[]
-                                {
-                                    new MockWorkItemType("Task"),
-                                    new MockWorkItemType("Deliverable"),
-                                    new MockWorkItemType("Scenario"),
-                                    new MockWorkItemType("Customer Promise"),
-                                    new MockWorkItemType("Bug"),
-                                    new MockWorkItemType("Measure")
-                                };
+        internal const string ProjectName = "Mock Project";
 
-            AreaRootNodes = new[] { CreateNodes(true) };
-            IterationRootNodes = new[] { CreateNodes(false) };
+        public MockProject(Guid id, string name, Uri uri, IWorkItemTypeCollection wits, INodeCollection areas, INodeCollection iterations)
+            : base(
+                   id,
+                   name,
+                   uri,
+                   new Lazy<IWorkItemTypeCollection>(() => wits),
+                   new Lazy<INodeCollection>(() => areas),
+                   new Lazy<INodeCollection>(() => iterations))
+        {
         }
 
-        public IEnumerable<INode> AreaRootNodes { get; set; }
-
-        public int Id { get; set; }
-
-        public IEnumerable<INode> IterationRootNodes { get; set; }
-
-        public string Name => "Mock";
-
-        public Uri Uri { get; set; }
-
-        public IEnumerable<IWorkItemType> WorkItemTypes { get; set; }
-
-        private static MockNode CreateNodes(bool area)
+        public MockProject(IWorkItemStore store, INode node)
+            : base(
+                   Guid.NewGuid(),
+                   node.Name,
+                   node.Uri,
+                   new Lazy<IWorkItemTypeCollection>(() => new MockWorkItemTypeCollection(store)),
+                   new Lazy<INodeCollection>(() => CreateNodes(true)),
+                   new Lazy<INodeCollection>(() => CreateNodes(false)))
         {
-            var root = new MockNode("Root", true, !area);
-            var l1 = new MockNode("L1", true, !area) { ParentNode = root };
-            var l2 = new MockNode("L2", true, !area) { ParentNode = l1 };
+        }
 
-            root.ChildNodes = new[] { l1 };
-            l1.ChildNodes = new[] { l2 };
-            return root;
+        public MockProject(IWorkItemStore store)
+            :this(store, new Node(1, false, false, ProjectName, new Uri("http://localhost/projects/1")))
+        {
+        }
+
+        private static INodeCollection CreateNodes(bool area)
+        {
+            var root = new Node(1, area, !area, "Root", new Uri("http://localhost/nodes/1"));
+            new Node(
+                     2,
+                     area,
+                     !area,
+                     "L1",
+                     new Uri("http://localhost/nodes/2"),
+                     () => root,
+                     n => new[]
+                              {
+                                  new Node(
+                                           3,
+                                           area,
+                                           !area,
+                                           "L2",
+                                           new Uri("http://localhost/nodes/3"),
+                                           () => n,
+                                           c => Enumerable.Empty<INode>())
+                              });
+
+            return new NodeCollection(new[] { root }.ToList().AsReadOnly());
         }
     }
 }

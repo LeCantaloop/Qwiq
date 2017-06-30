@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Linq
 {
@@ -9,9 +12,11 @@ namespace Microsoft.Qwiq.Linq
         private readonly IFieldMapper _innerMapper;
         private readonly ConcurrentDictionary<string, object> _cache;
 
-        public CachingFieldMapper(IFieldMapper innerMapper)
+        public CachingFieldMapper([NotNull] IFieldMapper innerMapper)
         {
-            _innerMapper = innerMapper;
+            Contract.Requires(innerMapper != null);
+
+            _innerMapper = innerMapper ?? throw new ArgumentNullException(nameof(innerMapper));
             _cache = new ConcurrentDictionary<string, object>();
         }
 
@@ -36,8 +41,12 @@ namespace Microsoft.Qwiq.Linq
             return (T)_cache.GetOrAdd(key, val => func());
         }
 
-        private string GenerateCacheKey(Type type, string method, string propertyName = "")
+        private string GenerateCacheKey([NotNull] Type type, [NotNull] string method, [NotNull] string propertyName = "")
         {
+            Contract.Requires(type != null);
+            Contract.Requires(method != null);
+            Contract.Requires(propertyName != null);
+
             return type.AssemblyQualifiedName + method + propertyName;
         }
     }

@@ -1,4 +1,5 @@
 using FastMember;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,22 +11,132 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {
-        private readonly IPropertyInspector _inspector;
-        private readonly ITypeParser _typeParser;
-        private static readonly ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute>();
         private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
+        private static readonly ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute>();
+        [NotNull] private readonly IPropertyInspector _inspector;
+        [NotNull] private readonly ITypeParser _typeParser;
 
-        public AttributeMapperStrategy(IPropertyInspector inspector, ITypeParser typeParser)
+
+        public AttributeMapperStrategy([NotNull] IPropertyInspector inspector)
+            : this(inspector, TypeParser.Default)
         {
-            _inspector = inspector;
-            _typeParser = typeParser;
         }
 
-        private static FieldDefinitionAttribute PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
+        public AttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
         {
-            return PropertyInfoFields.GetOrAdd(
-                property,
-                info => inspector.GetAttribute<FieldDefinitionAttribute>(property));
+            _typeParser = typeParser ?? throw new ArgumentNullException(nameof(typeParser));
+            _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
+        }
+
+        public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper workItemMapper)
+        {
+            var targetWorkItemType = typeof(T);
+
+            foreach (var workItemMapping in workItemMappings)
+            {
+                var sourceWorkItem = workItemMapping.Key;
+                var targetWorkItem = workItemMapping.Value;
+
+                MapImpl(targetWorkItemType, sourceWorkItem, targetWorkItem);
+            }
+        }
+
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
+        {
+            foreach (var workItemMapping in workItemMappings)
+            {
+                var sourceWorkItem = workItemMapping.Key;
+                var targetWorkItem = workItemMapping.Value;
+
+                MapImpl(targetWorkItemType, sourceWorkItem, targetWorkItem);
+            }
+        }
+
+        protected internal virtual void AssignFieldValue(
+            [NotNull] Type targetWorkItemType,
+            [NotNull] IWorkItem sourceWorkItem,
+            [NotNull] object targetWorkItem,
+            [NotNull] PropertyInfo property,
+            [NotNull] string fieldName,
+            bool convert,
+            [CanBeNull] object nullSub,
+            [CanBeNull] object fieldValue)
+        {
+            // Coalesce fieldValue and nullSub
+
+            if (fieldValue == null && nullSub != null)
+            {
+                fieldValue = nullSub;
+            }
+            else
+            {
+                if (fieldValue is string value && string.IsNullOrWhiteSpace(value))
+                    fieldValue = nullSub;
+            }
+
+            var destType = property.PropertyType;
+
+            if (fieldValue == null && destType.IsValueType)
+            {
+                // Value types do not accept null; don't do any work
+                return;
+            }
+
+            if (fieldValue == null && destType.CanAcceptNull())
+            {
+                // Destination is a nullable or can take null; don't do any work
+                return;
+            }
+
+            if (convert)
+            {
+                try
+                {
+                    fieldValue = _typeParser.Parse(destType, fieldValue);
+                }
+                catch (Exception e)
+                {
+                    var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                    var pm = new PropertyMap(property, fieldName);
+                    var message = $"Unable to convert field value on {sourceWorkItem.Id}.";
+                    throw new AttributeMapException(message, e, tm, pm);
+                }
+            }
+
+            var accessor = TypeAccessor.Create(targetWorkItemType, true);
+            try
+            {
+                accessor[targetWorkItem, property.Name] = fieldValue;
+            }
+            catch (Exception e)
+            {
+                var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                var pm = new PropertyMap(property, fieldName);
+                var message = $"Unable to set field value on {sourceWorkItem.Id}.";
+                throw new AttributeMapException(message, e, tm, pm);
+            }
+        }
+
+        protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
+        {
+            var properties = PropertiesOnWorkItemCache(
+                _inspector,
+                sourceWorkItem,
+                targetWorkItemType,
+                typeof(FieldDefinitionAttribute));
+
+            foreach (var property in properties)
+            {
+                var a = PropertyInfoFieldCache(_inspector, property);
+                if (a == null) continue;
+
+                var fieldName = a.FieldName;
+                var convert = a.RequireConversion;
+                var nullSub = a.NullSubstitute;
+                var fieldValue = sourceWorkItem[fieldName];
+
+                AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
+            }
         }
 
         private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
@@ -52,87 +163,11 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                     });
         }
 
-        public override void Map<T>(IEnumerable<KeyValuePair<IWorkItem, T>> workItemMappings, IWorkItemMapper workItemMapper)
+        private static FieldDefinitionAttribute PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
         {
-            var targetWorkItemType = typeof(T);
-            var accessor = TypeAccessor.Create(targetWorkItemType, true);
-
-            foreach (var workItemMapping in workItemMappings)
-            {
-                var sourceWorkItem = workItemMapping.Key;
-                var targetWorkItem = workItemMapping.Value;
-
-                MapImpl(targetWorkItemType, sourceWorkItem, accessor, targetWorkItem);
-            }
-        }
-
-        public override void Map(Type targetWorkItemType, IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> workItemMappings, IWorkItemMapper workItemMapper)
-        {
-            var accessor = TypeAccessor.Create(targetWorkItemType, true);
-
-            foreach (var workItemMapping in workItemMappings)
-            {
-                var sourceWorkItem = workItemMapping.Key;
-                var targetWorkItem = workItemMapping.Value;
-
-                MapImpl(targetWorkItemType, sourceWorkItem, accessor, targetWorkItem);
-            }
-        }
-
-        private void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, TypeAccessor accessor, object targetWorkItem)
-        {
-#if DEBUG
-            Trace.TraceInformation("{0}: Mapping {1}", GetType().Name, sourceWorkItem.Id);
-#endif
-
-            foreach (var property in PropertiesOnWorkItemCache(_inspector, sourceWorkItem, targetWorkItemType, typeof(FieldDefinitionAttribute)))
-            {
-                var a = PropertyInfoFieldCache(_inspector, property);
-                if (a == null) continue;
-
-                var fieldName = a.FieldName;
-                var convert = a.RequireConversion;
-
-                try
-                {
-                    if (convert)
-                    {
-                        var value = _typeParser.Parse(property.PropertyType, sourceWorkItem[fieldName]);
-                        accessor[targetWorkItem, property.Name] = value;
-                    }
-                    else
-                    {
-                        accessor[targetWorkItem, property.Name] = sourceWorkItem[fieldName];
-                    }
-                }
-                catch (Exception e)
-                {
-                    try
-                    {
-                        Trace.TraceWarning(
-                            "Could not convert value of field '{0}' ({1}) to type {2}",
-                            fieldName,
-                            sourceWorkItem[fieldName].GetType().Name,
-                            property.PropertyType.Name);
-                    }
-                    catch (Exception)
-                    {
-                    }
-
-                    try
-                    {
-                        Trace.TraceWarning(
-                            "Could not map field '{0}' from type '{1}' to type '{2}'. {3}",
-                            fieldName,
-                            sourceWorkItem.Type.Name,
-                            targetWorkItemType.Name,
-                            e.Message);
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-            }
+            return PropertyInfoFields.GetOrAdd(
+                property,
+                info => inspector.GetAttribute<FieldDefinitionAttribute>(property));
         }
     }
 }

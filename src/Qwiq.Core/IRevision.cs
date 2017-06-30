@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Microsoft.Qwiq.Proxies;
-using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
+
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    public interface IRevision
+    public interface IRevision : IWorkItemCore
     {
         /// <summary>
         /// Gets the attachments of the work item in this revision.
@@ -14,7 +14,8 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets the fields of the work item in this revision.
         /// </summary>
-        IDictionary<string, IField> Fields { get; }
+        [NotNull]
+        IFieldCollection Fields { get; }
 
         /// <summary>
         /// Gets the index of this revision.
@@ -29,6 +30,7 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets the work item that is stored in this revision.
         /// </summary>
+        [NotNull]
         IWorkItem WorkItem { get; }
 
         /// <summary>
@@ -36,13 +38,16 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <param name="name">The field of interest in the work item of this revision.</param>
         /// <returns>The value of the specified field.</returns>
-        object this[string name] { get; }
+        [CanBeNull]
+        new object this[[NotNull] string name] { get; }
 
         /// <summary>
         /// Gets the tagline for this revision.
         /// </summary>
         /// <returns>Returns System.String.</returns>
         string GetTagLine();
+
     }
 }
+
 

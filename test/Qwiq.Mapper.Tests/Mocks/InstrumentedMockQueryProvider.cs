@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Mocks
 {
     public class InstrumentedMockQueryProvider : IQueryProvider, IDisposable
     {
@@ -52,10 +52,7 @@ namespace Microsoft.Qwiq.Mapper.Tests.Mocks
         {
             if (disposing)
             {
-                if (_innerProvider as IDisposable != null)
-                {
-                    ((IDisposable)_innerProvider).Dispose();
-                }
+                (_innerProvider as IDisposable)?.Dispose();
             }
         }
     }

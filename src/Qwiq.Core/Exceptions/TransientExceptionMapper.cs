@@ -1,5 +1,8 @@
+using System.Diagnostics;
+
 namespace Microsoft.Qwiq.Exceptions
 {
+    [DebuggerStepThrough]
     internal class TransientExceptionMapper: VssExceptionMapper
     {
         private static readonly int[] TfsServerUnavailableIds = {

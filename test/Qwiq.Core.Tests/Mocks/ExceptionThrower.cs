@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Core.Tests.Mocks
+namespace Microsoft.Qwiq.UnitTests.Mocks
 {
     public class ExceptionThrower : IExceptionThrower
     {
@@ -13,7 +13,7 @@ namespace Microsoft.Qwiq.Core.Tests.Mocks
 
         public void ThrowException()
         {
-            throw new ArgumentException(null, _argumentName); ;
+            throw new ArgumentException(null, _argumentName);
         }
     }
 

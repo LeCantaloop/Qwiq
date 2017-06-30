@@ -1,14 +1,14 @@
 using Microsoft.Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Mapper.Tests.Mocks
+namespace Microsoft.Qwiq.Mapper.Mocks
 {
-    [WorkItemType("SimpleMockWorkItem")]
-    public class SimpleMockModel : IIdentifiable
+    [WorkItemType("Task")]
+    public class SimpleMockModel : IIdentifiable<int?>
     {
-        [FieldDefinition("ID")]
-        public int Id { get; internal set; }
+        [FieldDefinition(CoreFieldRefNames.Id)]
+        public int? Id { get; internal set; }
 
-        [FieldDefinition("IntField")]
+        [FieldDefinition(CoreFieldRefNames.IterationId)]
         public int IntField { get; internal set; }
     }
 }

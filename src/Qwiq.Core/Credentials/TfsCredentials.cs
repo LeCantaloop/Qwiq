@@ -1,15 +1,24 @@
-using Microsoft.TeamFoundation.Client;
+using System;
+using System.Diagnostics;
+
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Credentials
 {
+    [Obsolete("This type will be removed in a future release. Use VssCredentials instead.")]
+    [DebuggerStepThrough]
     public sealed class TfsCredentials
     {
-        internal TfsCredentials(TfsClientCredentials credentials)
+        public TfsCredentials(VssCredentials credentials)
         {
-            Credentials = credentials;
+            Credentials = credentials ?? throw new ArgumentNullException(nameof(credentials));
         }
 
-        internal TfsClientCredentials Credentials { get; private set; }
+        internal VssCredentials Credentials { get; }
+
+        public static implicit operator TfsCredentials(VssCredentials credentials)
+        {
+            return new TfsCredentials(credentials);
+        }
     }
 }
-

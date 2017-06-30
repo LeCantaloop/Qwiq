@@ -4,7 +4,7 @@ namespace Microsoft.Qwiq
     ///
     /// </summary>
     /// <remarks>
-    /// See <see cref="Microsoft.TeamFoundation.WorkItemTracking.Client.FieldStatus"/>
+    /// See <see cref="TeamFoundation.WorkItemTracking.Client.FieldStatus"/>
     /// </remarks>
     public enum ValidationState
     {

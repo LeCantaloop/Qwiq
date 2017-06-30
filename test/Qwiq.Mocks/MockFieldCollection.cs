@@ -1,42 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockFieldCollection : IFieldCollection
+    public class MockFieldCollection : FieldCollection
     {
-        private readonly IDictionary<string, IField> _values;
-
-        public MockFieldCollection(IDictionary<string, IField> values)
+        public MockFieldCollection([NotNull] WorkItemCore w, [NotNull] IFieldDefinitionCollection definitions)
+            : base(w, definitions, (r, d) => new MockField(r, d))
         {
-            _values = values;
         }
 
-        public MockFieldCollection(ICollection<IField> fields)
-            : this(fields.ToDictionary(k => k.Name, e => e, StringComparer.OrdinalIgnoreCase))
+        public new void SetField([NotNull] IField field)
         {
-
+            base.SetField(field);
         }
 
-        public IEnumerator<IField> GetEnumerator()
+        public void SetFieldValue([NotNull] string name, [CanBeNull] object value)
         {
-            return _values.Values.GetEnumerator();
+            TryGetByName(name, out IField f);
+            f.Value = value;
+            SetField(f);
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public bool Contains(string fieldName)
-        {
-            return _values.ContainsKey(fieldName);
-        }
-
-        public IField this[string name] => _values[name];
-
-        public int Count => _values.Count;
     }
 }

@@ -1,18 +1,23 @@
 using System;
-using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
-    public interface INode
+    public interface INode : IIdentifiable<int>
     {
-        IEnumerable<INode> ChildNodes { get; }
+        INodeCollection ChildNodes { get; }
+
         bool HasChildNodes { get; }
-        int Id { get; }
+
         bool IsAreaNode { get; }
+
         bool IsIterationNode { get; }
+
         string Name { get; }
+
         INode ParentNode { get; }
+
         string Path { get; }
+
         Uri Uri { get; }
     }
 }

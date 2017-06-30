@@ -1,10 +1,16 @@
+using System;
+
+using JetBrains.Annotations;
+
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemLinkInfo
+    public interface IWorkItemLinkInfo : IEquatable<IWorkItemLinkInfo>
     {
-        bool IsLocked { get; }
-        int LinkTypeId { get; }
+        [CanBeNull]
+        IWorkItemLinkTypeEnd LinkType { get; }
+
         int SourceId { get; }
+
         int TargetId { get; }
     }
 }

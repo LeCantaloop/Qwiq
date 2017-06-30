@@ -2,42 +2,26 @@ using System;
 
 namespace Microsoft.Qwiq.Mocks
 {
-    public class MockWorkItemLinkTypeEnd : IWorkItemLinkTypeEnd
+    public class MockWorkItemLinkTypeEnd : WorkItemLinkTypeEnd, IIdentifiable<int>
     {
-        public MockWorkItemLinkTypeEnd(string parentName, string direction, string name)
-            : this(parentName + "-" + direction, name)
+        public MockWorkItemLinkTypeEnd(IWorkItemLinkType linkType, string name, bool isForward, int id = 0)
+            : base(GetValue(linkType, isForward))
         {
+            Id = id;
+            LinkType = linkType ?? throw new ArgumentNullException(nameof(linkType));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            IsForwardLink = isForward;
         }
 
-        public MockWorkItemLinkTypeEnd(string immutableName, string name)
+        private static string GetValue(IWorkItemLinkType linkType, bool isForward)
         {
-            ImmutableName = immutableName;
-            Name = name;
+            if (linkType == null) throw new ArgumentNullException(nameof(linkType));
+            var referenceName = linkType.ReferenceName;
+            if (!linkType.IsDirectional) return referenceName;
+            return referenceName + (isForward ? "-Forward" : "-Reverse");
         }
 
-        public int Id
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string ImmutableName { get; }
-
-        public bool IsForwardLink => Name.Equals("Child", StringComparison.OrdinalIgnoreCase)
-                                     || Name.Equals("Forward", StringComparison.OrdinalIgnoreCase);
-
-        public IWorkItemLinkType LinkType { get; set; }
-
-        public string Name { get; }
-
-        public IWorkItemLinkTypeEnd OppositeEnd
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        /// <inheritdoc />
+        public int Id { get; }
     }
 }

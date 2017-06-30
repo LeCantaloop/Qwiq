@@ -3,27 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
-
-using Microsoft.Qwiq;
-using Microsoft.Qwiq.Core.Tests;
-using Microsoft.Qwiq.Identity.Mapper;
+using Microsoft.Qwiq.Identity.Mocks;
 using Microsoft.Qwiq.Mapper;
 using Microsoft.Qwiq.Mapper.Attributes;
 using Microsoft.Qwiq.Mocks;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Qwiq.Benchmark;
-using Qwiq.Identity.Tests.Mocks;
 using Should;
 
-namespace Qwiq.Identity.Tests
+namespace Microsoft.Qwiq.Identity
 {
     public abstract class BulkIdentityAwareAttributeMapperStrategyTests : ContextSpecification
     {
         private IWorkItemMapperStrategy _strategy;
-        private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
+        private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings;
         protected IDictionary<string, IEnumerable<ITeamFoundationIdentity>> Identities { get; set; }
 
         protected MockIdentityType Actual
@@ -43,18 +37,20 @@ namespace Qwiq.Identity.Tests
                                 : new MockIdentityManagementService(Identities));
             var sourceWorkItems = new[]
             {
-                new MockWorkItem(new Dictionary<string, object>
+                new MockWorkItem(
+                    new MockWorkItemType("Baz", MockIdentityType.BackingField),
+                    new Dictionary<string, object>
                     {
                         { MockIdentityType.BackingField, IdentityFieldBackingValue }
                     })
             };
 
-            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
+            _workItemMappings = sourceWorkItems.ToDictionary(k => (IWorkItem)k, e => (IIdentifiable<int?>)new MockIdentityType());
         }
 
         public override void When()
         {
-            _strategy.Map(typeof (MockIdentityType), _workItemMappings, null);
+            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
         }
     }
 
@@ -75,29 +71,6 @@ namespace Qwiq.Identity.Tests
     }
 
     [TestClass]
-    public class when_the_backing_source_does_not_result_in_a_resolved_identity : BulkIdentityAwareAttributeMapperStrategyTests
-    {
-        public override void Given()
-        {
-            IdentityFieldBackingValue = "Anon Existant";
-            Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>();
-            base.Given();
-        }
-
-        [TestMethod]
-        public void the_actual_identity_value_should_be_null()
-        {
-            Actual.AnIdentity.ShouldBeNull();
-        }
-
-        [TestMethod]
-        public void set_on_an_identity_property_should_not_be_called()
-        {
-            Actual.AnIdentitySetCount.ShouldEqual(0);
-        }
-    }
-
-    [TestClass]
     public class when_the_backing_source_does_result_in_a_resolved_identity : BulkIdentityAwareAttributeMapperStrategyTests
     {
         private const string identityAlias = "jsmit";
@@ -107,7 +80,9 @@ namespace Qwiq.Identity.Tests
             IdentityFieldBackingValue = identityDisplay;
             Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
             {
+#pragma warning disable 0618
                 {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(identityDisplay, identityAlias) }}
+#pragma warning restore 0618
             };
             base.Given();
         }
@@ -123,22 +98,30 @@ namespace Qwiq.Identity.Tests
         {
             Actual.AnIdentitySetCount.ShouldEqual(1);
         }
+
+        [TestMethod]
+        public void the_IdentityFieldValue_contains_expected_value()
+        {
+            Actual.AnIdentityValue.ShouldNotBeNull();
+            Actual.AnIdentityValue.DisplayName.ShouldEqual(identityDisplay);
+            Actual.AnIdentityValue.IdentityName.ShouldEqual(identityAlias);
+        }
     }
 
     [TestClass]
     public class given_a_work_item_with_defined_fields_when_the_field_names_to_properties_are_retrieved : ContextSpecification
     {
-        private readonly Type _identityType = typeof (MockIdentityType);
-        private IDictionary<string, PropertyInfo> Expected { get; set; }
-        private IDictionary<string, PropertyInfo> Actual { get; set; }
+        private readonly Type _identityType = typeof(MockIdentityType);
+        private Dictionary<string, List<PropertyInfo>> Expected { get; set; }
+        private Dictionary<string, List<PropertyInfo>> Actual { get; set; }
 
         public override void Given()
         {
-            Expected = new Dictionary<string, PropertyInfo>
+            Expected = new Dictionary<string, List<PropertyInfo>>
             {
-                { MockIdentityType.BackingField, _identityType.GetProperty("AnIdentity") },
-                { MockIdentityType.NonExistantField, _identityType.GetProperty("NonExistant") },
-                { MockIdentityType.UriIdentityField, _identityType.GetProperty("UriIdentity") }
+                [MockIdentityType.BackingField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.AnIdentity)), _identityType.GetProperty(nameof(MockIdentityType.AnIdentityValue)) },
+                [MockIdentityType.NonExistantField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.NonExistant)) },
+                [MockIdentityType.UriIdentityField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.UriIdentity)) }
             };
         }
 
@@ -153,78 +136,13 @@ namespace Qwiq.Identity.Tests
         [TestMethod]
         public void only_valid_fields_and_properties_are_retrieved()
         {
-            Actual.ShouldContainOnly(Expected);
+            Actual.Count.ShouldEqual(Expected.Count);
+            Actual[MockIdentityType.BackingField].ShouldContainOnly(Expected[MockIdentityType.BackingField]);
+            Actual[MockIdentityType.NonExistantField].ShouldContainOnly(Expected[MockIdentityType.NonExistantField]);
+            Actual[MockIdentityType.UriIdentityField].ShouldContainOnly(Expected[MockIdentityType.UriIdentityField]);
         }
     }
 
-    [Config(typeof(BenchmarkConfig))]
-    [TestClass]
-    public class Benchmark
-    {
-        private IWorkItemMapperStrategy _strategy;
-        private IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> _workItemMappings;
 
-        [Setup]
-        [TestInitialize]
-        public void Setup()
-        {
-            var propertyInspector = new PropertyInspector(new PropertyReflector());
-            _strategy = new BulkIdentityAwareAttributeMapperStrategy(
-                            propertyInspector,
-                            new MockIdentityManagementService()
-                        );
-
-            var generator = new WorkItemGenerator<MockWorkItem>(()=> new MockWorkItem(), new[] { "Revisions", "Item", "AssignedTo" });
-            generator.Generate();
-
-            var assignees = new[]
-                                {
-                                    MockIdentityManagementService.Danj.DisplayName,
-                                    MockIdentityManagementService.Adamb.DisplayName,
-                                    MockIdentityManagementService.Chrisj.DisplayName,
-                                    MockIdentityManagementService.Chrisjoh.DisplayName,
-                                    MockIdentityManagementService.Chrisjohn.DisplayName,
-                                    MockIdentityManagementService.Chrisjohns.DisplayName
-                                };
-
-            var sourceWorkItems = generator
-                                    .Items
-                                    // Run post-randomization to enable our scenario
-                                    .Select(
-                                        s =>
-                                            {
-                                                var i = Randomizer.Instance.Next(0, assignees.Length - 1);
-                                                s[MockIdentityType.BackingField] = assignees[i];
-
-                                                return s;
-                                            });
-
-            _workItemMappings = sourceWorkItems.Select(t => new KeyValuePair<IWorkItem, IIdentifiable>(t, new MockIdentityType())).ToList();
-        }
-
-        [Benchmark]
-        public IEnumerable<KeyValuePair<IWorkItem, IIdentifiable>> Execute()
-        {
-            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
-            return _workItemMappings;
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("Performance")]
-        [TestCategory("Benchmark")]
-        public void Execute_Identity_Mapping_Performance_Benchmark()
-        {
-            BenchmarkRunner.Run<Benchmark>();
-        }
-
-        [TestMethod]
-        [TestCategory("localOnly")]
-        [TestCategory("Performance")]
-        public void Execute_Identity_Mapping()
-        {
-            Execute();
-        }
-    }
 }
 

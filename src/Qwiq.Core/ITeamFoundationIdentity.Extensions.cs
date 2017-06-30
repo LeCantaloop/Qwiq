@@ -1,35 +1,51 @@
-using System;
+using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
-    public static class ITeamFoundationIdentityExtensions
+    // ReSharper disable InconsistentNaming
+    public static partial class Extensions
+    // ReSharper restore InconsistentNaming
     {
+        /// <summary>
+        ///     Gets the identity name from the specified <see cref="ITeamFoundationIdentity" /> instance.
+        /// </summary>
+        /// <param name="identity">An instance of <see cref="ITeamFoundationIdentity" />.</param>
+        /// <returns>
+        ///     The value of the <see cref="IdentityAttributeTags.AccountName" /> property of the identity if it is not null;
+        ///     otherwise, <see cref="IdentityFieldValue.IdentityName" />.
+        /// </returns>
+        public static string GetIdentityName(this ITeamFoundationIdentity identity)
+        {
+            if (identity == null) return null;
 
+            return identity.GetAttribute(IdentityAttributeTags.AccountName, null) ?? new IdentityFieldValue(identity).IdentityName;
+        }
+
+        /// <summary>
+        ///     Gets the user account name from the specified <see cref="ITeamFoundationIdentity" /> instance.
+        /// </summary>
+        /// <param name="identity">An instance of <see cref="ITeamFoundationIdentity" />.</param>
+        /// <returns>
+        ///     The value of the <see cref="IdentityAttributeTags.AccountName" /> property; otherwise,
+        ///     <see cref="IdentityFieldValue.AccountName" />.
+        /// </returns>
+        public static string GetUserAccountName(this ITeamFoundationIdentity identity)
+        {
+            if (identity == null) return null;
+
+            return identity.GetAttribute(IdentityAttributeTags.AccountName, null) ?? new IdentityFieldValue(identity).AccountName;
+        }
+
+        /// <summary>
+        ///     Gets the user account (logon) name from the specified <see cref="ITeamFoundationIdentity" /> instance.
+        /// </summary>
+        /// <param name="identity">An instance of <see cref="ITeamFoundationIdentity" />.</param>
+        /// <returns>
+        ///     <see cref="IdentityFieldValue.LogonName" />
+        /// </returns>
         public static string GetUserAlias(this ITeamFoundationIdentity identity)
         {
-            if (identity == null) throw new ArgumentNullException("identity");
-
-            if (identity.Descriptor.Identifier.Contains("@"))
-            {
-                var identifier = identity.Descriptor.Identifier;
-                var identifierSplit = identifier.Split('\\');
-
-                if (identifierSplit.Length == 2)
-                {
-                    return identifierSplit[1].Split('@')[0];
-                }
-            }
-            else
-            {
-                var uniqueName = identity.UniqueName;
-                var uniqueNameSplit = uniqueName.Split('\\');
-                if (uniqueNameSplit.Length == 2)
-                {
-                    return uniqueNameSplit[1];
-                }
-            }
-
-            return null;
+            return identity == null ? null : new IdentityFieldValue(identity).LogonName;
         }
     }
 }

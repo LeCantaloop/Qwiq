@@ -21,13 +21,14 @@ namespace Microsoft.Qwiq.Linq
     {
         protected readonly IFieldMapper FieldMapper;
 
-        public WiqlTranslator() : this(new SimpleFieldMapper())
+        public WiqlTranslator()
+            : this(new CachingFieldMapper(new SimpleFieldMapper()))
         {
         }
 
         public WiqlTranslator(IFieldMapper fieldMapper)
         {
-            FieldMapper = fieldMapper;
+            FieldMapper = fieldMapper ?? throw new ArgumentNullException(nameof(fieldMapper));
         }
 
         protected virtual Translator GetTranslator()
@@ -43,9 +44,19 @@ namespace Microsoft.Qwiq.Linq
             var query = translator.Query;
 
             query.UnderlyingQueryType = query.UnderlyingQueryType ?? TypeSystem.GetElementType(expression.Type);
-            query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
 
-            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
+            if (!query.Projections.Any())
+            {
+                query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
+            }
+            else
+            {
+                // TODO: Enumerate the projections and build the list of fields
+                query.Select = new SelectFragment(FieldMapper.GetFieldNames(query.UnderlyingQueryType).ToList());
+            }
+
+
+        var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
             if (workItemTypeRestriction.Any())
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
@@ -273,8 +284,7 @@ namespace Microsoft.Qwiq.Linq
 
             protected override Expression VisitConstant(ConstantExpression node)
             {
-                var queryable = node.Value as IQueryable;
-                if (queryable != null)
+                if (node.Value is IQueryable)
                 {
                     // Assume constant nodes with IQueryables are table references
                     _expressionInProgress = new Queue<IFragment>();
@@ -294,7 +304,7 @@ namespace Microsoft.Qwiq.Linq
                             _expressionInProgress.Enqueue(new DateTimeFragment(((DateTime)node.Value)));
                             break;
                         case "System.Int32[]":
-                            var originalIntVals = ((int[])node.Value);
+                            var originalIntVals = (int[])node.Value;
                             _expressionInProgress.Enqueue(new NumberListFragment(originalIntVals));
                             break;
                         case "System.String[]":

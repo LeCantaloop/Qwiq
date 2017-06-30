@@ -1,16 +1,33 @@
 using System;
 
+using Microsoft.VisualStudio.Services.Common;
+
 namespace Microsoft.Qwiq
 {
-    public interface ITfsTeamProjectCollection
+    [Obsolete("This interface is deprecated and will be removed in a future version. Use ITeamProjectCollection instead.")]
+    public interface ITfsTeamProjectCollection : ITeamProjectCollection
     {
-        IIdentityManagementService IdentityManagementService { get; }
-        ICommonStructureService CommonStructureService { get; }
     }
 
-    internal interface IInternalTfsTeamProjectCollection : ITfsTeamProjectCollection, IDisposable
+    public interface ITeamProjectCollection
     {
-        T GetService<T>();
+        /// <summary>Gets the credentials for this project collection.</summary>
+        VssCredentials AuthorizedCredentials { get; }
+
+        /// <summary>
+        ///     The identity who the calls to the server are being made for.
+        /// </summary>
+        ITeamFoundationIdentity AuthorizedIdentity { get; }
+
+        ICommonStructureService CommonStructureService { get; }
+
+        /// <summary> Returns true if this object has successfully authenticated. </summary>
+        bool HasAuthenticated { get; }
+
+        /// <summary> This is used to convert dates and times to UTC. </summary>
+        TimeZone TimeZone { get; }
+
+        /// <summary>The base url for this connection</summary>
+        Uri Uri { get; }
     }
 }
-

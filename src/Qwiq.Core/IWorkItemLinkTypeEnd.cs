@@ -2,7 +2,6 @@ namespace Microsoft.Qwiq
 {
     public interface IWorkItemLinkTypeEnd
     {
-        int Id { get; }
         string ImmutableName { get; }
         bool IsForwardLink { get; }
         IWorkItemLinkType LinkType { get; }

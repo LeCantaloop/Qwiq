@@ -1,22 +1,13 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
+// General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Qwiq.Identity.Tests")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Qwiq.Identity.Tests")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
+[assembly: AssemblyTitle("Microsoft.Qwiq.Identity.UnitTests")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("ce68530e-eb8f-4be2-9563-a09ac70ea8c1")]
+
+[assembly: InternalsVisibleTo("Microsoft.Qwiq.Identity.Benchmark.Tests")]
