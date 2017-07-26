@@ -133,7 +133,18 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                 var fieldName = a.FieldName;
                 var convert = a.RequireConversion;
                 var nullSub = a.NullSubstitute;
-                var fieldValue = sourceWorkItem[fieldName];
+                object fieldValue;
+                try
+                {
+                    fieldValue = sourceWorkItem[fieldName];
+                }
+                catch (DeniedOrNotExistException e)
+                {
+                    var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                    var pm = new PropertyMap(property, fieldName);
+                    var message = $"Unable to get field value on {sourceWorkItem.Id}.";
+                    throw new AttributeMapException(message, e, tm, pm);
+                }
 
                 AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
             }
