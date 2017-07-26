@@ -107,7 +107,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return NullIdentities;
@@ -115,7 +115,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             Guid[] teamFoundationIds,
-            MembershipQuery queryMembership)
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership)
         {
             return NullIdentities;
         }
@@ -123,7 +123,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return new[] { NullIdentities };
@@ -131,7 +131,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             Guid[] teamFoundationIds,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -142,7 +142,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -152,7 +152,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -163,7 +163,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotImplementedException();
@@ -171,7 +171,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotSupportedException();
@@ -185,7 +185,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -195,7 +195,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -241,7 +241,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return new[] { NullIdentities };
@@ -250,7 +250,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -261,7 +261,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotSupportedException();
@@ -270,7 +270,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
