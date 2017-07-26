@@ -121,9 +121,8 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         {
             var properties = PropertiesOnWorkItemCache(
                 _inspector,
-                sourceWorkItem,
-                targetWorkItemType,
-                typeof(FieldDefinitionAttribute));
+                sourceWorkItem.WorkItemType,
+                targetWorkItemType);
 
             foreach (var property in properties)
             {
@@ -156,11 +155,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             return fieldValue;
         }
 
-        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
+        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, string workItemType, Type targetType)
         {
             // Composite key: work item type and target type
-
-            var workItemType = workItem.WorkItemType;
             var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
 
             return PropertiesThatExistOnWorkItem.GetOrAdd(
