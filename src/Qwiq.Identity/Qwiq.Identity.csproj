@@ -37,6 +37,7 @@
     <Compile Include="IdentityValueConverterBase.cs" />
     <Compile Include="IIdentityManagementService.cs" />
     <Compile Include="IIdentityValueConverter.cs" />
+    <Compile Include="MembershipQuery.cs" />
     <Compile Include="MultipleIdentitiesFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
