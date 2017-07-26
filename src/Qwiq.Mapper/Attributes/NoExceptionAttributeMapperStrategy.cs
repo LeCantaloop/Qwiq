@@ -7,13 +7,51 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class NoExceptionAttributeMapperStrategy : AttributeMapperStrategy
     {
-        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyInspector inspector) : base(inspector)
+        /// <summary>
+        /// Creates a default instance of <see cref="NoExceptionAttributeMapperStrategy"/> with <see cref="PropertyReflector"/>.
+        /// </summary>
+        public NoExceptionAttributeMapperStrategy()
+            : base()
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with the specified <paramref name="propertyReflector"/>.
+        /// </summary>
+        /// <param name="propertyReflector">An instance of <see cref="IPropertyReflector"/>.</param>
+        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyReflector propertyReflector)
+            : base(propertyReflector)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and a default instance of <see cref="ITypeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
+        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyInspector inspector)
+            : base(inspector)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with a <see cref="AnnotatedPropertyValidator"/> using the specified <paramref name="inspector"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
         public NoExceptionAttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
             : base(inspector, typeParser)
         {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with the specified <paramref name="annotatedPropertyValidator"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="annotatedPropertyValidator">An instance of <see cref="IAnnotatedPropertyValidator"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
+        public NoExceptionAttributeMapperStrategy([NotNull] IAnnotatedPropertyValidator annotatedPropertyValidator, [NotNull] ITypeParser typeParser)
+            : base(annotatedPropertyValidator, typeParser)
+        {
+
         }
 
         protected internal override void AssignFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, PropertyInfo property, string fieldName, bool convert, object nullSub, object fieldValue)
