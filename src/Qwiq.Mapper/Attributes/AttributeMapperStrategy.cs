@@ -15,12 +15,37 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         [NotNull] private readonly IPropertyInspector _inspector;
         [NotNull] private readonly ITypeParser _typeParser;
 
+        /// <summary>
+        /// Creates a default instance of <see cref="AttributeMapperStrategy"/> with <see cref="PropertyReflector"/>.
+        /// </summary>
+        public AttributeMapperStrategy()
+            : this(new PropertyReflector())
+        {
+        }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="propertyReflector"/>.
+        /// </summary>
+        /// <param name="propertyReflector">An instance of <see cref="IPropertyReflector"/>.</param>
+        public AttributeMapperStrategy([NotNull] IPropertyReflector propertyReflector)
+            : this(new PropertyInspector(propertyReflector))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and a default instance of <see cref="ITypeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
         public AttributeMapperStrategy([NotNull] IPropertyInspector inspector)
             : this(inspector, TypeParser.Default)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
         public AttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
         {
             _typeParser = typeParser ?? throw new ArgumentNullException(nameof(typeParser));
