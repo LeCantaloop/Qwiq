@@ -28,7 +28,9 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="AnnotatedPropertyValidator.cs" />
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
+    <Compile Include="IAnnotatedPropertyValidator.cs" />
     <Compile Include="Attributes\NoExceptionAttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />

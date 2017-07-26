@@ -1,18 +1,14 @@
 using FastMember;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {
-        private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute>();
-        [NotNull] private readonly IPropertyInspector _inspector;
+        [NotNull] private readonly IAnnotatedPropertyValidator _annotatedPropertyValidator;
         [NotNull] private readonly ITypeParser _typeParser;
 
         /// <summary>
@@ -42,14 +38,24 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and <paramref name="typeParser"/>.
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with a <see cref="AnnotatedPropertyValidator"/> using the specified <paramref name="inspector"/> and <paramref name="typeParser"/>.
         /// </summary>
         /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
         /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
         public AttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
+            : this(new AnnotatedPropertyValidator(inspector), typeParser)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="annotatedPropertyValidator"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="annotatedPropertyValidator">An instance of <see cref="IAnnotatedPropertyValidator"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
+        public AttributeMapperStrategy([NotNull] IAnnotatedPropertyValidator annotatedPropertyValidator, [NotNull] ITypeParser typeParser)
         {
             _typeParser = typeParser ?? throw new ArgumentNullException(nameof(typeParser));
-            _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
+            _annotatedPropertyValidator = annotatedPropertyValidator ?? throw new ArgumentNullException(nameof(annotatedPropertyValidator));
         }
 
         public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper workItemMapper)
@@ -141,27 +147,6 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
-        protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
-        {
-            var properties = PropertiesOnWorkItemCache(
-                _inspector,
-                sourceWorkItem.WorkItemType,
-                targetWorkItemType);
-
-            foreach (var property in properties)
-            {
-                var a = PropertyInfoFieldCache(_inspector, property);
-                if (a == null) continue;
-
-                var fieldName = a.FieldName;
-                var convert = a.RequireConversion;
-                var nullSub = a.NullSubstitute;
-                var fieldValue = GetFieldValue(targetWorkItemType, sourceWorkItem, fieldName, property);
-
-                AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
-            }
-        }
-
         protected internal virtual object GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
         {
             object fieldValue;
@@ -179,33 +164,23 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             return fieldValue;
         }
 
-        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, string workItemType, Type targetType)
+        protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
         {
-            // Composite key: work item type and target type
-            var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
+            var validAnnotatedPropertyKeyPairs = _annotatedPropertyValidator.GetValidAnnotatedProperties(sourceWorkItem, targetWorkItemType);
 
-            return PropertiesThatExistOnWorkItem.GetOrAdd(
-                key,
-                tuple =>
-                    {
-                        return
-                            inspector.GetAnnotatedProperties(targetType, typeof(FieldDefinitionAttribute))
-                                     .Select(
-                                         property =>
-                                         new { property, fieldName = PropertyInfoFieldCache(inspector, property)?.FieldName })
-                                     .Where(
-                                         t =>
-                                         !string.IsNullOrEmpty(t.fieldName))
-                                     .Select(t => t.property)
-                                     .ToList();
-                    });
-        }
+            foreach (var pair in validAnnotatedPropertyKeyPairs)
+            {
+                var fieldDefinitionAttribute = pair.Value;
+                if (fieldDefinitionAttribute == null) continue;
 
-        private static FieldDefinitionAttribute PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
-        {
-            return PropertyInfoFields.GetOrAdd(
-                property,
-                info => inspector.GetAttribute<FieldDefinitionAttribute>(property));
+                var property = pair.Key;
+                var fieldName = fieldDefinitionAttribute.FieldName;
+                var convert = fieldDefinitionAttribute.RequireConversion;
+                var nullSub = fieldDefinitionAttribute.NullSubstitute;
+                var fieldValue = GetFieldValue(targetWorkItemType, sourceWorkItem, fieldName, property);
+
+                AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
+            }
         }
     }
 }
