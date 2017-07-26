@@ -133,21 +133,27 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                 var fieldName = a.FieldName;
                 var convert = a.RequireConversion;
                 var nullSub = a.NullSubstitute;
-                object fieldValue;
-                try
-                {
-                    fieldValue = sourceWorkItem[fieldName];
-                }
-                catch (DeniedOrNotExistException e)
-                {
-                    var tm = new TypePair(sourceWorkItem, targetWorkItemType);
-                    var pm = new PropertyMap(property, fieldName);
-                    var message = $"Unable to get field value on {sourceWorkItem.Id}.";
-                    throw new AttributeMapException(message, e, tm, pm);
-                }
+                var fieldValue = GetFieldValue(targetWorkItemType, sourceWorkItem, fieldName, property);
 
                 AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
             }
+        }
+
+        protected internal virtual object GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
+        {
+            object fieldValue;
+            try
+            {
+                fieldValue = sourceWorkItem[fieldName];
+            }
+            catch (DeniedOrNotExistException e)
+            {
+                var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                var pm = new PropertyMap(property, fieldName);
+                var message = $"Unable to get field value on {sourceWorkItem.Id}.";
+                throw new AttributeMapException(message, e, tm, pm);
+            }
+            return fieldValue;
         }
 
         private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
