@@ -1,31 +1,61 @@
 using FastMember;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {
-        private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>> PropertiesThatExistOnWorkItem = new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
-        private static readonly ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute> PropertyInfoFields = new ConcurrentDictionary<PropertyInfo, FieldDefinitionAttribute>();
-        [NotNull] private readonly IPropertyInspector _inspector;
+        [NotNull] private readonly IAnnotatedPropertyValidator _annotatedPropertyValidator;
         [NotNull] private readonly ITypeParser _typeParser;
 
+        /// <summary>
+        /// Creates a default instance of <see cref="AttributeMapperStrategy"/> with <see cref="PropertyReflector"/>.
+        /// </summary>
+        public AttributeMapperStrategy()
+            : this(new PropertyReflector())
+        {
+        }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="propertyReflector"/>.
+        /// </summary>
+        /// <param name="propertyReflector">An instance of <see cref="IPropertyReflector"/>.</param>
+        public AttributeMapperStrategy([NotNull] IPropertyReflector propertyReflector)
+            : this(new PropertyInspector(propertyReflector))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and a default instance of <see cref="ITypeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
         public AttributeMapperStrategy([NotNull] IPropertyInspector inspector)
             : this(inspector, TypeParser.Default)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with a <see cref="AnnotatedPropertyValidator"/> using the specified <paramref name="inspector"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
         public AttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
+            : this(new AnnotatedPropertyValidator(inspector), typeParser)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="annotatedPropertyValidator"/> and <paramref name="typeParser"/>.
+        /// </summary>
+        /// <param name="annotatedPropertyValidator">An instance of <see cref="IAnnotatedPropertyValidator"/>.</param>
+        /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
+        public AttributeMapperStrategy([NotNull] IAnnotatedPropertyValidator annotatedPropertyValidator, [NotNull] ITypeParser typeParser)
         {
             _typeParser = typeParser ?? throw new ArgumentNullException(nameof(typeParser));
-            _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
+            _annotatedPropertyValidator = annotatedPropertyValidator ?? throw new ArgumentNullException(nameof(annotatedPropertyValidator));
         }
 
         public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper workItemMapper)
@@ -117,57 +147,40 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             }
         }
 
+        protected internal virtual object GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
+        {
+            object fieldValue;
+            try
+            {
+                fieldValue = sourceWorkItem[fieldName];
+            }
+            catch (DeniedOrNotExistException e)
+            {
+                var tm = new TypePair(sourceWorkItem, targetWorkItemType);
+                var pm = new PropertyMap(property, fieldName);
+                var message = $"Unable to get field value on {sourceWorkItem.Id}.";
+                throw new AttributeMapException(message, e, tm, pm);
+            }
+            return fieldValue;
+        }
+
         protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
         {
-            var properties = PropertiesOnWorkItemCache(
-                _inspector,
-                sourceWorkItem,
-                targetWorkItemType,
-                typeof(FieldDefinitionAttribute));
+            var validAnnotatedPropertyKeyPairs = _annotatedPropertyValidator.GetValidAnnotatedProperties(sourceWorkItem, targetWorkItemType);
 
-            foreach (var property in properties)
+            foreach (var pair in validAnnotatedPropertyKeyPairs)
             {
-                var a = PropertyInfoFieldCache(_inspector, property);
-                if (a == null) continue;
+                var fieldDefinitionAttribute = pair.Value;
+                if (fieldDefinitionAttribute == null) continue;
 
-                var fieldName = a.FieldName;
-                var convert = a.RequireConversion;
-                var nullSub = a.NullSubstitute;
-                var fieldValue = sourceWorkItem[fieldName];
+                var property = pair.Key;
+                var fieldName = fieldDefinitionAttribute.FieldName;
+                var convert = fieldDefinitionAttribute.RequireConversion;
+                var nullSub = fieldDefinitionAttribute.NullSubstitute;
+                var fieldValue = GetFieldValue(targetWorkItemType, sourceWorkItem, fieldName, property);
 
                 AssignFieldValue(targetWorkItemType, sourceWorkItem, targetWorkItem, property, fieldName, convert, nullSub, fieldValue);
             }
-        }
-
-        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(IPropertyInspector inspector, IWorkItem workItem, Type targetType, Type attributeType)
-        {
-            // Composite key: work item type and target type
-
-            var workItemType = workItem.WorkItemType;
-            var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
-
-            return PropertiesThatExistOnWorkItem.GetOrAdd(
-                key,
-                tuple =>
-                    {
-                        return
-                            inspector.GetAnnotatedProperties(targetType, typeof(FieldDefinitionAttribute))
-                                     .Select(
-                                         property =>
-                                         new { property, fieldName = PropertyInfoFieldCache(inspector, property)?.FieldName })
-                                     .Where(
-                                         t =>
-                                         !string.IsNullOrEmpty(t.fieldName))
-                                     .Select(t => t.property)
-                                     .ToList();
-                    });
-        }
-
-        private static FieldDefinitionAttribute PropertyInfoFieldCache(IPropertyInspector inspector, PropertyInfo property)
-        {
-            return PropertyInfoFields.GetOrAdd(
-                property,
-                info => inspector.GetAttribute<FieldDefinitionAttribute>(property));
         }
     }
 }
