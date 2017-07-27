@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 using JetBrains.Annotations;
 
@@ -14,9 +13,6 @@ namespace Microsoft.Qwiq
 
             LinkTypeEnd = linkTypeEnd;
         }
-
-        [Obsolete("This property is deprecated and will be removed in a future release. Use LinkTypeEnd.Name instead.")]
-        public string LinkSubType => LinkTypeEnd?.Name;
 
         public IWorkItemLinkTypeEnd LinkTypeEnd { get; }
 

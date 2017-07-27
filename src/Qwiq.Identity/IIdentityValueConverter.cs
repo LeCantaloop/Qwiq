@@ -1,4 +1,3 @@
-using System;
 using JetBrains.Annotations;
 using System.Collections.Generic;
 
@@ -17,11 +16,6 @@ namespace Microsoft.Qwiq.Identity
         [ContractAnnotation("null => null; notnull => notnull")]
         U Map([CanBeNull] T value);
 
-        IReadOnlyDictionary<T,U> Map(IEnumerable<T> values);
-
-        [Obsolete("This method is depreciated and will be removed in a future version.")]
-        object Map(object value);
+        IReadOnlyDictionary<T, U> Map(IEnumerable<T> values);
     }
-
-
 }

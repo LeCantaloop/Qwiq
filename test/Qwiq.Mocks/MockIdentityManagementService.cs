@@ -9,24 +9,6 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Adamb instead.")]
-        public static readonly ITeamFoundationIdentity Adamb = Identities.Adamb;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisj instead.")]
-        public static readonly ITeamFoundationIdentity Chrisj = Identities.Chrisj;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjoh instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjoh = Identities.Chrisjoh;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohn instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjohn = Identities.Chrisjohn;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohns instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjohns = Identities.Chrisjohns;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
-        public static readonly ITeamFoundationIdentity Danj = Identities.Danj;
-
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
 
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;

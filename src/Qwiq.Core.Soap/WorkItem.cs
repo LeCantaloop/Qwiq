@@ -190,11 +190,6 @@ namespace Microsoft.Qwiq.Client.Soap
             set => _item.Title = value;
         }
 
-        /// <summary>
-        ///     Gets the uniform resource identifier (System.Uri) of this work item.
-        /// </summary>
-        public override Uri Uri => _item.Uri;
-
         public override string Url { get; }
 
         public override void ApplyRules(bool doNotUpdateChangedBy = false)
@@ -222,13 +217,6 @@ namespace Microsoft.Qwiq.Client.Soap
         public override IHyperlink CreateHyperlink(string location)
         {
             return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(new Tfs.Hyperlink(location)));
-        }
-
-        public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
-            return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(
-                new RelatedLink(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItem.Id)));
         }
 
         /// <summary>

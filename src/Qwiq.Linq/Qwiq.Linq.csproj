@@ -54,7 +54,6 @@
     <Compile Include="TranslatedQuery.cs" />
     <Compile Include="TypeSystem.cs" />
     <Compile Include="Visitors\IdentityComboStringVisitor.cs" />
-    <Compile Include="Visitors\LocalCollectionExpander.cs" />
     <Compile Include="Visitors\PartialEvaluator.cs" />
     <Compile Include="Visitors\QueryRewriter.cs" />
     <Compile Include="Visitors\Utility.cs" />

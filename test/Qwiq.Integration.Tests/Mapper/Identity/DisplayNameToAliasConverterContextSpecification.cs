@@ -15,12 +15,6 @@ namespace Microsoft.Qwiq.Mapper.Identity
 
         protected DisplayNameToAliasValueConverter ValueConverter { get; private set; }
 
-        [TestMethod]
-        public void Converted_value_is_expected_type()
-        {
-            ConvertedValue.ShouldBeType(typeof(Dictionary<string, string>));
-        }
-
         /// <inheritdoc />
         public override void Given()
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using System.Collections.Generic;
+using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -27,9 +28,23 @@ namespace Microsoft.Qwiq.Identity.Soap
 
         public override void When()
         {
-#pragma warning disable 0618
-            ActualOutput = TimedAction(() => (T)Instance.Map(Input), "SOAP", "Map");
-#pragma warning restore 0618
+#pragma warning disable IDE0019 // Use pattern matching
+            var stringValue = Input as string;
+            var stringArray = Input as IEnumerable<string>;
+#pragma warning restore IDE0019 // Use pattern matching
+
+            if (stringValue != null)
+            {
+                ActualOutput = TimedAction(() => (T)Instance.Map(stringValue), "SOAP", "Map");
+            }
+            else if (stringArray != null)
+            {
+                ActualOutput = TimedAction(() => (T)Instance.Map(stringArray), "SOAP", "Map");
+            }
+            else
+            {
+                ActualOutput = Input;
+            }
         }
 
         [TestMethod]

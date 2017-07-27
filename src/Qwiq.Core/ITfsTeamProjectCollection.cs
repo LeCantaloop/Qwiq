@@ -4,11 +4,6 @@ using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
-    [Obsolete("This interface is deprecated and will be removed in a future version. Use ITeamProjectCollection instead.")]
-    public interface ITfsTeamProjectCollection : ITeamProjectCollection
-    {
-    }
-
     public interface ITeamProjectCollection
     {
         /// <summary>Gets the credentials for this project collection.</summary>

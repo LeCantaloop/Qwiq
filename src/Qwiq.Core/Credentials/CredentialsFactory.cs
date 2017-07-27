@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 using Microsoft.VisualStudio.Services.Client;
@@ -20,67 +18,6 @@ namespace Microsoft.Qwiq.Credentials
     /// </summary>
     public static class CredentialsFactory
     {
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See AuthenticationOptions instead.",
-            false)]
-        public static IEnumerable<TfsCredentials> CreateCredentials(
-            string username = null,
-            string password = null,
-            string accessToken = null)
-        {
-            return CreateCredentials(
-                new Lazy<string>(() => username),
-                new Lazy<string>(() => password),
-                new Lazy<string>(() => accessToken));
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future release. See AuthenticationOptions instead.",
-            false)]
-        public static IEnumerable<TfsCredentials> CreateCredentials(
-            Lazy<string> username = null,
-            Lazy<string> password = null,
-            Lazy<string> accessToken = null)
-        {
-            if (username == null) username = new Lazy<string>(() => string.Empty);
-            if (password == null) password = new Lazy<string>(() => string.Empty);
-            if (accessToken == null) accessToken = new Lazy<string>(() => string.Empty);
-
-            return CreateCredentialsImpl(username, password, accessToken).Select(c => new TfsCredentials(c));
-        }
-
-        private static IEnumerable<VssCredentials> CreateCredentialsImpl(
-            Lazy<string> username,
-            Lazy<string> password,
-            Lazy<string> accessToken)
-        {
-            // First try OAuth, as this is our preferred method
-            foreach (var c in GetOAuthCredentials(accessToken.Value)) yield return c;
-
-            // Next try Username/Password combinations
-            foreach (var c in GetServiceIdentityCredentials(username.Value, password.Value)) yield return c;
-
-            // Next try PAT
-            foreach (var c in GetServiceIdentityPatCredentials(password.Value)) yield return c;
-
-            // Next try basic credentials
-            foreach (var c in GetBasicCredentials(username.Value, password.Value)) yield return c;
-
-            // User did not specify a username or a password, so use the process identity
-            yield return new VssClientCredentials(new WindowsCredential(false))
-            {
-                Storage = new VssClientCredentialStorage(),
-                PromptType = CredentialPromptType.DoNotPrompt
-            };
-
-            // Use the Windows identity of the logged on user
-            yield return new VssClientCredentials(true)
-            {
-                Storage = new VssClientCredentialStorage(),
-                PromptType = CredentialPromptType.PromptIfNeeded
-            };
-        }
-
         internal static IEnumerable<VssCredentials> GetBasicCredentials(string username = null, string password = null)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password)) yield break;

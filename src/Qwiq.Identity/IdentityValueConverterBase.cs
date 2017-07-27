@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Microsoft.Qwiq.Identity
@@ -26,17 +25,5 @@ namespace Microsoft.Qwiq.Identity
             return value;
         }
         public abstract IReadOnlyDictionary<string, object> Map(IEnumerable<string> values);
-
-        [Obsolete("This method is depreciated and will be removed in a future version.")]
-        public virtual object Map(object value)
-        {
-            if (value is string stringValue) return Map(stringValue);
-            if (value is IEnumerable<string> stringArray)
-            {
-                return Map(stringArray).Select(s=>s.Value).ToArray();
-            }
-
-            return value;
-        }
     }
 }

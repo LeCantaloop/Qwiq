@@ -16,8 +16,8 @@ namespace Microsoft.Qwiq.Mapper.Identity
         [TestCategory("SOAP")]
         public void Converted_value_contains_a_single_result()
         {
-            var kvp = (Dictionary<string, string>)ConvertedValue;
-            kvp.Count.ShouldEqual(1);
+            var val = (string)ConvertedValue;
+            val.ShouldNotBeNull();
         }
 
         /// <inheritdoc />

@@ -112,8 +112,6 @@ namespace Microsoft.Qwiq
 
         public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new InvalidOperationException($"No value specified for {nameof(Type)}.");
 
-        public abstract Uri Uri { get; }
-
         public override object this[string name]
         {
             get
@@ -169,11 +167,6 @@ namespace Microsoft.Qwiq
         public virtual IHyperlink CreateHyperlink(string location)
         {
             throw new NotSupportedException();
-        }
-
-        public virtual IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
         }
 
         public virtual IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)

@@ -135,8 +135,6 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public override int Rev => _item.Rev.GetValueOrDefault(0);
 
-        public override Uri Uri => _uri ?? (_uri = new Uri(_item.Url, UriKind.Absolute));
-
         public override string Url { get; }
 
         protected override object GetValue(string name)
