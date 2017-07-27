@@ -25,14 +25,6 @@ namespace Microsoft.Qwiq.Mocks
         {
         }
 
-        [Obsolete("This method has been deprecated and will be removed in a future release.")]
-        public MockWorkItemStore(IEnumerable<IWorkItem> workItems, IEnumerable<IWorkItemLinkInfo> links = null)
-            : this()
-
-        {
-            this.Add(workItems, links);
-        }
-
         public MockWorkItemStore([InstantHandle] [NotNull] Func<ITeamProjectCollection> tpcFactory, [InstantHandle] [NotNull] Func<MockWorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));

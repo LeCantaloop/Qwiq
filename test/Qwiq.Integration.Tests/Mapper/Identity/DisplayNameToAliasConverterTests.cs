@@ -21,7 +21,7 @@ namespace Microsoft.Qwiq.Mapper.Identity
         [TestCategory("SOAP")]
         public void Converted_value_result_is_expected_value()
         {
-            var kvp = ((Dictionary<string, string>)ConvertedValue);
+            var kvp = ((Dictionary<string, object>)ConvertedValue);
             kvp.First().Value.ShouldEqual("pelavall");
             kvp.Skip(1).Single().Value.ShouldEqual("jweber");
         }
@@ -51,8 +51,8 @@ namespace Microsoft.Qwiq.Mapper.Identity
         [TestCategory("SOAP")]
         public void Converted_value_result_is_expected_value()
         {
-            var kvp = ((Dictionary<string, string>)ConvertedValue);
-            kvp.First().Value.ShouldEqual("pelavall");
+            var kvp = (string)ConvertedValue;
+            kvp.ShouldEqual("pelavall");
         }
     }
 
@@ -82,8 +82,8 @@ namespace Microsoft.Qwiq.Mapper.Identity
         [TestCategory("SOAP")]
         public void Converted_value_result_is_expected_value()
         {
-            var kvp = ((Dictionary<string, string>)ConvertedValue);
-            kvp.First().Value.ShouldEqual("jweber");
+            var kvp = (string)ConvertedValue;
+            kvp.ShouldEqual("jweber");
         }
     }
 

@@ -214,7 +214,6 @@
     <Compile Include="WorkItemStore\RestWorkItemContextSpecification.cs" />
     <Compile Include="WorkItemStore\Soap\SoapWorkItemContextSpecification.cs" />
     <Compile Include="WorkItemStore\Soap\WorkItemStoreFactoryContextSpecification.cs" />
-    <Compile Include="WorkItemStore\Soap\WorkItemStoreFactoryTests.cs" />
     <Compile Include="WorkItemStore\WiqlHierarchyQueryTests.cs" />
     <Compile Include="WorkItemStore\WorkItem\IntegrationContextSpecificationSpecification.cs" />
     <Compile Include="WorkItemStore\WorkItem\LinkTests.cs" />
@@ -270,6 +269,10 @@
     <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj">
       <Project>{016E8D93-4195-4639-BCD5-77633E8E1681}</Project>
       <Name>Qwiq.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Qwiq.Identity.Tests\Qwiq.Identity.UnitTests.csproj">
+      <Project>{ce68530e-eb8f-4be2-9563-a09ac70ea8c1}</Project>
+      <Name>Qwiq.Identity.UnitTests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj">
       <Project>{B45C92B0-AC36-409D-86A5-5428C87384C3}</Project>

@@ -11,6 +11,7 @@ using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
+using MockIdentityDescriptor = Microsoft.Qwiq.Mocks.MockIdentityDescriptor;
 
 namespace Microsoft.Qwiq.Identity
 {
@@ -73,16 +74,14 @@ namespace Microsoft.Qwiq.Identity
     [TestClass]
     public class when_the_backing_source_does_result_in_a_resolved_identity : BulkIdentityAwareAttributeMapperStrategyTests
     {
-        private const string identityAlias = "jsmit";
-        private const string identityDisplay = "Joe Smit";
+        private const string IdentityAlias = "jsmit";
+        private const string IdentityDisplay = "Joe Smit";
         public override void Given()
         {
-            IdentityFieldBackingValue = identityDisplay;
+            IdentityFieldBackingValue = IdentityDisplay;
             Identities = new Dictionary<string, IEnumerable<ITeamFoundationIdentity>>
             {
-#pragma warning disable 0618
-                {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(identityDisplay, identityAlias) }}
-#pragma warning restore 0618
+                {IdentityFieldBackingValue, new []{new MockTeamFoundationIdentity(MockIdentityDescriptor.Create(IdentityAlias), IdentityDisplay, Guid.Empty) }}
             };
             base.Given();
         }
@@ -90,7 +89,7 @@ namespace Microsoft.Qwiq.Identity
         [TestMethod]
         public void the_actual_identity_value_should_be_the_identity_alias()
         {
-            Actual.AnIdentity.ShouldEqual(identityAlias);
+            Actual.AnIdentity.ShouldEqual(IdentityAlias);
         }
 
         [TestMethod]
@@ -103,8 +102,8 @@ namespace Microsoft.Qwiq.Identity
         public void the_IdentityFieldValue_contains_expected_value()
         {
             Actual.AnIdentityValue.ShouldNotBeNull();
-            Actual.AnIdentityValue.DisplayName.ShouldEqual(identityDisplay);
-            Actual.AnIdentityValue.IdentityName.ShouldEqual(identityAlias);
+            Actual.AnIdentityValue.DisplayName.ShouldEqual(IdentityDisplay);
+            Actual.AnIdentityValue.IdentityName.ShouldEqual(IdentityAlias);
         }
     }
 

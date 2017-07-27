@@ -67,18 +67,6 @@ namespace Microsoft.Qwiq.Identity
             return retval;
         }
 
-        [Obsolete("This method is depreciated and will be removed in a future version.")]
-        public override object Map(object value)
-        {
-            if (value is string stringValue) return Map(stringValue);
-            if (value is IEnumerable<string> stringArray)
-            {
-                return Map(stringArray).Select(s => (string)s.Value).ToArray();
-            }
-
-            return value;
-        }
-
         private Dictionary<string, object> GetIdentityForAliases(
             ICollection<string> logonNames,
             string tenantId,

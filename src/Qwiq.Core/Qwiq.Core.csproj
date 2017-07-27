@@ -83,7 +83,6 @@
     <Compile Include="Credentials\CredentialNotification.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\CredentialsNotifications.cs" />
-    <Compile Include="Credentials\TfsCredentials.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\DeniedOrNotExistException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
@@ -159,9 +158,18 @@
     <Compile Include="IWorkItemCommon.cs" />
     <Compile Include="IWorkItemCore.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
+    <Compile Include="IWorkItemLinkInfo.Extensions.cs">
+      <DependentUpon>IWorkItemLinkInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkType.cs" />
+    <Compile Include="IWorkItemLinkType.Extensions.cs">
+      <DependentUpon>IWorkItemLinkType.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkTypeCollection.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
+    <Compile Include="IWorkItemLinkTypeEnd.Extensions.cs">
+      <DependentUpon>IWorkItemLinkTypeEnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkTypeEndCollection.cs" />
     <Compile Include="IWorkItemReference.cs" />
     <Compile Include="IWorkItemStore.cs" />

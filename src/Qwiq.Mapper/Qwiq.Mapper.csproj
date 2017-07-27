@@ -40,7 +40,6 @@
     <Compile Include="Attributes\WorkItemLinksMapperStrategy.cs" />
     <Compile Include="Attributes\WorkItemTypeAttribute.cs" />
     <Compile Include="FieldMapper.cs" />
-    <Compile Include="IIdentifiable.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
     <Compile Include="AttributeMapException.cs" />

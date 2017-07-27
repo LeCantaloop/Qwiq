@@ -31,16 +31,6 @@ namespace Microsoft.Qwiq.Mocks
             IsEditable = true;
         }
 
-        [Obsolete("This method has been deprecated and will be removed in a future version.")]
-        public MockField(
-            object value,
-            object originalValue = null,
-            ValidationState validationState = ValidationState.Valid,
-            bool isChangedByUser = true)
-            : this(MockFieldDefinition.Create(Guid.NewGuid().ToString("N")), value, originalValue, validationState, isChangedByUser)
-        {
-        }
-
         internal MockField(IRevisionInternal revision, IFieldDefinition definition)
             : this(definition)
         {

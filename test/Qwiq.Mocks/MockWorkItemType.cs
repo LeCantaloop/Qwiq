@@ -8,13 +8,6 @@ namespace Microsoft.Qwiq.Mocks
     public class MockWorkItemType : WorkItemType
     {
         [DebuggerStepThrough]
-        [Obsolete("This method has been deprecated and will be removed in a future release. See ctor(IWorkItemStore, String, String).")]
-        public MockWorkItemType()
-            : this("Mock")
-        {
-        }
-
-        [DebuggerStepThrough]
         public MockWorkItemType(string name, string description = null, IWorkItemStore store = null)
             : this(name, new MockFieldDefinitionCollection(CoreFieldDefinitions.All), description, store)
         {
