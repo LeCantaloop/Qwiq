@@ -82,31 +82,31 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public MockWorkItem([NotNull] IWorkItemType type, int id)
-            : this(type, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
+        public MockWorkItem([NotNull] IWorkItemType workItemType, int id)
+            : this(workItemType, new KeyValuePair<string, object>(CoreFieldRefNames.Id, id))
         {
             Contract.Requires(id > 0);
         }
 
-        public MockWorkItem([NotNull] IWorkItemType type, int id, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
+        public MockWorkItem([NotNull] IWorkItemType workItemType, int id, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
             : this(
-                   type,
+                   workItemType,
                    fieldValues?.Union(new[] { new KeyValuePair<string, object>(CoreFieldRefNames.Id, id) })
                               .ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase) ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase) { { CoreFieldRefNames.Id, id } })
         {
             Contract.Requires(id > 0);
         }
 
-        public MockWorkItem([NotNull] IWorkItemType type, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
-            : this(type, fieldValues?.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
+        public MockWorkItem([NotNull] IWorkItemType workItemType, [CanBeNull] params KeyValuePair<string, object>[] fieldValues)
+            : this(workItemType, fieldValues?.ToDictionary(k => k.Key, e => e.Value, StringComparer.OrdinalIgnoreCase))
         {
         }
 
-        public MockWorkItem([NotNull] IWorkItemType type, [CanBeNull] Dictionary<string, object> fields = null)
-            : base(type, NormalizeFields(type, fields))
+        public MockWorkItem([NotNull] IWorkItemType workItemType, [CanBeNull] Dictionary<string, object> fields = null)
+            : base(workItemType, NormalizeFields(workItemType, fields))
         {
-            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.WorkItemType], type.Name);
-            SetFieldValue(type.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
+            SetFieldValue(workItemType.FieldDefinitions[CoreFieldRefNames.WorkItemType], workItemType.Name);
+            SetFieldValue(workItemType.FieldDefinitions[CoreFieldRefNames.RevisedDate], new DateTime(9999, 1, 1, 0, 0, 0));
 
             if (IsNew)
             {

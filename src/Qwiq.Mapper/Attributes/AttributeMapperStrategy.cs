@@ -154,7 +154,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         {
             // Composite key: work item type and target type
 
-            var workItemType = workItem.Type.Name;
+            var workItemType = workItem.WorkItemType;
             var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
 
             return PropertiesThatExistOnWorkItem.GetOrAdd(
@@ -167,9 +167,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                                          property =>
                                          new { property, fieldName = PropertyInfoFieldCache(inspector, property)?.FieldName })
                                      .Where(
-                                         @t =>
-                                         !string.IsNullOrEmpty(@t.fieldName) && workItem.Fields.Contains(@t.fieldName))
-                                     .Select(@t => @t.property)
+                                         t =>
+                                         !string.IsNullOrEmpty(t.fieldName))
+                                     .Select(t => t.property)
                                      .ToList();
                     });
         }

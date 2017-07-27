@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
@@ -143,6 +144,9 @@ namespace Microsoft.Qwiq.Client.Rest
             if (string.IsNullOrEmpty(name)) return null;
 
             _item.Fields.TryGetValue(name, out object value);
+#if DEBUG
+            Trace.WriteLine($"Get \'{name}\': {value.ToUsefulString()}");
+#endif
             return value;
         }
 
@@ -151,6 +155,9 @@ namespace Microsoft.Qwiq.Client.Rest
             if (string.IsNullOrEmpty(name)) return;
 
             _item.Fields[name] = value;
+#if DEBUG
+            Trace.WriteLine($"Set \'{name}\' to {value.ToUsefulString()}");
+#endif
         }
 
         [ContractInvariantMethod]
