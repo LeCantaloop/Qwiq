@@ -25,50 +25,67 @@ How often do you update a work item? How often do you create a new security grou
  - v3 (VS 2015+ / NuGet 3.x): `https://www.myget.org/F/qwiq/api/v3/index.json`
  - v2 (VS 2013 / NuGet 2.x): `https://www.myget.org/F/qwiq/api/v2`
 
-Once the feed is configured, instald via the nuget UI (as [Microsoft.Qwiq.Core](https://www.myget.org/feed/qwiq/package/nuget/Microsoft.Qwiq.Core)), or via the nuget package manager console:
+Once the feed is configured, install via the nuget UI or via the nuget package manager console
 
 ### Install Core
+From the NuGet package manager console
 ```
 PM> Install-Package Microsoft.Qwiq.Core
 ```
+Or via the UI [Microsoft.Qwiq.Core](https://www.myget.org/feed/qwiq/package/nuget/Microsoft.Qwiq.Core),
+
+
+### Install Client
+We now have two clients: one for SOAP, and one for REST
+
+From the NuGet package manager console
+```
+PM> Install-Package Microsoft.Qwiq.Client.Soap
+```
+Or via the UI [Microsoft.Qwiq.Client.Soap](https://www.myget.org/feed/qwiq/package/nuget/Microsoft.Qwiq.Client.Soap),
 
 ### Basic Usage
 ```csharp
 using Microsoft.Qwiq;
 using Microsoft.Qwiq.Credentials;
+
+using Microsoft.VisualStudio.Services.Client;
 ...
 
-// Create credentials objects based on the current process and OS identity
 // We support
-//  - Username and password
-//  - PAT
-//  - Federated Windows credentials
-var creds = CredentialsFactory.CreateCredentials();
-var uri = new Uri("[Tfs Tenant Uri]");
+//  - OAuth2
+//  - Personal Access Token (PAT)
+//  - Username and password (BASIC)
+//  - Windows credentials (NTLM or Federated with Azure Active Directory)
+//  - Anonymous
 
+// Use the full URI, including the collection. Example: https://QWIQ.VisualStudio.com/DefaultCollection
+var uri = new Uri("[Tfs Tenant Uri]");
+var options = new AuthenticationOptions(uri, AuthenticationType.Windows);
 var store = WorkItemStoreFactory
-                .GetInstance()
-                .Create(uri, creds);
-//               ^^^ store and re-use this!
+                .Default
+                .Create(options);
 
 // Execute WIQL
 var items = store.Query(@"
     SELECT [System.Id] 
     FROM WorkItems 
-    WHERE WorkItemType = 'Bug' AND State = 'Active'");
+    WHERE [System.WorkItemType] = 'Bug' AND State = 'Active'");
 ```
 
 ```powershell
 [Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.Qwiq.Core.dll")
+# Can use SOAP or REST clients here
+[Reflection.Assembly]::LoadFrom("E:\Path\To\Microsoft.Qwiq.Client.Soap.dll")
 
-$creds = [Microsoft.Qwiq.Credentials.CredentialsFactory]::CreateCredentials()
 $uri = [Uri]"[Tfs Tenant Uri]"
-$store = [Microsoft.Qwiq.WorkItemStoreFactory]::GetInstance().Create($uri, $creds)
+$options = New-Object Microsoft.Qwiq.Credentials.AuthenticationOptions $uri,Windows
+$store = [Microsoft.Qwiq.Client.Soap.WorkItemStoreFactory]::Default.Create($options)
 
 $items = $store.Query(@"
     SELECT [System.Id] 
     FROM WorkItems 
-    WHERE WorkItemType = 'Bug' AND State = 'Active'")
+    WHERE [System.WorkItemType] = 'Bug' AND State = 'Active'", $false)
 ```
 
 ## Contributing
