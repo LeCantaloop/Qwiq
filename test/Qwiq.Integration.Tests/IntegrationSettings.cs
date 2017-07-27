@@ -24,8 +24,7 @@ namespace Microsoft.Qwiq
         private static readonly Uri Uri = new Uri("https://microsoft.visualstudio.com/defaultcollection");
 
         /// <exclude />
-        public static AuthenticationOptions AuthenticationOptions { get; } =
-            new AuthenticationOptions(Uri, AuthenticationTypes.Windows);
+        public static AuthenticationOptions AuthenticationOptions { get; } = new AuthenticationOptions(Uri, AuthenticationTypes.Windows, Credentials);
 
         /// <exclude />
         public static Func<IWorkItemStore> CreateRestStore { get; } = () =>
