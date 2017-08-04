@@ -18,7 +18,12 @@ namespace Microsoft.Qwiq.Mapper
         public AnnotatedPropertyValidator([NotNull] IPropertyInspector inspector)
         {
             _inspector = inspector ?? throw new ArgumentNullException(nameof(inspector));
-            PropertyInfoValidator = (item, info) => !string.IsNullOrWhiteSpace(GetFieldDefinition(info)?.FieldName);
+            PropertyInfoValidator = (item, info) =>
+            {
+                var name = GetFieldDefinition(info)?.FieldName;
+                var validName = !string.IsNullOrWhiteSpace(name);
+                return validName && item.Fields.Contains(name);
+            };
         }
 
         public Func<IWorkItem, PropertyInfo, bool> PropertyInfoValidator
@@ -39,8 +44,12 @@ namespace Microsoft.Qwiq.Mapper
                 info => _inspector.GetAttribute<FieldDefinitionAttribute>(property));
         }
 
+        /// <exception cref="InvalidOperationException"><see cref="PropertyInfoValidator"/> is null.</exception>
         public IEnumerable<KeyValuePair<PropertyInfo, FieldDefinitionAttribute>> GetValidAnnotatedProperties(IWorkItem workItem, Type targetType)
         {
+            if (PropertyInfoValidator == null)
+                throw new InvalidOperationException($"{nameof(PropertyInfoValidator)} cannot be null.");
+
             var workItemTypeName = workItem.WorkItemType;
             var key = new Tuple<string, RuntimeTypeHandle>(workItemTypeName, targetType.TypeHandle);
 
