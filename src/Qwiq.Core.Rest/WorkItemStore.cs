@@ -194,9 +194,28 @@ namespace Microsoft.Qwiq.Client.Rest
 
         private IProjectCollection ProjectCollectionFactory()
         {
+            const string continuationHeader = "x-ms-continuationtoken";
+
+            // See https://www.visualstudio.com/en-us/docs/integrate/api/tfs/projects
+            const ProjectState defaultStateFilter = ProjectState.WellFormed;
+            const int defaultNumberOfTeamProjects = 100;
+
+            // Use the page size configured by the client if it is higher than the default
+            // Otherwise, with a default of 50, we would need to make multiple trips to load all the data
+            var pageSize = Math.Max(defaultNumberOfTeamProjects, Configuration.PageSize);
+
             using (var projectHttpClient = _tfs.Value.GetClient<ProjectHttpClient>())
             {
-                var projects = (List<TeamProjectReference>)projectHttpClient.GetProjects(ProjectState.WellFormed).GetAwaiter().GetResult();
+                var projects = new List<TeamProjectReference>(pageSize);
+
+                var projectReferences = projectHttpClient.GetProjects(defaultStateFilter, pageSize).GetAwaiter().GetResult();
+                projects.AddRange(projectReferences);
+                while (projectHttpClient.LastResponseContext.Headers.Contains(continuationHeader))
+                {
+                    projectReferences = projectHttpClient.GetProjects(defaultStateFilter, pageSize, projects.Count).GetAwaiter().GetResult();
+                    projects.AddRange(projectReferences);
+                }
+
                 var projects2 = new List<IProject>(projects.Count + 1);
 
                 for (var i = 0; i < projects.Count; i++)
