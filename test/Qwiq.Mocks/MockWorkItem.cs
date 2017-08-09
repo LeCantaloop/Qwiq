@@ -140,12 +140,6 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public override string Keywords
-        {
-            get => GetValue<string>(WorkItemFields.Keywords);
-            set => SetValue(WorkItemFields.Keywords, value);
-        }
-
         public new ICollection<ILink> Links { get; set; }
 
         public new int RelatedLinkCount => Links.OfType<IRelatedLink>().Count();

@@ -32,8 +32,6 @@ namespace Microsoft.Qwiq
 
         bool IsDirty { get; }
 
-        string Keywords { get; set; }
-
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>

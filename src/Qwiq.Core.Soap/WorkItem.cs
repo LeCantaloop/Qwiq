@@ -125,12 +125,6 @@ namespace Microsoft.Qwiq.Client.Soap
             set => _item.IterationPath = value;
         }
 
-        public override string Keywords
-        {
-            get => (string)_item[WorkItemFields.Keywords];
-            set => _item[WorkItemFields.Keywords] = value;
-        }
-
         /// <summary>
         ///     Gets the collection of the links in this work item.
         /// </summary>

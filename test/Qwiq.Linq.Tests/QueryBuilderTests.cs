@@ -80,10 +80,10 @@ namespace Microsoft.Qwiq.Linq
         {
             base.When();
             Expected =
-                "SELECT * FROM WorkItems WHERE (([Title] = 'asdf') AND ([Keywords] = 'String Value') AND ([Created Date] > '2012-11-29 17:00:00Z'))";
+                "SELECT * FROM WorkItems WHERE (([Title] = 'asdf') AND ([Tags] = 'String Value') AND ([Created Date] > '2012-11-29 17:00:00Z'))";
             Actual =
                 Query.Where(item => item.Title == "asdf")
-                    .Where(item => item.Keywords == "String Value")
+                    .Where(item => item.Tags == "String Value")
                     .Where(item => item.CreatedDate > _date)
                     .ToString();
         }
@@ -102,8 +102,8 @@ namespace Microsoft.Qwiq.Linq
         public override void When()
         {
             base.When();
-            Expected = "SELECT * FROM WorkItems WHERE ((([Keywords] = 'person1') OR ([Keywords] = 'person2')))";
-            Actual = Query.Where(item => item.Keywords == "person1" || item.Keywords == "person2").ToString();
+            Expected = "SELECT * FROM WorkItems WHERE ((([Tags] = 'person1') OR ([Tags] = 'person2')))";
+            Actual = Query.Where(item => item.Tags == "person1" || item.Tags == "person2").ToString();
         }
 
         [TestMethod]
@@ -128,8 +128,8 @@ namespace Microsoft.Qwiq.Linq
         public override void When()
         {
             base.When();
-            Expected = "SELECT * FROM WorkItems WHERE (([Keywords] IN ('person1', 'person2')))";
-            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Tags] IN ('person1', 'person2')))";
+            Actual = Query.Where(item => _values.Contains(item.Tags)).ToString();
         }
 
         [TestMethod]
@@ -154,8 +154,8 @@ namespace Microsoft.Qwiq.Linq
         public override void When()
         {
             base.When();
-            Expected = "SELECT * FROM WorkItems WHERE (([Keywords] IN ('person1', 'person2')))";
-            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+            Expected = "SELECT * FROM WorkItems WHERE (([Tags] IN ('person1', 'person2')))";
+            Actual = Query.Where(item => _values.Contains(item.Tags)).ToString();
         }
 
         [TestMethod]
@@ -181,7 +181,7 @@ namespace Microsoft.Qwiq.Linq
         [ExpectedException(typeof(NotSupportedException))]
         public void it_is_not_supported()
         {
-            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+            Actual = Query.Where(item => _values.Contains(item.Tags)).ToString();
         }
     }
 
@@ -205,7 +205,7 @@ namespace Microsoft.Qwiq.Linq
         [ExpectedException(typeof(NotSupportedException))]
         public void it_is_not_supported()
         {
-            Actual = Query.Where(item => _values.Contains(item.Keywords)).ToString();
+            Actual = Query.Where(item => _values.Contains(item.Tags)).ToString();
         }
     }
 
