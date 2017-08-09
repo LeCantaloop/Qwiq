@@ -20,11 +20,9 @@ namespace Microsoft.Qwiq
             _fields = fields ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public abstract string Url { get; }
         public virtual int? Id => GetValue<int?>(CoreFieldRefNames.Id);
-
         public virtual int? Rev => GetValue<int?>(CoreFieldRefNames.Rev);
-
+        public abstract string Url { get; }
         /// <summary>
         /// Gets or sets the <see cref="object"/> with the specified name.
         /// </summary>
@@ -42,7 +40,6 @@ namespace Microsoft.Qwiq
         public virtual object this[string name]
         {
             get
-
             {
                 if (name == null) throw new ArgumentNullException(nameof(name));
                 return GetValue(name);
