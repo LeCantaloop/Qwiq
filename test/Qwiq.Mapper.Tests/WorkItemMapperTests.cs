@@ -364,14 +364,7 @@ namespace Microsoft.Qwiq.Mapper
                 var expectedVal = property.GetValue(expected);
                 var actualVal = property.GetValue(actual);
 
-                if (expectedVal is ICollection val)
-                {
-                    CollectionAssert.AreEqual(val, (ICollection)actualVal);
-                }
-                else
-                {
-                    actualVal.ShouldEqual(expectedVal);
-                }
+                actualVal.ShouldEqual(expectedVal, $"{property.Name} ({property.PropertyType.Name}) are not equal.");
             }
         }
 
