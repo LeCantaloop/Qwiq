@@ -233,52 +233,96 @@ namespace Microsoft.Qwiq.Identity.Mocks
             throw new NotSupportedException();
         }
 
+#pragma warning disable RECS0154 // Parameter is never used
         public void AddRecentUser(TeamFoundationIdentity identity)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string[] searchFactorValues,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             return new[] { NullIdentities };
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string[] searchFactorValues,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IEnumerable<string> propertyNameFilters,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IdentityPropertyScope propertyScope)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string searchFactorValue,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string searchFactorValue,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IEnumerable<string> propertyNameFilters,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IdentityPropertyScope propertyScope)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
+#pragma warning disable RECS0154 // Parameter is never used
         public void UpdateExtendedProperties(TeamFoundationIdentity identity)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
