@@ -1,11 +1,9 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using Microsoft.VisualStudio.Services.Common;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-
-using JetBrains.Annotations;
-
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Identity
 {
@@ -35,27 +33,6 @@ namespace Microsoft.Qwiq.Identity
             return GetIdentityNames(values.ToArray());
         }
 
-
-
-        private Dictionary<string, object> GetIdentityNames(params string[] displayNames)
-        {
-            return
-                        GetAliasesForDisplayNames(displayNames)
-                        .ToDictionary(
-                            kvp => kvp.Key,
-                            kvp =>
-                                {
-                                    if (kvp.Value == null) return null;
-                                    var retval = kvp.Value.FirstOrDefault();
-                                    if (kvp.Value.Length > 1)
-                                    {
-                                        throw new MultipleIdentitiesFoundException(kvp.Key, kvp.Value);
-                                    }
-                                    return (object)retval;
-                                },
-                            Comparer.OrdinalIgnoreCase);
-        }
-
         private IDictionary<string, string[]> GetAliasesForDisplayNames(string[] displayNames)
         {
             if (displayNames == null) throw new ArgumentNullException(nameof(displayNames));
@@ -71,6 +48,24 @@ namespace Microsoft.Qwiq.Identity
                                             .Select(i => i.GetUserAlias())
                                             .Distinct(StringComparer.OrdinalIgnoreCase)
                                             .ToArray());
+        }
+
+        private Dictionary<string, object> GetIdentityNames(params string[] displayNames)
+        {
+            return
+                        GetAliasesForDisplayNames(displayNames)
+                        .ToDictionary(
+                            kvp => kvp.Key,
+                            kvp =>
+                                {
+                                    if (kvp.Value == null || kvp.Value.Length == 0) return null;
+                                    if (kvp.Value.Length > 1)
+                                    {
+                                        throw new MultipleIdentitiesFoundException(kvp.Key, kvp.Value);
+                                    }
+                                    return (object)kvp.Value[0];
+                                },
+                            Comparer.OrdinalIgnoreCase);
         }
     }
 }
