@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.Services.Common;
+﻿using JetBrains.Annotations;
+using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
-
-using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
@@ -90,7 +89,6 @@ namespace Microsoft.Qwiq
             DisplayPart = displayName;
 
             if (string.IsNullOrEmpty(displayName)) return;
-
 
             if (TryGetVsid(displayName, out Guid guid2, out string str))
             {
