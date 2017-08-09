@@ -1,7 +1,6 @@
+using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
-
-using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq.Mocks
 {
@@ -16,12 +15,15 @@ namespace Microsoft.Qwiq.Mocks
             bool isActive = true,
             IEnumerable<IIdentityDescriptor> members = null,
             IEnumerable<IIdentityDescriptor> memberOf = null)
-            : base(isActive, teamFoundationId == Guid.Empty ? Guid.NewGuid() : teamFoundationId, isActive ? 0 : 1)
+            : base(
+                  isActive,
+                  teamFoundationId == Guid.Empty ? Guid.NewGuid() : teamFoundationId,
+                  isActive ? 0 : 1,
+                  memberOf ?? ZeroLengthArrayOfIdentityDescriptor,
+                  members ?? ZeroLengthArrayOfIdentityDescriptor)
 
         {
             DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
-            MemberOf = memberOf ?? ZeroLengthArrayOfIdentityDescriptor;
-            Members = members ?? ZeroLengthArrayOfIdentityDescriptor;
             IsContainer = false;
             Descriptor = descriptor ?? throw new ArgumentNullException(nameof(descriptor));
 
@@ -45,10 +47,6 @@ namespace Microsoft.Qwiq.Mocks
         public sealed override string DisplayName { get; }
 
         public sealed override bool IsContainer { get; }
-
-        public sealed override IEnumerable<IIdentityDescriptor> MemberOf { get; }
-
-        public sealed override IEnumerable<IIdentityDescriptor> Members { get; }
 
         public override string GetAttribute(string name, string defaultValue)
         {
