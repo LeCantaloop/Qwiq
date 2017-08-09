@@ -9,6 +9,7 @@ namespace Microsoft.Qwiq
     {
         protected internal static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
         private string _uniqueName;
+
         protected internal TeamFoundationIdentity(
             bool isActive,
             Guid teamFoundationId,
@@ -27,7 +28,7 @@ namespace Microsoft.Qwiq
             int uniqueUserId,
             IEnumerable<IIdentityDescriptor> memberOf,
             IEnumerable<IIdentityDescriptor> members)
-            :this(isActive, teamFoundationId, uniqueUserId)
+            : this(isActive, teamFoundationId, uniqueUserId)
         {
             MemberOf = memberOf ?? ZeroLengthArrayOfIdentityDescriptor;
             Members = members ?? ZeroLengthArrayOfIdentityDescriptor;
@@ -39,6 +40,7 @@ namespace Microsoft.Qwiq
             Members = ZeroLengthArrayOfIdentityDescriptor;
             TeamFoundationId = Guid.Empty;
         }
+
         public abstract IIdentityDescriptor Descriptor { get; }
 
         public abstract string DisplayName { get; }
@@ -103,6 +105,7 @@ namespace Microsoft.Qwiq
         {
             return Comparer.TeamFoundationIdentity.Equals(this, other);
         }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as ITeamFoundationIdentity);
@@ -118,6 +121,7 @@ namespace Microsoft.Qwiq
         public abstract IEnumerable<KeyValuePair<string, object>> GetProperties();
 
         public abstract object GetProperty(string name);
+
         public override string ToString()
         {
             // Call of .ToString to avoid boxing Guid to Object
