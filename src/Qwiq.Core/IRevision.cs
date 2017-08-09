@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-
 using JetBrains.Annotations;
+using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
 {
@@ -46,8 +45,5 @@ namespace Microsoft.Qwiq
         /// </summary>
         /// <returns>Returns System.String.</returns>
         string GetTagLine();
-
     }
 }
-
-
