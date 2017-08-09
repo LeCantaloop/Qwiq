@@ -49,10 +49,7 @@ namespace Microsoft.Qwiq.Identity
                                     var retval = kvp.Value.FirstOrDefault();
                                     if (kvp.Value.Length > 1)
                                     {
-                                        var m =
-                                            $"Multiple identities found matching '{kvp.Key}'. Please specify one of the following identities:\r\n- {string.Join("\r\n- ", kvp.Value)}";
-
-                                        throw new MultipleIdentitiesFoundException(m);
+                                        throw new MultipleIdentitiesFoundException(kvp.Key, kvp.Value);
                                     }
                                     return (object)retval;
                                 },
