@@ -57,9 +57,6 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object that represents the type of this work item.
         /// </summary>
-        /// <exception cref="TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
-        /// The Type property is null.
-        /// </exception>
         IWorkItemType Type { get; }
 
         /// <summary>
