@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
@@ -17,7 +18,13 @@ namespace Microsoft.Qwiq.Client.Rest
                 CoreFieldRefNames.WorkItemType
             };
 
-        private IEnumerable<string> _defaultFields;
+        private static readonly string[] MandatoryFields =
+        {
+            CoreFieldRefNames.TeamProject,
+            CoreFieldRefNames.WorkItemType,
+        };
+
+        private HashSet<string> _defaultFields;
 
         private WorkItemExpand _workItemExpand;
 
@@ -45,7 +52,16 @@ namespace Microsoft.Qwiq.Client.Rest
                                        $"The {nameof(DefaultFields)} parameter can not be used with the {nameof(WorkItemExpand)} parameter. Setting {nameof(WorkItemExpand)} to {WorkItemExpand.None}.");
                     _workItemExpand = WorkItemExpand.None;
                 }
-                _defaultFields = value;
+                if (value == null || !value.Any()) _defaultFields.Clear();
+                else
+                {
+                    var fs = new HashSet<string>(value, Comparer.OrdinalIgnoreCase);
+                    foreach (var f in MandatoryFields)
+                    {
+                        fs.Add(f);
+                    }
+                    _defaultFields = fs;
+                }
             }
         }
 
@@ -71,7 +87,7 @@ namespace Microsoft.Qwiq.Client.Rest
                 }
                 else
                 {
-                    _defaultFields = DefaultFieldValue;
+                    _defaultFields = new HashSet<string>(DefaultFieldValue, Comparer.OrdinalIgnoreCase);
                 }
             }
         }
