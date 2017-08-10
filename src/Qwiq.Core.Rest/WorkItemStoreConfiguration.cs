@@ -35,9 +35,10 @@ namespace Microsoft.Qwiq.Client.Rest
         }
 
         /// <summary>
-        /// Gets or sets a value indicating which fields to load when querying for a work item. Has no effect if <see cref="WorkItemExpand"/> is set to <see
-        /// cref="M:WorkItemExpand.Full"/> or <see cref="M:WorkItemExpand.Fields"/>. Defaults to <see cref="M:CoreFieldRefNames.Id"/>, <see cref="M:CoreFieldRefNames.WorkItemType"/>
-        /// , <see cref="M:CoreFieldRefNames.Title"/>, <see cref="M:CoreFieldRefNames.AssignedTo"/>, <see cref="M:CoreFieldRefNames.State"/> , <see cref="M:CoreFieldRefNames.Tags"/>
+        /// Gets or sets a value indicating which fields to load when querying for a work item. Has no effect if <see cref="WorkItemExpand"/> is set to
+        /// <see cref="M:WorkItemExpand.Full"/> or <see cref="M:WorkItemExpand.Fields"/>. Defaults to <see cref="M:CoreFieldRefNames.AssignedTo"/>, <see cref="M:CoreFieldRefNames.ChangedBy"/>,
+        /// <see cref="M:CoreFieldRefNames.ChangedDate"/>, <see cref="M:CoreFieldRefNames.Id"/>, <see cref="M:CoreFieldRefNames.State"/>, <see cref="M:CoreFieldRefNames.TeamProject"/>,
+        /// <see cref="M:CoreFieldRefNames.Title"/>, <see cref="M:CoreFieldRefNames.WorkItemType"/>.
         /// </summary>
         public sealed override IEnumerable<string> DefaultFields
         {
@@ -73,6 +74,9 @@ namespace Microsoft.Qwiq.Client.Rest
         /// <summary>
         /// Gets or sets a value indicating which sub-elements of <see cref="TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem"/> to expand. Default value is <see cref="M:WorkItemExpand.All"/>.
         /// </summary>
+        /// <remarks>
+        /// When value is set to <see cref="M:WorkItemExpand.All"/>, the value of <see cref="M:WorkItemStoreConfiguration.DefaultFields"/> is set to null.
+        /// </remarks>
         public override WorkItemExpand WorkItemExpand
         {
             get => _workItemExpand;

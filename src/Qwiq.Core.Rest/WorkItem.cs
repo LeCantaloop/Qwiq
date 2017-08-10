@@ -108,12 +108,6 @@ namespace Microsoft.Qwiq.Client.Rest
 
         public override int Id => _item.Id.GetValueOrDefault(0);
 
-        public override string Keywords
-        {
-            get => GetValue<string>(WorkItemFields.Keywords);
-            set => SetValue(WorkItemFields.Keywords, value);
-        }
-
         public override ICollection<ILink> Links => _links
                                                     ?? (_links = new LinkCollection((List<WorkItemRelation>)_item.Relations, _linkFunc));
 

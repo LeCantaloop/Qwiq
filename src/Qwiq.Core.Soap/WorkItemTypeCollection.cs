@@ -19,8 +19,8 @@ namespace Microsoft.Qwiq.Client.Soap
 
         public override int Count => _workItemTypeCollection.Count;
 
-        public override IWorkItemType this[string typeName] => ExceptionHandlingDynamicProxyFactory
-            .Create<IWorkItemType>(new WorkItemType(_workItemTypeCollection[typeName]));
+        public override IWorkItemType this[string name] => ExceptionHandlingDynamicProxyFactory
+            .Create<IWorkItemType>(new WorkItemType(_workItemTypeCollection[name]));
 
         public override IEnumerator<IWorkItemType> GetEnumerator()
         {

@@ -32,8 +32,6 @@ namespace Microsoft.Qwiq
 
         bool IsDirty { get; }
 
-        string Keywords { get; set; }
-
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>
@@ -57,9 +55,6 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object that represents the type of this work item.
         /// </summary>
-        /// <exception cref="TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
-        /// The Type property is null.
-        /// </exception>
         IWorkItemType Type { get; }
 
         /// <summary>

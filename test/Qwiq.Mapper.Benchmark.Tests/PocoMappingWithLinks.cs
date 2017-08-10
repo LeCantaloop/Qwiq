@@ -25,6 +25,9 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
         }
 
         [TestMethod]
+#if DEBUG
+        [Ignore]
+#endif
         [TestCategory(Constants.TestCategory.Benchmark)]
         [TestCategory(Constants.TestCategory.Performance)]
         public void Execute_Mapping_with_Links_Performance_Benchmark()

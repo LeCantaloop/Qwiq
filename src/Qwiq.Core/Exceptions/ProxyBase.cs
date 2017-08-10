@@ -29,12 +29,16 @@ namespace Microsoft.Qwiq.Exceptions
             // ReSharper restore SuspiciousTypeConversion.Global
             if (proxy == null)
             {
+#pragma warning disable RECS0149 // Finds potentially erroneous calls to Object.Equals
                 return base.Equals(obj);
+#pragma warning restore RECS0149 // Finds potentially erroneous calls to Object.Equals
             }
             var target = proxy.DynProxyGetTarget();
             if (target == null)
             {
+#pragma warning disable RECS0149 // Finds potentially erroneous calls to Object.Equals
                 return base.Equals(obj);
+#pragma warning restore RECS0149 // Finds potentially erroneous calls to Object.Equals
             }
             return target.Equals(obj);
         }

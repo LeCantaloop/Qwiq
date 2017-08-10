@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using Microsoft.TeamFoundation.Core.WebApi;
+﻿using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
@@ -51,12 +50,10 @@ namespace Microsoft.Qwiq.Client.Rest
         /// <inheritdoc />
         Qwiq.WorkItemStoreConfiguration IWorkItemStore.Configuration => Configuration;
 
-        public WorkItemStoreConfiguration Configuration { get;}
+        public WorkItemStoreConfiguration Configuration { get; }
 
         public IFieldDefinitionCollection FieldDefinitions => _fieldDefinitions
                                                               ?? (_fieldDefinitions = new FieldDefinitionCollection(this));
-
-
 
         public IProjectCollection Projects => _projects ?? (_projects = ProjectCollectionFactory());
 

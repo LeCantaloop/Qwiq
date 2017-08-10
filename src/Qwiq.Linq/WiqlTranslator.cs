@@ -78,35 +78,35 @@ namespace Microsoft.Qwiq.Linq
                 _expressionInProgress = new Queue<IFragment>();
             }
 
-            public override Expression Visit(Expression expression)
+            public override Expression Visit(Expression node)
             {
-                if (expression == null)
+                if (node == null)
                 {
                     return null;
                 }
 
-                switch ((WiqlExpressionType)expression.NodeType)
+                switch ((WiqlExpressionType)node.NodeType)
                 {
                     case WiqlExpressionType.Select:
-                        return VisitSelect((SelectExpression)expression);
+                        return VisitSelect((SelectExpression)node);
                     case WiqlExpressionType.Where:
-                        return VisitWhere((WhereExpression)expression);
+                        return VisitWhere((WhereExpression)node);
                     case WiqlExpressionType.In:
-                        return VisitIn((InExpression)expression);
+                        return VisitIn((InExpression)node);
                     case WiqlExpressionType.Under:
-                        return VisitUnder((UnderExpression)expression);
+                        return VisitUnder((UnderExpression)node);
                     case WiqlExpressionType.Order:
-                        return VisitOrder((OrderExpression)expression);
+                        return VisitOrder((OrderExpression)node);
                     case WiqlExpressionType.AsOf:
-                        return VisitAsOf((AsOfExpression)expression);
+                        return VisitAsOf((AsOfExpression)node);
                     case WiqlExpressionType.Contains:
-                        return VisitContains((ContainsExpression)expression);
+                        return VisitContains((ContainsExpression)node);
                     case WiqlExpressionType.Indexer:
-                        return VisitIndexer((IndexerExpression) expression);
+                        return VisitIndexer((IndexerExpression) node);
                     case WiqlExpressionType.WasEver:
-                        return VisitWasEver((WasEverExpression)expression);
+                        return VisitWasEver((WasEverExpression)node);
                     default:
-                        return base.Visit(expression);
+                        return base.Visit(node);
                 }
             }
 

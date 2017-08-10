@@ -59,14 +59,14 @@ namespace Microsoft.Qwiq.Mapper
         /// <summary>
         /// Maps the specified target work item type.
         /// </summary>
-        /// <param name="targeWorkItemType">Type of the targe work item.</param>
+        /// <param name="targetWorkItemType">Type of the targe work item.</param>
         /// <param name="workItemMappings">The work item mappings.</param>
         /// <param name="workItemMapper">The work item mapper.</param>
-        public override void Map(Type targeWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
         {
             if (!workItemMappings.Any()) return;
 
-            var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targeWorkItemType, _inspector);
+            var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targetWorkItemType, _inspector);
             if (!validIdentityProperties.Any()) return;
 
             var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workItemMappings.Keys, validIdentityProperties.Keys);
@@ -83,7 +83,7 @@ namespace Microsoft.Qwiq.Mapper
 
                     foreach (var targetProperty in targetProperties)
                     {
-                        AssignFieldValue(targeWorkItemType, workItem.WorkItem, targetObject, targetProperty,
+                        AssignFieldValue(targetWorkItemType, workItem.WorkItem, targetObject, targetProperty,
                             sourceField.Name, true, sourceField.Value, mappedValue);
                     }
                 }

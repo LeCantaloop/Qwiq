@@ -92,12 +92,6 @@ namespace Microsoft.Qwiq
 
         public virtual bool IsDirty => throw new NotSupportedException();
 
-        public virtual string Keywords
-        {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
-        }
-
         public virtual ICollection<ILink> Links => throw new NotSupportedException();
 
         public new virtual int RelatedLinkCount => base.RelatedLinkCount.GetValueOrDefault(0);

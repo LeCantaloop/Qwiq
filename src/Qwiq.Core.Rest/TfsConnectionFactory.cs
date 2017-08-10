@@ -1,7 +1,6 @@
-using System;
-
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
+using System;
 
 namespace Microsoft.Qwiq.Client.Rest
 {
@@ -20,8 +19,6 @@ namespace Microsoft.Qwiq.Client.Rest
             tfsServer.Settings.BypassProxyOnLocal = true;
             tfsServer.Settings.CompressionEnabled = true;
 
-
-
             tfsServer.ConnectAsync(VssConnectMode.Automatic).GetAwaiter().GetResult();
             if (!tfsServer.HasAuthenticated) throw new InvalidOperationException("Could not connect.");
             return tfsServer.AsProxy();
@@ -29,7 +26,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-                // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly TfsConnectionFactory Instance = new TfsConnectionFactory();

@@ -29,7 +29,7 @@ namespace Microsoft.Qwiq.Mapper
             var pr = new PropertyReflector();
             var pi = new PropertyInspector(pr);
             var attMapper = new AttributeMapperStrategy(pi);
-            var mapper = new WorkItemMapper(new IWorkItemMapperStrategy[] { attMapper });
+            var mapper = new WorkItemMapper(attMapper);
             var translator = new WiqlTranslator();
             var pe = new PartialEvaluator();
             var qr = new QueryRewriter();

@@ -58,7 +58,7 @@ namespace Microsoft.Qwiq
 
         public virtual string Path => _path.Value;
 
-        public virtual Uri Uri { get; }
+        public Uri Uri { get; }
 
         [DebuggerStepThrough]
         public bool Equals(INode other)

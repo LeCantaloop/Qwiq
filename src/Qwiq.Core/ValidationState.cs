@@ -1,11 +1,9 @@
 namespace Microsoft.Qwiq
 {
     /// <summary>
-    ///
+    /// A description of the current state of a field.
     /// </summary>
-    /// <remarks>
-    /// See <see cref="TeamFoundation.WorkItemTracking.Client.FieldStatus"/>
-    /// </remarks>
+    // See Microsoft.TeamFoundation.WorkItemTracking.Client.FieldStatus
     public enum ValidationState
     {
         Valid = 0,

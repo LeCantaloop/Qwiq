@@ -57,9 +57,20 @@ namespace Microsoft.Qwiq.Mapper
             }
         };
 
+        protected WorkItemMapper CreateNoExceptionMapper()
+        {
+            var propertyInspector = new PropertyInspector(new PropertyReflector());
+            var mappingStrategies = new IWorkItemMapperStrategy[]
+            {
+                new NoExceptionAttributeMapperStrategy(propertyInspector),
+                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+            };
+            return new WorkItemMapper(mappingStrategies);
+        }
+
         protected IWorkItemStore WorkItemStore;
 
-        private IWorkItemMapper _workItemMapper;
+        protected IWorkItemMapper WorkItemMapper;
 
         protected IEnumerable<IWorkItem> SourceWorkItems;
 
@@ -73,12 +84,12 @@ namespace Microsoft.Qwiq.Mapper
                                             new AttributeMapperStrategy(propertyInspector),
                                             new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
                                         };
-            _workItemMapper = new WorkItemMapper(mappingStrategies);
+            WorkItemMapper = new WorkItemMapper(mappingStrategies);
         }
 
         public override void When()
         {
-            Actual = _workItemMapper.Create<T>(SourceWorkItems).SingleOrDefault();
+            Actual = WorkItemMapper.Create<T>(SourceWorkItems).SingleOrDefault();
         }
 
         public override void Cleanup()
@@ -86,6 +97,8 @@ namespace Microsoft.Qwiq.Mapper
             WorkItemStore?.Dispose();
         }
     }
+
+
 
     [TestClass]
     public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion : WorkItemMapperContext<Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion.EmptyStringModel>
@@ -111,6 +124,17 @@ namespace Microsoft.Qwiq.Mapper
 
             [FieldDefinition("EmptyStringField", true)]
             public double DoubleField { get;set;}
+        }
+    }
+
+    [TestClass]
+    public class Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion_using_NoExceptionAttributeMapper :
+        Given_a_model_with_a_field_of_type_Double_mapped_from_StringEmpty_Requiring_Conversion
+    {
+        public override void Given()
+        {
+            base.Given();
+            WorkItemMapper = CreateNoExceptionMapper();
         }
     }
 
@@ -364,14 +388,7 @@ namespace Microsoft.Qwiq.Mapper
                 var expectedVal = property.GetValue(expected);
                 var actualVal = property.GetValue(actual);
 
-                if (expectedVal is ICollection val)
-                {
-                    CollectionAssert.AreEqual(val, (ICollection)actualVal);
-                }
-                else
-                {
-                    actualVal.ShouldEqual(expectedVal);
-                }
+                actualVal.ShouldEqual(expectedVal, $"{property.Name} ({property.PropertyType.Name}) are not equal.");
             }
         }
 

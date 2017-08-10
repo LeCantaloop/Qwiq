@@ -43,7 +43,6 @@ namespace Microsoft.Qwiq.Linq
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));
             _builder = builder ?? throw new ArgumentNullException(nameof(builder));
             _expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            ;
         }
 
         Type IQueryable.ElementType => typeof(T);
