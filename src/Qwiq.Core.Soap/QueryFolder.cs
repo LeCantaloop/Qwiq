@@ -3,9 +3,9 @@ using Qwiq.Exceptions;
 
 namespace Qwiq.Client.Soap
 {
-    public class QueryFolder : Qwiq.QueryFolder
+    internal class QueryFolder : Qwiq.QueryFolder
     {
-        public QueryFolder(Microsoft.TeamFoundation.WorkItemTracking.Client.QueryFolder queryFolder)
+        internal QueryFolder(Microsoft.TeamFoundation.WorkItemTracking.Client.QueryFolder queryFolder)
             : base(
                 queryFolder.Id,
                 queryFolder.Name,
