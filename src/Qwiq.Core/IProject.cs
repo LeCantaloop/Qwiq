@@ -11,5 +11,7 @@ namespace Qwiq
         IWorkItemClassificationNodeCollection<int> IterationRootNodes { get; }
 
         IWorkItemTypeCollection WorkItemTypes { get; }
+
+        IQueryFolderCollection QueryHierarchy { get; }
     }
 }

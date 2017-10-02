@@ -89,7 +89,9 @@
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />
+    <Compile Include="QueryDefinition.cs" />
     <Compile Include="QueryFactory.cs" />
+    <Compile Include="QueryFolder.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="VssConnectionAdapter.cs" />

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Qwiq.Mocks
 {
@@ -13,7 +14,8 @@ namespace Qwiq.Mocks
                    uri,
                    new Lazy<IWorkItemTypeCollection>(() => wits),
                    new Lazy<IWorkItemClassificationNodeCollection<int>>(() => areas),
-                   new Lazy<IWorkItemClassificationNodeCollection<int>>(() => iterations))
+                   new Lazy<IWorkItemClassificationNodeCollection<int>>(() => iterations),
+                   new Lazy<IQueryFolderCollection>(() => new QueryFolderCollection(Enumerable.Empty<IQueryFolder>)))
         {
         }
 
@@ -24,7 +26,8 @@ namespace Qwiq.Mocks
                 new Uri("http://localhost/projects/1"),
                 new Lazy<IWorkItemTypeCollection>(() => new MockWorkItemTypeCollection(store)),
                 new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(NodeType.Area)),
-                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(NodeType.Iteration))
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(NodeType.Iteration)),
+                new Lazy<IQueryFolderCollection>(() => new QueryFolderCollection(Enumerable.Empty<IQueryFolder>))
             )
         {
         }
