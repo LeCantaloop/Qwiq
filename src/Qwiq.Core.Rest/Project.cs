@@ -11,6 +11,9 @@ namespace Qwiq.Client.Rest
 {
     internal class Project : Qwiq.Project
     {
+        //The VSTS Rest api for shared queries only allows for expanding folder structure 2 deep, https://www.visualstudio.com/en-us/docs/integrate/api/wit/queries
+        private const int MaxQueryFolderExpansionDepth = 2;
+
         internal Project([NotNull] TeamProjectReference project, [NotNull] WorkItemStore store)
             : base(
                 project.Id,
@@ -45,14 +48,14 @@ namespace Qwiq.Client.Rest
                         {
                             try
                             {
-                                return store.NativeWorkItemStore.Value.GetQueryAsync(project.Id, path, QueryExpand.Wiql, 2).Result;
+                                return store.NativeWorkItemStore.Value.GetQueryAsync(project.Id, path, QueryExpand.Wiql, MaxQueryFolderExpansionDepth).Result;
                             }
                             catch(VssServiceResponseException ex){
                                 throw new InvalidOperationException($"An error occured while trying to expand the saved query folder {path}. See inner exception for details.", ex);
                             }
                         }
 
-                        var initialFolders = store.NativeWorkItemStore.Value.GetQueriesAsync(project.Id, QueryExpand.Wiql, 2);
+                        var initialFolders = store.NativeWorkItemStore.Value.GetQueriesAsync(project.Id, QueryExpand.Wiql, MaxQueryFolderExpansionDepth);
                         return initialFolders.Result.Select(qf => new QueryFolder(qf, FolderExpansionFunc));
                     });
                 })
