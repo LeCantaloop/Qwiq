@@ -51,7 +51,7 @@ namespace Qwiq.Client.Rest
                                 return store.NativeWorkItemStore.Value.GetQueryAsync(project.Id, path, QueryExpand.Wiql, MaxQueryFolderExpansionDepth).Result;
                             }
                             catch(VssServiceResponseException ex){
-                                throw new InvalidOperationException($"An error occured while trying to expand the saved query folder {path}. See inner exception for details.", ex);
+                                throw new InvalidOperationException($"An error occured while trying to expand the saved query folder {path}. If there is '+' in your folder path see, https://developercommunity.visualstudio.com/content/problem/123660/when-a-saved-query-folder-contains-a-character-it.html, otherwise see inner exception for details.", ex);
                             }
                         }
 
