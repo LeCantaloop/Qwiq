@@ -1,16 +1,27 @@
 using System;
 using System.Globalization;
 
+using JetBrains.Annotations;
+
 namespace Qwiq
 {
     public class QueryFolder : IQueryFolder
     {
-        public QueryFolder(Guid id, string name, IQueryFolderCollection subFolders, IQueryDefinitionCollection queries)
+        protected QueryFolder(Guid id, [NotNull] string name, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(name));
+            }
+
             Id = id;
             Name = name;
-            SubFolders = subFolders;
-            SavedQueries = queries;
+            SubFolders = subFolders ?? throw new ArgumentNullException(nameof(subFolders));
+            SavedQueries = queries ?? throw new ArgumentNullException(nameof(queries));
         }
 
         public Guid Id { get; }
