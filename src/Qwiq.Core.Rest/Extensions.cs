@@ -42,11 +42,13 @@ namespace Qwiq.Client.Rest
                        : ExceptionHandlingDynamicProxyFactory.Create<IInternalTeamProjectCollection>(new VssConnectionAdapter(tfsNative));
         }
 
+        [Pure]
         internal static bool IsFolder([NotNull] this QueryHierarchyItem item)
         {
             return (item.IsFolder != null) && item.IsFolder.Value;
         }
 
+        [Pure]
         internal static bool IsExpanded([NotNull] this QueryHierarchyItem item)
         {
             return item.HasChildren.HasValue && item.HasChildren.Value && (item.Children != null);
