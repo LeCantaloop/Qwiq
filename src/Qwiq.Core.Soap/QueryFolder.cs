@@ -13,7 +13,8 @@ namespace Qwiq.Client.Soap
                 {
                     return queryFolder.OfType<Microsoft.TeamFoundation.WorkItemTracking.Client.QueryFolder>()
                         .Select(qf => ExceptionHandlingDynamicProxyFactory.Create<IQueryFolder>(new QueryFolder(qf)));
-                }), new QueryDefinitionCollection(() =>
+                }),
+                new QueryDefinitionCollection(() =>
                 {
                     return queryFolder.OfType<Microsoft.TeamFoundation.WorkItemTracking.Client.QueryDefinition>()
                         .Select(qd => ExceptionHandlingDynamicProxyFactory.Create<IQueryDefinition>(new QueryDefinition(qd)));

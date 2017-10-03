@@ -44,14 +44,14 @@ namespace Qwiq.Client.Rest
                     return new QueryFolderCollection(() =>
                     {
                         //BUGBUG: There is a bug in the GetQueryAsync in vsts where if a folder contains a '+' character it will return 404, even if the folder exists see here: https://developercommunity.visualstudio.com/content/problem/123660/when-a-saved-query-folder-contains-a-character-it.html
-                        QueryHierarchyItem FolderExpansionFunc(string path)
+                        QueryHierarchyItem FolderExpansionFunc(QueryHierarchyItem item)
                         {
                             try
                             {
-                                return store.NativeWorkItemStore.Value.GetQueryAsync(project.Id, path, QueryExpand.Wiql, MaxQueryFolderExpansionDepth).Result;
+                                return store.NativeWorkItemStore.Value.GetQueryAsync(project.Id, item.Path, QueryExpand.Wiql, MaxQueryFolderExpansionDepth).Result;
                             }
                             catch(VssServiceResponseException ex){
-                                throw new InvalidOperationException($"An error occured while trying to expand the saved query folder {path}. If there is '+' in your folder path see, https://developercommunity.visualstudio.com/content/problem/123660/when-a-saved-query-folder-contains-a-character-it.html, otherwise see inner exception for details.", ex);
+                                throw new InvalidOperationException($"An error occured while trying to expand the saved query folder {item.Path}. If there is '+' in your folder path see, https://developercommunity.visualstudio.com/content/problem/123660/when-a-saved-query-folder-contains-a-character-it.html, otherwise see inner exception for details.", ex);
                             }
                         }
 
