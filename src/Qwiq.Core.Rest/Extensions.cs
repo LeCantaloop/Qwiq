@@ -44,12 +44,12 @@ namespace Qwiq.Client.Rest
 
         internal static bool IsFolder([NotNull] this QueryHierarchyItem item)
         {
-            return item.IsFolder != null && item.IsFolder.Value;
+            return (item.IsFolder != null) && item.IsFolder.Value;
         }
 
         internal static bool IsExpanded([NotNull] this QueryHierarchyItem item)
         {
-            return item.HasChildren.HasValue && item.HasChildren.Value && item.Children != null;
+            return item.HasChildren.HasValue && item.HasChildren.Value && (item.Children != null);
         }
     }
 }
