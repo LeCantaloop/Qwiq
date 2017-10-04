@@ -16,7 +16,7 @@ namespace Qwiq.Client.Rest
                     return
                         queryFolder
                             .Children?
-                            .Where(q => q != null && q.IsFolder())
+                            .Where(q => q.IsFolder())
                             .Select(q => !q.IsExpanded() ? folderExpansionFunc(q) : q)
                             .Select(q => new QueryFolder(q, folderExpansionFunc))
                         ?? Enumerable.Empty<IQueryFolder>();
@@ -26,7 +26,7 @@ namespace Qwiq.Client.Rest
                     return
                         queryFolder
                             .Children?
-                            .Where(q => q != null && !q.IsFolder())
+                            .Where(q => (q != null) && !q.IsFolder())
                             .Select(q => new QueryDefinition(q))
                         ?? Enumerable.Empty<IQueryDefinition>();
                 }))
