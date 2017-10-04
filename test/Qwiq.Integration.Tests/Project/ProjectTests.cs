@@ -75,12 +75,16 @@ namespace Qwiq.Project
         [TestCategory("REST")]
         public void Each_project_contains_the_same_saved_QueryHierarchy()
         {
-            var restHierarchy = RestProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"];
-            var soapHierarchy = SoapProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"];
+            var restHierarchy = TimedAction(() => RestProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"], "REST", "Get Rest Hierarchy");
+            var soapHierarchy = TimedAction(() => SoapProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"], "SOAP", "Get Soap Hierarchy");
+
+            var restHashCode = TimedAction(() => restHierarchy.GetHashCode(), "REST", "Get Rest Hierarchy HashCode");
+            var soapHashCode = TimedAction(() => soapHierarchy.GetHashCode(), "SOAP", "Get Soap Hierarchy HashCode");
+
             restHierarchy.ShouldEqual(soapHierarchy);
             restHierarchy.SubFolders.ShouldContainOnly(soapHierarchy.SubFolders);
             restHierarchy.SavedQueries.ShouldContainOnly(soapHierarchy.SavedQueries);
-            restHierarchy.GetHashCode().ShouldEqual(soapHierarchy.GetHashCode());
+            restHashCode.ShouldEqual(soapHashCode);
         }
 
         [TestMethod]
