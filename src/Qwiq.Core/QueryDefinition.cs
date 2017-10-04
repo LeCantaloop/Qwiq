@@ -1,11 +1,12 @@
 using System;
 using System.Globalization;
+using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class QueryDefinition : IQueryDefinition
     {
-        public QueryDefinition(Guid id, [NotNull] string name, [NotNull] string queryText)
+        public QueryDefinition(Guid id, [NotNull] string name, [NotNull] string wiql)
         {
             if (id == Guid.Empty)
             {
@@ -24,12 +25,12 @@ namespace Qwiq
 
             Id = id;
             Name = name;
-            QueryText = queryText;
+            Wiql = wiql;
         }
 
         public Guid Id { get; }
         public string Name { get; }
-        public string QueryText { get; }
+        public string Wiql { get; }
 
         public override bool Equals(object obj)
         {
