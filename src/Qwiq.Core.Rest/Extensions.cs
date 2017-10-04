@@ -43,15 +43,17 @@ namespace Qwiq.Client.Rest
         }
 
         [Pure]
-        internal static bool IsFolder([NotNull] this QueryHierarchyItem item)
+        [ContractAnnotation("null => false")]
+        internal static bool IsFolder([CanBeNull] this QueryHierarchyItem item)
         {
-            return (item.IsFolder != null) && item.IsFolder.Value;
+            return (item?.IsFolder != null) && item.IsFolder.Value;
         }
 
         [Pure]
-        internal static bool IsExpanded([NotNull] this QueryHierarchyItem item)
+        [ContractAnnotation("null => false")]
+        internal static bool IsExpanded([CanBeNull] this QueryHierarchyItem item)
         {
-            return item.HasChildren.HasValue && item.HasChildren.Value && (item.Children != null);
+            return (item?.HasChildren != null) && item.HasChildren.Value && (item.Children != null);
         }
     }
 }
