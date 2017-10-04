@@ -5,14 +5,15 @@ using JetBrains.Annotations;
 
 namespace Qwiq
 {
-    public class QueryFolder : IQueryFolder
+    public abstract class QueryFolder : IQueryFolder
     {
-        protected QueryFolder(Guid id, [NotNull] string name, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
+        internal QueryFolder(Guid id, [NotNull] string name, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
         {
             if (id == Guid.Empty)
             {
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
+
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("Value cannot be null or empty.", nameof(name));

@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 
 namespace Qwiq
 {
-    public class QueryDefinition : IQueryDefinition
+    public abstract class QueryDefinition : IQueryDefinition
     {
-        public QueryDefinition(Guid id, [NotNull] string name, [NotNull] string wiql)
+        internal QueryDefinition(Guid id, [NotNull] string name, [NotNull] string wiql)
         {
             if (id == Guid.Empty)
             {
