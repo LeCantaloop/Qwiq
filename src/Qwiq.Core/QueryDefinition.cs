@@ -5,8 +5,23 @@ namespace Qwiq
 {
     public class QueryDefinition : IQueryDefinition
     {
-        public QueryDefinition(Guid id, string name, string queryText)
+        public QueryDefinition(Guid id, [NotNull] string name, [NotNull] string queryText)
         {
+            if (id == Guid.Empty)
+            {
+                throw new ArgumentOutOfRangeException(nameof(id));
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(name));
+            }
+
+            if (string.IsNullOrEmpty(wiql))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(wiql));
+            }
+
             Id = id;
             Name = name;
             QueryText = queryText;
