@@ -6,7 +6,7 @@ namespace Qwiq
 {
     public abstract class QueryDefinition : IQueryDefinition
     {
-        internal QueryDefinition(Guid id, [NotNull] string name, [NotNull] string wiql)
+        internal QueryDefinition(Guid id, [NotNull] string name, [NotNull] string wiql, [NotNull] string path)
         {
             if (id == Guid.Empty)
             {
@@ -23,14 +23,21 @@ namespace Qwiq
                 throw new ArgumentException("Value cannot be null or empty.", nameof(wiql));
             }
 
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(path));
+            }
+
             Id = id;
             Name = name;
             Wiql = wiql;
+            Path = path;
         }
 
         public Guid Id { get; }
         public string Name { get; }
         public string Wiql { get; }
+        public string Path { get; }
 
         public override bool Equals(object obj)
         {

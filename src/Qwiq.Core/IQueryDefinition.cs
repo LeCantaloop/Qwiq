@@ -10,5 +10,7 @@ namespace Qwiq
         string Name { get; }
         [NotNull]
         string Wiql { get; }
+        [NotNull]
+        string Path { get; }
     }
 }

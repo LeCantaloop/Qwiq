@@ -10,6 +10,7 @@ namespace Qwiq.Client.Soap
             : base(
                 queryFolder.Id,
                 queryFolder.Name,
+                queryFolder.Path,
                 new QueryFolderCollection(() =>
                 {
                     return queryFolder.OfType<Microsoft.TeamFoundation.WorkItemTracking.Client.QueryFolder>()

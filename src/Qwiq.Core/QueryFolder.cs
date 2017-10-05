@@ -7,7 +7,7 @@ namespace Qwiq
 {
     public abstract class QueryFolder : IQueryFolder
     {
-        internal QueryFolder(Guid id, [NotNull] string name, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
+        internal QueryFolder(Guid id, [NotNull] string name, [NotNull] string path, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
         {
             if (id == Guid.Empty)
             {
@@ -19,14 +19,21 @@ namespace Qwiq
                 throw new ArgumentException("Value cannot be null or empty.", nameof(name));
             }
 
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Value cannot be null or empty.", nameof(path));
+            }
+
             Id = id;
             Name = name;
+            Path = path;
             SubFolders = subFolders ?? throw new ArgumentNullException(nameof(subFolders));
             SavedQueries = queries ?? throw new ArgumentNullException(nameof(queries));
         }
 
         public Guid Id { get; }
         public string Name { get; }
+        public string Path { get; set; }
 
         public IQueryFolderCollection SubFolders { get; }
 
