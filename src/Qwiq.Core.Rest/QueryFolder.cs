@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
@@ -7,7 +6,7 @@ namespace Qwiq.Client.Rest
 {
     internal class QueryFolder : Qwiq.QueryFolder
     {
-        internal QueryFolder([NotNull] QueryHierarchyItem queryFolder, [NotNull] Func<QueryHierarchyItem, QueryHierarchyItem> folderExpansionFunc)
+        internal QueryFolder([NotNull] QueryHierarchyItem queryFolder, [NotNull] IQueryHierarchyItemRepository queryItemExpander)
             : base(
                 queryFolder.Id,
                 queryFolder.Name,
@@ -17,8 +16,8 @@ namespace Qwiq.Client.Rest
                         queryFolder
                             .Children?
                             .Where(q => q.IsFolder())
-                            .Select(q => !q.IsExpanded() ? folderExpansionFunc(q) : q)
-                            .Select(q => new QueryFolder(q, folderExpansionFunc))
+                            .Select(queryItemExpander.EnsureExpanded)
+                            .Select(q => new QueryFolder(q, queryItemExpander))
                         ?? Enumerable.Empty<IQueryFolder>();
                 }),
                 new QueryDefinitionCollection(() =>
