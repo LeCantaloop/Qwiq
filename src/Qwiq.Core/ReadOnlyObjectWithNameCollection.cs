@@ -184,14 +184,24 @@ namespace Microsoft.Qwiq
 
         protected void AddByName(string name, int index)
         {
-            try
+
+            var exists = _mapByName.ContainsKey(name);
+
+            Debug.Assert(!exists, $"An item with the name {name} already exists.");
+
+            if (!exists)
             {
-                _mapByName.Add(name, index);
+                try
+                {
+                    _mapByName.Add(name, index);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException($"An item with the name {name} already exists.", e);
+                }
             }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException($"An item with the name {name} already exists.", e);
-            }
+
+        
         }
 
         protected void Ensure()
