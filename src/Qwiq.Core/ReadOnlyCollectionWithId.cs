@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
 namespace Microsoft.Qwiq
@@ -93,13 +94,20 @@ namespace Microsoft.Qwiq
 
         protected void AddById(TId id, int index)
         {
-            try
+            var exists = _mapById.ContainsKey(id);
+
+            Debug.Assert(!exists, $"An item with the ID {id} already exists.");
+
+            if (!exists)
             {
-                _mapById.Add(id, index);
-            }
-            catch (ArgumentException e)
-            {
-                throw new ArgumentException($"An item with the ID {id} already exists.", e);
+                try
+                {
+                    _mapById.Add(id, index);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new ArgumentException($"An item with the ID {id} already exists.", e);
+                }
             }
         }
     }
