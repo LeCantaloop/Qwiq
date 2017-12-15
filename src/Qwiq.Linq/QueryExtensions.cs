@@ -23,6 +23,16 @@ namespace Microsoft.Qwiq.Linq
         {
             return true;
         }
+
+        public static bool InGroup<T>(this T _, T __)
+        {
+            return true;
+        }
+
+        public static bool NotInGroup<T>(this T _, T __)
+        {
+            return true;
+        }
     }
 }
 

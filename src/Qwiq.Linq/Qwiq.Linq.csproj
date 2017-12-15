@@ -62,10 +62,12 @@
     <Compile Include="WiqlExpressions\ContainsExpression.cs" />
     <Compile Include="WiqlExpressions\IndexerExpression.cs" />
     <Compile Include="WiqlExpressions\InExpression.cs" />
+    <Compile Include="WiqlExpressions\NotInGroupExpression.cs" />
     <Compile Include="WiqlExpressions\OrderExpression.cs" />
     <Compile Include="WiqlExpressions\OrderOptions.cs" />
     <Compile Include="WiqlExpressions\SelectExpression.cs" />
     <Compile Include="WiqlExpressions\UnderExpression.cs" />
+    <Compile Include="WiqlExpressions\InGroupExpression.cs" />
     <Compile Include="WiqlExpressions\WasEverExpression.cs" />
     <Compile Include="WiqlExpressions\WhereExpression.cs" />
     <Compile Include="WiqlExpressions\WiqlExpressionType.cs" />

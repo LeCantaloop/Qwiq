@@ -401,6 +401,42 @@ namespace Microsoft.Qwiq.Linq
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
+    public class when_a_where_clause_uses_the_ingroup_function : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] IN GROUP 'o_alias'))";
+            Actual = Query.Where(item => item.AssignedTo.InGroup("o_alias")).ToString();
+        }
+
+        [TestMethod]
+        public void the_InGroup_is_translated_to_an_InGroup_operator()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
+    public class when_a_where_clause_uses_the_notingroup_function : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Assigned To] NOT IN GROUP 'o_alias'))";
+            Actual = Query.Where(item => item.AssignedTo.NotInGroup("o_alias")).ToString();
+        }
+
+        [TestMethod]
+        public void the_NotInGroup_is_translated_to_an_InGroup_operator()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
+
+    [TestClass]
+    // ReSharper disable once InconsistentNaming
     public class when_a_where_clause_uses_the_Contains_string_function : WiqlQueryBuilderContextSpecification
     {
         public override void When()
