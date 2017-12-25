@@ -105,6 +105,10 @@ namespace Microsoft.Qwiq.Linq
                         return VisitIndexer((IndexerExpression) node);
                     case WiqlExpressionType.WasEver:
                         return VisitWasEver((WasEverExpression)node);
+                    case WiqlExpressionType.InGroup:
+                        return VisitInGroup((InGroupExpression)node);
+                    case WiqlExpressionType.NotInGroup:
+                        return VisitNotInGroup((NotInGroupExpression)node);
                     default:
                         return base.Visit(node);
                 }
@@ -169,6 +173,32 @@ namespace Microsoft.Qwiq.Linq
                 Visit(expression.Subject);
 
                 _expressionInProgress.Enqueue(new StringFragment(" EVER "));
+
+                Visit(expression.Target);
+                _expressionInProgress.Enqueue(new GroupEndFragment());
+
+                return expression;
+            }
+
+            protected virtual Expression VisitInGroup(InGroupExpression expression)
+            {
+                _expressionInProgress.Enqueue(new GroupStartFragment());
+                Visit(expression.Subject);
+
+                _expressionInProgress.Enqueue(new StringFragment(" IN GROUP "));
+
+                Visit(expression.Target);
+                _expressionInProgress.Enqueue(new GroupEndFragment());
+
+                return expression;
+            }
+
+            protected virtual Expression VisitNotInGroup(NotInGroupExpression expression)
+            {
+                _expressionInProgress.Enqueue(new GroupStartFragment());
+                Visit(expression.Subject);
+
+                _expressionInProgress.Enqueue(new StringFragment(" NOT IN GROUP "));
 
                 Visit(expression.Target);
                 _expressionInProgress.Enqueue(new GroupEndFragment());

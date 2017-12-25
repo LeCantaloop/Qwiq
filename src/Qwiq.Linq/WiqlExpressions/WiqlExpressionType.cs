@@ -10,7 +10,9 @@ namespace Microsoft.Qwiq.Linq.WiqlExpressions
         Contains,
         Select,
         Indexer,
-        WasEver
+        WasEver,
+        InGroup,
+        NotInGroup
     }
 }
 
