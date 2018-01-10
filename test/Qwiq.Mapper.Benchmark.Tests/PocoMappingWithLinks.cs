@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
             private WorkItemMapper _mapper;
             private IEnumerable<IWorkItem> _items;
 
-            [Setup]
+            [GlobalSetup]
             public void SetupData()
             {
                 var wis = new MockWorkItemStore();
