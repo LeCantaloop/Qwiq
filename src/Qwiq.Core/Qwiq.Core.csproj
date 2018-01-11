@@ -145,6 +145,7 @@
     <Compile Include="IRegisteredLinkType.cs" />
     <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
+    <Compile Include="IResourceReference.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />

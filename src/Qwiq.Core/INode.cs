@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface INode : IIdentifiable<int>
+    public interface INode : IIdentifiable<int>, IResourceReference
     {
         INodeCollection ChildNodes { get; }
 
@@ -15,6 +15,5 @@ namespace Microsoft.Qwiq
         string Path { get; }
 
         NodeType Type { get; }
-        Uri Uri { get; }
     }
 }

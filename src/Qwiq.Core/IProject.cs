@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IProject : IIdentifiable<Guid>
+    public interface IProject : IIdentifiable<Guid>, IResourceReference
     {
         INodeCollection AreaRootNodes { get; }
 
@@ -11,8 +11,6 @@ namespace Microsoft.Qwiq
         INodeCollection IterationRootNodes { get; }
 
         string Name { get; }
-
-        Uri Uri { get; }
 
         IWorkItemTypeCollection WorkItemTypes { get; }
     }
