@@ -8,10 +8,6 @@ namespace Microsoft.Qwiq
 
         bool HasChildNodes { get; }
 
-        bool IsAreaNode { get; }
-
-        bool IsIterationNode { get; }
-
         string Name { get; }
 
         INode ParentNode { get; }

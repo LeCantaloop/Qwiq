@@ -27,8 +27,6 @@ namespace Microsoft.Qwiq
 
             Type = type;
             Id = id;
-            IsAreaNode = type == NodeType.Area;
-            IsIterationNode = type == NodeType.Iteration;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Uri = uri;
 
@@ -47,10 +45,6 @@ namespace Microsoft.Qwiq
         public virtual bool HasChildNodes => ChildNodes.Any();
 
         public int Id { get; }
-
-        public bool IsAreaNode { get; }
-
-        public bool IsIterationNode { get; }
 
         public string Name { get; }
 

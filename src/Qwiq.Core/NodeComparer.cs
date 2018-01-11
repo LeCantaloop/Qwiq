@@ -19,8 +19,6 @@ namespace Microsoft.Qwiq
             if (ReferenceEquals(y, null)) return false;
 
             return x.Id == y.Id
-                && x.IsAreaNode == y.IsAreaNode
-                && x.IsIterationNode == y.IsIterationNode
                 && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase);
         }
@@ -34,8 +32,6 @@ namespace Microsoft.Qwiq
                 var hash = 27;
 
                 hash = (hash * 13) ^ obj.Id;
-                hash = (hash * 13) ^ obj.IsAreaNode.GetHashCode();
-                hash = (hash * 13) ^ obj.IsIterationNode.GetHashCode();
                 hash = (hash * 13) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
                 hash = (hash * 13) ^ (obj.Path != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Path) : 0);
 
