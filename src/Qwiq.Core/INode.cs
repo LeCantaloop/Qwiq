@@ -18,6 +18,7 @@ namespace Microsoft.Qwiq
 
         string Path { get; }
 
+        NodeType Type { get; }
         Uri Uri { get; }
     }
 }

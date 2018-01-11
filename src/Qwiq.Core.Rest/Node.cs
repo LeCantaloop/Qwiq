@@ -18,8 +18,7 @@ namespace Microsoft.Qwiq.Client.Rest
         internal Node([NotNull] WorkItemClassificationNode node, [CanBeNull] INode parentNode)
             : base(
                    node.Id,
-                   node.StructureType == TreeNodeStructureType.Area,
-                   node.StructureType == TreeNodeStructureType.Iteration,
+                   node.StructureType == TreeNodeStructureType.Area ? NodeType.Area : node.StructureType == TreeNodeStructureType.Iteration ? NodeType.Iteration : NodeType.None,
                    node.Name,
                    new Uri(node.Url),
                    () => parentNode,

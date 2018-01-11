@@ -10,8 +10,7 @@ namespace Microsoft.Qwiq.Client.Soap
         internal Node(Tfs.Node node)
             : base(
                    node.Id,
-                   node.IsAreaNode,
-                   node.IsIterationNode,
+                   node.IsAreaNode ? NodeType.Area : node.IsIterationNode ? NodeType.Iteration : NodeType.None,
                    node.Name,
                    node.Uri,
                    () => node.ParentNode != null ? new Node(node.ParentNode) : null,

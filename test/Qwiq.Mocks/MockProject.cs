@@ -30,17 +30,16 @@ namespace Microsoft.Qwiq.Mocks
         }
 
         public MockProject(IWorkItemStore store)
-            :this(store, new Node(1, false, false, ProjectName, new Uri("http://localhost/projects/1")))
+            :this(store, new Node(1, NodeType.None, ProjectName, new Uri("http://localhost/projects/1")))
         {
         }
 
         private static INodeCollection CreateNodes(bool area)
         {
-            var root = new Node(1, area, !area, "Root", new Uri("http://localhost/nodes/1"));
+            var root = new Node(1, area ? NodeType.Area : NodeType.Iteration, "Root", new Uri("http://localhost/nodes/1"));
             new Node(
                      2,
-                     area,
-                     !area,
+                     area ? NodeType.Area : NodeType.Iteration,
                      "L1",
                      new Uri("http://localhost/nodes/2"),
                      () => root,
@@ -48,8 +47,7 @@ namespace Microsoft.Qwiq.Mocks
                               {
                                   new Node(
                                            3,
-                                           area,
-                                           !area,
+                                           area ? NodeType.Area : NodeType.Iteration,
                                            "L2",
                                            new Uri("http://localhost/nodes/3"),
                                            () => n,

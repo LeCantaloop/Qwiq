@@ -15,8 +15,7 @@ namespace Microsoft.Qwiq
 
         internal Node(
             int id,
-            bool isAreaNode,
-            bool isIterationNode,
+            NodeType type,
             string name,
             Uri uri,
             Func<INode> parentFactory,
@@ -26,9 +25,10 @@ namespace Microsoft.Qwiq
             if (parentFactory == null) throw new ArgumentNullException(nameof(parentFactory));
             if (childrenFactory == null) throw new ArgumentNullException(nameof(childrenFactory));
 
+            Type = type;
             Id = id;
-            IsAreaNode = isAreaNode;
-            IsIterationNode = isIterationNode;
+            IsAreaNode = type == NodeType.Area;
+            IsIterationNode = type == NodeType.Iteration;
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Uri = uri;
 
@@ -37,8 +37,8 @@ namespace Microsoft.Qwiq
             _path = new Lazy<string>(() => ((ParentNode?.Path ?? string.Empty) + "\\" + Name).Trim('\\'));
         }
 
-        internal Node(int id, bool isAreaNode, bool isIterationNode, string name, Uri uri)
-            : this(id, isAreaNode, isIterationNode, name, uri, () => null, n => Enumerable.Empty<INode>())
+        internal Node(int id, NodeType type, string name, Uri uri)
+            : this(id, type, name, uri, () => null, n => Enumerable.Empty<INode>())
         {
         }
 
@@ -57,6 +57,7 @@ namespace Microsoft.Qwiq
         public virtual INode ParentNode => _parent.Value;
 
         public virtual string Path => _path.Value;
+        public NodeType Type { get; }
 
         public Uri Uri { get; }
 

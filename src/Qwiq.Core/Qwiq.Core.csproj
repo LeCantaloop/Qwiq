@@ -182,6 +182,7 @@
     <Compile Include="Node.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeComparer.cs" />
+    <Compile Include="NodeType.cs" />
     <Compile Include="NullableIdentifiableComparer.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCollection.cs" />
