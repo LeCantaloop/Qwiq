@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
             private IWorkItemMapperStrategy _strategy;
             private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings;
 
-            [Setup]
+            [GlobalSetup]
             public void SetupData()
             {
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
