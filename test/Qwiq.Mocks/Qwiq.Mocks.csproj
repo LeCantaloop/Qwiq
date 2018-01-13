@@ -73,6 +73,7 @@
     <Compile Include="PropertyValueGenerator.cs" />
     <Compile Include="Random.Extensions.cs" />
     <Compile Include="Randomizer.cs" />
+    <Compile Include="WorkItemClassificationNodeCollectionBuilder.cs" />
     <Compile Include="WorkItemGenerator.cs" />
     <Compile Include="WorkItemLinkGenerator.cs" />
     <Compile Include="WorkItemTypeDefinitions.cs" />

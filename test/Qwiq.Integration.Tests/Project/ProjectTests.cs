@@ -25,10 +25,36 @@ namespace Microsoft.Qwiq.Project
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
+        public void Each_project_contains_the_same_materialized_Area_paths()
+        {
+            var r = TimedAction(() => RestProject.AreaRootNodes.ToList(), "REST", "AreaRootNodes.ToList()");
+            var s = TimedAction(() => SoapProject.AreaRootNodes.ToList(), "SOAP", "AreaRootNodes.ToList()");
+
+            r.ShouldContainOnly(s, WorkItemClassificationNodeComparer<int>.Default);
+            // NOTE: Hashcodes will be different as they use the List's functionality
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
+        public void Each_project_contains_the_same_materialized_Iteration_paths()
+        {
+            var r = TimedAction(() => RestProject.IterationRootNodes.ToList(), "REST", "IterationRootNodes.ToList()");
+            var s = TimedAction(() => SoapProject.IterationRootNodes.ToList(), "SOAP", "IterationRootNodes.ToList()");
+
+            r.ShouldContainOnly(s, WorkItemClassificationNodeComparer<int>.Default);
+            // NOTE: Hashcodes will be different as they use the List's functionality
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void Each_project_contains_the_same_Area_paths()
         {
-            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, NodeComparer.Default);
-            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, Comparer.NodeCollection);
+            RestProject.AreaRootNodes.ShouldContainOnly(SoapProject.AreaRootNodes, WorkItemClassificationNodeComparer<int>.Default);
+            RestProject.AreaRootNodes.ShouldEqual(SoapProject.AreaRootNodes, Comparer.WorkItemClassificationNodeCollection);
             RestProject.AreaRootNodes.GetHashCode().ShouldEqual(SoapProject.AreaRootNodes.GetHashCode());
         }
 
@@ -38,8 +64,8 @@ namespace Microsoft.Qwiq.Project
         [TestCategory("REST")]
         public void Each_project_contains_the_same_Iteration_paths()
         {
-            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, NodeComparer.Default);
-            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, Comparer.NodeCollection);
+            RestProject.IterationRootNodes.ShouldContainOnly(SoapProject.IterationRootNodes, WorkItemClassificationNodeComparer<int>.Default);
+            RestProject.IterationRootNodes.ShouldEqual(SoapProject.IterationRootNodes, Comparer.WorkItemClassificationNodeCollection);
             RestProject.IterationRootNodes.GetHashCode().ShouldEqual(SoapProject.IterationRootNodes.GetHashCode());
         }
 

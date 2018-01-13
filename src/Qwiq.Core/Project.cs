@@ -5,9 +5,9 @@ namespace Microsoft.Qwiq
 {
     public class Project : IProject, IEquatable<IProject>
     {
-        private readonly Lazy<INodeCollection> _area;
+        private readonly Lazy<IWorkItemClassificationNodeCollection<int>> _area;
 
-        private readonly Lazy<INodeCollection> _iteration;
+        private readonly Lazy<IWorkItemClassificationNodeCollection<int>> _iteration;
 
         private readonly Lazy<IWorkItemTypeCollection> _wits;
 
@@ -16,8 +16,8 @@ namespace Microsoft.Qwiq
             string name,
             Uri uri,
             Lazy<IWorkItemTypeCollection> wits,
-            Lazy<INodeCollection> area,
-            Lazy<INodeCollection> iteration)
+            Lazy<IWorkItemClassificationNodeCollection<int>> area,
+            Lazy<IWorkItemClassificationNodeCollection<int>> iteration)
         {
             Guid = guid;
             Name = name != null ? string.Intern(name) : throw new ArgumentNullException(nameof(name));
@@ -36,11 +36,11 @@ namespace Microsoft.Qwiq
             return ProjectComparer.Default.Equals(this, other);
         }
 
-        public INodeCollection AreaRootNodes => _area.Value;
+        public IWorkItemClassificationNodeCollection<int> AreaRootNodes => _area.Value;
 
         public Guid Guid { get; }
 
-        public INodeCollection IterationRootNodes => _iteration.Value;
+        public IWorkItemClassificationNodeCollection<int> IterationRootNodes => _iteration.Value;
 
         public string Name { get; }
 

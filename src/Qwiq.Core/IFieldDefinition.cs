@@ -2,10 +2,10 @@
 
 namespace Microsoft.Qwiq
 {
-    public interface IFieldDefinition : IIdentifiable<int>
+    public interface IFieldDefinition : IIdentifiable<int>, INamed
     {
         [NotNull]
-        string Name { get; }
+        new string Name { get; }
 
         [NotNull]
         string ReferenceName { get; }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Microsoft.Qwiq
@@ -17,11 +18,12 @@ namespace Microsoft.Qwiq
 
         public static IEqualityComparer<IIdentityDescriptor> IdentityDescriptor { get; } = IdentityDescriptorComparer.Default;
 
-        public static IEqualityComparer<INode> Node { get; } = NodeComparer.Default;
+        public static IEqualityComparer<IWorkItemClassificationNode<int>> WorkItemClassificationNode { get; } = WorkItemClassificationNodeComparer<int>.Default;
 
-        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<INode, int>> NodeCollection { get; } =
-            ReadOnlyCollectionWithIdComparer<INode, int>.Default;
-
+        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<IWorkItemClassificationNode<int>, int>>
+            WorkItemClassificationNodeCollection { get; } =
+            ReadOnlyCollectionWithIdComparer<IWorkItemClassificationNode<int>, int>.Default;
+        
         public static IEqualityComparer<IIdentifiable<int?>> NullableIdentity { get; } = NullableIdentifiableComparer.Default;
 
         public static IEqualityComparer<string> OrdinalIgnoreCase { get; } = StringComparer.OrdinalIgnoreCase;
