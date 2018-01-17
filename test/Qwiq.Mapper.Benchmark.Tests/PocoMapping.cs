@@ -43,7 +43,7 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
 
             private Type _type;
 
-            [Setup]
+            [GlobalSetup]
             public void SetupData()
             {
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
