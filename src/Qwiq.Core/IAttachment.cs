@@ -2,7 +2,7 @@ using System;
 
 namespace Microsoft.Qwiq
 {
-    public interface IAttachment
+    public interface IAttachment : IResourceReference
     {
         DateTime AttachedTime { get; }
         string Comment { get; set; }
@@ -12,6 +12,5 @@ namespace Microsoft.Qwiq
         DateTime LastWriteTime { get; }
         long Length { get; }
         string Name { get; }
-        Uri Uri { get; }
     }
 }

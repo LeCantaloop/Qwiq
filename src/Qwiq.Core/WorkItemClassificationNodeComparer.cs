@@ -1,31 +1,28 @@
 ﻿using System;
-
 using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq
 {
-    internal class NodeComparer : GenericComparer<INode>
+    internal class WorkItemClassificationNodeComparer<TId> : GenericComparer<IWorkItemClassificationNode<TId>>
     {
-        internal new static readonly NodeComparer Default = Nested.Instance;
+        internal static new readonly WorkItemClassificationNodeComparer<TId> Default = Nested.Instance;
 
-        private NodeComparer()
+        private WorkItemClassificationNodeComparer()
         {
         }
 
-        public override bool Equals(INode x, INode y)
+        public override bool Equals(IWorkItemClassificationNode<TId> x, IWorkItemClassificationNode<TId> y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            return x.Id == y.Id
-                && x.IsAreaNode == y.IsAreaNode
-                && x.IsIterationNode == y.IsIterationNode
-                && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase);
+            return GenericComparer<TId>.Default.Equals(x.Id, y.Id)
+                   && x.Type == y.Type
+                   && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override int GetHashCode([CanBeNull] INode obj)
+        public override int GetHashCode([CanBeNull] IWorkItemClassificationNode<TId> obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 
@@ -33,11 +30,9 @@ namespace Microsoft.Qwiq
             {
                 var hash = 27;
 
-                hash = (hash * 13) ^ obj.Id;
-                hash = (hash * 13) ^ obj.IsAreaNode.GetHashCode();
-                hash = (hash * 13) ^ obj.IsIterationNode.GetHashCode();
+                hash = (hash * 13) ^ GenericComparer<TId>.Default.GetHashCode(obj.Id);
                 hash = (hash * 13) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
-                hash = (hash * 13) ^ (obj.Path != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Path) : 0);
+                hash = (hash * 13) ^ obj.Type.GetHashCode();
 
                 return hash;
             }
@@ -46,7 +41,7 @@ namespace Microsoft.Qwiq
         private class Nested
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
-            internal static readonly NodeComparer Instance = new NodeComparer();
+            internal static readonly WorkItemClassificationNodeComparer<TId> Instance = new WorkItemClassificationNodeComparer<TId>();
 
             // ReSharper restore MemberHidesStaticFromOuterClass
 

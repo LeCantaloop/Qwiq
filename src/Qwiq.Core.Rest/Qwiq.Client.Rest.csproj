@@ -84,8 +84,8 @@
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IInternalTeamProjectCollection.cs" />
+    <Compile Include="LevelOrderEnumerator.cs" />
     <Compile Include="LinkCollection.cs" />
-    <Compile Include="Node.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="VssConnectionAdapter.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemClassificationNodeCollectionBuilder.cs" />
     <Compile Include="WorkItemLinkTypeEnd.cs" />
     <Compile Include="WorkItemStore.cs" />
     <Compile Include="WorkItemStoreConfiguration.cs" />

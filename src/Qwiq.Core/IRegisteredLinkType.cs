@@ -1,7 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public interface IRegisteredLinkType
+    public interface IRegisteredLinkType : INamed
     {
-        string Name { get; }
     }
 }

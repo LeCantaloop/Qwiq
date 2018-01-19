@@ -1,10 +1,8 @@
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemType
+    public interface IWorkItemType : INamed
     {
         string Description { get; }
-        string Name { get; }
-
         IFieldDefinitionCollection FieldDefinitions { get; }
         IWorkItem NewWorkItem();
     }

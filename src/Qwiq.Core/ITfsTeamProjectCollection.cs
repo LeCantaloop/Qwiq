@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Services.Common;
 
 namespace Microsoft.Qwiq
 {
-    public interface ITeamProjectCollection
+    public interface ITeamProjectCollection : IResourceReference
     {
         /// <summary>Gets the credentials for this project collection.</summary>
         VssCredentials AuthorizedCredentials { get; }
@@ -21,8 +21,5 @@ namespace Microsoft.Qwiq
 
         /// <summary> This is used to convert dates and times to UTC. </summary>
         TimeZone TimeZone { get; }
-
-        /// <summary>The base url for this connection</summary>
-        Uri Uri { get; }
     }
 }

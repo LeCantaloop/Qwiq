@@ -1,6 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public interface IWorkItemLinkType
+    public interface IWorkItemLinkType : INamed
     {
         /// <summary>
         ///     Link type of the link at the source work item. The <see cref="IWorkItemLinkTypeEnd.Name" /> appears when you add
