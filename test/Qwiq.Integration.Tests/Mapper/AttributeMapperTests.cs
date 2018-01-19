@@ -22,8 +22,6 @@ namespace Microsoft.Qwiq.Mapper
         {
             WorkItemStore.Configuration.DefaultFields = new[]
             {
-                //CoreFieldRefNames.TeamProject,
-                //CoreFieldRefNames.WorkItemType,
                 CoreFieldRefNames.Id,
                 CoreFieldRefNames.State
             };
@@ -38,7 +36,6 @@ namespace Microsoft.Qwiq.Mapper
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("REST")]
-        [ExpectedException(typeof(InvalidOperationException), "The fields '" + CoreFieldRefNames.TeamProject + "' and '" + CoreFieldRefNames.WorkItemType + "' are required to load the Type property.")]
         public new void The_work_items_are_mapped_to_their_model()
         {
             Bugs.ToList().Count.ShouldEqual(1);
@@ -69,7 +66,6 @@ namespace Microsoft.Qwiq.Mapper
             WorkItemStore.Configuration.DefaultFields = new[]
             {
                 CoreFieldRefNames.TeamProject,
-                //CoreFieldRefNames.WorkItemType,
                 CoreFieldRefNames.Id,
                 CoreFieldRefNames.State
             };
@@ -83,7 +79,6 @@ namespace Microsoft.Qwiq.Mapper
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("REST")]
-        [ExpectedException(typeof(InvalidOperationException), "The fields '" + CoreFieldRefNames.TeamProject + "' and '" + CoreFieldRefNames.WorkItemType + "' are required to load the Type property.")]
         public new void The_work_items_are_mapped_to_their_model()
         {
             Bugs.ToList().Count.ShouldEqual(1);

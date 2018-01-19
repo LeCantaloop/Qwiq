@@ -25,7 +25,7 @@ namespace Microsoft.Qwiq.Client.Rest
         }
 
         private FieldDefinitionCollection(List<IFieldDefinition> fieldDefinitions)
-            : base(fieldDefinitions)
+            : base(fieldDefinitions.Distinct().ToList())
         {
         }
     }

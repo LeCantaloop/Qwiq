@@ -1,20 +1,16 @@
-﻿using System;
-
-using JetBrains.Annotations;
-#pragma warning disable 618
+﻿using JetBrains.Annotations;
 
 namespace Microsoft.Qwiq.Client.Soap
 {
-    public class WorkItemLinkInfo : Qwiq.WorkItemLinkInfo
+    public class WorkItemLinkInfo : Qwiq.WorkItemLinkInfo, IIdentifiable<int>
     {
         /// <inheritdoc />
         internal WorkItemLinkInfo(int sourceId, int targetId, int linkTypeId, [CanBeNull] IWorkItemLinkTypeEnd linkTypeEnd)
             : base(sourceId, targetId, linkTypeEnd)
         {
-            LinkTypeId = linkTypeId;
+            Id = linkTypeId;
         }
 
-        [Obsolete("This property is deprecated and will be removed in a future release.")]
-        public int LinkTypeId { get; }
+        public int Id { get; }
     }
 }

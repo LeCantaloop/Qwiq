@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 using Microsoft.Qwiq.Mocks;
 using Microsoft.Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,13 +32,25 @@ namespace Microsoft.Qwiq.Identity
 
         public override void When()
         {
-#pragma warning disable 0618
-            var result = Instance.Map(Input);
-#pragma warning restore 0618
+#pragma warning disable IDE0019 // Use pattern matching
+            var stringValue = Input as string;
+            var stringArray = Input as IEnumerable<string>;
+#pragma warning restore IDE0019 // Use pattern matching
 
-            Debug.Print("Result: " + result.ToUsefulString());
+            if (stringValue != null)
+            {
+                ActualOutput = (T)Instance.Map(stringValue);
+            }
+            else if (stringArray != null)
+            {
+                ActualOutput = (T)Instance.Map(stringArray).Values;
+            }
+            else
+            {
+                ActualOutput = Input;
+            }
 
-            ActualOutput = (T)result;
+            Debug.Print("Result: " + ActualOutput.ToUsefulString());
         }
 
         [TestMethod]
@@ -79,6 +91,12 @@ namespace Microsoft.Qwiq.Identity
             Input = new[] { "alias", "other" };
             ExpectedOutput = new[] { "alias@domain", "other@domain" };
         }
+
+        public override void When()
+        {
+            ActualOutput = Instance.Map(Input).Values.Select(s => s.ToString());
+            Debug.Print("Result: " + ActualOutput.ToUsefulString());
+        }
     }
 
     [TestClass]
@@ -89,6 +107,12 @@ namespace Microsoft.Qwiq.Identity
             base.Given();
             Input = new[] { "alias", "noidentity2" };
             ExpectedOutput = new[] { "alias@domain", "noidentity2" };
+        }
+
+        public override void When()
+        {
+            ActualOutput = Instance.Map(Input).Values.Select(s => s.ToString());
+            Debug.Print("Result: " + ActualOutput.ToUsefulString());
         }
     }
 

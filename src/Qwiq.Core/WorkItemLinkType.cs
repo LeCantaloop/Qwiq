@@ -101,5 +101,7 @@ namespace Microsoft.Qwiq
         {
             return _reverse ?? (_reverse = _reverseFac.Value);
         }
+
+        public string Name => ReferenceName;
     }
 }

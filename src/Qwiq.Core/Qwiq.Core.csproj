@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\..\build\targets\common.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="AccessDeniedException.cs" />
     <Compile Include="BaseLinkType.cs" />
+    <Compile Include="WorkItemClassificationNode.cs" />
     <Compile Include="Comparer.cs" />
     <Compile Include="CoreField.cs" />
     <Compile Include="CoreFieldRefNames.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Credentials\CredentialNotification.cs" />
     <Compile Include="Credentials\CredentialsFactory.cs" />
     <Compile Include="Credentials\CredentialsNotifications.cs" />
-    <Compile Include="Credentials\TfsCredentials.cs" />
     <Compile Include="Exceptions\AggregateExceptionExploder.cs" />
     <Compile Include="Exceptions\DeniedOrNotExistException.cs" />
     <Compile Include="Exceptions\ExceptionHandlingDynamicProxy.cs" />
@@ -131,8 +131,7 @@
     <Compile Include="IIdentifiable.cs" />
     <Compile Include="IIdentityDescriptor.cs" />
     <Compile Include="ILink.cs" />
-    <Compile Include="INode.cs" />
-    <Compile Include="INodeCollection.cs" />
+    <Compile Include="INamed.cs" />
     <Compile Include="INodeInfo.cs" />
     <Compile Include="IProject.cs" />
     <Compile Include="IProjectCollection.cs" />
@@ -141,11 +140,13 @@
     <Compile Include="IQuery.cs" />
     <Compile Include="IQueryFactory.cs" />
     <Compile Include="IReadOnlyField.cs" />
+    <Compile Include="IReadOnlyObjectCollection.cs" />
     <Compile Include="IReadOnlyObjectList.cs" />
     <Compile Include="IReadOnlyObjectWithIdList.cs" />
     <Compile Include="IRegisteredLinkType.cs" />
     <Compile Include="IRegisteredLinkTypeCollection.cs" />
     <Compile Include="IRelatedLink.cs" />
+    <Compile Include="IResourceReference.cs" />
     <Compile Include="IRevision.cs" />
     <Compile Include="IRevisionInternal.cs" />
     <Compile Include="ITeamFoundationIdentity.cs" />
@@ -155,13 +156,24 @@
     <Compile Include="ITypeParser.cs" />
     <Compile Include="IWorkItem.cs" />
     <Compile Include="IWorkItem.Extensions.cs" />
+    <Compile Include="IWorkItemClassificationNode.cs" />
+    <Compile Include="IWorkItemClassificationNodeCollection.cs" />
     <Compile Include="IWorkItemCollection.cs" />
     <Compile Include="IWorkItemCommon.cs" />
     <Compile Include="IWorkItemCore.cs" />
     <Compile Include="IWorkItemLinkInfo.cs" />
+    <Compile Include="IWorkItemLinkInfo.Extensions.cs">
+      <DependentUpon>IWorkItemLinkInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkType.cs" />
+    <Compile Include="IWorkItemLinkType.Extensions.cs">
+      <DependentUpon>IWorkItemLinkType.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkTypeCollection.cs" />
     <Compile Include="IWorkItemLinkTypeEnd.cs" />
+    <Compile Include="IWorkItemLinkTypeEnd.Extensions.cs">
+      <DependentUpon>IWorkItemLinkTypeEnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="IWorkItemLinkTypeEndCollection.cs" />
     <Compile Include="IWorkItemReference.cs" />
     <Compile Include="IWorkItemStore.cs" />
@@ -171,9 +183,7 @@
     <Compile Include="IWorkItemType.Extensions.cs" />
     <Compile Include="IWorkItemTypeCollection.cs" />
     <Compile Include="Link.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="NodeCollection.cs" />
-    <Compile Include="NodeComparer.cs" />
+    <Compile Include="NodeType.cs" />
     <Compile Include="NullableIdentifiableComparer.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="ProjectCollection.cs" />
@@ -181,6 +191,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadOnlyCollectionWithId.cs" />
     <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
+    <Compile Include="ReadOnlyObjectCollection.cs" />
     <Compile Include="ReadOnlyObjectWithNameCollection.cs" />
     <Compile Include="RegisteredLinkType.cs" />
     <Compile Include="RegisteredLinkTypeCollection.cs" />
@@ -197,6 +208,8 @@
     <Compile Include="ValidationState.cs" />
     <Compile Include="WiqlConstants.cs" />
     <Compile Include="WorkItem.cs" />
+    <Compile Include="WorkItemClassificationNodeCollection.cs" />
+    <Compile Include="WorkItemClassificationNodeComparer.cs" />
     <Compile Include="WorkItemCollection.cs" />
     <Compile Include="WorkItemCollectionComparer.cs" />
     <Compile Include="WorkItemCommon.cs" />
@@ -234,8 +247,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets')" />
 </Project>

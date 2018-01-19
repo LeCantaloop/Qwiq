@@ -17,9 +17,9 @@ namespace Microsoft.Qwiq
         }
 
         /// <inheritdoc />
-        public virtual BaseLinkType BaseType { get; }
+        public BaseLinkType BaseType { get; }
 
         /// <inheritdoc />
-        public virtual string Comment { get; }
+        public string Comment { get; }
     }
 }

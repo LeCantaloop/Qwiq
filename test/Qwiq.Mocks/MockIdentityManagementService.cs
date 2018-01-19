@@ -9,24 +9,6 @@ namespace Microsoft.Qwiq.Mocks
 {
     public class MockIdentityManagementService : IIdentityManagementService
     {
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Adamb instead.")]
-        public static readonly ITeamFoundationIdentity Adamb = Identities.Adamb;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisj instead.")]
-        public static readonly ITeamFoundationIdentity Chrisj = Identities.Chrisj;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjoh instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjoh = Identities.Chrisjoh;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohn instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjohn = Identities.Chrisjohn;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Chrisjohns instead.")]
-        public static readonly ITeamFoundationIdentity Chrisjohns = Identities.Chrisjohns;
-
-        [Obsolete("This field is depreciated and will be removed in a future version. Use Identities.Danj instead.")]
-        public static readonly ITeamFoundationIdentity Danj = Identities.Danj;
-
         private readonly IDictionary<string, ITeamFoundationIdentity[]> _accountNameMappings;
 
         private readonly IDictionary<IIdentityDescriptor, ITeamFoundationIdentity> _descriptorMappings;
@@ -124,6 +106,21 @@ namespace Microsoft.Qwiq.Mocks
         /// </returns>
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
         {
+            return ReadIdentities(descriptors, MembershipQuery.None);
+        }
+
+        /// <summary>
+        ///     Read identities for given descriptors.
+        /// </summary>
+        /// <param name="descriptors">
+        ///     Collection of <see cref="IIdentityDescriptor" />
+        /// </param>
+        /// <param name="queryMembership"></param>
+        /// <returns>
+        ///     An array of <see cref="ITeamFoundationIdentity" />, corresponding 1 to 1 with input descriptor array.
+        /// </returns>
+        public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors, MembershipQuery queryMembership)
+        {
             foreach (var descriptor in descriptors)
             {
                 var success = _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity identity);
@@ -137,6 +134,14 @@ namespace Microsoft.Qwiq.Mocks
         public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(
             IdentitySearchFactor searchFactor,
             IEnumerable<string> searchFactorValues)
+        {
+            return ReadIdentities(searchFactor, searchFactorValues, MembershipQuery.None);
+        }
+
+        public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(
+            IdentitySearchFactor searchFactor,
+            IEnumerable<string> searchFactorValues,
+            MembershipQuery queryMembership)
         {
             Trace.TraceInformation($"Searching for {searchFactor}: {string.Join(", ", searchFactorValues)}");
 
@@ -163,10 +168,17 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        /// <inheritdoc />
-        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue)
+        public ITeamFoundationIdentity ReadIdentity(
+            IdentitySearchFactor searchFactor,
+            string searchFactorValue)
         {
-            return ReadIdentities(searchFactor, new[] { searchFactorValue }).First().Value.SingleOrDefault();
+            return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None);
+        }
+
+        /// <inheritdoc />
+        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue, MembershipQuery queryMembership)
+        {
+            return ReadIdentities(searchFactor, new[] { searchFactorValue }, queryMembership).First().Value.SingleOrDefault();
         }
 
         private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)

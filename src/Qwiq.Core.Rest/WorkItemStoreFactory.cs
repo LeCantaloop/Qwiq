@@ -13,12 +13,6 @@ namespace Microsoft.Qwiq.Client.Rest
         {
         }
 
-        [Obsolete("This method is deprecated and will be removed in a future release. See property Default instead.", false)]
-        public static IWorkItemStoreFactory GetInstance()
-        {
-            return Default;
-        }
-
         public override IWorkItemStore Create(AuthenticationOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));

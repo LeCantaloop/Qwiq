@@ -208,7 +208,9 @@ namespace Microsoft.Qwiq
                     return true;
                 }
                 // ReSharper disable CatchAllClause
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 // ReSharper restore CatchAllClause
                 {
                 }
@@ -223,7 +225,9 @@ namespace Microsoft.Qwiq
                     return true;
                 }
                 // ReSharper disable CatchAllClause
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 // ReSharper restore CatchAllClause
                 {
                 }
@@ -236,7 +240,9 @@ namespace Microsoft.Qwiq
                     return true;
                 }
                 // ReSharper disable CatchAllClause
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 // ReSharper restore CatchAllClause
                 {
                 }
@@ -252,7 +258,9 @@ namespace Microsoft.Qwiq
                             return true;
                         }
                         // ReSharper disable EmptyGeneralCatchClause
+#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                         catch
+#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                         // ReSharper restore EmptyGeneralCatchClause
                         {
                         }

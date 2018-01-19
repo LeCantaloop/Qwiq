@@ -107,7 +107,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return NullIdentities;
@@ -115,7 +115,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             Guid[] teamFoundationIds,
-            MembershipQuery queryMembership)
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership)
         {
             return NullIdentities;
         }
@@ -123,7 +123,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             return new[] { NullIdentities };
@@ -131,7 +131,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             Guid[] teamFoundationIds,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -142,7 +142,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -152,7 +152,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
             TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -163,7 +163,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotImplementedException();
@@ -171,7 +171,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
         {
             throw new NotSupportedException();
@@ -185,7 +185,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string searchFactorValue,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -195,7 +195,7 @@ namespace Microsoft.Qwiq.Identity.Mocks
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
             TeamFoundation.Framework.Client.IdentityDescriptor descriptor,
-            MembershipQuery queryMembership,
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
             IEnumerable<string> propertyNameFilters,
             IdentityPropertyScope propertyScope)
@@ -233,52 +233,96 @@ namespace Microsoft.Qwiq.Identity.Mocks
             throw new NotSupportedException();
         }
 
+#pragma warning disable RECS0154 // Parameter is never used
         public void AddRecentUser(TeamFoundationIdentity identity)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             return new[] { NullIdentities };
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string[] searchFactorValues,
-            MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IEnumerable<string> propertyNameFilters,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IdentityPropertyScope propertyScope)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string searchFactorValue,
-            MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
         public TeamFoundation.Framework.Client.TeamFoundationIdentity ReadIdentity(
+#pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             string searchFactorValue,
-            MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
+            TeamFoundation.Framework.Common.MembershipQuery queryMembership,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             ReadIdentityOptions readOptions,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IEnumerable<string> propertyNameFilters,
+#pragma warning restore RECS0154 // Parameter is never used
+#pragma warning disable RECS0154 // Parameter is never used
             IdentityPropertyScope propertyScope)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }
 
+#pragma warning disable RECS0154 // Parameter is never used
         public void UpdateExtendedProperties(TeamFoundationIdentity identity)
+#pragma warning restore RECS0154 // Parameter is never used
         {
             throw new NotSupportedException();
         }

@@ -1,8 +1,4 @@
 using System;
-using System.Linq;
-
-using Microsoft.Qwiq.Exceptions;
-
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Microsoft.Qwiq.Client.Soap
@@ -15,14 +11,9 @@ namespace Microsoft.Qwiq.Client.Soap
                 project.Name,
                 project.Uri,
                 new Lazy<IWorkItemTypeCollection>(() => new WorkItemTypeCollection(project.WorkItemTypes)),
-                new Lazy<INodeCollection>(
-                    () => new NodeCollection(
-                        project.AreaRootNodes.Cast<Tfs.Node>()
-                               .Select(item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new Node(item))))),
-                new Lazy<INodeCollection>(
-                    () => new NodeCollection(
-                        project.IterationRootNodes.Cast<Tfs.Node>()
-                               .Select(item => ExceptionHandlingDynamicProxyFactory.Create<INode>(new Node(item))))))
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(()=> WorkItemClassificationNodeCollectionBuilder.Build(project.AreaRootNodes)),
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(project.IterationRootNodes))
+                )
         {
             Id = project.Id;
         }

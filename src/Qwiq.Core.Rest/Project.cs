@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-
 using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.Core.WebApi;
@@ -33,38 +32,9 @@ namespace Microsoft.Qwiq.Client.Rest
 
                             return new WorkItemTypeCollection(wits2);
                         }),
-                new Lazy<INodeCollection>(
-                    () =>
-                        {
-                            var result = store.NativeWorkItemStore
-                                              .Value
-                                              .GetClassificationNodeAsync(
-                                                  project.Id,
-                                                  TreeStructureGroup.Areas,
-                                                  null,
-                                                  int.MaxValue)
-                                              .GetAwaiter()
-                                              .GetResult();
-
-                            // SOAP Client does not return just the root, so return the root's children to match implementation
-                            var n = new Node(result).ChildNodes;
-                            return n;
-                        }),
-                new Lazy<INodeCollection>(
-                    () =>
-                        {
-                            var result = store.NativeWorkItemStore
-                                              .Value
-                                              .GetClassificationNodeAsync(
-                                                  project.Name,
-                                                  TreeStructureGroup.Iterations,
-                                                  null,
-                                                  int.MaxValue)
-                                              .GetAwaiter()
-                                              .GetResult();
-
-                            return new Node(result).ChildNodes;
-                        }))
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.BuildAsync(store.NativeWorkItemStore.Value.GetClassificationNodeAsync(project.Name, TreeStructureGroup.Areas, null, int.MaxValue)).GetAwaiter().GetResult()),
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.BuildAsync(store.NativeWorkItemStore.Value.GetClassificationNodeAsync(project.Name, TreeStructureGroup.Iterations, null, int.MaxValue)).GetAwaiter().GetResult())
+                )
         {
         }
     }

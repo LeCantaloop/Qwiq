@@ -79,6 +79,22 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 return new WasEverExpression(node.Type, subject, target);
             }
 
+            if (node.Method.DeclaringType == typeof(QueryExtensions) && node.Method.Name == "InGroup")
+            {
+                var subject = Visit(node.Arguments[0]);
+                var target = Visit(node.Arguments[1]);
+
+                return new InGroupExpression(node.Type, subject, target);
+            }
+
+            if (node.Method.DeclaringType == typeof(QueryExtensions) && node.Method.Name == "NotInGroup")
+            {
+                var subject = Visit(node.Arguments[0]);
+                var target = Visit(node.Arguments[1]);
+
+                return new NotInGroupExpression(node.Type, subject, target);
+            }
+
             // This is a contains used to see if a value is in a list, such as: bug => aliases.Contains(bug.AssignedTo)
             if (node.Method.DeclaringType == typeof(Enumerable) && node.Method.Name == "Contains")
             {

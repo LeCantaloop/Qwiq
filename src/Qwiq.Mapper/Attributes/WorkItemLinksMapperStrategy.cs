@@ -11,16 +11,14 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class WorkItemLinksMapperStrategy : WorkItemMapperStrategyBase
     {
-        private readonly IPropertyInspector _inspector;
-
-        protected IWorkItemStore Store { get; }
+        private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>
+            PropertiesThatExistOnWorkItem =
+                new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
 
         private static readonly ConcurrentDictionary<PropertyInfo, WorkItemLinkAttribute> PropertyInfoFields =
             new ConcurrentDictionary<PropertyInfo, WorkItemLinkAttribute>();
 
-        private static readonly ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>
-            PropertiesThatExistOnWorkItem =
-                new ConcurrentDictionary<Tuple<string, RuntimeTypeHandle>, List<PropertyInfo>>();
+        private readonly IPropertyInspector _inspector;
 
         public WorkItemLinksMapperStrategy(IPropertyInspector inspector, IWorkItemStore store)
         {
@@ -28,35 +26,7 @@ namespace Microsoft.Qwiq.Mapper.Attributes
             Store = store;
         }
 
-        private static WorkItemLinkAttribute PropertyInfoLinkTypeCache(
-            IPropertyInspector inspector,
-            PropertyInfo property)
-        {
-            return PropertyInfoFields.GetOrAdd(
-                property,
-                info => inspector.GetAttribute<WorkItemLinkAttribute>(property));
-        }
-
-        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(
-            IPropertyInspector inspector,
-            IWorkItem workItem,
-            Type targetType,
-            Type attributeType)
-        {
-            // Composite key: work item type and target type
-
-            var workItemType = workItem.WorkItemType;
-            var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
-
-            return PropertiesThatExistOnWorkItem.GetOrAdd(
-                key,
-                tuple => inspector.GetAnnotatedProperties(targetType, attributeType).ToList());
-        }
-
-        protected virtual IEnumerable<IWorkItem> Query(IEnumerable<int> ids)
-        {
-            return Store.Query(ids);
-        }
+        protected IWorkItemStore Store { get; }
 
         public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
         {
@@ -74,7 +44,6 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 
             var idToMapTargetLookup = workItemMappings.ToDictionary(k => k.Key.Id, e => e);
             var accessor = TypeAccessor.Create(targetWorkItemType, true);
-
 
             // REVIEW: The recursion of links can cause mapping multiple times on the same values
             // For example, a common ancestor
@@ -111,10 +80,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                             continue;
                         }
 
-
                         var wi = linkIds
                             // Only get the new items that need to be mapped
-                            .Where(p=> !previouslyMapped.ContainsKey(new Tuple<int, RuntimeTypeHandle>(p, propertyType.TypeHandle)))
+                            .Where(p => !previouslyMapped.ContainsKey(new Tuple<int, RuntimeTypeHandle>(p, propertyType.TypeHandle)))
                             .Select(
                             s =>
                                 {
@@ -160,6 +128,36 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                     }
                 }
             }
+        }
+
+        protected virtual IEnumerable<IWorkItem> Query(IEnumerable<int> ids)
+        {
+            return Store.Query(ids);
+        }
+
+        private static IEnumerable<PropertyInfo> PropertiesOnWorkItemCache(
+            IPropertyInspector inspector,
+            IWorkItem workItem,
+            Type targetType,
+            Type attributeType)
+        {
+            // Composite key: work item type and target type
+
+            var workItemType = workItem.WorkItemType;
+            var key = new Tuple<string, RuntimeTypeHandle>(workItemType, targetType.TypeHandle);
+
+            return PropertiesThatExistOnWorkItem.GetOrAdd(
+                key,
+                tuple => inspector.GetAnnotatedProperties(targetType, attributeType).ToList());
+        }
+
+        private static WorkItemLinkAttribute PropertyInfoLinkTypeCache(
+                                    IPropertyInspector inspector,
+            PropertyInfo property)
+        {
+            return PropertyInfoFields.GetOrAdd(
+                property,
+                info => inspector.GetAttribute<WorkItemLinkAttribute>(property));
         }
 
         private Dictionary<Tuple<int, string>, List<int>> BuildLinksRelationships(

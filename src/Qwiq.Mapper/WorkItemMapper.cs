@@ -16,6 +16,16 @@ namespace Microsoft.Qwiq.Mapper
         private delegate IIdentifiable<int?> ObjectActivator();
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator> OptimizedCtorExpression = new ConcurrentDictionary<RuntimeTypeHandle, ObjectActivator>();
 
+        public WorkItemMapper([NotNull] params IWorkItemMapperStrategy[] mapperStrategies)
+        {
+            Contract.Requires(mapperStrategies != null);
+
+            if (mapperStrategies == null) throw new ArgumentNullException(nameof(mapperStrategies));
+            if (mapperStrategies.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(mapperStrategies));
+
+            MapperStrategies = mapperStrategies;
+        }
+
         public WorkItemMapper([NotNull] IEnumerable<IWorkItemMapperStrategy> mapperStrategies)
         {
             Contract.Requires(mapperStrategies != null);

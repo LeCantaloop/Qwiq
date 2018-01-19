@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\..\build\targets\common.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -28,7 +28,9 @@
     <Compile Include="..\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="AnnotatedPropertyValidator.cs" />
     <Compile Include="Attributes\AttributeMapperStrategy.cs" />
+    <Compile Include="IAnnotatedPropertyValidator.cs" />
     <Compile Include="Attributes\NoExceptionAttributeMapperStrategy.cs" />
     <Compile Include="Attributes\FieldDefinitionAttribute.cs" />
     <Compile Include="Attributes\IPropertyInspector.cs" />
@@ -40,7 +42,6 @@
     <Compile Include="Attributes\WorkItemLinksMapperStrategy.cs" />
     <Compile Include="Attributes\WorkItemTypeAttribute.cs" />
     <Compile Include="FieldMapper.cs" />
-    <Compile Include="IIdentifiable.cs" />
     <Compile Include="IWorkItemMapper.cs" />
     <Compile Include="IWorkItemMapperStrategy.cs" />
     <Compile Include="AttributeMapException.cs" />
@@ -70,8 +71,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.1.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0011\build\GitVersionTask.targets')" />
 </Project>

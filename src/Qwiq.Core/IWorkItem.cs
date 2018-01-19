@@ -32,8 +32,6 @@ namespace Microsoft.Qwiq
 
         bool IsDirty { get; }
 
-        string Keywords { get; set; }
-
         /// <summary>
         /// Gets the links of the work item in this revision.
         /// </summary>
@@ -57,16 +55,7 @@ namespace Microsoft.Qwiq
         /// <summary>
         /// Gets a Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType object that represents the type of this work item.
         /// </summary>
-        /// <exception cref="TeamFoundation.WorkItemTracking.Client.WorkItemTypeDeniedOrNotExistException">
-        /// The Type property is null.
-        /// </exception>
         IWorkItemType Type { get; }
-
-        /// <summary>
-        /// Gets the uniform resource identifier (System.Uri) of this work item.
-        /// </summary>
-        [Obsolete("This property is deprecated and will be removed in a future release. See IWorkItemReference.Url instead.")]
-        Uri Uri { get; }
 
         /// <summary>
         /// Applies the server rules for validation and fix up to the work item.
@@ -93,9 +82,6 @@ namespace Microsoft.Qwiq
         IWorkItem Copy();
 
         IHyperlink CreateHyperlink(string location);
-
-        [Obsolete("This method is deprecated and will be removed in a future release.")]
-        IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem);
 
         IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null);
 

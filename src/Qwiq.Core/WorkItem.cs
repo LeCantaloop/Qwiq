@@ -92,12 +92,6 @@ namespace Microsoft.Qwiq
 
         public virtual bool IsDirty => throw new NotSupportedException();
 
-        public virtual string Keywords
-        {
-            get => throw new NotSupportedException();
-            set => throw new NotSupportedException();
-        }
-
         public virtual ICollection<ILink> Links => throw new NotSupportedException();
 
         public new virtual int RelatedLinkCount => base.RelatedLinkCount.GetValueOrDefault(0);
@@ -111,8 +105,6 @@ namespace Microsoft.Qwiq
         public virtual IEnumerable<IRevision> Revisions => throw new NotSupportedException();
 
         public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new InvalidOperationException($"No value specified for {nameof(Type)}.");
-
-        public abstract Uri Uri { get; }
 
         public override object this[string name]
         {
@@ -169,11 +161,6 @@ namespace Microsoft.Qwiq
         public virtual IHyperlink CreateHyperlink(string location)
         {
             throw new NotSupportedException();
-        }
-
-        public virtual IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
         }
 
         public virtual IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)

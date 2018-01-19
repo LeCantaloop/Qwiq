@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
@@ -23,43 +22,6 @@ namespace Microsoft.Qwiq.Mocks
 
         private int _tempId;
 
-        [DebuggerStepThrough]
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
-        public MockWorkItem()
-            : this("Mock")
-        {
-        }
-
-        [DebuggerStepThrough]
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
-        public MockWorkItem(string workItemType = null)
-            : this(workItemType, (IDictionary<string, object>)null)
-        {
-        }
-
-        [DebuggerStepThrough]
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
-        public MockWorkItem(IDictionary<string, object> fields)
-            : this((string)null, fields)
-        {
-        }
-
-        [Obsolete(
-            "This method has been deprecated and will be removed in a future release. See a constructor that takes IWorkItemType and fields.")]
-        public MockWorkItem(string workItemType = null, IDictionary<string, object> fields = null)
-            : this(
-                new MockWorkItemType(
-                    workItemType ?? "Mock",
-                    CoreFieldDefinitions.All.Union(
-                        fields?.Keys.Select(MockFieldDefinition.Create)
-                        ?? Enumerable.Empty<IFieldDefinition>())),
-                (Dictionary<string, object>)fields)
-        {
-        }
-
         public MockWorkItem([CanBeNull] string workItemType, [CanBeNull] params IField[] fields)
             : this(new MockWorkItemType(workItemType ?? "Mock", CoreFieldDefinitions.All.Union(fields.Select(f=>f.FieldDefinition))))
         {
@@ -76,8 +38,6 @@ namespace Microsoft.Qwiq.Mocks
                         f.Revision = this;
                         SetFieldValue(field.FieldDefinition, val);
                     }
-
-                    
                 }
             }
         }
@@ -133,11 +93,6 @@ namespace Microsoft.Qwiq.Mocks
             return retval;
         }
 
-        public override IRelatedLink CreateRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, IWorkItem relatedWorkItem)
-        {
-            return CreateRelatedLink(relatedWorkItem.Id, linkTypeEnd);
-        }
-
         public override IRelatedLink CreateRelatedLink(int id, IWorkItemLinkTypeEnd linkTypeEnd = null)
         {
             if (IsNew) throw new InvalidOperationException("Save first");
@@ -185,12 +140,6 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public override string Keywords
-        {
-            get => GetValue<string>(WorkItemFields.Keywords);
-            set => SetValue(WorkItemFields.Keywords, value);
-        }
-
         public new ICollection<ILink> Links { get; set; }
 
         public new int RelatedLinkCount => Links.OfType<IRelatedLink>().Count();
@@ -210,9 +159,7 @@ namespace Microsoft.Qwiq.Mocks
             }
         }
 
-        public override Uri Uri => new Uri($"vstfs:///WorkItemTracking/WorkItem/{Id}");
-
-        public override string Url => Uri.ToString();
+        public override string Url => $"vstfs:///WorkItemTracking/WorkItem/{Id}";
 
         public override void ApplyRules(bool doNotUpdateChangedBy = false)
         {
@@ -266,10 +213,10 @@ namespace Microsoft.Qwiq.Mocks
                 }
                 // Our limitation: need an ID to link so save before we do anything else
                 target.Id = target._tempId;
-                target.Links.Add(target.CreateRelatedLink(e.ForwardEnd, this));
+                target.Links.Add(target.CreateRelatedLink(Id, e.ForwardEnd));
 
                 // Recipricol links are typically handled in Save operation
-                Links.Add(CreateRelatedLink(e.ReverseEnd, target));
+                Links.Add(CreateRelatedLink(target.Id, e.ReverseEnd));
 
                 target.Id = 0;
             }
@@ -336,25 +283,6 @@ namespace Microsoft.Qwiq.Mocks
         {
             var invalidFields = Fields.Where(p => !p.IsValid).Select(p => p).ToArray();
             return invalidFields.Any() ? invalidFields : null;
-        }
-
-        [Obsolete(
-            "This method is deprecated and will be removed in a future version. See CreateRelatedLink(IWorkItemLinkTypeEnd, IWorkItem) instead.")]
-        public IRelatedLink CreateRelatedLink(IWorkItem target)
-        {
-            var store = Type.Store();
-            if (store != null)
-            {
-                var e = store.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd;
-                return CreateRelatedLink(e, target);
-            }
-
-            using (var wis = new MockWorkItemStore())
-            {
-                return CreateRelatedLink(
-                    wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Related].ForwardEnd,
-                    target);
-            }
         }
     }
 

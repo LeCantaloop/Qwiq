@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -8,17 +9,17 @@ namespace Microsoft.Qwiq.Mapper.Attributes
 {
     public class PropertyInspector : IPropertyInspector
     {
-        private readonly IPropertyReflector _reflector;
         private static readonly ConcurrentDictionary<RuntimeTypeHandle, ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>> AnnotatedProperties = new ConcurrentDictionary<RuntimeTypeHandle, ConcurrentDictionary<RuntimeTypeHandle, IEnumerable<PropertyInfo>>>();
+        private readonly IPropertyReflector _reflector;
 
-        public PropertyInspector(IPropertyReflector reflector)
+        public PropertyInspector([NotNull] IPropertyReflector reflector)
         {
-            _reflector = reflector;
+            _reflector = reflector ?? throw new ArgumentNullException(nameof(reflector));
         }
 
         public IEnumerable<PropertyInfo> GetAnnotatedProperties(Type workItemType, Type attributeType)
         {
-           return AnnotatedPropertiesCache(_reflector, workItemType, attributeType);
+            return AnnotatedPropertiesCache(_reflector, workItemType, attributeType);
         }
 
         public T GetAttribute<T>(PropertyInfo property) where T : Attribute
@@ -63,4 +64,3 @@ namespace Microsoft.Qwiq.Mapper.Attributes
         }
     }
 }
-

@@ -14,7 +14,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
     public class PartialEvaluator : ExpressionVisitor
     {
         /// <summary>
-        ///     Performs evaluation & replacement of independent sub-trees
+        ///     Performs evaluation and replacement of independent sub-trees
         /// </summary>
         /// <param name="expression">The root of the expression tree.</param>
         /// <param name="fnCanBeEvaluated">
@@ -28,7 +28,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Performs evaluation & replacement of independent sub-trees
+        ///     Performs evaluation and replacement of independent sub-trees
         /// </summary>
         /// <param name="node">The root of the expression tree.</param>
         /// <returns>A new tree with sub-trees evaluated and replaced.</returns>
@@ -59,19 +59,19 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 this.fnCanBeEvaluated = fnCanBeEvaluated;
             }
 
-            public override Expression Visit(Expression expression)
+            public override Expression Visit(Expression node)
             {
-                if (expression != null)
+                if (node != null)
                 {
                     var saveCannotBeEvaluated = cannotBeEvaluated;
                     cannotBeEvaluated = false;
-                    base.Visit(expression);
+                    base.Visit(node);
                     if (!cannotBeEvaluated)
-                        if (fnCanBeEvaluated(expression)) candidates.Add(expression);
+                        if (fnCanBeEvaluated(node)) candidates.Add(node);
                         else cannotBeEvaluated = true;
                     cannotBeEvaluated |= saveCannotBeEvaluated;
                 }
-                return expression;
+                return node;
             }
 
             internal HashSet<Expression> Nominate(Expression expression)
@@ -83,7 +83,7 @@ namespace Microsoft.Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Evaluates & replaces sub-trees when first candidate is reached (top-down)
+        ///     Evaluates and replaces sub-trees when first candidate is reached (top-down)
         /// </summary>
         private class SubtreeEvaluator : ExpressionVisitor
         {
@@ -94,11 +94,11 @@ namespace Microsoft.Qwiq.Linq.Visitors
                 this.candidates = candidates;
             }
 
-            public override Expression Visit(Expression exp)
+            public override Expression Visit(Expression node)
             {
-                if (exp == null) return null;
-                if (candidates.Contains(exp)) return Evaluate(exp);
-                return base.Visit(exp);
+                if (node == null) return null;
+                if (candidates.Contains(node)) return Evaluate(node);
+                return base.Visit(node);
             }
 
             internal Expression Eval(Expression exp)
