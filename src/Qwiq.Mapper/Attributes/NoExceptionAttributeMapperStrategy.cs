@@ -75,7 +75,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         $"{property.Name} ({property.PropertyType.FullName})");
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+#pragma warning disable RCS1075 // Avoid empty catch clause that catches System.Exception.
                 catch (Exception)
+#pragma warning restore RCS1075 // Avoid empty catch clause that catches System.Exception.
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 {
                     // Best effort
@@ -94,7 +96,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         e.Message);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+#pragma warning disable RCS1075 // Avoid empty catch clause that catches System.Exception.
                 catch (Exception)
+#pragma warning restore RCS1075 // Avoid empty catch clause that catches System.Exception.
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 {
                     // Best effort
@@ -118,7 +122,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                     Trace.TraceWarning(e.Message);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+#pragma warning disable RCS1075 // Avoid empty catch clause that catches System.Exception.
                 catch (Exception)
+#pragma warning restore RCS1075 // Avoid empty catch clause that catches System.Exception.
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 {
                     // Best effort
@@ -137,7 +143,9 @@ namespace Microsoft.Qwiq.Mapper.Attributes
                         e.Message);
                 }
 #pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
+#pragma warning disable RCS1075 // Avoid empty catch clause that catches System.Exception.
                 catch (Exception)
+#pragma warning restore RCS1075 // Avoid empty catch clause that catches System.Exception.
 #pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
                 {
                     // Best effort
