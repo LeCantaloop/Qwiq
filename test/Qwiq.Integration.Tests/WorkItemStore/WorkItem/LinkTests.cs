@@ -21,6 +21,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         [TestCategory("SOAP")]
         [ExpectedException(typeof(NotSupportedException))]
+        [Ignore]
         public void AttachedFileCount_is_equal()
         {
             AssertWorkItemExpandConfiguration();
@@ -31,6 +32,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("localOnly")]
         [TestCategory("REST")]
         [TestCategory("SOAP")]
+        [Ignore]
         public void ExternalLinkCount_is_equal()
         {
             AssertWorkItemExpandConfiguration();
@@ -41,6 +43,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("localOnly")]
         [TestCategory("REST")]
         [TestCategory("SOAP")]
+        [Ignore]
         public void HyperlinkCount_is_equal()
         {
             AssertWorkItemExpandConfiguration();
@@ -51,6 +54,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("localOnly")]
         [TestCategory("REST")]
         [TestCategory("SOAP")]
+        [Ignore]
         public void links_from_both_implementations_are_equal()
         {
             AssertWorkItemExpandConfiguration();
@@ -62,6 +66,7 @@ namespace Microsoft.Qwiq.WorkItemStore.WorkItem
         [TestCategory("localOnly")]
         [TestCategory("REST")]
         [TestCategory("SOAP")]
+        [Ignore]
         public void RelatedLinkCount_is_equal()
         {
             AssertWorkItemExpandConfiguration();
