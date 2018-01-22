@@ -42,6 +42,7 @@
     <Compile Include="Fragments\SelectFragment.cs" />
     <Compile Include="Fragments\StringFragment.cs" />
     <Compile Include="Fragments\TypeRestrictionFragment.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IFieldMapper.cs" />
     <Compile Include="IWiqlQueryBuilder.cs" />
     <Compile Include="IWiqlTranslator.cs" />

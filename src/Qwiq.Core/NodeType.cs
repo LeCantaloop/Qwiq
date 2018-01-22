@@ -1,6 +1,6 @@
 namespace Microsoft.Qwiq
 {
-    public enum NodeType : short
+    public enum NodeType
     {
         None,
         Area,

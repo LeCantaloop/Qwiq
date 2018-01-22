@@ -27,6 +27,7 @@
     <Compile Include="..\ReSharper.Annotations.cs">
       <Link>Properties\ReSharper.Annotations.cs</Link>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\IdentityMappingVisitor.cs" />
   </ItemGroup>

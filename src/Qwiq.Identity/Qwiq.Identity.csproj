@@ -32,6 +32,7 @@
       <Link>Properties\ReSharper.Annotations.cs</Link>
     </Compile>
     <Compile Include="DisplayNameToAliasValueConverter.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IdentityAliasValueConverter.cs" />
     <Compile Include="IdentityFieldValueConverter.cs" />
     <Compile Include="IdentityValueConverterBase.cs" />
