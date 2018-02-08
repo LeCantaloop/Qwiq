@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
-using Microsoft.Qwiq.Linq;
+using Qwiq.Linq;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public class MapperTeamFoundationServerWorkItemQueryProvider : TeamFoundationServerWorkItemQueryProvider
     {

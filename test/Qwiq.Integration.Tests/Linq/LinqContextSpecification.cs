@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.WorkItemStore;
+using Qwiq.Linq.Visitors;
+using Qwiq.WorkItemStore;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public abstract class LinqContextSpecification : WorkItemStoreComparisonContextSpecification
     {

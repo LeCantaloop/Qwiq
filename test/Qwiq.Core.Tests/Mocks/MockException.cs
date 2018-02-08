@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq.UnitTests.Mocks
+namespace Qwiq.UnitTests.Mocks
 {
     [Serializable]
     public class MockException : Exception

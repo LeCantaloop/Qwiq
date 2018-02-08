@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [DebuggerDisplay("{SourceField} -> {DestinationProperty.Name}")]
     public struct PropertyMap

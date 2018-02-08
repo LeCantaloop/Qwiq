@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// Wrapper around the TFS WorkItem. This exists so that every agent doesn't need to reference all the TFS libraries.

@@ -1,9 +1,9 @@
 using System;
 
-using Microsoft.Qwiq.Identity;
+using Qwiq.Identity;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockTfsTeamProjectCollection : ITeamProjectCollection
     {

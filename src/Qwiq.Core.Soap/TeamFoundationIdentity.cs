@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal class TeamFoundationIdentity : Qwiq.TeamFoundationIdentity
     {

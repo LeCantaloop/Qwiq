@@ -1,12 +1,12 @@
 using System.Linq;
 
-using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Linq;
+using Qwiq.Linq.Visitors;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.Mapper.Linq
+namespace Qwiq.Mapper.Linq
 {
     public abstract class QueryableContextSpecification<T> : ContextSpecification
     {

@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Mapper.Attributes
+namespace Qwiq.Mapper.Attributes
 {
     public class NoExceptionAttributeMapperStrategy : AttributeMapperStrategy
     {

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Mapper.Attributes
+namespace Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {

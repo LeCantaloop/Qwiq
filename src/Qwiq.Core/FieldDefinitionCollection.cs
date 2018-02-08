@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class FieldDefinitionCollection : ReadOnlyObjectWithIdCollection<IFieldDefinition, int>, IFieldDefinitionCollection
     {

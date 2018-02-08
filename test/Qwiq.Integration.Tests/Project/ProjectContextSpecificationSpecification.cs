@@ -1,6 +1,6 @@
-using Microsoft.Qwiq.WorkItemStore;
+using Qwiq.WorkItemStore;
 
-namespace Microsoft.Qwiq.Project
+namespace Qwiq.Project
 {
     public abstract class ProjectContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {

@@ -1,6 +1,6 @@
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     [ContractClassFor(typeof(IRevisionInternal))]
     internal abstract class RevisionInternalContract : IRevisionInternal

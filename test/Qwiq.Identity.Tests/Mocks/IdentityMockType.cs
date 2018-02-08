@@ -1,8 +1,8 @@
 using System;
 
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Identity.Mocks
+namespace Qwiq.Identity.Mocks
 {
     public class MockIdentityType : IIdentifiable<int?>
     {

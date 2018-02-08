@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     internal static class ExceptionHandlingDynamicProxyFactory
     {

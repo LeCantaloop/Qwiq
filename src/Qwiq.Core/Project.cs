@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class Project : IProject, IEquatable<IProject>
     {

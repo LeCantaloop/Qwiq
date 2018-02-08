@@ -1,10 +1,10 @@
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     // REVIEW: Make this implement the interface for IFieldDefinitionCollection and pass everything to the native type
     internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection

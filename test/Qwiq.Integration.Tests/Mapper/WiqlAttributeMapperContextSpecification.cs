@@ -1,10 +1,10 @@
-﻿using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Linq;
+using Qwiq.Linq.Visitors;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Tests.Common;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public abstract class WiqlAttributeMapperContextSpecification : TimedContextSpecification
     {

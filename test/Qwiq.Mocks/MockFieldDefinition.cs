@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Qwiq.Mocks
+﻿namespace Qwiq.Mocks
 {
     public class MockFieldDefinition : FieldDefinition
     {

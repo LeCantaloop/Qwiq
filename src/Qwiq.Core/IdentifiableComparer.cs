@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Qwiq
+﻿namespace Qwiq
 {
     internal class IdentifiableComparer : GenericComparer<IIdentifiable<int>>
     {

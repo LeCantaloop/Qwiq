@@ -6,12 +6,13 @@
     <ProjectGuid>{1EDEB333-3084-42BD-B273-4009B4B18541}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq.Linq</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Linq</AssemblyName>
+    <RootNamespace>Qwiq.Linq</RootNamespace>
+    <AssemblyName>Qwiq.Linq</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />

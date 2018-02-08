@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IRevision : IWorkItemCore
     {

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class WorkItemCollectionComparer : GenericComparer<IWorkItemCollection>
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockWorkItemStore : IWorkItemStore
     {

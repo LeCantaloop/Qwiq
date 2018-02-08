@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Qwiq.Linq")]
+[assembly: AssemblyTitle("Qwiq.Linq")]
 [assembly: AssemblyDescription("A LINQ query provider to simplify querying for work items")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM

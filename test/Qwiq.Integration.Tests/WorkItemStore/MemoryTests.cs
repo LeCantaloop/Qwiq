@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     [TestClass]
     public class Given_a_SOAP_and_REST_WorkItemStore : WorkItemStoreComparisonContextSpecification

@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 using Castle.DynamicProxy;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     /// <summary>
     /// Provides a base class for Castle intercepted types

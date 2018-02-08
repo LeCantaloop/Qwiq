@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class FieldCollection : IFieldCollection
     {

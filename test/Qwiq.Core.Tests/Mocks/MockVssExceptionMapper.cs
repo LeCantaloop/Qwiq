@@ -1,8 +1,8 @@
 using System;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     internal class MockVssExceptionMapper<T> : VssExceptionMapper where T : Exception, new()
     {

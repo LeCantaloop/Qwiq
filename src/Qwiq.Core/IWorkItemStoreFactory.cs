@@ -1,6 +1,6 @@
-using Microsoft.Qwiq.Credentials;
+using Qwiq.Credentials;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IWorkItemStoreFactory
     {

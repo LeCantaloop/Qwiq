@@ -1,9 +1,9 @@
 ﻿using System;
 
-using Microsoft.Qwiq.Credentials;
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Credentials;
+using Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class WorkItemStoreFactory : Qwiq.WorkItemStoreFactory
     {

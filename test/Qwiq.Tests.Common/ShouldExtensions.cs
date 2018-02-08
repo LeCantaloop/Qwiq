@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-using Microsoft.Qwiq;
+using Qwiq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Should

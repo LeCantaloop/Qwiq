@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IReadOnlyObjectCollection<T> : IReadOnlyList<T>
     {

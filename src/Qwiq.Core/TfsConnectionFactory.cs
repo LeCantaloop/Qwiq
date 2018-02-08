@@ -1,8 +1,8 @@
-﻿using Microsoft.Qwiq.Credentials;
+﻿using Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Common;
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class TfsConnectionFactory<TConnection> : ITfsConnectionFactory
         where TConnection : ITeamProjectCollection

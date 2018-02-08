@@ -1,10 +1,10 @@
-﻿using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem
+namespace Qwiq.WorkItemStore.WorkItem
 {
     [TestClass]
     public class WorkItemLinkTypeComparerTests : ContextSpecification

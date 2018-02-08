@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockWorkItemLinkTypeEnd : WorkItemLinkTypeEnd, IIdentifiable<int>
     {

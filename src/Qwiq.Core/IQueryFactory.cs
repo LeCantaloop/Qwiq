@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// Initializes a new instance of <see cref="IQuery"/>.

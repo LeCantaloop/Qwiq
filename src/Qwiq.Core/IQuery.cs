@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Represents a query to the <see cref="IWorkItemStore" />.

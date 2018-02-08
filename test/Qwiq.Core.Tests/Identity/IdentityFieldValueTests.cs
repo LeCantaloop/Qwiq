@@ -1,9 +1,9 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     public abstract class IdentityFieldValueContextSpecification : ContextSpecification
     {

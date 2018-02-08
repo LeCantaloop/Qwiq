@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Base class for common operations for Collections.

@@ -3,7 +3,7 @@ using Should;
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [TestClass]
     public class

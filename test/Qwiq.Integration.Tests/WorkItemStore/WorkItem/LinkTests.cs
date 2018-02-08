@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem
+namespace Qwiq.WorkItemStore.WorkItem
 {
     [TestClass]
     public class Given_a_WorkItem_with_Links : WorkItemWithLinksContextSpecification

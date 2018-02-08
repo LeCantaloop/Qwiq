@@ -4,7 +4,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem
+namespace Qwiq.WorkItemStore.WorkItem
 
 
 {

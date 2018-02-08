@@ -5,7 +5,7 @@ using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Validators;
 
-namespace Microsoft.Qwiq.Benchmark
+namespace Qwiq.Benchmark
 {
     public class BenchmarkConfig : ManualConfig
     {

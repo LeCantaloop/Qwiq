@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// A description of the current state of a field.

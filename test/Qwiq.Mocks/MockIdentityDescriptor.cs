@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockIdentityDescriptor
     {

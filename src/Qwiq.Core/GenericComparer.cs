@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class GenericComparer<T> : IComparer<T>, IEqualityComparer<T>
     {

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     public sealed class WorkItemStoreConfiguration : Qwiq.WorkItemStoreConfiguration
     {

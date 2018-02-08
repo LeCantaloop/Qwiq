@@ -5,7 +5,7 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public static partial class Extensions
     {

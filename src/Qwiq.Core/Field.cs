@@ -2,7 +2,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class Field : IField
     {

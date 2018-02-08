@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockFieldCollection : FieldCollection
     {

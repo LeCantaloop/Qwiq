@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     public abstract class RestWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
     {

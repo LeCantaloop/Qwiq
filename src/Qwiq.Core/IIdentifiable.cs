@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     This allows an object to be identified, <typeparam name="TKey" /> is the identifier (AKA Key)

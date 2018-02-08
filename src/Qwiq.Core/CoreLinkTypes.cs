@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
     public struct CoreLinkTypes

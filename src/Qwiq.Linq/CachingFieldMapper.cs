@@ -5,7 +5,7 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public class CachingFieldMapper : IFieldMapper
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class WorkItemStoreConfiguration : Qwiq.WorkItemStoreConfiguration
     {

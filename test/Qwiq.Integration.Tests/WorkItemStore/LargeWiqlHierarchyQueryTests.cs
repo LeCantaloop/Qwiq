@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     [TestClass]
     public class LargeWiqlHierarchyQueryTests : LargeHierarchyContextSpecification

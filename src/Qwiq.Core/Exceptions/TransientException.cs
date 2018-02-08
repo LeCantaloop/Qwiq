@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     [Serializable]
     [DebuggerStepThrough]

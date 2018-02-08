@@ -6,10 +6,10 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal class QueryFactory : IQueryFactory
     {
@@ -26,7 +26,7 @@ namespace Microsoft.Qwiq.Client.Soap
         public IQuery Create(string wiql, bool dayPrecision)
         {
             var q = new Query(
-                              new TeamFoundation.WorkItemTracking.Client.Query(_store.NativeWorkItemStore, wiql, null, dayPrecision),
+                              new Microsoft.TeamFoundation.WorkItemTracking.Client.Query(_store.NativeWorkItemStore, wiql, null, dayPrecision),
                               _store.Configuration.PageSize);
 
             return _store.Configuration.ProxyCreationEnabled
@@ -41,7 +41,7 @@ namespace Microsoft.Qwiq.Client.Soap
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(wiql));
 
             var q = new Query(
-                              new TeamFoundation.WorkItemTracking.Client.Query(_store.NativeWorkItemStore, wiql, ids.ToArray()),
+                              new Microsoft.TeamFoundation.WorkItemTracking.Client.Query(_store.NativeWorkItemStore, wiql, ids.ToArray()),
                               _store.Configuration.PageSize);
 
             return _store.Configuration.ProxyCreationEnabled

@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class WorkItemType : IWorkItemType, IEquatable<IWorkItemType>
     {

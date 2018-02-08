@@ -2,7 +2,7 @@
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class RelatedLink : Link, IRelatedLink
     {

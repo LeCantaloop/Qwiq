@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// Represents a failure to load a team foundation resource.

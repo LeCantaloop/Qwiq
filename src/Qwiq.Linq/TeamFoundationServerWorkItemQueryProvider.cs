@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public class TeamFoundationServerWorkItemQueryProvider : IQueryProvider
     {

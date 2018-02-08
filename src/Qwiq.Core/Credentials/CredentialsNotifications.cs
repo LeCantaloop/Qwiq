@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 
-namespace Microsoft.Qwiq.Credentials
+namespace Qwiq.Credentials
 {
     /// <summary>
     ///     Specifies events which the <see cref="IWorkItemStoreFactory" /> invokes to enable developer control over the

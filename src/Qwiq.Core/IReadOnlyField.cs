@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IReadOnlyField : IIdentifiable<int>
     {

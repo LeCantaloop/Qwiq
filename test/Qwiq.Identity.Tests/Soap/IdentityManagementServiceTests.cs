@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Identity.Mocks;
+using Qwiq.Identity.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     [TestClass]
     public class when_ReadIdentities_using_a_search_factor_for_an_identity_that_doesnt_exist : IdentityManagementServiceContextSpecification<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>>

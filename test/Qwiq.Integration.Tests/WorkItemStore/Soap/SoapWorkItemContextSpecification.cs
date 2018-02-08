@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq.WorkItemStore.Soap
+namespace Qwiq.WorkItemStore.Soap
 {
     public abstract class SoapWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
     {

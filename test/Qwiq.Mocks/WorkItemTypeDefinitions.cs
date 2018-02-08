@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
     public struct WorkItemTypeDefinitions

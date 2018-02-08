@@ -5,13 +5,13 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-using Microsoft.Qwiq.Benchmark;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mapper.Mocks;
-using Microsoft.Qwiq.Mocks;
+using Qwiq.Benchmark;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Mocks;
+using Qwiq.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
+namespace Qwiq.Mapper.Benchmark.Tests
 {
     [TestClass]
     public class BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : BenchmarkContextSpecification

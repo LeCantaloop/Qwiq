@@ -6,13 +6,14 @@
     <ProjectGuid>{8AC61B6E-BEC1-482D-A043-C65D2D343B35}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Core</AssemblyName>
+    <RootNamespace>Qwiq</RootNamespace>
+    <AssemblyName>Qwiq.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.0.0" />
