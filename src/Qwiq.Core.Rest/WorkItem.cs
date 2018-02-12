@@ -8,12 +8,12 @@ using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     internal class WorkItem : Qwiq.WorkItem
     {
         [NotNull]
-        private readonly TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem _item;
+        private readonly Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem _item;
 
         [NotNull]
         private readonly Func<string, IWorkItemLinkType> _linkFunc;
@@ -27,7 +27,7 @@ namespace Microsoft.Qwiq.Client.Rest
         private Uri _uri;
 
         public WorkItem(
-            [NotNull] TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
+            [NotNull] Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
             [NotNull] IWorkItemType wit,
             [NotNull] Func<string, IWorkItemLinkType> linkFunc)
             : base(wit)
@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Client.Rest
         }
 
         public WorkItem(
-            TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
+            Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
             Lazy<IWorkItemType> wit,
             Func<string, IWorkItemLinkType> linkFunc)
             : base(wit)

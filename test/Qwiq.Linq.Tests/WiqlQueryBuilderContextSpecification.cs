@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Linq.Visitors;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public abstract class WiqlQueryBuilderContextSpecification : ContextSpecification
     {

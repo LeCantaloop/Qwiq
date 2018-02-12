@@ -3,7 +3,7 @@ using System;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class IdentityDescriptor : IIdentityDescriptor, IComparable<IdentityDescriptor>, IEquatable<IdentityDescriptor>
     {

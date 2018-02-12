@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockField : IField
     {

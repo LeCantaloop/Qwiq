@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// Represents an identity descriptor <see cref="IdentityType"/> + <see cref="Identifier"/>.

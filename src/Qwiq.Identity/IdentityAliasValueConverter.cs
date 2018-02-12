@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
 
     /// <summary>

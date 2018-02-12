@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     public abstract class SoapIdentityMapperContextSpecification<T> : TimedContextSpecification
     {

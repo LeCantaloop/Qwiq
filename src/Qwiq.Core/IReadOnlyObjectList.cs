@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Represents a read-only collection of elements that can be accessed by index or name.

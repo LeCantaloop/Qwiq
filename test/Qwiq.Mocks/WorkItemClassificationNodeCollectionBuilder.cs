@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     internal static class WorkItemClassificationNodeCollectionBuilder
     {

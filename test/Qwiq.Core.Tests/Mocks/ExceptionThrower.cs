@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.UnitTests.Mocks
+namespace Qwiq.UnitTests.Mocks
 {
     public class ExceptionThrower : IExceptionThrower
     {

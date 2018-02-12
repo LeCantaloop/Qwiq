@@ -1,6 +1,6 @@
-﻿using Microsoft.Qwiq.Credentials;
+﻿using Qwiq.Credentials;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockWorkItemStoreFactory : WorkItemStoreFactory
     {

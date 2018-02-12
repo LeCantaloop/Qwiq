@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     internal class AggregateExceptionExploder : IExceptionExploder
     {

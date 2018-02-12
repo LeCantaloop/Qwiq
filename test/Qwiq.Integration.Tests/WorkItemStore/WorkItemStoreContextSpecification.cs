@@ -1,6 +1,6 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     public abstract class WorkItemStoreContextSpecification<T> : TimedContextSpecification
         where T : IWorkItemStore

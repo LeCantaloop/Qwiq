@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     public class IdentityFieldValueConverter : IdentityValueConverterBase
     {

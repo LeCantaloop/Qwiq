@@ -1,6 +1,6 @@
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class TypeParserTestsContext : ContextSpecification
     {

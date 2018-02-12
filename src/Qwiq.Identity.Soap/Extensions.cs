@@ -3,11 +3,11 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Client.Soap;
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Client.Soap;
+using Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     public static class Extensions
     {
@@ -45,7 +45,7 @@ namespace Microsoft.Qwiq.Identity.Soap
 
         [NotNull]
         [JetBrains.Annotations.Pure]
-        internal static IIdentityDescriptor AsProxy([NotNull] this TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        internal static IIdentityDescriptor AsProxy([NotNull] this Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException(nameof(descriptor));
             return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new Client.Soap.IdentityDescriptor(descriptor));

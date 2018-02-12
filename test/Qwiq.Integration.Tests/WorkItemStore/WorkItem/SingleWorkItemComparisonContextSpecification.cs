@@ -2,7 +2,7 @@
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem
+namespace Qwiq.WorkItemStore.WorkItem
 {
     public abstract class SingleWorkItemComparisonContextSpecification : WorkItemStoreComparisonContextSpecification
     {

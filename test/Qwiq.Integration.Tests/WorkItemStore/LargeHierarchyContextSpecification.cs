@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     public abstract class LargeHierarchyContextSpecification : WorkItemStoreComparisonContextSpecification
     {

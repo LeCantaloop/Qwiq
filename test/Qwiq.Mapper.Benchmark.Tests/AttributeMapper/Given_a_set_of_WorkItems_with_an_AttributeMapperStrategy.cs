@@ -1,13 +1,13 @@
 using System.Linq;
 
-using Microsoft.Qwiq.Mapper.Benchmark.Tests;
-using Microsoft.Qwiq.Mapper.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Mapper.Benchmark.Tests;
+using Qwiq.Mapper.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper.AttributeMapper
+namespace Qwiq.Mapper.AttributeMapper
 {
     [TestClass]
     public class Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : ContextSpecification

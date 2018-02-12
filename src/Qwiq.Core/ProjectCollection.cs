@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class ProjectCollection : ReadOnlyObjectWithIdCollection<IProject, Guid>, IProjectCollection
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq.Visitors
+namespace Qwiq.Linq.Visitors
 {
     /// <summary>
     ///     Enables the partial evaluation of queries.

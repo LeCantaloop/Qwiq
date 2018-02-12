@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Linq.Fragments
+namespace Qwiq.Linq.Fragments
 {
     internal class StringFragment : IFragment
     {

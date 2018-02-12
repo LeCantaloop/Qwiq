@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     [Serializable]
     public class AccessDeniedException : Exception

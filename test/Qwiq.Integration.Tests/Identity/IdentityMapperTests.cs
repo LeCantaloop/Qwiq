@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
 
-using Microsoft.Qwiq.Client.Soap;
-using Microsoft.Qwiq.Identity.Soap;
-using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Linq.Visitors;
-using Microsoft.Qwiq.WorkItemStore;
+using Qwiq.Client.Soap;
+using Qwiq.Identity.Soap;
+using Qwiq.Linq;
+using Qwiq.Linq.Visitors;
+using Qwiq.WorkItemStore;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     [TestClass]
     public class when_a_string_is_mapped_with_a_valid_identity : SoapIdentityMapperContextSpecification<string>

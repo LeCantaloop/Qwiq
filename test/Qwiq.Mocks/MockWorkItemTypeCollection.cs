@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     internal class MockWorkItemTypeCollection : WorkItemTypeCollection
     {

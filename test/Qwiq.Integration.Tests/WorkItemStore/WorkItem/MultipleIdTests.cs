@@ -3,7 +3,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem
+namespace Qwiq.WorkItemStore.WorkItem
 {
     [TestClass]
     public class Given_WorkItems_from_each_client_by_IDs : SingleWorkItemComparisonContextSpecification

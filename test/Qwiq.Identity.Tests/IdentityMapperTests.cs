@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     [TestClass]
     public abstract class IdentityMapperTests<T> : ContextSpecification

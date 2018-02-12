@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// Flags specifying optional work item data that should be copied.

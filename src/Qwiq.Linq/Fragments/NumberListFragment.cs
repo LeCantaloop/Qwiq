@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Linq.Fragments
+namespace Qwiq.Linq.Fragments
 {
     internal class NumberListFragment : ListFragment
     {

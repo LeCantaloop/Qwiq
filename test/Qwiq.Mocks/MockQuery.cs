@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     /// <summary>
     /// Maintains legacy behavior of MockWorkItemStore: WIQL queries return all items, links return all links. Work items are only restricted when querying by ID

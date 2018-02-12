@@ -5,16 +5,16 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-using Microsoft.Qwiq.Benchmark;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mapper.Mocks;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Benchmark;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Mocks;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using B = Microsoft.Qwiq.Mapper.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy;
+using B = Qwiq.Mapper.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy;
 
-namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
+namespace Qwiq.Mapper.Benchmark.Tests
 {
     [TestClass]
     public class BENCHMARK_Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy : BenchmarkContextSpecification
@@ -73,7 +73,7 @@ namespace Microsoft.Qwiq.Mapper.Benchmark.Tests
     }
 }
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [TestClass]
     public class Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy : ContextSpecification

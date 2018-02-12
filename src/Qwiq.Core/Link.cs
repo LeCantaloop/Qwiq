@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class Link : ILink
     {

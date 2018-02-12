@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Client.Soap;
+using Qwiq.Client.Soap;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     internal class IdentityManagementService : IIdentityManagementService
     {
@@ -19,7 +19,7 @@ namespace Microsoft.Qwiq.Identity.Soap
 
         public IIdentityDescriptor CreateIdentityDescriptor(string identityType, string identifier)
         {
-            return new TeamFoundation.Framework.Client.IdentityDescriptor(identityType, identifier).AsProxy();
+            return new Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor(identityType, identifier).AsProxy();
         }
 
         public IEnumerable<ITeamFoundationIdentity> ReadIdentities(IEnumerable<IIdentityDescriptor> descriptors)
@@ -34,7 +34,7 @@ namespace Microsoft.Qwiq.Identity.Soap
             if (descriptors == null) throw new ArgumentNullException(nameof(descriptors));
 
             var rawDescriptors = descriptors.Select(
-                    descriptor => new TeamFoundation.Framework.Client.IdentityDescriptor(
+                    descriptor => new Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor(
                         descriptor.IdentityType,
                         descriptor.Identifier))
                 .ToArray();
@@ -42,7 +42,7 @@ namespace Microsoft.Qwiq.Identity.Soap
             var identities =
                 _identityManagementService2.ReadIdentities(
                     rawDescriptors,
-                    (TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
+                    (Microsoft.TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
             ReadIdentityOptions.IncludeReadFromSource);
 
             // TODO: Use configuration options from IWorkItemStore to control proxy creation
@@ -64,11 +64,11 @@ namespace Microsoft.Qwiq.Identity.Soap
             if (searchFactorValues == null) throw new ArgumentNullException(nameof(searchFactorValues));
 
             var searchFactorArray = searchFactorValues.ToArray();
-            var factor = (TeamFoundation.Framework.Common.IdentitySearchFactor)searchFactor;
+            var factor = (Microsoft.TeamFoundation.Framework.Common.IdentitySearchFactor)searchFactor;
             var identities = _identityManagementService2.ReadIdentities(
                 factor,
                 searchFactorArray,
-                (TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
+                (Microsoft.TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
                 ReadIdentityOptions.IncludeReadFromSource);
 
             if (searchFactorArray.Length != identities.Length)
@@ -99,9 +99,9 @@ namespace Microsoft.Qwiq.Identity.Soap
 
             // TODO: Use configuration options from IWorkItemStore to control proxy creation
             return _identityManagementService2.ReadIdentity(
-                    (TeamFoundation.Framework.Common.IdentitySearchFactor)searchFactor,
+                    (Microsoft.TeamFoundation.Framework.Common.IdentitySearchFactor)searchFactor,
                     searchFactorValue,
-                    (TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
+                    (Microsoft.TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
                     ReadIdentityOptions.IncludeReadFromSource)
                 .AsProxy();
         }

@@ -1,6 +1,6 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.WorkItemStore.Soap
+namespace Qwiq.WorkItemStore.Soap
 {
     public abstract class WorkItemStoreFactoryContextSpecification : TimedContextSpecification
     {

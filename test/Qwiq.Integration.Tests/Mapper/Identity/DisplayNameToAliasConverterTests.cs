@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Qwiq.Identity;
+using Qwiq.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper.Identity
+namespace Qwiq.Mapper.Identity
 {
     [TestClass]
     public class Given_multiple_display_names : MultipleDisplayNameContextSpecification

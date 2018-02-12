@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockFieldDefinitionCollection : FieldDefinitionCollection
     {

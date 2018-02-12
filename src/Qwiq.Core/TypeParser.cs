@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Helper class that converts objects (as they are returned from the TFS API) to usable types.

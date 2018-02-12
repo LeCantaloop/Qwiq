@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class FieldDefinitionCollectionComparer : GenericComparer<IFieldDefinitionCollection>
     {

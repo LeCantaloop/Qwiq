@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Identity;
+using Qwiq.Identity;
 
-namespace Microsoft.Qwiq.Linq.Visitors
+namespace Qwiq.Linq.Visitors
 {
     /// <summary>
     ///     Represents a visitor used to detect and rewrite identity values in the expression tree.

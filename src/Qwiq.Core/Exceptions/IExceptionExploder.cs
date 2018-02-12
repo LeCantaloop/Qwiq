@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     public interface IExceptionExploder
     {

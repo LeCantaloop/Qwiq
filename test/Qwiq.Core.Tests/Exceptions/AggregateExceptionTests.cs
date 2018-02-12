@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     [TestClass]
     public class given_a_non_AggregateException_when_exploded : AggregateExceptionContextSpecification

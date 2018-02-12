@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IWorkItemLinkTypeCollection : IReadOnlyObjectWithNameCollection<IWorkItemLinkType>,
                                                    IEquatable<IWorkItemLinkTypeCollection>

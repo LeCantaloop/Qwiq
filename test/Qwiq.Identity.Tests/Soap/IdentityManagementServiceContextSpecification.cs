@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Identity.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Identity.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.TeamFoundation.Framework.Client;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     public abstract class IdentityManagementServiceContextSpecification<T> : ContextSpecification
     {

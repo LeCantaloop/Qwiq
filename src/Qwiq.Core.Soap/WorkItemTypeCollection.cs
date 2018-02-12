@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class WorkItemTypeCollection : Qwiq.WorkItemTypeCollection
     {
-        private readonly TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection _workItemTypeCollection;
+        private readonly Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection _workItemTypeCollection;
 
-        internal WorkItemTypeCollection(TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection workItemTypeCollection)
+        internal WorkItemTypeCollection(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection workItemTypeCollection)
             :base((List<IWorkItemType>)null)
         {
             _workItemTypeCollection = workItemTypeCollection
@@ -24,7 +24,7 @@ namespace Microsoft.Qwiq.Client.Soap
 
         public override IEnumerator<IWorkItemType> GetEnumerator()
         {
-            return _workItemTypeCollection.Cast<TeamFoundation.WorkItemTracking.Client.WorkItemType>()
+            return _workItemTypeCollection.Cast<Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemType>()
                                           .Select(
                                               item => ExceptionHandlingDynamicProxyFactory.Create<IWorkItemType>(
                                                   new WorkItemType(item)))

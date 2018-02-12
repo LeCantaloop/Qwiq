@@ -2,7 +2,7 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     [ContractClass(typeof(RevisionInternalContract))]
     internal interface IRevisionInternal

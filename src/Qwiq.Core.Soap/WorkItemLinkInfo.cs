@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class WorkItemLinkInfo : Qwiq.WorkItemLinkInfo, IIdentifiable<int>
     {

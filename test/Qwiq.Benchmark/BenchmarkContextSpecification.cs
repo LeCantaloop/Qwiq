@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Benchmark
+namespace Qwiq.Benchmark
 {
     public abstract class BenchmarkContextSpecification : ContextSpecification
     {

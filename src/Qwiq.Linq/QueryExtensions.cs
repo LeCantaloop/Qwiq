@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public static class QueryExtensions
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public interface IWorkItemMapperStrategy
     {

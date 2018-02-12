@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Identity;
-using Microsoft.Qwiq.Identity.Soap;
+using Qwiq.Identity;
+using Qwiq.Identity.Soap;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper.Identity
+namespace Qwiq.Mapper.Identity
 {
     /// <exclude />
     public abstract class DisplayNameToAliasConverterContextSpecification : SoapIdentityManagementServiceContextSpecification

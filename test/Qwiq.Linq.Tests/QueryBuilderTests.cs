@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 using Should.Core.Exceptions;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     [TestClass]
     // ReSharper disable once InconsistentNaming

@@ -4,7 +4,7 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     [PublicAPI]
     public class MockRevision : Revision

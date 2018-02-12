@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq.Visitors
+namespace Qwiq.Linq.Visitors
 {
     public class WiqlQueryBuilder : IWiqlQueryBuilder
     {

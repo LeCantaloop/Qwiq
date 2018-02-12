@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockWorkItemStoreConfiguration : WorkItemStoreConfiguration
     {

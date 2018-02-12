@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [StructLayout(LayoutKind.Sequential, Size = 1)]
     internal struct WorkItemField

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public static partial class Extensions
     {

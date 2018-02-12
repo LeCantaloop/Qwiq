@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class WorkItemTypeCollection : ReadOnlyObjectWithNameCollection<IWorkItemType>, IWorkItemTypeCollection
     {

@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IFieldCollection : IReadOnlyObjectWithIdCollection<IField, int>
     {

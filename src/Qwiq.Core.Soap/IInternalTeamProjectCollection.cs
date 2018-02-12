@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal interface IInternalTeamProjectCollection : ITeamProjectCollection, IDisposable
     {

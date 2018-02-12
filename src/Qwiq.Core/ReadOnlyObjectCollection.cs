@@ -4,12 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class ReadOnlyObjectCollection<T> : IReadOnlyObjectCollection<T>
     {
         private readonly object _lockObj = new object();
-        private bool _alreadyInit;
+        private volatile bool _alreadyInit;
         private Func<IEnumerable<T>> _itemFactory;
         private Lazy<IEnumerable<T>> _lazyItems;
 

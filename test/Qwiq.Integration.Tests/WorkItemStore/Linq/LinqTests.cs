@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 
-using Microsoft.Qwiq.Identity;
-using Microsoft.Qwiq.Linq;
+using Qwiq.Identity;
+using Qwiq.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore.Linq
+namespace Qwiq.WorkItemStore.Linq
 {
     [TestClass]
     public class Given_WorkItems_queried_by_LINQ_on_AssignedTo_by_UPN : LinqContextSpecification

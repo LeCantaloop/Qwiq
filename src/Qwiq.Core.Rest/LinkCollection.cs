@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     internal class LinkCollection : ReadOnlyObjectWithNameCollection<ILink>, ICollection<ILink>
     {

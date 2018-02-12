@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     internal class WorkItemStore : IWorkItemStore
     {

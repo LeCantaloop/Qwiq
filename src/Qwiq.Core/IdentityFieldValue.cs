@@ -5,7 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Represents an identity

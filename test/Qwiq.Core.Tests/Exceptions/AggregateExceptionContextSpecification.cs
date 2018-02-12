@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Tests.Common;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     public class AggregateExceptionContextSpecification : ContextSpecification
     {

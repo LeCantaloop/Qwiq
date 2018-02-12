@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public class WorkItemMapper : IWorkItemMapper
     {

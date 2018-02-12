@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
 
     public class WorkItemClassificationNode<TId> : IWorkItemClassificationNode<TId>, IEquatable<IWorkItemClassificationNode<TId>>

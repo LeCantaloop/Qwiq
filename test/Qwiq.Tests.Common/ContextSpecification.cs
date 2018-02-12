@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.Tests.Common
+namespace Qwiq.Tests.Common
 {
     /// <summary>
     ///     Serves as a base class for implementing Behavior-Driven Development

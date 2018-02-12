@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     internal class Query : IQuery
     {
@@ -88,7 +88,7 @@ namespace Microsoft.Qwiq.Client.Rest
             return retval;
         }
 
-        private WorkItem CreateItemEager(TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
+        private WorkItem CreateItemEager(Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
         {
             return new WorkItem(
                                 workItem,
@@ -97,7 +97,7 @@ namespace Microsoft.Qwiq.Client.Rest
                                 LinkFunc);
         }
 
-        private WorkItem CreateItemLazy(TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
+        private WorkItem CreateItemLazy(Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
         {
             IWorkItemType WorkItemTypeFactory()
             {
@@ -107,11 +107,11 @@ namespace Microsoft.Qwiq.Client.Rest
             return new WorkItem(workItem, new Lazy<IWorkItemType>(WorkItemTypeFactory), LinkFunc);
         }
 
-        private List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] FetchResults()
+        private List<Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] FetchResults()
         {
             var t = new CancellationToken();
             var ts =
-                    new List<Task<List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
+                    new List<Task<List<Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
                                                                                                  _ids.Count
                                                                                                  % _workItemStore.Configuration.PageSize
                                                                                                  + 1);
@@ -120,8 +120,8 @@ namespace Microsoft.Qwiq.Client.Rest
             var c = _workItemStore.NativeWorkItemStore.Value;
             var o = _workItemStore.Configuration;
 
-            var e = (TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemExpand)o.WorkItemExpand;
-            var p = (TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemErrorPolicy)o.WorkItemErrorPolicy;
+            var e = (Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemExpand)o.WorkItemExpand;
+            var p = (Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemErrorPolicy)o.WorkItemErrorPolicy;
             var f = o.WorkItemExpand == WorkItemExpand.None ? o.DefaultFields : null;
 
             foreach (var s in qry) ts.Add(c.GetWorkItemsAsync(s, f, _asOf, e, p, null, t));
@@ -135,7 +135,7 @@ namespace Microsoft.Qwiq.Client.Rest
             return _workItemStore.WorkItemLinkTypes[s];
         }
 
-        private List<IWorkItem> LoadWorkItemsEagerly(List<TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] results)
+        private List<IWorkItem> LoadWorkItemsEagerly(List<Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] results)
         {
             var retval = new List<IWorkItem>(_ids.Count);
 
@@ -159,7 +159,7 @@ namespace Microsoft.Qwiq.Client.Rest
 
         [JetBrains.Annotations.Pure]
         [NotNull]
-        private IWorkItemType LookUpWorkItemType([NotNull] TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
+        private IWorkItemType LookUpWorkItemType([NotNull] Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
         {
             if (!workItem.Fields.TryGetValue(CoreFieldRefNames.TeamProject, out object tp))
             {

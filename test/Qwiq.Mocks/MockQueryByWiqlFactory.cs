@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public class MockQueryByWiqlFactory : IQueryFactory
     {

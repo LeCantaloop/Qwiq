@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class WorkItemLinkTypeEnd : Qwiq.WorkItemLinkTypeEnd, IIdentifiable<int>
     {

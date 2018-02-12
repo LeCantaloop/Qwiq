@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public static class CoreLinkTypeReferenceNames
     {

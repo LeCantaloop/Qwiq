@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     /// An exception that is thrown when a field definition does not exist on a work item type.

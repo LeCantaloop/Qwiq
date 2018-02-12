@@ -5,10 +5,10 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Linq;
+using Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public class FieldMapper : IFieldMapper
     {

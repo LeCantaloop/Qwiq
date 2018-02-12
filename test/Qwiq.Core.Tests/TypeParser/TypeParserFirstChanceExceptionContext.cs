@@ -1,7 +1,7 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class TypeParserFirstChanceExceptionContext : TypeParserTestsContext
     {

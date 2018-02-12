@@ -1,10 +1,10 @@
 using System;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal class Field : Qwiq.Field
     {

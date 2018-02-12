@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     /// <summary>
     /// Maps friendly names to and from reference names

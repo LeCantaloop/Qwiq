@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <summary>
     ///     Represents the work item store resource.

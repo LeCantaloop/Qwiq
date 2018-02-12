@@ -1,8 +1,8 @@
 using System;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.UnitTests.Mocks
+namespace Qwiq.UnitTests.Mocks
 {
     public class MockArgumentExceptionMapper : IExceptionMapper
     {
