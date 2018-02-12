@@ -1,0 +1,7 @@
+engines:
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  remark-lint:
+    enabled: true
