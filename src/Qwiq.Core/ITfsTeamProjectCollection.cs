@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface ITeamProjectCollection : IResourceReference
     {

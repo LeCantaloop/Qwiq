@@ -2,7 +2,7 @@ using System;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     public interface IExceptionMapper
     {

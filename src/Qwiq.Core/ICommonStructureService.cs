@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface ICommonStructureService
     {

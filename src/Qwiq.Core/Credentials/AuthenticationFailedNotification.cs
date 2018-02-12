@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Credentials
+namespace Qwiq.Credentials
 {
     public class AuthenticationFailedNotification : CredentialNotification
     {

@@ -6,8 +6,8 @@
     <ProjectGuid>{26DFD8E0-C486-4EAE-BA7F-277A40AF5CC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq.Identity.BenchmarkTests</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Identity.BenchmarkTests</AssemblyName>
+    <RootNamespace>Qwiq.Identity.BenchmarkTests</RootNamespace>
+    <AssemblyName>Qwiq.Identity.BenchmarkTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -17,7 +17,8 @@
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\build\rulesets\noship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />

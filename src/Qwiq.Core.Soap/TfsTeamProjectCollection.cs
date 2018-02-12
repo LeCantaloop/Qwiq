@@ -1,10 +1,10 @@
 using System;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     /// <summary>
     /// </summary>
@@ -18,7 +18,7 @@ namespace Microsoft.Qwiq.Client.Soap
         /// </summary>
         /// <param name="teamProjectCollection">The TFS.</param>
         /// <exception cref="ArgumentNullException">tfs</exception>
-        internal TfsTeamProjectCollection(TeamFoundation.Client.TfsTeamProjectCollection teamProjectCollection)
+        internal TfsTeamProjectCollection(Microsoft.TeamFoundation.Client.TfsTeamProjectCollection teamProjectCollection)
         {
             Native = teamProjectCollection ?? throw new ArgumentNullException(nameof(teamProjectCollection));
 
@@ -73,7 +73,7 @@ namespace Microsoft.Qwiq.Client.Soap
         /// <value>The URI.</value>
         public Uri Uri { get; }
 
-        internal TeamFoundation.Client.TfsTeamProjectCollection Native { get; }
+        internal Microsoft.TeamFoundation.Client.TfsTeamProjectCollection Native { get; }
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

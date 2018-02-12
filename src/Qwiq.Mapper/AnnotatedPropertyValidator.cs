@@ -1,11 +1,11 @@
 using JetBrains.Annotations;
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Attributes;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public class AnnotatedPropertyValidator : IAnnotatedPropertyValidator
     {

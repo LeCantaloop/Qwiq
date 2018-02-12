@@ -3,7 +3,7 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     internal class MockProjectCollection : ProjectCollection
     {

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Runtime.ExceptionServices;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     [DebuggerStepThrough]
     public class ExceptionHandlingDynamicProxy : IInterceptor

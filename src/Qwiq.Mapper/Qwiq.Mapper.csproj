@@ -6,12 +6,13 @@
     <ProjectGuid>{016E8D93-4195-4639-BCD5-77633E8E1681}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq.Mapper</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Mapper</AssemblyName>
+    <RootNamespace>Qwiq.Mapper</RootNamespace>
+    <AssemblyName>Qwiq.Mapper</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FastMember" Version="1.1.0" />

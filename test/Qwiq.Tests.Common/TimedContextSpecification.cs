@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 using Humanizer;
 
-namespace Microsoft.Qwiq.Tests.Common
+namespace Qwiq.Tests.Common
 {
     public abstract class TimedContextSpecification : ContextSpecification
     {

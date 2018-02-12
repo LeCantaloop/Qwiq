@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     [Serializable]
     public class MultipleIdentitiesFoundException : ApplicationException

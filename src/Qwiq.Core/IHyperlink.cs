@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IHyperlink : ILink, IEquatable<IHyperlink>
     {

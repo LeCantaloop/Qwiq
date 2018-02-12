@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Project
+namespace Qwiq.Project
 {
     [TestClass]
     public class Given_a_Project_from_each_WorkItemStore_implementation : ProjectComparisonContextSpecification

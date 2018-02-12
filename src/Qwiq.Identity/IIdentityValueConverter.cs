@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     /// <summary>
     /// Defines a method that converts the value of the implementing reference or value type to another reference or value type.

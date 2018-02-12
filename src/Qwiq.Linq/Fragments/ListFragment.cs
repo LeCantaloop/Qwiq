@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Linq.Fragments
+namespace Qwiq.Linq.Fragments
 {
     internal class ListFragment : IFragment
     {

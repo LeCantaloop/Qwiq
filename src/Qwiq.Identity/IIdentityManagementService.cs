@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     public interface IIdentityManagementService
     {

@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     // ReSharper disable InconsistentNaming
     public static partial class Extensions

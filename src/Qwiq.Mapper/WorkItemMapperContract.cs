@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [ContractClassFor(typeof(IWorkItemMapper))]
     internal abstract class WorkItemMapperContract : IWorkItemMapper

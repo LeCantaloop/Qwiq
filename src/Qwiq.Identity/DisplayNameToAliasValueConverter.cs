@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     /// <summary>
     /// Converts a <see cref="string"/> representing an identity to an alias

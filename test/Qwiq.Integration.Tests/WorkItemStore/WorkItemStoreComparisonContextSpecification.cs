@@ -1,7 +1,7 @@
-﻿using Microsoft.Qwiq.Tests.Common;
+﻿using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
     [DeploymentItem("Microsoft.WITDataStore32.dll")]
     [DeploymentItem("Microsoft.WITDataStore64.dll")]

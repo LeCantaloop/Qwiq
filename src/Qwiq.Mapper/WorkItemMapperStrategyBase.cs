@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public abstract class WorkItemMapperStrategyBase : IWorkItemMapperStrategy
     {

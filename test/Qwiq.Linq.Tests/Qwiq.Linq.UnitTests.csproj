@@ -5,8 +5,8 @@
     <ProjectGuid>{0A26136B-A086-4CDF-BFF6-E0A83FB67446}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq.Linq</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Linq.UnitTests</AssemblyName>
+    <RootNamespace>Qwiq.Linq</RootNamespace>
+    <AssemblyName>Qwiq.Linq.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -16,7 +16,8 @@
     <TestProjectType>UnitTest</TestProjectType>
     <CodeAnalysisRuleSet>..\..\build\rulesets\noship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class ReadOnlyCollectionWithIdComparer<T, TId> : GenericComparer<IReadOnlyObjectWithIdCollection<T, TId>>
         where T : IIdentifiable<TId>

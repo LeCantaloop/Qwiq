@@ -4,17 +4,17 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-using Microsoft.Qwiq.Benchmark;
-using Microsoft.Qwiq.Identity.Mocks;
-using Microsoft.Qwiq.Mapper;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Benchmark;
+using Qwiq.Identity.Mocks;
+using Qwiq.Mapper;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using B = Microsoft.Qwiq.Identity.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_a_BulkIdentityAwareAttributeMapperStrategy;
+using B = Qwiq.Identity.Benchmark.Tests.BENCHMARK_Given_a_set_of_WorkItems_with_a_BulkIdentityAwareAttributeMapperStrategy;
 
-namespace Microsoft.Qwiq.Identity.Benchmark.Tests
+namespace Qwiq.Identity.Benchmark.Tests
 {
     [TestClass]
     public class BENCHMARK_Given_a_set_of_WorkItems_with_a_BulkIdentityAwareAttributeMapperStrategy : BenchmarkContextSpecification
@@ -69,7 +69,7 @@ namespace Microsoft.Qwiq.Identity.Benchmark.Tests
     }
 }
 
-namespace Microsoft.Qwiq.Mapper.Tests
+namespace Qwiq.Mapper.Tests
 {
     [TestClass]
     public class Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : ContextSpecification

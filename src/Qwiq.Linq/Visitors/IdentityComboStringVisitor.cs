@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq.Visitors
+namespace Qwiq.Linq.Visitors
 {
     /// <summary>
     ///     Represents a visitor to detect identity values in the expression tree.

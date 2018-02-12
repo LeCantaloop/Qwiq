@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Microsoft.Qwiq.Exceptions
+namespace Qwiq.Exceptions
 {
     [DebuggerStepThrough]
     internal class TransientExceptionMapper: VssExceptionMapper

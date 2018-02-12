@@ -6,10 +6,10 @@ using System.Linq.Expressions;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Identity;
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Identity;
+using Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Linq.Visitors
+namespace Qwiq.Linq.Visitors
 {
     /// <summary>
     ///     Represents a visitor used to detect and rewrite identity values in the expression tree.

@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public interface IFieldDefinitionCollection : IReadOnlyObjectWithIdCollection<IFieldDefinition, int>,
                                                   IEquatable<IFieldDefinitionCollection>

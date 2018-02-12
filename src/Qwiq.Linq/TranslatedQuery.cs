@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.Qwiq.Linq.Fragments;
+using Qwiq.Linq.Fragments;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     /// <summary>
     /// This guy holds the results of expression visiting. He allows us to keep lists of sub-expressions

@@ -1,10 +1,10 @@
-using Microsoft.Qwiq.Credentials;
+using Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     /// <exclude />
     public static class IntegrationSettings

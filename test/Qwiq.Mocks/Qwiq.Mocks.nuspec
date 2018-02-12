@@ -4,10 +4,10 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
-    <authors>Microsoft</authors>
-    <owners>Microsoft, QWIQ</owners>
-    <projectUrl>https://github.com/MicrosoftEdge/Microsoft.Qwiq</projectUrl>
-    <licenseUrl>https://github.com/MicrosoftEdge/Microsoft.Qwiq/blob/master/LICENSE</licenseUrl>
+    <authors>LeCantaloop</authors>
+    <owners>LeCantaloop, rjmurillo</owners>
+    <projectUrl>https://github.com/LeCantaloop/Qwiq</projectUrl>
+    <licenseUrl>https://github.com/LeCantaloop/Qwiq/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>$copyright$</copyright>

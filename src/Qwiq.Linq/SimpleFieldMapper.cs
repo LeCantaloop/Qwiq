@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     // REVIEW: A new type should be created that retrieves the field collection from the WIT
 

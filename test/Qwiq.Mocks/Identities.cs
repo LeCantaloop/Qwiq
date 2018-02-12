@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     public static class Identities
     {

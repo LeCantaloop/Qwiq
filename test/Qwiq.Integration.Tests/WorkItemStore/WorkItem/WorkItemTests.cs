@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore
+namespace Qwiq.WorkItemStore
 {
 
     public abstract class WorkItemContextSpecification<T> : WorkItemStoreContextSpecification<T>

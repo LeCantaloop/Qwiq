@@ -1,9 +1,9 @@
 ﻿using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.WebApi;
 
-namespace Microsoft.Qwiq.Client.Rest
+namespace Qwiq.Client.Rest
 {
     internal static class Extensions
     {
@@ -26,7 +26,7 @@ namespace Microsoft.Qwiq.Client.Rest
         [CanBeNull]
         [Pure]
         [ContractAnnotation("null => null; notnull => notnull")]
-        internal static IIdentityDescriptor AsProxy([CanBeNull] this VisualStudio.Services.Identity.IdentityDescriptor value)
+        internal static IIdentityDescriptor AsProxy([CanBeNull] this Microsoft.VisualStudio.Services.Identity.IdentityDescriptor value)
         {
             return value == null ? null : ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new IdentityDescriptor(value));
         }

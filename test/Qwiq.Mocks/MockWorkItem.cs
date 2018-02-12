@@ -7,7 +7,7 @@ using System.Threading;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mocks
+namespace Qwiq.Mocks
 {
     [Serializable]
     public class MockWorkItem : WorkItem, IWorkItem

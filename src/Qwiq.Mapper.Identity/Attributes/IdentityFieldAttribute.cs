@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Mapper.Attributes
+namespace Qwiq.Mapper.Attributes
 {
     /// <summary>
     /// Represents a class designating a property as an identity value.

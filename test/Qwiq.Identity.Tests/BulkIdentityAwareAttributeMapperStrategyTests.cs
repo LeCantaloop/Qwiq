@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using Microsoft.Qwiq.Identity.Mocks;
-using Microsoft.Qwiq.Mapper;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Identity.Mocks;
+using Qwiq.Mapper;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
-using MockIdentityDescriptor = Microsoft.Qwiq.Mocks.MockIdentityDescriptor;
+using MockIdentityDescriptor = Qwiq.Mocks.MockIdentityDescriptor;
 
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     public abstract class BulkIdentityAwareAttributeMapperStrategyTests : ContextSpecification
     {

@@ -6,12 +6,13 @@
     <ProjectGuid>{DB07E690-4B77-414F-91C7-1A48C9F01F24}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Qwiq.Mocks</RootNamespace>
-    <AssemblyName>Microsoft.Qwiq.Mocks</AssemblyName>
+    <RootNamespace>Qwiq.Mocks</RootNamespace>
+    <AssemblyName>Qwiq.Mocks</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <CodeAnalysisRuleSet>..\..\build\rulesets\ship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GitVersionTask" Version="4.0.0-beta0012" />

@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Credentials
+namespace Qwiq.Credentials
 {
     /// <summary>
     ///     Represents options for authentication against a Team Foundation Server.

@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq.Linq.WiqlExpressions
+namespace Qwiq.Linq.WiqlExpressions
 {
     internal enum WiqlExpressionType
     {

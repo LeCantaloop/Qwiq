@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 using Microsoft.VisualStudio.Services.Common;
 
 using TfsWorkItem = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     /// <summary>
     /// Wrapper around the TFS WorkItemStore. This exists so that every agent doesn't need to reference all the TFS libraries.

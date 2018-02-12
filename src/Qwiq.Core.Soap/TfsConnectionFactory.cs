@@ -2,7 +2,7 @@ using System;
 
 using Microsoft.VisualStudio.Services.Common;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class TfsConnectionFactory : TfsConnectionFactory<ITeamProjectCollection>
     {
@@ -15,7 +15,7 @@ namespace Microsoft.Qwiq.Client.Soap
         /// <inheritdoc />
         protected override ITeamProjectCollection ConnectToTfsCollection(Uri endpoint, VssCredentials credentials)
         {
-            var tfsServer = new TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
+            var tfsServer = new Microsoft.TeamFoundation.Client.TfsTeamProjectCollection(endpoint, credentials);
             tfsServer.EnsureAuthenticated();
             return tfsServer.AsProxy();
         }

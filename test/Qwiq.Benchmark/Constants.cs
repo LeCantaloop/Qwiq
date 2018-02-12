@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Qwiq.Benchmark
+﻿namespace Qwiq.Benchmark
 {
     public static class Constants
     {

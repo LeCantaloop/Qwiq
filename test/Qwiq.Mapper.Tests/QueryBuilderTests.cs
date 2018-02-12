@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 
-using Microsoft.Qwiq.Mapper.Mocks;
+using Qwiq.Mapper.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [TestClass]
     // ReSharper disable once InconsistentNaming

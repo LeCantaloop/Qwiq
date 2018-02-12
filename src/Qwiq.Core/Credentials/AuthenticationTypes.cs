@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Credentials
+namespace Qwiq.Credentials
 {
     [Flags]
     public enum AuthenticationTypes

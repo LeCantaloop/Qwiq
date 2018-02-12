@@ -1,4 +1,4 @@
-namespace Microsoft.Qwiq.Identity
+namespace Qwiq.Identity
 {
     /// <summary>
     /// Indicates the method to populate <see cref="ITeamFoundationIdentity"/>

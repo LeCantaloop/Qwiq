@@ -2,7 +2,7 @@ using System.Diagnostics;
 
 using Tfs = Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     public class Hyperlink : Qwiq.Hyperlink
     {

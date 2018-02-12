@@ -5,18 +5,18 @@ using System.Linq;
 
 using JetBrains.Annotations;
 
-using Microsoft.Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal class Query : IQuery
     {
         private readonly int _pageSize;
 
         [NotNull]
-        private readonly TeamFoundation.WorkItemTracking.Client.Query _query;
+        private readonly Microsoft.TeamFoundation.WorkItemTracking.Client.Query _query;
 
-        internal Query([NotNull] TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
+        internal Query([NotNull] Microsoft.TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
         {
             Contract.Requires(query != null);
 

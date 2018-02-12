@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     internal class WorkItemLinkTypeComparer : GenericComparer<IWorkItemLinkType>
     {

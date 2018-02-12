@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq.WiqlExpressions
+namespace Qwiq.Linq.WiqlExpressions
 {
     public class SelectExpression : Expression
     {

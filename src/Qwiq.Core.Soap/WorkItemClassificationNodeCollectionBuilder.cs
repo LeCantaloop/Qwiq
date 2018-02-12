@@ -3,7 +3,7 @@ using System.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
-namespace Microsoft.Qwiq.Client.Soap
+namespace Qwiq.Client.Soap
 {
     internal static class WorkItemClassificationNodeCollectionBuilder
     {

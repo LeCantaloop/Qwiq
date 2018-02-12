@@ -2,7 +2,7 @@
 using Should;
 using System.Collections.Generic;
 
-namespace Microsoft.Qwiq.Mapper.Identity
+namespace Qwiq.Mapper.Identity
 {
     public class MultipleDisplayNameContextSpecification : DisplayNameToAliasConverterContextSpecification
     {

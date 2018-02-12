@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class WorkItemStoreConfiguration
     {

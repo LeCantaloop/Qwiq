@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Should;
 
-namespace Microsoft.Qwiq.Identity.Soap
+namespace Qwiq.Identity.Soap
 {
     [TestClass]
     public class Given_an_Account_with_Group_Membership : SoapIdentityManagementServiceContextSpecification

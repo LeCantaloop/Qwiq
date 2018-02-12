@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     [ContractClassFor(typeof(IFieldMapper))]
     internal abstract class FieldMapperContract : IFieldMapper

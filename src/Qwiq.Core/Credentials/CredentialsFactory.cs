@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Services.Client;
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.OAuth;
 
-namespace Microsoft.Qwiq.Credentials
+namespace Qwiq.Credentials
 {
     /// <summary>
     ///     Depending on the specific setup of the TFS server, it may or may not accept credentials of specific type. To

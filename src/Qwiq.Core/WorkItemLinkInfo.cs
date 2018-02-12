@@ -4,7 +4,7 @@ using System.Globalization;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public class WorkItemLinkInfo : IWorkItemLinkInfo
     {

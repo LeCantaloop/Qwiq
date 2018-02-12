@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Microsoft.Qwiq.Mapper.Attributes
+namespace Qwiq.Mapper.Attributes
 {
     public abstract class PropertyReflectorBase : IPropertyReflector
     {

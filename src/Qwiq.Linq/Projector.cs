@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public static class Projector
     {

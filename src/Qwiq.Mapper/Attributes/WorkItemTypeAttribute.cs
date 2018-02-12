@@ -1,6 +1,6 @@
 using System;
 
-namespace Microsoft.Qwiq.Mapper.Attributes
+namespace Qwiq.Mapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
     public class WorkItemTypeAttribute : Attribute

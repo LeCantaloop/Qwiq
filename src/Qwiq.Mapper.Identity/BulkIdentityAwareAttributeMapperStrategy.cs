@@ -7,10 +7,10 @@ using System.Reflection;
 
 using FastMember;
 using JetBrains.Annotations;
-using Microsoft.Qwiq.Identity;
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Identity;
+using Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     /// <summary>
     /// Class BulkIdentityAwareAttributeMapperStrategy.

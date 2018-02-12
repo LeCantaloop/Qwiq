@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace Microsoft.Qwiq.Linq
+namespace Qwiq.Linq
 {
     public interface IWiqlQueryBuilder
     {

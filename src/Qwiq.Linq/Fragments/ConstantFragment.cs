@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Microsoft.Qwiq.Linq.Fragments
+namespace Qwiq.Linq.Fragments
 {
     internal class ConstantFragment : StringFragment
     {

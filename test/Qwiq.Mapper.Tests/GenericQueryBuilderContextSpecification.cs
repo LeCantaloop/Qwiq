@@ -1,9 +1,9 @@
-using Microsoft.Qwiq.Linq;
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mapper.Linq;
-using Microsoft.Qwiq.Mapper.Mocks;
+using Qwiq.Linq;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Linq;
+using Qwiq.Mapper.Mocks;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public abstract class GenericQueryBuilderContextSpecification<T> : QueryableContextSpecification<T>
     {

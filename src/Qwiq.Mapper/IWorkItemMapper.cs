@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 
 using JetBrains.Annotations;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     [ContractClass(typeof(WorkItemMapperContract))]
     public interface IWorkItemMapper

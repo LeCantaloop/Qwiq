@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Attributes;
 
-namespace Microsoft.Qwiq.Mapper.Mocks
+namespace Qwiq.Mapper.Mocks
 {
     [WorkItemType("Task")]
     public class MockModel : IIdentifiable<int?>

@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     [TestClass]
     public class when_parsing_a_value_type_to_nullable_value_type : TypeParserTestsContext

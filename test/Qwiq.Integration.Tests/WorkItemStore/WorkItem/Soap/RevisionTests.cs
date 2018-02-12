@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 
-using Microsoft.Qwiq.WorkItemStore.Soap;
+using Qwiq.WorkItemStore.Soap;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.WorkItemStore.WorkItem.Soap
+namespace Qwiq.WorkItemStore.WorkItem.Soap
 {
     public abstract class RevisionContextSpecification : SoapWorkItemContextSpecification
     {

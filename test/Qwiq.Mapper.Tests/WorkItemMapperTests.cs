@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using Microsoft.Qwiq.Mapper.Attributes;
-using Microsoft.Qwiq.Mapper.Mocks;
-using Microsoft.Qwiq.Mocks;
-using Microsoft.Qwiq.Tests.Common;
+using Qwiq.Mapper.Attributes;
+using Qwiq.Mapper.Mocks;
+using Qwiq.Mocks;
+using Qwiq.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
 
-namespace Microsoft.Qwiq.Mapper
+namespace Qwiq.Mapper
 {
     public abstract class WorkItemMapperContext<T> : ContextSpecification
         where T : IIdentifiable<int?>, new()

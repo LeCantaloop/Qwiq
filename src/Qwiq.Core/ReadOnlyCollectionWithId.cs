@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Microsoft.Qwiq
+namespace Qwiq
 {
     public abstract class ReadOnlyObjectWithIdCollection<T, TId> : ReadOnlyObjectWithNameCollection<T>,
                                                                    IReadOnlyObjectWithIdCollection<T, TId>
