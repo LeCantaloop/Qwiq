@@ -22,6 +22,7 @@ How often do you update a work item? How often do you create a new security grou
 ## How to install it
 We have two ways you can install our packages: through NuGet.org which contains our stable packages only, and MyGet.org, which contains vNext and stable packages.
 
+
 If you want our vNext packages, [add our MyGet feed to your NuGet clients](https://docs.nuget.org/ndocs/tools/package-manager-ui#package-sources):
 
  - v3 (VS 2015+ / NuGet 3.x): `https://www.myget.org/F/qwiq/api/v3/index.json`
@@ -39,7 +40,7 @@ Or via the UI [Qwiq.Core](https://www.nuget.org/packages/Qwiq.Core/)
 
 MyGet
 ```
-PM> Install-Package Qwiq.Core -Source https://www.myget.org/F/qwiq/api/v3/index.json 
+PM> Install-Package Qwiq.Core -Source https://www.myget.org/F/qwiq/api/v3/index.json
 ```
 Or via the UI [Qwiq.Core](https://www.myget.org/feed/qwiq/package/nuget/Qwiq.Core),
 
@@ -56,12 +57,13 @@ Or via the UI [Qwiq.Client.Soap](https://www.nuget.org/packages/Qwiq.Client.Soap
 From the NuGet package manager console
 MyGet
 ```
-PM> Install-Package Qwiq.Client.Soap -Source https://www.myget.org/F/qwiq/api/v3/index.json 
+PM> Install-Package Qwiq.Client.Soap -Source https://www.myget.org/F/qwiq/api/v3/index.json
 ```
 Or via the UI [Qwiq.Client.Soap](https://www.myget.org/feed/qwiq/package/nuget/Qwiq.Client.Soap),
 
 ### Basic Usage
 For .NET
+
 ```csharp
 using Qwiq;
 using Qwiq.Credentials;
@@ -91,6 +93,7 @@ var items = store.Query(@"
 ```
 
 For PowerShell
+
 ```powershell
 [Reflection.Assembly]::LoadFrom("E:\Path\To\Qwiq.Core.dll")
 # Can use SOAP or REST clients here
