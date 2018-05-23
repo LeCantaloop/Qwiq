@@ -213,6 +213,12 @@ namespace Qwiq.Client.Soap
             return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(new Tfs.Hyperlink(location)));
         }
 
+        public override IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)
+        {
+            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
+            return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLink(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItemId)));
+        }
+
         /// <summary>
         ///     Validates the fields of this work item.
         /// </summary>
