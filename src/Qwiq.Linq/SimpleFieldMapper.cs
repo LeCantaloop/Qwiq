@@ -20,7 +20,8 @@ namespace Qwiq.Linq
             {"CreatedBy", "Created By"},
             {"CreatedDate", "Created Date"},
             {"IterationPath", "Iteration Path"},
-            {"RevisedDate", "Revised Date"}
+            {"RevisedDate", "Revised Date"},
+            {"WorkItemType", "Work Item Type"}
         };
 
         // REVIEW: Replace with more constrained set of fields

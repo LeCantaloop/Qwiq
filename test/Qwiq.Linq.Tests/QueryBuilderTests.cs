@@ -697,4 +697,21 @@ namespace Qwiq.Linq
             Actual.ShouldEqual(Expected);
         }
     }
+
+    [TestClass]
+    public class given_a_query_on_WorkItemType : WiqlQueryBuilderContextSpecification
+    {
+        public override void When()
+        {
+            base.When();
+            Expected = "SELECT * FROM WorkItems WHERE (([Work Item Type] = 'Bug'))";
+            Actual = Query.Where(item => item.WorkItemType == "Bug").ToString();
+        }
+
+        [TestMethod]
+        public void the_value_is_written_to_WIQL()
+        {
+            Actual.ShouldEqual(Expected);
+        }
+    }
 }
