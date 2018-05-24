@@ -80,7 +80,7 @@ using Microsoft.VisualStudio.Services.Client;
 
 // Use the full URI, including the collection. Example: https://QWIQ.VisualStudio.com/DefaultCollection
 var uri = new Uri("[Tfs Tenant Uri]");
-var options = new AuthenticationOptions(uri, AuthenticationType.Windows);
+var options = new AuthenticationOptions(uri, AuthenticationTypes.Windows);
 var store = WorkItemStoreFactory
                 .Default
                 .Create(options);
