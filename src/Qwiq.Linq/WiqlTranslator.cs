@@ -258,6 +258,8 @@ namespace Qwiq.Linq
                         _expressionInProgress.Enqueue(new StringFragment(" NOT "));
                         Visit(node.Operand);
                         break;
+                    case ExpressionType.Convert:
+                    case ExpressionType.ConvertChecked:
                     case ExpressionType.TypeAs:
                         // Casting a type; do nothing because WIQL handles type conversion
                         Visit(node.Operand);
