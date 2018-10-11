@@ -84,12 +84,16 @@
     <Compile Include="FieldDefinitionCollection.cs" />
     <Compile Include="IdentityDescriptor.cs" />
     <Compile Include="IInternalTeamProjectCollection.cs" />
+    <Compile Include="IQueryHierarchyItemRepository.cs" />
     <Compile Include="LevelOrderEnumerator.cs" />
     <Compile Include="LinkCollection.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />
+    <Compile Include="QueryDefinition.cs" />
     <Compile Include="QueryFactory.cs" />
+    <Compile Include="QueryFolder.cs" />
+    <Compile Include="QueryHiearchyItemRepository.cs" />
     <Compile Include="TeamFoundationIdentity.cs" />
     <Compile Include="TfsConnectionFactory.cs" />
     <Compile Include="VssConnectionAdapter.cs" />

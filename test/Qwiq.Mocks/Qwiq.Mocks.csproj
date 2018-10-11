@@ -56,7 +56,9 @@
     <Compile Include="MockQuery.cs" />
     <Compile Include="MockQueryByWiql.cs" />
     <Compile Include="MockQueryByWiqlFactory.cs" />
+    <Compile Include="MockQueryDefinition.cs" />
     <Compile Include="MockQueryFactory.cs" />
+    <Compile Include="MockQueryFolder.cs" />
     <Compile Include="MockRelatedLink.cs" />
     <Compile Include="MockRevision.cs" />
     <Compile Include="MockTeamFoundationIdentity.cs" />

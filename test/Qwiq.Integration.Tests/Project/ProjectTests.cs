@@ -73,6 +73,24 @@ namespace Qwiq.Project
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
         [TestCategory("REST")]
+        public void Each_project_contains_the_same_saved_QueryHierarchy()
+        {
+            var restHierarchy = TimedAction(() => RestProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"], "REST", "Get Rest Hierarchy");
+            var soapHierarchy = TimedAction(() => SoapProject.QueryHierarchy["Shared Queries"].SubFolders["WPT - Web Platform"], "SOAP", "Get Soap Hierarchy");
+
+            var restHashCode = TimedAction(() => restHierarchy.GetHashCode(), "REST", "Get Rest Hierarchy HashCode");
+            var soapHashCode = TimedAction(() => soapHierarchy.GetHashCode(), "SOAP", "Get Soap Hierarchy HashCode");
+
+            restHierarchy.ShouldEqual(soapHierarchy);
+            restHierarchy.SubFolders.ShouldContainOnly(soapHierarchy.SubFolders);
+            restHierarchy.SavedQueries.ShouldContainOnly(soapHierarchy.SavedQueries);
+            restHashCode.ShouldEqual(soapHashCode);
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
+        [TestCategory("REST")]
         public void Each_project_contains_the_same_WorkItemTypes_with_the_same_FieldDefinitions()
         {
             var exceptions = new List<Exception>();

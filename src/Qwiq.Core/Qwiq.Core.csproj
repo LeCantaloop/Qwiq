@@ -138,7 +138,11 @@
     <Compile Include="IProjectInfo.cs" />
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="IQueryDefinition.cs" />
     <Compile Include="IQueryFactory.cs" />
+    <Compile Include="IQueryFolder.cs" />
+    <Compile Include="IQueryDefinitionCollection.cs" />
+    <Compile Include="IQueryFolderCollection.cs" />
     <Compile Include="IReadOnlyField.cs" />
     <Compile Include="IReadOnlyObjectCollection.cs" />
     <Compile Include="IReadOnlyObjectList.cs" />
@@ -189,6 +193,12 @@
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryDefinition.cs" />
+    <Compile Include="QueryDefinitionCollection.cs" />
+    <Compile Include="QueryDefinitionComparer.cs" />
+    <Compile Include="QueryFolder.cs" />
+    <Compile Include="QueryFolderCollection.cs" />
+    <Compile Include="QueryFolderComparer.cs" />
     <Compile Include="ReadOnlyCollectionWithId.cs" />
     <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
     <Compile Include="ReadOnlyObjectCollection.cs" />

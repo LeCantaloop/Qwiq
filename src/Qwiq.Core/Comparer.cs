@@ -45,5 +45,10 @@ namespace Qwiq
         public static IEqualityComparer<IWorkItemType> WorkItemType { get; } = WorkItemTypeComparer.Default;
 
         public static IEqualityComparer<IWorkItemTypeCollection> WorkItemTypeCollection { get; } = WorkItemTypeCollectionComparer.Default;
+
+        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<IQueryFolder, Guid>> QueryFolderCollection { get; } = ReadOnlyCollectionWithIdComparer<IQueryFolder, Guid>.Default;
+        public static IEqualityComparer<IQueryFolder> QueryFolder { get; } = QueryFolderComparer.Default;
+        public static IEqualityComparer<IReadOnlyObjectWithIdCollection<IQueryDefinition, Guid>> QueryDefinitionCollection { get; } = ReadOnlyCollectionWithIdComparer<IQueryDefinition, Guid>.Default;
+        public static IEqualityComparer<IQueryDefinition> QueryDefinition { get; } = QueryDefinitionComparer.Default;
     }
 }
