@@ -17,9 +17,9 @@ namespace Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
+            // Paths are not used for comparison because they differ in REST and SOAP due to inclusion or project
             var res = x.Id == y.Id
                       && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase)
-                      && string.Equals(x.Path, y.Path, StringComparison.OrdinalIgnoreCase)
                       && Comparer.QueryFolderCollection.Equals(x.SubFolders, y.SubFolders)
                       && Comparer.QueryDefinitionCollection.Equals(x.SavedQueries, y.SavedQueries);
 
@@ -36,7 +36,6 @@ namespace Qwiq
 
                 hash = (hash * 13) ^ obj.Id.GetHashCode();
                 hash = (hash * 13) ^ (obj.Name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Name) : 0);
-                hash = (hash * 13) ^ (obj.Path != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(obj.Path) : 0);
                 hash = (hash * 13) ^ obj.SubFolders.GetHashCode();
                 hash = (hash * 13) ^ obj.SavedQueries.GetHashCode();
 
