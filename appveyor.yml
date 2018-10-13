@@ -5,7 +5,7 @@ platform: Any CPU
 init:
 - ps: IF ($env:APPVEYOR_REPO_BRANCH -eq "develop") {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
 install:
-- choco install gitversion.portable -pre -y
+- choco install gitversion.portable -version 4.0.0-beta0012 -pre -y
 cache:
 - packages -> **\packages.config
 nuget:
