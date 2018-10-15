@@ -26,7 +26,7 @@ namespace Qwiq
                 }
             }
 
-            var nocreds = new AccessDeniedException("Invalid credentials");
+            var nocreds = new AccessDeniedException("Invalid credentials. For more details use the AuthenticationOptions.Notifications.AuthenticationFailed event.");
             options.Notifications?.AuthenticationFailed(new AuthenticationFailedNotification(null, nocreds));
             throw nocreds;
         }
