@@ -38,7 +38,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Should" Version="1.1.20" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="4.0.4.403061554" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.5.0" />
     <PackageReference Include="WindowsAzure.ServiceBus" Version="3.3.2" />
   </ItemGroup>
   <ItemGroup>
