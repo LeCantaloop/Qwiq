@@ -96,13 +96,15 @@ Or add MSBuild parameters to treat warnings as warnings (not errors).
 - Assembly naming convention matches pattern
 - Release configuration is being used
 
-#### 4. Init.ps1 Failures
-**Symptom**: Environment initialization fails
+#### 4. ~~Init.ps1 Failures~~ (FIXED)
+**Status**: ✅ Fixed in commit d3b67fc
 
-**Solution**: The init.ps1 script downloads NuGet.exe and tools. If this fails:
-- Check internet connectivity
-- Verify NuGet.org is accessible
-- May need to skip init.ps1 and rely on pre-installed tools
+**Previous Issue**: The init.ps1 script tried to download deprecated NuGet credential provider causing build failures.
+
+**Solution Applied**: Removed init.ps1 step from workflow. Not needed since:
+- GitHub Actions already provides NuGet via `nuget/setup-nuget@v2`
+- Public feeds don't require VSS credential provider
+- Modern NuGet has built-in credential providers
 
 ## Monitoring the Run
 

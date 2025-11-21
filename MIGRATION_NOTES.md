@@ -82,6 +82,11 @@ steps:
    - GitHub Actions workflow doesn't include this yet
    - Can be added later if needed
 
+6. **Simplified Initialization**
+   - Removed init.ps1 step (tried to install deprecated credential provider)
+   - Uses GitHub Actions native NuGet setup instead
+   - More reliable and faster initialization
+
 ## What to Watch For
 
 ### Potential Issues
