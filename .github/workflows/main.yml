@@ -23,6 +23,10 @@ jobs:
         os: [windows-latest, ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
+    
+    env:
+      # Test filter matching AppVeyor configuration
+      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST"
 
     steps:
     - name: Checkout
@@ -53,6 +57,7 @@ jobs:
     - name: Restore NuGet packages (Windows)
       if: runner.os == 'Windows'
       run: nuget restore Qwiq.sln -NonInteractive
+      continue-on-error: false
 
     - name: Build solution (Windows)
       if: runner.os == 'Windows'
@@ -68,14 +73,17 @@ jobs:
     - name: Restore NuGet packages (Ubuntu)
       if: runner.os == 'Linux'
       run: |
-        # Use nuget to restore packages
-        nuget restore Qwiq.sln -NonInteractive || true
+        # Use nuget to restore packages - best effort on Ubuntu/Mono
+        nuget restore Qwiq.sln -NonInteractive
+        echo "NuGet restore exit code: $?"
+      continue-on-error: true
 
     - name: Build solution (Ubuntu)
       if: runner.os == 'Linux'
       run: |
-        # Build with msbuild (mono)
-        msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m || true
+        # Build with msbuild (mono) - best effort on Ubuntu
+        msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
+        echo "Build exit code: $?"
       continue-on-error: true
 
     - name: Run tests (Windows)
@@ -101,7 +109,7 @@ jobs:
         
         foreach ($assembly in $testAssemblies) {
           Write-Host "Testing: $($assembly.FullName)"
-          vstest.console.exe $assembly.FullName /Logger:trx /TestCaseFilter:"TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST"
+          vstest.console.exe $assembly.FullName /Logger:trx /TestCaseFilter:"$env:TEST_FILTER"
           if ($LASTEXITCODE -ne 0) {
             Write-Warning "Tests failed in $($assembly.Name) with exit code $LASTEXITCODE"
           }
