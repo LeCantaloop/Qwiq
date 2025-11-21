@@ -1,0 +1,111 @@
+name: Main build
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup MSBuild (Windows)
+      if: runner.os == 'Windows'
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      if: runner.os == 'Windows'
+      uses: nuget/setup-nuget@v2
+      with:
+        nuget-version: 'latest'
+
+    - name: Initialize environment (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        .\init.ps1
+
+    - name: Restore NuGet packages (Windows)
+      if: runner.os == 'Windows'
+      run: nuget restore Qwiq.sln -NonInteractive
+
+    - name: Build solution (Windows)
+      if: runner.os == 'Windows'
+      run: msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
+
+    - name: Setup Mono (Ubuntu)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mono-complete mono-vbnc nuget
+
+    - name: Initialize environment (Ubuntu)
+      if: runner.os == 'Linux'
+      shell: pwsh
+      run: |
+        .\init.ps1
+
+    - name: Restore NuGet packages (Ubuntu)
+      if: runner.os == 'Linux'
+      run: nuget restore Qwiq.sln -NonInteractive
+
+    - name: Build solution (Ubuntu)
+      if: runner.os == 'Linux'
+      run: msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
+
+    - name: Run tests (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $testAssemblies = Get-ChildItem -Path "test" -Recurse -Filter "*.UnitTests.dll" | Where-Object { $_.FullName -match "bin\\Release" -and $_.FullName -notmatch "IntegrationTests" }
+        foreach ($assembly in $testAssemblies) {
+          Write-Host "Testing: $($assembly.FullName)"
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" $assembly.FullName /Logger:trx /TestCaseFilter:"TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST"
+        }
+
+    - name: Run tests (Ubuntu)
+      if: runner.os == 'Linux'
+      shell: pwsh
+      run: |
+        # Mono doesn't support VSTest, so we'll use mono with the test assemblies
+        Write-Host "Note: Full test execution on Ubuntu/Mono may have limitations. Skipping tests for Ubuntu build."
+        Write-Host "Tests should be primarily validated on Windows runner."
+
+    - name: Upload test results (Windows)
+      if: runner.os == 'Windows' && (success() || failure())
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.os }}
+        path: TestResults/**/*.trx
+        if-no-files-found: ignore
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: binaries-${{ matrix.os }}
+        path: |
+          src/**/bin/Release/**
+          !src/**/bin/Release/**/*.pdb
+        if-no-files-found: error
