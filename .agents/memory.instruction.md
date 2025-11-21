@@ -66,3 +66,11 @@ applyTo: '**'
 3. **Wrong Windows Runner**: Using windows-2019 when windows-latest works with proper package cleanup
 4. **Ubuntu Test Results**: Uploading test results from Ubuntu when no tests actually run
 5. **Init.ps1 Dependencies**: Relying on init.ps1 without checking for deprecated credential provider issues
+
+## GitVersioning Solution (PR #29)
+Instead of removing GitVersionTask from all projects (massive change), use Nerdbank.GitVersioning:
+- Create `version.json` at repo root with version configuration
+- Create `Directory.Build.props` to add Nerdbank.GitVersioning package reference to all projects
+- Create `Directory.Build.targets` to neutralize GitVersionTask imports (override targets with no-ops)
+- This allows build to succeed without touching individual project files
+- Nerdbank.GitVersioning is compatible with MSBuild 17.x and actively maintained
