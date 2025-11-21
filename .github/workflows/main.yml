@@ -48,12 +48,6 @@ jobs:
       if: runner.os == 'Windows'
       uses: darenm/Setup-VSTest@v1.3
 
-    - name: Initialize environment (Windows)
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: |
-        .\init.ps1
-
     - name: Restore NuGet packages (Windows)
       if: runner.os == 'Windows'
       run: nuget restore Qwiq.sln -NonInteractive
