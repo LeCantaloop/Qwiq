@@ -67,17 +67,23 @@ applyTo: '**'
 4. **Ubuntu Test Results**: Uploading test results from Ubuntu when no tests actually run
 5. **Init.ps1 Dependencies**: Relying on init.ps1 without checking for deprecated credential provider issues
 
-## GitVersioning Solution (PR #29)
-GitVersionTask 4.0.0 MUST be completely removed - neutralization via Directory.Build.targets doesn't work:
-- The package gets restored by NuGet and MSBuild loads the incompatible assembly before targets execute
-- This causes "MSB0001: Internal MSBuild Error: Task Instance should be null"
+## Legacy Package Removal (PR #22 and #29)
+Both GitVersionTask 4.0.0 and Microsoft.Net.Compilers 2.10.0 MUST be completely removed:
+- Neutralization via Directory.Build.targets doesn't work
+- Packages get restored by NuGet and MSBuild loads incompatible assemblies before targets execute
+- GitVersionTask: "MSB0001: Internal MSBuild Error: Task Instance should be null"
+- Microsoft.Net.Compilers: "DisableSdkPath parameter is not supported by the Csc task"
 
-**Required approach:**
-1. Remove GitVersionTask from all packages.config files
-2. Remove PackageReference entries from all .csproj files  
-3. Remove Error condition checks for GitVersionTask
-4. Remove Import statements for GitVersionTask.targets
-5. Add Nerdbank.GitVersioning via Directory.Build.props
-6. Create version.json for Nerdbank.GitVersioning configuration
+**Required removal approach:**
+1. Remove from all packages.config files
+2. Remove PackageReference entries from all .csproj files
+3. Remove Error condition checks
+4. Remove Import statements
+5. Replace functionality:
+   - GitVersionTask → Nerdbank.GitVersioning (via Directory.Build.props)
+   - Microsoft.Net.Compilers → Not needed (MSBuild 17.x has built-in Roslyn)
 
-This is a 29-file change but necessary for MSBuild 17.x compatibility.
+**FxCop Suppression:**
+- Disable legacy FxCop in Release builds via Directory.Build.targets
+- Set `<RunCodeAnalysis>false</RunCodeAnalysis>` in Release configuration
+- FxCop is deprecated, generates warnings that fail CI
