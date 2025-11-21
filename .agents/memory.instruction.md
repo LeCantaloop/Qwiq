@@ -68,9 +68,16 @@ applyTo: '**'
 5. **Init.ps1 Dependencies**: Relying on init.ps1 without checking for deprecated credential provider issues
 
 ## GitVersioning Solution (PR #29)
-Instead of removing GitVersionTask from all projects (massive change), use Nerdbank.GitVersioning:
-- Create `version.json` at repo root with version configuration
-- Create `Directory.Build.props` to add Nerdbank.GitVersioning package reference to all projects
-- Create `Directory.Build.targets` to neutralize GitVersionTask imports (override targets with no-ops)
-- This allows build to succeed without touching individual project files
-- Nerdbank.GitVersioning is compatible with MSBuild 17.x and actively maintained
+GitVersionTask 4.0.0 MUST be completely removed - neutralization via Directory.Build.targets doesn't work:
+- The package gets restored by NuGet and MSBuild loads the incompatible assembly before targets execute
+- This causes "MSB0001: Internal MSBuild Error: Task Instance should be null"
+
+**Required approach:**
+1. Remove GitVersionTask from all packages.config files
+2. Remove PackageReference entries from all .csproj files  
+3. Remove Error condition checks for GitVersionTask
+4. Remove Import statements for GitVersionTask.targets
+5. Add Nerdbank.GitVersioning via Directory.Build.props
+6. Create version.json for Nerdbank.GitVersioning configuration
+
+This is a 29-file change but necessary for MSBuild 17.x compatibility.
