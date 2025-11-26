@@ -50,7 +50,7 @@ jobs:
 
     - name: Restore NuGet packages (Windows)
       if: runner.os == 'Windows'
-      run: nuget restore Qwiq.sln -NonInteractive
+      run: nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages
       continue-on-error: false
 
     - name: Build solution (Windows)

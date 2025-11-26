@@ -29,8 +29,8 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <UseCommonOutputDirectory>False</UseCommonOutputDirectory>
 
-    <!-- Code Analysis -->
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <!-- Code Analysis - Disabled in GitHub Actions, will use Roslyn analyzers instead -->
+    <RunCodeAnalysis>false</RunCodeAnalysis>
 
   </PropertyGroup>
 
