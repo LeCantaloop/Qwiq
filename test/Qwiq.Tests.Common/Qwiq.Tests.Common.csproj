@@ -9,7 +9,6 @@
     <RootNamespace>Microsoft.Qwiq.Tests.Common</RootNamespace>
     <AssemblyName>Microsoft.Qwiq.Tests.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <CodeAnalysisRuleSet>..\..\build\rulesets\noship.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
