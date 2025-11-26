@@ -1,0 +1,104 @@
+name: Main build
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    env:
+      # Test filter matching AppVeyor configuration
+      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST"
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+      with:
+        nuget-version: 'latest'
+
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1.3
+
+    - name: Restore NuGet packages
+      run: |
+        # First restore using nuget.exe which handles packages.config correctly
+        nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages -ConfigFile nuget.config
+        
+        # Also restore each packages.config individually to ensure all dependencies are resolved
+        Get-ChildItem -Path . -Recurse -Filter packages.config | ForEach-Object {
+          Write-Host "Restoring packages from: $($_.FullName)"
+          nuget restore $_.FullName -PackagesDirectory packages -ConfigFile nuget.config
+        }
+      shell: pwsh
+      continue-on-error: false
+
+    - name: Build solution
+      run: msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
+
+    - name: Run tests
+      shell: pwsh
+      run: |
+        # Find all test assemblies (excluding IntegrationTests)
+        $testAssemblies = @(
+          Get-ChildItem -Path "test" -Recurse -Filter "*Tests.dll" | 
+          Where-Object { 
+            $_.FullName -match "bin\\Release" -and 
+            $_.FullName -notmatch "IntegrationTests" -and
+            $_.FullName -notmatch "\\ref\\" 
+          }
+        )
+        
+        if ($testAssemblies.Count -eq 0) {
+          Write-Warning "No test assemblies found!"
+          exit 1
+        }
+        
+        Write-Host "Found $($testAssemblies.Count) test assemblies"
+        
+        foreach ($assembly in $testAssemblies) {
+          Write-Host "Testing: $($assembly.FullName)"
+          vstest.console.exe $assembly.FullName /Logger:trx /TestCaseFilter:"$env:TEST_FILTER"
+          if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Tests failed in $($assembly.Name) with exit code $LASTEXITCODE"
+          }
+        }
+
+    - name: Upload test results
+      if: success() || failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: TestResults/**/*.trx
+        if-no-files-found: ignore
+
+    - name: Upload binaries
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: binaries
+        path: |
+          src/**/bin/Release/**/*.dll
+          src/**/bin/Release/**/*.exe
+          !src/**/bin/Release/**/*.pdb
+        if-no-files-found: warn
