@@ -17,12 +17,7 @@ permissions:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     
     env:
       # Test filter matching AppVeyor configuration
@@ -34,22 +29,18 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup MSBuild (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v2
 
-    - name: Setup NuGet (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup NuGet
       uses: nuget/setup-nuget@v2
       with:
         nuget-version: 'latest'
 
-    - name: Setup VSTest (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup VSTest
       uses: darenm/Setup-VSTest@v1.3
 
-    - name: Restore NuGet packages (Windows)
-      if: runner.os == 'Windows'
+    - name: Restore NuGet packages
       run: |
         # First restore using nuget.exe which handles packages.config correctly
         nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages -ConfigFile nuget.config
@@ -62,35 +53,10 @@ jobs:
       shell: pwsh
       continue-on-error: false
 
-    - name: Build solution (Windows)
-      if: runner.os == 'Windows'
+    - name: Build solution
       run: msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
 
-    - name: Setup Mono (Ubuntu)
-      if: runner.os == 'Linux'
-      run: |
-        # Mono is already pre-installed on Ubuntu runners
-        mono --version
-        msbuild /version
-
-    - name: Restore NuGet packages (Ubuntu)
-      if: runner.os == 'Linux'
-      run: |
-        # Use nuget to restore packages - best effort on Ubuntu/Mono
-        nuget restore Qwiq.sln -NonInteractive
-        echo "NuGet restore exit code: $?"
-      continue-on-error: true
-
-    - name: Build solution (Ubuntu)
-      if: runner.os == 'Linux'
-      run: |
-        # Build with msbuild (mono) - best effort on Ubuntu
-        msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
-        echo "Build exit code: $?"
-      continue-on-error: true
-
-    - name: Run tests (Windows)
-      if: runner.os == 'Windows'
+    - name: Run tests
       shell: pwsh
       run: |
         # Find all test assemblies (excluding IntegrationTests)
@@ -118,27 +84,19 @@ jobs:
           }
         }
 
-    - name: Run tests (Ubuntu)
-      if: runner.os == 'Linux'
-      shell: pwsh
-      run: |
-        # Mono doesn't support VSTest, so we'll use mono with the test assemblies
-        Write-Host "Note: Full test execution on Ubuntu/Mono may have limitations. Skipping tests for Ubuntu build."
-        Write-Host "Tests should be primarily validated on Windows runner."
-
-    - name: Upload test results (Windows)
-      if: runner.os == 'Windows' && (success() || failure())
+    - name: Upload test results
+      if: success() || failure()
       uses: actions/upload-artifact@v4
       with:
-        name: test-results-${{ matrix.os }}
+        name: test-results
         path: TestResults/**/*.trx
         if-no-files-found: ignore
 
     - name: Upload binaries
       uses: actions/upload-artifact@v4
-      if: success() || (failure() && runner.os == 'Linux')
+      if: success()
       with:
-        name: binaries-${{ matrix.os }}
+        name: binaries
         path: |
           src/**/bin/Release/**/*.dll
           src/**/bin/Release/**/*.exe
