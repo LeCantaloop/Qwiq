@@ -50,7 +50,16 @@ jobs:
 
     - name: Restore NuGet packages (Windows)
       if: runner.os == 'Windows'
-      run: nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages
+      run: |
+        # First restore using nuget.exe which handles packages.config correctly
+        nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages -ConfigFile nuget.config
+        
+        # Also restore each packages.config individually to ensure all dependencies are resolved
+        Get-ChildItem -Path . -Recurse -Filter packages.config | ForEach-Object {
+          Write-Host "Restoring packages from: $($_.FullName)"
+          nuget restore $_.FullName -PackagesDirectory packages -ConfigFile nuget.config
+        }
+      shell: pwsh
       continue-on-error: false
 
     - name: Build solution (Windows)
