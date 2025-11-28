@@ -19,12 +19,18 @@ QWIQ (**Q**uick **W**ork **I**tem **Q**uery) is a .NET Framework library providi
 
 ### Build Commands (Windows only)
 ```powershell
-# Restore NuGet packages
+# Restore NuGet packages (basic)
 nuget restore Qwiq.sln
 
 # Build solution with MSBuild
 msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
 ```
+
+**CI-aligned restore command:** If you encounter restore issues, use the exact CI command:
+```powershell
+nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages -ConfigFile nuget.config
+```
+This ensures packages go into the local `packages/` directory and uses the repo's NuGet configuration.
 
 ### Test Commands
 The workflow uses VSTest to run tests:
@@ -53,9 +59,15 @@ vstest.console.exe <TestAssembly.dll> /TestCaseFilter:"TestCategory!=localOnly&T
 
 ### Test Projects (`test/`)
 - Unit tests: `Qwiq.Core.Tests`, `Qwiq.Linq.Tests`, `Qwiq.Mapper.Tests`, `Qwiq.Identity.Tests`
-- Integration tests: `Qwiq.IntegrationTests`
+- Integration tests: `Qwiq.Integration.Tests`
 - Mocks: `Qwiq.Mocks`
 - Benchmarks: `Qwiq.Benchmark`, `*.Benchmark.Tests`
+
+### Key Entry Points
+For most feature work, start with these locations before searching broadly:
+- `WorkItemStoreFactory` in `Qwiq.Core` - Store creation and connection
+- `WiqlTranslator` in `Qwiq.Linq` - LINQ-to-WIQL query translation
+- `Qwiq.Mocks` and `ContextSpecification` in `Qwiq.Tests.Common` - Testing patterns
 
 ### Key Configuration Files
 - `build/targets/common.props` - Shared MSBuild properties
@@ -111,14 +123,29 @@ The main workflow (`.github/workflows/main.yml`) runs on:
 5. Run tests with VSTest and category filters
 6. Upload test results and binaries
 
+### When Editing GitHub Actions Workflows
+When adding or updating .NET workflows in this repo, follow these guidelines:
+- Use `windows-latest` runner (not `windows-2019` which is retired)
+- If using `actions/setup-dotnet`, prefer `global-json-file: ./global.json` over `dotnet-version`
+- Add `dotnet tool restore` after setting up .NET when relying on tools like Nerdbank.GitVersioning
+- Include deterministic build flags: `/p:Deterministic=true /p:UseSharedCompilation=false /nodeReuse:false`
+- Upload binlogs as artifacts for debugging: `/bl:./artifacts/logs/build.binlog`
+- Prefer `.runsettings` files or environment variables for complex test filters instead of long inline strings
+
 ## When Making Changes
 
+**Do:**
 1. **Always restore before building:** `nuget restore Qwiq.sln`
 2. **Build with MSBuild:** `msbuild Qwiq.sln /p:Configuration=Release`
 3. **Test on Windows only** - this is a .NET Framework project
 4. **Follow existing code patterns** - check similar files for conventions
 5. **Update packages.config** when adding new NuGet packages
 6. **Run tests with appropriate filters** to exclude integration tests
+
+**Do not:**
+- Modify `Directory.Build.props`, `Directory.Build.targets`, or `nuget.config` as part of feature/bugfix PRs - these centralize repo-wide behavior
+- Upgrade critical NuGet dependencies (`Microsoft.TeamFoundationServer.*`, `Microsoft.VisualStudio.Services.*`, `Newtonsoft.Json`) unless explicitly tasked with dependency updates
+- Attempt large-scale migrations (SDK-style conversion, target framework changes, removing SOAP support) as incidental changes - these require dedicated PRs
 
 ## Trust These Instructions
 
