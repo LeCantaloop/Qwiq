@@ -315,4 +315,7 @@ __pycache__/
 # End of https://www.gitignore.io/api/windows,visualstudio
 
 # Visual Studio Workspace Bootstrapper
-.tools/
+.tools/*.exe
+
+# NuGet executables
+.nuget/*.exe

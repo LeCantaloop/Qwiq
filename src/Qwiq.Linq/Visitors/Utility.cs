@@ -28,17 +28,5 @@ namespace Qwiq.Linq.Visitors
         {
             return new LinkedList<T>(source);
         }
-
-        /// <summary>
-        ///     Creates an MD5 fingerprint of the string.
-        /// </summary>
-        public static string ToMd5Fingerprint(this string s)
-        {
-            var bytes = Encoding.Unicode.GetBytes(s.ToCharArray());
-            var hash = new MD5CryptoServiceProvider().ComputeHash(bytes);
-
-            // concat the hash bytes into one long string
-            return hash.Aggregate(new StringBuilder(32), (sb, b) => sb.Append(b.ToString("X2"))).ToString();
-        }
     }
 }
