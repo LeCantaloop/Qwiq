@@ -1,0 +1,5 @@
+/
+|-- Qwiq.Linq.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Linq.dll

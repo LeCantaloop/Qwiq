@@ -1,0 +1,6 @@
+/
+|-- Qwiq.Identity.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Identity.dll
+|   |   |-- Qwiq.Identity.xml

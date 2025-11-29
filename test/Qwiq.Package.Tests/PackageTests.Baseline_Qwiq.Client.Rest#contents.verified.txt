@@ -1,0 +1,5 @@
+/
+|-- Qwiq.Client.Rest.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Client.Rest.dll

@@ -1,0 +1,6 @@
+/
+|-- Qwiq.Core.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Core.dll
+|-- readme.txt

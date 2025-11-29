@@ -1,0 +1,24 @@
+<package>
+  <metadata>
+    <id>Qwiq.Core</id>
+    <version>********</version>
+    <title>Qwiq.Core</title>
+    <authors>LeCantaloop</authors>
+    <owners>LeCantaloop, rjmurillo</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/LeCantaloop/Qwiq</projectUrl>
+    <description>Provides Quick Work Item Queries to Team Foundation Server and Visual Studio Online</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
+    <dependencies>
+      <dependency id="Castle.Core" version="4.0.0" />
+      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+      <dependency id="Microsoft.IdentityModel.Clients.ActiveDirectory" version="3.13.9" />
+      <dependency id="Microsoft.VisualStudio.Services.InteractiveClient" version="15.112.1" />
+      <dependency id="Newtonsoft.Json" version="10.0.2" />
+      <dependency id="System.IdentityModel.Tokens.Jwt" version="4.0.4.403061554" />
+    </dependencies>
+  </metadata>
+</package>

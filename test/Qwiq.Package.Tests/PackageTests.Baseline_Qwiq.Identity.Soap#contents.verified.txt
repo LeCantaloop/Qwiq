@@ -1,0 +1,5 @@
+/
+|-- Qwiq.Identity.Soap.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Identity.Soap.dll

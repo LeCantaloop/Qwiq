@@ -1,0 +1,5 @@
+/
+|-- Qwiq.Client.Soap.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Client.Soap.dll

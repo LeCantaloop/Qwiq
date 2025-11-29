@@ -1,0 +1,5 @@
+/
+|-- Qwiq.Mapper.nuspec
+|-- lib
+|   |-- net46
+|   |   |-- Qwiq.Mapper.dll
