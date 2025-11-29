@@ -1,5 +1,7 @@
 using System.Reflection;
 
+using NuGet.Versioning;
+
 namespace Qwiq.Package.Tests;
 
 public class PackageTests
@@ -52,14 +54,34 @@ public class PackageTests
         return ExtractPackageName(name);
     }
 
+    /// <summary>
+    /// Extracts the package ID from a package filename (without extension).
+    /// Uses NuGet's version parser to robustly handle semantic versions including
+    /// prerelease tags (e.g., "1.0.0-beta") and package IDs that end with digits.
+    /// </summary>
+    /// <param name="fullName">Package filename without extension (e.g., "Qwiq.Core.10.0.32" or "Qwiq.Linq.Identity.10.0.32-beta")</param>
+    /// <returns>The package ID portion (e.g., "Qwiq.Core" or "Qwiq.Linq.Identity")</returns>
     private static string ExtractPackageName(string fullName)
     {
-        int lastDotIndex = fullName.LastIndexOf('.');
-        while (lastDotIndex > 0 && char.IsDigit(fullName[lastDotIndex - 1]))
+        string[] parts = fullName.Split('.');
+        if (parts.Length < 2)
         {
-            lastDotIndex = fullName.LastIndexOf('.', lastDotIndex - 1);
+            return fullName;
         }
 
-        return lastDotIndex > 0 ? fullName[..lastDotIndex] : fullName;
+        // Find the earliest split point where the right-hand side parses as a NuGet version.
+        // This handles package IDs with dots (e.g., "Qwiq.Linq.Identity") and IDs ending
+        // with digits (e.g., "Qwiq.Core4") correctly.
+        for (int i = 1; i < parts.Length; i++)
+        {
+            string candidateVersion = string.Join(".", parts, i, parts.Length - i);
+            if (NuGetVersion.TryParse(candidateVersion, out _))
+            {
+                return string.Join(".", parts, 0, i);
+            }
+        }
+
+        // If nothing looks like a version, fall back to returning the whole name.
+        return fullName;
     }
 }

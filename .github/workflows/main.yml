@@ -166,9 +166,9 @@ jobs:
     - name: Run package tests
       shell: pwsh
       run: |
-        # Use --no-build to prevent dotnet test from rebuilding and clearing the output directory
-        # where we just copied the .nupkg files
-        dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj --configuration Release --no-build --logger trx --results-directory TestResults
+        # Use --no-build and --no-restore to prevent dotnet test from rebuilding or restoring,
+        # which could clear the output directory where we just copied the .nupkg files
+        dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj --configuration Release --no-build --no-restore --logger trx --results-directory TestResults
 
     - name: Upload test results
       if: success() || failure()

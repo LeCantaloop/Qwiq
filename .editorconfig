@@ -9,7 +9,7 @@ end_of_line = crlf
 indent_size = 4
 
 # Verify settings
-[*.{received,verified}.{json,txt,xml}]
+[*.{received,verified}.{json,txt,xml,nuspec}]
 charset = utf-8-bom
 end_of_line = lf
 indent_size = unset
