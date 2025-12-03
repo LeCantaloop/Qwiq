@@ -169,14 +169,14 @@ jobs:
 
     - name: Upload test results
       if: success() || failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: test-results
         path: TestResults/**/*.trx
         if-no-files-found: ignore
 
     - name: Upload binaries
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: success()
       with:
         name: binaries
