@@ -1,11 +1,10 @@
-﻿using JetBrains.Annotations;
 
 namespace Qwiq.Client.Soap
 {
     public class WorkItemLinkInfo : Qwiq.WorkItemLinkInfo, IIdentifiable<int>
     {
         /// <inheritdoc />
-        internal WorkItemLinkInfo(int sourceId, int targetId, int linkTypeId, [CanBeNull] IWorkItemLinkTypeEnd linkTypeEnd)
+        internal WorkItemLinkInfo(int sourceId, int targetId, int linkTypeId, IWorkItemLinkTypeEnd linkTypeEnd)
             : base(sourceId, targetId, linkTypeEnd)
         {
             Id = linkTypeId;

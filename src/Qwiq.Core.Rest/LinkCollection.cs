@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -12,7 +11,7 @@ namespace Qwiq.Client.Rest
 {
     internal class LinkCollection : ReadOnlyObjectWithNameCollection<ILink>, ICollection<ILink>
     {
-        internal LinkCollection([CanBeNull] List<WorkItemRelation> relations, [NotNull] Func<string, IWorkItemLinkType> linkFunc)
+        internal LinkCollection(List<WorkItemRelation> relations, Func<string, IWorkItemLinkType> linkFunc)
         {
             Contract.Requires(linkFunc != null);
 
@@ -41,7 +40,7 @@ namespace Qwiq.Client.Rest
                     const string Name = "name";
                     var l = new ExternalLink(
                                              relation.Url,
-                                             ExtractProperty(relation.Attributes, Name),
+                                             ExtractProperty(relation.Attributes, Name) ?? string.Empty,
                                              ExtractComment(relation.Attributes));
                     Add(l);
                 }
@@ -99,7 +98,7 @@ namespace Qwiq.Client.Rest
             throw new NotSupportedException();
         }
 
-        private static string ExtractComment(IDictionary<string, object> relationAttributes)
+        private static string? ExtractComment(IDictionary<string, object> relationAttributes)
         {
             const string Comment = "comment";
             return ExtractProperty(relationAttributes, Comment);
@@ -111,9 +110,9 @@ namespace Qwiq.Client.Rest
             return Convert.ToInt32(arr.Last());
         }
 
-        private static string ExtractProperty(IDictionary<string, object> relationAttributes, string property)
+        private static string? ExtractProperty(IDictionary<string, object> relationAttributes, string property)
         {
-            relationAttributes.TryGetValue(property, out object val);
+            relationAttributes.TryGetValue(property, out object? val);
             return val?.ToString();
         }
     }

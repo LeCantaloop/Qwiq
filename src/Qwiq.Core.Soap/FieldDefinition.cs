@@ -7,9 +7,11 @@ namespace Qwiq.Client.Soap
     internal class FieldDefinition : Qwiq.FieldDefinition
     {
         internal FieldDefinition(Tfs.FieldDefinition fieldDefinition)
-            :base(fieldDefinition?.Id ?? 0, fieldDefinition?.ReferenceName, fieldDefinition?.Name)
+            : base(
+                (fieldDefinition ?? throw new ArgumentNullException(nameof(fieldDefinition))).Id,
+                fieldDefinition.ReferenceName,
+                fieldDefinition.Name)
         {
-            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
         }
 
         /// <summary>

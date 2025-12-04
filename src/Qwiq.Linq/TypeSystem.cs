@@ -26,10 +26,10 @@ namespace Qwiq.Linq
             return iEnumerable == null ? type : iEnumerable.GetGenericArguments()[0];
         }
 
-        private static Type FindIEnumerable(Type type)
+        private static Type? FindIEnumerable(Type type)
         {
             if (type == null || type == typeof(string)) { return null; }
-            if (type.IsArray) { return typeof(IEnumerable<>).MakeGenericType(type.GetElementType()); }
+            if (type.IsArray) { return typeof(IEnumerable<>).MakeGenericType(type.GetElementType()!); }
 
             if (type.IsGenericType)
             {

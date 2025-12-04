@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -19,7 +18,7 @@ namespace Qwiq.Client.Rest
         private readonly Lazy<WorkItemTrackingHttpClient> _workItemStore;
         private readonly Guid _projectId;
 
-        public QueryHiearchyItemRepository([NotNull] Lazy<WorkItemTrackingHttpClient> workItemStore, Guid projectId)
+        public QueryHiearchyItemRepository(Lazy<WorkItemTrackingHttpClient> workItemStore, Guid projectId)
         {
             if (projectId == Guid.Empty)
             {

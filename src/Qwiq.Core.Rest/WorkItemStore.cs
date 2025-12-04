@@ -18,14 +18,14 @@ namespace Qwiq.Client.Rest
 
         private readonly Lazy<IInternalTeamProjectCollection> _tfs;
 
-        private IFieldDefinitionCollection _fieldDefinitions;
+        private IFieldDefinitionCollection? _fieldDefinitions;
 
-        private IWorkItemLinkTypeCollection _linkTypes;
+        private IWorkItemLinkTypeCollection? _linkTypes;
 
-        private IProjectCollection _projects;
+        private IProjectCollection? _projects;
 
         internal WorkItemStore(Func<IInternalTeamProjectCollection> tpcFactory, Func<WorkItemStore, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>(), queryFactory)
+            : this(tpcFactory, () => tpcFactory()?.GetClient<WorkItemTrackingHttpClient>()!, queryFactory)
         {
         }
 
@@ -57,7 +57,7 @@ namespace Qwiq.Client.Rest
 
         public IProjectCollection Projects => _projects ?? (_projects = ProjectCollectionFactory());
 
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
+        public IRegisteredLinkTypeCollection? RegisteredLinkTypes { get; }
 
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
 
@@ -65,7 +65,7 @@ namespace Qwiq.Client.Rest
 
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _linkTypes ?? (_linkTypes = WorkItemLinkTypeCollectionFactory());
 
-        internal Lazy<WorkItemTrackingHttpClient> NativeWorkItemStore { get; private set; }
+        internal Lazy<WorkItemTrackingHttpClient>? NativeWorkItemStore { get; private set; }
 
         public void Dispose()
         {
@@ -91,7 +91,7 @@ namespace Qwiq.Client.Rest
             return query.RunQuery();
         }
 
-        public IWorkItem Query(int id, DateTime? asOf = null)
+        public IWorkItem? Query(int id, DateTime? asOf = null)
         {
             return Query(new[] { id }, asOf).SingleOrDefault();
         }
@@ -134,13 +134,18 @@ namespace Qwiq.Client.Rest
                                      ? ends[0]
                                      : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward"));
 
+                if (forwardEnd == null)
+                {
+                    throw new InvalidOperationException($"Could not find forward link type end for '{kvp.Key}'.");
+                }
                 if (!forwardEnd.ReferenceName.EndsWith("Forward")) forwardEnd.ReferenceName += "-Forward";
 
                 type.SetForwardEnd(new WorkItemLinkTypeEnd(forwardEnd) { IsForwardLink = true, LinkType = type });
                 type.SetReverseEnd(
                                    type.IsDirectional
                                        ? new WorkItemLinkTypeEnd(
-                                                                 ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse")))
+                                                                 ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))
+                                                                 ?? throw new InvalidOperationException($"Could not find reverse link type end for '{kvp.Key}'."))
                                        {
                                            LinkType
                                                          = type
@@ -228,7 +233,7 @@ namespace Qwiq.Client.Rest
 
         private WorkItemLinkTypeCollection WorkItemLinkTypeCollectionFactory()
         {
-            return GetLinks(NativeWorkItemStore.Value);
+            return GetLinks(NativeWorkItemStore!.Value);
         }
     }
 }

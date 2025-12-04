@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 
-using JetBrains.Annotations;
 
 using Qwiq.Identity;
 
@@ -13,7 +12,6 @@ namespace Qwiq.Linq.Visitors
     /// <seealso cref="IdentityComboStringVisitor" />
     public class IdentityMappingVisitor : IdentityComboStringVisitor
     {
-        [NotNull]
         private readonly IIdentityValueConverter<string, object> _valueConverter;
 
         /// <summary>
@@ -21,7 +19,7 @@ namespace Qwiq.Linq.Visitors
         /// </summary>
         /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
         /// <exception cref="ArgumentNullException">valueConverter</exception>
-        public IdentityMappingVisitor([NotNull] IIdentityValueConverter<string, object> valueConverter)
+        public IdentityMappingVisitor(IIdentityValueConverter<string, object> valueConverter)
         {
             _valueConverter = valueConverter ?? throw new ArgumentNullException(nameof(valueConverter));
         }
@@ -35,7 +33,10 @@ namespace Qwiq.Linq.Visitors
         {
             if (!NeedsIdentityMapping) return base.VisitConstant(node);
 
-            var newNode = _valueConverter.Map(node.Value as string);
+            var value = node.Value as string;
+            if (value == null) return base.VisitConstant(node);
+
+            var newNode = _valueConverter.Map(value);
             return Expression.Constant(newNode);
         }
     }

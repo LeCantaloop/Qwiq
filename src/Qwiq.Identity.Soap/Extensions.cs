@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 
-using JetBrains.Annotations;
 
 using Qwiq.Client.Soap;
 using Qwiq.Exceptions;
@@ -17,10 +16,7 @@ namespace Qwiq.Identity.Soap
         /// <param name="teamProjectCollection">An instance of <see cref="ITeamProjectCollection"/></param>
         /// <returns><see cref="IIdentityManagementService" />.</returns>
         /// <exception cref="ArgumentNullException">teamProjectCollection</exception>
-        [NotNull]
-        [JetBrains.Annotations.Pure]
-        [PublicAPI]
-        public static IIdentityManagementService GetIdentityManagementService([NotNull] this ITeamProjectCollection teamProjectCollection)
+        public static IIdentityManagementService GetIdentityManagementService(this ITeamProjectCollection teamProjectCollection)
         {
             Contract.Requires(teamProjectCollection != null);
 
@@ -34,26 +30,18 @@ namespace Qwiq.Identity.Soap
         /// <param name="workItemStore">An instance of <see cref="IWorkItemStore"/>.</param>
         /// <returns><see cref="IIdentityManagementService" />.</returns>
         /// <exception cref="ArgumentNullException">workItemStore</exception>
-        [NotNull]
-        [JetBrains.Annotations.Pure]
-        [PublicAPI]
-        public static IIdentityManagementService GetIdentityManagementService([NotNull] this IWorkItemStore workItemStore)
+        public static IIdentityManagementService GetIdentityManagementService(this IWorkItemStore workItemStore)
         {
             if (workItemStore == null) throw new ArgumentNullException(nameof(workItemStore));
             return workItemStore.TeamProjectCollection.GetIdentityManagementService();
         }
-
-        [NotNull]
-        [JetBrains.Annotations.Pure]
-        internal static IIdentityDescriptor AsProxy([NotNull] this Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
+        internal static IIdentityDescriptor AsProxy(this Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException(nameof(descriptor));
             return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new Client.Soap.IdentityDescriptor(descriptor));
         }
 
-        [JetBrains.Annotations.Pure]
-        [CanBeNull]
-        internal static IIdentityManagementService AsProxy([CanBeNull] this IIdentityManagementService2 ims)
+        internal static IIdentityManagementService AsProxy(this IIdentityManagementService2 ims)
         {
             return ims == null
                        ? null

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 
 using FastMember;
-using JetBrains.Annotations;
 using Qwiq.Identity;
 using Qwiq.Mapper.Attributes;
 
@@ -91,14 +90,14 @@ namespace Qwiq.Mapper
         }
 
         protected internal virtual void AssignFieldValue(
-            [NotNull] Type targetWorkItemType,
-            [NotNull] IWorkItem sourceWorkItem,
-            [NotNull] object targetWorkItem,
-            [NotNull] PropertyInfo property,
-            [NotNull] string fieldName,
+            Type targetWorkItemType,
+            IWorkItem sourceWorkItem,
+            object targetWorkItem,
+            PropertyInfo property,
+            string fieldName,
             bool convert,
-            [CanBeNull] object nullSub,
-            [CanBeNull] object fieldValue)
+            object? nullSub,
+            object? fieldValue)
         {
             // Coalesce fieldValue and nullSub
 
@@ -212,7 +211,7 @@ namespace Qwiq.Mapper
         internal static Dictionary<string, List<PropertyInfo>> GetWorkItemIdentityFieldNameToIdentityPropertyMap(Type targetWorkItemType, IPropertyInspector propertyInspector)
         {
             var hashtable = IdentityPropertyTypeMap;
-            var props = (Dictionary<string, List<PropertyInfo>>)hashtable[targetWorkItemType];
+            var props = (Dictionary<string, List<PropertyInfo>>?)hashtable[targetWorkItemType];
 
             if (props != null) return props;
 

@@ -16,7 +16,7 @@ namespace Qwiq.Mapper
         {
             base.When();
             Expected += $" WHERE (([NullableField] = 1) AND ([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
-            Actual = Query.Where(item => item.NullableField.Value == 1).ToString();
+            Actual = Query.Where(item => item.NullableField!.Value == 1).ToString()!;
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Qwiq.Mapper
         public void an_argument_exception_is_thrown()
         {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Query.Where(item => item.UnmappedProperty != null).ToString();
+            Actual = Query.Where(item => item.UnmappedProperty != null).ToString()!;
         }
     }
 
@@ -47,7 +47,7 @@ namespace Qwiq.Mapper
         {
             base.When();
             Expected += $" WHERE (([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
-            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToString();
+            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).ToString()!;
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace Qwiq.Mapper
         {
             base.When();
             Expected += $" WHERE (([{CoreFieldRefNames.WorkItemType}] = 'MockWorkItem'))";
-            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToString();
+            Actual = Query.Select(item => new { One = item.IntField, Two = item.IntField }).Select(item2 => new { ABC = item2.Two }).ToString()!;
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace Qwiq.Mapper
         {
             base.When();
             Expected += " WHERE ((([Id] = 1) AND ([IntField] > 5)))";
-            Actual = Query.Where(item => item.Id == 1 && item.IntField > 5).ToString();
+            Actual = Query.Where(item => item.Id == 1 && item.IntField > 5).ToString()!;
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace Qwiq.Mapper
         {
             base.When();
             Expected += $" WHERE (([IntField] > 1) AND ([{CoreFieldRefNames.WorkItemType}] IN ('Baz', 'Buzz', 'Fizz')))";
-            Actual = Query.Where(item => item.IntField > 1).ToString();
+            Actual = Query.Where(item => item.IntField > 1).ToString()!;
         }
 
         [TestMethod]

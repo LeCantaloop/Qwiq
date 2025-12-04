@@ -4,7 +4,7 @@ namespace Qwiq
 {
     internal class ExternalLink : Link, IExternalLink
     {
-        public ExternalLink(string uri, string name, string comment = null)
+        public ExternalLink(string uri, string name, string? comment = null)
             : base(comment, BaseLinkType.ExternalLink)
         {
             if (name == null) throw new ArgumentNullException(nameof(name));
@@ -36,7 +36,7 @@ namespace Qwiq
 
         public string LinkedArtifactUri { get; }
 
-        public bool Equals(IExternalLink other)
+        public bool Equals(IExternalLink? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(other, null)) return false;
@@ -46,7 +46,7 @@ namespace Qwiq
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as IExternalLink);
         }

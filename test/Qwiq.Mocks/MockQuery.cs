@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using JetBrains.Annotations;
 
 namespace Qwiq.Mocks
 {
@@ -10,14 +9,14 @@ namespace Qwiq.Mocks
     /// </summary>
     public class MockQuery : IQuery
     {
-        [CanBeNull] private readonly string _wiql;
-        [CanBeNull] private readonly IEnumerable<int> _ids;
-        [NotNull] private readonly MockWorkItemStore _store;
+        private readonly string? _wiql;
+        private readonly IEnumerable<int>? _ids;
+        private readonly MockWorkItemStore _store;
 
         public MockQuery(
-            [NotNull] MockWorkItemStore store,  
-            [CanBeNull] string wiql = null,
-            [CanBeNull] IEnumerable<int> ids = null)
+            MockWorkItemStore store,
+            string? wiql = null,
+            IEnumerable<int>? ids = null)
         {
             _wiql = wiql;
             _ids = ids;
@@ -51,11 +50,11 @@ namespace Qwiq.Mocks
             var h = new HashSet<int>(_ids);
             h.Remove(0);
             var retval = new List<IWorkItem>(h.Count);
-            
+
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", h));
             foreach (var id in h)
             {
-                if (_store._lookup.TryGetValue(id, out IWorkItem val))
+                if (_store._lookup.TryGetValue(id, out IWorkItem? val) && val != null)
                 {
                     retval.Add(val);
                 }

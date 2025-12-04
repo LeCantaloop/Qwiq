@@ -23,7 +23,12 @@ namespace Qwiq.Client.Rest
 
         public ITeamFoundationIdentity AuthorizedIdentity { get; }
 
-        public ICommonStructureService CommonStructureService { get; }
+        /// <summary>
+        /// Gets the common structure service. Not supported in REST API.
+        /// </summary>
+        /// <exception cref="NotSupportedException">REST API does not support CommonStructureService.</exception>
+        public ICommonStructureService CommonStructureService =>
+            throw new NotSupportedException("CommonStructureService is not available via the REST API. Use SOAP client for this functionality.");
 
         public bool HasAuthenticated { get; }
 

@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Diagnostics.Windows;
+using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Validators;
@@ -11,20 +11,22 @@ namespace Qwiq.Benchmark
     {
         public BenchmarkConfig()
         {
-            Add(Job.Clr.With(Jit.RyuJit).With(Platform.X64).With(new GcMode { Server = true }));
-            Add(Job.Clr.With(Jit.RyuJit).With(Platform.X86).With(new GcMode { Server = true }));
-            Add(Job.Clr.With(Jit.RyuJit).With(Platform.AnyCpu).With(new GcMode { Server = true }));
+#if NETFRAMEWORK
+            AddJob(Job.Clr.WithJit(Jit.RyuJit).WithPlatform(Platform.X64).WithGcServer(true));
+            AddJob(Job.Clr.WithJit(Jit.RyuJit).WithPlatform(Platform.X86).WithGcServer(true));
+            AddJob(Job.Clr.WithJit(Jit.RyuJit).WithPlatform(Platform.AnyCpu).WithGcServer(true));
+#else
+            AddJob(Job.Default.WithJit(Jit.RyuJit).WithPlatform(Platform.X64).WithGcServer(true));
+            AddJob(Job.Default.WithJit(Jit.RyuJit).WithPlatform(Platform.AnyCpu).WithGcServer(true));
+#endif
 
             // GC and Memory Allocation
-            Add(new BenchmarkDotNet.Diagnosers.MemoryDiagnoser());
-            Add(new InliningDiagnoser());
+            AddDiagnoser(MemoryDiagnoser.Default);
 
             // Checks whether any of the referenced assemblies is non-optimized
-            Add(JitOptimizationsValidator.FailOnError);
+            AddValidator(JitOptimizationsValidator.FailOnError);
 
-            Add(StatisticColumn.AllStatistics);
-
-
+            AddColumn(StatisticColumn.AllStatistics);
         }
     }
 }

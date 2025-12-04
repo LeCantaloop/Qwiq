@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
-using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -11,9 +10,9 @@ namespace Qwiq.Client.Rest
 {
     internal class QueryFactory : IQueryFactory
     {
-        [NotNull] private readonly WorkItemStore _store;
+        private readonly WorkItemStore _store;
 
-        private QueryFactory([NotNull] WorkItemStore store)
+        private QueryFactory(WorkItemStore store)
         {
             Contract.Requires(store != null);
 
@@ -57,11 +56,11 @@ namespace Qwiq.Client.Rest
             return Create(ids, wiql);
         }
 
-        public static IQueryFactory GetInstance([NotNull] WorkItemStore store)
+        public static IQueryFactory GetInstance(WorkItemStore store)
         {
             Contract.Requires(store != null);
 
-            return new QueryFactory(store);
+            return new QueryFactory(store ?? throw new ArgumentNullException(nameof(store)));
         }
     }
 }

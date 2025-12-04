@@ -28,9 +28,9 @@ namespace Qwiq.Linq
 
             try
             {
-                return (IQueryable)Activator.CreateInstance(typeof(Query<>).MakeGenericType(type), new object[] { this, expression });
+                return (IQueryable)Activator.CreateInstance(typeof(Query<>).MakeGenericType(type), new object[] { this, expression })!;
             }
-            catch (TargetInvocationException e)
+            catch (TargetInvocationException e) when (e.InnerException != null)
             {
                 throw e.InnerException;
             }
@@ -54,14 +54,14 @@ namespace Qwiq.Linq
             if (isCollection)
             {
                 var itemType = isCollection
-                    // TResult is an IEnumerable`1 collection.
+                               // TResult is an IEnumerable`1 collection.
                                ? typeof(TResult).GetGenericArguments().Single()
-                    // TResult is not an IEnumerable`1 collection, but a single item.
+                               // TResult is not an IEnumerable`1 collection, but a single item.
                                : typeof(TResult);
                 var result = ExecuteImpl(expression, itemType);
-                var list = Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType)) as IList;
+                var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
 
-                var enumerableResult = (IEnumerable)result;
+                var enumerableResult = (IEnumerable)result!;
                 var f = enumerableResult.GetEnumerator();
                 while (f.MoveNext())
                 {
@@ -77,16 +77,17 @@ namespace Qwiq.Linq
         protected virtual object ExecuteImpl(Expression expression, Type itemType)
         {
             var query = WiqlQueryBuilder.BuildQuery(expression);
+            var queryType = query.UnderlyingQueryType ?? itemType;
 
             var results = query.WillEverHaveResults()
-                ? ExecuteRawQuery(query.UnderlyingQueryType, query.ToQueryString())
-                : Activator.CreateInstance(typeof(List<>).MakeGenericType(query.UnderlyingQueryType)) as IEnumerable;
+                ? ExecuteRawQuery(queryType, query.ToQueryString())
+                : (IEnumerable)Activator.CreateInstance(typeof(List<>).MakeGenericType(queryType))!;
 
             if (query.Projections.Count > 0)
             {
-                return Projector.Project(query.Projections, results.Cast<object>());
+                return Projector.Project(query.Projections, results!.Cast<object>());
             }
-            return results;
+            return results!;
         }
 
         protected virtual IEnumerable ExecuteRawQuery(Type workItemType, string queryString)

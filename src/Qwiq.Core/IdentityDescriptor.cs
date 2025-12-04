@@ -1,13 +1,12 @@
-﻿using Microsoft.VisualStudio.Services.Identity;
+using Microsoft.VisualStudio.Services.Identity;
 using System;
-using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Qwiq
 {
     public class IdentityDescriptor : IIdentityDescriptor, IComparable<IdentityDescriptor>, IEquatable<IdentityDescriptor>
     {
-        [NotNull] private string _identifier;
+        private string _identifier;
 
         /// <summary>
         /// </summary>
@@ -23,7 +22,7 @@ namespace Qwiq
         ///     "Microsoft.TeamFoundation.Identity",
         ///     "S-1-9-1234567890-1234567890-123456789-1234567890-1234567890-1-1234567890-1234567890-1234567890-1234567890"
         /// </example>
-        public IdentityDescriptor([NotNull] string identityType, [NotNull] string identifier)
+        public IdentityDescriptor(string identityType, string identifier)
         {
             IdentityType = identityType;
             Identifier = identifier;

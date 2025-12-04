@@ -12,17 +12,17 @@ namespace Qwiq.Credentials
             Exception = exception;
         }
 
-        public AuthenticationFailedNotification(VssCredentials credentials)
+        public AuthenticationFailedNotification(VssCredentials? credentials)
             : base(credentials)
         {
         }
 
         public AuthenticationFailedNotification(Exception exception)
-            :base(null)
+            : base(null)
         {
             Exception = exception;
         }
 
-        public Exception Exception { get; }
+        public Exception? Exception { get; }
     }
 }

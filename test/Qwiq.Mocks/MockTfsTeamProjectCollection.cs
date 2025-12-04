@@ -18,17 +18,17 @@ namespace Qwiq.Mocks
             TimeZone = TimeZone.CurrentTimeZone;
         }
 
-        public VssCredentials AuthorizedCredentials { get; set; }
+        public VssCredentials AuthorizedCredentials { get; set; } = null!;
 
-        public ITeamFoundationIdentity AuthorizedIdentity { get; set; }
+        public ITeamFoundationIdentity AuthorizedIdentity { get; set; } = null!;
 
-        public ICommonStructureService CommonStructureService { get; set; }
+        public ICommonStructureService? CommonStructureService { get; set; }
 
         public bool HasAuthenticated { get; set; }
 
-        public IIdentityManagementService IdentityManagementService { get; set; }
+        public IIdentityManagementService? IdentityManagementService { get; set; }
 
-        public Uri Uri { get; set; }
+        public Uri Uri { get; set; } = null!;
 
         public TimeZone TimeZone { get; }
     }

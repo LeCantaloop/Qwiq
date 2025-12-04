@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
 
 namespace Qwiq.Mocks
 {
     internal class MockWorkItemTypeCollection : WorkItemTypeCollection
     {
-        public MockWorkItemTypeCollection([NotNull] IWorkItemStore store)
-            : base((List<IWorkItemType>)null)
+        public MockWorkItemTypeCollection(IWorkItemStore store)
+            : base((List<IWorkItemType>)null!)
         {
             ItemFactory = () => new[]
                                     {

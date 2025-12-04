@@ -68,7 +68,7 @@ namespace Qwiq.Linq.Visitors
                 var subject = Visit(node.Object);
                 var target = Visit(node.Arguments[0]);
 
-                return new UnderExpression(node.Type, subject, target);
+                return new UnderExpression(node.Type, subject!, target!);
             }
 
             if (node.Method.DeclaringType == typeof(QueryExtensions) && node.Method.Name == "WasEver")
@@ -110,15 +110,15 @@ namespace Qwiq.Linq.Visitors
                 var subject = Visit(node.Object);
                 var target = Visit(node.Arguments[0]);
 
-                return new ContainsExpression(node.Type, subject, target);
+                return new ContainsExpression(node.Type, subject!, target!);
             }
 
             if (node.Method.DeclaringType == typeof(QueryExtensions) && node.Method.Name == "AsOf")
             {
                 Visit(node.Arguments[0]);
-                var time = (ConstantExpression)Visit(node.Arguments[1]);
+                var time = (ConstantExpression)Visit(node.Arguments[1])!;
 
-                return new AsOfExpression(node.Type, (DateTime)time.Value);
+                return new AsOfExpression(node.Type, (DateTime)time.Value!);
             }
 
             if (node.Method.Name == "ToUpper" || node.Method.Name == "ToUpperInvariant" || node.Method.Name == "ToLower" || node.Method.Name == "ToLowerInvariant")
@@ -128,13 +128,13 @@ namespace Qwiq.Linq.Visitors
 
             if (node.Method.Name == "ToString")
             {
-                return Expression.TypeAs(Visit(node.Object), typeof(string));
+                return Expression.TypeAs(Visit(node.Object)!, typeof(string));
             }
 
             if (node.Method.Name == "get_Item")
             {
                 var subject = node.Object;
-                var name = Visit(node.Arguments[0]);
+                var name = Visit(node.Arguments[0])!;
                 return new IndexerExpression(node.Type, subject, name);
             }
 

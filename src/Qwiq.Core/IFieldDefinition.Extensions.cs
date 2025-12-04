@@ -1,10 +1,9 @@
-﻿using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public static partial class Extensions
     {
-        public static bool IsCloneable([NotNull] this IFieldDefinition definition)
+        public static bool IsCloneable(this IFieldDefinition definition)
         {
             switch (definition.Id)
             {
@@ -28,7 +27,7 @@ namespace Qwiq
             return definition.IsEditable();
         }
 
-        public static bool IsEditable([NotNull] this IFieldDefinition definition)
+        public static bool IsEditable(this IFieldDefinition definition)
         {
             switch (definition.Id)
             {
@@ -45,7 +44,7 @@ namespace Qwiq
             return !definition.IsComputed();
         }
 
-        public static bool IsComputed([NotNull] this IFieldDefinition definition)
+        public static bool IsComputed(this IFieldDefinition definition)
         {
             switch (definition.Id)
             {

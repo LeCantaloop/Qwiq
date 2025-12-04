@@ -6,6 +6,7 @@ on:
       - develop
       - master
   pull_request:
+    # Run for ALL pull requests regardless of target branch
   workflow_dispatch:
 
 permissions:
@@ -15,173 +16,70 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
-    
+
     env:
       # Test filter matching AppVeyor configuration
-      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST"
+      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: ./global.json
 
-    - name: Setup NuGet
-      uses: nuget/setup-nuget@v2
-      with:
-        # Use NuGet 5.x for compatibility with packages.config-based projects
-        # NuGet 7.x has stricter NU5012 errors when packing with packages.config
-        nuget-version: '5.11.0'
+      - name: Restore .NET tools
+        run: dotnet tool restore
 
-    - name: Setup VSTest
-      uses: darenm/Setup-VSTest@v1.3
+      - name: Restore NuGet packages
+        run: dotnet restore Qwiq.sln
 
-    - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v5
-      with:
-        dotnet-version: '8.0.x'
+      - name: Build solution
+        run: dotnet build Qwiq.sln -c Release --no-restore /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build.binlog
 
-    - name: Restore NuGet packages
-      shell: pwsh
-      run: |
-        # Two-step restore is required for this legacy packages.config layout:
-        # 1. Solution-level restore handles most projects
-        # 2. Per-packages.config restore ensures all dependencies are resolved,
-        #    including those in projects that may not be wired up the way NuGet expects
-        nuget restore Qwiq.sln -NonInteractive -PackagesDirectory packages -ConfigFile nuget.config
-        
-        Get-ChildItem -Path . -Recurse -Filter packages.config | ForEach-Object {
-          Write-Host "Restoring packages from: $($_.FullName)"
-          nuget restore $_.FullName -PackagesDirectory packages -ConfigFile nuget.config
-        }
+      - name: Pack NuGet packages
+        run: dotnet pack Qwiq.sln -c Release --no-build /p:ContinuousIntegrationBuild=true
 
-    - name: Build solution
-      run: msbuild Qwiq.sln /p:Configuration=Release /p:Platform="Any CPU" /v:minimal /m
+      - name: Run tests
+        run: dotnet test Qwiq.sln -c Release --no-build --filter "${{ env.TEST_FILTER }}" --logger trx --results-directory ./artifacts/TestResults
 
-    - name: Prepare NuGet dependency .nupkg files for packing
-      shell: pwsh
-      run: |
-        # nuget pack requires .nupkg files for dependencies when processing packages.config.
-        # nuget restore only extracts packages to folders, so we use nuget install with
-        # -PackageSaveMode nupkg to create the .nupkg files that nuget pack needs.
-        # We use a separate 'packages-nupkg' directory because nuget install would skip
-        # packages already present in the 'packages' folder from restore.
-        $root = $PWD
-        $nupkgDir = Join-Path $root 'packages-nupkg'
+      - name: Upload build logs
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: ./artifacts/logs/
+          if-no-files-found: ignore
 
-        Write-Host "Creating nupkg directory at $nupkgDir"
-        New-Item -ItemType Directory -Force -Path $nupkgDir | Out-Null
+      - name: Upload test results
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./artifacts/TestResults/**/*.trx
+          if-no-files-found: ignore
 
-        Get-ChildItem -Recurse -Filter 'packages.config' | ForEach-Object {
-          $configPath = $_.FullName
-          Write-Host "Installing packages from $configPath into $nupkgDir"
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: binaries
+          path: |
+            src/**/bin/Release/**/*.dll
+            src/**/bin/Release/**/*.exe
+            !src/**/bin/Release/**/*.pdb
+          if-no-files-found: warn
 
-          nuget install $configPath `
-            -OutputDirectory $nupkgDir `
-            -PackageSaveMode nupkg `
-            -NonInteractive
-        }
-
-    # NOTE:
-    # - We pack from the .csproj with an external .nuspec for metadata.
-    # - Because these projects use packages.config, NuGet always generates <dependencies>
-    #   from packages.config and ignores <dependencies> in the .nuspec.
-    # - This triggers NU5128 in older-style packages.config scenarios, even though the
-    #   historical Qwiq packages have worked fine.
-    # - We suppress NU5128 (and NU5125) via NoWarn to keep the legacy dependency semantics
-    #   without rewriting the packaging model in this PR.
-    - name: Pack NuGet packages
-      shell: pwsh
-      run: |
-        $root = $PWD
-        $nupkgDir = Join-Path $root 'packages-nupkg'
-
-        Get-ChildItem -Path "src" -Recurse -Filter "*.nuspec" | ForEach-Object {
-          $projectDir = $_.DirectoryName
-          $projectName = (Get-ChildItem -Path $projectDir -Filter "*.csproj" | Select-Object -First 1).BaseName
-          Write-Host "Packing: $projectName"
-
-          nuget pack "$projectDir\$projectName.csproj" `
-            -Properties "Configuration=Release;NoWarn=NU5125,NU5128" `
-            -OutputDirectory "$projectDir\bin\Release" `
-            -IncludeReferencedProjects `
-            -PackagesDirectory $nupkgDir `
-            -NonInteractive
-        }
-
-    - name: Run tests
-      shell: pwsh
-      run: |
-        # Find all test assemblies (excluding IntegrationTests and Package.Tests which runs separately)
-        $testAssemblies = @(
-          Get-ChildItem -Path "test" -Recurse -Filter "*Tests.dll" | 
-          Where-Object { 
-            $_.FullName -match "bin\\Release" -and 
-            $_.FullName -notmatch "IntegrationTests" -and
-            $_.FullName -notmatch "Package\.Tests" -and
-            $_.FullName -notmatch "\\ref\\" 
-          }
-        )
-        
-        if ($testAssemblies.Count -eq 0) {
-          Write-Warning "No test assemblies found!"
-          exit 1
-        }
-        
-        Write-Host "Found $($testAssemblies.Count) test assemblies"
-        
-        foreach ($assembly in $testAssemblies) {
-          Write-Host "Testing: $($assembly.FullName)"
-          vstest.console.exe $assembly.FullName /Logger:trx /TestCaseFilter:"$env:TEST_FILTER"
-          if ($LASTEXITCODE -ne 0) {
-            Write-Warning "Tests failed in $($assembly.Name) with exit code $LASTEXITCODE"
-          }
-        }
-
-    - name: Copy NuGet packages for package tests
-      shell: pwsh
-      run: |
-        $packageTestDir = "test/Qwiq.Package.Tests/bin/Release/net8.0"
-        New-Item -ItemType Directory -Force -Path $packageTestDir | Out-Null
-        $packages = Get-ChildItem -Path "src" -Recurse -Filter "*.nupkg"
-        if ($packages.Count -eq 0) {
-          Write-Error "No .nupkg files found in src directory!"
-          exit 1
-        }
-        Write-Host "Found $($packages.Count) packages to copy"
-        $packages | ForEach-Object {
-          Write-Host "Copying: $($_.FullName) to $packageTestDir"
-          Copy-Item $_.FullName -Destination $packageTestDir
-        }
-        # Verify packages were copied
-        $copiedPackages = Get-ChildItem -Path $packageTestDir -Filter "*.nupkg"
-        Write-Host "Verified $($copiedPackages.Count) packages in $packageTestDir"
-
-    - name: Run package tests
-      shell: pwsh
-      run: |
-        # Use --no-build and --no-restore to prevent dotnet test from rebuilding or restoring,
-        # which could clear the output directory where we just copied the .nupkg files
-        dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj --configuration Release --no-build --no-restore --logger trx --results-directory TestResults
-
-    - name: Upload test results
-      if: success() || failure()
-      uses: actions/upload-artifact@v5
-      with:
-        name: test-results
-        path: TestResults/**/*.trx
-        if-no-files-found: ignore
-
-    - name: Upload binaries
-      uses: actions/upload-artifact@v5
-      if: success()
-      with:
-        name: binaries
-        path: |
-          src/**/bin/Release/**/*.dll
-          src/**/bin/Release/**/*.exe
-          !src/**/bin/Release/**/*.pdb
-        if-no-files-found: warn
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: packages
+          path: |
+            src/**/bin/Release/**/*.nupkg
+            src/**/bin/Release/**/*.snupkg
+          if-no-files-found: warn

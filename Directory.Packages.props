@@ -1,0 +1,48 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Build and Analysis -->
+    <PackageVersion Include="Nerdbank.GitVersioning" Version="3.6.143" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
+
+    <!-- Azure DevOps / TFS Client Libraries -->
+    <!-- Use version 16.153.0 which is the last version with IdentityTypeMapper and compatible constructor signatures -->
+    <PackageVersion Include="Microsoft.VisualStudio.Services.Client" Version="16.153.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Services.InteractiveClient" Version="16.153.0" />
+    <PackageVersion Include="Microsoft.TeamFoundationServer.Client" Version="16.153.0" />
+    <!-- ExtendedClient (SOAP) only works on net472+ Windows -->
+    <PackageVersion Include="Microsoft.TeamFoundationServer.ExtendedClient" Version="16.153.0" />
+
+    <!-- Core Dependencies -->
+    <PackageVersion Include="Castle.Core" Version="5.1.1" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
+    <PackageVersion Include="System.Threading.Tasks.Dataflow" Version="8.0.1" />
+    <PackageVersion Include="FastMember" Version="1.5.0" />
+
+    <!-- Identity / Auth (modern MSAL replaces ADAL) -->
+    <PackageVersion Include="Microsoft.Identity.Client" Version="4.61.3" />
+
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageVersion Include="MSTest.TestAdapter" Version="3.4.3" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.4.3" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+    <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="Humanizer.Core" Version="2.14.1" />
+    <PackageVersion Include="JetBrains.DotMemoryUnit" Version="3.2.20220510.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="NuGet.Versioning" Version="6.12.1" />
+    <PackageVersion Include="Verify.Xunit" Version="28.3.1" />
+    <PackageVersion Include="Verify.Nupkg" Version="1.1.1" />
+
+    <!-- Benchmarking -->
+    <PackageVersion Include="BenchmarkDotNet" Version="0.13.12" />
+  </ItemGroup>
+</Project>

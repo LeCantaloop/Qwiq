@@ -21,7 +21,7 @@ namespace Qwiq.Client.Rest
 
             tfsServer.ConnectAsync(VssConnectMode.Automatic).GetAwaiter().GetResult();
             if (!tfsServer.HasAuthenticated) throw new InvalidOperationException("Could not connect.");
-            return tfsServer.AsProxy();
+            return tfsServer.AsProxy() ?? throw new InvalidOperationException("Failed to create proxy for TFS connection.");
         }
 
         // ReSharper disable ClassNeverInstantiated.Local

@@ -9,9 +9,9 @@ namespace Qwiq
         /// <summary>
         ///     Gets or sets the string value of the AreaPath field for this work item.
         /// </summary>
-        string AreaPath { get; set; }
+        string? AreaPath { get; set; }
 
-        string AssignedTo { get; set; }
+        string? AssignedTo { get; set; }
 
         /// <summary>
         ///     Gets the number of attached files for this work item.
@@ -21,7 +21,7 @@ namespace Qwiq
         /// <summary>
         ///     Gets the string value of the ChangedBy field for this work item.
         /// </summary>
-        string ChangedBy { get; }
+        string? ChangedBy { get; }
 
         /// <summary>
         ///     Gets the System.DateTime object that represents the date and time that this
@@ -32,7 +32,7 @@ namespace Qwiq
         /// <summary>
         ///     Gets the string value of the CreatedBy field for this work item.
         /// </summary>
-        string CreatedBy { get; }
+        string? CreatedBy { get; }
 
         /// <summary>
         ///     Gets the System.DateTime object that represents the date and time that this
@@ -43,7 +43,7 @@ namespace Qwiq
         /// <summary>
         ///     Gets or sets a string that describes this work item.
         /// </summary>
-        string Description { get; set; }
+        string? Description { get; set; }
 
         /// <summary>
         ///     Gets the number of external links in this work item.
@@ -62,7 +62,7 @@ namespace Qwiq
         /// <summary>
         ///     Gets or sets the string value of the IterationPath field of this work item.
         /// </summary>
-        string IterationPath { get; set; }
+        string? IterationPath { get; set; }
 
         /// <summary>
         ///     Gets the number of related links of this work item.
@@ -78,22 +78,22 @@ namespace Qwiq
         /// <summary>
         ///     Gets or sets a string that describes the state of this work item.
         /// </summary>
-        string State { get; set; }
+        string? State { get; set; }
 
         /// <summary>
         ///     Gets or sets a string of all the tags on this work item.
         /// </summary>
-        string Tags { get; set; }
+        string? Tags { get; set; }
 
         /// <summary>
         ///     Gets or sets a string that describes the title of this work item.
         /// </summary>
-        string Title { get; set; }
+        string? Title { get; set; }
 
         int? Watermark { get; }
 
-        string WorkItemType { get; }
+        string? WorkItemType { get; }
 
-        string TeamProject { get; }
+        string? TeamProject { get; }
     }
 }

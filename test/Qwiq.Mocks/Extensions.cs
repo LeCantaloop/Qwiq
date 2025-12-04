@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using JetBrains.Annotations;
 
 namespace Qwiq.Mocks
 {
@@ -32,8 +31,8 @@ namespace Qwiq.Mocks
 
         public static MockWorkItemStore Add(
             this MockWorkItemStore store,
-            IEnumerable<IWorkItem> workItems,
-            IEnumerable<IWorkItemLinkInfo> links)
+            IEnumerable<IWorkItem>? workItems,
+            IEnumerable<IWorkItemLinkInfo>? links)
         {
             if (store == null) throw new ArgumentNullException(nameof(store));
             if (workItems == null && links == null)
@@ -101,13 +100,13 @@ namespace Qwiq.Mocks
             return Create(store, null);
         }
 
-        public static MockWorkItem Create(this MockWorkItemStore store, IEnumerable<KeyValuePair<string, object>> values = null)
+        public static MockWorkItem Create(this MockWorkItemStore store, IEnumerable<KeyValuePair<string, object>>? values = null)
         {
             var project = store.Projects[0];
             var wit = project.WorkItemTypes[0];
 
-            var tp = new KeyValuePair<string, object>(CoreFieldRefNames.TeamProject, project.Name);
-            var wp = new KeyValuePair<string, object>(CoreFieldRefNames.WorkItemType, wit.Name);
+            var tp = new KeyValuePair<string, object>(CoreFieldRefNames.TeamProject, project.Name!);
+            var wp = new KeyValuePair<string, object>(CoreFieldRefNames.WorkItemType, wit.Name!);
             var a = new[] { tp, wp };
 
             values = values?.Union(a) ?? a;
@@ -122,9 +121,7 @@ namespace Qwiq.Mocks
             var g = new WorkItemGenerator<MockWorkItem>(store.Create, new[] { "Revisions", "Item" });
             return g.Generate(1).Single();
         }
-
-        [CanBeNull]
-        public static IWorkItemStore Store([CanBeNull] this IWorkItemType type)
+        public static IWorkItemStore? Store(this IWorkItemType type)
         {
             var t = type as MockWorkItemType;
             return t?.Store;

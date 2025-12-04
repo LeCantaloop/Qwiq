@@ -1,5 +1,4 @@
 using Castle.DynamicProxy;
-using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -10,14 +9,13 @@ namespace Qwiq.Exceptions
     [DebuggerStepThrough]
     public class ExceptionHandlingDynamicProxy : IInterceptor
     {
-        [NotNull]
         private readonly IExceptionMapper _exceptionMapper;
 
-        public ExceptionHandlingDynamicProxy([NotNull] IExceptionMapper exceptionMapper)
+        public ExceptionHandlingDynamicProxy(IExceptionMapper exceptionMapper)
         {
             Contract.Requires(exceptionMapper != null);
 
-            _exceptionMapper = exceptionMapper;
+            _exceptionMapper = exceptionMapper ?? throw new ArgumentNullException(nameof(exceptionMapper));
         }
 
         public void Intercept(IInvocation invocation)
@@ -29,7 +27,7 @@ namespace Qwiq.Exceptions
             catch (Exception e)
             {
                 // .NET 4.5 feature: Capture an exception and re-throw it without changing the stack trace
-                ExceptionDispatchInfo.Capture(_exceptionMapper.Map(e)).Throw();
+                ExceptionDispatchInfo.Capture(_exceptionMapper.Map(e) ?? e).Throw();
             }
         }
 

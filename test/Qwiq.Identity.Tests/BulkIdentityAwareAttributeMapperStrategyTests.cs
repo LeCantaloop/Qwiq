@@ -8,25 +8,25 @@ using Qwiq.Mapper;
 using Qwiq.Mapper.Attributes;
 using Qwiq.Mocks;
 using Qwiq.Tests.Common;
+using Should;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Should;
 using MockIdentityDescriptor = Qwiq.Mocks.MockIdentityDescriptor;
 
 namespace Qwiq.Identity
 {
     public abstract class BulkIdentityAwareAttributeMapperStrategyTests : ContextSpecification
     {
-        private IWorkItemMapperStrategy _strategy;
-        private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings;
-        protected IDictionary<string, IEnumerable<ITeamFoundationIdentity>> Identities { get; set; }
+        private IWorkItemMapperStrategy _strategy = null!;
+        private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings = null!;
+        protected IDictionary<string, IEnumerable<ITeamFoundationIdentity>>? Identities { get; set; }
 
         protected MockIdentityType Actual
         {
             get { return _workItemMappings.Select(kvp => kvp.Value).Cast<MockIdentityType>().Single(); }
         }
 
-        protected string IdentityFieldBackingValue { get; set; }
+        protected string? IdentityFieldBackingValue { get; set; }
 
         public override void Given()
         {
@@ -40,7 +40,7 @@ namespace Qwiq.Identity
             {
                 new MockWorkItem(
                     new MockWorkItemType("Baz", MockIdentityType.BackingField),
-                    new Dictionary<string, object>
+                    new Dictionary<string, object?>
                     {
                         { MockIdentityType.BackingField, IdentityFieldBackingValue }
                     })
@@ -51,7 +51,7 @@ namespace Qwiq.Identity
 
         public override void When()
         {
-            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null);
+            _strategy.Map(typeof(MockIdentityType), _workItemMappings, null!);
         }
     }
 
@@ -102,7 +102,7 @@ namespace Qwiq.Identity
         public void the_IdentityFieldValue_contains_expected_value()
         {
             Actual.AnIdentityValue.ShouldNotBeNull();
-            Actual.AnIdentityValue.DisplayName.ShouldEqual(IdentityDisplay);
+            Actual.AnIdentityValue!.DisplayName.ShouldEqual(IdentityDisplay);
             Actual.AnIdentityValue.IdentityName.ShouldEqual(IdentityAlias);
         }
     }
@@ -111,16 +111,16 @@ namespace Qwiq.Identity
     public class given_a_work_item_with_defined_fields_when_the_field_names_to_properties_are_retrieved : ContextSpecification
     {
         private readonly Type _identityType = typeof(MockIdentityType);
-        private Dictionary<string, List<PropertyInfo>> Expected { get; set; }
-        private Dictionary<string, List<PropertyInfo>> Actual { get; set; }
+        private Dictionary<string, List<PropertyInfo>> Expected { get; set; } = null!;
+        private Dictionary<string, List<PropertyInfo>> Actual { get; set; } = null!;
 
         public override void Given()
         {
             Expected = new Dictionary<string, List<PropertyInfo>>
             {
-                [MockIdentityType.BackingField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.AnIdentity)), _identityType.GetProperty(nameof(MockIdentityType.AnIdentityValue)) },
-                [MockIdentityType.NonExistantField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.NonExistant)) },
-                [MockIdentityType.UriIdentityField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.UriIdentity)) }
+                [MockIdentityType.BackingField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.AnIdentity))!, _identityType.GetProperty(nameof(MockIdentityType.AnIdentityValue))! },
+                [MockIdentityType.NonExistantField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.NonExistant))! },
+                [MockIdentityType.UriIdentityField] = new List<PropertyInfo> { _identityType.GetProperty(nameof(MockIdentityType.UriIdentity))! }
             };
         }
 

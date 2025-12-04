@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-using JetBrains.Annotations;
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -12,24 +11,17 @@ namespace Qwiq.Client.Rest
 {
     internal class WorkItem : Qwiq.WorkItem
     {
-        [NotNull]
         private readonly Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem _item;
-
-        [NotNull]
         private readonly Func<string, IWorkItemLinkType> _linkFunc;
+        private IFieldCollection? _fields;
+        private LinkCollection? _links;
 
-        [CanBeNull]
-        private IFieldCollection _fields;
-
-        [CanBeNull]
-        private LinkCollection _links;
-
-        private Uri _uri;
+        private Uri? _uri;
 
         public WorkItem(
-            [NotNull] Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
-            [NotNull] IWorkItemType wit,
-            [NotNull] Func<string, IWorkItemLinkType> linkFunc)
+            Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem item,
+            IWorkItemType wit,
+            Func<string, IWorkItemLinkType> linkFunc)
             : base(wit)
         {
             Contract.Requires(item != null);
@@ -131,18 +123,18 @@ namespace Qwiq.Client.Rest
 
         public override string Url { get; }
 
-        protected override object GetValue(string name)
+        protected override object? GetValue(string name)
         {
             if (string.IsNullOrEmpty(name)) return null;
 
-            _item.Fields.TryGetValue(name, out object value);
+            _item.Fields.TryGetValue(name, out object? value);
 #if DEBUG
             Trace.WriteLine($"Get \'{name}\': {value.ToUsefulString()}");
 #endif
             return value;
         }
 
-        protected override void SetValue(string name, object value)
+        protected override void SetValue(string name, object? value)
         {
             if (string.IsNullOrEmpty(name)) return;
 

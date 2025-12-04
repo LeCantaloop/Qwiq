@@ -1,12 +1,11 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class RelatedLink : Link, IRelatedLink
     {
-        internal RelatedLink(int related, [CanBeNull] IWorkItemLinkTypeEnd linkTypeEnd = null, [CanBeNull] string comment = null)
+        internal RelatedLink(int related, IWorkItemLinkTypeEnd? linkTypeEnd = null, string? comment = null)
             : base(comment, BaseLinkType.RelatedLink)
         {
             RelatedWorkItemId = related;
@@ -14,18 +13,18 @@ namespace Qwiq
             LinkTypeEnd = linkTypeEnd;
         }
 
-        public IWorkItemLinkTypeEnd LinkTypeEnd { get; }
+        public IWorkItemLinkTypeEnd? LinkTypeEnd { get; }
 
         public int RelatedWorkItemId { get; }
 
         /// <inheritdoc />
         [DebuggerStepThrough]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as IRelatedLink);
         }
 
-        public bool Equals(IRelatedLink other)
+        public bool Equals(IRelatedLink? other)
         {
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(other, null)) return false;

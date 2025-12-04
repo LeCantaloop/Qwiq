@@ -8,9 +8,9 @@ namespace Qwiq.Exceptions
 {
     public class ExceptionHandlingDynamicProxyFactoryContextSpecification : ContextSpecification
     {
-        protected IExceptionThrower InstanceToProxy { get; set; }
+        protected IExceptionThrower InstanceToProxy { get; set; } = null!;
 
-        protected IExceptionThrower ProxiedInstance { get; set; }
+        protected IExceptionThrower ProxiedInstance { get; set; } = null!;
 
         public override void Given()
         {

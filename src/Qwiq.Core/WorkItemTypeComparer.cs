@@ -1,6 +1,5 @@
 using System;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -12,7 +11,7 @@ namespace Qwiq
         {
         }
 
-        public override bool Equals([CanBeNull] IWorkItemType x, [CanBeNull] IWorkItemType y)
+        public override bool Equals(IWorkItemType x, IWorkItemType y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -41,7 +40,7 @@ namespace Qwiq
 
         // ReSharper disable ClassNeverInstantiated.Local
         private class Nested
-            // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemTypeComparer Instance = new WorkItemTypeComparer();

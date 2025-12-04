@@ -10,7 +10,7 @@ namespace Qwiq
         {
         }
 
-        public override bool Equals(IWorkItemLinkType x, IWorkItemLinkType y)
+        public override bool Equals(IWorkItemLinkType? x, IWorkItemLinkType? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

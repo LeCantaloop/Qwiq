@@ -13,8 +13,8 @@ namespace Qwiq.Mocks
             string displayName,
             Guid teamFoundationId,
             bool isActive = true,
-            IEnumerable<IIdentityDescriptor> members = null,
-            IEnumerable<IIdentityDescriptor> memberOf = null)
+            IEnumerable<IIdentityDescriptor>? members = null,
+            IEnumerable<IIdentityDescriptor>? memberOf = null)
             : base(
                   isActive,
                   teamFoundationId == Guid.Empty ? Guid.NewGuid() : teamFoundationId,
@@ -33,10 +33,10 @@ namespace Qwiq.Mocks
                     {
                         { IdentityAttributeTags.SchemaClassName, "User"},
                         { IdentityAttributeTags.Description, string.Empty },
-                        { IdentityAttributeTags.Domain, f.Domain },
-                        { IdentityAttributeTags.AccountName, f.AccountName },
+                        { IdentityAttributeTags.Domain, f.Domain ?? string.Empty },
+                        { IdentityAttributeTags.AccountName, f.AccountName ?? string.Empty },
                         { IdentityAttributeTags.DistinguishedName, string.Empty},
-                        { IdentityAttributeTags.MailAddress, f.Email },
+                        { IdentityAttributeTags.MailAddress, f.Email ?? string.Empty },
                         { IdentityAttributeTags.SpecialType, "Generic" },
                         { IdentityAttributeTags.IdentityTypeClaim, Descriptor.IdentityType }
                     };
@@ -48,9 +48,9 @@ namespace Qwiq.Mocks
 
         public sealed override bool IsContainer { get; }
 
-        public override string GetAttribute(string name, string defaultValue)
+        public override string? GetAttribute(string name, string? defaultValue)
         {
-            return _properties.TryGetValue(name, out object obj)
+            return _properties.TryGetValue(name, out object? obj)
                        ? obj?.ToString() ?? defaultValue
                        : defaultValue;
         }

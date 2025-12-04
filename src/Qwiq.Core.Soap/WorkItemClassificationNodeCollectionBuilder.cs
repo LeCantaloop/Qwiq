@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Diagnostics;
-using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 
 namespace Qwiq.Client.Soap
@@ -24,7 +23,7 @@ namespace Qwiq.Client.Soap
             }
         }
 
-        private static IWorkItemClassificationNode<int> BuildNode([NotNull] LevelOrderEnumerator e)
+        private static IWorkItemClassificationNode<int> BuildNode(LevelOrderEnumerator e)
         {
             Debug.Assert(e.Current != null, "e.Current != null");
 

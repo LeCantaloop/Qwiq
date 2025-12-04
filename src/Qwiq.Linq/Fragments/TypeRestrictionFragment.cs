@@ -13,7 +13,7 @@ namespace Qwiq.Linq.Fragments
             _workItemTypes = new HashSet<string>(workItemTypes, Comparer.OrdinalIgnoreCase);
         }
 
-        public string Get(Type queryType)
+        public string Get(Type? queryType)
         {
             var numberOfTypesGreaterThanOne = _workItemTypes.Count > 1;
 

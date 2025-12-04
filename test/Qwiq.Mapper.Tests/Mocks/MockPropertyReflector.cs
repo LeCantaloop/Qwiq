@@ -34,7 +34,7 @@ namespace Qwiq.Mapper.Mocks
             return Enumerable.Empty<Attribute>();
         }
 
-        public Attribute GetAttribute(Type type, PropertyInfo property)
+        public Attribute? GetAttribute(Type type, PropertyInfo property)
         {
             GetAttributeCallCount += 1;
             return null;

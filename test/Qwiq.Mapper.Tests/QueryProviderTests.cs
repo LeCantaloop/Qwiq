@@ -57,9 +57,9 @@ namespace Qwiq.Mapper
 
     public abstract class SelectTests : QueryableContextSpecification<SimpleMockModel>
     {
-        protected object Actual;
+        protected object? Actual;
 
-        protected object Expected;
+        protected object? Expected;
 
         protected override IWorkItemStore CreateWorkItemStore()
         {
@@ -103,9 +103,9 @@ namespace Qwiq.Mapper
     // ReSharper disable once InconsistentNaming
     public class when_a_where_clause_includes_an_empty_contains_clause : QueryableContextSpecification<SimpleMockModel>
     {
-        private IEnumerable<SimpleMockModel> _actual;
+        private IEnumerable<SimpleMockModel> _actual = null!;
 
-        private InstrumentedMockWorkItemStore _workItemStore;
+        private InstrumentedMockWorkItemStore _workItemStore = null!;
 
         [TestMethod]
         public void the_query_should_not_be_run()

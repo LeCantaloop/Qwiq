@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,14 +7,13 @@ namespace Qwiq
 {
     public abstract class WorkItemCore : IWorkItemCore, IEquatable<IWorkItemCore>, IRevisionInternal
     {
-        [CanBeNull]
         private readonly Dictionary<string, object> _fields;
 
         protected internal WorkItemCore()
         {
         }
 
-        protected internal WorkItemCore([CanBeNull] Dictionary<string, object> fields)
+        protected internal WorkItemCore(Dictionary<string, object> fields)
         {
             _fields = fields ?? new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
@@ -27,17 +25,16 @@ namespace Qwiq
         /// Gets or sets the <see cref="object"/> with the specified name.
         /// </summary>
         /// <value>
-        /// The <see cref="object"/>.
+        /// The <see cref="object"/>, or null if the field is not set.
         /// </value>
         /// <param name="name">
         /// The name.
         /// </param>
-        /// <returns>
-        /// </returns>
+        /// <returns>The field value, or null if not set.</returns>
         /// <exception cref="ArgumentNullException">
         /// name is null
         /// </exception>
-        public virtual object this[string name]
+        public virtual object? this[string name]
         {
             get
             {
@@ -78,9 +75,7 @@ namespace Qwiq
             SetValue(fieldDefinition.ReferenceName, value);
         }
 
-        [JetBrains.Annotations.Pure]
-        [CanBeNull]
-        protected virtual T GetValue<T>([NotNull] string name)
+        protected virtual T GetValue<T>(string name)
         {
             var value = GetValue(name);
 
@@ -88,10 +83,7 @@ namespace Qwiq
 
             return TypeParser.Default.Parse(value, default(T));
         }
-
-        [CanBeNull]
-        [JetBrains.Annotations.Pure]
-        protected virtual object GetValue([NotNull] string name)
+        protected virtual object GetValue(string name)
         {
             Contract.Requires(!string.IsNullOrEmpty(name));
             if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
@@ -104,7 +96,7 @@ namespace Qwiq
             return val;
         }
 
-        protected virtual void SetValue([NotNull] string name, [CanBeNull] object value)
+        protected virtual void SetValue(string name, object value)
         {
             if (_fields == null) throw new InvalidOperationException("Type must be initialized with fields.");
             _fields[name] = value;

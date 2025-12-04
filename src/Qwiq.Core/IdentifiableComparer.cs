@@ -1,4 +1,4 @@
-﻿namespace Qwiq
+namespace Qwiq
 {
     internal class IdentifiableComparer : GenericComparer<IIdentifiable<int>>
     {
@@ -9,7 +9,7 @@
 
         }
 
-        public override bool Equals(IIdentifiable<int> x, IIdentifiable<int> y)
+        public override bool Equals(IIdentifiable<int>? x, IIdentifiable<int>? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

@@ -11,7 +11,7 @@ namespace Qwiq
         }
 
         /// <inheritdoc />
-        public override bool Equals(IWorkItemCollection x, IWorkItemCollection y)
+        public override bool Equals(IWorkItemCollection? x, IWorkItemCollection? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

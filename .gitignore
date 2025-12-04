@@ -319,3 +319,7 @@ __pycache__/
 
 # NuGet executables
 .nuget/*.exe
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md

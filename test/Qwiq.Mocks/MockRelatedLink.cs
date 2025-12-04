@@ -13,13 +13,13 @@ namespace Qwiq.Mocks
         }
 
         [DebuggerStepThrough]
-        public MockRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, int targetId)
+        public MockRelatedLink(IWorkItemLinkTypeEnd? linkTypeEnd, int targetId)
             : base(targetId, linkTypeEnd)
         {
             LinkInfo = new WorkItemLinkInfo(0, targetId, linkTypeEnd);
         }
 
-        public MockRelatedLink(IWorkItemLinkTypeEnd linkTypeEnd, int sourceId, int targetId)
+        public MockRelatedLink(IWorkItemLinkTypeEnd? linkTypeEnd, int sourceId, int targetId)
             : base(targetId, linkTypeEnd)
         {
             if (sourceId == targetId)

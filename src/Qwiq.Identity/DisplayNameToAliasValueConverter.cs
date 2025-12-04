@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace Qwiq.Identity
         /// </summary>
         /// <param name="identityManagementService">The identity management service.</param>
         /// <exception cref="ArgumentNullException">identityManagementService</exception>
-        public DisplayNameToAliasValueConverter([NotNull] IIdentityManagementService identityManagementService)
+        public DisplayNameToAliasValueConverter(IIdentityManagementService identityManagementService)
         {
             Contract.Requires(identityManagementService != null);
 
@@ -30,7 +29,9 @@ namespace Qwiq.Identity
         public override IReadOnlyDictionary<string, object> Map(IEnumerable<string> values)
         {
             if (values == null) return Empty;
-            return GetIdentityNames(values.ToArray());
+            var result = GetIdentityNames(values.ToArray());
+            // Filter out null values to satisfy the non-nullable contract
+            return result.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value!, Comparer.OrdinalIgnoreCase);
         }
 
         private IDictionary<string, string[]> GetAliasesForDisplayNames(string[] displayNames)
@@ -41,16 +42,18 @@ namespace Qwiq.Identity
                       .ToDictionary(
                                     kvp => kvp.Key,
                                     kvp => kvp
-                                            .Value.Where(
+                                            .Value?.Where(
                                                          identity => identity != null
                                                                      && !identity.IsContainer
                                                                      && identity.UniqueUserId == IdentityConstants.ActiveUniqueId)
                                             .Select(i => i.GetUserAlias())
+                                            .Where(alias => alias != null)
+                                            .Cast<string>()
                                             .Distinct(StringComparer.OrdinalIgnoreCase)
-                                            .ToArray());
+                                            .ToArray() ?? Array.Empty<string>());
         }
 
-        private Dictionary<string, object> GetIdentityNames(params string[] displayNames)
+        private Dictionary<string, object?> GetIdentityNames(params string[] displayNames)
         {
             return
                         GetAliasesForDisplayNames(displayNames)
@@ -63,7 +66,7 @@ namespace Qwiq.Identity
                                     {
                                         throw new MultipleIdentitiesFoundException(kvp.Key, kvp.Value);
                                     }
-                                    return (object)kvp.Value[0];
+                                    return (object?)kvp.Value[0];
                                 },
                             Comparer.OrdinalIgnoreCase);
         }

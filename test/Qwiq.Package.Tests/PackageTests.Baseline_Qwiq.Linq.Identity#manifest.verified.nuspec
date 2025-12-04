@@ -1,20 +1,39 @@
-<package>
+﻿<package>
   <metadata>
     <id>Qwiq.Linq.Identity</id>
     <version>********</version>
-    <title>Qwiq.Linq.Identity</title>
-    <authors>LeCantaloop</authors>
-    <owners>LeCantaloop, rjmurillo</owners>
+    <authors>Richard Murillo</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
-    <projectUrl>https://github.com/LeCantaloop/Qwiq</projectUrl>
-    <description>Extensions of Qwiq.Linq providing identity assistance in LINQ.</description>
-    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-    <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
+    <projectUrl>https://github.com/rjmurillo/Qwiq</projectUrl>
+    <description>QWIQ Linq Identity - Identity-aware LINQ extensions for QWIQ</description>
+    <copyright>Copyright (c) 2025 Qwiq Contributors</copyright>
+    <tags>Microsoft Team Foundation Server TFS Azure DevOps VSO Visual Studio Online Agile WIT Work Item Tracking VSTS TeamFoundation</tags>
+    <repository type="git" url="https://github.com/rjmurillo/Qwiq.git" commit="****************************************" />
     <dependencies>
-      <dependency id="Qwiq.Identity" version="*" />
-      <dependency id="Qwiq.Linq" version="*" />
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
+        <dependency id="Qwiq.Identity" version="*" exclude="Build,Analyzers" />
+        <dependency id="Qwiq.Linq" version="*" exclude="Build,Analyzers" />
+        <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Identity.Client" version="4.61.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.InteractiveClient" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0">
+        <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
+        <dependency id="Qwiq.Identity" version="*" exclude="Build,Analyzers" />
+        <dependency id="Qwiq.Linq" version="*" exclude="Build,Analyzers" />
+        <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Identity.Client" version="4.61.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.InteractiveClient" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
 </package>

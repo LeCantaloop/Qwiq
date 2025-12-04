@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -14,20 +13,15 @@ namespace Qwiq
     /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IRevisionInternal, IEquatable<IWorkItem>
     {
-        [CanBeNull]
         private readonly Lazy<IWorkItemType> _lazyType;
-
-        [CanBeNull]
         private readonly IWorkItemType _type;
-
-        [CanBeNull]
         private Func<IFieldCollection> _fieldFactory;
 
         private IFieldCollection _fields;
 
         private bool _useFields = true;
 
-        protected internal WorkItem([NotNull] IWorkItemType workItemType, [CanBeNull] Dictionary<string, object> fields)
+        protected internal WorkItem(IWorkItemType workItemType, Dictionary<string, object?> fields)
             : base(fields)
         {
             Contract.Requires(workItemType != null);
@@ -35,20 +29,20 @@ namespace Qwiq
             _type = workItemType ?? throw new ArgumentNullException(nameof(workItemType));
         }
 
-        protected internal WorkItem([NotNull] IWorkItemType workItemType)
+        protected internal WorkItem(IWorkItemType workItemType)
         {
             Contract.Requires(workItemType != null);
 
             _type = workItemType ?? throw new ArgumentNullException(nameof(workItemType));
         }
 
-        protected internal WorkItem([NotNull] Lazy<IWorkItemType> type)
+        protected internal WorkItem(Lazy<IWorkItemType> type)
         {
             Contract.Requires(type != null);
             _lazyType = type;
         }
 
-        protected internal WorkItem([NotNull] IWorkItemType workItemType, [NotNull] Func<IFieldCollection> fieldCollectionFactory)
+        protected internal WorkItem(IWorkItemType workItemType, Func<IFieldCollection> fieldCollectionFactory)
         {
             Contract.Requires(workItemType != null);
             Contract.Requires(fieldCollectionFactory != null);

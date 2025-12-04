@@ -10,7 +10,7 @@ namespace Qwiq.Mocks
         private static readonly Regex EqualsRegex = new Regex(@"(?<direction>\[?(Source|Target)\]?)?\.?(?<field>\[?[A-Za-z0-9\. ]+\]?)\s?=\s?(?<value>[A-Za-z0-9\' \\ \.-]+)", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         private static readonly Regex InRegex = new Regex(@"(?<direction>\[?(Source|Target)\]?)?\.?(?<field>\[?[A-Za-z0-9\. ]+\]?)\s?In\s?(?<value>\([A-Za-z0-9\'\\/, ]+\))", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        private readonly IEnumerable<int> _ids;
+        private readonly IEnumerable<int>? _ids;
 
         private readonly List<Tuple<string, string, string>> _parts;
 
@@ -115,7 +115,7 @@ namespace Qwiq.Mocks
                                     foreach (var directionGroup in directionGroups)
                                     {
                                         var workItem = "Source".Equals(directionGroup.Key, StringComparison.OrdinalIgnoreCase) ? source : target;
-                                        match = directionGroup.Any(e => StringComparer.OrdinalIgnoreCase.Equals(e.Item3, workItem[e.Item2]?.ToString()));
+                                        match = directionGroup.Any(e => StringComparer.OrdinalIgnoreCase.Equals(e.Item3, workItem?[e.Item2]?.ToString()));
 
                                         if (!match)
                                         {
@@ -136,7 +136,7 @@ namespace Qwiq.Mocks
                                     // There should be only one, so must match
                                     var fieldPredicate = fieldPredicateGroup.Single();
                                     var workItem = "Source".Equals(fieldPredicate.Item1, StringComparison.OrdinalIgnoreCase) ? source : target;
-                                    match = MatchAggregate(match, fieldPredicate, workItem);
+                                    if (workItem != null) match = MatchAggregate(match, fieldPredicate, workItem);
                                 }
 
                                 if (!match)
@@ -173,7 +173,7 @@ namespace Qwiq.Mocks
             {
                 foreach (var id in _ids)
                 {
-                    if (_store._lookup.TryGetValue(id, out IWorkItem val))
+                    if (_store._lookup.TryGetValue(id, out IWorkItem? val) && val != null)
                     {
                         yield return val;
                     }

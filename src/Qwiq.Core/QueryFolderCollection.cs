@@ -10,12 +10,12 @@ namespace Qwiq
         {
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Comparer.QueryFolderCollection.Equals(this, obj as IQueryFolderCollection);
         }
 
-        public bool Equals(IQueryFolderCollection other)
+        public bool Equals(IQueryFolderCollection? other)
         {
             return Comparer.QueryFolderCollection.Equals(this, other);
         }

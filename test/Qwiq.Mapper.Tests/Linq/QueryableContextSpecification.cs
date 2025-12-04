@@ -10,7 +10,7 @@ namespace Qwiq.Mapper.Linq
 {
     public abstract class QueryableContextSpecification<T> : ContextSpecification
     {
-        protected IOrderedQueryable<T> Query;
+        protected IOrderedQueryable<T> Query = null!;
 
         protected virtual IWorkItemStore CreateWorkItemStore()
         {

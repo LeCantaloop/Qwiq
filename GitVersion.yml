@@ -1,7 +1,7 @@
 assembly-versioning-scheme: MajorMinorPatchTag
-assembly-informational-format: '{NuGetVersionV2}'
+assembly-informational-format: "{NuGetVersionV2}"
 mode: Mainline
-tag-prefix: '[vV]'
+tag-prefix: "[vV]"
 continuous-delivery-fallback-tag: ci
 next-version: 10.0.0
 major-version-bump-message: '\+semver:\s?(breaking|major)'
@@ -56,7 +56,7 @@ branches:
     is-mainline: false
   master:
     mode: ContinuousDeployment
-    tag: ''
+    tag: ""
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
@@ -76,7 +76,7 @@ branches:
     is-mainline: false
   support:
     mode: ContinuousDeployment
-    tag: ''
+    tag: ""
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -64,7 +63,7 @@ namespace Qwiq
 
             // Implements IComparable<T>?
 
-            if (x is IComparable<T> comparable1)
+            if (x is IComparable<T> comparable1 && !object.Equals(y, default(T)))
             {
                 return comparable1.CompareTo(y);
             }
@@ -78,7 +77,7 @@ namespace Qwiq
 
             // Implements IEquatable<T>?
 
-            if (x is IEquatable<T> equatable)
+            if (x is IEquatable<T> equatable && !object.Equals(y, default(T)))
             {
                 return equatable.Equals(y) ? 0 : -1;
             }
@@ -87,7 +86,7 @@ namespace Qwiq
             return object.Equals(x, y) ? 0 : -1;
         }
 
-        public virtual bool Equals([CanBeNull] T x, [CanBeNull] T y)
+        public virtual bool Equals(T x, T y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -96,9 +95,25 @@ namespace Qwiq
             return Compare(x, y) == 0;
         }
 
-        public virtual int GetHashCode([CanBeNull] T obj)
+        public virtual int GetHashCode(T obj)
         {
-            return obj?.GetHashCode() ?? 0;
+            if (obj == null) return 0;
+
+            // For IEnumerable types, compute content-based hash to match structural Equals
+            if (obj is IEnumerable enumerable)
+            {
+                unchecked
+                {
+                    int hash = 17;
+                    foreach (var item in enumerable)
+                    {
+                        hash = (hash * 31) + (item?.GetHashCode() ?? 0);
+                    }
+                    return hash;
+                }
+            }
+
+            return obj.GetHashCode();
         }
     }
 }

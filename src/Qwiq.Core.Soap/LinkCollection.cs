@@ -72,7 +72,7 @@ namespace Qwiq.Client.Soap
 
         public int Count => _item.Links.Count;
 
-        public bool IsReadOnly => ((IList) _item.Links).IsReadOnly;
+        public bool IsReadOnly => ((IList)_item.Links).IsReadOnly;
     }
 }
 

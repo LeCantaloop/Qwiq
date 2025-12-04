@@ -38,8 +38,8 @@ namespace Qwiq.Mapper.Benchmark.Tests
         [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
-            private WorkItemMapper _mapper;
-            private IEnumerable<IWorkItem> _items;
+            private WorkItemMapper _mapper = null!;
+            private IEnumerable<IWorkItem> _items = null!;
 
             [GlobalSetup]
             public void SetupData()
@@ -60,7 +60,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
                 _mapper = new WorkItemMapper(mappingStrategies);
 
                 // Try to map 10% of what came back
-                var mapCount = (int)(generator.Items.Count * 0.1);
+                var mapCount = (int)(generator.Items!.Count * 0.1);
                 _items = generator.Items.Take(mapCount).ToList();
             }
 
@@ -78,7 +78,7 @@ namespace Qwiq.Mapper
     [TestClass]
     public class Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy : ContextSpecification
     {
-        private B.Benchmark _benchmark;
+        private B.Benchmark _benchmark = null!;
 
         public override void Given()
         {

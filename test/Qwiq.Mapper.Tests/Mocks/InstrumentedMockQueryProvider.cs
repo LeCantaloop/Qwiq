@@ -26,7 +26,7 @@ namespace Qwiq.Mapper.Mocks
             return _innerProvider.CreateQuery<TElement>(expression);
         }
 
-        public object Execute(Expression expression)
+        public object? Execute(Expression expression)
         {
             ExecuteCallCount += 1;
             return _innerProvider.Execute(expression);

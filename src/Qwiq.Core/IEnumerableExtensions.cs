@@ -9,10 +9,10 @@ namespace System.Collections.Generic
         public static IEnumerable<T[]> Partition<T>(this HashSet<T> source, int size)
         {
             var count = 0;
-            T[] group = null; // use arrays as buffer
+            T[]? group = null; // use arrays as buffer
             foreach (var item in source)
             {
-                if (group == null) group = new T[size];
+                group ??= new T[size];
                 group[count++] = item;
                 if (count != size) continue;
                 yield return group;
@@ -21,7 +21,7 @@ namespace System.Collections.Generic
             }
             if (count <= 0) yield break;
             Array.Resize(ref group, count);
-            yield return group;
+            yield return group!;
         }
     }
 }

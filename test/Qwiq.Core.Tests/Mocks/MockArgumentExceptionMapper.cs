@@ -10,7 +10,7 @@ namespace Qwiq.UnitTests.Mocks
 
         public const string MockParamName = "MockParam";
 
-        public Exception Map(Exception ex)
+        public Exception? Map(Exception ex)
         {
             ExecutionCount++;
             var argumentException = ex as ArgumentException;

@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class WorkItemClassificationNodeCollection<TId> : ReadOnlyObjectWithIdCollection<IWorkItemClassificationNode<TId>, TId>, IEquatable<IWorkItemClassificationNodeCollection<TId>>, IWorkItemClassificationNodeCollection<TId>
+        where TId : notnull
     {
-        public WorkItemClassificationNodeCollection([CanBeNull] IEnumerable<IWorkItemClassificationNode<TId>> items) : base(items)
+        public WorkItemClassificationNodeCollection(IEnumerable<IWorkItemClassificationNode<TId>> items) : base(items)
         {
         }
 
-        public bool Equals(IWorkItemClassificationNodeCollection<TId> other)
+        public bool Equals(IWorkItemClassificationNodeCollection<TId>? other)
         {
             return ReadOnlyCollectionWithIdComparer<IWorkItemClassificationNode<TId>, TId>.Default.Equals(this, other);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return ReadOnlyCollectionWithIdComparer<IWorkItemClassificationNode<TId>, TId>.Default.Equals(this, obj as IWorkItemClassificationNodeCollection<TId>);
         }

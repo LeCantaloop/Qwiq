@@ -23,7 +23,7 @@
                 return i.Id;
             }
 
-            return item.LinkType.LinkTypeId();
+            return item.LinkType?.LinkTypeId() ?? 0;
         }
     }
 }

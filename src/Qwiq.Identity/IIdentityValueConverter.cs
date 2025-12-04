@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 
 namespace Qwiq.Identity
@@ -13,8 +12,7 @@ namespace Qwiq.Identity
         /// </summary>
         /// <param name="value">The value to convert.</param>
         /// <returns>An <see cref="object"/> instance whose value is equivalent to the value of <paramref name="value"/>.</returns>
-        [ContractAnnotation("null => null; notnull => notnull")]
-        U Map([CanBeNull] T value);
+        U Map(T value);
 
         IReadOnlyDictionary<T, U> Map(IEnumerable<T> values);
     }

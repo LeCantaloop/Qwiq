@@ -8,6 +8,6 @@ namespace Qwiq.Mapper.Attributes
     {
         IEnumerable<PropertyInfo> GetAnnotatedProperties(Type workItemType, Type attributeType);
 
-        T GetAttribute<T>(PropertyInfo property) where T : Attribute;
+        T? GetAttribute<T>(PropertyInfo property) where T : Attribute;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Qwiq
+namespace Qwiq
 {
     internal class NullableIdentifiableComparer : GenericComparer<IIdentifiable<int?>>
     {
@@ -7,7 +7,7 @@
         }
 
         internal new static NullableIdentifiableComparer Default => Nested.Instance;
-        public override bool Equals(IIdentifiable<int?> x, IIdentifiable<int?> y)
+        public override bool Equals(IIdentifiable<int?>? x, IIdentifiable<int?>? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using System;
 using System.Collections.Generic;
@@ -24,14 +23,10 @@ namespace Qwiq.Client.Rest
         private readonly Wiql _query;
 
         private readonly bool _timePrecision;
-
-        [NotNull]
         private readonly WorkItemStore _workItemStore;
+        private HashSet<int>? _ids;
 
-        [CanBeNull]
-        private HashSet<int> _ids;
-
-        internal Query([NotNull] IEnumerable<int> ids, Wiql query, [NotNull] WorkItemStore workItemStore)
+        internal Query(IEnumerable<int> ids, Wiql query, WorkItemStore workItemStore)
             : this(query, false, workItemStore)
         {
             if (ids == null) throw new ArgumentNullException(nameof(ids));
@@ -40,7 +35,7 @@ namespace Qwiq.Client.Rest
             _ids = new HashSet<int>(ids);
         }
 
-        internal Query(Wiql query, bool timePrecision, [NotNull] WorkItemStore workItemStore)
+        internal Query(Wiql query, bool timePrecision, WorkItemStore workItemStore)
 
         {
             Contract.Requires(workItemStore != null);
@@ -62,8 +57,6 @@ namespace Qwiq.Client.Rest
 
             return wit.LinkTypeEnds;
         }
-
-        [ItemNotNull]
         public IEnumerable<IWorkItemLinkInfo> RunLinkQuery()
         {
             // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
@@ -112,12 +105,12 @@ namespace Qwiq.Client.Rest
             var t = new CancellationToken();
             var ts =
                     new List<Task<List<Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>>>(
-                                                                                                 _ids.Count
+                                                                                                 _ids!.Count
                                                                                                  % _workItemStore.Configuration.PageSize
                                                                                                  + 1);
             var qry = _ids.Partition(_workItemStore.Configuration.PageSize);
 
-            var c = _workItemStore.NativeWorkItemStore.Value;
+            var c = _workItemStore.NativeWorkItemStore!.Value;
             var o = _workItemStore.Configuration;
 
             var e = (Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItemExpand)o.WorkItemExpand;
@@ -137,7 +130,7 @@ namespace Qwiq.Client.Rest
 
         private List<IWorkItem> LoadWorkItemsEagerly(List<Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem>[] results)
         {
-            var retval = new List<IWorkItem>(_ids.Count);
+            var retval = new List<IWorkItem>(_ids!.Count);
 
             // This is done in parallel so keep performance similar to the SOAP client
             for (var i = 0; i < results.Length; i++)
@@ -157,15 +150,13 @@ namespace Qwiq.Client.Rest
             return retval;
         }
 
-        [JetBrains.Annotations.Pure]
-        [NotNull]
-        private IWorkItemType LookUpWorkItemType([NotNull] Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
+        private IWorkItemType LookUpWorkItemType(Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models.WorkItem workItem)
         {
-            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.TeamProject, out object tp))
+            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.TeamProject, out object? tp))
             {
                 throw new InvalidOperationException($"Field '{CoreFieldRefNames.TeamProject}' is required.");
             }
-            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.WorkItemType, out object wit))
+            if (!workItem.Fields.TryGetValue(CoreFieldRefNames.WorkItemType, out object? wit))
             {
                 throw new InvalidOperationException($"Field '{CoreFieldRefNames.WorkItemType}' is required.");
             }
@@ -199,7 +190,7 @@ namespace Qwiq.Client.Rest
         private ReadOnlyCollection<IWorkItemLinkInfo> RunkLinkQueryImpl()
         {
             // Eager loading for the link type ID (which is not returned by the REST API) causes ~250ms delay
-            var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
+            var result = _workItemStore.NativeWorkItemStore!.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
 
             // To avoid an enumerator allocation we are forcing the cast
             var result2 = (List<WorkItemLink>)result.WorkItemRelations;
@@ -208,7 +199,8 @@ namespace Qwiq.Client.Rest
 
             for (var index = 0; index < result2.Count; index++)
             {
-                ends.TryGetByName(result2[index].Rel, out IWorkItemLinkTypeEnd end);
+                ends.TryGetByName(result2[index].Rel, out IWorkItemLinkTypeEnd? end);
+                // end can be null if the link type is not found - WorkItemLinkInfo constructor accepts nullable
                 retval.Add(new WorkItemLinkInfo(result2[index].Source?.Id ?? 0, result2[index].Target?.Id ?? 0, end));
             }
 
@@ -222,7 +214,7 @@ namespace Qwiq.Client.Rest
             // REVIEW: Closure variable "ends" allocates, preventing local cache
             // REVIEW: Delegate for ctor of Lazy also allocates
             var ends = new Lazy<WorkItemLinkTypeEndCollection>(WorkItemLinkTypeEndValueFactory);
-            var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
+            var result = _workItemStore.NativeWorkItemStore!.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
 
             // To avoid an enumerator allocation we are forcing the cast
             var result2 = (List<WorkItemLink>)result.WorkItemRelations;
@@ -232,25 +224,23 @@ namespace Qwiq.Client.Rest
                 WorkItemLink t = result2[i];
 
                 // REVIEW: Closure allocation: workItemLink + ends outer closure
-                IWorkItemLinkTypeEnd EndValueFactory()
+                IWorkItemLinkTypeEnd? EndValueFactory()
                 {
-                    return ends.Value.TryGetByName(t.Rel, out IWorkItemLinkTypeEnd end) ? end : null;
+                    return ends.Value.TryGetByName(t.Rel, out IWorkItemLinkTypeEnd? end) ? end : null;
                 }
 
-                var ltEnd = new Lazy<IWorkItemLinkTypeEnd>(EndValueFactory);
+                var ltEnd = new Lazy<IWorkItemLinkTypeEnd?>(EndValueFactory);
 
                 yield return new WorkItemLinkInfo(t.Source?.Id ?? 0, t.Target?.Id ?? 0, ltEnd);
             }
         }
-
-        [NotNull]
         private List<IWorkItem> RunQueryImpl()
         {
             Contract.Ensures(Contract.Result<List<IWorkItem>>() != null);
 
             if (_ids == null && _query != null)
             {
-                var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
+                var result = _workItemStore.NativeWorkItemStore!.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
                 if (!result.WorkItems.Any()) return EmptyWorkItems;
                 _ids = new HashSet<int>();
                 var items = (List<WorkItemReference>)result.WorkItems;
@@ -267,15 +257,13 @@ namespace Qwiq.Client.Rest
 
             return LoadWorkItemsEagerly(results);
         }
-
-        [NotNull]
         private IEnumerable<IWorkItem> RunQueryImplLazy()
         {
             Contract.Ensures(Contract.Result<IEnumerable<IWorkItem>>() != null);
 
             if (_ids == null && _query != null)
             {
-                var result = _workItemStore.NativeWorkItemStore.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
+                var result = _workItemStore.NativeWorkItemStore!.Value.QueryByWiqlAsync(_query, _timePrecision).GetAwaiter().GetResult();
                 if (!result.WorkItems.Any()) yield break;
                 _ids = new HashSet<int>();
                 var items = (List<WorkItemReference>)result.WorkItems;

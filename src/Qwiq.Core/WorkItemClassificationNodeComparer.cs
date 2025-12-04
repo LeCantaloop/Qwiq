@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+using System;
 
 namespace Qwiq
 {
@@ -11,7 +10,7 @@ namespace Qwiq
         {
         }
 
-        public override bool Equals(IWorkItemClassificationNode<TId> x, IWorkItemClassificationNode<TId> y)
+        public override bool Equals(IWorkItemClassificationNode<TId>? x, IWorkItemClassificationNode<TId>? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -22,7 +21,7 @@ namespace Qwiq
                    && string.Equals(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
         }
 
-        public override int GetHashCode([CanBeNull] IWorkItemClassificationNode<TId> obj)
+        public override int GetHashCode(IWorkItemClassificationNode<TId> obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 

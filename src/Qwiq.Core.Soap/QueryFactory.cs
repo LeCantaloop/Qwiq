@@ -4,7 +4,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 
-using JetBrains.Annotations;
 
 using Qwiq.Exceptions;
 using Microsoft.TeamFoundation.WorkItemTracking.Common;
@@ -13,10 +12,9 @@ namespace Qwiq.Client.Soap
 {
     internal class QueryFactory : IQueryFactory
     {
-        [NotNull]
         private readonly WorkItemStore _store;
 
-        internal QueryFactory([NotNull] WorkItemStore store)
+        internal QueryFactory(WorkItemStore store)
         {
             Contract.Requires(store != null);
 

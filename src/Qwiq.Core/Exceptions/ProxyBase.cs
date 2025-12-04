@@ -22,7 +22,7 @@ namespace Qwiq.Exceptions
         /// Intercepted interfaces can provide IEquatable`1 implementations, but that will not forward calls to
         /// Object.Equals(Object) or Object.GetHashCode() since neither is part of the interface.
         /// </remarks>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             // ReSharper disable SuspiciousTypeConversion.Global
             var proxy = this as IProxyTargetAccessor;
@@ -67,14 +67,14 @@ namespace Qwiq.Exceptions
             // ReSharper restore SuspiciousTypeConversion.Global
             if (proxy == null)
             {
-                return base.ToString();
+                return base.ToString()!;
             }
             var target = proxy.DynProxyGetTarget();
             if (target == null)
             {
-                return base.ToString();
+                return base.ToString()!;
             }
-            return target.ToString();
+            return target.ToString()!;
         }
     }
 }

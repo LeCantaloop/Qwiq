@@ -4,6 +4,6 @@ namespace Qwiq
     {
         BaseLinkType BaseType { get; }
 
-        string Comment { get; }
+        string? Comment { get; }
     }
 }

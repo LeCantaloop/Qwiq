@@ -3,6 +3,7 @@ using System;
 using Qwiq.Exceptions;
 using Microsoft.TeamFoundation.Server;
 using Microsoft.VisualStudio.Services.Common;
+using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Qwiq.Client.Soap
 {
@@ -90,6 +91,7 @@ namespace Qwiq.Client.Soap
         /// <typeparam name="T"></typeparam>
         /// <returns>T.</returns>
         public T GetClient<T>()
+            where T : VssHttpClientBase
         {
             return Native.GetClient<T>();
         }

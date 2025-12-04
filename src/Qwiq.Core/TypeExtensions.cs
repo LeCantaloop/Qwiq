@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Collections.Generic;
 
 namespace System
 {
@@ -40,7 +39,7 @@ namespace System
             [typeof(DateTimeOffset?)] = null,
         };
 
-        public static bool CanAcceptNull([NotNull] this Type type)
+        public static bool CanAcceptNull(this Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
@@ -58,9 +57,7 @@ namespace System
 
             return false;
         }
-
-        [CanBeNull]
-        public static object GetDefaultValueOfType([NotNull] this Type type)
+        public static object GetDefaultValueOfType(this Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
@@ -72,7 +69,7 @@ namespace System
             return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
 
-        public static bool IsGenericNullable([NotNull] this Type type)
+        public static bool IsGenericNullable(this Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);

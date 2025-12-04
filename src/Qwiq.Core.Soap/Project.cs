@@ -13,7 +13,7 @@ namespace Qwiq.Client.Soap
                 project.Name,
                 project.Uri,
                 new Lazy<IWorkItemTypeCollection>(() => new WorkItemTypeCollection(project.WorkItemTypes)),
-                new Lazy<IWorkItemClassificationNodeCollection<int>>(()=> WorkItemClassificationNodeCollectionBuilder.Build(project.AreaRootNodes)),
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(project.AreaRootNodes)),
                 new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.Build(project.IterationRootNodes)),
                 new Lazy<IQueryFolderCollection>(
                     () =>

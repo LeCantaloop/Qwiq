@@ -1,28 +1,27 @@
 using System;
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class Revision : IRevision, IRevisionInternal
     {
-        internal IFieldDefinitionCollection FieldDefinitions { get; }
+        internal IFieldDefinitionCollection? FieldDefinitions { get; }
 
-        private readonly Dictionary<int, object> _values;
+        private readonly Dictionary<int, object?>? _values;
 
-        private IFieldCollection _fields;
+        private IFieldCollection? _fields;
 
         internal Revision(
-            [NotNull] IFieldDefinitionCollection definitions,
+            IFieldDefinitionCollection definitions,
             int revision)
         {
             Rev = revision;
-            _values = new Dictionary<int, object>();
+            _values = new Dictionary<int, object?>();
             FieldDefinitions = definitions;
         }
 
-        internal Revision([NotNull] IWorkItem workItem, int revision)
+        internal Revision(IWorkItem workItem, int revision)
         {
             WorkItem = workItem ?? throw new ArgumentNullException(nameof(workItem));
             Rev = revision;
@@ -32,7 +31,7 @@ namespace Qwiq
         /// <inheritdoc />
         public virtual IEnumerable<IAttachment> Attachments => throw new NotSupportedException();
 
-        public IFieldCollection Fields => _fields ?? (_fields = new FieldCollection(this, FieldDefinitions, (r, d) => new Field(r, d)));
+        public IFieldCollection Fields => _fields ??= new FieldCollection(this, FieldDefinitions!, (r, d) => new Field(r, d));
 
         /// <inheritdoc />
         public int Index => Rev.GetValueOrDefault(0);
@@ -44,11 +43,18 @@ namespace Qwiq
 
         public int? Rev { get; }
 
-        public string Url => WorkItem?.Url;
+        public string? Url => WorkItem?.Url;
 
-        public IWorkItem WorkItem { get; }
+        /// <summary>
+        /// Gets the work item that is stored in this revision.
+        /// </summary>
+        /// <remarks>
+        /// Note: The implementation may return null when constructed with field definitions only,
+        /// but consumers should expect this to be non-null for normal use cases.
+        /// </remarks>
+        public IWorkItem? WorkItem { get; }
 
-        public virtual object this[string name]
+        public virtual object? this[string name]
         {
             get
             {
@@ -63,28 +69,28 @@ namespace Qwiq
             throw new NotSupportedException();
         }
 
-        object IWorkItemCore.this[string name]
+        object? IWorkItemCore.this[string name]
         {
             get => this[name];
             set => throw new NotSupportedException();
         }
 
         /// <inheritdoc />
-        public object GetCurrentFieldValue(IFieldDefinition fieldDefinition)
+        public object? GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
             if (WorkItem != null) return WorkItem.Fields[fieldDefinition.ReferenceName];
 
-            return _values[fieldDefinition.Id];
+            return _values![fieldDefinition.Id];
         }
 
         /// <inheritdoc />
-        void IRevisionInternal.SetFieldValue(IFieldDefinition fieldDefinition, object value)
+        void IRevisionInternal.SetFieldValue(IFieldDefinition fieldDefinition, object? value)
         {
             throw new InvalidOperationException();
         }
 
-        internal bool HasValue(int fieldId) => _values.ContainsKey(fieldId);
+        internal bool HasValue(int fieldId) => _values!.ContainsKey(fieldId);
 
-        internal void SetFieldValue(int fieldId, object value) => _values[fieldId] = value;
+        internal void SetFieldValue(int fieldId, object? value) => _values![fieldId] = value;
     }
 }

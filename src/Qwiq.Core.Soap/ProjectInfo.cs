@@ -13,7 +13,9 @@ namespace Qwiq.Client.Soap
             _projectInfo = projectInfo ?? throw new ArgumentNullException(nameof(projectInfo));
         }
 
-        public string Uri { get => _projectInfo.Uri;
+        public string Uri
+        {
+            get => _projectInfo.Uri;
             set => _projectInfo.Uri = value;
         }
     }

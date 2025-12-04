@@ -11,18 +11,19 @@ namespace Qwiq.Client.Soap
         {
             if (link.BaseType == BaseLinkType.RelatedLink)
             {
-                var relatedLink = (IRelatedLink) link;
+                var relatedLink = (IRelatedLink)link;
+                var linkTypeEndName = relatedLink.LinkTypeEnd?.ImmutableName;
                 return
                     item.Links.Cast<Tfs.Link>()
                         .OfType<Tfs.RelatedLink>()
                         .SingleOrDefault(
                             rl =>
-                                rl.LinkTypeEnd.ImmutableName.Equals(relatedLink.LinkTypeEnd.ImmutableName, StringComparison.OrdinalIgnoreCase)
+                                (linkTypeEndName == null || rl.LinkTypeEnd.ImmutableName.Equals(linkTypeEndName, StringComparison.OrdinalIgnoreCase))
                                 && rl.RelatedWorkItemId == relatedLink.RelatedWorkItemId);
             }
             if (link.BaseType == BaseLinkType.Hyperlink)
             {
-                var hyperlink = (IHyperlink) link;
+                var hyperlink = (IHyperlink)link;
                 return
                     item.Links.Cast<Tfs.Link>()
                         .OfType<Tfs.Hyperlink>()

@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -13,7 +12,6 @@ namespace Qwiq
         public const string Related = "System.LinkTypes.Related";
 
         /// <summary>Returns the set of all core link types.</summary>
-        [ItemNotNull]
         public static readonly string[] All = { Related, Hierarchy, Dependency, Duplicate };
     }
 }

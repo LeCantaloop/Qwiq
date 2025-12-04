@@ -1,21 +1,21 @@
-version: '{build}'
+version: "{build}"
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
 init:
-- ps: IF ($env:APPVEYOR_REPO_BRANCH -eq "develop") {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
+  - ps: IF ($env:APPVEYOR_REPO_BRANCH -eq "develop") {$env:APPVEYOR_CACHE_SKIP_SAVE = "true"}
 install:
-- choco install gitversion.portable -version 4.0.0-beta0012 -pre -y
+  - choco install gitversion.portable -version 4.0.0-beta0012 -pre -y
 cache:
-- packages -> **\packages.config
+  - packages -> **\packages.config
 nuget:
   account_feed: true
   project_feed: true
 before_build:
-- ps: >-
-    .\init.ps1;
-    & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
-    C:\ProgramData\chocolatey\bin\gfv.exe /l console /output buildserver;
+  - ps: >-
+      .\init.ps1;
+      & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
+      C:\ProgramData\chocolatey\bin\gfv.exe /l console /output buildserver;
 build:
   publish_nuget: true
   publish_nuget_symbols: true
@@ -25,26 +25,26 @@ build:
 test:
   assemblies:
     except:
-    - '**\*IntegrationTests.dll'
+      - '**\*IntegrationTests.dll'
   categories:
     except:
-    - localOnly
-    - Benchmark
-    - SOAP
-    - REST
+      - localOnly
+      - Benchmark
+      - SOAP
+      - REST
 artifacts:
-- path: '*.nupkg'
-  name: NuGet
-- path: Benchmark-report.html
-  name: BDN
+  - path: "*.nupkg"
+    name: NuGet
+  - path: Benchmark-report.html
+    name: BDN
 deploy:
-- provider: NuGet
-  server: https://www.myget.org/F/qwiq/api/v2/package
-  api_key:
-    secure: 8wGYx8W+ojYQJsAJpRLez+KwwFa+OW7cvsn5RoR08WQpi5klhTq/9b/9YaEu/5Bx
-  symbol_server: https://www.myget.org/F/qwiq/symbols/api/v2/package
+  - provider: NuGet
+    server: https://www.myget.org/F/qwiq/api/v2/package
+    api_key:
+      secure: 8wGYx8W+ojYQJsAJpRLez+KwwFa+OW7cvsn5RoR08WQpi5klhTq/9b/9YaEu/5Bx
+    symbol_server: https://www.myget.org/F/qwiq/symbols/api/v2/package
 notifications:
-- provider: GitHubPullRequest
-  on_build_success: false
-  on_build_failure: true
-  on_build_status_changed: true
+  - provider: GitHubPullRequest
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true

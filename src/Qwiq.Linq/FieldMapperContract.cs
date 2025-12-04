@@ -12,21 +12,21 @@ namespace Qwiq.Linq
             Contract.Requires(type != null);
             Contract.Requires(!string.IsNullOrEmpty(propertyName));
 
-            return default(string);
+            return default!;
         }
 
         public IEnumerable<string> GetFieldNames(Type type)
         {
             Contract.Requires(type != null);
 
-            return default(IEnumerable<string>);
+            return default!;
         }
 
         public IEnumerable<string> GetWorkItemType(Type type)
         {
             Contract.Requires(type != null);
 
-            return default(IEnumerable<string>);
+            return default!;
         }
     }
 }

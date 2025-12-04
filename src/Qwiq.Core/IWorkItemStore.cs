@@ -29,7 +29,7 @@ namespace Qwiq
         /// <value>The projects.</value>
         IProjectCollection Projects { get; }
 
-        IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
+        IRegisteredLinkTypeCollection? RegisteredLinkTypes { get; }
 
         /// <summary>
         ///     Gets the team project collection.
@@ -76,7 +76,7 @@ namespace Qwiq
         /// <returns>
         ///     <see cref="IWorkItem" />
         /// </returns>
-        IWorkItem Query(int id, DateTime? asOf = null);
+        IWorkItem? Query(int id, DateTime? asOf = null);
 
         /// <summary>
         ///     Queries the links.

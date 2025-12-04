@@ -24,7 +24,7 @@ mode(Recursive)
                                                "REST",
                                                "Query - IDs");
 
-            
+
 
             SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks - WIQL");
             hs = new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }));

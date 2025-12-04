@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,9 +9,8 @@ namespace Qwiq.Mocks
     public class MockFieldDefinitionCollection : FieldDefinitionCollection
     {
         public MockFieldDefinitionCollection(IWorkItemStore store)
-            : base(store?.Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s).ToList())
+            : base(store?.Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s).ToList() ?? throw new ArgumentNullException(nameof(store)))
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
         }
 
         [DebuggerStepThrough]
@@ -21,7 +19,7 @@ namespace Qwiq.Mocks
         {
         }
 
-        public MockFieldDefinitionCollection([InstantHandle] [NotNull] IEnumerable<IFieldDefinition> fieldDefinitions)
+        public MockFieldDefinitionCollection(IEnumerable<IFieldDefinition> fieldDefinitions)
             : this(fieldDefinitions.ToList())
         {
             Contract.Requires(fieldDefinitions != null);

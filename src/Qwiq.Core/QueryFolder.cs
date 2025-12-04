@@ -1,13 +1,12 @@
 using System;
 using System.Globalization;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public abstract class QueryFolder : IQueryFolder
     {
-        internal QueryFolder(Guid id, [NotNull] string name, [NotNull] string path, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
+        internal QueryFolder(Guid id, string name, string path, IQueryFolderCollection subFolders, IQueryDefinitionCollection queries)
         {
             if (id == Guid.Empty)
             {
@@ -39,12 +38,12 @@ namespace Qwiq
 
         public IQueryDefinitionCollection SavedQueries { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return QueryFolderComparer.Default.Equals(this, obj as IQueryFolder);
         }
 
-        public bool Equals(IQueryFolder other)
+        public bool Equals(IQueryFolder? other)
         {
             return QueryFolderComparer.Default.Equals(this, other);
         }

@@ -6,7 +6,7 @@ namespace Qwiq
     {
         internal new static ProjectComparer Default => Nested.Instance;
 
-        public override bool Equals(IProject x, IProject y)
+        public override bool Equals(IProject? x, IProject? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

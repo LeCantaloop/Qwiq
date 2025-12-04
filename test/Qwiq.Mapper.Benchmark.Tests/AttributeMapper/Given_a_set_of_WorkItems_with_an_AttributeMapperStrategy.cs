@@ -12,11 +12,11 @@ namespace Qwiq.Mapper.AttributeMapper
     [TestClass]
     public class Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : ContextSpecification
     {
-        private BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy.Benchmark _benchmark;
+        private BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy.Benchmark _benchmark = null!;
 
-        private MockModel _genericResult;
+        private MockModel _genericResult = null!;
 
-        private IIdentifiable<int?> _nonGenericResult;
+        private IIdentifiable<int?> _nonGenericResult = null!;
 
         public override void Given()
         {

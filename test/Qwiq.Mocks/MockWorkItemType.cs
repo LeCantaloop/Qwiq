@@ -8,7 +8,7 @@ namespace Qwiq.Mocks
     public class MockWorkItemType : WorkItemType
     {
         [DebuggerStepThrough]
-        public MockWorkItemType(string name, string description = null, IWorkItemStore store = null)
+        public MockWorkItemType(string name, string? description = null, IWorkItemStore? store = null)
             : this(name, new MockFieldDefinitionCollection(CoreFieldDefinitions.All), description, store)
         {
         }
@@ -19,7 +19,7 @@ namespace Qwiq.Mocks
         {
         }
 
-        public MockWorkItemType(string name, IEnumerable<string> fields, string description = null, IWorkItemStore store = null)
+        public MockWorkItemType(string name, IEnumerable<string> fields, string? description = null, IWorkItemStore? store = null)
             : this(name, fields.Select(MockFieldDefinition.Create), description, store)
         {
         }
@@ -27,8 +27,8 @@ namespace Qwiq.Mocks
         public MockWorkItemType(
             string name,
             IEnumerable<IFieldDefinition> fieldDefinitions,
-            string description = null,
-            IWorkItemStore store = null)
+            string? description = null,
+            IWorkItemStore? store = null)
             : base(name, description, null, null)
         {
             if (fieldDefinitions == null) throw new ArgumentNullException(nameof(fieldDefinitions));
@@ -49,15 +49,15 @@ namespace Qwiq.Mocks
         public MockWorkItemType(
             string name,
             IFieldDefinitionCollection fieldDefinitions,
-            string description = null,
-            IWorkItemStore store = null)
+            string? description = null,
+            IWorkItemStore? store = null)
             : base(name, description, new Lazy<IFieldDefinitionCollection>(() => fieldDefinitions))
         {
             WorkItemFactory = () => new MockWorkItem(this);
             Store = store;
         }
 
-        public IWorkItemStore Store { get; set; }
+        public IWorkItemStore? Store { get; set; }
     }
 
 

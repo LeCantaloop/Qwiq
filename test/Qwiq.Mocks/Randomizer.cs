@@ -4,8 +4,8 @@ namespace Qwiq.Mocks
 {
     public class Randomizer : Random
     {
-        private static Randomizer random;
+        private static Randomizer? random;
 
-        public static Randomizer Instance => random ?? (random = new Randomizer());
+        public static Randomizer Instance => random ??= new Randomizer();
     }
 }

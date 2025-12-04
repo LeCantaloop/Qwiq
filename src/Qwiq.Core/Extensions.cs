@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public static partial class Extensions
     {
-        [NotNull]
         private static readonly string[] Split = { "\r\n", "\n" };
 
         internal static string EachToUsefulString<T>(this IEnumerable<T> enumerable, int limit = 10)
@@ -28,7 +26,7 @@ namespace Qwiq
             return sb.ToString();
         }
 
-        internal static string ToUsefulString([CanBeNull] this object obj)
+        internal static string ToUsefulString(this object obj)
         {
             string str;
             if (obj == null) return "[null]";
@@ -58,9 +56,7 @@ namespace Qwiq
 
             return obj.GetType().ToString() == str ? obj.GetType().ToString() : $"{obj.GetType()}:[{str}]";
         }
-
-        [NotNull]
-        private static string Tab([CanBeNull] this string str)
+        private static string Tab(this string str)
         {
             if (string.IsNullOrEmpty(str)) return string.Empty;
 

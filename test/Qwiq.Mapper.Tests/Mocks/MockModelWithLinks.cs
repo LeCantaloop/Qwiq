@@ -11,8 +11,8 @@ namespace Qwiq.Mapper.Mocks
         public const string ReverseLinkName = "NS.SampleLink-Reverse";
         public const string ForwardLinkName = "NS.SampleLink-Forward";
 
-        private IEnumerable<MockModel> _givers;
-        private IEnumerable<MockModel> _takers;
+        private IEnumerable<MockModel>? _givers;
+        private IEnumerable<MockModel>? _takers;
 
         [WorkItemLink(typeof(MockModel), ReverseLinkName)]
         public IEnumerable<MockModel> Givers

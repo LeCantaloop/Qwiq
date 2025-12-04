@@ -9,9 +9,8 @@ namespace Qwiq.Client.Rest
     internal class FieldDefinitionCollection : Qwiq.FieldDefinitionCollection
     {
         internal FieldDefinitionCollection(IWorkItemStore store)
-            : base(store?.Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s).ToList())
+            : base((store ?? throw new ArgumentNullException(nameof(store))).Projects.SelectMany(s => s.WorkItemTypes).SelectMany(s => s.FieldDefinitions).Select(s => s).ToList())
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
         }
 
         internal FieldDefinitionCollection(IEnumerable<WorkItemTypeFieldInstance> typeFields)

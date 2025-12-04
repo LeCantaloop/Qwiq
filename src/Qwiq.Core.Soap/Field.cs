@@ -11,7 +11,7 @@ namespace Qwiq.Client.Soap
         internal Tfs.Field NativeField { get; }
 
         internal Field(Tfs.Field field)
-            :base(
+            : base(
                  ExceptionHandlingDynamicProxyFactory.Create<IRevisionInternal>(new WorkItem(field?.WorkItem)),
                  ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(field?.FieldDefinition)))
         {

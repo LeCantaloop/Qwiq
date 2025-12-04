@@ -17,7 +17,7 @@ namespace Qwiq.Mapper
     public abstract class WorkItemMapperContext<T> : ContextSpecification
         where T : IIdentifiable<int?>, new()
     {
-        protected readonly Dictionary<string, object> WorkItemBackingStore = new Dictionary<string, object>
+        protected readonly Dictionary<string, object?> WorkItemBackingStore = new Dictionary<string, object?>
         {
             {
                 "DateTimeField",
@@ -63,18 +63,18 @@ namespace Qwiq.Mapper
             var mappingStrategies = new IWorkItemMapperStrategy[]
             {
                 new NoExceptionAttributeMapperStrategy(propertyInspector),
-                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+                new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore!)
             };
             return new WorkItemMapper(mappingStrategies);
         }
 
-        protected IWorkItemStore WorkItemStore;
+        protected IWorkItemStore? WorkItemStore;
 
-        protected IWorkItemMapper WorkItemMapper;
+        protected IWorkItemMapper WorkItemMapper = null!;
 
-        protected IEnumerable<IWorkItem> SourceWorkItems;
+        protected IEnumerable<IWorkItem> SourceWorkItems = null!;
 
-        protected T Actual;
+        protected T Actual = default!;
 
         public override void Given()
         {
@@ -82,14 +82,14 @@ namespace Qwiq.Mapper
             var mappingStrategies = new IWorkItemMapperStrategy[]
                                         {
                                             new AttributeMapperStrategy(propertyInspector),
-                                            new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore)
+                                            new WorkItemLinksMapperStrategy(propertyInspector, WorkItemStore!)
                                         };
             WorkItemMapper = new WorkItemMapper(mappingStrategies);
         }
 
         public override void When()
         {
-            Actual = WorkItemMapper.Create<T>(SourceWorkItems).SingleOrDefault();
+            Actual = WorkItemMapper.Create<T>(SourceWorkItems).SingleOrDefault()!;
         }
 
         public override void Cleanup()
@@ -120,10 +120,10 @@ namespace Qwiq.Mapper
         public class EmptyStringModel : IIdentifiable<int?>
         {
             [FieldDefinition("Id")]
-            public int? Id { get;set;}
+            public int? Id { get; set; }
 
             [FieldDefinition("EmptyStringField", true)]
-            public double DoubleField { get;set;}
+            public double DoubleField { get; set; }
         }
     }
 
@@ -354,7 +354,7 @@ namespace Qwiq.Mapper
     // ReSharper disable once InconsistentNaming
     public class when_the_issue_factory_parses_an_issue_without_links : WorkItemMapperContext<MockModelSubclass>
     {
-        private MockModelSubclass _expected;
+        private MockModelSubclass _expected = null!;
 
         public override void Given()
         {
@@ -397,7 +397,7 @@ namespace Qwiq.Mapper
         // ReSharper disable once InconsistentNaming
         public class when_an_issue_is_mapped_without_a_workitemtype : WorkItemMapperContext<MockModelWithNoType>
         {
-            private MockModelWithNoType _expected;
+            private MockModelWithNoType _expected = null!;
 
             public override void Given()
             {
@@ -407,8 +407,8 @@ namespace Qwiq.Mapper
 
                 _expected = new MockModelWithNoType
                 {
-                    Id = int.Parse(WorkItemBackingStore["Id"].ToString()),
-                    IntField = int.Parse(WorkItemBackingStore["IntField"].ToString())
+                    Id = int.Parse(WorkItemBackingStore["Id"]?.ToString()!),
+                    IntField = int.Parse(WorkItemBackingStore["IntField"]?.ToString()!)
                 };
                 base.Given();
             }
@@ -431,7 +431,7 @@ namespace Qwiq.Mapper
     // ReSharper disable once InconsistentNaming
     public class when_an_issue_is_mapped_without_a_workitemtype : WorkItemMapperContext<MockModelWithNoBacking>
     {
-        private MockModelWithNoBacking _expected;
+        private MockModelWithNoBacking _expected = null!;
 
         public override void Given()
         {
@@ -439,7 +439,7 @@ namespace Qwiq.Mapper
 
             SourceWorkItems = new[] { new MockWorkItem(new MockWorkItemType("Baz", WorkItemBackingStore.Keys.Select(MockFieldDefinition.Create)), WorkItemBackingStore) };
 
-            _expected = new MockModelWithNoBacking { Id = int.Parse(WorkItemBackingStore["Id"].ToString()) };
+            _expected = new MockModelWithNoBacking { Id = int.Parse(WorkItemBackingStore["Id"]?.ToString()!) };
             base.Given();
         }
 

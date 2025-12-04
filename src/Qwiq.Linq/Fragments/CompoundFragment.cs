@@ -13,7 +13,7 @@ namespace Qwiq.Linq.Fragments
             Fragments = fragments;
         }
 
-        public string Get(Type queryType)
+        public string Get(Type? queryType)
         {
             string retVal = string.Empty;
             while (Fragments.Count > 0)

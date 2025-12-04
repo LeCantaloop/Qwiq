@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -10,18 +9,16 @@ namespace Qwiq
     {
 
         private IWorkItemLinkTypeEnd _oppositeEnd;
-
-        [CanBeNull]
         private readonly Lazy<IWorkItemLinkTypeEnd> _lazyOpposite;
 
-        internal WorkItemLinkTypeEnd([NotNull] string immutableName, [NotNull] IWorkItemLinkTypeEnd oppositeEnd)
+        internal WorkItemLinkTypeEnd(string immutableName, IWorkItemLinkTypeEnd oppositeEnd)
         {
             Contract.Requires(!string.IsNullOrEmpty(immutableName));
             Contract.Requires(oppositeEnd != null);
             _oppositeEnd = oppositeEnd ?? throw new ArgumentNullException(nameof(oppositeEnd));
         }
 
-        internal WorkItemLinkTypeEnd([NotNull] string immutableName, [NotNull] Lazy<IWorkItemLinkTypeEnd> oppositeEnd)
+        internal WorkItemLinkTypeEnd(string immutableName, Lazy<IWorkItemLinkTypeEnd> oppositeEnd)
             : this(immutableName)
         {
             Contract.Requires(!string.IsNullOrEmpty(immutableName));
@@ -30,7 +27,7 @@ namespace Qwiq
             _lazyOpposite = oppositeEnd ?? throw new ArgumentNullException(nameof(oppositeEnd));
         }
 
-        internal WorkItemLinkTypeEnd([NotNull] string immutableName)
+        internal WorkItemLinkTypeEnd(string immutableName)
         {
             Contract.Requires(!string.IsNullOrEmpty(immutableName));
             if (string.IsNullOrWhiteSpace(immutableName))

@@ -20,9 +20,9 @@
         /// <returns></returns>
         public static IFieldDefinition Create(string name)
         {
-            if (CoreFieldDefinitions.NameLookup.TryGetValue(name, out IFieldDefinition field)) return field;
+            if (CoreFieldDefinitions.NameLookup.TryGetValue(name, out IFieldDefinition? field) && field != null) return field;
 
-            if (CoreFieldDefinitions.ReferenceNameLookup.TryGetValue(name, out field)) return field;
+            if (CoreFieldDefinitions.ReferenceNameLookup.TryGetValue(name, out field) && field != null) return field;
 
             field = new MockFieldDefinition(name, $"Microsoft.Qwiq.Mocks.{name.Replace(" ", string.Empty)}");
 

@@ -1,5 +1,9 @@
-/
+﻿/
 |-- Qwiq.Linq.nuspec
 |-- lib
-|   |-- net46
+|   |-- net472
 |   |   |-- Qwiq.Linq.dll
+|   |   |-- Qwiq.Linq.xml
+|   |-- net8.0
+|   |   |-- Qwiq.Linq.dll
+|   |   |-- Qwiq.Linq.xml

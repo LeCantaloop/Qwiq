@@ -4,7 +4,7 @@ namespace Qwiq
     {
         string ImmutableName { get; }
         bool IsForwardLink { get; }
-        IWorkItemLinkType LinkType { get; }
+        IWorkItemLinkType? LinkType { get; }
         IWorkItemLinkTypeEnd OppositeEnd { get; }
     }
 }

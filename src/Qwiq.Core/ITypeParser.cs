@@ -1,13 +1,12 @@
 using System;
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public interface ITypeParser
     {
-        object Parse([CanBeNull] Type destinationType, [CanBeNull] object value, [CanBeNull] object defaultValue);
-        object Parse([CanBeNull] Type destinationType, [CanBeNull] object input);
-        T Parse<T>([CanBeNull] object value);
-        T Parse<T>([CanBeNull] object value, [CanBeNull] T defaultValue);
+        object Parse(Type destinationType, object value, object defaultValue);
+        object Parse(Type destinationType, object input);
+        T Parse<T>(object value);
+        T Parse<T>(object value, T defaultValue);
     }
 }

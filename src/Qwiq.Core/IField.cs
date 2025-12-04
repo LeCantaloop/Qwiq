@@ -15,10 +15,10 @@ namespace Qwiq
 
         bool IsValid { get; }
 
-        object OriginalValue { get; }
+        object? OriginalValue { get; }
 
         ValidationState ValidationState { get; }
 
-        new object Value { get; set; }
+        new object? Value { get; set; }
     }
 }

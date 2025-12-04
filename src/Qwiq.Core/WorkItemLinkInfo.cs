@@ -1,34 +1,30 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class WorkItemLinkInfo : IWorkItemLinkInfo
     {
-        [CanBeNull]
-        private Lazy<IWorkItemLinkTypeEnd> _lazyLinkTypeEnd;
+        private Lazy<IWorkItemLinkTypeEnd?>? _lazyLinkTypeEnd;
+        private IWorkItemLinkTypeEnd? _linkTypeEnd;
 
-        [CanBeNull]
-        private IWorkItemLinkTypeEnd _linkTypeEnd;
-
-        internal WorkItemLinkInfo(int sourceId, int targetId, [CanBeNull] IWorkItemLinkTypeEnd linkTypeEnd)
+        internal WorkItemLinkInfo(int sourceId, int targetId, IWorkItemLinkTypeEnd? linkTypeEnd)
         {
             SourceId = sourceId;
             TargetId = targetId;
             _linkTypeEnd = linkTypeEnd;
         }
 
-        internal WorkItemLinkInfo(int sourceId, int targetId, [NotNull] Lazy<IWorkItemLinkTypeEnd> linkTypeEnd)
+        internal WorkItemLinkInfo(int sourceId, int targetId, Lazy<IWorkItemLinkTypeEnd?>? linkTypeEnd)
         {
             SourceId = sourceId;
             TargetId = targetId;
             _lazyLinkTypeEnd = linkTypeEnd ?? throw new ArgumentNullException(nameof(linkTypeEnd));
         }
 
-        public IWorkItemLinkTypeEnd LinkType
+        public IWorkItemLinkTypeEnd? LinkType
         {
             get
             {
@@ -49,13 +45,13 @@ namespace Qwiq
         public int TargetId { get; }
 
         [DebuggerStepThrough]
-        public bool Equals(IWorkItemLinkInfo other)
+        public bool Equals(IWorkItemLinkInfo? other)
         {
             return WorkItemLinkInfoComparer.Default.Equals(this, other);
         }
 
         [DebuggerStepThrough]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return WorkItemLinkInfoComparer.Default.Equals(this, obj as IWorkItemLinkInfo);
         }

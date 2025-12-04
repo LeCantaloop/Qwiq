@@ -6,7 +6,7 @@ namespace Qwiq
     {
         internal new static WorkItemTypeCollectionComparer Default => Nested.Instance;
 
-        public override bool Equals(IWorkItemTypeCollection x, IWorkItemTypeCollection y)
+        public override bool Equals(IWorkItemTypeCollection? x, IWorkItemTypeCollection? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -18,8 +18,9 @@ namespace Qwiq
             var source = y.ToList();
             foreach (var wit in expected)
             {
-                if (!y.Contains(wit.Name)) return false;
-                var tw = y[wit.Name];
+                var witName = wit.Name;
+                if (witName == null || !y.Contains(witName)) return false;
+                var tw = y[witName];
                 if (!WorkItemTypeComparer.Default.Equals(wit, tw)) return false;
 
                 // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch

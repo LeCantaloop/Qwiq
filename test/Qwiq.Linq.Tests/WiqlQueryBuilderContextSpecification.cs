@@ -8,15 +8,15 @@ namespace Qwiq.Linq
 {
     public abstract class WiqlQueryBuilderContextSpecification : ContextSpecification
     {
-        protected string Actual;
+        protected string Actual = null!;
 
-        protected string Expected;
+        protected string Expected = null!;
 
-        protected IOrderedQueryable<IWorkItem> Query;
+        protected IOrderedQueryable<IWorkItem> Query = null!;
 
-        protected TeamFoundationServerWorkItemQueryProvider QueryProvider { get; set; }
+        protected TeamFoundationServerWorkItemQueryProvider QueryProvider { get; set; } = null!;
 
-        protected WiqlQueryBuilder WiqlQueryBuilder { get; set; }
+        protected WiqlQueryBuilder WiqlQueryBuilder { get; set; } = null!;
 
         public override void Given()
         {

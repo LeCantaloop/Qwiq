@@ -4,7 +4,7 @@ namespace Qwiq
     {
         internal new static WorkItemLinkInfoComparer Default => Nested.Instance;
 
-        public override bool Equals(IWorkItemLinkInfo x, IWorkItemLinkInfo y)
+        public override bool Equals(IWorkItemLinkInfo? x, IWorkItemLinkInfo? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -31,7 +31,7 @@ namespace Qwiq
         // ReSharper disable ClassNeverInstantiated.Local
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses")]
         private class Nested
-            // ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper restore ClassNeverInstantiated.Local
         {
             // ReSharper disable MemberHidesStaticFromOuterClass
             internal static readonly WorkItemLinkInfoComparer Instance = new WorkItemLinkInfoComparer();

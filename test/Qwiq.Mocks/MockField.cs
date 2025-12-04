@@ -7,9 +7,9 @@ namespace Qwiq.Mocks
     {
         private const int MaxStringLength = 255;
 
-        private IRevisionInternal _revision;
+        private IRevisionInternal? _revision;
 
-        private object _value;
+        private object? _value;
 
         public MockField(IFieldDefinition fieldDefinition)
         {
@@ -18,8 +18,8 @@ namespace Qwiq.Mocks
 
         public MockField(
             IFieldDefinition fieldDefinition,
-            object value,
-            object originalValue = null,
+            object? value,
+            object? originalValue = null,
             ValidationState validationState = ValidationState.Valid,
             bool isChangedByUser = true)
             : this(fieldDefinition)
@@ -51,15 +51,15 @@ namespace Qwiq.Mocks
 
         public virtual bool IsValid => ValidationState == ValidationState.Valid;
 
-        public virtual string Name => FieldDefinition.Name;
+        public virtual string? Name => FieldDefinition.Name;
 
-        public object OriginalValue { get; set; }
+        public object? OriginalValue { get; set; }
 
         public virtual string ReferenceName => FieldDefinition.ReferenceName;
 
         public ValidationState ValidationState { get; private set; }
 
-        public object Value
+        public object? Value
         {
             get => Revision != null ? Revision.GetCurrentFieldValue(FieldDefinition) : _value;
             set
@@ -148,14 +148,14 @@ namespace Qwiq.Mocks
             }
         }
 
-        internal IRevisionInternal Revision
+        internal IRevisionInternal? Revision
         {
             get => _revision;
             set
             {
                 if (_revision != null && _revision != value) throw new InvalidOperationException("Revision already set");
                 _revision = value;
-                if (_value != null)
+                if (_value != null && _revision != null)
                 {
                     _revision.SetFieldValue(FieldDefinition, _value);
                     _value = null;

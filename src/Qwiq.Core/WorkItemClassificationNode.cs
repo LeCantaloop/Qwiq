@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 using System.Diagnostics;
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
 
     public class WorkItemClassificationNode<TId> : IWorkItemClassificationNode<TId>, IEquatable<IWorkItemClassificationNode<TId>>
     {
-        
 
-        public WorkItemClassificationNode(TId id, NodeType nodeType, [NotNull] string name, Uri uri)
+
+        public WorkItemClassificationNode(TId id, NodeType nodeType, string name, Uri uri)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
@@ -27,13 +26,13 @@ namespace Qwiq
         public string Name { get; }
 
         [DebuggerStepThrough]
-        public bool Equals(IWorkItemClassificationNode<TId> other)
+        public bool Equals(IWorkItemClassificationNode<TId>? other)
         {
             return WorkItemClassificationNodeComparer<TId>.Default.Equals(this, other);
         }
 
         [DebuggerStepThrough]
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return WorkItemClassificationNodeComparer<TId>.Default.Equals(this, obj as IWorkItemClassificationNode<TId>);
         }

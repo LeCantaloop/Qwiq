@@ -4,11 +4,11 @@ namespace Qwiq
 {
     public abstract class TypeParserTestsContext : ContextSpecification
     {
-        protected object Actual { get; set; }
+        protected object? Actual { get; set; }
 
-        protected object Expected { get; set; }
+        protected object? Expected { get; set; }
 
-        protected ITypeParser Parser { get; set; }
+        protected ITypeParser Parser { get; set; } = null!;
 
         public override void Given()
         {

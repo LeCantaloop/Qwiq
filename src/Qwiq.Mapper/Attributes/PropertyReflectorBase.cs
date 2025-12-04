@@ -12,7 +12,7 @@ namespace Qwiq.Mapper.Attributes
             return attributes.Where(attribute => attribute.GetType() == type);
         }
 
-        protected Attribute FindFirstAttribute(IEnumerable<Attribute> attributes, Type type)
+        protected Attribute? FindFirstAttribute(IEnumerable<Attribute> attributes, Type type)
         {
             return FilterAttributes(attributes, type).FirstOrDefault();
         }
@@ -20,7 +20,7 @@ namespace Qwiq.Mapper.Attributes
         public abstract IEnumerable<PropertyInfo> GetProperties(Type workItemType);
         public abstract IEnumerable<Attribute> GetCustomAttributes(PropertyInfo property);
         public abstract IEnumerable<Attribute> GetCustomAttributes(PropertyInfo property, Type attributeType);
-        public abstract Attribute GetAttribute(Type type, PropertyInfo property);
+        public abstract Attribute? GetAttribute(Type type, PropertyInfo property);
     }
 }
 

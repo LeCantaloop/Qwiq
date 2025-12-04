@@ -6,7 +6,7 @@ namespace Qwiq
     {
         internal new static WorkItemLinkTypeEndComparer Default => Nested.Instance;
 
-        public override bool Equals(IWorkItemLinkTypeEnd x, IWorkItemLinkTypeEnd y)
+        public override bool Equals(IWorkItemLinkTypeEnd? x, IWorkItemLinkTypeEnd? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -14,7 +14,7 @@ namespace Qwiq
 
             return x.IsForwardLink == y.IsForwardLink
                    && x.ImmutableName.Equals(y.ImmutableName, StringComparison.OrdinalIgnoreCase)
-                   && x.Name.Equals(y.Name, StringComparison.OrdinalIgnoreCase);
+                   && (x.Name?.Equals(y.Name, StringComparison.OrdinalIgnoreCase) ?? y.Name == null);
         }
 
         public override int GetHashCode(IWorkItemLinkTypeEnd obj)

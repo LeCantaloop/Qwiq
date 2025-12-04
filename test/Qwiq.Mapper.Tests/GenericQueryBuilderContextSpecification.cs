@@ -7,8 +7,8 @@ namespace Qwiq.Mapper
 {
     public abstract class GenericQueryBuilderContextSpecification<T> : QueryableContextSpecification<T>
     {
-        protected string Expected;
-        protected string Actual;
+        protected string Expected = null!;
+        protected string Actual = null!;
 
         protected override IPropertyInspector CreatePropertyInspector()
         {

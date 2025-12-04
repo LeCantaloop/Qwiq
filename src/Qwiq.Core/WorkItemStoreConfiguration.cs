@@ -14,7 +14,7 @@ namespace Qwiq
             PageSize = 50;
         }
 
-        public abstract IEnumerable<string> DefaultFields { get; set; }
+        public abstract IEnumerable<string>? DefaultFields { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether lazy loading of certain properties is enabled. Lazy loading is enabled by default

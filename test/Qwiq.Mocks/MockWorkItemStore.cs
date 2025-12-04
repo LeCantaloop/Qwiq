@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Qwiq.Mocks
@@ -25,7 +24,7 @@ namespace Qwiq.Mocks
         {
         }
 
-        public MockWorkItemStore([InstantHandle] [NotNull] Func<ITeamProjectCollection> tpcFactory, [InstantHandle] [NotNull] Func<MockWorkItemStore, IQueryFactory> queryFactory)
+        public MockWorkItemStore(Func<ITeamProjectCollection> tpcFactory, Func<MockWorkItemStore, IQueryFactory> queryFactory)
         {
             if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
             if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
@@ -45,7 +44,7 @@ namespace Qwiq.Mocks
             Configuration = new MockWorkItemStoreConfiguration();
         }
 
-        public VssCredentials AuthorizedCredentials => null;
+        public VssCredentials AuthorizedCredentials => null!;
 
         /// <inheritdoc/>
         ///
@@ -53,11 +52,11 @@ namespace Qwiq.Mocks
 
         public IFieldDefinitionCollection FieldDefinitions => _storeDefinitions.Value;
         public IProjectCollection Projects => _projects.Value;
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes { get; }
+        public IRegisteredLinkTypeCollection? RegisteredLinkTypes { get; }
         public bool SimulateQueryTimes { get; set; }
         public ITeamProjectCollection TeamProjectCollection => _tfs.Value;
         public IWorkItemLinkTypeCollection WorkItemLinkTypes { get; internal set; }
-        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection.AuthorizedIdentity!;
         public TimeZone TimeZone => _tfs.Value.TimeZone;
         private int WaitTime => Instance.Next(0, 3000);
 
@@ -87,7 +86,7 @@ namespace Qwiq.Mocks
             return query.RunQuery();
         }
 
-        public IWorkItem Query(int id, DateTime? asOf = null)
+        public IWorkItem? Query(int id, DateTime? asOf = null)
         {
             return Query(new[] { id }, asOf).SingleOrDefault();
         }
@@ -112,12 +111,12 @@ namespace Qwiq.Mocks
             var missingWits = new Dictionary<IProject, HashSet<IWorkItemType>>();
             foreach (var item in workItems)
             {
-                var projectName = item[CoreFieldRefNames.TeamProject].ToString();
-                var witName = item[CoreFieldRefNames.WorkItemType].ToString();
+                var projectName = item[CoreFieldRefNames.TeamProject]?.ToString();
+                var witName = item[CoreFieldRefNames.WorkItemType]?.ToString();
                 IProject project;
                 try
                 {
-                    project = Projects[projectName];
+                    project = Projects[projectName!];
                 }
                 catch (DeniedOrNotExistException)
                 {
@@ -125,13 +124,13 @@ namespace Qwiq.Mocks
                     project = new MockProject(this);
                 }
 
-                if (!project.WorkItemTypes.Contains(witName))
+                if (!project.WorkItemTypes.Contains(witName!))
                 {
                     Trace.TraceWarning("Project {0} is missing work item type definition {1}", project, witName);
                     missingWits.TryAdd(project, new HashSet<IWorkItemType>(WorkItemTypeComparer.Default));
 
                     var t = item.Type as MockWorkItemType;
-                    if (t?.Store != this) t.Store = this;
+                    if (t?.Store != this && t != null) t.Store = this;
 
                     missingWits[project].Add(item.Type);
                 }
@@ -161,7 +160,7 @@ namespace Qwiq.Mocks
                     changesRequired = true;
                     wits.UnionWith(project.WorkItemTypes);
                     var w = new WorkItemTypeCollection(wits.ToList());
-                    var p = new MockProject(project.Guid, project.Name, project.Uri, w, project.AreaRootNodes, project.IterationRootNodes);
+                    var p = new MockProject(project.Guid, project.Name!, project.Uri, w, project.AreaRootNodes, project.IterationRootNodes);
                     newProjects.Add(p);
                 }
             }
@@ -234,7 +233,7 @@ namespace Qwiq.Mocks
                 if (rl.LinkTypeEnd == null) return;
 
                 // Check to see if a recipricol link is required
-                if (rl.LinkTypeEnd.LinkType.IsDirectional)
+                if (rl.LinkTypeEnd.LinkType?.IsDirectional == true)
                     try
                     {
                         var t = _lookup[rl.RelatedWorkItemId];

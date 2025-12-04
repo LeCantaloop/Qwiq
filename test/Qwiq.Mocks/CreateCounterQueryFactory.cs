@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 
@@ -6,17 +5,17 @@ namespace Qwiq.Mocks
 {
     public class CreateCounterQueryFactory : IQueryFactory
     {
-        [NotNull] private readonly IQueryFactory _delegate;
-        [NotNull] private readonly IList<string> _queries;
+        private readonly IQueryFactory _delegate;
+        private readonly IList<string> _queries;
 
-        public CreateCounterQueryFactory([NotNull] IQueryFactory @delegate)
+        public CreateCounterQueryFactory(IQueryFactory @delegate)
         {
             _delegate = @delegate ?? throw new ArgumentNullException(nameof(@delegate));
             _queries = new List<string>();
         }
 
         public int CreateCallCount { get; private set; }
-        
+
         public IEnumerable<string> Queries => _queries;
 
         public IQuery Create(string wiql, bool dayPrecision = false)

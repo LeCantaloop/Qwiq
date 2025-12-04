@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -33,19 +32,19 @@ namespace Qwiq.Mapper
 
     public class AttributeMapException : ApplicationException
     {
-        private readonly string _message;
+        private readonly string? _message;
 
         public AttributeMapException()
         {
         }
 
-        public AttributeMapException([CanBeNull] string message)
+        public AttributeMapException(string message)
             : base(message) => _message = message;
 
-        public AttributeMapException([CanBeNull] string message, [CanBeNull] Exception innerException)
+        public AttributeMapException(string message, Exception innerException)
             : base(message, innerException) => _message = message;
 
-        public AttributeMapException([CanBeNull] string message, [CanBeNull] Exception innerException, TypePair typePair, PropertyMap properties)
+        public AttributeMapException(string message, Exception innerException, TypePair typePair, PropertyMap properties)
 
             : this(message, innerException)
         {

@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -18,9 +17,9 @@ namespace Qwiq
         private readonly IRevisionInternal _revision;
 
         internal FieldCollection(
-            [NotNull] IRevisionInternal revision,
-            [NotNull] IFieldDefinitionCollection definitions,
-            [NotNull] Func<IRevisionInternal, IFieldDefinition, IField> fieldFactory)
+            IRevisionInternal revision,
+            IFieldDefinitionCollection definitions,
+            Func<IRevisionInternal, IFieldDefinition, IField> fieldFactory)
         {
             _revision = revision;
             _definitions = definitions;
@@ -74,14 +73,14 @@ namespace Qwiq
         }
 
         [DebuggerStepThrough]
-        public bool Equals(IReadOnlyObjectWithIdCollection<IField, int> other)
+        public bool Equals(IReadOnlyObjectWithIdCollection<IField, int>? other)
         {
             return Comparer.FieldCollection.Equals(this, other);
         }
 
         public virtual IField GetById(int id)
         {
-            if (!TryGetById(id, out IField byId)) throw new DeniedOrNotExistException();
+            if (!TryGetById(id, out IField? byId) || byId == null) throw new DeniedOrNotExistException();
             return byId;
         }
 
@@ -104,12 +103,12 @@ namespace Qwiq
             return -1;
         }
 
-        public bool TryGetById(int id, out IField value)
+        public bool TryGetById(int id, out IField? value)
         {
             if (_cache.TryGetValue(id, out value)) return true;
             try
             {
-                if (_definitions.TryGetById(id, out IFieldDefinition def))
+                if (_definitions.TryGetById(id, out IFieldDefinition? def) && def != null)
                 {
                     value = _fieldFactory(_revision, def);
                     _cache[id] = value;
@@ -122,19 +121,25 @@ namespace Qwiq
             return false;
         }
 
-        public bool TryGetByName(string name, out IField value)
+        public bool TryGetByName(string name, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out IField value)
         {
             if (name == null)
             {
-                value = null;
+                value = null!;
                 return false;
             }
-            if (!_definitions.TryGetByName(name, out IFieldDefinition def))
+            if (!_definitions.TryGetByName(name, out IFieldDefinition? def) || def == null)
             {
-                value = null;
+                value = null!;
                 return false;
             }
-            return TryGetById(def.Id, out value);
+            if (!TryGetById(def.Id, out IField? result) || result == null)
+            {
+                value = null!;
+                return false;
+            }
+            value = result;
+            return true;
         }
 
         [DebuggerStepThrough]
@@ -143,10 +148,10 @@ namespace Qwiq
             return GetEnumerator();
         }
 
-        protected internal void SetField([NotNull] IField field)
+        protected internal void SetField(IField field)
         {
             if (field == null) throw new ArgumentNullException(nameof(field));
-            if (!_definitions.Contains(field.ReferenceName)) throw new InvalidOperationException();
+            if (field.ReferenceName == null || !_definitions.Contains(field.ReferenceName)) throw new InvalidOperationException();
 
             _cache[field.FieldDefinition.Id] = field;
         }

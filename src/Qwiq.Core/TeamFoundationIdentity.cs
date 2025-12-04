@@ -8,7 +8,7 @@ namespace Qwiq
     public abstract class TeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
         protected internal static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
-        private string _uniqueName;
+        private string? _uniqueName;
 
         protected internal TeamFoundationIdentity(
             bool isActive,
@@ -39,6 +39,7 @@ namespace Qwiq
             MemberOf = ZeroLengthArrayOfIdentityDescriptor;
             Members = ZeroLengthArrayOfIdentityDescriptor;
             TeamFoundationId = Guid.Empty;
+            _uniqueName = null;
         }
 
         public abstract IIdentityDescriptor Descriptor { get; }
@@ -95,23 +96,23 @@ namespace Qwiq
                                       : $"{string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}";
                 }
 
-                return _uniqueName;
+                return _uniqueName!;
             }
         }
 
         public int UniqueUserId { get; }
 
-        public bool Equals(ITeamFoundationIdentity other)
+        public bool Equals(ITeamFoundationIdentity? other)
         {
             return Comparer.TeamFoundationIdentity.Equals(this, other);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as ITeamFoundationIdentity);
         }
 
-        public abstract string GetAttribute(string name, string defaultValue);
+        public abstract string? GetAttribute(string name, string? defaultValue);
 
         public override int GetHashCode()
         {

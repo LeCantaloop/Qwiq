@@ -1,5 +1,9 @@
-/
+﻿/
 |-- Qwiq.Client.Rest.nuspec
 |-- lib
-|   |-- net46
+|   |-- net472
 |   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml
+|   |-- net8.0
+|   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml

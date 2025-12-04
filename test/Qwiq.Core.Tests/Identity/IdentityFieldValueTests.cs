@@ -7,10 +7,10 @@ namespace Qwiq.Identity
 {
     public abstract class IdentityFieldValueContextSpecification : ContextSpecification
     {
-        protected string DisplayName;
+        protected string DisplayName = null!;
 
-        protected string FullName;
-        protected IdentityFieldValue Result;
+        protected string? FullName;
+        protected IdentityFieldValue Result = null!;
     }
 
     [TestClass]

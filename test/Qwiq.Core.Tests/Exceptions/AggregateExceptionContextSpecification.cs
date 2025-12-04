@@ -7,9 +7,9 @@ namespace Qwiq.Exceptions
 {
     public class AggregateExceptionContextSpecification : ContextSpecification
     {
-        protected IExceptionExploder Instance { get; set; }
-        protected Exception Exception { get; set; }
-        protected IEnumerable<Exception> Result { get; set; }
+        protected IExceptionExploder Instance { get; set; } = null!;
+        protected Exception Exception { get; set; } = null!;
+        protected IEnumerable<Exception> Result { get; set; } = null!;
 
         public override void Given()
         {

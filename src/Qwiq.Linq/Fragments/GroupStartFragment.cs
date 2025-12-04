@@ -4,7 +4,7 @@ namespace Qwiq.Linq.Fragments
 {
     internal class GroupStartFragment : IFragment
     {
-        public string Get(Type queryType)
+        public string Get(Type? queryType)
         {
             return "(";
         }

@@ -13,41 +13,41 @@ namespace Qwiq.Mapper.Mocks
 
         public const string ReverseLinkName = "NS.SampleLink-Reverse";
 
-        private string _assignedTo;
+        private string? _assignedTo;
 
-        private string _closedBy;
+        private string? _closedBy;
 
-        private IEnumerable<MockModel> _givers;
+        private IEnumerable<MockModel>? _givers;
 
-        private string _history;
+        private string? _history;
 
-        private string _issueType;
+        private string? _issueType;
 
-        private string _keywords;
+        private string? _keywords;
 
-        private string _milestone;
+        private string? _milestone;
 
-        private string _openedBy;
+        private string? _openedBy;
 
-        private string _product;
+        private string? _product;
 
-        private string _productFamily;
+        private string? _productFamily;
 
-        private string _release;
+        private string? _release;
 
-        private string _releaseType;
+        private string? _releaseType;
 
-        private string _resolution;
+        private string? _resolution;
 
-        private string _status;
+        private string? _status;
 
-        private string _tags;
+        private string? _tags;
 
-        private IEnumerable<MockModel> _takers;
+        private IEnumerable<MockModel>? _takers;
 
-        private string _title;
+        private string? _title;
 
-        private string _treePath;
+        private string? _treePath;
 
         /// <summary>
         ///     The alias of the user to which this issue is assigned.
@@ -100,7 +100,7 @@ namespace Qwiq.Mapper.Mocks
             set => _history = value;
         }
 
-        
+
 
         [FieldDefinition("Id")]
         public virtual int? Id { get; set; }
@@ -246,6 +246,6 @@ namespace Qwiq.Mapper.Mocks
         }
 
         [FieldDefinition("Work Item Type")]
-        public virtual string WorkItemType { get; set; }
+        public virtual string? WorkItemType { get; set; }
     }
 }

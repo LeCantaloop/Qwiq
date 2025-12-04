@@ -1,12 +1,11 @@
 using System.Linq;
-using JetBrains.Annotations;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
 namespace Qwiq.Client.Rest
 {
     internal class QueryFolder : Qwiq.QueryFolder
     {
-        internal QueryFolder([NotNull] QueryHierarchyItem queryFolder, [NotNull] IQueryHierarchyItemRepository queryItemExpander)
+        internal QueryFolder(QueryHierarchyItem queryFolder, IQueryHierarchyItemRepository queryItemExpander)
             : base(
                 queryFolder.Id,
                 queryFolder.Name,

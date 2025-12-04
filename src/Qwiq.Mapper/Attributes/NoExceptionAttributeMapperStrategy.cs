@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -19,7 +18,7 @@ namespace Qwiq.Mapper.Attributes
         /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with the specified <paramref name="propertyReflector"/>.
         /// </summary>
         /// <param name="propertyReflector">An instance of <see cref="IPropertyReflector"/>.</param>
-        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyReflector propertyReflector)
+        public NoExceptionAttributeMapperStrategy(IPropertyReflector propertyReflector)
             : base(propertyReflector)
         {
         }
@@ -28,7 +27,7 @@ namespace Qwiq.Mapper.Attributes
         /// Creates a new instance of <see cref="NoExceptionAttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and a default instance of <see cref="ITypeParser"/>.
         /// </summary>
         /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
-        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyInspector inspector)
+        public NoExceptionAttributeMapperStrategy(IPropertyInspector inspector)
             : base(inspector)
         {
         }
@@ -38,7 +37,7 @@ namespace Qwiq.Mapper.Attributes
         /// </summary>
         /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
         /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
-        public NoExceptionAttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
+        public NoExceptionAttributeMapperStrategy(IPropertyInspector inspector, ITypeParser typeParser)
             : base(inspector, typeParser)
         {
         }
@@ -48,13 +47,13 @@ namespace Qwiq.Mapper.Attributes
         /// </summary>
         /// <param name="annotatedPropertyValidator">An instance of <see cref="IAnnotatedPropertyValidator"/>.</param>
         /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
-        public NoExceptionAttributeMapperStrategy([NotNull] IAnnotatedPropertyValidator annotatedPropertyValidator, [NotNull] ITypeParser typeParser)
+        public NoExceptionAttributeMapperStrategy(IAnnotatedPropertyValidator annotatedPropertyValidator, ITypeParser typeParser)
             : base(annotatedPropertyValidator, typeParser)
         {
 
         }
 
-        protected internal override void AssignFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, PropertyInfo property, string fieldName, bool convert, object nullSub, object fieldValue)
+        protected internal override void AssignFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem, PropertyInfo property, string fieldName, bool convert, object? nullSub, object? fieldValue)
         {
             try
             {
@@ -106,7 +105,7 @@ namespace Qwiq.Mapper.Attributes
             }
         }
 
-        protected internal override object GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
+        protected internal override object? GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
         {
             try
             {

@@ -9,7 +9,7 @@ namespace Qwiq.Identity
         {
             if (string.IsNullOrWhiteSpace(value)) return value;
 
-            var r = Map(new[] {value});
+            var r = Map(new[] { value });
             if (r != null)
             {
                 var kvp = r.FirstOrDefault();

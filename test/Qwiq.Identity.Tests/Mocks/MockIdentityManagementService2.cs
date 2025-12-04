@@ -8,7 +8,7 @@ namespace Qwiq.Identity.Mocks
 {
     public class MockIdentityManagementService2 : IIdentityManagementService2
     {
-        private static readonly Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[] NullIdentities = { null };
+        private static readonly Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[] NullIdentities = { null };
 
         public string IdentityDomainScope => throw new NotSupportedException();
 
@@ -105,7 +105,7 @@ namespace Qwiq.Identity.Mocks
             throw new NotSupportedException();
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[] ReadIdentities(
             Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions)
@@ -113,14 +113,14 @@ namespace Qwiq.Identity.Mocks
             return NullIdentities;
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[] ReadIdentities(
             Guid[] teamFoundationIds,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership)
         {
             return NullIdentities;
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[][] ReadIdentities(
             Microsoft.TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership,
@@ -129,7 +129,7 @@ namespace Qwiq.Identity.Mocks
             return new[] { NullIdentities };
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[] ReadIdentities(
             Guid[] teamFoundationIds,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
@@ -139,7 +139,7 @@ namespace Qwiq.Identity.Mocks
             return NullIdentities;
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[][] ReadIdentities(
             Microsoft.TeamFoundation.Framework.Common.IdentitySearchFactor searchFactor,
             string[] searchFactorValues,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership,
@@ -150,7 +150,7 @@ namespace Qwiq.Identity.Mocks
             return new[] { NullIdentities };
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[] ReadIdentities(
             Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor[] descriptors,
             Microsoft.TeamFoundation.Framework.Common.MembershipQuery queryMembership,
             ReadIdentityOptions readOptions,
@@ -240,7 +240,7 @@ namespace Qwiq.Identity.Mocks
             throw new NotSupportedException();
         }
 
-        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity[][] ReadIdentities(
+        public Microsoft.TeamFoundation.Framework.Client.TeamFoundationIdentity?[][] ReadIdentities(
 #pragma warning disable RECS0154 // Parameter is never used
             IdentitySearchFactor searchFactor,
 #pragma warning restore RECS0154 // Parameter is never used

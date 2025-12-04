@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -11,7 +10,7 @@ namespace Qwiq
         {
         }
 
-        public override bool Equals(IQueryFolder x, IQueryFolder y)
+        public override bool Equals(IQueryFolder? x, IQueryFolder? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
@@ -26,7 +25,7 @@ namespace Qwiq
             return res;
         }
 
-        public override int GetHashCode([CanBeNull] IQueryFolder obj)
+        public override int GetHashCode(IQueryFolder obj)
         {
             if (ReferenceEquals(obj, null)) return 0;
 

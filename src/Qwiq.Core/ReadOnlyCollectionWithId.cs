@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -8,6 +7,7 @@ namespace Qwiq
     public abstract class ReadOnlyObjectWithIdCollection<T, TId> : ReadOnlyObjectWithNameCollection<T>,
                                                                    IReadOnlyObjectWithIdCollection<T, TId>
         where T : IIdentifiable<TId>
+        where TId : notnull
     {
         private readonly Func<T, TId> _idFunc;
 
@@ -15,15 +15,15 @@ namespace Qwiq
 
 
 
-        protected ReadOnlyObjectWithIdCollection([CanBeNull] List<T> items, [CanBeNull] Func<T, string> nameFunc)
+        protected ReadOnlyObjectWithIdCollection(IList<T> items, Func<T, string> nameFunc)
             : this(items, nameFunc, arg => arg.Id)
         {
         }
 
         protected ReadOnlyObjectWithIdCollection(
-            [CanBeNull] List<T> items,
-            [CanBeNull] Func<T, string> nameFunc,
-            [NotNull] Func<T, TId> idFunc)
+            IList<T> items,
+            Func<T, string> nameFunc,
+            Func<T, TId> idFunc)
             : base(items, nameFunc)
         {
             Contract.Requires(idFunc != null);
@@ -32,32 +32,32 @@ namespace Qwiq
             _mapById = new Dictionary<TId, int>(items?.Count ?? 0);
         }
 
-        protected ReadOnlyObjectWithIdCollection([CanBeNull] List<T> items)
+        protected ReadOnlyObjectWithIdCollection(IList<T> items)
             : base(items)
         {
             _idFunc = a => a.Id;
             _mapById = new Dictionary<TId, int>(items?.Count ?? 0);
         }
 
-        protected ReadOnlyObjectWithIdCollection([CanBeNull] IEnumerable<T> items)
-            :base(items)
+        protected ReadOnlyObjectWithIdCollection(IEnumerable<T> items)
+            : base(items)
         {
             _idFunc = a => a.Id;
             _mapById = new Dictionary<TId, int>();
         }
 
         protected ReadOnlyObjectWithIdCollection(
-            [NotNull] Func<IEnumerable<T>> itemFactory,
-            [CanBeNull] Func<T, string> nameFunc)
-            :this(itemFactory, nameFunc, arg => arg.Id)
+            Func<IEnumerable<T>> itemFactory,
+            Func<T, string> nameFunc)
+            : this(itemFactory, nameFunc, arg => arg.Id)
         {
         }
 
         protected ReadOnlyObjectWithIdCollection(
-            [NotNull] Func<IEnumerable<T>> itemFactory,
-            [CanBeNull] Func<T, string> nameFunc,
-            [NotNull] Func<T, TId> idFunc)
-            :base(itemFactory, nameFunc)
+            Func<IEnumerable<T>> itemFactory,
+            Func<T, string> nameFunc,
+            Func<T, TId> idFunc)
+            : base(itemFactory, nameFunc)
         {
             _idFunc = idFunc ?? throw new ArgumentNullException(nameof(idFunc));
             _mapById = new Dictionary<TId, int>();
@@ -69,19 +69,19 @@ namespace Qwiq
             return _mapById.ContainsKey(id);
         }
 
-        public virtual bool Equals(IReadOnlyObjectWithIdCollection<T, TId> other)
+        public virtual bool Equals(IReadOnlyObjectWithIdCollection<T, TId>? other)
         {
             return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, other);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return ReadOnlyCollectionWithIdComparer<T, TId>.Default.Equals(this, obj as IReadOnlyObjectWithIdCollection<T, TId>);
         }
 
         public virtual T GetById(TId id)
         {
-            if (!TryGetById(id, out T byId)) throw new DeniedOrNotExistException();
+            if (!TryGetById(id, out T? byId) || byId == null) throw new DeniedOrNotExistException();
             return byId;
         }
 
@@ -90,7 +90,7 @@ namespace Qwiq
             return ReadOnlyCollectionWithIdComparer<T, TId>.Default.GetHashCode(this);
         }
 
-        public virtual bool TryGetById(TId id, out T value)
+        public virtual bool TryGetById(TId id, out T? value)
         {
             Ensure();
             if (_mapById.TryGetValue(id, out int index))
@@ -98,7 +98,7 @@ namespace Qwiq
                 value = this[index];
                 return true;
             }
-            value = default(T);
+            value = default;
             return false;
         }
 

@@ -13,7 +13,7 @@ namespace Qwiq.Linq.Fragments
             _fragments = fragments;
         }
 
-        public string Get(Type queryType)
+        public string Get(Type? queryType)
         {
             return "(" + string.Join(", ", _fragments.Select(s => s.Get(queryType))) + ")";
         }

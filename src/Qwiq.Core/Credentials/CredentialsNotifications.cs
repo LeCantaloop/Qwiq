@@ -17,8 +17,8 @@ namespace Qwiq.Credentials
         }
 
         public CredentialsNotifications(
-            Func<AuthenticationSuccessNotification, Task> success,
-            Func<AuthenticationFailedNotification, Task> failed)
+            Func<AuthenticationSuccessNotification, Task>? success,
+            Func<AuthenticationFailedNotification, Task>? failed)
         {
             AuthenticationSuccess = success ?? SuccessAsync;
             AuthenticationFailed = failed ?? FailedAsync;
@@ -54,8 +54,8 @@ namespace Qwiq.Credentials
 
             Trace.TraceInformation(
                                    "TFS connection attempt success with {0}/{1}.",
-                                   credential.Windows.GetType(),
-                                   credential.Federated.GetType());
+                                   credential?.Windows?.GetType(),
+                                   credential?.Federated?.GetType());
 
             return Task.CompletedTask;
         }

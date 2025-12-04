@@ -4,6 +4,7 @@ using JetBrains.dotMemoryUnit;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Qwiq.Tests.Common;
 using Should;
 
 namespace Qwiq.WorkItemStore

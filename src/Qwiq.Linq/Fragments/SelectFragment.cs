@@ -14,7 +14,7 @@ namespace Qwiq.Linq.Fragments
             _fields = fields;
         }
 
-        public string Get(Type queryType)
+        public string Get(Type? queryType)
         {
             return $"SELECT {string.Join(", ", _fields)} FROM {WiqlConstants.WorkItemTable}";
         }

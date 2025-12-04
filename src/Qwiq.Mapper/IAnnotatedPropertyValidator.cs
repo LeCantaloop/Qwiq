@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using Qwiq.Mapper.Attributes;
 using System;
 using System.Collections.Generic;
@@ -21,16 +20,14 @@ namespace Qwiq.Mapper
         /// </summary>
         /// <param name="property">An instance of <see cref="PropertyInfo"/> decorated with <see cref="FieldDefinitionAttribute"/>.</param>
         /// <returns>If the <paramref name="property"/> is decorated with <see cref="FieldDefinitionAttribute"/> then the attribute; otherwise, null.</returns>
-        [CanBeNull]
-        FieldDefinitionAttribute GetFieldDefinition([NotNull] PropertyInfo property);
+        FieldDefinitionAttribute? GetFieldDefinition(PropertyInfo property);
 
         /// <summary>
         /// Gets and validates annotated properties of <paramref name="targetType"/> against <paramref name="workItem"/>.
         /// </summary>
         /// <param name="workItem">An instance of <see cref="IWorkItem"/>.</param>
         /// <param name="targetType">The type being mapped.</param>
-        /// <returns>A collection of <see cref="PropertyInfo"/> dedocated with <see cref="FieldDefinitionAttribute"/> that are valid.</returns>
-        [NotNull]
-        IEnumerable<KeyValuePair<PropertyInfo, FieldDefinitionAttribute>> GetValidAnnotatedProperties([NotNull] IWorkItem workItem, [NotNull] Type targetType);
+        /// <returns>A collection of <see cref="PropertyInfo"/> decorated with <see cref="FieldDefinitionAttribute"/> that are valid.</returns>
+        IEnumerable<KeyValuePair<PropertyInfo, FieldDefinitionAttribute>> GetValidAnnotatedProperties(IWorkItem workItem, Type targetType);
     }
 }

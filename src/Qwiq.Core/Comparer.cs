@@ -21,9 +21,10 @@ namespace Qwiq
         public static IEqualityComparer<IWorkItemClassificationNode<int>> WorkItemClassificationNode { get; } = WorkItemClassificationNodeComparer<int>.Default;
 
         public static IEqualityComparer<IReadOnlyObjectWithIdCollection<IWorkItemClassificationNode<int>, int>>
-            WorkItemClassificationNodeCollection { get; } =
+            WorkItemClassificationNodeCollection
+        { get; } =
             ReadOnlyCollectionWithIdComparer<IWorkItemClassificationNode<int>, int>.Default;
-        
+
         public static IEqualityComparer<IIdentifiable<int?>> NullableIdentity { get; } = NullableIdentifiableComparer.Default;
 
         public static IEqualityComparer<string> OrdinalIgnoreCase { get; } = StringComparer.OrdinalIgnoreCase;

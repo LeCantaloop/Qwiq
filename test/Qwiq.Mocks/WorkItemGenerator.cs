@@ -16,7 +16,7 @@ namespace Qwiq.Mocks
         {
         }
 
-        public WorkItemGenerator(Func<T> createFunc, IEnumerable<string> propertiesToSkip = null)
+        public WorkItemGenerator(Func<T> createFunc, IEnumerable<string>? propertiesToSkip = null)
         {
             _create = createFunc ?? throw new ArgumentNullException(nameof(createFunc));
             _propertyGenerator = new PropertyValueGenerator<T>(propertiesToSkip);
@@ -76,7 +76,7 @@ namespace Qwiq.Mocks
                 }
 
                 // Determine if we need to create a recipricol link
-                if (!(link.LinkTypeEnd?.LinkType.IsDirectional ?? false)) continue;
+                if (link.LinkTypeEnd?.LinkType?.IsDirectional != true) continue;
 
                 // Look up the item if it was not previously generated
                 if (linked == null)
@@ -100,11 +100,11 @@ namespace Qwiq.Mocks
             return _propertyGenerator.PopulateInstance(instance);
         }
 
-        public System.Collections.Generic.IReadOnlyCollection<T> Items { get; private set; }
+        public System.Collections.Generic.IReadOnlyCollection<T>? Items { get; private set; }
 
         protected const string Chars = "$%#@!*abcdefghijklmnopqrstuvwxyz1234567890?;:ABCDEFGHIJKLMNOPQRSTUVWXYZ^&";
 
-        protected virtual object GetRandomValue(T instance, string propertyName, Type propertyType)
+        protected virtual object? GetRandomValue(T instance, string propertyName, Type propertyType)
         {
             return _propertyGenerator.GetRandomValue(instance, propertyName, propertyType);
 

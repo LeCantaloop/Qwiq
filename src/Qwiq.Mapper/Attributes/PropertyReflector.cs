@@ -27,7 +27,7 @@ namespace Qwiq.Mapper.Attributes
             return FilterAttributes(attributes, attributeType);
         }
 
-        public override Attribute GetAttribute(Type type, PropertyInfo property)
+        public override Attribute? GetAttribute(Type type, PropertyInfo property)
         {
             var attributes = GetCustomAttributes(property);
             return FindFirstAttribute(attributes, type);
@@ -35,7 +35,7 @@ namespace Qwiq.Mapper.Attributes
 
         private static IEnumerable<PropertyInfo> TypePropertiesCache(Type type)
         {
-            if (TypeProperties.TryGetValue(type.TypeHandle, out IEnumerable<PropertyInfo> pis))
+            if (TypeProperties.TryGetValue(type.TypeHandle, out IEnumerable<PropertyInfo>? pis))
             {
                 return pis;
             }
@@ -47,7 +47,7 @@ namespace Qwiq.Mapper.Attributes
 
         private static IEnumerable<Attribute> CustomAttributesCache(PropertyInfo property)
         {
-            if (PropertyAttributes.TryGetValue(property, out IEnumerable<Attribute> @as))
+            if (PropertyAttributes.TryGetValue(property, out IEnumerable<Attribute>? @as))
             {
                 return @as;
             }

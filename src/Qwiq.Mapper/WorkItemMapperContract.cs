@@ -13,7 +13,7 @@ namespace Qwiq.Mapper
         {
             Contract.Requires(collection != null);
 
-            return default(IEnumerable);
+            return default!;
         }
 
         /// <inheritdoc />
@@ -27,7 +27,7 @@ namespace Qwiq.Mapper
             Contract.Requires(type != null);
             Contract.Requires(collection != null);
 
-            return default(IEnumerable<IIdentifiable<int?>>);
+            return default!;
         }
 
         /// <inheritdoc />

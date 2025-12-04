@@ -21,7 +21,7 @@ namespace Qwiq
 
         internal new static FieldDefinitionCollectionComparer Default => Nested.Instance;
 
-        public override bool Equals(IFieldDefinitionCollection x, IFieldDefinitionCollection y)
+        public override bool Equals(IFieldDefinitionCollection? x, IFieldDefinitionCollection? y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;

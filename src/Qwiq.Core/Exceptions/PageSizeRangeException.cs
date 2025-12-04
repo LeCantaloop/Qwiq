@@ -7,7 +7,7 @@ namespace Qwiq
     public class PageSizeRangeException : ApplicationException
     {
         public PageSizeRangeException()
-            :base("TF237117: PageSize has to be between 50 and 200")
+            : base("TF237117: PageSize has to be between 50 and 200")
         {
 
         }

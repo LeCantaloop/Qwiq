@@ -1,22 +1,21 @@
-﻿using System;
+using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class WorkItemLinkType : IWorkItemLinkType, IEquatable<IWorkItemLinkType>
     {
-        private readonly Lazy<IWorkItemLinkTypeEnd> _forwardFac;
+        private readonly Lazy<IWorkItemLinkTypeEnd>? _forwardFac;
 
-        private readonly Lazy<IWorkItemLinkTypeEnd> _reverseFac;
+        private readonly Lazy<IWorkItemLinkTypeEnd>? _reverseFac;
 
-        private IWorkItemLinkTypeEnd _forward;
+        private IWorkItemLinkTypeEnd? _forward;
 
-        private IWorkItemLinkTypeEnd _reverse;
+        private IWorkItemLinkTypeEnd? _reverse;
 
-        internal WorkItemLinkType([NotNull] string referenceName, [NotNull] IWorkItemLinkTypeEnd forward, [NotNull] IWorkItemLinkTypeEnd reverse)
+        internal WorkItemLinkType(string referenceName, IWorkItemLinkTypeEnd forward, IWorkItemLinkTypeEnd reverse)
             : this(referenceName)
         {
             Contract.Requires(!string.IsNullOrEmpty(referenceName));
@@ -29,7 +28,7 @@ namespace Qwiq
             _reverseFac = null;
         }
 
-        internal WorkItemLinkType([NotNull] string referenceName, [NotNull] Lazy<IWorkItemLinkTypeEnd> forward, [NotNull] Lazy<IWorkItemLinkTypeEnd> reverse)
+        internal WorkItemLinkType(string referenceName, Lazy<IWorkItemLinkTypeEnd> forward, Lazy<IWorkItemLinkTypeEnd> reverse)
             : this(referenceName)
         {
             Contract.Requires(!string.IsNullOrEmpty(referenceName));
@@ -40,10 +39,10 @@ namespace Qwiq
             _reverseFac = reverse ?? throw new ArgumentNullException(nameof(reverse));
         }
 
-        internal WorkItemLinkType([NotNull] string referenceName)
+        internal WorkItemLinkType(string referenceName)
         {
             Contract.Requires(!string.IsNullOrEmpty(referenceName));
-            
+
             if (string.IsNullOrWhiteSpace(referenceName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(referenceName));
 
@@ -60,12 +59,12 @@ namespace Qwiq
 
         public IWorkItemLinkTypeEnd ReverseEnd => CoerceReverseValue();
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return WorkItemLinkTypeComparer.Default.Equals(this, obj as IWorkItemLinkType);
         }
 
-        public bool Equals(IWorkItemLinkType other)
+        public bool Equals(IWorkItemLinkType? other)
         {
             return WorkItemLinkTypeComparer.Default.Equals(this, other);
         }
@@ -94,14 +93,18 @@ namespace Qwiq
 
         private IWorkItemLinkTypeEnd CoerceForwardValue()
         {
-            return _forward ?? (_forward = _forwardFac.Value);
+            if (_forward != null) return _forward;
+            if (_forwardFac == null) throw new InvalidOperationException($"{nameof(ForwardEnd)} has not been initialized.");
+            return _forward = _forwardFac.Value;
         }
 
         private IWorkItemLinkTypeEnd CoerceReverseValue()
         {
-            return _reverse ?? (_reverse = _reverseFac.Value);
+            if (_reverse != null) return _reverse;
+            if (_reverseFac == null) throw new InvalidOperationException($"{nameof(ReverseEnd)} has not been initialized.");
+            return _reverse = _reverseFac.Value;
         }
 
-        public string Name => ReferenceName;
+        public string? Name => ReferenceName;
     }
 }

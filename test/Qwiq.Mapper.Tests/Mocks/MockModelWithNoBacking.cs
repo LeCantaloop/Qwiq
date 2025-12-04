@@ -9,7 +9,7 @@ namespace Qwiq.Mapper.Mocks
         public virtual int? Id { get; internal set; }
 
         [FieldDefinition("FieldWithNoBackingStore")]
-        public string FieldWithNoBackingStore { get; internal set; }
+        public string? FieldWithNoBackingStore { get; internal set; }
     }
 }
 

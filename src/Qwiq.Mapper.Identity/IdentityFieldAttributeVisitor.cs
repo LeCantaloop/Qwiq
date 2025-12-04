@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 
-using JetBrains.Annotations;
 
 using Qwiq.Identity;
 using Qwiq.Mapper.Attributes;
@@ -17,17 +16,16 @@ namespace Qwiq.Linq.Visitors
     /// <seealso cref="IdentityComboStringVisitor" />
     public class IdentityFieldAttributeVisitor : ExpressionVisitor
     {
-        [NotNull]
         private readonly IIdentityValueConverter<string, object> _valueConverter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityFieldAttributeVisitor" /> class.
         /// </summary>
         /// <param name="valueConverter">An instance of IIdentityValueConverter used to convert identity values.</param>
-        public IdentityFieldAttributeVisitor([NotNull] IIdentityValueConverter<string, object> valueConverter)
+        public IdentityFieldAttributeVisitor(IIdentityValueConverter<string, object> valueConverter)
         {
             Contract.Requires(valueConverter != null);
-            
+
             _valueConverter = valueConverter ?? throw new ArgumentNullException(nameof(valueConverter));
         }
 
@@ -57,7 +55,10 @@ namespace Qwiq.Linq.Visitors
         {
             if (!NeedsIdentityMapping) return base.VisitConstant(node);
 
-            var newNode = _valueConverter.Map(node.Value as string);
+            var value = node.Value as string;
+            if (value == null) return base.VisitConstant(node);
+
+            var newNode = _valueConverter.Map(value);
             return Expression.Constant(newNode);
         }
 
@@ -78,7 +79,7 @@ namespace Qwiq.Linq.Visitors
 
         private static bool ExpressionsNeedIdentityMapping(IEnumerable<Expression> expressions)
         {
-            return expressions.OfType<MemberExpression>().Any(arg => IsIdentityField(arg.Expression.Type, arg.Member.Name));
+            return expressions.OfType<MemberExpression>().Any(arg => arg.Expression != null && IsIdentityField(arg.Expression.Type, arg.Member.Name));
         }
 
         private static bool IsIdentityField(Type type, string propertyName)

@@ -6,7 +6,7 @@ namespace Qwiq.Mocks
     {
         /// <inheritdoc/>
         ///
-        public override IEnumerable<string> DefaultFields { get; set; }
+        public override IEnumerable<string>? DefaultFields { get; set; }
 
         /// <inheritdoc/>
         ///

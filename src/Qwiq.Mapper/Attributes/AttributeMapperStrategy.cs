@@ -1,5 +1,4 @@
 using FastMember;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,8 +7,8 @@ namespace Qwiq.Mapper.Attributes
 {
     public class AttributeMapperStrategy : WorkItemMapperStrategyBase
     {
-        [NotNull] private readonly IAnnotatedPropertyValidator _annotatedPropertyValidator;
-        [NotNull] private readonly ITypeParser _typeParser;
+        private readonly IAnnotatedPropertyValidator _annotatedPropertyValidator;
+        private readonly ITypeParser _typeParser;
 
         /// <summary>
         /// Creates a default instance of <see cref="AttributeMapperStrategy"/> with <see cref="PropertyReflector"/>.
@@ -23,7 +22,7 @@ namespace Qwiq.Mapper.Attributes
         /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="propertyReflector"/>.
         /// </summary>
         /// <param name="propertyReflector">An instance of <see cref="IPropertyReflector"/>.</param>
-        public AttributeMapperStrategy([NotNull] IPropertyReflector propertyReflector)
+        public AttributeMapperStrategy(IPropertyReflector propertyReflector)
             : this(new PropertyInspector(propertyReflector))
         {
         }
@@ -32,7 +31,7 @@ namespace Qwiq.Mapper.Attributes
         /// Creates a new instance of <see cref="AttributeMapperStrategy"/> with the specified <paramref name="inspector"/> and a default instance of <see cref="ITypeParser"/>.
         /// </summary>
         /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
-        public AttributeMapperStrategy([NotNull] IPropertyInspector inspector)
+        public AttributeMapperStrategy(IPropertyInspector inspector)
             : this(inspector, TypeParser.Default)
         {
         }
@@ -42,7 +41,7 @@ namespace Qwiq.Mapper.Attributes
         /// </summary>
         /// <param name="inspector">An instance of <see cref="IPropertyInspector"/>.</param>
         /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
-        public AttributeMapperStrategy([NotNull] IPropertyInspector inspector, [NotNull] ITypeParser typeParser)
+        public AttributeMapperStrategy(IPropertyInspector inspector, ITypeParser typeParser)
             : this(new AnnotatedPropertyValidator(inspector), typeParser)
         {
         }
@@ -52,7 +51,7 @@ namespace Qwiq.Mapper.Attributes
         /// </summary>
         /// <param name="annotatedPropertyValidator">An instance of <see cref="IAnnotatedPropertyValidator"/>.</param>
         /// <param name="typeParser">An instance of <see cref="ITypeParser"/>.</param>
-        public AttributeMapperStrategy([NotNull] IAnnotatedPropertyValidator annotatedPropertyValidator, [NotNull] ITypeParser typeParser)
+        public AttributeMapperStrategy(IAnnotatedPropertyValidator annotatedPropertyValidator, ITypeParser typeParser)
         {
             _typeParser = typeParser ?? throw new ArgumentNullException(nameof(typeParser));
             _annotatedPropertyValidator = annotatedPropertyValidator ?? throw new ArgumentNullException(nameof(annotatedPropertyValidator));
@@ -83,14 +82,14 @@ namespace Qwiq.Mapper.Attributes
         }
 
         protected internal virtual void AssignFieldValue(
-            [NotNull] Type targetWorkItemType,
-            [NotNull] IWorkItem sourceWorkItem,
-            [NotNull] object targetWorkItem,
-            [NotNull] PropertyInfo property,
-            [NotNull] string fieldName,
+            Type targetWorkItemType,
+            IWorkItem sourceWorkItem,
+            object targetWorkItem,
+            PropertyInfo property,
+            string fieldName,
             bool convert,
-            [CanBeNull] object nullSub,
-            [CanBeNull] object fieldValue)
+            object? nullSub,
+            object? fieldValue)
         {
             // Coalesce fieldValue and nullSub
 
@@ -147,9 +146,9 @@ namespace Qwiq.Mapper.Attributes
             }
         }
 
-        protected internal virtual object GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
+        protected internal virtual object? GetFieldValue(Type targetWorkItemType, IWorkItem sourceWorkItem, string fieldName, PropertyInfo property)
         {
-            object fieldValue;
+            object? fieldValue;
             try
             {
                 fieldValue = sourceWorkItem[fieldName];

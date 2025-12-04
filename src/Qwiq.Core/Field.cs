@@ -1,6 +1,5 @@
 using System;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -8,7 +7,7 @@ namespace Qwiq
     {
         private readonly IRevisionInternal _revision;
 
-        protected internal Field([NotNull] IRevisionInternal revision, [NotNull] IFieldDefinition fieldDefinition)
+        protected internal Field(IRevisionInternal revision, IFieldDefinition fieldDefinition)
         {
             _revision = revision ?? throw new ArgumentNullException(nameof(revision));
             FieldDefinition = fieldDefinition ?? throw new ArgumentNullException(nameof(fieldDefinition));
@@ -29,15 +28,15 @@ namespace Qwiq
 
         public virtual bool IsValid => ValidationState == ValidationState.Valid;
 
-        public virtual string Name => FieldDefinition.Name;
+        public virtual string? Name => FieldDefinition.Name;
 
-        public virtual object OriginalValue => throw new NotImplementedException();
+        public virtual object? OriginalValue => throw new NotImplementedException();
 
-        public virtual string ReferenceName => FieldDefinition.ReferenceName;
+        public virtual string? ReferenceName => FieldDefinition.ReferenceName;
 
         public virtual ValidationState ValidationState => throw new NotImplementedException();
 
-        public virtual object Value
+        public virtual object? Value
         {
             get => _revision.GetCurrentFieldValue(FieldDefinition);
             set => _revision.SetFieldValue(FieldDefinition, value);

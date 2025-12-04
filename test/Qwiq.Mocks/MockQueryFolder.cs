@@ -1,11 +1,10 @@
-﻿using System;
-using JetBrains.Annotations;
+using System;
 
 namespace Qwiq.Mocks
 {
     public class MockQueryFolder : QueryFolder
     {
-        public MockQueryFolder(Guid id, [NotNull] string name, [NotNull] string path, [NotNull] IQueryFolderCollection subFolders, [NotNull] IQueryDefinitionCollection queries)
+        public MockQueryFolder(Guid id, string name, string path, IQueryFolderCollection subFolders, IQueryDefinitionCollection queries)
             : base(id, name, path, subFolders, queries)
         {
         }

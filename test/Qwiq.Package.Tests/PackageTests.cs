@@ -8,8 +8,31 @@ public class PackageTests
 {
     public static TheoryData<string> GetPackages()
     {
-        DirectoryInfo directory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!;
-        FileInfo[] packages = directory.GetFiles("Qwiq*.nupkg", SearchOption.AllDirectories)
+        // Find the solution root by looking for src directory
+        // Start from the test assembly location and walk up
+        DirectoryInfo? directory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
+        DirectoryInfo? srcDirectory = null;
+
+        while (directory != null)
+        {
+            DirectoryInfo candidate = new(Path.Combine(directory.FullName, "src"));
+            if (candidate.Exists)
+            {
+                srcDirectory = candidate;
+                break;
+            }
+            directory = directory.Parent;
+        }
+
+        if (srcDirectory == null)
+        {
+            throw new InvalidOperationException(
+                "Could not find 'src' directory. Unable to locate NuGet packages.");
+        }
+
+        // Search for packages in src/**/bin/Release/**/*.nupkg
+        FileInfo[] packages = srcDirectory.GetFiles("Qwiq*.nupkg", SearchOption.AllDirectories)
+            .Where(f => f.FullName.Contains(Path.Combine("bin", "Release"), StringComparison.OrdinalIgnoreCase))
             .OrderBy(fileInfo => fileInfo.Name, StringComparer.Ordinal)
             .ToArray();
 
@@ -17,7 +40,7 @@ public class PackageTests
         {
             throw new InvalidOperationException(
                 "No Qwiq*.nupkg files were found. Ensure the pack step runs before executing this test. " +
-                $"Searched in: {directory.FullName}");
+                $"Searched in: {srcDirectory.FullName}");
         }
 
         TheoryData<string> theoryData = new();

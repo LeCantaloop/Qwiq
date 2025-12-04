@@ -24,7 +24,7 @@ namespace Qwiq.Client.Rest
             CoreFieldRefNames.WorkItemType,
         };
 
-        private HashSet<string> _defaultFields;
+        private HashSet<string>? _defaultFields;
 
         private WorkItemExpand _workItemExpand;
 
@@ -40,7 +40,7 @@ namespace Qwiq.Client.Rest
         /// <see cref="M:CoreFieldRefNames.ChangedDate"/>, <see cref="M:CoreFieldRefNames.Id"/>, <see cref="M:CoreFieldRefNames.State"/>, <see cref="M:CoreFieldRefNames.TeamProject"/>,
         /// <see cref="M:CoreFieldRefNames.Title"/>, <see cref="M:CoreFieldRefNames.WorkItemType"/>.
         /// </summary>
-        public sealed override IEnumerable<string> DefaultFields
+        public sealed override IEnumerable<string>? DefaultFields
         {
             get => _defaultFields;
             set
@@ -53,7 +53,7 @@ namespace Qwiq.Client.Rest
                                        $"The {nameof(DefaultFields)} parameter can not be used with the {nameof(WorkItemExpand)} parameter. Setting {nameof(WorkItemExpand)} to {WorkItemExpand.None}.");
                     _workItemExpand = WorkItemExpand.None;
                 }
-                if (value == null || !value.Any()) _defaultFields.Clear();
+                if (value == null || !value.Any()) _defaultFields?.Clear();
                 else
                 {
                     var fs = new HashSet<string>(value, Comparer.OrdinalIgnoreCase);

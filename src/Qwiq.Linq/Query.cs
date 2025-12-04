@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 
-using JetBrains.Annotations;
 
 namespace Qwiq.Linq
 {
@@ -21,7 +20,7 @@ namespace Qwiq.Linq
 
         private readonly IQueryProvider _provider;
 
-        public Query([NotNull] IQueryProvider provider, [NotNull] IWiqlQueryBuilder builder)
+        public Query(IQueryProvider provider, IWiqlQueryBuilder builder)
         {
             Contract.Requires(provider != null);
             Contract.Requires(builder != null);
@@ -31,7 +30,7 @@ namespace Qwiq.Linq
             _expression = Expression.Constant(this);
         }
 
-        public Query([NotNull] IQueryProvider provider, [NotNull] IWiqlQueryBuilder builder, [NotNull] Expression expression)
+        public Query(IQueryProvider provider, IWiqlQueryBuilder builder, Expression expression)
         {
             Contract.Requires(provider != null);
             Contract.Requires(builder != null);
@@ -64,8 +63,8 @@ namespace Qwiq.Linq
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            var enumerable = (IEnumerable)_provider.Execute(_expression);
-            return enumerable.GetEnumerator();
+            var enumerable = (IEnumerable?)_provider.Execute(_expression);
+            return enumerable?.GetEnumerator() ?? throw new InvalidOperationException("Query execution returned null");
         }
     }
 }

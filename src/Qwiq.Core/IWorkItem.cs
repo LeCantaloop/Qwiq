@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
@@ -21,8 +20,6 @@ namespace Qwiq
         new int ExternalLinkCount { get; }
 
         new int HyperlinkCount { get; }
-
-        [NotNull]
         IFieldCollection Fields { get; }
 
         /// <summary>
@@ -83,7 +80,7 @@ namespace Qwiq
 
         IHyperlink CreateHyperlink(string location);
 
-        IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null);
+        IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd? linkTypeEnd = null);
 
         /// <summary>
         /// Validates the fields of this work item.

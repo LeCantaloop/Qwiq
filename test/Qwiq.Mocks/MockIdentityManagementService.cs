@@ -27,7 +27,7 @@ namespace Qwiq.Mocks
         }
 
         public MockIdentityManagementService(IEnumerable<ITeamFoundationIdentity> identities)
-            : this(identities.ToDictionary(k => new IdentityFieldValue(k).LogonName, e => e, StringComparer.OrdinalIgnoreCase))
+            : this(identities.Where(i => new IdentityFieldValue(i).LogonName != null).ToDictionary(k => new IdentityFieldValue(k).LogonName!, e => e, StringComparer.OrdinalIgnoreCase))
         {
         }
 
@@ -123,11 +123,11 @@ namespace Qwiq.Mocks
         {
             foreach (var descriptor in descriptors)
             {
-                var success = _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity identity);
+                var success = _descriptorMappings.TryGetValue(descriptor, out ITeamFoundationIdentity? identity);
 
                 Trace.TraceInformation($"{nameof(MockIdentityManagementService)}: Searching for {descriptor}; Success: {success}");
 
-                yield return identity;
+                yield return identity!;
             }
         }
 
@@ -172,13 +172,13 @@ namespace Qwiq.Mocks
             IdentitySearchFactor searchFactor,
             string searchFactorValue)
         {
-            return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None);
+            return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None)!;
         }
 
         /// <inheritdoc />
         public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue, MembershipQuery queryMembership)
         {
-            return ReadIdentities(searchFactor, new[] { searchFactorValue }, queryMembership).First().Value.SingleOrDefault();
+            return ReadIdentities(searchFactor, new[] { searchFactorValue }, queryMembership).First().Value.SingleOrDefault()!;
         }
 
         private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)

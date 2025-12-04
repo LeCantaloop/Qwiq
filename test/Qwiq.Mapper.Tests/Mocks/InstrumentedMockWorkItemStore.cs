@@ -16,7 +16,7 @@ namespace Qwiq.Mapper.Mocks
 
         public VssCredentials AuthorizedCredentials => _innerWorkItemStore.AuthorizedCredentials;
 
-        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore?.AuthorizedIdentity;
+        public ITeamFoundationIdentity AuthorizedIdentity => _innerWorkItemStore.AuthorizedIdentity;
 
         /// <inheritdoc />
         public WorkItemStoreConfiguration Configuration => _innerWorkItemStore.Configuration;
@@ -44,7 +44,7 @@ namespace Qwiq.Mapper.Mocks
 
         public int QueryStringCallCount { get; private set; }
 
-        public IRegisteredLinkTypeCollection RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
+        public IRegisteredLinkTypeCollection? RegisteredLinkTypes => _innerWorkItemStore.RegisteredLinkTypes;
 
         public ITeamProjectCollection TeamProjectCollection
         {
@@ -87,7 +87,7 @@ namespace Qwiq.Mapper.Mocks
             return _innerWorkItemStore.Query(ids, asOf);
         }
 
-        public IWorkItem Query(int id, DateTime? asOf = null)
+        public IWorkItem? Query(int id, DateTime? asOf = null)
         {
             QueryIdCallCount += 1;
             return _innerWorkItemStore.Query(id, asOf);

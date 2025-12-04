@@ -22,14 +22,14 @@ namespace Qwiq.Mocks
             Func<T> createFunc,
             IWorkItemLinkType linkType,
             Func<IWorkItemLinkTypeEnd, int, int, ILink> linkFunc,
-            IEnumerable<string> propertiesToSkip = null)
+            IEnumerable<string>? propertiesToSkip = null)
             : base(createFunc, propertiesToSkip)
         {
             _linkFunc = linkFunc ?? throw new ArgumentNullException(nameof(linkFunc));
             _linkType = linkType ?? throw new ArgumentNullException(nameof(linkType));
         }
 
-        protected override object GetRandomValue(T instance, string propertyName, Type propertyType)
+        protected override object? GetRandomValue(T instance, string propertyName, Type propertyType)
         {
             switch (propertyType.ToString())
             {

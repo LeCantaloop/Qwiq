@@ -56,7 +56,7 @@ namespace Qwiq.Linq
             }
 
 
-        var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
+            var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
             if (workItemTypeRestriction.Any())
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
@@ -78,7 +78,7 @@ namespace Qwiq.Linq
                 _expressionInProgress = new Queue<IFragment>();
             }
 
-            public override Expression Visit(Expression node)
+            public override Expression? Visit(Expression? node)
             {
                 if (node == null)
                 {
@@ -102,7 +102,7 @@ namespace Qwiq.Linq
                     case WiqlExpressionType.Contains:
                         return VisitContains((ContainsExpression)node);
                     case WiqlExpressionType.Indexer:
-                        return VisitIndexer((IndexerExpression) node);
+                        return VisitIndexer((IndexerExpression)node);
                     case WiqlExpressionType.WasEver:
                         return VisitWasEver((WasEverExpression)node);
                     case WiqlExpressionType.InGroup:
@@ -327,34 +327,38 @@ namespace Qwiq.Linq
                 }
                 else
                 {
-                    switch (node.Value.GetType().FullName)
+                    var valueType = node.Value.GetType();
+
+                    // Check for string first
+                    if (valueType == typeof(string))
                     {
-                        case "System.String":
-                            _expressionInProgress.Enqueue(new ConstantFragment(node.Value.ToString()));
-                            break;
-                        case "System.DateTime":
-                            _expressionInProgress.Enqueue(new DateTimeFragment(((DateTime)node.Value)));
-                            break;
-                        case "System.Int32[]":
-                            var originalIntVals = (int[])node.Value;
-                            _expressionInProgress.Enqueue(new NumberListFragment(originalIntVals));
-                            break;
-                        case "System.String[]":
-                        case
-                            "System.Linq.Enumerable+WhereArrayIterator`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"
-                            :
-                        case "System.Linq.Enumerable+WhereSelectArrayIterator`2[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089],[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]":
-                            _expressionInProgress.Enqueue(
-                                new ConstantListFragment((IEnumerable<string>)node.Value));
-                            break;
-                        case "System.Int16":
-                        case "System.Int32":
-                        case "System.Int64":
-                        case "System.Double":
-                            _expressionInProgress.Enqueue(new StringFragment(node.Value.ToString()));
-                            break;
-                        default:
-                            throw new NotSupportedException($"The constant for '{node.Value}' is not supported");
+                        _expressionInProgress.Enqueue(new ConstantFragment(node.Value.ToString() ?? string.Empty));
+                    }
+                    // Check for DateTime
+                    else if (valueType == typeof(DateTime))
+                    {
+                        _expressionInProgress.Enqueue(new DateTimeFragment(((DateTime)node.Value)));
+                    }
+                    // Check for int array
+                    else if (valueType == typeof(int[]))
+                    {
+                        var originalIntVals = (int[])node.Value;
+                        _expressionInProgress.Enqueue(new NumberListFragment(originalIntVals));
+                    }
+                    // Check for string array or IEnumerable<string> (including LINQ iterators)
+                    else if (node.Value is IEnumerable<string> stringEnumerable)
+                    {
+                        _expressionInProgress.Enqueue(new ConstantListFragment(stringEnumerable));
+                    }
+                    // Check for numeric types
+                    else if (valueType == typeof(short) || valueType == typeof(int) ||
+                             valueType == typeof(long) || valueType == typeof(double))
+                    {
+                        _expressionInProgress.Enqueue(new StringFragment(node.Value.ToString() ?? string.Empty));
+                    }
+                    else
+                    {
+                        throw new NotSupportedException($"The constant for '{node.Value}' is not supported");
                     }
                 }
 
@@ -373,7 +377,7 @@ namespace Qwiq.Linq
                 if (node.Expression != null && node.NodeType == ExpressionType.MemberAccess && node.Member.Name == "Value")
                 {
                     // Node is a obj.Property.Value call. The 'Value' can be ignored. Trim it off and continue.
-                    return Visit(node.Expression);
+                    return Visit(node.Expression)!;
                 }
 
                 throw new NotSupportedException($"The member '{node.Member.Name}' is not supported");
@@ -381,7 +385,8 @@ namespace Qwiq.Linq
 
             protected Expression VisitIndexer(IndexerExpression node)
             {
-                _expressionInProgress.Enqueue(new MemberFragment(_fieldMapper, node.Target.Value.ToString()));
+                var targetValue = node.Target.Value?.ToString() ?? throw new InvalidOperationException("Indexer target value cannot be null");
+                _expressionInProgress.Enqueue(new MemberFragment(_fieldMapper, targetValue));
 
                 return node;
             }

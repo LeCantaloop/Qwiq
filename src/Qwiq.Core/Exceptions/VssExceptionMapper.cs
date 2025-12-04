@@ -19,7 +19,7 @@ namespace Qwiq.Exceptions
             _newExceptionCreator = newExceptionCreator;
         }
 
-        public Exception Map(Exception ex)
+        public Exception? Map(Exception ex)
         {
             var vssException = ex as VssException;
 

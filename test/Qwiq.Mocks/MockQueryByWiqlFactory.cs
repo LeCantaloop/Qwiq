@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using JetBrains.Annotations;
 
 namespace Qwiq.Mocks
 {
     public class MockQueryByWiqlFactory : IQueryFactory
     {
-        [NotNull] private readonly MockWorkItemStore _store;
+        private readonly MockWorkItemStore _store;
 
-        public MockQueryByWiqlFactory([NotNull] MockWorkItemStore store)
+        public MockQueryByWiqlFactory(MockWorkItemStore store)
         {
             _store = store ?? throw new ArgumentNullException(nameof(store));
         }

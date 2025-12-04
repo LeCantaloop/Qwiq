@@ -13,8 +13,8 @@ namespace Qwiq.Linq
     /// </summary>
     public class TranslatedQuery
     {
-        internal IFragment Select { get; set; }
-        public Type UnderlyingQueryType { get; set; }
+        internal IFragment? Select { get; set; }
+        public Type? UnderlyingQueryType { get; set; }
         internal Queue<IFragment> WhereClauses { get; private set; }
         internal Queue<IFragment> ThenOrderClauses { get; private set; }
         public DateTime? AsOfDateTime { get; set; }
@@ -22,7 +22,7 @@ namespace Qwiq.Linq
 
         public bool WillEverHaveResults()
         {
-            return Select.IsValid() && WhereClauses.All(fragment => fragment.IsValid()) &&
+            return Select != null && Select.IsValid() && WhereClauses.All(fragment => fragment.IsValid()) &&
                    ThenOrderClauses.All(fragment => fragment.IsValid());
         }
 
@@ -38,7 +38,7 @@ namespace Qwiq.Linq
 
         public string ToQueryString()
         {
-            var result = Select.Get(UnderlyingQueryType);
+            var result = Select?.Get(UnderlyingQueryType) ?? string.Empty;
             result += BuildWhereString();
             result += BuildOrderString();
             result += BuildAsOfString();
@@ -88,4 +88,3 @@ namespace Qwiq.Linq
         }
     }
 }
-

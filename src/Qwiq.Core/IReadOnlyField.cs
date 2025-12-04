@@ -1,19 +1,11 @@
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public interface IReadOnlyField : IIdentifiable<int>
     {
-        [NotNull]
-        string Name { get; }
-
-        [NotNull]
-        string ReferenceName { get; }
-
-        [CanBeNull]
-        object Value { get; }
-
-        [NotNull]
+        string? Name { get; }
+        string? ReferenceName { get; }
+        object? Value { get; }
         IFieldDefinition FieldDefinition { get; }
     }
 }

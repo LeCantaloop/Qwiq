@@ -32,8 +32,9 @@ namespace Qwiq.Linq.Visitors
         /// </summary>
         /// <param name="node">The root of the expression tree.</param>
         /// <returns>A new tree with sub-trees evaluated and replaced.</returns>
-        public override Expression Visit(Expression node)
+        public override Expression? Visit(Expression? node)
         {
+            if (node == null) return null;
             return Visit(node, CanBeEvaluatedLocally);
         }
 
@@ -48,7 +49,7 @@ namespace Qwiq.Linq.Visitors
         /// </summary>
         private class Nominator : ExpressionVisitor
         {
-            private HashSet<Expression> candidates;
+            private HashSet<Expression> candidates = null!;
 
             private bool cannotBeEvaluated;
 
@@ -59,7 +60,7 @@ namespace Qwiq.Linq.Visitors
                 this.fnCanBeEvaluated = fnCanBeEvaluated;
             }
 
-            public override Expression Visit(Expression node)
+            public override Expression? Visit(Expression? node)
             {
                 if (node != null)
                 {
@@ -94,7 +95,7 @@ namespace Qwiq.Linq.Visitors
                 this.candidates = candidates;
             }
 
-            public override Expression Visit(Expression node)
+            public override Expression? Visit(Expression? node)
             {
                 if (node == null) return null;
                 if (candidates.Contains(node)) return Evaluate(node);
@@ -103,7 +104,7 @@ namespace Qwiq.Linq.Visitors
 
             internal Expression Eval(Expression exp)
             {
-                return Visit(exp);
+                return Visit(exp)!;
             }
 
             private Expression Evaluate(Expression e)

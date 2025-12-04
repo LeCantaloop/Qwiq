@@ -36,12 +36,12 @@ namespace Qwiq.Mapper.Benchmark.Tests
         [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
-            private WorkItemMapper _mapper;
-            private IEnumerable<IWorkItem> _items;
+            private WorkItemMapper _mapper = null!;
+            private IEnumerable<IWorkItem> _items = null!;
 
-            private IEnumerable<IWorkItem> _item;
+            private IEnumerable<IWorkItem> _item = null!;
 
-            private Type _type;
+            private Type _type = null!;
 
             [GlobalSetup]
             public void SetupData()

@@ -1,6 +1,9 @@
-/
+﻿/
 |-- Qwiq.Mapper.Identity.nuspec
 |-- lib
-|   |-- net46
+|   |-- net472
+|   |   |-- Qwiq.Mapper.Identity.dll
+|   |   |-- Qwiq.Mapper.Identity.xml
+|   |-- net8.0
 |   |   |-- Qwiq.Mapper.Identity.dll
 |   |   |-- Qwiq.Mapper.Identity.xml

@@ -33,9 +33,15 @@ namespace Qwiq
 
         private Project()
         {
+            Name = null!;
+            Uri = null!;
+            _wits = null!;
+            _area = null!;
+            _iteration = null!;
+            _queryHierarchy = null!;
         }
 
-        public bool Equals(IProject other)
+        public bool Equals(IProject? other)
         {
             return ProjectComparer.Default.Equals(this, other);
         }
@@ -54,7 +60,7 @@ namespace Qwiq
 
         public IQueryFolderCollection QueryHierarchy => _queryHierarchy.Value;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return ProjectComparer.Default.Equals(this, obj as IProject);
         }

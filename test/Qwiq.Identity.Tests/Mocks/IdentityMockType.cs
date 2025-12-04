@@ -12,13 +12,13 @@ namespace Qwiq.Identity.Mocks
 
         internal const string UriIdentityField = "Uri Identity WorkItemField";
 
-        private string _anIdentity;
+        private string? _anIdentity;
 
         internal int AnIdentitySetCount;
 
         [FieldDefinition(BackingField)]
         [IdentityField]
-        public string AnIdentity
+        public string? AnIdentity
         {
             get => _anIdentity;
             set
@@ -30,25 +30,25 @@ namespace Qwiq.Identity.Mocks
 
         [FieldDefinition(BackingField)]
         [IdentityField]
-        public IdentityFieldValue AnIdentityValue { get;set;}
+        public IdentityFieldValue? AnIdentityValue { get; set; }
 
         [IdentityField]
-        public string NoBacking { get; set; }
+        public string? NoBacking { get; set; }
 
         [IdentityField]
         [FieldDefinition(NonExistantField)]
-        public string NonExistant { get; set; }
+        public string? NonExistant { get; set; }
 
         [FieldDefinition("NotAnIdentityField")]
-        public string NotAnIdentity { get; set; }
+        public string? NotAnIdentity { get; set; }
 
         [FieldDefinition("PrivateIdentityField")]
         [IdentityField]
-        public string PrivateIdentity { get; }
+        public string? PrivateIdentity { get; }
 
         [FieldDefinition(UriIdentityField)]
         [IdentityField]
-        public Uri UriIdentity { get; set; }
+        public Uri? UriIdentity { get; set; }
 
         [FieldDefinition("Work Item Id WorkItemField")]
         public int? Id { get; }

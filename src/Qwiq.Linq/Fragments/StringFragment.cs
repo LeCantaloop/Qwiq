@@ -11,7 +11,7 @@ namespace Qwiq.Linq.Fragments
             Fragment = fragment;
         }
 
-        public virtual string Get(Type queryType)
+        public virtual string Get(Type? queryType)
         {
             return Fragment;
         }

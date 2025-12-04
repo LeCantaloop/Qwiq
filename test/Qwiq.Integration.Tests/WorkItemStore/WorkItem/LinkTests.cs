@@ -93,7 +93,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         public void SOAP_WorkItem_has_Attached_files()
         {
             AssertWorkItemExpandConfiguration();
-            
+
             SoapResult.WorkItem.AttachedFileCount.ShouldBeGreaterThan(0);
         }
 
@@ -103,7 +103,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         public void SOAP_WorkItem_has_Related_links()
         {
             AssertWorkItemExpandConfiguration();
-            
+
             SoapResult.WorkItem.RelatedLinkCount.ShouldBeGreaterThan(0);
         }
 
@@ -134,7 +134,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         public void REST_WorkItem_has_Attached_files()
         {
             AssertWorkItemExpandConfiguration();
-            
+
             RestResult.WorkItem.AttachedFileCount.ShouldBeGreaterThan(0);
         }
 
@@ -144,7 +144,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         public void REST_WorkItem_has_Related_links()
         {
             AssertWorkItemExpandConfiguration();
-            
+
             RestResult.WorkItem.RelatedLinkCount.ShouldBeGreaterThan(0);
         }
 

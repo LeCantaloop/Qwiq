@@ -1,25 +1,22 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public class WorkItemType : IWorkItemType, IEquatable<IWorkItemType>
     {
-        private IFieldDefinitionCollection _fdc;
+        private IFieldDefinitionCollection? _fdc;
+        private readonly Lazy<IFieldDefinitionCollection>? _lazyFieldDefinitions;
 
-        [CanBeNull]
-        private readonly Lazy<IFieldDefinitionCollection> _lazyFieldDefinitions;
-
-        private Func<IFieldDefinitionCollection> _fieldDefinitionFactory;
+        private Func<IFieldDefinitionCollection>? _fieldDefinitionFactory;
 
         internal WorkItemType(
-            [NotNull] string name,
-            [CanBeNull] string description,
-            [CanBeNull] Lazy<IFieldDefinitionCollection> fieldDefinitions,
-            Func<IWorkItem> workItemFactory = null)
+            string name,
+            string? description,
+            Lazy<IFieldDefinitionCollection>? fieldDefinitions,
+            Func<IWorkItem>? workItemFactory = null)
         {
             Contract.Requires(name != null);
             Contract.Requires(!string.IsNullOrEmpty(name));
@@ -34,7 +31,7 @@ namespace Qwiq
             Description = description == null ? string.Empty : string.Intern(description);
         }
 
-        protected internal Func<IFieldDefinitionCollection> FieldDefinitionFactory
+        protected internal Func<IFieldDefinitionCollection>? FieldDefinitionFactory
         {
             get => _fieldDefinitionFactory;
             internal set
@@ -44,25 +41,25 @@ namespace Qwiq
             }
         }
 
-        protected internal Func<IWorkItem> WorkItemFactory { get; internal set; }
+        protected internal Func<IWorkItem>? WorkItemFactory { get; internal set; }
 
-        public bool Equals([CanBeNull] IWorkItemType other)
+        public bool Equals(IWorkItemType? other)
         {
             return WorkItemTypeComparer.Default.Equals(this, other);
         }
 
         public string Description { get; }
 
-        public virtual IFieldDefinitionCollection FieldDefinitions => _fdc ?? (_fdc = FieldDefinitionFactory == null ? _lazyFieldDefinitions.Value : FieldDefinitionFactory());
+        public virtual IFieldDefinitionCollection FieldDefinitions => _fdc ??= FieldDefinitionFactory == null ? _lazyFieldDefinitions!.Value : FieldDefinitionFactory();
 
         public string Name { get; }
 
         public IWorkItem NewWorkItem()
         {
-            return WorkItemFactory();
+            return WorkItemFactory!();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return WorkItemTypeComparer.Default.Equals(this, obj as IWorkItemType);
         }
@@ -71,8 +68,6 @@ namespace Qwiq
         {
             return WorkItemTypeComparer.Default.GetHashCode(this);
         }
-
-        [NotNull]
         public override string ToString()
         {
             return Name;

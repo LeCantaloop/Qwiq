@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-using JetBrains.Annotations;
 
 using Qwiq.Exceptions;
 
@@ -12,19 +11,15 @@ namespace Qwiq.Client.Soap
     internal class Query : IQuery
     {
         private readonly int _pageSize;
-
-        [NotNull]
         private readonly Microsoft.TeamFoundation.WorkItemTracking.Client.Query _query;
 
-        internal Query([NotNull] Microsoft.TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
+        internal Query(Microsoft.TeamFoundation.WorkItemTracking.Client.Query query, int pageSize)
         {
             Contract.Requires(query != null);
 
             _query = query ?? throw new ArgumentNullException(nameof(query));
             _pageSize = pageSize;
         }
-
-        [CanBeNull]
         private IWorkItemLinkTypeEndCollection _linkTypes;
 
         public IWorkItemLinkTypeEndCollection GetLinkTypes()
@@ -50,10 +45,10 @@ namespace Qwiq.Client.Soap
             // REVIEW: Create an IWorkItemLinkInfo like IWorkItemLinkTypeEndCollection and IWorkItemCollection
             var wili = _query.RunLinkQuery();
             var retval = new List<IWorkItemLinkInfo>(wili.Length);
-            var lt = GetLinkTypes().ToDictionary(k=>((WorkItemLinkTypeEnd)k).Id, e=>(WorkItemLinkTypeEnd)e);
+            var lt = GetLinkTypes().ToDictionary(k => ((WorkItemLinkTypeEnd)k).Id, e => (WorkItemLinkTypeEnd)e);
             for (var i = 0; i < wili.Length; i++)
             {
-                lt.TryGetValue(wili[i].LinkTypeId, out WorkItemLinkTypeEnd lte) ;
+                lt.TryGetValue(wili[i].LinkTypeId, out WorkItemLinkTypeEnd lte);
                 retval.Add(new WorkItemLinkInfo(wili[i].SourceId, wili[i].TargetId, wili[i].LinkTypeId, lte));
             }
 

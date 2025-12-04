@@ -7,7 +7,7 @@ namespace Qwiq.UnitTests.Mocks
     public class MockException : Exception
     {
         public MockException()
-            :base()
+            : base()
         {
         }
 

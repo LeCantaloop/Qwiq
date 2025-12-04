@@ -25,7 +25,7 @@ namespace Qwiq.Linq
         };
 
         // REVIEW: Replace with more constrained set of fields
-        private static readonly IEnumerable<string> FieldNames = new[] {"*"};
+        private static readonly IEnumerable<string> FieldNames = new[] { "*" };
 
         public IEnumerable<string> GetWorkItemType(Type type)
         {
@@ -39,7 +39,7 @@ namespace Qwiq.Linq
 
         public string GetFieldName(Type type, string propertyName)
         {
-            return Mappings.TryGetValue(propertyName, out string name) ? name : propertyName;
+            return Mappings.TryGetValue(propertyName, out string? name) ? name : propertyName;
         }
     }
 }

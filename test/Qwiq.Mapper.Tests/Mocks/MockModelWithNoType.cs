@@ -9,6 +9,6 @@ namespace Qwiq.Mapper.Mocks
 
         [FieldDefinition("IntField")]
         public int IntField { get; internal set; }
-}
+    }
 }
 

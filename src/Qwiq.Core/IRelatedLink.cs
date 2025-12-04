@@ -4,7 +4,7 @@ namespace Qwiq
 {
     public interface IRelatedLink : ILink, IEquatable<IRelatedLink>
     {
-        IWorkItemLinkTypeEnd LinkTypeEnd { get; }
+        IWorkItemLinkTypeEnd? LinkTypeEnd { get; }
 
         int RelatedWorkItemId { get; }
     }

@@ -1,22 +1,39 @@
-<package>
+﻿<package>
   <metadata>
     <id>Qwiq.Client.Rest</id>
     <version>********</version>
-    <title>Qwiq.Core.Rest</title>
-    <authors>LeCantaloop</authors>
-    <owners>LeCantaloop, rjmurillo</owners>
+    <authors>Richard Murillo</authors>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
-    <projectUrl>https://github.com/LeCantaloop/Qwiq</projectUrl>
-    <description>Provides Quick Work Item Queries to Team Foundation Server and Visual Studio Online via REST APIs</description>
-    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
-    <tags>Microsoft Team Foundation Server TFS VSO Visual Studio Online VisualStudio Agile WIT Work Item Tracking Object Model VSTS TeamFoundation TFSOM</tags>
+    <projectUrl>https://github.com/rjmurillo/Qwiq</projectUrl>
+    <description>QWIQ REST Client - Azure DevOps REST-based Work Item client</description>
+    <copyright>Copyright (c) 2025 Qwiq Contributors</copyright>
+    <tags>Microsoft Team Foundation Server TFS Azure DevOps VSO Visual Studio Online Agile WIT Work Item Tracking VSTS TeamFoundation</tags>
+    <repository type="git" url="https://github.com/rjmurillo/Qwiq.git" commit="****************************************" />
     <dependencies>
-      <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
-      <dependency id="Microsoft.TeamFoundationServer.Client" version="15.112.1" />
-      <dependency id="Newtonsoft.Json" version="10.0.2" />
-      <dependency id="Qwiq.Core" version="*" />
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.TeamFoundationServer.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Tasks.Dataflow" version="8.0.1" exclude="Build,Analyzers" />
+        <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Identity.Client" version="4.61.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.InteractiveClient" version="16.153.0" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0">
+        <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.TeamFoundationServer.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Threading.Tasks.Dataflow" version="8.0.1" exclude="Build,Analyzers" />
+        <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Identity.Client" version="4.61.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.VisualStudio.Services.InteractiveClient" version="16.153.0" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
   </metadata>
 </package>

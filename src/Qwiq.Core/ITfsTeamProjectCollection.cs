@@ -14,7 +14,7 @@ namespace Qwiq
         /// </summary>
         ITeamFoundationIdentity AuthorizedIdentity { get; }
 
-        ICommonStructureService CommonStructureService { get; }
+        ICommonStructureService? CommonStructureService { get; }
 
         /// <summary> Returns true if this object has successfully authenticated. </summary>
         bool HasAuthenticated { get; }

@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -8,9 +7,7 @@ namespace Qwiq
 {
     public static partial class Extensions
     {
-        [MustUseReturnValue]
-        [ContractAnnotation("wit:null => halt")]
-        public static IWorkItem NewWorkItem([NotNull] this IWorkItemType wit, [CanBeNull] IEnumerable<KeyValuePair<string, object>> values)
+        public static IWorkItem NewWorkItem(this IWorkItemType wit, IEnumerable<KeyValuePair<string, object>> values)
         {
             Contract.Requires(wit != null);
 
@@ -26,10 +23,9 @@ namespace Qwiq
             return wi;
         }
 
-        [ContractAnnotation("wit:null => halt")]
         public static IEnumerable<IWorkItem> NewWorkItems(
-            [NotNull] this IWorkItemType wit,
-            [InstantHandle] [NotNull] IEnumerable<IEnumerable<KeyValuePair<string, object>>> values)
+            this IWorkItemType wit,
+            IEnumerable<IEnumerable<KeyValuePair<string, object>>> values)
         {
             Contract.Requires(values != null);
             Contract.Requires(wit != null);

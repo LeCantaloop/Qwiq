@@ -10,7 +10,7 @@ namespace Qwiq.Linq.Fragments
         {
         }
 
-        public override string Get(Type queryType)
+        public override string Get(Type? queryType)
         {
             return "'" + EscapeSpecialWiqlChars(base.Get(queryType)) + "'";
         }

@@ -55,7 +55,7 @@ namespace Qwiq.Identity.Benchmark.Tests
                 var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
                 wis.Add(generator.Generate());
 
-                _workItemMappings = generator.Items.ToDictionary(k => (IWorkItem) k, e => (IIdentifiable<int?>) new MockIdentityType());
+                _workItemMappings = generator.Items.ToDictionary(k => (IWorkItem)k, e => (IIdentifiable<int?>)new MockIdentityType());
 
             }
 

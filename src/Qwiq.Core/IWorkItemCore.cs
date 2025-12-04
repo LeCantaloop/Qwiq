@@ -15,7 +15,7 @@ namespace Qwiq
         /// <exception cref="System.ArgumentNullException">
         ///     The name parameter is null.
         /// </exception>
-        object this[string name] { get; set; }
+        object? this[string name] { get; set; }
 
         // Relations
 

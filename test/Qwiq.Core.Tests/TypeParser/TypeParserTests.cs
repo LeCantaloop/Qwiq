@@ -1,6 +1,5 @@
 using System;
 using System.Xml;
-using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Should;
@@ -447,7 +446,7 @@ namespace Qwiq
         public override void When()
         {
             Expected = DateTime.MinValue;
-            Actual = (DateTime)Parser.Parse(typeof(DateTime), (object)"");
+            Actual = (DateTime)(Parser.Parse(typeof(DateTime), (object)"") ?? DateTime.MinValue);
         }
 
         [TestMethod]

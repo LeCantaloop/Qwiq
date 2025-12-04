@@ -1,14 +1,13 @@
 using System;
 using System.Diagnostics;
 
-using JetBrains.Annotations;
 
 namespace Qwiq
 {
     public abstract class Link : ILink
     {
         [DebuggerStepThrough]
-        protected internal Link([CanBeNull] string comment, BaseLinkType baseType)
+        protected internal Link(string comment, BaseLinkType baseType)
         {
             if (baseType == BaseLinkType.None) throw new ArgumentOutOfRangeException(nameof(baseType));
 
@@ -20,6 +19,6 @@ namespace Qwiq
         public BaseLinkType BaseType { get; }
 
         /// <inheritdoc />
-        public string Comment { get; }
+        public string? Comment { get; }
     }
 }

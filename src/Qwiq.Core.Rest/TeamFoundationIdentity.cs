@@ -1,4 +1,3 @@
-﻿using JetBrains.Annotations;
 using Microsoft.VisualStudio.Services.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,20 +12,20 @@ namespace Qwiq.Client.Rest
 
         private readonly Identity _identity;
 
-        internal TeamFoundationIdentity([NotNull] Identity identity)
+        internal TeamFoundationIdentity(Identity identity)
             : base(
                   identity.IsActive,
                   identity.Id,
                   identity.UniqueUserId,
-                  identity.MemberOf?.Select(item => item.AsProxy()).ToArray() ?? Enumerable.Empty<IIdentityDescriptor>(),
-                  identity.Members?.Select(item => item.AsProxy()).ToArray() ?? Enumerable.Empty<IIdentityDescriptor>())
+                  identity.MemberOf?.Select(item => item.AsProxy()).OfType<IIdentityDescriptor>().ToArray() ?? Enumerable.Empty<IIdentityDescriptor>(),
+                  identity.Members?.Select(item => item.AsProxy()).OfType<IIdentityDescriptor>().ToArray() ?? Enumerable.Empty<IIdentityDescriptor>())
         {
             Contract.Requires(identity != null);
 
             _identity = identity ?? throw new ArgumentNullException(nameof(identity));
             DisplayName = identity.DisplayName;
             IsContainer = identity.IsContainer;
-            _descriptor = new Lazy<IIdentityDescriptor>(() => identity.Descriptor.AsProxy());
+            _descriptor = new Lazy<IIdentityDescriptor>(() => identity.Descriptor.AsProxy()!);
         }
 
         public override IIdentityDescriptor Descriptor => _descriptor.Value;
@@ -35,7 +34,7 @@ namespace Qwiq.Client.Rest
 
         public override bool IsContainer { get; }
 
-        public override string GetAttribute(string name, string defaultValue)
+        public override string? GetAttribute(string name, string? defaultValue)
         {
             if (_identity.Properties.TryGetValue(name, out object obj)) return obj?.ToString() ?? defaultValue;
             return defaultValue;

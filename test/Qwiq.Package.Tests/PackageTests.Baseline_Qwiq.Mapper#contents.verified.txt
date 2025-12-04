@@ -1,5 +1,9 @@
-/
+﻿/
 |-- Qwiq.Mapper.nuspec
 |-- lib
-|   |-- net46
+|   |-- net472
 |   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml
+|   |-- net8.0
+|   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml

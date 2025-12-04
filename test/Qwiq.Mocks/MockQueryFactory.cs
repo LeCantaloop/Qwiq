@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace Qwiq.Mocks
 {
     public class MockQueryFactory : IQueryFactory
     {
-        [NotNull] private readonly MockWorkItemStore _store;
+        private readonly MockWorkItemStore _store;
 
-        public MockQueryFactory([NotNull] MockWorkItemStore store)
+        public MockQueryFactory(MockWorkItemStore store)
         {
             _store = store ?? throw new ArgumentNullException(nameof(store));
         }
