@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 
 
 namespace Qwiq
@@ -12,24 +11,19 @@ namespace Qwiq
         private readonly Lazy<IWorkItemLinkTypeEnd> _lazyOpposite;
 
         internal WorkItemLinkTypeEnd(string immutableName, IWorkItemLinkTypeEnd oppositeEnd)
+            : this(immutableName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(immutableName));
-            Contract.Requires(oppositeEnd != null);
             _oppositeEnd = oppositeEnd ?? throw new ArgumentNullException(nameof(oppositeEnd));
         }
 
         internal WorkItemLinkTypeEnd(string immutableName, Lazy<IWorkItemLinkTypeEnd> oppositeEnd)
             : this(immutableName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(immutableName));
-            Contract.Requires(oppositeEnd != null);
-
             _lazyOpposite = oppositeEnd ?? throw new ArgumentNullException(nameof(oppositeEnd));
         }
 
         internal WorkItemLinkTypeEnd(string immutableName)
         {
-            Contract.Requires(!string.IsNullOrEmpty(immutableName));
             if (string.IsNullOrWhiteSpace(immutableName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(immutableName));
 

@@ -38,14 +38,11 @@ namespace Qwiq
             }
         }
 
-        // ReSharper disable ClassNeverInstantiated.Local
+        // ReSharper disable once ClassNeverInstantiated.Local
         private class Nested
-        // ReSharper restore ClassNeverInstantiated.Local
         {
-            // ReSharper disable MemberHidesStaticFromOuterClass
+            // ReSharper disable once MemberHidesStaticFromOuterClass
             internal static readonly WorkItemTypeComparer Instance = new WorkItemTypeComparer();
-
-            // ReSharper restore MemberHidesStaticFromOuterClass
 
             // Explicit static constructor to tell C# compiler
             // not to mark type as beforefieldinit

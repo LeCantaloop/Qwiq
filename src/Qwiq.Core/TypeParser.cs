@@ -202,12 +202,10 @@ namespace Qwiq
                     result = converter.ConvertTo(value, converter.UnderlyingType);
                     return true;
                 }
-                // ReSharper disable CatchAllClause
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-                // ReSharper restore CatchAllClause
                 {
+                    // Intentionally empty: NullableConverter may fail for certain value types.
+                    // Fall through to try other conversion strategies.
                 }
 
             var valueType = value.GetType();
@@ -219,12 +217,10 @@ namespace Qwiq
                     result = typeConverter.ConvertTo(value, destinationType);
                     return true;
                 }
-                // ReSharper disable CatchAllClause
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-                // ReSharper restore CatchAllClause
                 {
+                    // Intentionally empty: TypeConverter.CanConvertTo may return true but still fail.
+                    // Fall through to try other conversion strategies.
                 }
 
             typeConverter = GetTypeConverter(destinationType);
@@ -234,12 +230,10 @@ namespace Qwiq
                     result = typeConverter.ConvertFrom(value);
                     return true;
                 }
-                // ReSharper disable CatchAllClause
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                 catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-                // ReSharper restore CatchAllClause
                 {
+                    // Intentionally empty: TypeConverter.CanConvertFrom may return true but still fail.
+                    // Fall through to try other conversion strategies.
                 }
 
             if (value != null)
@@ -252,12 +246,10 @@ namespace Qwiq
                             result = typeConverter.ConvertFromString(val);
                             return true;
                         }
-                        // ReSharper disable EmptyGeneralCatchClause
-#pragma warning disable RECS0022 // A catch clause that catches System.Exception and has an empty body
                         catch
-#pragma warning restore RECS0022 // A catch clause that catches System.Exception and has an empty body
-                        // ReSharper restore EmptyGeneralCatchClause
                         {
+                            // Intentionally empty: ConvertFromString may fail even when IsValid returns true.
+                            // Fall through to return null result.
                         }
             }
 
