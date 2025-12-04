@@ -1,3 +1,6 @@
+using System;
+using System.Diagnostics;
+
 namespace Qwiq.WorkItemStore.Soap
 {
     public abstract class SoapWorkItemContextSpecification : WorkItemContextSpecification<IWorkItemStore>
@@ -10,9 +13,11 @@ namespace Qwiq.WorkItemStore.Soap
                 {
                     return IntegrationSettings.CreateSoapStore();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return null;
+                    // Log the exception for debugging instead of silently swallowing
+                    Debug.WriteLine($"Failed to create SOAP WorkItemStore: {ex.GetType().Name}: {ex.Message}");
+                    throw;
                 }
             }, "SOAP", "WIS Create");
         }

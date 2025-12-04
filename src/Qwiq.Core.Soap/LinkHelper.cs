@@ -18,7 +18,7 @@ namespace Qwiq.Client.Soap
                         .OfType<Tfs.RelatedLink>()
                         .SingleOrDefault(
                             rl =>
-                                (linkTypeEndName == null || rl.LinkTypeEnd.ImmutableName.Equals(linkTypeEndName, StringComparison.OrdinalIgnoreCase))
+                                (linkTypeEndName == null || string.Equals(rl.LinkTypeEnd?.ImmutableName, linkTypeEndName, StringComparison.OrdinalIgnoreCase))
                                 && rl.RelatedWorkItemId == relatedLink.RelatedWorkItemId);
             }
             if (link.BaseType == BaseLinkType.Hyperlink)

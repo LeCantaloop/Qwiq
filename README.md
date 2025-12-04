@@ -8,7 +8,7 @@ QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Serv
 
 ## What can it be used for?
 
-Querying Team Foundation Server, of course! Instead of directly using the TFS Client OM, you could use QWIQ! It it made of packages designed to make working with Tfs/Vso a pleasure. Qwiq.Core is the no-frills base package, exposinng the raw types needed to read and write work items. Qwiq.Identity adds methods to simplify converting between your preferred method of identity (display names, user names) and TFS's identity classes. Qwiq.Linq provides a Linq query provider to be able to write Linq to query tfs. Qwiq.Mapper enables converting from IWorkItem, the raw Qwiq.Core type, to your own classes to enable strongly typed access to your WorkItems. Qwiq.Relatives extends Qwiq.Linq to enable slightly more complicated queries allowing for basic queries of related workitems. Qwiq.Mocks provides default implementations for commonly mocked classes within Qwiq, and should allow for getting up and unit testing quickly. Why use this over the Client OM? Glad you asked!
+Querying Team Foundation Server, of course! Instead of directly using the TFS Client OM, you could use QWIQ! It it made of packages designed to make working with Tfs/Vso a pleasure. Qwiq.Core is the no-frills base package, exposing the raw types needed to read and write work items. Qwiq.Identity adds methods to simplify converting between your preferred method of identity (display names, usernames) and TFS's identity classes. Qwiq.Linq provides a Linq query provider to be able to write Linq to query tfs. Qwiq.Mapper enables converting from IWorkItem, the raw Qwiq.Core type, to your own classes to enable strongly typed access to your WorkItems. Qwiq.Relatives extends Qwiq.Linq to enable slightly more complicated queries allowing for basic queries of related workitems. Qwiq.Mocks provides default implementations for commonly mocked classes within Qwiq, and should allow for getting up and unit testing quickly. Why use this over the Client OM? Glad you asked!
 
 ### 1. Easier to consume
 
@@ -16,7 +16,7 @@ Let's be honest, the TFS libraries are a pain to use. There are a lot of them, s
 
 ### 2. Easier to test
 
-Qwiq makes testing your apps a breeze. Everything has an interface. Everything uses factories (or factory methods) instead of constructors. Install our [`Qwiq.Mocks`](https://www.nuget.org/packages/Qwiq.Mocks/) package for easy to use mocks, or mock what you need from out interfaces for your tests and go. No more messy, temperamental fakes, or adapters cluttering your code.
+Qwiq makes testing your apps a breeze. Everything has an interface. Everything uses factories (or factory methods) instead of constructors. Install our [`Qwiq.Mocks`](https://www.nuget.org/packages/Qwiq.Mocks/) package for easy-to-use mocks, or mock what you need from our interfaces for your tests and go. No more messy, temperamental fakes, or adapters cluttering your code.
 
 ### 3. Easier to understand
 

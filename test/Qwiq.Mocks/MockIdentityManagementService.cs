@@ -168,17 +168,17 @@ namespace Qwiq.Mocks
             }
         }
 
-        public ITeamFoundationIdentity ReadIdentity(
+        public ITeamFoundationIdentity? ReadIdentity(
             IdentitySearchFactor searchFactor,
             string searchFactorValue)
         {
-            return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None)!;
+            return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None);
         }
 
         /// <inheritdoc />
-        public ITeamFoundationIdentity ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue, MembershipQuery queryMembership)
+        public ITeamFoundationIdentity? ReadIdentity(IdentitySearchFactor searchFactor, string searchFactorValue, MembershipQuery queryMembership)
         {
-            return ReadIdentities(searchFactor, new[] { searchFactorValue }, queryMembership).First().Value.SingleOrDefault()!;
+            return ReadIdentities(searchFactor, new[] { searchFactorValue }, queryMembership).First().Value.SingleOrDefault();
         }
 
         private IEnumerable<ITeamFoundationIdentity> Locate(Func<ITeamFoundationIdentity, bool> predicate)

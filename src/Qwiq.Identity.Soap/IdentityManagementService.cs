@@ -83,14 +83,14 @@ namespace Qwiq.Identity.Soap
             }
         }
 
-        public ITeamFoundationIdentity ReadIdentity(
+        public ITeamFoundationIdentity? ReadIdentity(
             IdentitySearchFactor searchFactor,
             string searchFactorValue)
         {
             return ReadIdentity(searchFactor, searchFactorValue, MembershipQuery.None);
         }
 
-        public ITeamFoundationIdentity ReadIdentity(
+        public ITeamFoundationIdentity? ReadIdentity(
             IdentitySearchFactor searchFactor,
             string searchFactorValue,
             MembershipQuery queryMembership)
@@ -103,7 +103,7 @@ namespace Qwiq.Identity.Soap
                     searchFactorValue,
                     (Microsoft.TeamFoundation.Framework.Common.MembershipQuery)queryMembership,
                     ReadIdentityOptions.IncludeReadFromSource)
-                .AsProxy();
+                ?.AsProxy();
         }
     }
 }

@@ -1,6 +1,10 @@
 
 # Created by https://www.gitignore.io/api/windows,visualstudio
 
+### Agent Working Files ###
+# AI agent working directory (task lists, memory, scripts)
+.agents/
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
