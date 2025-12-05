@@ -9,7 +9,7 @@ namespace Qwiq.WorkItemStore
     public abstract class WorkItemContextSpecification<T> : WorkItemStoreContextSpecification<T>
         where T : IWorkItemStore
     {
-        private const int Id = 1;
+        private const int Id = TestData.BasicWorkItemId;
 
         protected IWorkItem Result { get; private set; }
 

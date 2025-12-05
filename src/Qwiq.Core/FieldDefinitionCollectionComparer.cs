@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Qwiq
 {
@@ -12,8 +13,15 @@ namespace Qwiq
                 FieldRefNames.RelatedLinks
             };
 
+        // REST API returns hierarchical level fields that SOAP does not:
+        // System.AreaLevel1 through System.AreaLevel7
+        // System.IterationLevel1 through System.IterationLevel7
+        private static readonly Regex HierarchicalFieldsPattern =
+            new Regex(@"^System\.(Area|Iteration)Level[1-7]$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         internal static readonly Func<IFieldDefinition, bool> SkippedFieldsPredicate =
-            p => !SkippedFields.Contains(p.ReferenceName, StringComparer.OrdinalIgnoreCase);
+            p => !SkippedFields.Contains(p.ReferenceName, StringComparer.OrdinalIgnoreCase)
+                 && !HierarchicalFieldsPattern.IsMatch(p.ReferenceName);
 
         private FieldDefinitionCollectionComparer()
         {
@@ -27,12 +35,14 @@ namespace Qwiq
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
 
-            // The SOAP client does not return four field definitions:
+            // The SOAP client does not return these field definitions:
             //  - System.AttachedFiles
             //  - System.RelatedLinks
             //  - System.LinkedFiles
             //  - System.BISLinks
-            //  - System.RelatedLinks
+            // Additionally, REST API returns hierarchical level fields not present in SOAP:
+            //  - System.AreaLevel1 through System.AreaLevel7
+            //  - System.IterationLevel1 through System.IterationLevel7
 
             var source = y.Where(SkippedFieldsPredicate).ToList();
             var expected = x.Where(SkippedFieldsPredicate).ToList();

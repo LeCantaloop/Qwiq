@@ -43,7 +43,7 @@ namespace Qwiq.Mapper
 
             _ids = new[]
             {
-                8663955
+                TestData.MapperBugId
             };
         }
 

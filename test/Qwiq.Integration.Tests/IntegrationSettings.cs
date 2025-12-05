@@ -13,15 +13,15 @@ namespace Qwiq
         public static Func<AuthenticationTypes, IEnumerable<VssCredentials>> Credentials = UnitTestCredentialsFactory;
 
         /// <exclude />
-        public static string[] Domains = { "microsoft.com" };
+        public static string[] Domains = { "msn.com" };
 
         /// <exclude />
-        public static Guid ProjectGuid = Guid.Parse("8d47e068-03c8-4cdc-aa9b-fc6929290322");
+        public static Guid ProjectGuid = Guid.Parse("0a4c0240-1a67-45de-93db-fc1de9f54ffb");
 
         /// <exclude />
         public static string TenantId = "72F988BF-86F1-41AF-91AB-2D7CD011DB47";
 
-        private static readonly Uri Uri = new Uri("https://qwiq-sandbox.visualstudio.com/WIT");
+        private static readonly Uri Uri = new Uri("https://qwiq-sandbox.visualstudio.com/");
 
         /// <exclude />
         public static AuthenticationOptions AuthenticationOptions { get; } = new AuthenticationOptions(Uri, AuthenticationTypes.Windows, Credentials);

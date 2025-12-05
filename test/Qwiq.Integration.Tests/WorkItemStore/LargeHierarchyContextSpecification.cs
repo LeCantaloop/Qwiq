@@ -5,11 +5,12 @@ namespace Qwiq.WorkItemStore
 {
     public abstract class LargeHierarchyContextSpecification : WorkItemStoreComparisonContextSpecification
     {
-        internal const string WIQL = @"
+        // Use TestData.HierarchyParentId (User Story ID 3 with 2 Task children)
+        internal static readonly string WIQL = $@"
 SELECT [System.Id], [System.Title]
 FROM WorkItemLinks
 WHERE
-    Source.[System.Id] IN (10726623)
+    Source.[System.Id] IN ({TestData.HierarchyParentId})
     AND [System.Links.LinkType] = 'System.LinkTypes.Hierarchy-Forward'
 mode(Recursive)
 ";

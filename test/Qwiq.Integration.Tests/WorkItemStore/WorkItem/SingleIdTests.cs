@@ -7,7 +7,7 @@ namespace Qwiq.WorkItemStore.WorkItem
     [TestClass]
     public class Given_a_WorkItem_from_each_client_by_Id : SingleWorkItemComparisonContextSpecification
     {
-        private const int Id = 10726528;
+        private const int Id = TestData.BasicWorkItemId;
 
         public override void When()
         {
@@ -19,7 +19,7 @@ namespace Qwiq.WorkItemStore.WorkItem
     [TestClass]
     public class Given_a_WorkItem_from_each_client_by_Id_at_AsOf : SingleWorkItemComparisonContextSpecification
     {
-        private const int Id = 10726528;
+        private const int Id = TestData.BasicWorkItemId;
 
         public override void When()
         {

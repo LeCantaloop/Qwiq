@@ -312,6 +312,18 @@ public void SetValue(string value) { } // Cannot be null
    - When `WorkItem` is null, `Revision.Id` returns `null`
 6. **Null-conditional access for link types**: Use `?.` when accessing `LinkTypeEnd.ImmutableName` as it may be null
 
+### Quality Attributes & Architectural Guidance
+
+- **Aim for easy tests**: Build seams with dependency injection, interfaces, or pure functions. If code is hard to test, step back and simplify before moving on.
+- **Keep coupling low**: Give every class one clear job. When code crosses areas (Core, Mapper, Identity), talk through interfaces instead of concrete types and avoid dependency cycles.
+- **Reuse shared constants**: Pull identity and configuration values from the known sources (`TestData.cs`, `CoreFieldRefNames`, `Directory.Build.props`) so numbers and names stay in sync.
+- **Follow existing patterns**: Before adding new behavior, spot the pattern already in use (Factory, Strategy, Adapter, etc.) and stick with it. Call out the chosen pattern in reviews or docs.
+- **Ship in small steps**: Add one testable change, refactor for clarity, then continue. Short cycles beat large rewrites.
+- **Hide variations and separate creation**: Keep REST vs SOAP or framework differences behind strategies or providers. Create objects through factories or helper methods so callers only use them.
+- **Log what matters**: Add `Trace` logging when you open a new runtime path, but never write secrets or tokens to the logs.
+- **Explain big choices**: Record why you chose a pattern or design tradeoff in XML comments or companion markdown so the next person has the context.
+- **Protect core qualities first**: Testability, cohesion, coupling, and encapsulation are the foundation. If any of them slip, fix that before layering on new features.
+
 ### Nullable Reference Types Status
 
 Nullable reference types are enabled repository-wide. Status by project:
@@ -545,9 +557,11 @@ Tests are categorized to allow selective execution:
 | (default)          | Unit tests                  | Always (CI)                      |
 | `localOnly`        | Requires local TFS instance | Manual, local dev                |
 | `Benchmark`        | Performance benchmarks      | Manual                           |
-| `SOAP`             | SOAP integration tests      | Manual, with TFS credentials     |
-| `REST`             | REST integration tests      | Manual, with Azure DevOps access |
-| `IntegrationTests` | Full integration suite      | Manual, with server access       |
+| `SOAP`             | SOAP integration tests      | Manual, interactive login prompt |
+| `REST`             | REST integration tests      | Manual, interactive login prompt |
+| `IntegrationTests` | Full integration suite      | Manual, interactive login prompt |
+
+**Note:** SOAP, REST, and IntegrationTests categories all prompt for credentials via an interactive dialog. This works fine locally but makes them unsuitable for headless CI/CD environments.
 
 ### Package Tests
 
@@ -559,11 +573,100 @@ The `Qwiq.Package.Tests` project validates NuGet package contents using Verify. 
 
 ### Integration Tests
 
-Integration tests in `Qwiq.IntegrationTests` require:
+Integration tests in `Qwiq.IntegrationTests` connect to the `qwiq-sandbox` Azure DevOps organization.
 
-- TFS/Azure DevOps server credentials
-- Access to `https://microsoft.visualstudio.com/defaultcollection` (or configure `IntegrationSettings.cs`)
-- Windows environment (SOAP tests use net472)
+#### Sandbox Environment Details
+
+| Setting          | Value                                    |
+| ---------------- | ---------------------------------------- |
+| Organization URL | `https://qwiq-sandbox.visualstudio.com/` |
+| Project Name     | `WIT`                                    |
+| Project ID       | `0a4c0240-1a67-45de-93db-fc1de9f54ffb`   |
+| Process Template | `WIT_TEST`                               |
+| Test User        | Richard Murillo (`rjmurillo@msn.com`)    |
+
+#### Test Work Items
+
+The sandbox contains pre-configured work items for integration testing:
+
+| ID  | Type       | Title                                      | Purpose                    |
+| --- | ---------- | ------------------------------------------ | -------------------------- |
+| 1   | Bug        | Integration Test                           | Basic work item tests      |
+| 2   | Task       | Child Task for Integration Tests           | Child of ID 3 (hierarchy)  |
+| 3   | User Story | Parent Story for Integration Tests         | Parent for hierarchy tests |
+| 4   | Bug        | Bug for Mapper Integration Tests           | Mapper tests               |
+| 5   | Bug        | Work Item with Links for Integration Tests | Work item with links       |
+| 6   | Task       | Child Task 2 for Hierarchy                 | Second child of ID 3       |
+
+**Hierarchy Structure:**
+
+```text
+User Story (ID: 3) - "Parent Story for Integration Tests"
+├── Task (ID: 2) - "Child Task for Integration Tests"
+└── Task (ID: 6) - "Child Task 2 for Hierarchy"
+```
+
+#### Running Integration Tests
+
+```powershell
+# Run all integration tests (requires Windows + Azure DevOps access)
+dotnet test test/Qwiq.Integration.Tests/Qwiq.IntegrationTests.csproj --logger "console;verbosity=detailed"
+
+# Run only REST tests (skips SOAP which requires special auth)
+dotnet test test/Qwiq.Integration.Tests/Qwiq.IntegrationTests.csproj --filter "TestCategory=REST|TestCategory=localOnly"
+
+# Run excluding SOAP tests (MSA accounts with MFA)
+dotnet test test/Qwiq.Integration.Tests/Qwiq.IntegrationTests.csproj --filter "TestCategory!=SOAP"
+```
+
+#### Environment Variables for CI/CD
+
+| Variable               | Purpose                           | Default Value                            |
+| ---------------------- | --------------------------------- | ---------------------------------------- |
+| `QWIQ_TEST_URL`        | Override sandbox organization URL | `https://qwiq-sandbox.visualstudio.com/` |
+| `QWIQ_PROJECT_GUID`    | Override project GUID             | `0a4c0240-1a67-45de-93db-fc1de9f54ffb`   |
+| `AZURE_DEVOPS_EXT_PAT` | PAT for authentication            | (none - uses Windows auth by default)    |
+
+**PAT Scopes Required:**
+
+- Work Items (Read & Write)
+- Project and Team (Read)
+- Identity (Read)
+
+#### Known Limitations
+
+1. **Interactive Authentication**: All integration tests (SOAP, REST, IntegrationTests categories) present an interactive login dialog. This works fine locally but requires user interaction, making them unsuitable for headless CI/CD environments.
+
+2. **Single Test User**: The sandbox has only one user (Richard Murillo). Identity tests expecting multiple users with the same display name will fail.
+
+3. **REST/SOAP API Differences**: Comparison tests reveal actual API differences:
+
+   - REST returns `System.AreaLevel1-7` and `System.IterationLevel1-7` fields
+   - SOAP does not return these fields
+
+4. **Windows Required**: Full test suite requires Windows for `net472` SOAP tests.
+
+5. **URL Configuration**: The connection URL must be the **organization-level** URL (`https://qwiq-sandbox.visualstudio.com/`), NOT the project URL (`https://qwiq-sandbox.visualstudio.com/WIT`). The project is specified separately in queries via `TestData.ProjectName`.
+
+#### Test Data Constants
+
+All test work item IDs and identity constants are centralized in [`TestData.cs`](../test/Qwiq.Integration.Tests/TestData.cs):
+
+```csharp
+public static class TestData
+{
+    public const int BasicWorkItemId = 1;      // Bug for basic tests
+    public const int HierarchyChildId = 2;     // Task child of ID 3
+    public const int HierarchyParentId = 3;    // User Story parent
+    public const int MapperBugId = 4;          // Bug for mapper tests
+    public const int WorkItemWithLinksId = 5;  // Bug with related links
+
+    public const string TestUserUpn = "rjmurillo@msn.com";
+    public const string TestUserAlias = "rjmurillo";
+    public const string TestUserDisplayName = "Richard Murillo";
+    public const string ProjectName = "WIT";
+}
+```
 
 ### Test Patterns
 

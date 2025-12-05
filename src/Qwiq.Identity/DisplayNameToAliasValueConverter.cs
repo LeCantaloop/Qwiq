@@ -18,11 +18,9 @@ namespace Qwiq.Identity
         /// Initializes a new instance of the <see cref="DisplayNameToAliasValueConverter"/> class.
         /// </summary>
         /// <param name="identityManagementService">The identity management service.</param>
-        /// <exception cref="ArgumentNullException">identityManagementService</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="identityManagementService"/> is <c>null</c>.</exception>
         public DisplayNameToAliasValueConverter(IIdentityManagementService identityManagementService)
         {
-            Contract.Requires(identityManagementService != null);
-
             _identityManagementService = identityManagementService ?? throw new ArgumentNullException(nameof(identityManagementService));
         }
 
@@ -36,21 +34,62 @@ namespace Qwiq.Identity
 
         private IDictionary<string, string[]> GetAliasesForDisplayNames(string[] displayNames)
         {
-            if (displayNames == null) throw new ArgumentNullException(nameof(displayNames));
+            if (displayNames == null)
+            {
+                throw new ArgumentNullException(nameof(displayNames));
+            }
 
-            return _identityManagementService.ReadIdentities(IdentitySearchFactor.DisplayName, displayNames)
-                      .ToDictionary(
-                                    kvp => kvp.Key,
-                                    kvp => kvp
-                                            .Value?.Where(
-                                                         identity => identity != null
-                                                                     && !identity.IsContainer
-                                                                     && identity.UniqueUserId == IdentityConstants.ActiveUniqueId)
-                                            .Select(i => i.GetUserAlias())
-                                            .Where(alias => alias != null)
-                                            .Cast<string>()
-                                            .Distinct(StringComparer.OrdinalIgnoreCase)
-                                            .ToArray() ?? Array.Empty<string>());
+            var identityResults = _identityManagementService.ReadIdentities(IdentitySearchFactor.DisplayName, displayNames);
+            var result = new Dictionary<string, string[]>(Comparer.OrdinalIgnoreCase);
+
+            foreach (var kvp in identityResults)
+            {
+                var aliases = kvp.Value?.Where(
+                                             identity => identity != null
+                                                         && !identity.IsContainer
+                                                         && identity.UniqueUserId == IdentityConstants.ActiveUniqueId)
+                                        .Select(i => GetAliasFromIdentity(i, kvp.Key))
+                                        .Where(alias => alias != null)
+                                        .Cast<string>()
+                                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                                        .ToArray() ?? Array.Empty<string>();
+
+                // Use indexer for assignment - handles both insert and update
+                // For duplicate keys (case-insensitive), the last value wins
+                result[kvp.Key] = aliases;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Extracts the alias from an identity, falling back to parsing the search key if needed.
+        /// </summary>
+        /// <param name="identity">The identity to extract the alias from.</param>
+        /// <param name="searchKey">The original search key (display name or combo string).</param>
+        /// <returns>The alias, or null if it cannot be determined.</returns>
+        /// <remarks>
+        /// Container identities (groups) are filtered out before this method is called via the
+        /// <see cref="ITeamFoundationIdentity.IsContainer"/> check in <see cref="GetAliasesForDisplayNames"/>.
+        /// This method focuses on extracting the alias from individual user identities.
+        /// </remarks>
+        private static string? GetAliasFromIdentity(ITeamFoundationIdentity identity, string searchKey)
+        {
+            // First try to get the alias from the identity's descriptor
+            var alias = identity.GetUserAlias();
+            if (!string.IsNullOrEmpty(alias))
+            {
+                return alias;
+            }
+
+            // Fall back to parsing the search key (which might be a combo string like "Name <email>")
+            var identityFieldValue = new IdentityFieldValue(searchKey);
+            if (!string.IsNullOrEmpty(identityFieldValue.LogonName))
+            {
+                return identityFieldValue.LogonName;
+            }
+
+            return null;
         }
 
         private Dictionary<string, object?> GetIdentityNames(params string[] displayNames)

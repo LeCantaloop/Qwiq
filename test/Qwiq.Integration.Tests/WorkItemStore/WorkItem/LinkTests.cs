@@ -94,6 +94,16 @@ namespace Qwiq.WorkItemStore.WorkItem
         {
             AssertWorkItemExpandConfiguration();
 
+            // Sandbox work item MUST have attachments configured for this test to pass
+            // Run scripts/Validate-SandboxEnvironment.ps1 to verify environment configuration
+            if (SoapResult.WorkItem.AttachedFileCount == 0)
+            {
+                Assert.Fail(
+                    $"Test work item {TestData.WorkItemWithLinksId} has no attachments. " +
+                    "Add at least one attachment to this work item in the sandbox environment. " +
+                    "Run 'scripts/Validate-SandboxEnvironment.ps1' to verify environment configuration.");
+            }
+
             SoapResult.WorkItem.AttachedFileCount.ShouldBeGreaterThan(0);
         }
 
@@ -150,9 +160,16 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         private void AssertWorkItemExpandConfiguration()
         {
+            // This is a test setup issue, not an environment data issue.
+            // The Given() method should configure WorkItemExpand appropriately.
             if (RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.None
                 || RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.Fields)
-                Assert.Inconclusive("The links could not tested because the expand configuration was not set to include links.");
+            {
+                Assert.Fail(
+                    "Test setup error: WorkItemExpand must be set to include links (All or Relations). " +
+                    $"Current value: {RestResult.WorkItemStore.Configuration.WorkItemExpand}. " +
+                    "Ensure the Given() method sets Rest.Configuration.WorkItemExpand = WorkItemExpand.All.");
+            }
         }
     }
 }

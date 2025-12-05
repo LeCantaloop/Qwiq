@@ -8,27 +8,50 @@ namespace Qwiq
 
         public override bool Equals(IWorkItemTypeCollection? x, IWorkItemTypeCollection? y)
         {
-            if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
-
-            if (x.Count != y.Count) return false;
-
-            var expected = x.ToList();
-            var source = y.ToList();
-            foreach (var wit in expected)
+            if (ReferenceEquals(x, y))
             {
-                var witName = wit.Name;
-                if (witName == null || !y.Contains(witName)) return false;
-                var tw = y[witName];
-                if (!WorkItemTypeComparer.Default.Equals(wit, tw)) return false;
-
-                // Removes the first occurrence, so if there are duplicates we'll still get a valid mismatch
-                source.Remove(wit);
+                return true;
             }
 
-            // If there are any items left then fail
-            if (source.Any()) return false;
+            if (ReferenceEquals(x, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            // Check if both collections contain the same work item types by name.
+            // We need symmetric comparison: all items in x must exist in y and vice versa.
+            // Note: We compare by work item type name, which is the unique identifier.
+
+            // First, check that all types in x exist and match in y
+            foreach (var wit in x)
+            {
+                var witName = wit.Name;
+                if (witName == null || !y.Contains(witName))
+                {
+                    return false;
+                }
+
+                var tw = y[witName];
+                if (!WorkItemTypeComparer.Default.Equals(wit, tw))
+                {
+                    return false;
+                }
+            }
+
+            // Then, check that all types in y exist in x (they already matched above if they exist)
+            foreach (var wit in y)
+            {
+                var witName = wit.Name;
+                if (witName == null || !x.Contains(witName))
+                {
+                    return false;
+                }
+            }
 
             return true;
         }

@@ -78,6 +78,18 @@ namespace Should
         }
 
         /// <summary>
+        /// Asserts that the value equals the expected value using a custom comparer.
+        /// Since Shouldly doesn't natively support IEqualityComparer, this shim provides the functionality.
+        /// </summary>
+        public static void ShouldBe<T>(this T actual, T expected, IEqualityComparer<T> comparer)
+        {
+            if (!comparer.Equals(actual, expected))
+            {
+                throw new AssertFailedException($"Expected {expected} but was {actual} (using custom comparer)");
+            }
+        }
+
+        /// <summary>
         /// Asserts that the value is null.
         /// </summary>
         public static void ShouldBeNull<T>(this T? actual) where T : class

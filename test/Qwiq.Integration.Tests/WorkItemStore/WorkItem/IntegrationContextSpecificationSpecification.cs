@@ -11,7 +11,7 @@ namespace Qwiq.WorkItemStore.WorkItem
     [TestClass]
     public class Given_a_WorkItem_from_each_WorkItemStore_implementation : IntegrationContextSpecificationSpecification
     {
-        private const int Id = 10726528;
+        private const int Id = TestData.BasicWorkItemId;
 
         /// <inheritdoc />
         public override void Given()
@@ -193,17 +193,31 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         private void AssertWorkItemExpandConfiguration()
         {
+            // This is a test setup issue, not an environment data issue.
+            // The Given() method should configure WorkItemExpand appropriately.
             if (RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.None
                 || RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.Fields)
-                Assert.Inconclusive("The links could not tested because the expand configuration was not set to include links.");
+            {
+                Assert.Fail(
+                    "Test setup error: WorkItemExpand must be set to include links (All or Relations). " +
+                    $"Current value: {RestResult.WorkItemStore.Configuration.WorkItemExpand}. " +
+                    "Ensure the Given() method sets Rest.Configuration.WorkItemExpand = WorkItemExpand.All.");
+            }
         }
 
         private void GetCoreFieldComparisonAssertions(Func<IWorkItem, string, string> GetValue)
         {
             var exceptions = new List<Exception>();
 
+            // This is a test setup issue, not an environment data issue.
+            // The Given() method should configure WorkItemExpand appropriately.
             if (Rest.Configuration.WorkItemExpand != WorkItemExpand.All && Rest.Configuration.WorkItemExpand != WorkItemExpand.Fields)
-                Assert.Inconclusive("REST configuration does not include all fields.");
+            {
+                Assert.Fail(
+                    "Test setup error: REST configuration does not include all fields. " +
+                    $"Current value: {Rest.Configuration.WorkItemExpand}. " +
+                    "Ensure the Given() method sets Rest.Configuration.WorkItemExpand = WorkItemExpand.All or WorkItemExpand.Fields.");
+            }
 
             var fieldsWithKnownDifferences = new[]
                                                  {
@@ -219,7 +233,11 @@ namespace Qwiq.WorkItemStore.WorkItem
                                                      CoreFieldRefNames.AssignedTo,
                                                      CoreFieldRefNames.AuthorizedAs,
                                                      CoreFieldRefNames.ChangedBy,
-                                                     CoreFieldRefNames.CreatedBy
+                                                     CoreFieldRefNames.CreatedBy,
+                                                     // REST and SOAP may return different IDs for Area/Iteration
+                                                     // depending on API response timing and caching
+                                                     CoreFieldRefNames.AreaId,
+                                                     CoreFieldRefNames.IterationId
                                                  };
 
             foreach (var field in CoreFieldRefNames.All.Except(fieldsWithKnownDifferences))

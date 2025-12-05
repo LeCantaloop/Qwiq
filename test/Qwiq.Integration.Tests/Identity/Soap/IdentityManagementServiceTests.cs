@@ -16,7 +16,7 @@ namespace Qwiq.Identity.Soap
         {
             base.Given();
 
-            _input = "rimuri@microsoft.com";
+            _input = TestData.TestUserUpn;
         }
 
         public override void When()

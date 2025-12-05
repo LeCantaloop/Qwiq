@@ -6,6 +6,7 @@ using System.Linq;
 
 
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Qwiq.Client.Rest
 {
@@ -128,10 +129,44 @@ namespace Qwiq.Client.Rest
             if (string.IsNullOrEmpty(name)) return null;
 
             _item.Fields.TryGetValue(name, out object? value);
+
+            // Convert IdentityRef objects to a string format compatible with SOAP
+            // IdentityRef.ToString() returns the type name, not a useful value
+            if (value is IdentityRef identityRef)
+            {
+                value = FormatIdentityRef(identityRef);
+            }
+
 #if DEBUG
             Trace.WriteLine($"Get \'{name}\': {value.ToUsefulString()}");
 #endif
             return value;
+        }
+
+        /// <summary>
+        /// Formats an IdentityRef object to a string compatible with SOAP identity field format.
+        /// </summary>
+        /// <param name="identityRef">The identity reference from the REST API.</param>
+        /// <returns>A formatted string like "Display Name &lt;unique@name.com&gt;" or just the display name.</returns>
+        private static string? FormatIdentityRef(IdentityRef? identityRef)
+        {
+            if (identityRef == null) return null;
+
+            var displayName = identityRef.DisplayName;
+            var uniqueName = identityRef.UniqueName;
+
+            if (string.IsNullOrEmpty(displayName))
+            {
+                return uniqueName;
+            }
+
+            if (string.IsNullOrEmpty(uniqueName) || displayName.Equals(uniqueName, StringComparison.OrdinalIgnoreCase))
+            {
+                return displayName;
+            }
+
+            // Format as "Display Name <unique@name.com>" to match SOAP combo string format
+            return $"{displayName} <{uniqueName}>";
         }
 
         protected override void SetValue(string name, object? value)

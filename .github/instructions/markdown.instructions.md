@@ -76,6 +76,13 @@ See the [README](../README.md) for details.
 Check the [documentation][docs] and [API reference][docs].
 
 [docs]: https://github.com/rjmurillo/Qwiq
+
+## Quality Guidance
+
+- **Keep related info together**: Use clear headings and avoid scattering a topic across distant sections.
+- **Link to the source file**: When you mention constants or settings, point to `TestData.cs`, `Directory.Build.props`, or the correct file instead of copying values.
+- **Call out test impact**: If a doc update changes how tests run, highlight the new steps so readers do not miss them.
+- **Avoid doubles**: If guidance already exists in another instruction file, link to it rather than repeating the same text.
 ```
 
 ## Special Files
@@ -133,6 +140,7 @@ Before submitting changes, verify:
 - [ ] Links are not broken
 - [ ] Tables render correctly
 - [ ] No trailing whitespace
+- [ ] Guidance avoids duplicate identity/configuration details by linking to canonical sources
 - [ ] File ends with newline
 
 ## Common Mistakes to AVOID

@@ -17,11 +17,16 @@ namespace Qwiq.Client.Rest
             var n = await collection.ConfigureAwait(false);
 
             // SOAP client does not return the root (e.g. "\"), so return the root's children to match implementation
-            return new WorkItemClassificationNodeCollection<int>(NewMethod(n.Children, n.Name));
+            return new WorkItemClassificationNodeCollection<int>(FlattenClassificationNodes(n.Children, n.Name));
         }
 
-        private static IEnumerable<IWorkItemClassificationNode<int>> NewMethod(IEnumerable<WorkItemClassificationNode> collection, string rootPath)
+        private static IEnumerable<IWorkItemClassificationNode<int>> FlattenClassificationNodes(IEnumerable<WorkItemClassificationNode>? collection, string rootPath)
         {
+            if (collection == null)
+            {
+                yield break;
+            }
+
             foreach (var n in collection)
             {
                 var e = new LevelOrderEnumerator(n);

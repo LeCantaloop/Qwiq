@@ -11,7 +11,7 @@ namespace Qwiq.WorkItemStore.WorkItem
     [TestClass]
     public class Given_a_WorkItem_from_each_client_by_WIQL : SingleWorkItemComparisonContextSpecification
     {
-        private const int Id = 10726528;
+        private const int Id = TestData.BasicWorkItemId;
 
         private static readonly string Wiql = ((FormattableString)$"SELECT {string.Join(", ", CoreFieldRefNames.All)} FROM WorkItems WHERE [System.Id] = {Id}").ToString(CultureInfo.InvariantCulture);
 

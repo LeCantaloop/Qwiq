@@ -22,6 +22,14 @@ When working on ANY file, you MUST:
 3. Follow established patterns in similar files
 4. Complete the Validation Checklist before submitting
 
+## Core Quality Expectations
+
+- **Write testable code**: Structure changes so unit tests are straightforward—prefer dependency injection, pure functions, and clear seams.
+- **Keep classes focused**: Give each type one responsibility and communicate across bounded contexts via interfaces, not concretes.
+- **Use existing constants**: Reuse identity/configuration values from canonical sources (`TestData`, `CoreFieldRefNames`, `Directory.Build.props`) instead of duplicating literals.
+- **Isolate platform differences**: Hide REST vs SOAP or framework-specific behavior behind strategies, feature switches, or factories so clients stay uniform.
+- **Separate creation from use**: Instantiate collaborators through factories or constructor injection; avoid mixing object construction with runtime logic.
+
 ## Multi-File Change Flowchart
 
 For changes spanning multiple file types:
@@ -140,6 +148,8 @@ Your changes are successful when:
 - All builds pass without warnings
 - All tests pass
 - No linting errors (run `dotnet format` and `dotnet pprettier --write .` to auto-fix)
+- Architectural qualities preserved (low coupling, high cohesion, testability as leverage)
+- No duplicated identity or configuration literals (reuse canonical sources)
 - PR description is complete and accurate
 - All checklist items completed
 - Established patterns are followed

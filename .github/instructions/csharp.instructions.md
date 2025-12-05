@@ -106,6 +106,17 @@ When `WorkItem` is null (constructor 2), `Revision.Id` returns `null`.
 string.Equals(rl.LinkTypeEnd?.ImmutableName, linkTypeEndName, StringComparison.OrdinalIgnoreCase)
 ```
 
+## Quality & Design Guidance
+
+- **Make testing simple**: Inject dependencies, keep methods small, and expose seams so unit tests can plug in mocks from `Qwiq.Mocks` or Moq.
+- **Keep responsibilities clear**: Each class should own one job. If a change touches several areas (Core, Mapper, Identity), double-check that only interfaces cross the boundaries.
+- **Reuse identity and field values**: Pull names and constants from `CoreFieldRefNames`, `TestData`, and `IdentityConstants` to avoid drifting copies.
+- **Leave configuration in config files**: Defaults belong in `Directory.Build.props`, `Directory.Packages.props`, or option classes—not hardcoded in methods.
+- **Isolate REST vs SOAP differences**: Push variation into strategies, providers, or small helper classes instead of scattering `if` checks through call sites.
+- **Program by intention**: Sketch the methods you wish existed, then implement them behind focused interfaces. This keeps methods cohesive and reveals missing seams.
+- **Call out the pattern you follow**: If you add a Strategy, Adapter, Façade, or Factory, say so in code comments or reviews so future work stays aligned.
+- **Create objects separately**: Build services through factories, builders, or constructor injection. Avoid new-ing up dependencies inside business logic.
+
 ## Test Patterns
 
 ### ContextSpecification Base Class
@@ -159,6 +170,7 @@ Before submitting changes, verify:
   - Run `dotnet pprettier --write .` to auto-fix all formatting
 - [ ] Tests pass: `dotnet test --filter "TestCategory!=localOnly&..."`
 - [ ] Similar files checked for established patterns
+- [ ] Architectural qualities reviewed (testability, cohesion, coupling) and no duplicated identity/configuration literals introduced
 
 ## Decision Trees
 

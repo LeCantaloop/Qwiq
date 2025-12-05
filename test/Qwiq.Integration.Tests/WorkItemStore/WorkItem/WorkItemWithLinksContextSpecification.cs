@@ -5,8 +5,8 @@ namespace Qwiq.WorkItemStore.WorkItem
     public abstract class WorkItemWithLinksContextSpecification : WorkItemStoreComparisonContextSpecification
     {
         // Choose a work item having high External/Hyper/Related link/Attached file count.
-        // The item selected below has 147 related, 14 external, 8 hyper, 8 attached
-        private const int Id = 6413554;
+        // The sandbox item (ID 5) has 2 related links. More links can be added as needed.
+        private const int Id = TestData.WorkItemWithLinksId;
 
         public override void When()
         {
