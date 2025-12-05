@@ -20,7 +20,7 @@ namespace Qwiq.Client.Soap
             _query = query ?? throw new ArgumentNullException(nameof(query));
             _pageSize = pageSize;
         }
-        private IWorkItemLinkTypeEndCollection _linkTypes;
+        private IWorkItemLinkTypeEndCollection _linkTypes = null!;
 
         public IWorkItemLinkTypeEndCollection GetLinkTypes()
         {

@@ -64,7 +64,7 @@ namespace Qwiq.Client.Rest
 
             Debug.Assert(Current != null, nameof(Current) + " != null");
 
-            if (Current.Children == null) return;
+            if (Current!.Children == null) return;
 
             foreach (var child in Current.Children)
             {

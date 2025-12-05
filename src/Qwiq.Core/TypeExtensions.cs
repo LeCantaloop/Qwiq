@@ -6,7 +6,7 @@ namespace System
     {
         // Default values of value types return by the default ctor
         // See https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/default-values-table
-        private static readonly Dictionary<Type, object> DefaultValuesForTypes = new Dictionary<Type, object>
+        private static readonly Dictionary<Type, object?> DefaultValuesForTypes = new Dictionary<Type, object?>
         {
             [typeof(bool)] = false,
             [typeof(bool?)] = null,
@@ -57,11 +57,11 @@ namespace System
 
             return false;
         }
-        public static object GetDefaultValueOfType(this Type type)
+        public static object? GetDefaultValueOfType(this Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            if (DefaultValuesForTypes.TryGetValue(type, out object retval))
+            if (DefaultValuesForTypes.TryGetValue(type, out object? retval))
             {
                 return retval;
             }

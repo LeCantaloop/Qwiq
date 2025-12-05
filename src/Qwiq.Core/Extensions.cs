@@ -15,10 +15,10 @@ namespace Qwiq
         {
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append(string.Join(",\n", enumerable.Select(x => ToUsefulString(x).Tab()).Take(limit).ToArray()));
+            sb.Append(string.Join(",\n", enumerable.Select(x => ToUsefulString((object?)x).Tab()).Take(limit).ToArray()));
             if (enumerable.Count() > limit)
                 if (enumerable.Count() > limit + 1) sb.AppendLine($",\n  ...({enumerable.Count() - limit} more elements)");
-                else sb.AppendLine(",\n" + enumerable.Last().ToUsefulString().Tab());
+                else sb.AppendLine(",\n" + ToUsefulString((object?)enumerable.Last()).Tab());
             else sb.AppendLine();
 
             sb.AppendLine("}");
@@ -26,9 +26,9 @@ namespace Qwiq
             return sb.ToString();
         }
 
-        internal static string ToUsefulString(this object obj)
+        internal static string ToUsefulString(this object? obj)
         {
-            string str;
+            string? str;
             if (obj == null) return "[null]";
 
             if (obj.GetType() == typeof(string))
@@ -41,7 +41,7 @@ namespace Qwiq
 
             if (obj is IEnumerable enumerable)
             {
-                var e = enumerable.Cast<object>();
+                var e = enumerable.Cast<object?>();
 
                 return enumerable.GetType() + ":\n" + e.EachToUsefulString();
             }

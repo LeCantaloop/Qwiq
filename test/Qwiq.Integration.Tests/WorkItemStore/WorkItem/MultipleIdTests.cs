@@ -12,8 +12,8 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         public override void When()
         {
-            SoapResult.WorkItem = SoapResult.WorkItemStore.Query(new[] { Id }).Single();
-            RestResult.WorkItem = RestResult.WorkItemStore.Query(new[] { Id }).Single();
+            SoapResult.WorkItem = SoapResult.WorkItemStore!.Query(new[] { Id }).Single();
+            RestResult.WorkItem = RestResult.WorkItemStore!.Query(new[] { Id }).Single();
         }
     }
 
@@ -38,8 +38,8 @@ namespace Qwiq.WorkItemStore.WorkItem
         {
             var t = DateTime.UtcNow;
 
-            SoapResult.WorkItem = SoapResult.WorkItemStore.Query(new[] { Id }, t).Single();
-            RestResult.WorkItem = RestResult.WorkItemStore.Query(new[] { Id }, t).Single();
+            SoapResult.WorkItem = SoapResult.WorkItemStore!.Query(new[] { Id }, t).Single();
+            RestResult.WorkItem = RestResult.WorkItemStore!.Query(new[] { Id }, t).Single();
         }
     }
 }

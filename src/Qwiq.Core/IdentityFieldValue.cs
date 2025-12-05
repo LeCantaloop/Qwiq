@@ -135,7 +135,7 @@ namespace Qwiq
         ///     Gets the display name.
         /// </summary>
         /// <value>The display name without the account name, if it exists.</value>
-        public string? DisplayName => !string.IsNullOrEmpty(DisplayPart) ? DisplayPart.Split('<')[0].Trim() : DisplayPart;
+        public string? DisplayName => !string.IsNullOrEmpty(DisplayPart) ? DisplayPart!.Split('<')[0].Trim() : DisplayPart;
 
         /// <summary>
         ///     Gets the display part.

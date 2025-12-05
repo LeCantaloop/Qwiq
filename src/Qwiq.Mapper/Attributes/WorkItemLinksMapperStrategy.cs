@@ -28,12 +28,12 @@ namespace Qwiq.Mapper.Attributes
 
         protected IWorkItemStore Store { get; }
 
-        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper? workItemMapper)
         {
             var linksLookup = BuildLinksRelationships(targetWorkItemType, workItemMappings);
 
             // REVIEW: We don't have any cycle detection, this avoids causing stack overflows in those cases
-            workItemMapper = new WorkItemMapper(workItemMapper.MapperStrategies.Except(new[] { this }));
+            workItemMapper = new WorkItemMapper(workItemMapper!.MapperStrategies.Except(new[] { this }));
 
             // If there were no items added to the lookup, don't bother querying VSO
             if (!linksLookup.Any()) return;

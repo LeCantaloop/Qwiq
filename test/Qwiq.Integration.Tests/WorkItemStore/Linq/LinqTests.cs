@@ -24,7 +24,7 @@ namespace Qwiq.WorkItemStore.Linq
         [TestCategory("REST")]
         public void the_results_are_equal()
         {
-            RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
+            RestResult.WorkItems!.ShouldContainOnly(SoapResult.WorkItems!);
         }
     }
 
@@ -46,7 +46,7 @@ namespace Qwiq.WorkItemStore.Linq
         [TestCategory("REST")]
         public void the_results_are_equal()
         {
-            RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
+            RestResult.WorkItems!.ShouldContainOnly(SoapResult.WorkItems!);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Qwiq.WorkItemStore.Linq
         [TestCategory("SOAP")]
         public void SOAP_returned_results()
         {
-            SoapResult.WorkItems.Count.ShouldBeGreaterThan(0);
+            SoapResult.WorkItems!.Count.ShouldBeGreaterThan(0);
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace Qwiq.WorkItemStore.Linq
         [TestCategory("REST")]
         public void REST_returned_results()
         {
-            RestResult.WorkItems.Count.ShouldBeGreaterThan(0);
+            RestResult.WorkItems!.Count.ShouldBeGreaterThan(0);
         }
     }
 }

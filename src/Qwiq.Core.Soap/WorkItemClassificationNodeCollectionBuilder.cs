@@ -28,10 +28,10 @@ namespace Qwiq.Client.Soap
             Debug.Assert(e.Current != null, "e.Current != null");
 
             return new WorkItemClassificationNode<int>(
-                e.Current.Id,
-                e.Current.IsAreaNode ? NodeType.Area : e.Current.IsIterationNode ? NodeType.Iteration : NodeType.None,
-                e.Current.Path,
-                e.Current.Uri
+                e.Current!.Id,
+                e.Current!.IsAreaNode ? NodeType.Area : e.Current!.IsIterationNode ? NodeType.Iteration : NodeType.None,
+                e.Current!.Path,
+                e.Current!.Uri
             );
         }
     }

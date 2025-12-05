@@ -12,12 +12,12 @@ namespace Qwiq
 
         public override bool Equals(object? obj)
         {
-            return Comparer.QueryDefinitionCollection.Equals(this, obj as IQueryDefinitionCollection);
+            return Comparer.QueryDefinitionCollection.Equals(this, (obj as IQueryDefinitionCollection)!);
         }
 
         public bool Equals(IQueryDefinitionCollection? other)
         {
-            return Comparer.QueryDefinitionCollection.Equals(this, other);
+            return Comparer.QueryDefinitionCollection.Equals(this, other!);
         }
 
         public override int GetHashCode()

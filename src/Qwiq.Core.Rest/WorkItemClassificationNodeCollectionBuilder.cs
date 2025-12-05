@@ -34,10 +34,10 @@ namespace Qwiq.Client.Rest
                 {
                     Debug.Assert(e.Current != null, "e.Current != null");
 
-                    var t = e.Current.StructureType == TreeNodeStructureType.Area
-                            ? NodeType.Area : e.Current.StructureType == TreeNodeStructureType.Iteration ? NodeType.Iteration : NodeType.None;
+                    var t = e.Current!.StructureType == TreeNodeStructureType.Area
+                            ? NodeType.Area : e.Current!.StructureType == TreeNodeStructureType.Iteration ? NodeType.Iteration : NodeType.None;
 
-                    var u = DecodeUrlString(e.Current.Url);
+                    var u = DecodeUrlString(e.Current!.Url);
 
                     var m = (t == NodeType.Area ? AreaRegex : IterationRegex).Match(u);
                     var p = m.Groups["path"].Value;

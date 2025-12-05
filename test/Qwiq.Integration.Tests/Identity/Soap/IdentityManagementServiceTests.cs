@@ -9,8 +9,8 @@ namespace Qwiq.Identity.Soap
     [TestClass]
     public class Given_an_Account_with_Group_Membership : SoapIdentityManagementServiceContextSpecification
     {
-        private string _input;
-        private ITeamFoundationIdentity _result;
+        private string _input = null!;
+        private ITeamFoundationIdentity? _result;
 
         public override void Given()
         {
@@ -21,7 +21,7 @@ namespace Qwiq.Identity.Soap
 
         public override void When()
         {
-            _result = Instance.ReadIdentity(IdentitySearchFactor.AccountName, _input, MembershipQuery.Expanded);
+            _result = Instance!.ReadIdentity(IdentitySearchFactor.AccountName, _input, MembershipQuery.Expanded);
         }
 
         [TestMethod]
@@ -29,7 +29,7 @@ namespace Qwiq.Identity.Soap
         [TestCategory("SOAP")]
         public void Identity_Contains_MemberOf()
         {
-            _result.MemberOf.Any().ShouldBeTrue();
+            _result!.MemberOf.Any().ShouldBeTrue();
         }
     }
 }

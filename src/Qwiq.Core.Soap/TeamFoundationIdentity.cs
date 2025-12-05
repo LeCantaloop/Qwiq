@@ -39,7 +39,7 @@ namespace Qwiq.Client.Soap
 
         public override string UniqueName => _identity.UniqueName;
 
-        public override string GetAttribute(string name, string defaultValue)
+        public override string GetAttribute(string name, string? defaultValue)
         {
             return _identity.GetAttribute(name, defaultValue);
         }

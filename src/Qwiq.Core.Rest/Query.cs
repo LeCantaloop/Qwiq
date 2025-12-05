@@ -175,16 +175,16 @@ namespace Qwiq.Client.Rest
                     $"Value for field '{CoreFieldRefNames.WorkItemType}' cannot be null or empty.");
             }
 
-            if (!_workItemStore.Projects.Contains(tps))
+            if (!_workItemStore.Projects.Contains(tps!))
             {
                 throw new InvalidOperationException($"No project for specified value '{tps}'.");
             }
-            var proj = _workItemStore.Projects[tps];
-            if (!proj.WorkItemTypes.Contains(wits))
+            var proj = _workItemStore.Projects[tps!];
+            if (!proj.WorkItemTypes.Contains(wits!))
             {
                 throw new InvalidOperationException($"No work item type for specified value '{wits}'.");
             }
-            return proj.WorkItemTypes[wits];
+            return proj.WorkItemTypes[wits!];
         }
 
         private ReadOnlyCollection<IWorkItemLinkInfo> RunkLinkQueryImpl()

@@ -6,7 +6,7 @@ namespace Qwiq.Mapper.Identity
 {
     public class SingleDisplayNameContextSpecification : DisplayNameToAliasConverterContextSpecification
     {
-        protected internal string DisplayName { get; set; }
+        protected internal string DisplayName { get; set; } = null!;
 
         /// <inheritdoc />
         [TestMethod]

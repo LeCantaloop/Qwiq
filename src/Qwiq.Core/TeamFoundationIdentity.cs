@@ -75,7 +75,7 @@ namespace Qwiq
         {
             get
             {
-                if (!string.IsNullOrEmpty(_uniqueName)) return _uniqueName;
+                if (!string.IsNullOrEmpty(_uniqueName)) return _uniqueName!;
 
                 var domain = GetAttribute(IdentityAttributeTags.Domain, string.Empty);
                 var account = GetAttribute(IdentityAttributeTags.AccountName, string.Empty);
@@ -104,7 +104,7 @@ namespace Qwiq
 
         public bool Equals(ITeamFoundationIdentity? other)
         {
-            return Comparer.TeamFoundationIdentity.Equals(this, other);
+            return Comparer.TeamFoundationIdentity.Equals(this, other!);
         }
 
         public override bool Equals(object? obj)

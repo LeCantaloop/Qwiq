@@ -43,9 +43,7 @@ namespace Qwiq.Identity.Soap
 
         internal static IIdentityManagementService AsProxy(this IIdentityManagementService2 ims)
         {
-            return ims == null
-                       ? null
-                       : ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(new IdentityManagementService(ims));
+            return ExceptionHandlingDynamicProxyFactory.Create<IIdentityManagementService>(new IdentityManagementService(ims!));
         }
     }
 }

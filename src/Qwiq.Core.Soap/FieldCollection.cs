@@ -47,7 +47,7 @@ namespace Qwiq.Client.Soap
             return -1;
         }
 
-        public bool TryGetByName(string name, out IField value)
+        public bool TryGetByName(string name, out IField? value)
         {
             if (name == null)
             {
@@ -95,7 +95,7 @@ namespace Qwiq.Client.Soap
             return GetEnumerator();
         }
 
-        public bool TryGetById(int id, out IField value)
+        public bool TryGetById(int id, out IField? value)
         {
             try
             {

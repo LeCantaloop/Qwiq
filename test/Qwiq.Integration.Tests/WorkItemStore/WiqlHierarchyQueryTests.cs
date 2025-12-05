@@ -24,8 +24,8 @@ WHERE
 mode(recursive)
 ";
 
-            RestResult.Links = TimedAction(() => RestResult.WorkItemStore.QueryLinks(wiql).ToList(), "REST", "QueryLinks");
-            SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(wiql).ToList(), "SOAP", "QueryLinks");
+            RestResult.Links = TimedAction(() => RestResult.WorkItemStore!.QueryLinks(wiql).ToList(), "REST", "QueryLinks");
+            SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore!.QueryLinks(wiql).ToList(), "SOAP", "QueryLinks");
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ mode(recursive)
         [TestCategory("REST")]
         public void SOAP_Links_returned()
         {
-            SoapResult.Links.ShouldNotBeNull();
+            SoapResult.Links!.ShouldNotBeNull();
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ mode(recursive)
         [TestCategory("REST")]
         public void REST_Links_returned()
         {
-            RestResult.Links.ShouldNotBeNull();
+            RestResult.Links!.ShouldNotBeNull();
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ mode(recursive)
         [TestCategory("REST")]
         public void Same_number_of_links_returned()
         {
-            RestResult.Links.Count().ShouldEqual(SoapResult.Links.Count());
+            RestResult.Links!.Count().ShouldEqual(SoapResult.Links!.Count());
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ mode(recursive)
         [TestCategory("REST")]
         public void WorkItemLink_SourceId_TargetId_are_equal()
         {
-            RestResult.Links.ShouldContainOnly(SoapResult.Links);
+            RestResult.Links!.ShouldContainOnly(SoapResult.Links!);
         }
     }
 }

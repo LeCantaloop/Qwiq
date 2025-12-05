@@ -17,22 +17,22 @@ mode(Recursive)
 
         public override void When()
         {
-            RestResult.Links = TimedAction(() => RestResult.WorkItemStore.QueryLinks(WIQL).ToList(), "REST", "QueryLinks - WIQL");
-            var hs = new HashSet<int>(RestResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }));
+            RestResult.Links = TimedAction(() => RestResult.WorkItemStore!.QueryLinks(WIQL).ToList(), "REST", "QueryLinks - WIQL");
+            var hs = new HashSet<int>(RestResult.Links!.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }));
             hs.Remove(0);
             RestResult.WorkItems = TimedAction(
-                                               () => RestResult.WorkItemStore.Query(hs),
+                                               () => RestResult.WorkItemStore!.Query(hs),
                                                "REST",
                                                "Query - IDs");
 
 
 
-            SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks - WIQL");
-            hs = new HashSet<int>(SoapResult.Links.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }));
+            SoapResult.Links = TimedAction(() => SoapResult.WorkItemStore!.QueryLinks(WIQL).ToList(), "SOAP", "QueryLinks - WIQL");
+            hs = new HashSet<int>(SoapResult.Links!.SelectMany(dl => new[] { dl.TargetId, dl.SourceId }));
             hs.Remove(0);
 
             SoapResult.WorkItems = TimedAction(
-                                               () => SoapResult.WorkItemStore.Query(hs),
+                                               () => SoapResult.WorkItemStore!.Query(hs),
                                                "SOAP",
                                                "Query - IDs");
         }

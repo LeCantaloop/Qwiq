@@ -14,7 +14,7 @@ namespace Qwiq.Client.Soap
             {
                 case BaseLinkType.RelatedLink:
                     var relatedLink = (IRelatedLink)link;
-                    var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, relatedLink.LinkTypeEnd);
+                    var linkTypeEnd = LinkTypeEndMapper.Map(item.Store, relatedLink.LinkTypeEnd!);
                     return new Tfs.RelatedLink(linkTypeEnd, relatedLink.RelatedWorkItemId);
 
                 case BaseLinkType.Hyperlink:

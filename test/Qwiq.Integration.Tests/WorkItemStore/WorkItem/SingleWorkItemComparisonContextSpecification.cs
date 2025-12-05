@@ -12,8 +12,8 @@ namespace Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void WorkItem_is_equal()
         {
-            RestResult.WorkItem.ShouldEqual(SoapResult.WorkItem);
-            RestResult.WorkItem.GetHashCode().ShouldEqual(SoapResult.WorkItem.GetHashCode());
+            RestResult.WorkItem!.ShouldEqual(SoapResult.WorkItem!);
+            RestResult.WorkItem!.GetHashCode().ShouldEqual(SoapResult.WorkItem!.GetHashCode());
         }
     }
 }

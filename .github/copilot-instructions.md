@@ -338,9 +338,85 @@ Nullable reference types are enabled repository-wide. Status by project:
 Common nullable patterns in this codebase:
 
 - Use `T?` for properties that can legitimately return null
-- Use `null!` for lazy-initialized fields that are guaranteed to be set before use
+- **NEVER use `null!` to suppress CS8618 warnings** - use proper initialization instead
 - Update both interfaces AND implementations when changing nullability
 - Use `[MaybeNullWhen(false)]` attribute for Try\* out parameters
+
+## ⚠️ CRITICAL: Test-Driven Development (TDD) for Refactoring
+
+When making refactoring changes, especially for nullable reference type fixes or similar behavior-preserving changes, **ALWAYS** use Test-Driven Development:
+
+### TDD Process for Refactoring
+
+1. **Write Tests FIRST** - Before making any code changes:
+   - Identify the classes/methods you plan to modify
+   - Write comprehensive tests that document current behavior
+   - Ensure all tests pass with the current implementation
+   - Tests serve as executable documentation and regression prevention
+
+2. **Make Changes** - After tests are passing:
+   - Make the minimal changes needed (e.g., nullable annotations)
+   - Do NOT change behavior - only change types/annotations
+   - Run tests frequently during changes
+
+3. **Verify No Behavior Change** - After making changes:
+   - All original tests should still pass
+   - If tests fail, either fix the code OR fix the test (if test was wrong)
+   - Tests prove behavior didn't change
+
+### When TDD is MANDATORY
+
+- **Nullable reference type fixes** (CS8xxx errors)
+- **Field initialization changes** (removing `null!`, adding proper initialization)
+- **Interface signature changes** (adding `?` to parameters/returns)
+- **Any refactoring that could affect runtime behavior**
+
+### Example: Fixing `null!` Suppression
+
+```csharp
+// BEFORE (BAD - suppresses CS8618):
+private readonly Dictionary<string, object?> _fields = null!;
+
+protected internal WorkItemCore()
+{
+    // _fields not initialized!
+}
+
+// Step 1: Write test that documents behavior
+[TestMethod]
+public void Parameterless_constructor_should_allow_field_operations()
+{
+    var item = new TestableWorkItemCore();
+    item.SetValue("test", "value");  // Should not throw
+    var result = item.GetValue("test");
+    result.ShouldEqual("value");
+}
+
+// Step 2: Fix the code properly
+private readonly Dictionary<string, object?> _fields;
+
+protected internal WorkItemCore()
+{
+    _fields = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+}
+
+// Step 3: Verify test still passes
+```
+
+### Test Coverage Requirements
+
+When fixing initialization issues, write tests for:
+- All constructor overloads
+- Lazy initialization paths
+- Property accessors that depend on the field
+- Edge cases (null inputs, empty collections, etc.)
+
+### Why This Matters
+
+Using `null!` to suppress CS8618 warnings is **hiding the problem**, not fixing it. It tells the compiler "trust me, this will be initialized" but provides no runtime guarantee. Proper initialization ensures:
+- Compile-time safety (compiler knows it's initialized)
+- Runtime safety (no NullReferenceExceptions)
+- Clear intent (obvious from code that field is always initialized)
 
 ## CI/CD Pipeline
 

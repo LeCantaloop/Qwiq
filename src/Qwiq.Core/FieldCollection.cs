@@ -75,7 +75,7 @@ namespace Qwiq
         [DebuggerStepThrough]
         public bool Equals(IReadOnlyObjectWithIdCollection<IField, int>? other)
         {
-            return Comparer.FieldCollection.Equals(this, other);
+            return Comparer.FieldCollection.Equals(this, other!);
         }
 
         public virtual IField GetById(int id)

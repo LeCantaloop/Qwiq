@@ -11,9 +11,9 @@ namespace Qwiq.Mapper.Identity
     /// <exclude />
     public abstract class DisplayNameToAliasConverterContextSpecification : SoapIdentityManagementServiceContextSpecification
     {
-        protected object ConvertedValue { get; set; }
+        protected object ConvertedValue { get; set; } = null!;
 
-        protected DisplayNameToAliasValueConverter ValueConverter { get; private set; }
+        protected DisplayNameToAliasValueConverter ValueConverter { get; private set; } = null!;
 
         /// <inheritdoc />
         public override void Given()

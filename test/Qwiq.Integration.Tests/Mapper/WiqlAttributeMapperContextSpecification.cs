@@ -8,10 +8,10 @@ namespace Qwiq.Mapper
 {
     public abstract class WiqlAttributeMapperContextSpecification : TimedContextSpecification
     {
-        private int[] _ids;
-        public IQueryable<Bug> Bugs { get; set; }
-        protected IWorkItemStore WorkItemStore { get; private set; }
-        private Query<Bug> Query { get; set; }
+        private int[] _ids = null!;
+        public IQueryable<Bug> Bugs { get; set; } = null!;
+        protected IWorkItemStore WorkItemStore { get; private set; } = null!;
+        private Query<Bug> Query { get; set; } = null!;
         public override void Cleanup()
         {
             WorkItemStore?.Dispose();
@@ -60,10 +60,10 @@ namespace Qwiq.Mapper
             public int? Id { get; set; }
 
             [FieldDefinition(CoreFieldRefNames.State)]
-            public string State { get; set; }
+            public string State { get; set; } = null!;
 
             [FieldDefinition("InvalidField")]
-            public string Invalid { get; set; }
+            public string Invalid { get; set; } = null!;
         }
     }
 }

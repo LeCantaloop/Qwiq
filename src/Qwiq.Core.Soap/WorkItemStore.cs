@@ -66,7 +66,7 @@ namespace Qwiq.Client.Soap
         }
 
         internal WorkItemStore(Func<IInternalTeamProjectCollection> tpcFactory, Func<WorkItemStore, IQueryFactory> queryFactory)
-            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>(), queryFactory)
+            : this(tpcFactory, () => tpcFactory?.Invoke()?.GetService<TfsWorkItem.WorkItemStore>()!, queryFactory)
         {
         }
 
@@ -82,7 +82,7 @@ namespace Qwiq.Client.Soap
         public IWorkItemLinkTypeCollection WorkItemLinkTypes => _workItemLinkTypes.Value;
         public VssCredentials AuthorizedCredentials => _tfs.Value.AuthorizedCredentials;
 
-        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity;
+        public ITeamFoundationIdentity AuthorizedIdentity => TeamProjectCollection?.AuthorizedIdentity!;
         Qwiq.WorkItemStoreConfiguration IWorkItemStore.Configuration => Configuration;
         internal TfsWorkItem.WorkItemStore NativeWorkItemStore => _workItemStore.Value;
         public IFieldDefinitionCollection FieldDefinitions => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(

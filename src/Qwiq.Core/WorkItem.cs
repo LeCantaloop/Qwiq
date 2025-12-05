@@ -13,11 +13,11 @@ namespace Qwiq
     /// <seealso cref="IWorkItem" />
     public abstract class WorkItem : WorkItemCommon, IWorkItem, IRevisionInternal, IEquatable<IWorkItem>
     {
-        private readonly Lazy<IWorkItemType> _lazyType;
-        private readonly IWorkItemType _type;
-        private Func<IFieldCollection> _fieldFactory;
+        private readonly Lazy<IWorkItemType> _lazyType = null!;
+        private readonly IWorkItemType _type = null!;
+        private Func<IFieldCollection>? _fieldFactory = null!;
 
-        private IFieldCollection _fields;
+        private IFieldCollection _fields = null!;
 
         private bool _useFields = true;
 
@@ -39,7 +39,7 @@ namespace Qwiq
         protected internal WorkItem(Lazy<IWorkItemType> type)
         {
             Contract.Requires(type != null);
-            _lazyType = type;
+            _lazyType = type ?? throw new ArgumentNullException(nameof(type));
         }
 
         protected internal WorkItem(IWorkItemType workItemType, Func<IFieldCollection> fieldCollectionFactory)
@@ -100,7 +100,7 @@ namespace Qwiq
 
         public virtual IWorkItemType Type => _type ?? _lazyType?.Value ?? throw new InvalidOperationException($"No value specified for {nameof(Type)}.");
 
-        public override object this[string name]
+        public override object? this[string name]
         {
             get
             {
@@ -157,17 +157,17 @@ namespace Qwiq
             throw new NotSupportedException();
         }
 
-        public virtual IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)
+        public virtual IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd? linkTypeEnd = null)
         {
             throw new NotSupportedException();
         }
 
-        public bool Equals(IWorkItem other)
+        public bool Equals(IWorkItem? other)
         {
             return WorkItemComparer.Default.Equals(this, other);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return WorkItemComparer.Default.Equals(this, obj as IWorkItem);
         }

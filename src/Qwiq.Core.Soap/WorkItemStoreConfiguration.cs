@@ -12,7 +12,7 @@ namespace Qwiq.Client.Soap
 
         /// <inheritdoc/>
         ///
-        public override IEnumerable<string> DefaultFields { get; set; }
+        public override IEnumerable<string>? DefaultFields { get; set; }
 
         /// <inheritdoc/>
         ///

@@ -14,7 +14,7 @@ namespace Qwiq
         }
 
         [DebuggerStepThrough]
-        internal WorkItemTypeCollection(List<IWorkItemType> workItemTypes)
+        internal WorkItemTypeCollection(List<IWorkItemType>? workItemTypes)
             : base(workItemTypes, type => type.Name!)
         {
         }

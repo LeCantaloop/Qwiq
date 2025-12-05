@@ -22,7 +22,7 @@ namespace Qwiq.Client.Soap
             _queue = new Queue<Node>();
             _currentGenerationCount = 1;
             _nextGenerationCount = 0;
-            Current = null;
+            Current = null!;
         }
 
         public void Dispose()
@@ -64,7 +64,7 @@ namespace Qwiq.Client.Soap
 
             Debug.Assert(Current != null, nameof(Current) + " != null");
 
-            foreach (Node child in Current.ChildNodes)
+            foreach (Node child in Current!.ChildNodes)
             {
                 _nextGenerationCount++;
                 _queue.Enqueue(child);
@@ -80,8 +80,8 @@ namespace Qwiq.Client.Soap
             _currentDepth = 0;
         }
 
-        public Node Current { get; private set; }
+        public Node? Current { get; private set; }
 
-        object IEnumerator.Current => Current;
+        object IEnumerator.Current => Current!;
     }
 }

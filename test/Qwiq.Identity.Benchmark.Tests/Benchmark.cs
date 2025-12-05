@@ -39,8 +39,8 @@ namespace Qwiq.Identity.Benchmark.Tests
         [Config(typeof(BenchmarkConfig))]
         public class Benchmark
         {
-            private IWorkItemMapperStrategy _strategy;
-            private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings;
+            private IWorkItemMapperStrategy _strategy = null!;
+            private Dictionary<IWorkItem, IIdentifiable<int?>> _workItemMappings = null!;
 
             [GlobalSetup]
             public void SetupData()
@@ -55,7 +55,7 @@ namespace Qwiq.Identity.Benchmark.Tests
                 var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
                 wis.Add(generator.Generate());
 
-                _workItemMappings = generator.Items.ToDictionary(k => (IWorkItem)k, e => (IIdentifiable<int?>)new MockIdentityType());
+                _workItemMappings = generator.Items!.ToDictionary(k => (IWorkItem)k, e => (IIdentifiable<int?>)new MockIdentityType());
 
             }
 
@@ -74,7 +74,7 @@ namespace Qwiq.Mapper.Tests
     [TestClass]
     public class Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : ContextSpecification
     {
-        private B.Benchmark _benchmark;
+        private B.Benchmark _benchmark = null!;
 
         public override void Given()
         {

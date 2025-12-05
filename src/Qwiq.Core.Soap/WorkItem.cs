@@ -33,7 +33,7 @@ namespace Qwiq.Client.Soap
         /// <summary>
         ///     Gets or sets the string value of the AreaPath field for this work item.
         /// </summary>
-        public override string AreaPath
+        public override string? AreaPath
         {
             get => _item.AreaPath;
             set => _item.AreaPath = value;
@@ -84,7 +84,7 @@ namespace Qwiq.Client.Soap
         /// <summary>
         ///     Gets or sets a string that describes this work item.
         /// </summary>
-        public override string Description
+        public override string? Description
         {
             get => _item.Description;
             set => _item.Description = value;
@@ -119,7 +119,7 @@ namespace Qwiq.Client.Soap
         /// <summary>
         ///     Gets or sets the string value of the IterationPath field of this work item.
         /// </summary>
-        public override string IterationPath
+        public override string? IterationPath
         {
             get => _item.IterationPath;
             set => _item.IterationPath = value;
@@ -163,13 +163,13 @@ namespace Qwiq.Client.Soap
         /// <summary>
         ///     Gets or sets a string that describes the state of this work item.
         /// </summary>
-        public override string State
+        public override string? State
         {
             get => _item.State;
             set => _item.State = value;
         }
 
-        public override string Tags
+        public override string? Tags
         {
             get => _item.Tags;
             set => _item.Tags = value;
@@ -178,7 +178,7 @@ namespace Qwiq.Client.Soap
         /// <summary>
         ///     Gets or sets a string that describes the title of this work item.
         /// </summary>
-        public override string Title
+        public override string? Title
         {
             get => _item.Title;
             set => _item.Title = value;
@@ -213,9 +213,9 @@ namespace Qwiq.Client.Soap
             return ExceptionHandlingDynamicProxyFactory.Create<IHyperlink>(new Hyperlink(new Tfs.Hyperlink(location)));
         }
 
-        public override IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd linkTypeEnd = null)
+        public override IRelatedLink CreateRelatedLink(int relatedWorkItemId, IWorkItemLinkTypeEnd? linkTypeEnd = null)
         {
-            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd);
+            var rawLinkTypeEnd = LinkTypeEndMapper.Map(_item.Store, linkTypeEnd!);
             return ExceptionHandlingDynamicProxyFactory.Create<IRelatedLink>(new RelatedLink(new Tfs.RelatedLink(rawLinkTypeEnd, relatedWorkItemId)));
         }
 
@@ -349,12 +349,12 @@ namespace Qwiq.Client.Soap
                 new WorkItem(_item.Copy(type, (Tfs.WorkItemCopyFlags)flags)));
         }
 
-        protected override object GetValue(string name)
+        protected override object? GetValue(string name)
         {
             return _item[name];
         }
 
-        protected override void SetValue(string name, object value)
+        protected override void SetValue(string name, object? value)
         {
             _item[name] = value;
         }

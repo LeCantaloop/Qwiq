@@ -11,7 +11,7 @@ namespace Qwiq.Client.Soap
         private readonly Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection _workItemTypeCollection;
 
         internal WorkItemTypeCollection(Microsoft.TeamFoundation.WorkItemTracking.Client.WorkItemTypeCollection workItemTypeCollection)
-            : base((List<IWorkItemType>)null)
+            : base((List<IWorkItemType>?)null)
         {
             _workItemTypeCollection = workItemTypeCollection
                                       ?? throw new ArgumentNullException(nameof(workItemTypeCollection));

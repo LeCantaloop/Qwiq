@@ -7,9 +7,9 @@ namespace Qwiq.Linq
 {
     public abstract class LinqContextSpecification : WorkItemStoreComparisonContextSpecification
     {
-        protected IOrderedQueryable<IWorkItem> RestQueryable { get; private set; }
+        protected IOrderedQueryable<IWorkItem> RestQueryable { get; private set; } = null!;
 
-        protected IOrderedQueryable<IWorkItem> SoapQueryable { get; private set; }
+        protected IOrderedQueryable<IWorkItem> SoapQueryable { get; private set; } = null!;
 
         /// <inheritdoc />
         public override void Given()

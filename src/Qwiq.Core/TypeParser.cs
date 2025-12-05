@@ -19,7 +19,7 @@ namespace Qwiq
 
         public static ITypeParser Default => Nested.Instance;
 
-        public object Parse(Type destinationType, object value, object defaultValue)
+        public object? Parse(Type destinationType, object? value, object? defaultValue)
         {
             if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
             var defaultValueType = defaultValue?.GetType();
@@ -31,22 +31,22 @@ namespace Qwiq
             return ParseImpl(destinationType, value, defaultValue);
         }
 
-        public object Parse(Type destinationType, object input)
+        public object? Parse(Type destinationType, object? input)
         {
             if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
             return ParseImpl(destinationType, input);
         }
 
-        public T Parse<T>(object value)
+        public T Parse<T>(object? value)
         {
-            return Parse(value, default(T));
+            return Parse(value, default(T)!);
         }
 
-        public T Parse<T>(object value, T defaultValue)
+        public T Parse<T>(object? value, T defaultValue)
         {
-            return (T)Parse(typeof(T), value, defaultValue);
+            return (T)Parse(typeof(T), value, defaultValue)!;
         }
-        private static object ParseImpl(Type destinationType, object value)
+        private static object? ParseImpl(Type destinationType, object? value)
         {
             var valueIsNull = ValueRepresentsNull(value);
             var canAcceptNull = destinationType.CanAcceptNull();
@@ -59,7 +59,7 @@ namespace Qwiq
                 return destinationType.GetDefaultValueOfType();
             }
 
-            var valueType = value.GetType();
+            var valueType = value!.GetType();
 
             // Quit if no type conversion is actually required
             if (valueType == destinationType) return value;
@@ -92,7 +92,7 @@ namespace Qwiq
                     break;
             }
 
-            if (TryConvert(destinationType, value, out object result)) return result;
+            if (TryConvert(destinationType, value, out object? result)) return result;
 
             var defaultValue = destinationType.GetDefaultValueOfType();
             if (destinationType.IsGenericNullable() && defaultValue == null) return null;
@@ -111,10 +111,10 @@ namespace Qwiq
 
             return null;
         }
-        private static object ParseImpl(
+        private static object? ParseImpl(
             Type destinationType,
-            object value,
-            object defaultValue)
+            object? value,
+            object? defaultValue)
         {
             var valueIsNull = ValueRepresentsNull(value);
             var defaultValueIsNull = ValueRepresentsNull(defaultValue);
@@ -135,7 +135,7 @@ namespace Qwiq
                 return defaultValue;
             }
 
-            var valueType = value.GetType();
+            var valueType = value!.GetType();
 
             // Quit if no type conversion is actually required
             if (valueType == destinationType) return value;
@@ -175,7 +175,7 @@ namespace Qwiq
                     break;
             }
 
-            if (TryConvert(destinationType, value, out object result)) return result;
+            if (TryConvert(destinationType, value, out object? result)) return result;
             if (destinationType.IsGenericNullable() && defaultValue == null) return null;
 
             if (defaultValue != null)
@@ -193,8 +193,14 @@ namespace Qwiq
             return null;
         }
 
-        private static bool TryConvert(Type destinationType, object value, out object result)
+        private static bool TryConvert(Type destinationType, object? value, out object? result)
         {
+            if (value == null)
+            {
+                result = null;
+                return destinationType.CanAcceptNull();
+            }
+
             if (destinationType.IsGenericNullable())
                 try
                 {
@@ -261,7 +267,7 @@ namespace Qwiq
         {
             var hashtable = TypeConverters;
 
-            var typeConverter = (TypeConverter)hashtable[valueType];
+            var typeConverter = (TypeConverter?)hashtable[valueType];
             if (typeConverter != null) return typeConverter;
 
             lock (hashtable)
@@ -272,7 +278,7 @@ namespace Qwiq
             return typeConverter;
         }
 
-        private static bool ValueRepresentsNull(object value)
+        private static bool ValueRepresentsNull(object? value)
         {
             return value == null || value == DBNull.Value;
         }

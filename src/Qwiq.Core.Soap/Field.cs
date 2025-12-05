@@ -12,8 +12,8 @@ namespace Qwiq.Client.Soap
 
         internal Field(Tfs.Field field)
             : base(
-                 ExceptionHandlingDynamicProxyFactory.Create<IRevisionInternal>(new WorkItem(field?.WorkItem)),
-                 ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(field?.FieldDefinition)))
+                 ExceptionHandlingDynamicProxyFactory.Create<IRevisionInternal>(new WorkItem(field?.WorkItem!)),
+                 ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinition>(new FieldDefinition(field?.FieldDefinition!)))
         {
             NativeField = field ?? throw new ArgumentNullException(nameof(field));
         }
@@ -38,7 +38,7 @@ namespace Qwiq.Client.Soap
 
         public override ValidationState ValidationState => (ValidationState)(int)NativeField.Status;
 
-        public override object Value
+        public override object? Value
         {
             get => NativeField.Value;
             set => NativeField.Value = value;

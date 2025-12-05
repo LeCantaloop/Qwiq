@@ -5,9 +5,9 @@ namespace Qwiq.WorkItemStore
     public abstract class WorkItemStoreContextSpecification<T> : TimedContextSpecification
         where T : IWorkItemStore
     {
-        internal IQueryFactory QueryFactory;
+        internal IQueryFactory QueryFactory = null!;
 
-        protected T WorkItemStore;
+        protected T WorkItemStore = default!;
 
         public override void Cleanup()
         {

@@ -7,7 +7,7 @@ namespace Qwiq
     public abstract class Link : ILink
     {
         [DebuggerStepThrough]
-        protected internal Link(string comment, BaseLinkType baseType)
+        protected internal Link(string? comment, BaseLinkType baseType)
         {
             if (baseType == BaseLinkType.None) throw new ArgumentOutOfRangeException(nameof(baseType));
 

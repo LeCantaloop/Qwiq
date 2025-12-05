@@ -8,9 +8,9 @@ namespace Qwiq.Client.Soap
     {
         internal WorkItemLinkType(Tfs.WorkItemLinkType linkType)
             : base(
-                linkType?.ReferenceName,
-                new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ForwardEnd)),
-                new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ReverseEnd)))
+                linkType?.ReferenceName!,
+                new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ForwardEnd!)),
+                new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ReverseEnd!)))
         {
             if (linkType == null) throw new ArgumentNullException(nameof(linkType));
             IsActive = linkType.IsActive;

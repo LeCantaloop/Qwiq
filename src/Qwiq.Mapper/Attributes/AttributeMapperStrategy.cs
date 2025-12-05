@@ -57,7 +57,7 @@ namespace Qwiq.Mapper.Attributes
             _annotatedPropertyValidator = annotatedPropertyValidator ?? throw new ArgumentNullException(nameof(annotatedPropertyValidator));
         }
 
-        public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map<T>(IDictionary<IWorkItem, T> workItemMappings, IWorkItemMapper? workItemMapper)
         {
             var targetWorkItemType = typeof(T);
 
@@ -70,7 +70,7 @@ namespace Qwiq.Mapper.Attributes
             }
         }
 
-        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper workItemMapper)
+        public override void Map(Type targetWorkItemType, IDictionary<IWorkItem, IIdentifiable<int?>> workItemMappings, IWorkItemMapper? workItemMapper)
         {
             foreach (var workItemMapping in workItemMappings)
             {

@@ -21,7 +21,7 @@ namespace Qwiq.Linq
             foreach (var projection in projections!)
             {
                 Debug.Assert(projection != null, "projection != null");
-                var compiledProjection = projection.Compile();
+                var compiledProjection = projection!.Compile();
                 projectedData = projectedData.Select(r => compiledProjection.DynamicInvoke(r));
             }
 

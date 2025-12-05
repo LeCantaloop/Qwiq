@@ -15,15 +15,15 @@ namespace Qwiq
         }
 
         /// <inheritdoc />
-        public bool Equals(IWorkItemCollection other)
+        public bool Equals(IWorkItemCollection? other)
         {
-            return Comparer.WorkItemCollection.Equals(this, other);
+            return Comparer.WorkItemCollection.Equals(this, other!);
         }
 
         /// <inheritdoc />
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            return Comparer.WorkItemCollection.Equals(this, obj as IWorkItemCollection);
+            return Comparer.WorkItemCollection.Equals(this, (obj as IWorkItemCollection)!);
         }
 
         /// <inheritdoc />

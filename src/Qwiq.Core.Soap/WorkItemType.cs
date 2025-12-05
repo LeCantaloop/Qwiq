@@ -10,10 +10,10 @@ namespace Qwiq.Client.Soap
     {
         internal WorkItemType(Tfs.WorkItemType type)
             : base(
-                 type?.Name,
+                 type?.Name!,
                  type?.Description,
-                 new Lazy<IFieldDefinitionCollection>(() => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(new FieldDefinitionCollection(type?.FieldDefinitions))),
-                 () => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(type?.NewWorkItem()))
+                 new Lazy<IFieldDefinitionCollection>(() => ExceptionHandlingDynamicProxyFactory.Create<IFieldDefinitionCollection>(new FieldDefinitionCollection(type?.FieldDefinitions!))),
+                 () => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(type?.NewWorkItem()!))
                  )
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

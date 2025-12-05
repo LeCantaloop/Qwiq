@@ -13,7 +13,7 @@ namespace Qwiq.WorkItemStore
         [TestCategory("REST")]
         public void Links_Equal()
         {
-            RestResult.Links.ShouldContainOnly(SoapResult.Links);
+            RestResult.Links!.ShouldContainOnly(SoapResult.Links!);
         }
 
         [TestMethod]
@@ -22,7 +22,7 @@ namespace Qwiq.WorkItemStore
         [TestCategory("REST")]
         public void WorkItems_Equal()
         {
-            RestResult.WorkItems.ShouldContainOnly(SoapResult.WorkItems);
+            RestResult.WorkItems!.ShouldContainOnly(SoapResult.WorkItems!);
         }
     }
 

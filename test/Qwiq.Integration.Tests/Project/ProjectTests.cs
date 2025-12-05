@@ -99,7 +99,7 @@ namespace Qwiq.Project
                 var sw = wit;
                 try
                 {
-                    var rw = RestProject.WorkItemTypes[sw.Name];
+                    var rw = RestProject.WorkItemTypes[sw.Name!];
                     rw.ShouldNotBeNull($"No WIT '{sw.Name}' in REST");
 
                     // We can't do a simple ShouldContainsOnly check here because the REST client is returning fields the SOAP client is not

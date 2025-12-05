@@ -8,13 +8,13 @@ namespace Qwiq.Identity.Soap
 {
     public abstract class SoapIdentityMapperContextSpecification<T> : TimedContextSpecification
     {
-        protected IdentityAliasValueConverter Instance { get; set; }
+        protected IdentityAliasValueConverter Instance { get; set; } = null!;
 
-        protected T Input { get; set; }
+        protected T Input { get; set; } = default!;
 
-        protected T ActualOutput { get; set; }
+        protected T ActualOutput { get; set; } = default!;
 
-        protected T ExpectedOutput { get; set; }
+        protected T ExpectedOutput { get; set; } = default!;
 
         /// <inheritdoc />
         public override void Given()

@@ -32,9 +32,9 @@ namespace Qwiq.Identity
 
     public abstract class IdentityMapperContextSpecification : WorkItemStoreComparisonContextSpecification
     {
-        protected IOrderedQueryable<IWorkItem> SoapQueryable { get; private set; }
+        protected IOrderedQueryable<IWorkItem> SoapQueryable { get; private set; } = null!;
 
-        protected IOrderedQueryable<IWorkItem> RestQueryable { get; private set; }
+        protected IOrderedQueryable<IWorkItem> RestQueryable { get; private set; } = null!;
 
 
 

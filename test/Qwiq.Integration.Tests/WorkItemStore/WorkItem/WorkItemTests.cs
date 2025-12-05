@@ -11,7 +11,7 @@ namespace Qwiq.WorkItemStore
     {
         private const int Id = TestData.BasicWorkItemId;
 
-        protected IWorkItem Result { get; private set; }
+        protected IWorkItem Result { get; private set; } = null!;
 
         [TestMethod]
         [TestCategory("localOnly")]
@@ -29,7 +29,7 @@ namespace Qwiq.WorkItemStore
 
         public override void When()
         {
-            Result = WorkItemStore.Query(Id);
+            Result = WorkItemStore!.Query(Id)!;
         }
     }
 }

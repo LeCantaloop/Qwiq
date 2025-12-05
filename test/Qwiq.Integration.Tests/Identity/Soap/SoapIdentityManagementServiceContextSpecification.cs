@@ -4,7 +4,7 @@ namespace Qwiq.Identity.Soap
 {
     public abstract class SoapIdentityManagementServiceContextSpecification : TimedContextSpecification
     {
-        protected IIdentityManagementService Instance { get; private set; }
+        protected IIdentityManagementService Instance { get; private set; } = null!;
 
         /// <inheritdoc />
         public override void Given()

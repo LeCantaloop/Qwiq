@@ -55,12 +55,38 @@ value.HasValue.ShouldBeFalse(); // NOT: value.ShouldBeNull()
 [NotNull] public string Value { get; }
 [CanBeNull] public string? Name { get; }
 
+// ❌ Using null! to suppress CS8618 (hides the problem!)
+private readonly Dictionary<string, object?> _fields = null!;
+protected internal MyClass() { } // _fields never initialized!
+
 // ❌ Duplicate validation (pick ONE approach)
 Contract.Requires(param != null);
 if (param == null) throw new ArgumentNullException(nameof(param)); // Don't use both!
 
 // ❌ Silent exception swallowing
 catch (Exception) { return null; } // Log the error at minimum
+```
+
+### Field Initialization - CRITICAL
+
+**NEVER use `= null!` to suppress CS8618 warnings.** This is suppressing the problem, not fixing it.
+
+```csharp
+// ❌ WRONG: Suppresses CS8618, no guarantee of initialization
+private readonly MyType _field = null!;
+protected MyClass() { } // Forgot to initialize!
+
+// ✅ CORRECT: Initialize in declaration
+private readonly MyType _field = new MyType();
+
+// ✅ CORRECT: Initialize in ALL constructors
+private readonly MyType _field;
+protected MyClass() { _field = new MyType(); }
+protected MyClass(MyType field) { _field = field; }
+
+// ✅ CORRECT: Make nullable if null is valid
+private readonly MyType? _field;
+protected MyClass() { _field = null; } // Explicitly null
 ```
 
 ## Exception Handling
@@ -156,6 +182,75 @@ public class Given_some_context : ContextSpecification
 - Use `MockWorkItem`, `MockRevision`, etc. from `Qwiq.Mocks`
 - `IEnumerable` collections need `.First()` or `.ToList()` for indexing
 - SOAP-specific classes are `internal` and require TFS infrastructure
+
+## ⚠️ MANDATORY: Test-Driven Development for Refactoring
+
+When making refactoring changes (nullable fixes, initialization changes, interface updates), you **MUST** use TDD:
+
+### TDD Workflow
+
+**Step 1: Write Tests BEFORE Code Changes**
+```csharp
+// Document current behavior with tests
+[TestClass]
+public class Given_WorkItemCore_with_parameterless_constructor : ContextSpecification
+{
+    private TestableWorkItemCore? _result;
+
+    public override void When()
+    {
+        _result = new TestableWorkItemCore();
+    }
+
+    [TestMethod]
+    public void Should_allow_field_operations()
+    {
+        _result!.SetValue("test", "value");
+        var value = _result!.GetValue("test");
+        value.ShouldEqual("value");
+    }
+}
+```
+
+**Step 2: Verify Tests Pass**
+```bash
+dotnet test --filter "FullyQualifiedName~WorkItemCore"
+# All tests should PASS before making changes
+```
+
+**Step 3: Make Code Changes**
+```csharp
+// Fix null! suppression with proper initialization
+private readonly Dictionary<string, object?> _fields;
+
+protected internal WorkItemCore()
+{
+    _fields = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+}
+```
+
+**Step 4: Verify Tests Still Pass**
+```bash
+dotnet test --filter "FullyQualifiedName~WorkItemCore"
+# All tests should STILL PASS after changes
+```
+
+### When TDD is Required
+
+- Fixing CS8618 warnings (field initialization)
+- Fixing CS8625 warnings (null literal assignments)
+- Removing `null!` suppressions
+- Changing constructor signatures
+- Any change that could affect runtime behavior
+
+### Test Coverage for Initialization Fixes
+
+When fixing field initialization, write tests for:
+- All constructor overloads
+- Lazy initialization behavior
+- Property accessors
+- Null handling
+- Edge cases
 
 ## Validation Checklist
 

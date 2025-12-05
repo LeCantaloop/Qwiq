@@ -4,9 +4,9 @@ namespace Qwiq.WorkItemStore.Soap
 {
     public abstract class WorkItemStoreFactoryContextSpecification : TimedContextSpecification
     {
-        protected IWorkItemStoreFactory Instance { get; private set; }
+        protected IWorkItemStoreFactory Instance { get; private set; } = null!;
 
-        protected IWorkItemStore WorkItemStore { get; private set; }
+        protected IWorkItemStore WorkItemStore { get; private set; } = null!;
 
         public override void Cleanup()
         {

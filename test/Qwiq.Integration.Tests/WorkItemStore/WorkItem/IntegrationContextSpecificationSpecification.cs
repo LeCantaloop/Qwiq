@@ -24,8 +24,8 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         public override void When()
         {
-            SoapResult.WorkItem = TimedAction(() => SoapResult.WorkItemStore.Query(Id), "SOAP", "Query By Id");
-            RestResult.WorkItem = TimedAction(() => RestResult.WorkItemStore.Query(Id), "REST", "Query By Id");
+            SoapResult.WorkItem = TimedAction(() => SoapResult.WorkItemStore!.Query(Id), "SOAP", "Query By Id");
+            RestResult.WorkItem = TimedAction(() => RestResult.WorkItemStore!.Query(Id), "REST", "Query By Id");
         }
     }
 
@@ -37,7 +37,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void AreaPath_is_equal()
         {
-            RestResult.WorkItem.AreaPath.ShouldEqual(SoapResult.WorkItem.AreaPath);
+            RestResult.WorkItem!.AreaPath.ShouldEqual(SoapResult.WorkItem!.AreaPath);
 
             RestResult.WorkItem[CoreFieldRefNames.AreaPath].ShouldEqual(RestResult.WorkItem.AreaPath);
             RestResult.WorkItem.Fields[CoreFieldRefNames.AreaPath].Value.ShouldEqual(RestResult.WorkItem.AreaPath);
@@ -58,8 +58,8 @@ namespace Qwiq.WorkItemStore.WorkItem
             {
                 try
                 {
-                    var restValue = (DateTime?)RestResult.WorkItem[field];
-                    var soapValue = (DateTime)SoapResult.WorkItem[field];
+                    var restValue = (DateTime?)RestResult.WorkItem![field];
+                    var soapValue = (DateTime)SoapResult.WorkItem![field]!;
 
                     restValue.GetValueOrDefault().ShouldEqual(soapValue.ToUniversalTime(), field);
                 }
@@ -91,8 +91,8 @@ namespace Qwiq.WorkItemStore.WorkItem
             {
                 try
                 {
-                    var restValue = RestResult.WorkItem[field]?.ToString();
-                    var soapValue = SoapResult.WorkItem[field]?.ToString();
+                    var restValue = RestResult.WorkItem![field]?.ToString();
+                    var soapValue = SoapResult.WorkItem![field]?.ToString();
 
                     // If there is an identity field, drop the account name that REST returns to us
                     restValue = new IdentityFieldValue(restValue).DisplayName;
@@ -115,7 +115,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void CoreFields_by_Fields_indexer_are_equal()
         {
-            string GetValue(IWorkItem item, string field)
+            string? GetValue(IWorkItem item, string field)
             {
                 return item.Fields[field]?.Value?.ToString();
             }
@@ -129,7 +129,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void CoreFields_by_this_indexer_are_equal()
         {
-            string GetValue(IWorkItem item, string field)
+            string? GetValue(IWorkItem item, string field)
             {
                 return item[field]?.ToString();
             }
@@ -143,7 +143,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         [TestCategory("REST")]
         public void CreatedDate_is_equal()
         {
-            RestResult.WorkItem.CreatedDate.ShouldEqual(SoapResult.WorkItem.CreatedDate.ToUniversalTime());
+            RestResult.WorkItem!.CreatedDate.ShouldEqual(SoapResult.WorkItem!.CreatedDate.ToUniversalTime());
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace Qwiq.WorkItemStore.WorkItem
         {
             var exceptions = new List<Exception>();
 
-            Action<object, object> AssertAreEqual = (restValue, soapValue) =>
+            Action<object?, object?> AssertAreEqual = (restValue, soapValue) =>
                                                         {
                                                             try
                                                             {
@@ -168,9 +168,9 @@ namespace Qwiq.WorkItemStore.WorkItem
 
             try
             {
-                AssertAreEqual(RestResult.WorkItem.Id, SoapResult.WorkItem.Id);
-                AssertAreEqual(RestResult.WorkItem.Title, SoapResult.WorkItem.Title);
-                AssertAreEqual(RestResult.WorkItem.WorkItemType, SoapResult.WorkItem.WorkItemType);
+                AssertAreEqual(RestResult.WorkItem!.Id, SoapResult.WorkItem!.Id);
+                AssertAreEqual(RestResult.WorkItem!.Title, SoapResult.WorkItem!.Title);
+                AssertAreEqual(RestResult.WorkItem!.WorkItemType, SoapResult.WorkItem!.WorkItemType);
             }
             catch (Exception e)
             {
@@ -188,14 +188,14 @@ namespace Qwiq.WorkItemStore.WorkItem
         {
             AssertWorkItemExpandConfiguration();
 
-            RestResult.WorkItem.RelatedLinkCount.ShouldEqual(SoapResult.WorkItem.RelatedLinkCount);
+            RestResult.WorkItem!.RelatedLinkCount.ShouldEqual(SoapResult.WorkItem!.RelatedLinkCount);
         }
 
         private void AssertWorkItemExpandConfiguration()
         {
             // This is a test setup issue, not an environment data issue.
             // The Given() method should configure WorkItemExpand appropriately.
-            if (RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.None
+            if (RestResult.WorkItemStore!.Configuration.WorkItemExpand == WorkItemExpand.None
                 || RestResult.WorkItemStore.Configuration.WorkItemExpand == WorkItemExpand.Fields)
             {
                 Assert.Fail(
@@ -205,7 +205,7 @@ namespace Qwiq.WorkItemStore.WorkItem
             }
         }
 
-        private void GetCoreFieldComparisonAssertions(Func<IWorkItem, string, string> GetValue)
+        private void GetCoreFieldComparisonAssertions(Func<IWorkItem, string, string?> GetValue)
         {
             var exceptions = new List<Exception>();
 
@@ -244,8 +244,8 @@ namespace Qwiq.WorkItemStore.WorkItem
             {
                 try
                 {
-                    var restValue = GetValue(RestResult.WorkItem, field);
-                    var soapValue = GetValue(SoapResult.WorkItem, field);
+                    var restValue = GetValue(RestResult.WorkItem!, field);
+                    var soapValue = GetValue(SoapResult.WorkItem!, field);
 
                     // We do approximate equality here:
                     // - SOAP "fixes" values of certain types before returning, REST does not

@@ -8,9 +8,9 @@ namespace Qwiq.Project
     {
         private Guid projectId;
 
-        protected IProject RestProject { get; private set; }
+        protected IProject RestProject { get; private set; } = null!;
 
-        protected IProject SoapProject { get; private set; }
+        protected IProject SoapProject { get; private set; } = null!;
 
         public override void Given()
         {

@@ -197,7 +197,7 @@ namespace Qwiq.Mocks
                                             {
                                                 bool Predicate(ITeamFoundationIdentity identity)
                                                 {
-                                                    return Comparer.OrdinalIgnoreCase.Equals(identity.GetUserAccountName(), searchFactor);
+                                                    return Comparer.OrdinalIgnoreCase.Equals(identity.GetUserAccountName()!, searchFactor);
                                                 }
 
                                                 return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(

@@ -17,8 +17,8 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         public override void When()
         {
-            RestResult.WorkItem = TimedAction(() => RestResult.WorkItemStore.Query(Wiql).Single(), "REST", "Query");
-            SoapResult.WorkItem = TimedAction(() => SoapResult.WorkItemStore.Query(Wiql).Single(), "SOAP", "Query");
+            RestResult.WorkItem = TimedAction(() => RestResult.WorkItemStore!.Query(Wiql).Single(), "REST", "Query");
+            SoapResult.WorkItem = TimedAction(() => SoapResult.WorkItemStore!.Query(Wiql).Single(), "SOAP", "Query");
         }
     }
 }

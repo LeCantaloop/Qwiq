@@ -6,7 +6,7 @@ namespace Qwiq.Mapper.Identity
 {
     public class MultipleDisplayNameContextSpecification : DisplayNameToAliasConverterContextSpecification
     {
-        protected internal string[] DisplayNames { get; set; }
+        protected internal string[] DisplayNames { get; set; } = null!;
 
         [TestMethod]
         [TestCategory("localOnly")]

@@ -4,9 +4,9 @@ namespace Qwiq.Project
 {
     public abstract class ProjectContextSpecificationSpecification : WorkItemStoreComparisonContextSpecification
     {
-        protected IProjectCollection RestProjects { get; set; }
+        protected IProjectCollection RestProjects { get; set; } = null!;
 
-        protected IProjectCollection SoapProjects { get; set; }
+        protected IProjectCollection SoapProjects { get; set; } = null!;
 
         public override void When()
         {
