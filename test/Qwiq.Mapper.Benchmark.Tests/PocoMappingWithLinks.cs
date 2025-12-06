@@ -40,6 +40,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
         {
             private WorkItemMapper _mapper = null!;
             private IEnumerable<IWorkItem> _items = null!;
+            private static readonly string[] propertiesToSkip = new[] { "Revisions", "Item" };
 
             [GlobalSetup]
             public void SetupData()
@@ -49,7 +50,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
                                                                         () => wis.Create(),
                                                                         wis.WorkItemLinkTypes[CoreLinkTypeReferenceNames.Hierarchy],
                                                                         (e, s, t) => new MockRelatedLink(e, s, t),
-                                                                        new[] { "Revisions", "Item" });
+                                                                        propertiesToSkip);
                 wis.Add(generator.Generate());
                 var propertyInspector = new PropertyInspector(new PropertyReflector());
                 var mappingStrategies = new IWorkItemMapperStrategy[]
@@ -76,6 +77,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
 namespace Qwiq.Mapper
 {
     [TestClass]
+    [TestCategory(Constants.TestCategory.Benchmark)]
     public class Given_a_set_of_WorkItems_with_Links_with_an_AttributeMapperStrategy_and_WorkItemLinksMapperStrategy : ContextSpecification
     {
         private B.Benchmark _benchmark = null!;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Qwiq.Linq.Fragments
@@ -21,7 +22,7 @@ namespace Qwiq.Linq.Fragments
                 ? $"([{CoreFieldRefNames.WorkItemType}] IN ({{0}}))"
                 : $"([{CoreFieldRefNames.WorkItemType}] = {{0}})";
             var replacement = string.Join(", ", _workItemTypes.Select(t => "'" + t + "'"));
-            return string.Format(format, replacement);
+            return string.Format(CultureInfo.InvariantCulture, format, replacement);
         }
 
         public bool IsValid()

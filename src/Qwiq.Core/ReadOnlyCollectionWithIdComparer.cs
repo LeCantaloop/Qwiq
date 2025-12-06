@@ -27,7 +27,7 @@ namespace Qwiq
             }
 
             // If there are any items left then fail
-            if (source.Any()) return false;
+            if (source.Count > 0) return false;
 
             return true;
         }

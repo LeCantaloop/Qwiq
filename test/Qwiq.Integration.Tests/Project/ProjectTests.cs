@@ -156,7 +156,7 @@ namespace Qwiq.Project
                 exceptions.Add(e);
             }
 
-            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
     }
 }

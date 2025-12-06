@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -17,7 +18,7 @@ namespace Qwiq
             sb.AppendLine("{");
             sb.Append(string.Join(",\n", enumerable.Select(x => ToUsefulString((object?)x).Tab()).Take(limit).ToArray()));
             if (enumerable.Count() > limit)
-                if (enumerable.Count() > limit + 1) sb.AppendLine($",\n  ...({enumerable.Count() - limit} more elements)");
+                if (enumerable.Count() > limit + 1) sb.AppendLine(string.Format(CultureInfo.InvariantCulture, ",\n  ...({0} more elements)", enumerable.Count() - limit));
                 else sb.AppendLine(",\n" + ToUsefulString((object?)enumerable.Last()).Tab());
             else sb.AppendLine();
 
@@ -52,7 +53,7 @@ namespace Qwiq
 
             str = str.Trim();
 
-            if (str.Contains("\n")) return string.Format("{1}:\r\n[\r\n{0}\r\n]", str.Tab(), obj.GetType());
+            if (str.Contains('\n')) return string.Format(CultureInfo.InvariantCulture, "{1}:\r\n[\r\n{0}\r\n]", str.Tab(), obj.GetType());
 
             return obj.GetType().ToString() == str ? obj.GetType().ToString() : $"{obj.GetType()}:[{str}]";
         }

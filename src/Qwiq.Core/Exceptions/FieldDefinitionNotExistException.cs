@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using System.Globalization;
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Qwiq
 {
@@ -41,6 +43,7 @@ namespace Qwiq
         {
         }
 
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldDefinitionNotExistException"/> class.
         /// </summary>
@@ -50,5 +53,6 @@ namespace Qwiq
             : base(info, context)
         {
         }
+#endif
     }
 }

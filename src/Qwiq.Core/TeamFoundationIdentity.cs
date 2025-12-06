@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.Services.Common;
+using Microsoft.VisualStudio.Services.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ namespace Qwiq
 {
     public abstract class TeamFoundationIdentity : ITeamFoundationIdentity, IEquatable<ITeamFoundationIdentity>
     {
-        protected internal static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = new IIdentityDescriptor[0];
+        protected internal static readonly IIdentityDescriptor[] ZeroLengthArrayOfIdentityDescriptor = Array.Empty<IIdentityDescriptor>();
         private string? _uniqueName;
 
         protected internal TeamFoundationIdentity(
@@ -85,6 +85,7 @@ namespace Qwiq
                     _uniqueName = string.IsNullOrEmpty(domain)
                                       ? account
                                       : string.Format(
+                                          CultureInfo.InvariantCulture,
                                           IdentityConstants.DomainQualifiedAccountNameFormat,
                                           domain,
                                           account);
@@ -93,7 +94,7 @@ namespace Qwiq
                 {
                     _uniqueName = string.IsNullOrEmpty(domain)
                                       ? $"{account}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}"
-                                      : $"{string.Format(IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}";
+                                      : $"{string.Format(CultureInfo.InvariantCulture, IdentityConstants.DomainQualifiedAccountNameFormat, domain, account)}:{UniqueUserId.ToString(CultureInfo.InvariantCulture)}";
                 }
 
                 return _uniqueName!;

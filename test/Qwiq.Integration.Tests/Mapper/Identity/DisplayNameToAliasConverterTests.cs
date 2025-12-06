@@ -219,6 +219,15 @@ namespace Qwiq.Mapper.Identity
         [TestMethod]
         [TestCategory("localOnly")]
         [TestCategory("SOAP")]
+        public new void Converted_value_contains_a_single_result()
+        {
+            var result = (string)ConvertedValue;
+            result.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        [TestCategory("localOnly")]
+        [TestCategory("SOAP")]
         public new void Converted_value_result_is_expected_value()
         {
             ((string)ConvertedValue).ShouldBe(TestData.TestUserAlias, Comparer.OrdinalIgnoreCase);

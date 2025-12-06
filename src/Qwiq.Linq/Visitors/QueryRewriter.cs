@@ -95,23 +95,74 @@ namespace Qwiq.Linq.Visitors
                 return new NotInGroupExpression(node.Type, subject, target);
             }
 
-            // This is a contains used to see if a value is in a list, such as: bug => aliases.Contains(bug.AssignedTo)
-            if (node.Method.DeclaringType == typeof(Enumerable) && node.Method.Name == "Contains")
+            // Handle Contains method calls
+            if (node.Method.Name == "Contains")
             {
-                var subject = Visit(node.Arguments[1]);
-                var target = Visit(node.Arguments[0]);
+                var declaringType = node.Method.DeclaringType;
 
-                return new InExpression(node.Type, subject, target);
+                // This is a contains used to do substring matching on a value, such as: bug => bug.Status.Contains("Approved")
+                if (declaringType == typeof(string))
+                {
+                    var subject = Visit(node.Object);
+                    var target = Visit(node.Arguments[0]);
+
+                    return new ContainsExpression(node.Type, subject!, target!);
+                }
+
+                // This is a contains used to see if a value is in a list, such as: bug => aliases.Contains(bug.AssignedTo)
+                // Supports: Enumerable.Contains, MemoryExtensions.Contains (arrays in .NET 9+), and IEnumerable<T> extensions
+                // Excludes: Collection<T>.Contains, HashSet<T>.Contains, List<T>.Contains (unsupported instance methods)
+
+                // Check for unsupported collection types (these have Contains as instance methods, not extensions)
+                var isUnsupportedCollection =
+                    declaringType?.Name == "Collection`1" ||
+                    declaringType?.Name == "HashSet`1" ||
+                    declaringType?.Name == "List`1";
+
+                if (isUnsupportedCollection)
+                {
+                    // These are not supported - let it fall through to throw NotSupportedException
+                }
+                else
+                {
+                    // Supported Contains - determine argument pattern
+                    Expression subject, target;
+
+                    if (node.Arguments.Count == 2)
+                    {
+                        // Extension method pattern: Contains(source, value)
+                        // For MemoryExtensions.Contains, the first argument may be wrapped in an op_Implicit conversion
+                        // to ReadOnlySpan<T>. We need to unwrap it to get the original collection.
+                        var sourceArg = node.Arguments[0];
+
+                        // Unwrap ReadOnlySpan implicit conversions (e.g., array -> ReadOnlySpan)
+                        if (sourceArg is MethodCallExpression conversionCall &&
+                            conversionCall.Method.Name == "op_Implicit" &&
+                            conversionCall.Method.DeclaringType?.Name.StartsWith("ReadOnlySpan", StringComparison.Ordinal) == true)
+                        {
+                            sourceArg = conversionCall.Arguments[0];
+                        }
+
+                        target = Visit(sourceArg);
+                        subject = Visit(node.Arguments[1]);
+                    }
+                    else if (node.Arguments.Count == 1)
+                    {
+                        // Instance method syntax: source.Contains(value)
+                        subject = Visit(node.Arguments[0]);
+                        target = Visit(node.Object!);
+                    }
+                    else
+                    {
+                        // Unknown Contains signature - fall through
+                        goto unknown_method;
+                    }
+
+                    return new InExpression(node.Type, subject, target);
+                }
             }
 
-            // This is a contains used to do substring matching on a value, such as: bug => bug.Status.Contains("Approved")
-            if (node.Method.DeclaringType == typeof(string) && node.Method.Name == "Contains")
-            {
-                var subject = Visit(node.Object);
-                var target = Visit(node.Arguments[0]);
-
-                return new ContainsExpression(node.Type, subject!, target!);
-            }
+        unknown_method:
 
             if (node.Method.DeclaringType == typeof(QueryExtensions) && node.Method.Name == "AsOf")
             {

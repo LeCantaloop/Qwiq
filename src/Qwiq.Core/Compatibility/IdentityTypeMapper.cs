@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.Services.Identity
                     return name;
                 }
             }
-            return string.Format("UnknownIdentityType_{0}", typeId);
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "UnknownIdentityType_{0}", typeId);
         }
 
         /// <summary>

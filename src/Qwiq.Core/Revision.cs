@@ -58,7 +58,7 @@ namespace Qwiq
         {
             get
             {
-                if (name == null) throw new ArgumentNullException(nameof(name));
+                ArgumentNullException.ThrowIfNull(name);
                 return Fields[name].Value;
             }
         }

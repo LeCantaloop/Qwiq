@@ -1,5 +1,6 @@
 ﻿/
 |-- Qwiq.Core.nuspec
+|-- README.md
 |-- lib
 |   |-- net472
 |   |   |-- Qwiq.Core.dll

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Qwiq.Credentials;
 using Qwiq.Exceptions;
@@ -15,7 +15,7 @@ namespace Qwiq.Client.Rest
 
         public override IWorkItemStore Create(AuthenticationOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             var tfsProxy = (IInternalTeamProjectCollection)TfsConnectionFactory.Default.Create(options);
             var wis = CreateRestWorkItemStore(tfsProxy);

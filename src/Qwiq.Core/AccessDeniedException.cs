@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Qwiq
 {
@@ -18,8 +20,10 @@ namespace Qwiq
         {
         }
 
+#if NETFRAMEWORK || NETSTANDARD2_0
         protected AccessDeniedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
+#endif
     }
 }

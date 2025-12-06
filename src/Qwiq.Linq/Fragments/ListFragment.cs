@@ -20,7 +20,7 @@ namespace Qwiq.Linq.Fragments
 
         public bool IsValid()
         {
-            return _fragments.Any() && _fragments.All(fragment => fragment.IsValid());
+            return _fragments.Count != 0 && _fragments.All(fragment => fragment.IsValid());
         }
     }
 }

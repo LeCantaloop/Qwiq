@@ -1,1 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">  <PropertyGroup>    <TargetFrameworks>net472;net8.0</TargetFrameworks>    <RootNamespace>Qwiq.Mocks</RootNamespace>    <AssemblyName>Qwiq.Mocks</AssemblyName>    <Description>QWIQ Mocks - Mock implementations for testing</Description>    <PackageId>Qwiq.Mocks</PackageId>    <IsPackable>true</IsPackable>  </PropertyGroup>  <ItemGroup>    <PackageReference Include="Microsoft.VisualStudio.Services.Client" />    <PackageReference Include="Newtonsoft.Json" />  </ItemGroup>  <ItemGroup>    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />    <ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />  </ItemGroup>    <ItemGroup>    <None Include="Qwiq.Mocks.nuspec" />  </ItemGroup></Project>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+		<TargetFrameworks>net472;net8.0</TargetFrameworks>
+		<RootNamespace>Qwiq.Mocks</RootNamespace>
+		<AssemblyName>Qwiq.Mocks</AssemblyName>
+		<Description>QWIQ Mocks - Mock implementations for testing</Description>
+		<PackageId>Qwiq.Mocks</PackageId>
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\docs\package-readme\Qwiq.Mocks.md" Pack="true" PackagePath="README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Services.Client" />
+		<PackageReference Include="Newtonsoft.Json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+		<ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Qwiq.Mocks.nuspec" />
+	</ItemGroup>
+</Project>

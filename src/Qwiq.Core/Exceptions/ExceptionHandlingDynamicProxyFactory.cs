@@ -1,5 +1,6 @@
 using Castle.DynamicProxy;
 
+using System;
 using System.Diagnostics.Contracts;
 
 namespace Qwiq.Exceptions
@@ -18,8 +19,9 @@ namespace Qwiq.Exceptions
         {
             Contract.Requires(instance != null);
             Contract.Ensures(Contract.Result<T>() != null);
+            ArgumentNullException.ThrowIfNull(instance);
 
-            return (T)Generator.CreateInterfaceProxyWithTarget(typeof(T), instance, Options, Proxy);
+            return Generator.CreateInterfaceProxyWithTarget<T>(instance, Options, Proxy);
         }
         internal static T Create<T>(
             T instance,
@@ -28,10 +30,11 @@ namespace Qwiq.Exceptions
             where T : class
         {
             Contract.Requires(instance != null);
+            ArgumentNullException.ThrowIfNull(instance);
 
             var proxy = new ExceptionHandlingDynamicProxy(new ExceptionMapper(exploders ?? ExceptionExploders, mappers ?? ExceptionMappers));
 
-            return (T)Generator.CreateInterfaceProxyWithTarget(typeof(T), instance, Options, proxy);
+            return Generator.CreateInterfaceProxyWithTarget<T>(instance, Options, proxy);
         }
     }
 }

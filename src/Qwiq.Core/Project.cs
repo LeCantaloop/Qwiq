@@ -1,8 +1,12 @@
-﻿using System;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Qwiq
 {
+    /// <summary>
+    /// Represents a Team Project in TFS/Azure DevOps.
+    /// </summary>
     public class Project : IProject, IEquatable<IProject>
     {
         private readonly Lazy<IWorkItemClassificationNodeCollection<int>> _area;
@@ -48,6 +52,8 @@ namespace Qwiq
 
         public IWorkItemClassificationNodeCollection<int> AreaRootNodes => _area.Value;
 
+        /// <inheritdoc />
+        [SuppressMessage("Naming", "CA1720:Identifier contains type name", Justification = "Guid property name matches TFS/Azure DevOps API naming convention.")]
         public Guid Guid { get; }
 
         public IWorkItemClassificationNodeCollection<int> IterationRootNodes => _iteration.Value;

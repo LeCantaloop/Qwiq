@@ -93,7 +93,7 @@ namespace Qwiq.Mocks
                         if (!StringComparer.OrdinalIgnoreCase.Equals(linkPredicate.Item3, li.LinkType.ImmutableName)) continue;
 
                         // The link type immutable name matches. Check for additional predicates
-                        if (!fieldPredicateGroups.Any())
+                        if (fieldPredicateGroups.Count == 0)
                         {
                             // No additional predicates -- return the link
                             yield return li;
@@ -179,7 +179,7 @@ namespace Qwiq.Mocks
                     }
                 }
             }
-            else if (_parts.Any())
+            else if (_parts.Count != 0)
             {
                 var fieldPredicateGroups = _parts.GroupBy(k => k.Item2, e => e).ToList();
                 foreach (var workItem in _store._lookup.Values)

@@ -1,8 +1,8 @@
 # QWIQ
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/LeCantaloop/Qwiq/blob/master/LICENSE) [![Build status: DEVELOP](https://ci.appveyor.com/api/projects/status/jfi0nejktfny3dkf/branch/develop?svg=true)](https://ci.appveyor.com/project/LeCantaloop/microsoft-qwiq/branch/develop)
-
-[![MyGet](https://img.shields.io/myget/qwiq/v/Qwiq.Core.svg)](https://myget.org/feed/qwiq/package/nuget/Qwiq.Core) [![MyGet](https://img.shields.io/myget/qwiq/vpre/Qwiq.Core.svg)](https://myget.org/feed/qwiq/package/nuget/Qwiq.Core)
+[![Build](https://github.com/rjmurillo/Qwiq/actions/workflows/main.yml/badge.svg)](https://github.com/rjmurillo/Qwiq/actions/workflows/main.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rjmurillo/Qwiq/blob/master/LICENSE)
+[![NuGet](https://img.shields.io/nuget/v/Qwiq.Core.svg)](https://www.nuget.org/packages/Qwiq.Core/)
 
 QWIQ is a **Q**uick **W**ork **I**tem **Q**uery library for Team Foundation Server / Visual Studio Online. If you do a lot of reading or writing of work items, this package is for you!
 

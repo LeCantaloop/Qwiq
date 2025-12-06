@@ -49,7 +49,7 @@ namespace Qwiq.Mapper
 
         public override void When()
         {
-            Bugs = Query.Where(b => _ids.Contains(b.Id.Value));
+            Bugs = Query.Where(b => b.Id.HasValue && _ids.Contains(b.Id.Value));
         }
 
         protected abstract void ConfigureOptions();

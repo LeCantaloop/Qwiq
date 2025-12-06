@@ -36,7 +36,7 @@ namespace Qwiq.Exceptions
     {
         public override void Given()
         {
-            ExceptionExploders = new IExceptionExploder[0];
+            ExceptionExploders = Array.Empty<IExceptionExploder>();
             ExceptionMappers = new[] { new MockArgumentExceptionMapper() };
             Input = new ArgumentException(null, MockArgumentExceptionMapper.MockParamName);
             base.Given();
@@ -54,7 +54,7 @@ namespace Qwiq.Exceptions
     {
         public override void Given()
         {
-            ExceptionExploders = new IExceptionExploder[0];
+            ExceptionExploders = Array.Empty<IExceptionExploder>();
             ExceptionMappers = new[] { new MockArgumentExceptionMapper() };
             Input = new ArgumentNullException();
             base.Given();
@@ -94,7 +94,7 @@ namespace Qwiq.Exceptions
 
         public override void Given()
         {
-            ExceptionExploders = new IExceptionExploder[0];
+            ExceptionExploders = Array.Empty<IExceptionExploder>();
             ExceptionMappers = new[] { new MockVssExceptionMapper<T>(HandledErrorCodes.ToArray()) };
             base.Given();
         }
@@ -105,7 +105,7 @@ namespace Qwiq.Exceptions
     {
         public override void Given()
         {
-            HandledErrorCodes = new int[] { };
+            HandledErrorCodes = Array.Empty<int>();
             Input = new VssServiceException("TFabcd: This is a sample exception");
             base.Given();
         }

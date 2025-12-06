@@ -224,6 +224,68 @@ If you have questions about the migration:
 - Create an issue on GitHub
 - The workflow is designed to be self-documenting with comments
 
+## Package Testing Modernization (December 2025)
+
+### Context
+
+As part of the ongoing repository modernization effort, the package baseline testing strategy was updated to use the [Verify.Nupkg](https://github.com/MattKotsenas/Verify.Nupkg) plugin for snapshot testing NuGet packages.
+
+### Changes Made
+
+1. **Integrated Verify.Nupkg Plugin**
+
+   - Added `<PackageReference Include="Verify.Nupkg" />` to `Qwiq.Package.Tests.csproj`
+   - Added `VerifyNupkg.Initialize();` call in `ModuleInitializer.cs`
+   - Replaced 150+ lines of custom ZIP parsing/tree generation with `VerifyFile().ScrubNuspec()`
+
+2. **Package Deduplication Logic**
+
+   - Implemented timestamp-based deduplication to handle incremental builds
+   - Uses `GroupBy(GetPackageDiscriminator).Select(group => group.OrderByDescending(LastWriteTimeUtc).First())`
+   - Prevents test failures from multiple package versions in build output
+
+3. **Symbol Package Testing Deferred**
+
+   - Verify.Nupkg currently only supports `.nupkg` files (not `.snupkg`)
+   - Deleted 9 `.snupkg.verified` baseline files temporarily
+   - Added logging to track skipped symbol packages
+   - Documented feature request in `docs/issues/verify-nupkg-snupkg-support.md`
+   - Upstream tracking: [MattKotsenas/Verify.Nupkg#38](https://github.com/MattKotsenas/Verify.Nupkg/issues/38)
+
+4. **Workflow Optimization**
+   - Removed redundant `dotnet pack` step (packages now generated during build via `GeneratePackageOnBuild`)
+   - Package artifacts still uploaded to CI as part of build outputs
+
+### Benefits
+
+- **Reduced Maintenance**: Leverages upstream plugin instead of custom parsing logic
+- **Better Snapshots**: Verify.Nupkg provides structured tree view and scrubbed manifests
+- **Consistent Testing**: Same verification approach as other snapshot tests in the repository
+- **Future-Ready**: Easy to restore symbol package baselines once upstream support lands
+
+### Migration Path for Symbol Packages
+
+When Verify.Nupkg adds `.snupkg` support:
+
+1. Update `GetPackages()` to include `.snupkg` files in discovery
+2. Remove skip logging for symbol packages
+3. Regenerate 9 `.snupkg.verified` baseline files (one per library project)
+4. Update test documentation
+
+### Test Results
+
+- **Before**: 18 tests (9 .nupkg + 9 .snupkg), custom parsing logic
+- **Current**: 10 tests (9 .nupkg + 1 shared test method), Verify.Nupkg plugin
+- **After Upstream**: 18 tests again (9 .nupkg + 9 .snupkg), unified verification approach
+
+### References
+
+- Feature request: `docs/issues/verify-nupkg-snupkg-support.md`
+- Upstream issue: https://github.com/MattKotsenas/Verify.Nupkg/issues/38
+- Test implementation: `test/Qwiq.Package.Tests/PackageTests.cs`
+
+---
+
 ## Summary
 
 The migration is complete and ready for testing. The new workflow:
@@ -233,5 +295,6 @@ The migration is complete and ready for testing. The new workflow:
 - ✅ Uses proper .NET Framework tools
 - ✅ Includes comprehensive documentation
 - ✅ Passed all quality checks
+- ✅ Modernized package testing with Verify.Nupkg plugin
 
 The only remaining step is to approve and test the workflow!

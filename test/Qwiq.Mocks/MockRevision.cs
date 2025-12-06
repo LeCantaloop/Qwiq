@@ -7,13 +7,13 @@ namespace Qwiq.Mocks
 {
     public class MockRevision : Revision
     {
-        public MockRevision(Dictionary<string, object> dictionary, int index)
+        public MockRevision(Dictionary<string, object?> dictionary, int index)
             : base(new MockFieldDefinitionCollection(dictionary.Keys.Select(MockFieldDefinition.Create)), index)
         {
             Contract.Requires(dictionary != null);
             Contract.Requires(index > 0);
 
-            if (dictionary == null) throw new System.ArgumentNullException(nameof(dictionary));
+            ArgumentNullException.ThrowIfNull(dictionary);
             var fieldDefs = base.FieldDefinitions!;
             foreach (var kvp in dictionary)
             {
@@ -22,8 +22,8 @@ namespace Qwiq.Mocks
             }
         }
 
-        public MockRevision(Dictionary<string, object> dictionary)
-            : this(dictionary, (int)dictionary["Index"])
+        public MockRevision(Dictionary<string, object?> dictionary)
+            : this(dictionary, (int)dictionary["Index"]!)
         {
 
         }

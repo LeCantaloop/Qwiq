@@ -12,8 +12,8 @@ namespace Qwiq.Linq
     {
         public static object Project(IEnumerable<LambdaExpression> projections, IEnumerable<object> data)
         {
-            if (projections == null) throw new ArgumentNullException(nameof(projections));
-            if (data == null) throw new ArgumentNullException(nameof(data));
+            ArgumentNullException.ThrowIfNull(projections);
+            ArgumentNullException.ThrowIfNull(data);
             Contract.Requires(projections != null);
             Contract.Requires(data != null);
 

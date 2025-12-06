@@ -11,7 +11,8 @@ namespace Qwiq
     {
         private readonly Func<T, TId> _idFunc;
 
-        private readonly IDictionary<TId, int> _mapById;
+        // The null! is intentional - the field is guaranteed to be initialized before use via Ensure()
+        private readonly Dictionary<TId, int> _mapById = null!;
 
 
 

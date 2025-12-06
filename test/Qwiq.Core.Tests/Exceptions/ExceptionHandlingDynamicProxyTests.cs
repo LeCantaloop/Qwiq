@@ -17,7 +17,7 @@ namespace Qwiq.Exceptions
             ProxiedInstance =
                 ExceptionHandlingDynamicProxyFactory.Create(
                         InstanceToProxy,
-                            new IExceptionExploder[0],
+                            Array.Empty<IExceptionExploder>(),
                             new IExceptionMapper[]
                             {
                                 new MockArgumentExceptionMapper()

@@ -26,8 +26,8 @@ namespace Qwiq.Mocks
 
         public MockWorkItemStore(Func<ITeamProjectCollection> tpcFactory, Func<MockWorkItemStore, IQueryFactory> queryFactory)
         {
-            if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
-            if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+            ArgumentNullException.ThrowIfNull(tpcFactory);
+            ArgumentNullException.ThrowIfNull(queryFactory);
 
             _tfs = new Lazy<ITeamProjectCollection>(tpcFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
@@ -76,9 +76,9 @@ namespace Qwiq.Mocks
 
         public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            ArgumentNullException.ThrowIfNull(ids);
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
+            if (ids2.Length == 0) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
             Trace.TraceInformation("Querying for IDs " + string.Join(", ", ids2));
 
@@ -137,7 +137,7 @@ namespace Qwiq.Mocks
             }
 
             // Fourth: If there are any missing wits update the project and reset the project collection
-            if (!missingWits.Any()) return;
+            if (missingWits.Count == 0) return;
             var changesRequired = false;
 
             var newProjects = new List<IProject>();
@@ -151,7 +151,7 @@ namespace Qwiq.Mocks
 
                 var wits = missingWits[project];
 
-                if (!wits.Any())
+                if (wits.Count == 0)
                 {
                     newProjects.Add(project);
                 }
@@ -178,7 +178,7 @@ namespace Qwiq.Mocks
         private void Save(IWorkItem item)
         {
             // Fix the ID
-            if (item.Id == 0) item[CoreFieldRefNames.Id] = _lookup.Keys.Any() ? _lookup.Keys.Max() + 1 : 1;
+            if (item.Id == 0) item[CoreFieldRefNames.Id] = _lookup.Keys.Count != 0 ? _lookup.Keys.Max() + 1 : 1;
 
             var id = item.Id;
 
@@ -189,7 +189,7 @@ namespace Qwiq.Mocks
                             { BaseLinkType.Hyperlink, 0 }
                         };
 
-            if (item.Links != null && item.Links.Any()) foreach (var link in item.Links) l[link.BaseType]++;
+            if (item.Links != null && item.Links.Count != 0) foreach (var link in item.Links) l[link.BaseType]++;
 
             item[CoreFieldRefNames.RelatedLinkCount] = l[BaseLinkType.RelatedLink];
             item[CoreFieldRefNames.ExternalLinkCount] = l[BaseLinkType.ExternalLink];
@@ -264,7 +264,7 @@ namespace Qwiq.Mocks
         {
             var id = item.Id;
             // If there are new links add them back
-            if (item.Links != null && item.Links.Any()) foreach (var link in item.Links) SaveLink(link, id);
+            if (item.Links != null && item.Links.Count != 0) foreach (var link in item.Links) SaveLink(link, id);
         }
     }
 }

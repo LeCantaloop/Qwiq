@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using Qwiq.Linq;
 
@@ -6,7 +6,7 @@ namespace Qwiq.Mapper
 {
     public class MapperTeamFoundationServerWorkItemQueryProvider : TeamFoundationServerWorkItemQueryProvider
     {
-        protected IWorkItemMapper WorkItemMapper;
+        protected IWorkItemMapper WorkItemMapper { get; }
 
         public MapperTeamFoundationServerWorkItemQueryProvider(IWorkItemStore workItemStore,
             IWiqlQueryBuilder queryBuilder, IWorkItemMapper workItemMapper) : base(workItemStore, queryBuilder)

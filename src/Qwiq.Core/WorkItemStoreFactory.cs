@@ -1,4 +1,4 @@
-﻿using Qwiq.Credentials;
+using Qwiq.Credentials;
 
 namespace Qwiq
 {

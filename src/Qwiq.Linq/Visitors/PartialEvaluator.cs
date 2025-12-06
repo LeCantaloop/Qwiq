@@ -40,7 +40,21 @@ namespace Qwiq.Linq.Visitors
 
         private static bool CanBeEvaluatedLocally(Expression expression)
         {
-            return expression.NodeType != ExpressionType.Parameter;
+            if (expression.NodeType == ExpressionType.Parameter)
+            {
+                return false;
+            }
+
+            // Don't try to evaluate ReadOnlySpan conversions - they can't be invoked via DynamicInvoke
+            // because ReadOnlySpan is a ref struct
+            if (expression is MethodCallExpression methodCall &&
+                methodCall.Method.Name == "op_Implicit" &&
+                methodCall.Method.DeclaringType?.Name.StartsWith("ReadOnlySpan", StringComparison.Ordinal) == true)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

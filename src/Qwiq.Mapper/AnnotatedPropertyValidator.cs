@@ -37,7 +37,7 @@ namespace Qwiq.Mapper
 
         public FieldDefinitionAttribute? GetFieldDefinition(PropertyInfo property)
         {
-            if (property == null) throw new ArgumentNullException(nameof(property));
+            ArgumentNullException.ThrowIfNull(property);
             return PropertyInfoFields.GetOrAdd(
                 property,
                 info => _inspector.GetAttribute<FieldDefinitionAttribute>(property));

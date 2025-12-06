@@ -22,7 +22,7 @@ namespace Qwiq.Client.Soap
             _queue = new Queue<Node>();
             _currentGenerationCount = 1;
             _nextGenerationCount = 0;
-            Current = null!;
+            _current = null;
         }
 
         public void Dispose()
@@ -31,9 +31,9 @@ namespace Qwiq.Client.Soap
 
         public bool MoveNext()
         {
-            if (Current == null)
+            if (_current == null)
             {
-                Current = _root;
+                _current = _root;
                 ProcessCurrent();
 
                 return true;
@@ -51,7 +51,7 @@ namespace Qwiq.Client.Soap
                 _nextGenerationCount = 0;
             }
 
-            Current = _queue.Dequeue();
+            _current = _queue.Dequeue();
             ProcessCurrent();
 
             return true;
@@ -62,9 +62,9 @@ namespace Qwiq.Client.Soap
             _currentGenerationCount--;
             if (_currentDepth >= _maxDepth) return;
 
-            Debug.Assert(Current != null, nameof(Current) + " != null");
+            Debug.Assert(_current != null, nameof(_current) + " != null");
 
-            foreach (Node child in Current!.ChildNodes)
+            foreach (Node child in _current!.ChildNodes)
             {
                 _nextGenerationCount++;
                 _queue.Enqueue(child);
@@ -73,15 +73,23 @@ namespace Qwiq.Client.Soap
 
         public void Reset()
         {
-            Current = null;
+            _current = null;
             _queue.Clear();
             _currentGenerationCount = 1;
             _nextGenerationCount = 0;
             _currentDepth = 0;
         }
 
-        public Node? Current { get; private set; }
+        private Node? _current;
 
-        object IEnumerator.Current => Current!;
+        /// <summary>
+        /// Gets the current node. Returns null only before first MoveNext or after Reset.
+        /// </summary>
+        /// <remarks>
+        /// This is internal API and callers should only access Current after MoveNext returns true.
+        /// </remarks>
+        public Node Current => _current!;
+
+        object IEnumerator.Current => Current;
     }
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 
+using Qwiq.Benchmark;
 using Qwiq.Mapper.Benchmark.Tests;
 using Qwiq.Mapper.Mocks;
 using Qwiq.Tests.Common;
@@ -10,6 +11,7 @@ using Should;
 namespace Qwiq.Mapper.AttributeMapper
 {
     [TestClass]
+    [TestCategory(Constants.TestCategory.Benchmark)]
     public class Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy : ContextSpecification
     {
         private BENCHMARK_Given_a_set_of_WorkItems_with_an_AttributeMapperStrategy.Benchmark _benchmark = null!;

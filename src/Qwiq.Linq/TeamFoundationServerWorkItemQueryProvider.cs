@@ -38,7 +38,7 @@ namespace Qwiq.Linq
 
         public object Execute(Expression expression)
         {
-            return ExecuteImpl(expression, TypeSystem.GetElementType(expression.Type));
+            return ExecuteCore(expression, TypeSystem.GetElementType(expression.Type));
         }
 
         public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
@@ -58,7 +58,7 @@ namespace Qwiq.Linq
                                ? typeof(TResult).GetGenericArguments().Single()
                                // TResult is not an IEnumerable`1 collection, but a single item.
                                : typeof(TResult);
-                var result = ExecuteImpl(expression, itemType);
+                var result = ExecuteCore(expression, itemType);
                 var list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(itemType))!;
 
                 var enumerableResult = (IEnumerable)result!;
@@ -71,10 +71,10 @@ namespace Qwiq.Linq
                 return (TResult)list;
             }
 
-            return (TResult)ExecuteImpl(expression, typeof(TResult));
+            return (TResult)ExecuteCore(expression, typeof(TResult));
         }
 
-        protected virtual object ExecuteImpl(Expression expression, Type itemType)
+        protected virtual object ExecuteCore(Expression expression, Type itemType)
         {
             var query = WiqlQueryBuilder.BuildQuery(expression);
             var queryType = query.UnderlyingQueryType ?? itemType;

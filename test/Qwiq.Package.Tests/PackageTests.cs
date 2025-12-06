@@ -1,9 +1,18 @@
 using System.Reflection;
 
 using NuGet.Versioning;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace Qwiq.Package.Tests;
 
+/// <summary>
+/// Tests that verify NuGet package contents against verified baselines.
+/// These tests require all target frameworks to be built and packed, so they
+/// only run on Windows where net472 can be built.
+/// </summary>
+[Trait("TestCategory", "Package")]
 public class PackageTests
 {
     public static TheoryData<string> GetPackages()
@@ -30,18 +39,34 @@ public class PackageTests
                 "Could not find 'src' directory. Unable to locate NuGet packages.");
         }
 
-        // Search for packages in src/**/bin/Release/**/*.nupkg
-        FileInfo[] packages = srcDirectory.GetFiles("Qwiq*.nupkg", SearchOption.AllDirectories)
+        // Search for both .nupkg and .snupkg packages in src/**/bin/Release/**/
+        FileInfo[] nupkgPackages = srcDirectory.GetFiles("Qwiq*.nupkg", SearchOption.AllDirectories)
             .Where(f => f.FullName.Contains(Path.Combine("bin", "Release"), StringComparison.OrdinalIgnoreCase))
-            .OrderBy(fileInfo => fileInfo.Name, StringComparer.Ordinal)
             .ToArray();
 
-        if (packages.Length == 0)
+        FileInfo[] snupkgPackages = srcDirectory.GetFiles("Qwiq*.snupkg", SearchOption.AllDirectories)
+            .Where(f => f.FullName.Contains(Path.Combine("bin", "Release"), StringComparison.OrdinalIgnoreCase))
+            .ToArray();
+
+        if (nupkgPackages.Length == 0)
         {
             throw new InvalidOperationException(
-                "No Qwiq*.nupkg files were found. Ensure the pack step runs before executing this test. " +
+                "No Qwiq*.nupkg or Qwiq*.snupkg files were found. Ensure the pack step runs before executing this test. " +
                 $"Searched in: {srcDirectory.FullName}");
         }
+
+        if (snupkgPackages.Length > 0)
+        {
+            Trace.TraceInformation(
+                "Skipping baseline verification for {0} symbol packages pending Verify.Nupkg support. See https://github.com/MattKotsenas/Verify.Nupkg/issues/38.",
+                snupkgPackages.Length);
+        }
+
+        FileInfo[] packages = nupkgPackages
+            .GroupBy(fileInfo => GetPackageDiscriminator(fileInfo.Name), StringComparer.OrdinalIgnoreCase)
+            .Select(group => group.OrderByDescending(fileInfo => fileInfo.LastWriteTimeUtc).First())
+            .OrderBy(fileInfo => fileInfo.Name, StringComparer.Ordinal)
+            .ToArray();
 
         TheoryData<string> theoryData = new();
         foreach (FileInfo package in packages)
@@ -60,21 +85,30 @@ public class PackageTests
 
         string discriminator = GetPackageDiscriminator(package.Name);
 
-        return VerifyFile(package)
-            .ScrubNuspec()
-            .UseTextForParameters(discriminator);
+        var settings = new VerifySettings();
+        settings.UseTextForParameters(discriminator);
+
+        return VerifyFile(package, settings)
+            .ScrubNuspec();
     }
 
     private static string GetPackageDiscriminator(string packageName)
     {
-        if (packageName.Contains(".symbols.nupkg", StringComparison.Ordinal))
+        // For all package types, extract just the package name without version or extension
+        string baseName = packageName;
+
+        // Remove .symbols.nupkg extension (legacy)
+        if (baseName.Contains(".symbols.nupkg", StringComparison.Ordinal))
         {
-            string baseName = packageName.Replace(".symbols.nupkg", string.Empty, StringComparison.Ordinal);
-            return $"{ExtractPackageName(baseName)}_symbols";
+            baseName = baseName.Replace(".symbols.nupkg", string.Empty, StringComparison.Ordinal);
+        }
+        // Remove .nupkg extension
+        else if (baseName.EndsWith(".nupkg", StringComparison.Ordinal))
+        {
+            baseName = baseName.Replace(".nupkg", string.Empty, StringComparison.Ordinal);
         }
 
-        string name = packageName.Replace(".nupkg", string.Empty, StringComparison.Ordinal);
-        return ExtractPackageName(name);
+        return ExtractPackageName(baseName);
     }
 
     /// <summary>

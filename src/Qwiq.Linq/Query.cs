@@ -36,7 +36,7 @@ namespace Qwiq.Linq
             Contract.Requires(builder != null);
             Contract.Requires(expression != null);
 
-            if (expression == null) throw new ArgumentNullException(nameof(expression));
+            ArgumentNullException.ThrowIfNull(expression);
             if (!typeof(IQueryable<T>).IsAssignableFrom(expression.Type)) throw new ArgumentOutOfRangeException(nameof(expression));
 
             _provider = provider ?? throw new ArgumentNullException(nameof(provider));

@@ -96,7 +96,7 @@ namespace Qwiq
 
                 // If no backslash or @, the UniqueName might be the alias itself
                 // But only return it if it doesn't look like a display name (contains spaces)
-                if (!uniqueName.Contains(" "))
+                if (!uniqueName.Contains(' '))
                 {
                     return uniqueName;
                 }

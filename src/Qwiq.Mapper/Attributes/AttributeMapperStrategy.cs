@@ -66,7 +66,7 @@ namespace Qwiq.Mapper.Attributes
                 var sourceWorkItem = workItemMapping.Key;
                 var targetWorkItem = workItemMapping.Value;
 
-                MapImpl(targetWorkItemType, sourceWorkItem, targetWorkItem);
+                MapCore(targetWorkItemType, sourceWorkItem, targetWorkItem);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Qwiq.Mapper.Attributes
                 var sourceWorkItem = workItemMapping.Key;
                 var targetWorkItem = workItemMapping.Value;
 
-                MapImpl(targetWorkItemType, sourceWorkItem, targetWorkItem);
+                MapCore(targetWorkItemType, sourceWorkItem, targetWorkItem);
             }
         }
 
@@ -163,7 +163,7 @@ namespace Qwiq.Mapper.Attributes
             return fieldValue;
         }
 
-        protected internal virtual void MapImpl(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
+        protected internal virtual void MapCore(Type targetWorkItemType, IWorkItem sourceWorkItem, object targetWorkItem)
         {
             var validAnnotatedPropertyKeyPairs = _annotatedPropertyValidator.GetValidAnnotatedProperties(sourceWorkItem, targetWorkItemType);
 

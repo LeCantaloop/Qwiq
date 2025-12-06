@@ -13,7 +13,7 @@ namespace Qwiq.Client.Rest
         {
             Contract.Requires(item != null);
 
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            ArgumentNullException.ThrowIfNull(item);
             Name = string.Intern(item.Name);
         }
 

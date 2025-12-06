@@ -21,7 +21,7 @@ namespace Qwiq
 
         public object? Parse(Type destinationType, object? value, object? defaultValue)
         {
-            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
+            ArgumentNullException.ThrowIfNull(destinationType);
             var defaultValueType = defaultValue?.GetType();
             if (defaultValueType != null && destinationType != defaultValueType)
             {
@@ -33,7 +33,7 @@ namespace Qwiq
 
         public object? Parse(Type destinationType, object? input)
         {
-            if (destinationType == null) throw new ArgumentNullException(nameof(destinationType));
+            ArgumentNullException.ThrowIfNull(destinationType);
             return ParseImpl(destinationType, input);
         }
 
@@ -128,7 +128,7 @@ namespace Qwiq
                         return null;
 
                     // A value type cannot have a null return
-                    throw new InvalidOperationException($"The type {destinationType} cannot have a null value.", new ArgumentNullException(nameof(value), new ArgumentNullException(nameof(defaultValue))));
+                    throw new InvalidOperationException($"The type {destinationType} cannot have a null value.", new ArgumentNullException(nameof(value), "Both value and defaultValue are null for a non-nullable type."));
                 }
 
                 // If the incoming value is null, return the default value

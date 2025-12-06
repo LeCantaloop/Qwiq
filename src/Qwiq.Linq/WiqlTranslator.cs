@@ -19,7 +19,7 @@ namespace Qwiq.Linq
     /// </summary>
     public class WiqlTranslator : IWiqlTranslator
     {
-        protected readonly IFieldMapper FieldMapper;
+        protected IFieldMapper FieldMapper { get; }
 
         public WiqlTranslator()
             : this(new CachingFieldMapper(new SimpleFieldMapper()))
@@ -57,7 +57,7 @@ namespace Qwiq.Linq
 
 
             var workItemTypeRestriction = FieldMapper.GetWorkItemType(query.UnderlyingQueryType).ToList();
-            if (workItemTypeRestriction.Any())
+            if (workItemTypeRestriction.Count != 0)
             {
                 query.WhereClauses.Enqueue(new TypeRestrictionFragment(workItemTypeRestriction));
             }
@@ -68,7 +68,7 @@ namespace Qwiq.Linq
         protected class Translator : ExpressionVisitor
         {
             private readonly IFieldMapper _fieldMapper;
-            public TranslatedQuery Query;
+            public TranslatedQuery Query { get; set; }
             private Queue<IFragment> _expressionInProgress;
 
             public Translator(IFieldMapper fieldMapper)
@@ -130,7 +130,7 @@ namespace Qwiq.Linq
                 Visit(expression.Source);
                 Visit(expression.Filter);
 
-                if (_expressionInProgress.Any())
+                if (_expressionInProgress.Count != 0)
                 {
                     Query.WhereClauses.Enqueue(new CompoundFragment(_expressionInProgress));
                 }

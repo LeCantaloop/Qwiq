@@ -24,7 +24,7 @@ namespace Qwiq.WorkItemStore
         [TestCategory("localOnly")]
         public void Reading_Id_from_this_operator_with_ReferenceName_equals_the_property_value()
         {
-            Result[CoreFieldRefNames.Id]?.ToString().ShouldEqual(Result.Id.ToString());
+            Result[CoreFieldRefNames.Id]?.ToString().ShouldEqual(Result.Id.ToString(CultureInfo.InvariantCulture));
         }
 
         public override void When()

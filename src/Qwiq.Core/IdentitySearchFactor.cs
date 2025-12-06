@@ -32,7 +32,7 @@ namespace Qwiq
         ///     A general search for identity
         /// </summary>
         /// <remarks>
-        ///     This is the default search factor for shorter overloads of <see cref="IIdentityManagementService.ReadIdentity" />,
+        ///     This is the default search factor for shorter overloads of IIdentityManagementService.ReadIdentity,
         ///     and typically the correct choice for user input. Use the general search factor to find one or more identities by
         ///     one of the following properties:
         ///     - Display name
@@ -42,7 +42,7 @@ namespace Qwiq
         ///     when two or more identities share the same display name (e.g. "John Smith")
         /// </remarks>
         /// <seealso cref="DisplayName" />
-        /// <see cref="AccountName" />
+        /// <seealso cref="AccountName" />
         General = 5,
 
         /// <summary>

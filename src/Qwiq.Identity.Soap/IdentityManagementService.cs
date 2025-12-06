@@ -46,7 +46,8 @@ namespace Qwiq.Identity.Soap
             ReadIdentityOptions.IncludeReadFromSource);
 
             // TODO: Use configuration options from IWorkItemStore to control proxy creation
-            return identities.Select(identity => identity?.AsProxy());
+            // Filter out null identities since interface contract requires non-null elements
+            return identities.Select(identity => identity?.AsProxy()).Where(identity => identity != null)!;
         }
 
         public IEnumerable<KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>> ReadIdentities(
@@ -72,7 +73,7 @@ namespace Qwiq.Identity.Soap
                 ReadIdentityOptions.IncludeReadFromSource);
 
             if (searchFactorArray.Length != identities.Length)
-                throw new IndexOutOfRangeException(
+                throw new InvalidOperationException(
                     "A call to IIdentityManagementService2.ReadIdentities resulted in a return set where there was not a one to one mapping between search terms and search results. This is unexpected behavior and execution cannot continue. Please check if the underlying service implementation has changed and update the consuming code as appropriate.");
 
             for (var i = 0; i < searchFactorArray.Length; i++)

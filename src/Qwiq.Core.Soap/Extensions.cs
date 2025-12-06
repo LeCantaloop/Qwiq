@@ -1,4 +1,4 @@
-﻿using Qwiq.Exceptions;
+using Qwiq.Exceptions;
 
 namespace Qwiq.Client.Soap
 {

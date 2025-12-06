@@ -143,7 +143,7 @@ namespace Qwiq.Mocks
                         break;
 
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(value), ValidationState, "Unexpected validation state.");
                 }
             }
         }

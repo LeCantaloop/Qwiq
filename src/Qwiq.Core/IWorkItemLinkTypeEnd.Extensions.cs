@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Qwiq
 {
@@ -9,7 +9,7 @@ namespace Qwiq
         /// </summary>
         /// <param name="item">An instance of <see cref="IWorkItemLinkTypeEnd"/>.</param>
         /// <returns>
-        /// 0 if <paramref name="item"/> is null or the <see cref="M:IWorkItemLinkTypeEnd.LinkType"/> is null; otherwise the link type id.
+        /// 0 if <paramref name="item"/> is null or the <see cref="IWorkItemLinkTypeEnd.LinkType"/> is null; otherwise the link type id.
         /// </returns>
         /// <remarks>
         /// A true Id is only returned for SOAP instances of <paramref name="item"/>

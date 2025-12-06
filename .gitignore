@@ -74,7 +74,7 @@ dlldata.c
 # .NET Core
 project.lock.json
 project.fragment.lock.json
-artifacts/
+/artifacts/
 **/Properties/launchSettings.json
 
 *_i.c
@@ -323,6 +323,10 @@ __pycache__/
 
 # NuGet executables
 .nuget/*.exe
+
+
+# Verify snapshot testing artifacts
+*.received.*
 
 
 #Ignore vscode AI rules

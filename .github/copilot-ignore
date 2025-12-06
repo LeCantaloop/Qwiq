@@ -1,0 +1,6 @@
+# GitHub Copilot Ignore Configuration
+# Files and directories listed here will be excluded from Copilot analysis
+# https://docs.github.com/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/configuring-content-exclusions-for-github-copilot
+
+# Transient agent artifacts (session logs, task lists, etc.)
+.agents/

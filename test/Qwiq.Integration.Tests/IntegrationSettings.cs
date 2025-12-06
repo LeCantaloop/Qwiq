@@ -10,16 +10,16 @@ namespace Qwiq
     public static class IntegrationSettings
     {
         /// <exclude />
-        public static Func<AuthenticationTypes, IEnumerable<VssCredentials>> Credentials = UnitTestCredentialsFactory;
+        public static Func<AuthenticationTypes, IEnumerable<VssCredentials>> Credentials { get; set; } = UnitTestCredentialsFactory;
 
         /// <exclude />
-        public static string[] Domains = { "msn.com" };
+        public static string[] Domains { get; set; } = { "msn.com" };
 
         /// <exclude />
-        public static Guid ProjectGuid = Guid.Parse("0a4c0240-1a67-45de-93db-fc1de9f54ffb");
+        public static Guid ProjectGuid { get; set; } = Guid.Parse("0a4c0240-1a67-45de-93db-fc1de9f54ffb");
 
         /// <exclude />
-        public static string TenantId = "72F988BF-86F1-41AF-91AB-2D7CD011DB47";
+        public static string TenantId { get; set; } = "72F988BF-86F1-41AF-91AB-2D7CD011DB47";
 
         private static readonly Uri Uri = new Uri("https://qwiq-sandbox.visualstudio.com/");
 

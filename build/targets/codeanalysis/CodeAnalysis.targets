@@ -1,0 +1,11 @@
+<Project>
+  <!-- PedanticMode: Centralized control for TreatWarningsAsErrors -->
+  <PropertyGroup>
+    <!-- Default PedanticMode to true on CI, false locally for flexibility -->
+    <PedanticMode Condition="'$(PedanticMode)' == ''">$(ContinuousIntegrationBuild)</PedanticMode>
+    
+    <!-- Wire TreatWarningsAsErrors and MSBuildTreatWarningsAsErrors to PedanticMode -->
+    <TreatWarningsAsErrors>$(PedanticMode)</TreatWarningsAsErrors>
+    <MSBuildTreatWarningsAsErrors>$(PedanticMode)</MSBuildTreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>

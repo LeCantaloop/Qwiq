@@ -34,7 +34,7 @@ namespace Qwiq.WorkItemStore.WorkItem
             // Create a MockWorkItem with revisions
             var mockWorkItem = new MockWorkItem(
                 new MockWorkItemType("Task"),
-                new Dictionary<string, object>
+                new Dictionary<string, object?>
                 {
                     { "System.Id", 1 },
                     { "System.Rev", 1 },
@@ -42,7 +42,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                 });
 
             // Create and add a revision to the work item
-            var revisionData = new Dictionary<string, object>
+            var revisionData = new Dictionary<string, object?>
             {
                 { "System.Id", 1 },
                 { "System.Rev", 1 },
@@ -79,11 +79,11 @@ namespace Qwiq.WorkItemStore.WorkItem
     public class Given_a_Revision_without_WorkItem : ContextSpecification
     {
         private IRevision _revision = null!;
-        private Dictionary<string, object> _fieldValues = null!;
+        private Dictionary<string, object?> _fieldValues = null!;
 
         public override void Given()
         {
-            _fieldValues = new Dictionary<string, object>
+            _fieldValues = new Dictionary<string, object?>
             {
                 { "System.Id", 42 },
                 { "System.Rev", 3 },
@@ -139,12 +139,12 @@ namespace Qwiq.WorkItemStore.WorkItem
     public class Given_a_Revision_constructed_with_explicit_index : ContextSpecification
     {
         private IRevision _revision = null!;
-        private Dictionary<string, object> _fieldValues = null!;
+        private Dictionary<string, object?> _fieldValues = null!;
         private const int ExpectedIndex = 5;
 
         public override void Given()
         {
-            _fieldValues = new Dictionary<string, object>
+            _fieldValues = new Dictionary<string, object?>
             {
                 { "System.Id", 100 },
                 { "System.Rev", 5 },
@@ -182,7 +182,7 @@ namespace Qwiq.WorkItemStore.WorkItem
 
         public override void Given()
         {
-            var fieldValues = new Dictionary<string, object>
+            var fieldValues = new Dictionary<string, object?>
             {
                 { "System.Id", 1 },
                 { "Index", 1 }

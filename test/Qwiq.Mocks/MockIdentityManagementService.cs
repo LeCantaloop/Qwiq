@@ -39,7 +39,7 @@ namespace Qwiq.Mocks
         /// </param>
         public MockIdentityManagementService(IDictionary<string, ITeamFoundationIdentity> accountNameMappings)
         {
-            if (accountNameMappings == null) throw new ArgumentNullException(nameof(accountNameMappings));
+            ArgumentNullException.ThrowIfNull(accountNameMappings);
 
             _accountNameMappings = new Dictionary<string, ITeamFoundationIdentity[]>(StringComparer.OrdinalIgnoreCase);
             _descriptorMappings = new Dictionary<IIdentityDescriptor, ITeamFoundationIdentity>(IdentityDescriptorComparer.Default);
@@ -213,14 +213,14 @@ namespace Qwiq.Mocks
 
             foreach (var searchFactor in searchFactors)
             {
-                if (_accountNameMappings.ContainsKey(searchFactor))
+                if (_accountNameMappings.TryGetValue(searchFactor, out ITeamFoundationIdentity[]? value))
                     yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
                                                                                                 searchFactor,
-                                                                                                _accountNameMappings[searchFactor]);
+value);
                 else
                     yield return new KeyValuePair<string, IEnumerable<ITeamFoundationIdentity>>(
                                                                                                 searchFactor,
-                                                                                                new ITeamFoundationIdentity[0]);
+                                                                                                Array.Empty<ITeamFoundationIdentity>());
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Qwiq
+namespace Qwiq
 {
     // ReSharper disable InconsistentNaming
     public static class IWorkItemLinkTypeExtensions

@@ -20,10 +20,7 @@ namespace Qwiq.Client.Rest
 
         public QueryHiearchyItemRepository(Lazy<WorkItemTrackingHttpClient> workItemStore, Guid projectId)
         {
-            if (projectId == Guid.Empty)
-            {
-                throw new ArgumentOutOfRangeException(nameof(projectId));
-            }
+            ArgumentOutOfRangeException.ThrowIfEqual(projectId, Guid.Empty);
 
             _workItemStore = workItemStore ?? throw new ArgumentNullException(nameof(workItemStore));
             _projectId = projectId;

@@ -77,7 +77,7 @@ namespace Qwiq
         /// </summary>
         /// <remarks>
         ///     If the current user is active (e.g. not deleted), the value is equal to
-        ///     <see cref="VisualStudio.Services.Common.IdentityConstants.ActiveUniqueId" />.
+        ///     the Azure DevOps IdentityConstants.ActiveUniqueId value (typically 0).
         /// </remarks>
         /// <value>The unique user identifier.</value>
         int UniqueUserId { get; }

@@ -1,9 +1,19 @@
 using Microsoft.VisualStudio.Services.Identity;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.Services.Common;
 
 namespace Qwiq
 {
+    /// <summary>
+    /// Represents an identity descriptor for TFS/Azure DevOps identities.
+    /// </summary>
+    /// <remarks>
+    /// CA1036 is suppressed because this class implements IComparable for use in sorted collections
+    /// and dictionary keys, but comparison operators (&lt;, &gt;, &lt;=, &gt;=) are not used anywhere
+    /// in the codebase. Adding unused operators would increase API surface without benefit.
+    /// </remarks>
+    [SuppressMessage("Design", "CA1036:Override methods on comparable types", Justification = "Comparison operators are not used in this codebase; IComparable is implemented for sorting/dictionary key purposes only.")]
     public class IdentityDescriptor : IIdentityDescriptor, IComparable<IdentityDescriptor>, IEquatable<IdentityDescriptor>
     {
         private string _identifier = null!;
@@ -87,5 +97,6 @@ namespace Qwiq
         {
             return IdentityTypeMapper.Instance.GetTypeNameFromId(IdentityTypeId) + ";" + _identifier;
         }
+
     }
 }

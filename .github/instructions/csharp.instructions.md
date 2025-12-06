@@ -190,6 +190,7 @@ When making refactoring changes (nullable fixes, initialization changes, interfa
 ### TDD Workflow
 
 **Step 1: Write Tests BEFORE Code Changes**
+
 ```csharp
 // Document current behavior with tests
 [TestClass]
@@ -213,12 +214,14 @@ public class Given_WorkItemCore_with_parameterless_constructor : ContextSpecific
 ```
 
 **Step 2: Verify Tests Pass**
+
 ```bash
 dotnet test --filter "FullyQualifiedName~WorkItemCore"
 # All tests should PASS before making changes
 ```
 
 **Step 3: Make Code Changes**
+
 ```csharp
 // Fix null! suppression with proper initialization
 private readonly Dictionary<string, object?> _fields;
@@ -230,6 +233,7 @@ protected internal WorkItemCore()
 ```
 
 **Step 4: Verify Tests Still Pass**
+
 ```bash
 dotnet test --filter "FullyQualifiedName~WorkItemCore"
 # All tests should STILL PASS after changes
@@ -246,6 +250,7 @@ dotnet test --filter "FullyQualifiedName~WorkItemCore"
 ### Test Coverage for Initialization Fixes
 
 When fixing field initialization, write tests for:
+
 - All constructor overloads
 - Lazy initialization behavior
 - Property accessors

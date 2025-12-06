@@ -16,7 +16,7 @@ namespace Qwiq.Linq.Fragments
 
         public string Get(Type? queryType)
         {
-            if (queryType == null) throw new ArgumentNullException(nameof(queryType));
+            ArgumentNullException.ThrowIfNull(queryType);
             return "[" + _fieldMapper.GetFieldName(queryType, ParameterName) + "]";
         }
 

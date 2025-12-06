@@ -38,12 +38,12 @@ namespace Qwiq
         {
             get
             {
-                if (name == null) throw new ArgumentNullException(nameof(name));
+                ArgumentNullException.ThrowIfNull(name);
                 return GetValue(name);
             }
             set
             {
-                if (name == null) throw new ArgumentNullException(nameof(name));
+                ArgumentNullException.ThrowIfNull(name);
                 SetValue(name, value);
             }
         }
@@ -60,7 +60,7 @@ namespace Qwiq
 
         public object? GetCurrentFieldValue(IFieldDefinition fieldDefinition)
         {
-            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
+            ArgumentNullException.ThrowIfNull(fieldDefinition);
             return GetValue(fieldDefinition.ReferenceName);
         }
 
@@ -71,7 +71,7 @@ namespace Qwiq
 
         public void SetFieldValue(IFieldDefinition fieldDefinition, object? value)
         {
-            if (fieldDefinition == null) throw new ArgumentNullException(nameof(fieldDefinition));
+            ArgumentNullException.ThrowIfNull(fieldDefinition);
             SetValue(fieldDefinition.ReferenceName, value);
         }
 

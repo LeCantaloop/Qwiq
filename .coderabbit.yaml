@@ -1,0 +1,30 @@
+# CodeRabbit AI Configuration
+# https://docs.coderabbit.ai/guides/configure-coderabbit
+
+reviews:
+  profile: "assertive"
+  # Ignore transient agent artifacts from code review
+  path_filters:
+    - "!.agents/**"
+
+  # Review settings
+  request_changes_workflow: true
+  high_level_summary: false
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  changed_files_summary: false
+  sequence_diagrams: true
+  estimate_code_review_effort: true
+  assess_linked_issues: true
+  related_issues: true
+  related_prs: true
+  suggested_labels: true
+  auto_apply_labels: true
+  auto_assign_reviewers: true
+  auto_review:
+    enabled: true
+    drafts: true
+
+chat:
+  auto_reply: true

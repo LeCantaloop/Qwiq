@@ -2,7 +2,7 @@
   <PropertyGroup>
     <!-- Use modern .NET 8 as default, with net472 for Windows-specific components -->
     <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -15,9 +15,17 @@
     <HighEntropyVA>true</HighEntropyVA>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- TreatWarningsAsErrors is controlled by PedanticMode (see Directory.Build.targets) -->
     <!-- Analyzer diagnostic severities are configured in .editorconfig -->
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+
+    <!-- Deterministic Builds -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+
+    <!-- Artifact Output Configuration -->
+    <!-- Note: Full ArtifactsPath support requires .NET 9+ SDK. For .NET 8, we only configure test results path. -->
+    <ArtifactsTestResultsPath Condition="'$(ArtifactsTestResultsPath)' == ''">$(MSBuildThisFileDirectory)artifacts\TestResults</ArtifactsTestResultsPath>
 
     <!-- Output Configuration -->
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -62,6 +70,14 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
+  <!-- Source Link Configuration -->
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -70,7 +86,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
   </PropertyGroup>
@@ -78,9 +94,15 @@
   <ItemGroup>
     <!-- Add Nerdbank.GitVersioning for all projects -->
     <PackageReference Include="Nerdbank.GitVersioning" PrivateAssets="all" />
+    <!-- Microsoft.CodeAnalysis.NetAnalyzers is included in .NET SDK 5+ via EnableNETAnalyzers=true -->
+  </ItemGroup>
 
-    <!-- Add Microsoft.CodeAnalysis.NetAnalyzers to replace deprecated FxCop -->
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" PrivateAssets="all" />
+  <!-- Source Link for all projects (even test projects benefit from source linking in debugging) -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
 
     <!-- InternalsVisibleTo for Castle DynamicProxy (used by Moq) - replaces AssemblyInfo.Common.cs -->
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2, PublicKey=0024000004800000940000000602000000240000525341310004000001000100c547cac37abd99c8db225ef2f6c8a3602f3b3606cc9891605d02baa56104f4cfc0734aa39b93bf7852f7d9266654753cc297e7d2edfe0bac1cdcf9f717241550e0a7b191195b7667bb4f64bcb8e2121380fd1d9d46ad2d92d2d15605093924cceaf74c4861eff62abf69b9291ed0a340e113be11e6a7d3113e92484cf7045cc7" />

@@ -6,8 +6,20 @@
     <Description>QWIQ Linq - LINQ query provider for Azure DevOps / TFS</Description>
     <PackageId>Qwiq.Linq</PackageId>
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\package-readme\Qwiq.Linq.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Link polyfill files from Qwiq.Core for ArgumentNullException.ThrowIfNull support on older frameworks -->
+    <Compile Include="..\Qwiq.Core\Compatibility\ArgumentNullExceptionPolyfill.cs" Link="Compatibility\ArgumentNullExceptionPolyfill.cs" />
+    <Compile Include="..\Qwiq.Core\Compatibility\CallerArgumentExpressionAttribute.cs" Link="Compatibility\CallerArgumentExpressionAttribute.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />

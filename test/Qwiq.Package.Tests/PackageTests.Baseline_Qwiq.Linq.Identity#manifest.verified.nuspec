@@ -6,6 +6,7 @@
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
     <projectUrl>https://github.com/rjmurillo/Qwiq</projectUrl>
     <description>QWIQ Linq Identity - Identity-aware LINQ extensions for QWIQ</description>
     <copyright>Copyright (c) 2025 Qwiq Contributors</copyright>

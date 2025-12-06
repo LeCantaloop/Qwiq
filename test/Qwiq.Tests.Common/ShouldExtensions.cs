@@ -36,13 +36,13 @@ namespace Should
                 else source.Remove(item);
             }
 
-            if (noContain.Any() || source.Any())
+            if (noContain.Count > 0 || source.Count > 0)
             {
                 var message = $"Should contain only: {expected.EachToUsefulString()} \r\nentire list: {collection.EachToUsefulString()}";
 
-                if (noContain.Any()) message += "\ndoes not contain: " + noContain.EachToUsefulString();
+                if (noContain.Count > 0) message += "\ndoes not contain: " + noContain.EachToUsefulString();
 
-                if (source.Any()) message += "\ndoes contain but shouldn't: " + source.EachToUsefulString();
+                if (source.Count > 0) message += "\ndoes contain but shouldn't: " + source.EachToUsefulString();
 
                 throw new AssertFailedException(message);
             }

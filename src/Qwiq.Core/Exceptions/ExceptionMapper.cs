@@ -22,9 +22,9 @@ namespace Qwiq.Exceptions
 
         public Exception Map(Exception ex)
         {
-            return MapImpl(ex) ?? ex;
+            return MapCore(ex) ?? ex;
         }
-        private Exception? MapImpl(Exception ex)
+        private Exception? MapCore(Exception ex)
         {
             var q = new Queue<Exception>();
             q.Enqueue(ex);

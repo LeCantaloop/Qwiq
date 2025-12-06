@@ -29,7 +29,7 @@ namespace Qwiq.Client.Rest
         internal Query(IEnumerable<int> ids, Wiql query, WorkItemStore workItemStore)
             : this(query, false, workItemStore)
         {
-            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            ArgumentNullException.ThrowIfNull(ids);
             Contract.Requires(workItemStore != null);
 
             _ids = new HashSet<int>(ids);
@@ -76,7 +76,7 @@ namespace Qwiq.Client.Rest
             var m = AsOfRegex.Match(wiql);
             if (!m.Success) return null;
 
-            if (!DateTime.TryParse(m.Groups["date"].Value, out DateTime retval)) throw new Exception();
+            if (!DateTime.TryParse(m.Groups["date"].Value, out DateTime retval)) throw new FormatException($"Unable to parse ASOF date: {m.Groups["date"].Value}");
 
             return retval;
         }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Qwiq.Identity
 {
@@ -25,8 +27,10 @@ namespace Qwiq.Identity
         {
         }
 
+#if NETFRAMEWORK || NETSTANDARD2_0
         protected MultipleIdentitiesFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
+#endif
     }
 }

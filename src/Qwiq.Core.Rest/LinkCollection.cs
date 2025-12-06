@@ -16,7 +16,7 @@ namespace Qwiq.Client.Rest
             Contract.Requires(linkFunc != null);
 
             if (relations == null) return;
-            if (linkFunc == null) throw new ArgumentNullException(nameof(linkFunc));
+            ArgumentNullException.ThrowIfNull(linkFunc);
 
             for (var i = 0; i < relations.Count; i++)
             {
@@ -76,10 +76,10 @@ namespace Qwiq.Client.Rest
 
         public void CopyTo(ILink[] array, int arrayIndex)
         {
-            if (array == null) throw new ArgumentNullException(nameof(array));
-            if (array.Rank != 1) throw new ArgumentException(nameof(array));
-            if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-            if (array.Length - arrayIndex < Count) throw new ArgumentException(nameof(array));
+            ArgumentNullException.ThrowIfNull(array);
+            if (array.Rank != 1) throw new ArgumentException("Array must be single-dimensional.", nameof(array));
+            ArgumentOutOfRangeException.ThrowIfNegative(arrayIndex);
+            if (array.Length - arrayIndex < Count) throw new ArgumentException("Destination array is not long enough.", nameof(array));
             foreach (var value in this) array.SetValue(value, arrayIndex++);
         }
 
@@ -107,7 +107,7 @@ namespace Qwiq.Client.Rest
         private static int ExtractId(string uri)
         {
             var arr = uri.Split('/');
-            return Convert.ToInt32(arr.Last());
+            return Convert.ToInt32(arr.Last(), System.Globalization.CultureInfo.InvariantCulture);
         }
 
         private static string? ExtractProperty(IDictionary<string, object> relationAttributes, string property)

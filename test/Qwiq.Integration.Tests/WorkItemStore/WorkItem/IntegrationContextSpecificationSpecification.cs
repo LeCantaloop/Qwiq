@@ -69,7 +69,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                 }
             }
 
-            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                 }
             }
 
-            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                                                         {
                                                             try
                                                             {
-                                                                restValue.ShouldEqual(soapValue, GenericComparer<object>.Default);
+                                                                restValue.ShouldEqual(soapValue, GenericComparer<object?>.Default);
                                                             }
                                                             catch (Exception e)
                                                             {
@@ -177,7 +177,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                 exceptions.Add(e);
             }
 
-            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
 
         [TestMethod]
@@ -259,7 +259,7 @@ namespace Qwiq.WorkItemStore.WorkItem
                 }
             }
 
-            if (exceptions.Any()) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
+            if (exceptions.Count != 0) throw new AggregateException(exceptions.EachToUsefulString(), exceptions);
         }
     }
 }

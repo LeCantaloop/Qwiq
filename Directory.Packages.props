@@ -7,7 +7,7 @@
   <ItemGroup>
     <!-- Build and Analysis -->
     <PackageVersion Include="Nerdbank.GitVersioning" Version="3.6.143" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 
     <!-- Azure DevOps / TFS Client Libraries -->
     <!-- Use version 16.153.0 which is the last version with IdentityTypeMapper and compatible constructor signatures -->

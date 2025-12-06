@@ -27,7 +27,7 @@ namespace Qwiq
 
         protected override void Add(IFieldDefinition value, int index)
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentNullException.ThrowIfNull(value);
             base.Add(value, index);
             AddByName(value.ReferenceName, index);
         }

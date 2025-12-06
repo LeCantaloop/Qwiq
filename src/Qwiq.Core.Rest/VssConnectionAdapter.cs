@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Microsoft.VisualStudio.Services.Common;
 using Microsoft.VisualStudio.Services.WebApi;
@@ -39,7 +39,6 @@ namespace Qwiq.Client.Rest
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public T GetClient<T>()

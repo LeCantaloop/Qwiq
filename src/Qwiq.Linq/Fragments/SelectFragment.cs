@@ -9,7 +9,7 @@ namespace Qwiq.Linq.Fragments
 
         public SelectFragment(ICollection<string> fields)
         {
-            if (fields == null) throw new ArgumentNullException(nameof(fields));
+            ArgumentNullException.ThrowIfNull(fields);
             if (fields.Count == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(fields));
             _fields = fields;
         }

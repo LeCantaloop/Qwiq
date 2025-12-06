@@ -1,4 +1,4 @@
-﻿using Qwiq.Credentials;
+using Qwiq.Credentials;
 using Microsoft.VisualStudio.Services.Common;
 using System;
 
@@ -9,7 +9,7 @@ namespace Qwiq
     {
         public virtual ITeamProjectCollection Create(AuthenticationOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
             var credentials = options.Credentials;
 
             foreach (var credential in credentials)

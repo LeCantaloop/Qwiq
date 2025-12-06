@@ -1,4 +1,4 @@
-﻿namespace Qwiq
+namespace Qwiq
 {
     public enum WorkItemErrorPolicy
     {

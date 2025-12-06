@@ -1,0 +1,6 @@
+# CODEOWNERS
+# This file defines the individuals or teams responsible for code in this repository.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @rjmurillo

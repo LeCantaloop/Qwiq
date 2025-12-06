@@ -8,10 +8,7 @@ namespace Qwiq
     {
         internal QueryFolder(Guid id, string name, string path, IQueryFolderCollection subFolders, IQueryDefinitionCollection queries)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            ArgumentOutOfRangeException.ThrowIfEqual(id, Guid.Empty);
 
             if (string.IsNullOrEmpty(name))
             {

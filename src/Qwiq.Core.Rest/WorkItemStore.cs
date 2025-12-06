@@ -1,4 +1,4 @@
-﻿using Microsoft.TeamFoundation.Core.WebApi;
+using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Common;
@@ -34,9 +34,9 @@ namespace Qwiq.Client.Rest
             Func<WorkItemTrackingHttpClient> wisFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory)
         {
-            if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
-            if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
-            if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+            ArgumentNullException.ThrowIfNull(tpcFactory);
+            ArgumentNullException.ThrowIfNull(wisFactory);
+            ArgumentNullException.ThrowIfNull(queryFactory);
             _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             NativeWorkItemStore = new Lazy<WorkItemTrackingHttpClient>(wisFactory);
             _queryFactory = new Lazy<IQueryFactory>(() => queryFactory(this));
@@ -83,9 +83,9 @@ namespace Qwiq.Client.Rest
         public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
             // Same behavior as SOAP version
-            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            ArgumentNullException.ThrowIfNull(ids);
             var ids2 = (int[])ids.ToArray().Clone();
-            if (!ids2.Any()) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
+            if (ids2.Length == 0) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 
             var query = _queryFactory.Value.Create(ids2, asOf);
             return query.RunQuery();
@@ -132,19 +132,19 @@ namespace Qwiq.Client.Rest
 
                 var forwardEnd = ends.Count == 1 && !type.IsDirectional
                                      ? ends[0]
-                                     : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward"));
+                                     : ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Forward", StringComparison.Ordinal));
 
                 if (forwardEnd == null)
                 {
                     throw new InvalidOperationException($"Could not find forward link type end for '{kvp.Key}'.");
                 }
-                if (!forwardEnd.ReferenceName.EndsWith("Forward")) forwardEnd.ReferenceName += "-Forward";
+                if (!forwardEnd.ReferenceName.EndsWith("Forward", StringComparison.Ordinal)) forwardEnd.ReferenceName += "-Forward";
 
                 type.SetForwardEnd(new WorkItemLinkTypeEnd(forwardEnd) { IsForwardLink = true, LinkType = type });
                 type.SetReverseEnd(
                                    type.IsDirectional
                                        ? new WorkItemLinkTypeEnd(
-                                                                 ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse"))
+                                                                 ends.SingleOrDefault(p => p.ReferenceName.EndsWith("Reverse", StringComparison.Ordinal))
                                                                  ?? throw new InvalidOperationException($"Could not find reverse link type end for '{kvp.Key}'."))
                                        {
                                            LinkType

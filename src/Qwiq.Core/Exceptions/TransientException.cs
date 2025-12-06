@@ -1,6 +1,8 @@
 using System;
 using System.Diagnostics;
+#if NETFRAMEWORK || NETSTANDARD2_0
 using System.Runtime.Serialization;
+#endif
 
 namespace Qwiq.Exceptions
 {
@@ -13,9 +15,11 @@ namespace Qwiq.Exceptions
         {
         }
 
+#if NETFRAMEWORK || NETSTANDARD2_0
         protected TransientException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#endif
     }
 }

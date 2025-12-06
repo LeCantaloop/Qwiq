@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Qwiq.Exceptions;
@@ -47,7 +48,7 @@ namespace Qwiq.Client.Soap
             return -1;
         }
 
-        public bool TryGetByName(string name, out IField? value)
+        public bool TryGetByName(string name, [MaybeNullWhen(false)] out IField value)
         {
             if (name == null)
             {

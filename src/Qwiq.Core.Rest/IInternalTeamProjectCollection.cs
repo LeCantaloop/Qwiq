@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.Services.WebApi;
+using Microsoft.VisualStudio.Services.WebApi;
 
 namespace Qwiq.Client.Rest
 {

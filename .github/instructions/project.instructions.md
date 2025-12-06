@@ -102,12 +102,39 @@ Each project should define:
 </PropertyGroup>
 ```
 
+## PedanticMode: Warnings as Errors
+
+All projects inherit `TreatWarningsAsErrors` via the `PedanticMode` property, controlled in `build/targets/codeanalysis/CodeAnalysis.targets`.
+
+### Default Behavior
+
+- **CI builds**: `PedanticMode=true` (warnings treated as errors)
+- **Local builds**: `PedanticMode` defaults to `$(ContinuousIntegrationBuild)` value
+
+### Build Commands
+
+```powershell
+# Strict build (warnings as errors) - CI default
+dotnet build Qwiq.sln -c Release /p:PedanticMode=true
+
+# Flexible build (warnings allowed) - for diagnosing analyzers
+dotnet build Qwiq.sln -c Release /p:PedanticMode=false
+```
+
+### When to Use `/p:PedanticMode=false`
+
+- Diagnosing noisy analyzer rules
+- Investigating new analyzer violations
+- Prototyping changes with temporary warnings
+
+**Important**: All CI builds enforce `PedanticMode=true`. Fix warnings before committing.
+
 ## Validation Checklist
 
 Before submitting changes, verify:
 
 - [ ] `dotnet restore Qwiq.sln` succeeds
-- [ ] `dotnet build Qwiq.sln -c Release` succeeds with 0 errors
+- [ ] `dotnet build Qwiq.sln -c Release` succeeds with 0 errors (PedanticMode=true)
 - [ ] No new warnings introduced
 - [ ] Tests pass with filters applied
 - [ ] Package versions are in `Directory.Packages.props` (not individual csproj)

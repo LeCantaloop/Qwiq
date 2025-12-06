@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 
 
@@ -17,6 +18,7 @@ namespace Qwiq.Mapper
             if (customAttribute == null)
                 throw new ArgumentException(
                                             string.Format(
+                                                          CultureInfo.InvariantCulture,
                                                           "No field definition found for property '{0}'. Querying on non-mapped fields is not allowed."
                                                           + " Either map the '{0}' property or remove it from the query.",
                                                           propertyName),
@@ -38,14 +40,14 @@ namespace Qwiq.Mapper
 
         public IEnumerable<string> GetWorkItemType(Type type)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
             var customAttributes = type.GetCustomAttributes(typeof(WorkItemTypeAttribute), true).Cast<WorkItemTypeAttribute>().ToList();
             return customAttributes.Select(ca => ca.GetTypeName()).OrderBy(name => name);
             // Order alphabetically so string comparisons work and we don't needlessly permute our queries
         }
         private static T? GetFieldAttribute<T>(Type type, string propertyName) where T : class
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
             Contract.Requires(!string.IsNullOrEmpty(propertyName));
 
             var property = type.GetProperty(propertyName);

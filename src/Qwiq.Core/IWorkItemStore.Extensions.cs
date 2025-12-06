@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Qwiq
 {
@@ -6,13 +6,13 @@ namespace Qwiq
     {
         public static IWorkItemLinkTypeEnd GetChildLinkTypeEnd(this IWorkItemStore store)
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
+            ArgumentNullException.ThrowIfNull(store);
             return store.GetLinkType(CoreLinkTypeReferenceNames.Hierarchy).ReverseEnd;
         }
 
         public static IWorkItemLinkType GetLinkType(this IWorkItemStore store, string linkTypeReferenceName)
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
+            ArgumentNullException.ThrowIfNull(store);
             return store.WorkItemLinkTypes[linkTypeReferenceName];
         }
 

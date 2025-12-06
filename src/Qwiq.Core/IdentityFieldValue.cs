@@ -39,7 +39,7 @@ namespace Qwiq
         {
             Contract.Requires(identity != null);
 
-            if (identity == null) throw new ArgumentNullException(nameof(identity));
+            ArgumentNullException.ThrowIfNull(identity);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Qwiq
             var arr = Identifier!.Split(IdentityConstants.DomainAccountNameSeparator);
             if (arr.Length != 2 || arr[1] == TeamFoundationId) return;
 
-            if (arr[1].Contains("@"))
+            if (arr[1].Contains('@'))
             {
                 Email = arr[1];
                 LogonName = arr[1].Split('@')[0];
@@ -111,7 +111,7 @@ namespace Qwiq
             if (TryGetAccountName(displayName!, out str2))
             {
                 AccountName = str2;
-                if (str2 != null && str2.Contains("@"))
+                if (str2 != null && str2.Contains('@'))
                 {
                     Email = str2;
                     LogonName = str2.Split('@')[0];
@@ -240,7 +240,7 @@ namespace Qwiq
         {
             var match = DomainAccountRegex.Match(search);
             domainAndAcccountName = null;
-            if (match.Success && match.Groups.Count > 1 && match.Groups[1].Value.Contains(@"\"))
+            if (match.Success && match.Groups.Count > 1 && match.Groups[1].Value.Contains('\\'))
             {
                 domainAndAcccountName = match.Groups[1].Value;
                 return true;
@@ -254,7 +254,7 @@ namespace Qwiq
             if (match.Success && match.Groups.Count > 1)
             {
                 displayName = match.Groups[1].Value;
-                Guid.TryParse(match.Groups[2].Value, out scopeId);
+                _ = Guid.TryParse(match.Groups[2].Value, out scopeId);
                 return true;
             }
             scopeId = Guid.Empty;
@@ -268,7 +268,7 @@ namespace Qwiq
             if (match.Success && match.Groups.Count > 1)
             {
                 displayName = match.Groups[1].Value;
-                Guid.TryParse(match.Groups[2].Value, out vsid);
+                _ = Guid.TryParse(match.Groups[2].Value, out vsid);
                 return true;
             }
             vsid = Guid.Empty;

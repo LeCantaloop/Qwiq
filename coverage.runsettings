@@ -6,9 +6,10 @@
     <!-- Path relative to solution directory -->
     <ResultsDirectory>.\TestResults</ResultsDirectory>
 
-    <!-- [x86] | x64
-      - You can also change it from menu Test, Test Settings, Default Processor Architecture -->
-    <TargetPlatform>x86</TargetPlatform>
+    <!-- x86 | [x64]
+      - You can also change it from menu Test, Test Settings, Default Processor Architecture
+      - GitHub Actions only provides x64 .NET SDK, so use x64 for CI compatibility -->
+    <TargetPlatform>x64</TargetPlatform>
 
     <!-- Framework35 | [Framework40] | Framework45 -->
     <TargetFrameworkVersion>Framework45</TargetFrameworkVersion>

@@ -15,7 +15,13 @@ permissions:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+    name: Build (${{ matrix.os }})
 
     env:
       # Test filter matching AppVeyor configuration
@@ -38,36 +44,99 @@ jobs:
       - name: Restore NuGet packages
         run: dotnet restore Qwiq.sln
 
-      - name: Build solution
-        run: dotnet build Qwiq.sln -c Release --no-restore /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build.binlog
+      - name: Build and pack solution (Windows)
+        # Windows: Use /t:Build,Pack to ensure all packages are generated during build.
+        # This produces packages for all target frameworks including net472.
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: dotnet build Qwiq.sln -c Release --no-restore /t:Build,Pack /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build.binlog
 
-      - name: Pack NuGet packages
-        run: dotnet pack Qwiq.sln -c Release --no-build /p:ContinuousIntegrationBuild=true
+      - name: Build solution (Linux)
+        # Linux: Build solution without packing.
+        # Linux cannot build net472 (requires Windows/.NET Framework), so we skip packing.
+        # The SDK automatically filters out Windows-only TFMs during inner builds.
+        # Packages are only produced on Windows where all TFMs can be built.
+        if: matrix.os == 'ubuntu-latest'
+        shell: pwsh
+        run: dotnet build Qwiq.sln -c Release --no-restore /p:GeneratePackageOnBuild=false /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build.binlog
 
-      - name: Run tests
-        run: dotnet test Qwiq.sln -c Release --no-build --filter "${{ env.TEST_FILTER }}" --logger trx --results-directory ./artifacts/TestResults
+      - name: Validate package output
+        # Scans csproj files to find packable projects and validates each produced
+        # both .nupkg and .snupkg files. Fails the build if any are missing.
+        # Only run on Windows (Linux builds don't generate all packages)
+        if: matrix.os == 'windows-latest'
+        run: ./build/scripts/Validate-PackageOutput.ps1
+
+      - name: Verify Source Link
+        # Only run on push events (develop/master), not on pull_request events.
+        # During PR checks, GitHub creates a temporary merge commit that sourcelink
+        # cannot validate because the commit doesn't persist on GitHub's raw content server.
+        # Only run on Windows builds (Linux builds don't generate all packages)
+        if: github.event_name == 'push' && matrix.os == 'windows-latest'
+        run: ./build/scripts/Verify-SourceLink.ps1
+
+      - name: Run tests with coverage (Windows)
+        id: test-windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        # Run all tests on Windows where all TFMs are built.
+        # The test filter excludes integration tests that require server connectivity.
+        run: dotnet test Qwiq.sln -c Release --no-build --filter "${{ env.TEST_FILTER }}" --logger trx --results-directory ./artifacts/TestResults --collect:"XPlat Code Coverage" --settings coverage.runsettings
+
+      - name: Run tests with coverage (Linux)
+        id: test-linux
+        if: matrix.os == 'ubuntu-latest'
+        shell: pwsh
+        # Run tests on Linux with net8.0 only.
+        # Exclude IntegrationTests (net472-only, would require Mono).
+        # Exclude Package.Tests (requires .nupkg files which are only built on Windows).
+        # Benchmark tests are excluded by TEST_FILTER (TestCategory!=Benchmark).
+        # Test multi-targeted projects by explicitly specifying --framework net8.0.
+        run: |
+          $projects = @(
+            'test/Qwiq.Core.Tests/Qwiq.Core.UnitTests.csproj',
+            'test/Qwiq.Identity.Tests/Qwiq.Identity.UnitTests.csproj',
+            'test/Qwiq.Linq.Tests/Qwiq.Linq.UnitTests.csproj',
+            'test/Qwiq.Mapper.Tests/Qwiq.Mapper.UnitTests.csproj'
+          )
+          foreach ($project in $projects) {
+            dotnet test $project -c Release --no-build --framework net8.0 --filter "${{ env.TEST_FILTER }}" --logger trx --results-directory ./artifacts/TestResults --collect:"XPlat Code Coverage" --settings coverage.runsettings
+          }
 
       - name: Upload build logs
         if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
-          name: build-logs
+          name: build-logs-${{ matrix.os }}
           path: ./artifacts/logs/
           if-no-files-found: ignore
 
+      - name: Generate coverage report
+        if: always() && (steps.test-windows.outcome == 'success' || steps.test-windows.outcome == 'failure' || steps.test-linux.outcome == 'success' || steps.test-linux.outcome == 'failure')
+        shell: pwsh
+        run: dotnet reportgenerator -reports:"./artifacts/TestResults/**/coverage.cobertura.xml" -targetdir:"./artifacts/CoverageReport" -reporttypes:"Cobertura;HtmlSummary;HtmlInline_AzurePipelines"
+
       - name: Upload test results
-        if: success() || failure()
+        if: always() && (steps.test-windows.outcome == 'success' || steps.test-windows.outcome == 'failure' || steps.test-linux.outcome == 'success' || steps.test-linux.outcome == 'failure')
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.os }}
           path: ./artifacts/TestResults/**/*.trx
+          if-no-files-found: ignore
+
+      - name: Upload coverage report
+        if: always() && (steps.test-windows.outcome == 'success' || steps.test-windows.outcome == 'failure' || steps.test-linux.outcome == 'success' || steps.test-linux.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ matrix.os }}
+          path: ./artifacts/CoverageReport/
           if-no-files-found: ignore
 
       - name: Upload binaries
         uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: binaries
+          name: binaries-${{ matrix.os }}
           path: |
             src/**/bin/Release/**/*.dll
             src/**/bin/Release/**/*.exe
@@ -76,10 +145,13 @@ jobs:
 
       - name: Upload packages
         uses: actions/upload-artifact@v4
-        if: success()
+        # Only upload packages from Windows build (Linux doesn't build all packages)
+        if: success() && matrix.os == 'windows-latest'
         with:
           name: packages
           path: |
             src/**/bin/Release/**/*.nupkg
             src/**/bin/Release/**/*.snupkg
+            test/**/bin/Release/**/*.nupkg
+            test/**/bin/Release/**/*.snupkg
           if-no-files-found: warn

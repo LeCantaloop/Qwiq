@@ -1,4 +1,4 @@
-﻿namespace Qwiq
+namespace Qwiq
 {
     public interface IWorkItemClassificationNodeCollection<TId> : IReadOnlyObjectWithIdCollection<IWorkItemClassificationNode<TId>, TId>
         where TId : notnull

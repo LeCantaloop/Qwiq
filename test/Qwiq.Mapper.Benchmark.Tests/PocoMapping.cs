@@ -42,6 +42,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
             private IEnumerable<IWorkItem> _item = null!;
 
             private Type _type = null!;
+            private static readonly string[] propertiesToSkip = new[] { "Revisions", "Item" };
 
             [GlobalSetup]
             public void SetupData()
@@ -52,7 +53,7 @@ namespace Qwiq.Mapper.Benchmark.Tests
                 _mapper = new WorkItemMapper(mappingStrategies);
 
                 var wis = new MockWorkItemStore();
-                var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), new[] { "Revisions", "Item" });
+                var generator = new WorkItemGenerator<MockWorkItem>(() => wis.Create(), propertiesToSkip);
                 _items = generator.Generate(1);
                 wis.Add(_items);
 

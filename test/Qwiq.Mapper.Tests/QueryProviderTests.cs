@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,9 +58,9 @@ namespace Qwiq.Mapper
 
     public abstract class SelectTests : QueryableContextSpecification<SimpleMockModel>
     {
-        protected object? Actual;
+        protected object? Actual { get; set; }
 
-        protected object? Expected;
+        protected object? Expected { get; set; }
 
         protected override IWorkItemStore CreateWorkItemStore()
         {
@@ -101,16 +102,33 @@ namespace Qwiq.Mapper
 
     [TestClass]
     // ReSharper disable once InconsistentNaming
-    public class when_a_where_clause_includes_an_empty_contains_clause : QueryableContextSpecification<SimpleMockModel>
+    public class when_a_where_clause_includes_an_empty_contains_clause : QueryableContextSpecification<SimpleMockModel>, IDisposable
     {
         private IEnumerable<SimpleMockModel> _actual = null!;
 
-        private InstrumentedMockWorkItemStore _workItemStore = null!;
+        private InstrumentedMockWorkItemStore? _workItemStore;
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed) return;
+            if (disposing)
+            {
+                _workItemStore?.Dispose();
+            }
+            _disposed = true;
+        }
 
         [TestMethod]
         public void the_query_should_not_be_run()
         {
-            _workItemStore.QueryCallCount.ShouldEqual(0);
+            _workItemStore!.QueryCallCount.ShouldEqual(0);
         }
 
         [TestMethod]

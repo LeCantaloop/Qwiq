@@ -7,10 +7,7 @@ namespace Qwiq
     {
         internal QueryDefinition(Guid id, string name, string wiql, string path)
         {
-            if (id == Guid.Empty)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            ArgumentOutOfRangeException.ThrowIfEqual(id, Guid.Empty);
 
             if (string.IsNullOrEmpty(name))
             {

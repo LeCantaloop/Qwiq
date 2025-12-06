@@ -34,7 +34,7 @@ namespace Qwiq.Mocks
             IEnumerable<IWorkItem>? workItems,
             IEnumerable<IWorkItemLinkInfo>? links)
         {
-            if (store == null) throw new ArgumentNullException(nameof(store));
+            ArgumentNullException.ThrowIfNull(store);
             if (workItems == null && links == null)
                 throw new ArgumentException($"Both {nameof(workItems)} and {nameof(links)} cannot be null.");
             if (links != null && workItems == null)
@@ -116,9 +116,11 @@ namespace Qwiq.Mocks
             return wi;
         }
 
+        private static readonly string[] propertiesToSkip = new[] { "Revisions", "Item" };
+
         public static MockWorkItem Generate(this MockWorkItemStore store)
         {
-            var g = new WorkItemGenerator<MockWorkItem>(store.Create, new[] { "Revisions", "Item" });
+            var g = new WorkItemGenerator<MockWorkItem>(store.Create, propertiesToSkip);
             return g.Generate(1).Single();
         }
         public static IWorkItemStore? Store(this IWorkItemType type)

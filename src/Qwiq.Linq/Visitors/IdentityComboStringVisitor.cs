@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
@@ -47,7 +47,7 @@ namespace Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Visits the children of the <see cref="T:System.Linq.Expressions.BinaryExpression" />.
+        ///     Visits the children of the <see cref="System.Linq.Expressions.BinaryExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
@@ -62,7 +62,7 @@ namespace Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Visits the <see cref="T:System.Linq.Expressions.ConstantExpression" />.
+        ///     Visits the <see cref="System.Linq.Expressions.ConstantExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>
@@ -88,7 +88,7 @@ namespace Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Visits the children of the <see cref="T:System.Linq.Expressions.MethodCallExpression" />.
+        ///     Visits the children of the <see cref="System.Linq.Expressions.MethodCallExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>

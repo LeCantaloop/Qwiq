@@ -1,0 +1,3 @@
+# Default MSBuild arguments applied to all builds
+/m:1
+/nodeReuse:false

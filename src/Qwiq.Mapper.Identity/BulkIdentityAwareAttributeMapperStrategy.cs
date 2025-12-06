@@ -66,7 +66,7 @@ namespace Qwiq.Mapper
             if (!workItemMappings.Any()) return;
 
             var validIdentityProperties = GetWorkItemIdentityFieldNameToIdentityPropertyMap(targetWorkItemType, _inspector);
-            if (!validIdentityProperties.Any()) return;
+            if (validIdentityProperties.Count == 0) return;
 
             var validIdentityFieldsWithWorkItems = GetWorkItemsWithIdentityFieldValues(workItemMappings.Keys, validIdentityProperties.Keys);
             var identitySearchTerms = GetIdentitySearchTerms(validIdentityFieldsWithWorkItems);

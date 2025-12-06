@@ -36,7 +36,7 @@ namespace Qwiq.Mapper.Attributes
             workItemMapper = new WorkItemMapper(workItemMapper!.MapperStrategies.Except(new[] { this }));
 
             // If there were no items added to the lookup, don't bother querying VSO
-            if (!linksLookup.Any()) return;
+            if (linksLookup.Count == 0) return;
 
             // Load all the items
             var workItems = Store.Query(linksLookup.SelectMany(p => p.Value).Distinct())
@@ -186,11 +186,11 @@ namespace Qwiq.Mapper.Attributes
                                           .Select(wil => wil.RelatedWorkItemId)
                                           .ToList();
 
-                        if (!ids.Any()) continue;
+                        if (ids.Count == 0) continue;
                         var key = new Tuple<int, string>(sourceWorkItem.Id, linkType);
-                        if (linksLookup.ContainsKey(key))
+                        if (linksLookup.TryGetValue(key, out List<int>? value))
                         {
-                            var val = new HashSet<int>(linksLookup[key]);
+                            var val = new HashSet<int>(value);
                             foreach (var id in ids)
                             {
                                 val.Add(id);

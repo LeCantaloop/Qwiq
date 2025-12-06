@@ -24,7 +24,7 @@ namespace Qwiq.Mocks
 
         public System.Collections.Generic.IReadOnlyCollection<T> Generate(int quantity = 50)
         {
-            if (quantity <= 0) throw new ArgumentOutOfRangeException(nameof(quantity));
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
             // After generating the parent/child links, this can grow an order of magnitude
             var items = new List<T>(quantity * 10);
             var generatedItems = new HashSet<int>();

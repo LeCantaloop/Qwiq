@@ -17,7 +17,7 @@ namespace Qwiq.Linq.Visitors
         /// <summary>
         ///     Initializes a new instance of the <see cref="IdentityMappingVisitor" /> class.
         /// </summary>
-        /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter" /> used to convert identity values.</param>
+        /// <param name="valueConverter">An instance of <see cref="IIdentityValueConverter{TIn,TOut}" /> used to convert identity values.</param>
         /// <exception cref="ArgumentNullException">valueConverter</exception>
         public IdentityMappingVisitor(IIdentityValueConverter<string, object> valueConverter)
         {
@@ -25,7 +25,7 @@ namespace Qwiq.Linq.Visitors
         }
 
         /// <summary>
-        ///     Visits the <see cref="T:System.Linq.Expressions.ConstantExpression" />.
+        ///     Visits the <see cref="System.Linq.Expressions.ConstantExpression" />.
         /// </summary>
         /// <param name="node">The expression to visit.</param>
         /// <returns>The modified expression, if it or any subexpression was modified; otherwise, returns the original expression.</returns>

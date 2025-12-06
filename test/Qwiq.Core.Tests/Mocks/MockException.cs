@@ -1,5 +1,7 @@
 using System;
+#if NETFRAMEWORK
 using System.Runtime.Serialization;
+#endif
 
 namespace Qwiq.UnitTests.Mocks
 {
@@ -11,10 +13,12 @@ namespace Qwiq.UnitTests.Mocks
         {
         }
 
+#if NETFRAMEWORK
         protected MockException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
+#endif
     }
 }
 

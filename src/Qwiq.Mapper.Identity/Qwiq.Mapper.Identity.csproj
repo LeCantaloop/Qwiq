@@ -6,8 +6,14 @@
     <Description>QWIQ Mapper Identity - Identity-aware mapping for QWIQ</Description>
     <PackageId>Qwiq.Mapper.Identity</PackageId>
     <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\docs\package-readme\Qwiq.Mapper.Identity.md" Pack="true" PackagePath="README.md" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Qwiq.Identity.UnitTests" />

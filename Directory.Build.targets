@@ -5,4 +5,7 @@
     Note: The modern .NET SDK automatically defines NETFRAMEWORK, NET8_0_OR_GREATER, etc.
     based on the target framework. See: https://docs.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#preprocessor-symbols
   -->
+
+  <!-- Import PedanticMode configuration for warnings-as-errors control -->
+  <Import Project="$(MSBuildThisFileDirectory)build/targets/codeanalysis/CodeAnalysis.targets" />
 </Project>
