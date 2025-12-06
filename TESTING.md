@@ -267,13 +267,14 @@ If the workflow fails, follow these steps:
 
 Code coverage is collected in CI and available as artifacts. The following gates apply to new code:
 
-| Metric | Minimum | Target | Notes |
-|--------|---------|--------|-------|
-| Line Coverage (new code) | 70% | 80% | Enforced for new PRs |
-| Branch Coverage (new code) | 60% | 70% | Logical path coverage |
-| Overall Line Coverage | Baseline | Improving | Tracked but not blocking |
+| Metric                     | Minimum  | Target    | Notes                    |
+| -------------------------- | -------- | --------- | ------------------------ |
+| Line Coverage (new code)   | 70%      | 80%       | Enforced for new PRs     |
+| Branch Coverage (new code) | 60%      | 70%       | Logical path coverage    |
+| Overall Line Coverage      | Baseline | Improving | Tracked but not blocking |
 
 **Coverage Philosophy:**
+
 - New code should meet target coverage (80% line, 70% branch)
 - Existing code coverage tracked for visibility
 - Coverage reports available as CI artifacts
@@ -300,6 +301,7 @@ xdg-open ./coverage/index.html  # Linux
 ### Coverage Configuration
 
 Coverage settings are defined in `coverage.runsettings`:
+
 - Platform: x64 (matches CI environment)
 - Format: Cobertura XML (for report generation)
 - Exclusions: Test projects, generated code, compatibility shims
