@@ -105,7 +105,7 @@ jobs:
 
       - name: Upload build logs
         if: success() || failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build-logs-${{ matrix.os }}
           path: ./artifacts/logs/
@@ -118,7 +118,7 @@ jobs:
 
       - name: Upload test results
         if: always() && (steps.test-windows.outcome == 'success' || steps.test-windows.outcome == 'failure' || steps.test-linux.outcome == 'success' || steps.test-linux.outcome == 'failure')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results-${{ matrix.os }}
           path: ./artifacts/TestResults/**/*.trx
@@ -126,14 +126,14 @@ jobs:
 
       - name: Upload coverage report
         if: always() && (steps.test-windows.outcome == 'success' || steps.test-windows.outcome == 'failure' || steps.test-linux.outcome == 'success' || steps.test-linux.outcome == 'failure')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: coverage-report-${{ matrix.os }}
           path: ./artifacts/CoverageReport/
           if-no-files-found: ignore
 
       - name: Upload binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: success()
         with:
           name: binaries-${{ matrix.os }}
@@ -144,7 +144,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Upload packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         # Only upload packages from Windows build (Linux doesn't build all packages)
         if: success() && matrix.os == 'windows-latest'
         with:
