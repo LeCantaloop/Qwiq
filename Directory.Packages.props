@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.Server.Kestrel.Core" Version="2.3.6" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.12.2" />
     <!-- Build and Analysis -->
     <PackageVersion Include="Nerdbank.GitVersioning" Version="3.6.143" />
@@ -26,6 +27,7 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
+    <PackageVersion Include="System.Linq.Dynamic.Core" Version="1.6.0" />
     <PackageVersion Include="System.Runtime" Version="4.3.1" />
     <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.12.2" />
