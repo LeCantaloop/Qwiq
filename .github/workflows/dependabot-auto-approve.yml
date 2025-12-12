@@ -27,6 +27,6 @@ jobs:
       github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
     steps:
       - name: Auto approve
-        uses: cognitedata/auto-approve-dependabot-action@v3.0.1
+        uses: cognitedata/auto-approve-dependabot-action@b8bdaf7c4c3b43ba6f8e02ab6cd49d94a3da2bab # v3.0.1
         with:
           github-token: ${{ secrets.GH_ACTIONS_PR_WRITE }}
