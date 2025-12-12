@@ -3,33 +3,45 @@
   "isRoot": true,
   "tools": {
     "nbgv": {
-      "version": "3.7.115",
-      "commands": ["nbgv"],
+      "version": "3.9.50",
+      "commands": [
+        "nbgv"
+      ],
       "rollForward": false
     },
     "packedprettier": {
       "version": "3.2.5.13",
-      "commands": ["pprettier"],
+      "commands": [
+        "pprettier"
+      ],
       "rollForward": false
     },
     "sourcelink": {
       "version": "3.1.1",
-      "commands": ["sourcelink"],
+      "commands": [
+        "sourcelink"
+      ],
       "rollForward": false
     },
     "dotnet-reportgenerator-globaltool": {
       "version": "5.5.1",
-      "commands": ["reportgenerator"],
+      "commands": [
+        "reportgenerator"
+      ],
       "rollForward": false
     },
     "verify.tool": {
       "version": "0.7.0",
-      "commands": ["dotnet-verify"],
+      "commands": [
+        "dotnet-verify"
+      ],
       "rollForward": false
     },
     "microsoft.sbom.dotnettool": {
       "version": "4.1.4",
-      "commands": ["sbom-tool"],
+      "commands": [
+        "sbom-tool"
+      ],
       "rollForward": false
     }
   }
