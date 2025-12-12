@@ -381,12 +381,12 @@ dotnet pprettier --check "**/*.md"
 
 **Configuration Files:**
 
-| File                       | Purpose                                    |
-| -------------------------- | ------------------------------------------ |
-| `.editorconfig`            | Code style and analyzer severity           |
-| `.prettierrc`              | Prettier formatting rules                  |
-| `.prettierignore`          | Files to exclude from Prettier             |
-| `.markdownlint-cli2.yaml`  | Markdown linting rules                     |
+| File                      | Purpose                          |
+| ------------------------- | -------------------------------- |
+| `.editorconfig`           | Code style and analyzer severity |
+| `.prettierrc`             | Prettier formatting rules        |
+| `.prettierignore`         | Files to exclude from Prettier   |
+| `.markdownlint-cli2.yaml` | Markdown linting rules           |
 
 **Key Markdown Rules Enforced:**
 

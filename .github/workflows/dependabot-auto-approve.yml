@@ -15,7 +15,8 @@ jobs:
   autoapprove:
     name: Auto-Approve PR by dependabot or renovate
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
+    if:
+      github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
     steps:
       - name: Auto approve
         uses: cognitedata/auto-approve-dependabot-action@v3.0.1

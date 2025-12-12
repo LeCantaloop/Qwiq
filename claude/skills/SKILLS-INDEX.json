@@ -135,10 +135,7 @@
       "description": "HTTP traffic capture and WireMock stub generation for QWIQ integration tests. Use when creating offline test fixtures, recording API responses, or converting HAR files to WireMock stubs.",
       "path": "./wiremock-capture/SKILL.md",
       "resources": [],
-      "scripts": [
-        "scripts/Capture-WireMockTraffic.ps1",
-        "scripts/Convert-HarToWireMock.ps1"
-      ],
+      "scripts": ["scripts/Capture-WireMockTraffic.ps1", "scripts/Convert-HarToWireMock.ps1"],
       "triggers": [
         "WireMock",
         "HAR",

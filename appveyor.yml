@@ -13,8 +13,7 @@ nuget:
   project_feed: true
 before_build:
   - ps: >-
-      .\init.ps1;
-      & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
+      .\init.ps1; & .\.tools\nuget.exe restore -NonInteractive -DisableParallelProcessing;
       C:\ProgramData\chocolatey\bin\gfv.exe /l console /output buildserver;
 build:
   publish_nuget: true
