@@ -1,22 +1,87 @@
 # Handoff Document
 
-> **Last Updated**: 2025-12-11 by Copilot Agent (WireMock CI Fix)
-> **Current Phase**: Wave 1 ✅ COMPLETE | Wave 2 Phase 2D ✅ COMPLETE | CI Maintenance Complete
-> **Branch**: `copilot/sub-pr-65`
+> **Last Updated**: 2025-12-12 by Claudette (Session 28 - Documentation Reconciliation)
+> **Current Phase**: Wave 2 🔄 IN PROGRESS | Waves 3-5 📋 RE-ACTIVATED
+> **Branch**: `feat/modernize-3` (commit: 767b30f0)
+> **Target**: Production v11.0.0 Release
 
 ---
 
 ## Current State
 
-**Build Status**: ✅ Passing (CI run 20148162606 - Windows & Ubuntu)
-**Test Status**: ✅ All tests passing (filtered suite excludes WireMock on CI)
-**Security Scanning**: ✅ CodeQL and Gitleaks workflows added
-**Coverage**: ✅ 46.1% line coverage with XPlat Code Coverage (Coverlet)
-**WireMock Tests**: ✅ 9 passing locally (excluded from CI - HTTPS requires elevated privileges)
-**SOAP Unit Tests**: ✅ 13 tests created (4 test classes), require Windows to run
-**Package Validation**: ✅ All 10 packages produced
+**Build Status**: ✅ Passing - 0 errors, 0 warnings
+**Test Status**: ✅ All tests passing (with standard exclusions)
+**Nullable Status**: ✅ 0 CS8xxx warnings across all source projects
+**Coverage**: 46.1% line coverage (target: **70%** for production)
+**Security**: ✅ CodeQL and Gitleaks workflows active
 
-**Last Commit**: ci: exclude WireMock tests from CI test filter
+**Project Context**: 
+- Internal enterprise library for Azure DevOps/TFS work item management
+- 100+ team members will use in production
+- MCP extension for AI agents integration
+- Kubernetes container deployment required
+- Must pass enterprise security review
+
+### Session Summary (Documentation Reconciliation - 2025-12-12 Session 28)
+
+**Purpose**: Update all repository documentation with current .NET version knowledge and correct TFM strategy after discovering:
+1. .NET 10 GA'd November 11, 2025 (LTS until Nov 2028) - no longer "future"
+2. net48/net481 provide compiler optimization benefits (not just binary compatibility)
+3. Current branch is `feat/modernize-3`, not `chore/modernize-wave-2`
+4. User clarified this is for production deployment (100+ team members)
+
+**Work Completed**:
+1. ✅ Updated `/memories/session-2025-12-12-modernization-analysis.md`
+   - Added .NET 10 support policy (LTS, active, EOL Nov 2028)
+   - Corrected TFM strategy with net48/net481 value explanation
+   - Updated branch information
+
+2. ✅ Updated `.github/copilot-instructions.md`
+   - TFM tables: `net472;net48;net481;net8.0;net9.0;net10.0`
+   - SDK requirement: .NET 10.0 (was .NET 8.0)
+   - Branch: `feat/modernize-3`
+   - Multi-targeting strategy with compiler optimization notes
+
+3. ✅ Updated `.agents/modernize-explainer.md`
+   - Replaced "MAINTENANCE MODE" (Session 27) with "PRODUCTION v11.0.0"
+   - Added strategic pivot explanation (why Session 27 was invalid)
+   - .NET support policy table (as of Dec 12, 2025)
+   - Corrected TFM strategy section
+   - RE-ACTIVATED Wave 3 with full rationale
+   - RE-ACTIVATED Wave 4 (all 25 tasks)
+   - ADDED Wave 5 section (W5.1-W5.8 enterprise tasks)
+   - Updated dependency map and risk assessment
+
+4. ✅ Updated `.agents/modernize-TODO.md`
+   - Key TFM Decision section with net48/net481/net10.0
+   - Phase 3B header with corrected strategy
+   - W3.1 and W3.1a tasks with full TFM list
+
+5. ✅ Updated `.agents/PROMPTS.md`
+   - Added branch and production context
+   - Generic phase references
+
+6. ✅ Updated `.agents/analyzer-debt-inventory.md`
+   - Session 28 header update
+   - Branch information
+
+7. ✅ Updated `.agents/HANDOFF.md` (this file)
+   - Complete rewrite with current state
+
+**Key Corrections Made**:
+
+| Topic | Previous (Wrong) | Current (Correct) |
+|-------|------------------|-------------------|
+| .NET 10 Status | "Defer until Nov 2025 GA" | ✅ GA'd Nov 11, 2025 - Use Now |
+| net48/net481 | "No benefit, binary compat only" | ✅ Compiler optimizations, binding decisions |
+| Branch | `chore/modernize-wave-2` | `feat/modernize-3` |
+| Coverage Target | 46% acceptable | **70% required** for production |
+| Project Status | Maintenance mode | **Active development** (v11.0.0) |
+
+**Files Modified**: 7 documentation files
+**Build Status**: ✅ Still clean (documentation-only changes)
+
+---
 
 ### Session Summary (WireMock CI Fix - 2025-12-11)
 

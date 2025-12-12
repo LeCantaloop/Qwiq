@@ -16,8 +16,11 @@ Read the contents of the .agents directory completely before starting any work:
 2. SECOND: Read `.agents/HANDOFF.md` - this contains context from the previous session
 3. THIRD: Read `.agents/modernize-TODO.md` - this contains your task details
 
-Execute all tasks specified for Phase 2A comprehensively, following the AGENT-INSTRUCTIONS.md protocol:
-- Create a session log file at `.agents/sessions/YYYY-MM-DD-phase-2a.md`
+**Current Branch**: `feat/modernize-3` (commit: 767b30f0)
+**Target**: Production v11.0.0 Release for 100+ team members
+
+Execute all tasks specified for the current phase comprehensively, following the AGENT-INSTRUCTIONS.md protocol:
+- Create a session log file at `.agents/sessions/YYYY-MM-DD-phase-XX.md`
 - Complete the pre-flight checklist
 - Work incrementally with small commits
 - Check off tasks in modernize-TODO.md as you complete them
