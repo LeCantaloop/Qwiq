@@ -1,19 +1,81 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+# Dependabot configuration for automated dependency updates
+# See: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: "dotnet-sdk" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # .NET SDK version updates (global.json)
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "dotnet-sdk"
+    reviewers:
+      - "rjmurillo"
+
+  # GitHub Actions dependency updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "nuget" # See documentation for possible values
-    directory: "/" # Location of package manifests
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    reviewers:
+      - "rjmurillo"
+    # Group all action updates into a single PR to reduce noise
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  # NuGet package dependency updates
+  - package-ecosystem: "nuget"
+    directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "nuget"
+    reviewers:
+      - "rjmurillo"
+    # Ignore specific packages that should be updated manually
+    ignore:
+      # Azure DevOps / TFS SDK packages (require careful version coordination)
+      - dependency-name: "Microsoft.TeamFoundationServer.*"
+      - dependency-name: "Microsoft.VisualStudio.Services.*"
+    # Group package updates by category
+    groups:
+      test-dependencies:
+        patterns:
+          - "MSTest.*"
+          - "coverlet.*"
+          - "xunit*"
+          - "Verify.*"
+          - "Shouldly"
+      analyzers:
+        patterns:
+          - "Microsoft.CodeAnalysis.*"
+          - "*.Analyzers"

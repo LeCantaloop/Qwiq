@@ -1,0 +1,24 @@
+#nullable enable
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.DefaultFields.get -> System.Collections.Generic.IEnumerable<string!>?
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.DefaultFields.set -> void
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.WorkItemErrorPolicy.get -> Qwiq.WorkItemErrorPolicy
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.WorkItemErrorPolicy.set -> void
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.WorkItemExpand.get -> Qwiq.WorkItemExpand
+override Qwiq.Client.Soap.WorkItemStoreConfiguration.WorkItemExpand.set -> void
+override Qwiq.Client.Soap.WorkItemStoreFactory.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.IWorkItemStore!
+override Qwiq.Client.Soap.WorkItemTypeCollection.Count.get -> int
+override Qwiq.Client.Soap.WorkItemTypeCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<Qwiq.IWorkItemType!>!
+override Qwiq.Client.Soap.WorkItemTypeCollection.this[string! name].get -> Qwiq.IWorkItemType!
+Qwiq.Client.Soap.Hyperlink
+Qwiq.Client.Soap.IdentityDescriptor
+Qwiq.Client.Soap.TfsConnectionFactory
+Qwiq.Client.Soap.WorkItemLinkInfo
+Qwiq.Client.Soap.WorkItemLinkInfo.Id.get -> int
+Qwiq.Client.Soap.WorkItemLinkType
+Qwiq.Client.Soap.WorkItemLinkTypeEnd
+Qwiq.Client.Soap.WorkItemLinkTypeEnd.Id.get -> int
+Qwiq.Client.Soap.WorkItemStoreConfiguration
+Qwiq.Client.Soap.WorkItemStoreFactory
+Qwiq.Client.Soap.WorkItemTypeCollection
+static readonly Qwiq.Client.Soap.TfsConnectionFactory.Default -> Qwiq.ITfsConnectionFactory!
+static readonly Qwiq.Client.Soap.WorkItemStoreFactory.Default -> Qwiq.IWorkItemStoreFactory!

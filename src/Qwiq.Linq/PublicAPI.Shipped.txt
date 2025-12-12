@@ -1,0 +1,135 @@
+#nullable enable
+override Qwiq.Linq.Query<T>.ToString() -> string!
+override Qwiq.Linq.Visitors.IdentityComboStringVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.Visitors.IdentityComboStringVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.Visitors.IdentityComboStringVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.Visitors.PartialEvaluator.Visit(System.Linq.Expressions.Expression? node) -> System.Linq.Expressions.Expression?
+override Qwiq.Linq.Visitors.QueryRewriter.VisitMethodCall(System.Linq.Expressions.MethodCallExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.WiqlExpressions.AsOfExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.AsOfExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.ContainsExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.ContainsExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.IndexerExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.IndexerExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.InExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.InExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.InGroupExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.InGroupExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.NotInGroupExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.NotInGroupExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.OrderExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.OrderExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.SelectExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.SelectExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.UnderExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.UnderExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.WasEverExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.WasEverExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlExpressions.WhereExpression.NodeType.get -> System.Linq.Expressions.ExpressionType
+override Qwiq.Linq.WiqlExpressions.WhereExpression.Type.get -> System.Type!
+override Qwiq.Linq.WiqlTranslator.Translator.Visit(System.Linq.Expressions.Expression? node) -> System.Linq.Expressions.Expression?
+override Qwiq.Linq.WiqlTranslator.Translator.VisitBinary(System.Linq.Expressions.BinaryExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.WiqlTranslator.Translator.VisitConstant(System.Linq.Expressions.ConstantExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.WiqlTranslator.Translator.VisitMember(System.Linq.Expressions.MemberExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.WiqlTranslator.Translator.VisitUnary(System.Linq.Expressions.UnaryExpression! node) -> System.Linq.Expressions.Expression!
+Qwiq.Linq.CachingFieldMapper
+Qwiq.Linq.CachingFieldMapper.CachingFieldMapper(Qwiq.Linq.IFieldMapper! innerMapper) -> void
+Qwiq.Linq.CachingFieldMapper.GetFieldName(System.Type! type, string! propertyName) -> string!
+Qwiq.Linq.CachingFieldMapper.GetFieldNames(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.CachingFieldMapper.GetWorkItemType(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.IFieldMapper
+Qwiq.Linq.IFieldMapper.GetFieldName(System.Type! type, string! propertyName) -> string!
+Qwiq.Linq.IFieldMapper.GetFieldNames(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.IFieldMapper.GetWorkItemType(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.IWiqlQueryBuilder
+Qwiq.Linq.IWiqlQueryBuilder.BuildQuery(System.Linq.Expressions.Expression! expression) -> Qwiq.Linq.TranslatedQuery!
+Qwiq.Linq.IWiqlTranslator
+Qwiq.Linq.IWiqlTranslator.Translate(System.Linq.Expressions.Expression! expression) -> Qwiq.Linq.TranslatedQuery!
+Qwiq.Linq.Projector
+Qwiq.Linq.Query<T>
+Qwiq.Linq.Query<T>.GetEnumerator() -> System.Collections.Generic.IEnumerator<T>!
+Qwiq.Linq.Query<T>.Query(System.Linq.IQueryProvider! provider, Qwiq.Linq.IWiqlQueryBuilder! builder, System.Linq.Expressions.Expression! expression) -> void
+Qwiq.Linq.Query<T>.Query(System.Linq.IQueryProvider! provider, Qwiq.Linq.IWiqlQueryBuilder! builder) -> void
+Qwiq.Linq.QueryExtensions
+Qwiq.Linq.SimpleFieldMapper
+Qwiq.Linq.SimpleFieldMapper.GetFieldName(System.Type! type, string! propertyName) -> string!
+Qwiq.Linq.SimpleFieldMapper.GetFieldNames(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.SimpleFieldMapper.GetWorkItemType(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Linq.SimpleFieldMapper.SimpleFieldMapper() -> void
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.CreateQuery(System.Linq.Expressions.Expression! expression) -> System.Linq.IQueryable!
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.CreateQuery<TElement>(System.Linq.Expressions.Expression! expression) -> System.Linq.IQueryable<TElement>!
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.Execute(System.Linq.Expressions.Expression! expression) -> object!
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.Execute<TResult>(System.Linq.Expressions.Expression! expression) -> TResult
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.TeamFoundationServerWorkItemQueryProvider(Qwiq.IWorkItemStore! workItemStore, Qwiq.Linq.IWiqlQueryBuilder! queryBuilder) -> void
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.WiqlQueryBuilder.get -> Qwiq.Linq.IWiqlQueryBuilder!
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.WiqlQueryBuilder.set -> void
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.WorkItemStore.get -> Qwiq.IWorkItemStore!
+Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.WorkItemStore.set -> void
+Qwiq.Linq.TranslatedQuery
+Qwiq.Linq.TranslatedQuery.AsOfDateTime.get -> System.DateTime?
+Qwiq.Linq.TranslatedQuery.AsOfDateTime.set -> void
+Qwiq.Linq.TranslatedQuery.Projections.get -> System.Collections.Generic.IList<System.Linq.Expressions.LambdaExpression!>!
+Qwiq.Linq.TranslatedQuery.ToQueryString() -> string!
+Qwiq.Linq.TranslatedQuery.TranslatedQuery() -> void
+Qwiq.Linq.TranslatedQuery.UnderlyingQueryType.get -> System.Type?
+Qwiq.Linq.TranslatedQuery.UnderlyingQueryType.set -> void
+Qwiq.Linq.TranslatedQuery.WillEverHaveResults() -> bool
+Qwiq.Linq.Visitors.IdentityComboStringVisitor
+Qwiq.Linq.Visitors.IdentityComboStringVisitor.IdentityComboStringVisitor() -> void
+Qwiq.Linq.Visitors.PartialEvaluator
+Qwiq.Linq.Visitors.PartialEvaluator.PartialEvaluator() -> void
+Qwiq.Linq.Visitors.PartialEvaluator.Visit(System.Linq.Expressions.Expression! expression, System.Func<System.Linq.Expressions.Expression!, bool>! fnCanBeEvaluated) -> System.Linq.Expressions.Expression!
+Qwiq.Linq.Visitors.QueryRewriter
+Qwiq.Linq.Visitors.QueryRewriter.QueryRewriter() -> void
+Qwiq.Linq.Visitors.Utility
+Qwiq.Linq.Visitors.WiqlQueryBuilder
+Qwiq.Linq.Visitors.WiqlQueryBuilder.BuildQuery(System.Linq.Expressions.Expression! expression) -> Qwiq.Linq.TranslatedQuery!
+Qwiq.Linq.Visitors.WiqlQueryBuilder.WiqlQueryBuilder() -> void
+Qwiq.Linq.Visitors.WiqlQueryBuilder.WiqlQueryBuilder(Qwiq.Linq.IWiqlTranslator! translator, params System.Linq.Expressions.ExpressionVisitor![]! visitors) -> void
+Qwiq.Linq.Visitors.WiqlQueryBuilder.WiqlQueryBuilder(Qwiq.Linq.IWiqlTranslator! translator) -> void
+Qwiq.Linq.WiqlExpressions.AsOfExpression
+Qwiq.Linq.WiqlExpressions.ContainsExpression
+Qwiq.Linq.WiqlExpressions.IndexerExpression
+Qwiq.Linq.WiqlExpressions.InExpression
+Qwiq.Linq.WiqlExpressions.InGroupExpression
+Qwiq.Linq.WiqlExpressions.NotInGroupExpression
+Qwiq.Linq.WiqlExpressions.OrderExpression
+Qwiq.Linq.WiqlExpressions.SelectExpression
+Qwiq.Linq.WiqlExpressions.SelectExpression.Projection.get -> System.Linq.Expressions.LambdaExpression!
+Qwiq.Linq.WiqlExpressions.SelectExpression.Select.get -> System.Linq.Expressions.Expression!
+Qwiq.Linq.WiqlExpressions.UnderExpression
+Qwiq.Linq.WiqlExpressions.WasEverExpression
+Qwiq.Linq.WiqlExpressions.WhereExpression
+Qwiq.Linq.WiqlTranslator
+Qwiq.Linq.WiqlTranslator.FieldMapper.get -> Qwiq.Linq.IFieldMapper!
+Qwiq.Linq.WiqlTranslator.Translate(System.Linq.Expressions.Expression! expression) -> Qwiq.Linq.TranslatedQuery!
+Qwiq.Linq.WiqlTranslator.Translator
+Qwiq.Linq.WiqlTranslator.Translator.Query.get -> Qwiq.Linq.TranslatedQuery!
+Qwiq.Linq.WiqlTranslator.Translator.Query.set -> void
+Qwiq.Linq.WiqlTranslator.Translator.Translator(Qwiq.Linq.IFieldMapper! fieldMapper) -> void
+Qwiq.Linq.WiqlTranslator.Translator.VisitIndexer(Qwiq.Linq.WiqlExpressions.IndexerExpression! node) -> System.Linq.Expressions.Expression!
+Qwiq.Linq.WiqlTranslator.WiqlTranslator() -> void
+Qwiq.Linq.WiqlTranslator.WiqlTranslator(Qwiq.Linq.IFieldMapper! fieldMapper) -> void
+static Qwiq.Linq.Projector.Project(System.Collections.Generic.IEnumerable<System.Linq.Expressions.LambdaExpression!>! projections, System.Collections.Generic.IEnumerable<object!>! data) -> object!
+static Qwiq.Linq.QueryExtensions.AsOf<T>(this System.Linq.IQueryable<T>! query, System.DateTime asOfDateTime) -> System.Linq.IQueryable<T>!
+static Qwiq.Linq.QueryExtensions.InGroup<T>(this T _, T __) -> bool
+static Qwiq.Linq.QueryExtensions.NotInGroup<T>(this T _, T __) -> bool
+static Qwiq.Linq.QueryExtensions.WasEver<T>(this T _, T __) -> bool
+static Qwiq.Linq.Visitors.Utility.ToConcatenatedString<T>(this System.Collections.Generic.IEnumerable<T>! source, System.Func<T, string!>! selector, string! separator) -> string!
+static Qwiq.Linq.Visitors.Utility.ToLinkedList<T>(this System.Collections.Generic.IEnumerable<T>! source) -> System.Collections.Generic.LinkedList<T>!
+virtual Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.ExecuteCore(System.Linq.Expressions.Expression! expression, System.Type! itemType) -> object!
+virtual Qwiq.Linq.TeamFoundationServerWorkItemQueryProvider.ExecuteRawQuery(System.Type! workItemType, string! queryString) -> System.Collections.IEnumerable!
+virtual Qwiq.Linq.Visitors.IdentityComboStringVisitor.ExpressionsNeedIdentityMapping(System.Collections.Generic.IEnumerable<System.Linq.Expressions.Expression!>! expressions) -> bool
+virtual Qwiq.Linq.Visitors.IdentityComboStringVisitor.NeedsIdentityMapping.get -> bool
+virtual Qwiq.Linq.WiqlTranslator.GetTranslator() -> Qwiq.Linq.WiqlTranslator.Translator!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitAsOf(Qwiq.Linq.WiqlExpressions.AsOfExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitContains(Qwiq.Linq.WiqlExpressions.ContainsExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitIn(Qwiq.Linq.WiqlExpressions.InExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitInGroup(Qwiq.Linq.WiqlExpressions.InGroupExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitNotInGroup(Qwiq.Linq.WiqlExpressions.NotInGroupExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitOrder(Qwiq.Linq.WiqlExpressions.OrderExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitSelect(Qwiq.Linq.WiqlExpressions.SelectExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitUnder(Qwiq.Linq.WiqlExpressions.UnderExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitWasEver(Qwiq.Linq.WiqlExpressions.WasEverExpression! expression) -> System.Linq.Expressions.Expression!
+virtual Qwiq.Linq.WiqlTranslator.Translator.VisitWhere(Qwiq.Linq.WiqlExpressions.WhereExpression! expression) -> System.Linq.Expressions.Expression!

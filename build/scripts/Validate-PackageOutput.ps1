@@ -5,7 +5,9 @@
 .DESCRIPTION
     This script scans all .csproj files to identify projects marked as packable
     (IsPackable=true and GeneratePackageOnBuild=true), then validates that each
-    produced both a .nupkg and .snupkg file.
+    produced both a .nupkg and .snupkg file in the centralized package output directory.
+
+    The SDK places packages in artifacts/package/{Configuration} when ArtifactsPath is set.
 
     This is a CI build validation script - it should fail the build if any
     expected packages are missing.
@@ -19,13 +21,20 @@
 .PARAMETER SourcePaths
     Array of paths to search for .csproj files. Defaults to 'src' and 'test'.
 
+.PARAMETER PackageOutputPath
+    The directory where packages are output. Defaults to artifacts/package/{Configuration}.
+
 .EXAMPLE
     .\Validate-PackageOutput.ps1
-    Validates packages in src/ and test/ directories.
+    Validates packages in the default artifacts/package/release directory.
 
 .EXAMPLE
     .\Validate-PackageOutput.ps1 -Configuration Debug
     Validates packages built with Debug configuration.
+
+.EXAMPLE
+    .\Validate-PackageOutput.ps1 -PackageOutputPath "C:\custom\output"
+    Validates packages in a custom output directory.
 
 .NOTES
     This script should be run after 'dotnet build /t:Build,Pack' completes.
@@ -41,7 +50,10 @@ param(
     [string]$Configuration = "Release",
 
     [Parameter(Mandatory = $false)]
-    [string[]]$SourcePaths = @("src", "test")
+    [string[]]$SourcePaths = @("src", "test"),
+
+    [Parameter(Mandatory = $false)]
+    [string]$PackageOutputPath = ""
 )
 
 Set-StrictMode -Version Latest
@@ -53,6 +65,14 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Solution root:  $SolutionRoot" -ForegroundColor White
 Write-Host "  Configuration:  $Configuration" -ForegroundColor White
 Write-Host "  Source paths:   $($SourcePaths -join ', ')" -ForegroundColor White
+
+# Determine the package output path
+# The SDK places packages in artifacts/package/{Configuration} when ArtifactsPath is set
+if (-not $PackageOutputPath) {
+    $PackageOutputPath = Join-Path $SolutionRoot "artifacts" "package" $Configuration.ToLower()
+}
+
+Write-Host "  Package output: $PackageOutputPath" -ForegroundColor White
 
 # Find all packable projects by scanning csproj files
 $packableProjects = @()
@@ -92,7 +112,6 @@ foreach ($sourcePath in $SourcePaths) {
                 Name = $packageId
                 ProjectFile = $csproj.FullName
                 ProjectDir = $csproj.DirectoryName
-                BinPath = Join-Path $csproj.DirectoryName "bin" $Configuration
             }
         }
     }
@@ -117,24 +136,21 @@ Write-Host "`n----------------------------------------" -ForegroundColor Cyan
 Write-Host "Validating package output..." -ForegroundColor Cyan
 Write-Host "----------------------------------------" -ForegroundColor Cyan
 
+# Verify the package output directory exists
+if (-not (Test-Path $PackageOutputPath)) {
+    Write-Error "Package output directory not found: $PackageOutputPath"
+    Write-Host "Ensure 'dotnet build /t:Build,Pack' completed successfully." -ForegroundColor Yellow
+    exit 1
+}
+
 foreach ($proj in $packableProjects) {
-    $binPath = $proj.BinPath
-
-    if (-not (Test-Path $binPath)) {
-        Write-Host "  $($proj.Name): " -NoNewline -ForegroundColor White
-        Write-Host "MISSING (bin folder not found)" -ForegroundColor Red
-        $missingNupkg += $proj.Name
-        $missingSnupkg += $proj.Name
-        continue
-    }
-
     # Find .nupkg file (pattern: PackageName.*.nupkg, excluding .snupkg)
-    $nupkg = Get-ChildItem -Path $binPath -Filter "$($proj.Name).*.nupkg" -File |
+    $nupkg = Get-ChildItem -Path $PackageOutputPath -Filter "$($proj.Name).*.nupkg" -File |
         Where-Object { $_.Name -notmatch "\.snupkg$" } |
         Select-Object -First 1
 
     # Find .snupkg file
-    $snupkg = Get-ChildItem -Path $binPath -Filter "$($proj.Name).*.snupkg" -File |
+    $snupkg = Get-ChildItem -Path $PackageOutputPath -Filter "$($proj.Name).*.snupkg" -File |
         Select-Object -First 1
 
     $status = ""

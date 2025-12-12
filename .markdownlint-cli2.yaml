@@ -1,0 +1,81 @@
+# Markdownlint configuration for Qwiq repository
+# See: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+config:
+  # Enable all rules by default
+  default: true
+
+  # MD003: Heading style - use ATX style (#)
+  MD003:
+    style: atx
+
+  # MD007: Unordered list indentation
+  MD007:
+    indent: 2
+
+  # MD013: Line length - disabled, let prettier handle wrapping
+  MD013: false
+
+  # MD022: Headings should be surrounded by blank lines
+  MD022: true
+
+  # MD024: Multiple headings with same content - allow in different nesting
+  MD024:
+    siblings_only: true
+
+  # MD025: Single title/top-level heading - allow front matter title
+  MD025:
+    front_matter_title: ""
+
+  # MD029: Ordered list item prefix - use ordered numbers
+  MD029:
+    style: ordered
+
+  # MD031: Fenced code blocks should be surrounded by blank lines
+  MD031: true
+
+  # MD033: Inline HTML - allow for details/summary and other common patterns
+  MD033:
+    allowed_elements:
+      - details
+      - summary
+      - br
+      - sup
+      - sub
+
+  # MD034: Bare URLs - require angle brackets or markdown links
+  MD034: true
+
+  # MD036: Emphasis used instead of heading
+  MD036: true
+
+  # MD040: Fenced code blocks should have a language specified
+  MD040: true
+
+  # MD041: First line should be a top-level heading - not always applicable
+  MD041: false
+
+  # MD046: Code block style - use fenced
+  MD046:
+    style: fenced
+
+  # MD048: Code fence style - use backticks
+  MD048:
+    style: backtick
+
+  # MD058: Tables should be surrounded by blank lines
+  MD058: true
+
+# Files to lint
+globs:
+  - "**/*.md"
+
+# Files to ignore
+ignores:
+  - "**/node_modules/**"
+  - "**/artifacts/**"
+  - "**/.git/**"
+  - "**/WireMockRecordings/**"
+  # Verify snapshot files have their own formatting rules
+  - "**/*.verified.md"
+  - "**/*.received.md"

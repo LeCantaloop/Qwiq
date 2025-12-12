@@ -301,7 +301,99 @@ public class Given_some_context : ContextSpecification
 }
 ```
 
+### Code Coverage
+
+Code coverage helps ensure new code is properly tested. Coverage is collected in CI and available as artifacts.
+
+#### Running Tests with Coverage
+
+```powershell
+# Run tests with coverage collection using the repository's coverage settings
+dotnet test Qwiq.sln --settings coverage.runsettings
+
+# Or with explicit coverage collection
+dotnet test Qwiq.sln --collect:"Code Coverage" --settings coverage.runsettings
+```
+
+#### Coverage Configuration
+
+Coverage settings are defined in `coverage.runsettings` at the repository root:
+
+- **Format**: Cobertura XML (CI-friendly, integrates with GitHub Actions)
+- **Included assemblies**: Only Qwiq.\* production assemblies
+- **Excluded**: Test projects, mocks, benchmarks, third-party dependencies
+- **Excluded attributes**: Generated code, debugger-hidden code, `[ExcludeFromCodeCoverage]`
+
+#### Generating Coverage Reports
+
+```powershell
+# Install ReportGenerator (one-time)
+dotnet tool install -g dotnet-reportgenerator-globaltool
+
+# Generate HTML report from coverage results
+reportgenerator -reports:artifacts/TestResults/**/*.cobertura.xml -targetdir:./artifacts/coverage -reporttypes:Html
+
+# Open the report
+start ./artifacts/coverage/index.html
+```
+
+#### Coverage Guidelines
+
+| Metric                     | Minimum | Target | Notes                    |
+| -------------------------- | ------- | ------ | ------------------------ |
+| Line Coverage (new code)   | 70%     | 80%    | Enforced for new PRs     |
+| Branch Coverage (new code) | 60%     | 70%    | Logical path coverage    |
+| Overall Line Coverage      | —       | —      | Tracked but not blocking |
+
+**Best Practices:**
+
+- Write tests for happy paths AND edge cases
+- Cover error handling and null checks
+- Test public APIs thoroughly
+- Use mocks from `Qwiq.Mocks` for unit tests
+- Mark intentionally untested code with `[ExcludeFromCodeCoverage]`
+
 ## Code Style
+
+### Formatting and Linting
+
+This repository uses automated formatting and linting tools:
+
+**C# Formatting:**
+
+```powershell
+# Apply C# analyzer fixes
+dotnet format
+
+# Check formatting without applying changes
+dotnet format --verify-no-changes
+```
+
+**Markdown Formatting:**
+
+```powershell
+# Format markdown files with Prettier (via PackedPrettier)
+dotnet pprettier --write "**/*.md"
+
+# Check markdown without applying changes
+dotnet pprettier --check "**/*.md"
+```
+
+**Configuration Files:**
+
+| File                       | Purpose                                    |
+| -------------------------- | ------------------------------------------ |
+| `.editorconfig`            | Code style and analyzer severity           |
+| `.prettierrc`              | Prettier formatting rules                  |
+| `.prettierignore`          | Files to exclude from Prettier             |
+| `.markdownlint-cli2.yaml`  | Markdown linting rules                     |
+
+**Key Markdown Rules Enforced:**
+
+- MD031: Blank lines around fenced code blocks
+- MD040: Language identifiers on code blocks (e.g., ` ```csharp `)
+- MD034: No bare URLs (use `<url>` or `[text](url)`)
+- MD058: Blank lines around tables
 
 ### Nullable Reference Types
 
@@ -496,6 +588,56 @@ dotnet restore Qwiq.sln
 - Check existing issues on GitHub
 - Review the `.github/copilot-instructions.md` for detailed technical reference
 - Look at similar test files for patterns
+
+---
+
+## Dependency License Policy
+
+QWIQ enforces a dependency license policy to protect library consumers from restrictive license requirements. This policy is automatically enforced via the [Dependency Review Action](.github/workflows/dependency-review.yml) on all pull requests.
+
+### Allowed Licenses (Permissive)
+
+The following licenses are **allowed** because they are permissive and compatible with QWIQ's MIT license:
+
+| License          | Description                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| **MIT**          | Permissive: allows commercial use, modification, distribution with minimal restrictions. QWIQ's own license. |
+| **Apache-2.0**   | Permissive with explicit patent grant. Compatible with MIT. Used by many Microsoft packages.                 |
+| **BSD-3-Clause** | Permissive: similar to MIT with non-endorsement clause. Common in .NET ecosystem.                            |
+| **0BSD**         | Public domain equivalent. No restrictions whatsoever.                                                        |
+
+### Denied Licenses (Copyleft)
+
+The following licenses are **denied** because they impose copyleft requirements that would restrict QWIQ's consumers:
+
+| License      | Why Denied                                                                                                              |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| **GPL-2.0**  | Copyleft: requires derivative works to be GPL-licensed. Incompatible with MIT-licensed library distribution.            |
+| **GPL-3.0**  | Stronger copyleft than GPL-2.0 with additional patent provisions. Would force QWIQ consumers to GPL-license their code. |
+| **AGPL-3.0** | Network copyleft: even SaaS usage triggers license requirements. Extremely restrictive for library consumers.           |
+| **LGPL-3.0** | "Lesser" GPL still requires source disclosure for modifications. Creates compliance burden for consumers.               |
+
+### License Enforcement
+
+Pull requests that introduce dependencies with denied licenses will **fail the dependency review check** and cannot be merged. If you believe a specific dependency is essential despite its license, please:
+
+1. Open an issue explaining the use case
+2. Explore alternative packages with permissive licenses
+3. Request a license policy exception with business justification
+
+### Vulnerability Policy
+
+In addition to license restrictions, dependencies with **moderate or higher severity vulnerabilities** are blocked. This applies to both runtime and development dependencies.
+
+To check for vulnerabilities before submitting a PR:
+
+```powershell
+# Restore dependencies
+dotnet restore Qwiq.sln
+
+# List dependencies (optional)
+dotnet list package --vulnerable --include-transitive
+```
 
 ---
 

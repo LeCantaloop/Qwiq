@@ -1,0 +1,41 @@
+# Prettier ignore file for Qwiq repository
+# See: https://prettier.io/docs/en/ignore.html
+
+# Build outputs
+artifacts/
+**/bin/
+**/obj/
+
+# Dependencies
+node_modules/
+
+# Git
+.git/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# Verify snapshot files (have their own formatting rules)
+*.verified.*
+*.received.*
+
+# WireMock recordings (JSON structure must be preserved exactly)
+WireMockRecordings/
+**/Stubs/**/*.json
+
+# Package lock files
+package-lock.json
+packages.lock.json
+
+# Generated files
+*.Designer.cs
+*.g.cs
+
+# Binary files
+*.nupkg
+*.snupkg
+*.dll
+*.exe
+*.pdb

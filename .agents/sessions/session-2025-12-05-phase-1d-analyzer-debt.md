@@ -465,8 +465,8 @@ All changes were documented incrementally:
 
 ## Related Documents
 
-- [modernize-TODO.md](./modernize-TODO.md) - Master task list (updated)
-- [analyzer-debt-inventory.md](./analyzer-debt-inventory.md) - Comprehensive rule inventory (NEW)
-- [modernize-explainer.md](./modernize-explainer.md) - Context and rationale
-- [copilot-instructions.md](../copilot-instructions.md) - Repository guidelines
+- [modernize-TODO.md](../modernize-TODO.md) - Master task list (updated)
+- [analyzer-debt-inventory.md](../analyzer-debt-inventory.md) - Comprehensive rule inventory (NEW)
+- [modernize-explainer.md](../modernize-explainer.md) - Context and rationale
+- [copilot-instructions.md](../../.github/copilot-instructions.md) - Repository guidelines
 - `.editorconfig` - Analyzer configuration (72 suppressions removed)

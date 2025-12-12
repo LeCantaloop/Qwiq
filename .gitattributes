@@ -46,6 +46,14 @@
 *.snupkg.verified binary
 
 ###############################
+# Public API Analyzer Files   #
+###############################
+
+# Ensure Public API files use LF line endings in the repository archive
+PublicAPI.Shipped.txt text eol=lf
+PublicAPI.Unshipped.txt text eol=lf
+
+###############################
 # Optional Git LFS Rules      #
 ###############################
 

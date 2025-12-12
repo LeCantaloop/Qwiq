@@ -19,6 +19,20 @@
 		<PackageReference Include="Newtonsoft.Json" />
 	</ItemGroup>
 
+	<!-- System.Runtime needed for net472 to resolve type conflicts -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<PackageReference Include="System.Runtime" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Link polyfill files from Qwiq.Core for compatibility on older frameworks -->
+		<Compile Include="..\..\src\Qwiq.Core\Compatibility\NullableAttributes.cs" Link="Compatibility\NullableAttributes.cs" />
+		<Compile Include="..\..\src\Qwiq.Core\Compatibility\EmbeddedAttribute.cs" Link="Compatibility\EmbeddedAttribute.cs" />
+		<Compile Include="..\..\src\Qwiq.Core\Compatibility\CallerArgumentExpressionAttribute.cs" Link="Compatibility\CallerArgumentExpressionAttribute.cs" />
+		<Compile Include="..\..\src\Qwiq.Core\Compatibility\ArgumentNullExceptionPolyfill.cs" Link="Compatibility\ArgumentNullExceptionPolyfill.cs" />
+		<Compile Include="..\..\src\Qwiq.Core\Compatibility\ArgumentOutOfRangeExceptionPolyfill.cs" Link="Compatibility\ArgumentOutOfRangeExceptionPolyfill.cs" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
 		<ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />

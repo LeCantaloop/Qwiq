@@ -34,7 +34,7 @@ namespace Qwiq.Client.Soap
 
         public IQuery Create(IEnumerable<int> ids, string wiql)
         {
-            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            ArgumentNullException.ThrowIfNull(ids);
             if (string.IsNullOrWhiteSpace(wiql))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(wiql));
 

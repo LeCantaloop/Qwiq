@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- Centralized artifact output paths for consistent build layout -->
+    <!-- ArtifactsPath is supported in .NET 9+ SDK (we'll adopt in .NET 10 LTS, skipping .NET 9 STS). For .NET 8, we configure paths manually. -->
+    <ArtifactsPath Condition="'$(ArtifactsPath)' == ''">$(RepoRoot)artifacts</ArtifactsPath>
+    <ArtifactsTestResultsPath Condition="'$(ArtifactsTestResultsPath)' == ''">$(ArtifactsPath)\TestResults</ArtifactsTestResultsPath>
+  </PropertyGroup>
+</Project>
+

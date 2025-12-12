@@ -468,7 +468,7 @@ git push origin copilot/start-wave-1-task-w1-1
 - `.agents/modernize-TODO.md` - Master task list (9/23 complete)
 - `.agents/modernize-explainer.md` - Context and rationale
 - `.github/copilot-instructions.md` - Repository patterns and guidelines
-- `.agents/session-2025-12-05-package-readme.md` - This session summary
+- `.agents/sessions/session-2025-12-05-package-readme.md` - This session summary
 
 **Nullable Patterns** (from copilot-instructions.md):
 - Use `T?` for properties that can legitimately return null

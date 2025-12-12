@@ -1,0 +1,8 @@
+﻿/
+|-- Qwiq.Mocks.nuspec
+|-- README.md
+|-- lib
+|   |-- net472
+|   |   |-- Qwiq.Mocks.dll
+|   |-- net8.0
+|   |   |-- Qwiq.Mocks.dll

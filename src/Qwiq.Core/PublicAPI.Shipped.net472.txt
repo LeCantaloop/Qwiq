@@ -1,0 +1,6 @@
+#nullable enable
+Qwiq.AccessDeniedException.AccessDeniedException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void
+Qwiq.DeniedOrNotExistException.DeniedOrNotExistException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void
+Qwiq.Exceptions.TransientException.TransientException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void
+Qwiq.FieldDefinitionNotExistException.FieldDefinitionNotExistException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void
+Qwiq.PageSizeRangeException.PageSizeRangeException(System.Runtime.Serialization.SerializationInfo! info, System.Runtime.Serialization.StreamingContext context) -> void

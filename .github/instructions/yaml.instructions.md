@@ -9,7 +9,9 @@ applyTo: "**/*.{yml,yaml}"
 ## Quick Reference
 
 - Primary YAML files: GitHub Actions workflows in `.github/workflows/`
-- Use `windows-latest` runner (not `windows-2019` which is retired)
+- **Preferred**: `ubuntu-latest` (faster, cheaper)
+- **Use `windows-latest` when**: Building net472 targets (avoids mono on Linux)
+- Never use `windows-2019` (retired)
 - Prefer `global-json-file: ./global.json` over `dotnet-version`
 - Include `dotnet tool restore` for Nerdbank.GitVersioning
 
@@ -64,12 +66,13 @@ jobs:
 
 ### Key Requirements
 
-| Requirement           | Reason                                    |
-| --------------------- | ----------------------------------------- |
-| `windows-latest`      | SOAP projects require Windows for net472  |
-| `fetch-depth: 0`      | Nerdbank.GitVersioning needs full history |
-| `dotnet tool restore` | Restores nbgv from dotnet tool manifest   |
-| `global-json-file`    | Uses pinned SDK version from repository   |
+| Requirement           | Reason                                              |
+| --------------------- | --------------------------------------------------- |
+| `ubuntu-latest`       | Preferred for non-build workflows (faster, cheaper) |
+| `windows-latest`      | Required for net472 builds (avoids mono on Linux)   |
+| `fetch-depth: 0`      | Nerdbank.GitVersioning needs full history           |
+| `dotnet tool restore` | Restores nbgv from dotnet tool manifest             |
+| `global-json-file`    | Uses pinned SDK version from repository             |
 
 ### Deterministic Builds
 

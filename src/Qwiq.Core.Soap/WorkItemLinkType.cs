@@ -12,7 +12,7 @@ namespace Qwiq.Client.Soap
                 new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ForwardEnd!)),
                 new Lazy<IWorkItemLinkTypeEnd>(() => new WorkItemLinkTypeEnd(linkType?.ReverseEnd!)))
         {
-            if (linkType == null) throw new ArgumentNullException(nameof(linkType));
+            ArgumentNullException.ThrowIfNull(linkType);
             IsActive = linkType.IsActive;
             IsDirectional = linkType.IsDirectional;
         }

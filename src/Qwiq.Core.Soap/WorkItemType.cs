@@ -16,7 +16,7 @@ namespace Qwiq.Client.Soap
                  () => ExceptionHandlingDynamicProxyFactory.Create<IWorkItem>(new WorkItem(type?.NewWorkItem()!))
                  )
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            ArgumentNullException.ThrowIfNull(type);
         }
     }
 }

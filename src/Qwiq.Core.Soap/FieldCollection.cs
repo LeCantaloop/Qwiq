@@ -48,7 +48,13 @@ namespace Qwiq.Client.Soap
             return -1;
         }
 
-        public bool TryGetByName(string name, [MaybeNullWhen(false)] out IField value)
+        public bool TryGetByName(string name,
+#if NETFRAMEWORK || NETSTANDARD2_0
+            [MaybeNullWhen(false)]
+#else
+            [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)]
+#endif
+            out IField value)
         {
             if (name == null)
             {

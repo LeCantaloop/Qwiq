@@ -47,7 +47,7 @@ Completed the final actionable Wave 1 tasks (W1.22, W1.23, W1.16, W1.24), bringi
 **Final Implementation** (in `Directory.Build.props`):
 ```xml
 <!-- Artifact Output Configuration -->
-<!-- Note: Full ArtifactsPath support requires .NET 9+ SDK. For .NET 8, we only configure test results path. -->
+<!-- Note: Full ArtifactsPath support requires .NET 9+ SDK (we'll adopt in .NET 10 LTS, skipping .NET 9 STS). For .NET 8, we only configure test results path. -->
 <ArtifactsTestResultsPath Condition="'$(ArtifactsTestResultsPath)' == ''">$(MSBuildThisFileDirectory)artifacts\TestResults</ArtifactsTestResultsPath>
 ```
 
@@ -214,7 +214,7 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 - **.NET 10 Strategy**: Skip .NET 9 (STS), adopt .NET 10 (LTS)
 - **SOAP Client**: Maintenance-only mode (Windows-only)
 - **REST Client**: Active development, cross-platform
-- **ArtifactsPath**: Test results path only (full support requires .NET 9+)
+- **ArtifactsPath**: Test results path only (full support requires .NET 9+ SDK, we'll adopt in .NET 10 LTS)
 
 ---
 
@@ -224,4 +224,4 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 |---------|------|--------|---------|
 | 1.0 | Dec 6, 2025 | Copilot Session 13 | Wave 1 completion handoff |
 
-**Location**: `.agents/session-2025-12-06-wave1-completion.md`
+**Location**: `.agents/sessions/session-2025-12-06-wave1-completion.md`

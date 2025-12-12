@@ -1,18 +1,28 @@
+// Polyfill for CallerArgumentExpressionAttribute for .NET Framework and .NET Standard 2.0
+// This attribute is used by ArgumentOutOfRangeExceptionPolyfill.cs
+
 #if NETFRAMEWORK || NETSTANDARD2_0
 
-// ReSharper disable once CheckNamespace
 namespace System.Runtime.CompilerServices
 {
-    [global::System.AttributeUsage(
-        global::System.AttributeTargets.Parameter,
-        AllowMultiple = false,
-        Inherited = false)]
-    sealed class CallerArgumentExpressionAttribute :
-        global::System.Attribute
+    /// <summary>
+    /// Allows capturing the expressions passed to a method.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+    internal sealed class CallerArgumentExpressionAttribute : Attribute
     {
-        public CallerArgumentExpressionAttribute(string parameterName) =>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CallerArgumentExpressionAttribute"/> class.
+        /// </summary>
+        /// <param name="parameterName">The name of the targeted parameter.</param>
+        public CallerArgumentExpressionAttribute(string parameterName)
+        {
             ParameterName = parameterName;
+        }
 
+        /// <summary>
+        /// Gets the target parameter name of the CallerArgumentExpression.
+        /// </summary>
         public string ParameterName { get; }
     }
 }

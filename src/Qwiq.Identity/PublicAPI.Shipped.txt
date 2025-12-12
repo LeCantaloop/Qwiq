@@ -1,0 +1,36 @@
+#nullable enable
+abstract Qwiq.Identity.IdentityValueConverterBase.Map(System.Collections.Generic.IEnumerable<string!>! values) -> System.Collections.Generic.IReadOnlyDictionary<string!, object!>!
+override Qwiq.Identity.DisplayNameToAliasValueConverter.Map(System.Collections.Generic.IEnumerable<string!>! values) -> System.Collections.Generic.IReadOnlyDictionary<string!, object!>!
+override Qwiq.Identity.IdentityAliasValueConverter.Map(System.Collections.Generic.IEnumerable<string!>! values) -> System.Collections.Generic.IReadOnlyDictionary<string!, object!>!
+override Qwiq.Identity.IdentityFieldValueConverter.Map(System.Collections.Generic.IEnumerable<string!>! values) -> System.Collections.Generic.IReadOnlyDictionary<string!, object!>!
+Qwiq.Identity.DisplayNameToAliasValueConverter
+Qwiq.Identity.DisplayNameToAliasValueConverter.DisplayNameToAliasValueConverter(Qwiq.Identity.IIdentityManagementService! identityManagementService) -> void
+Qwiq.Identity.IdentityAliasValueConverter
+Qwiq.Identity.IdentityAliasValueConverter.IdentityAliasValueConverter(Qwiq.Identity.IIdentityManagementService! identityManagementService, string! tenantId, params string![]! domains) -> void
+Qwiq.Identity.IdentityFieldValueConverter
+Qwiq.Identity.IdentityFieldValueConverter.IdentityFieldValueConverter(Qwiq.Identity.IIdentityManagementService! identityManagementService) -> void
+Qwiq.Identity.IdentityValueConverterBase
+Qwiq.Identity.IdentityValueConverterBase.IdentityValueConverterBase() -> void
+Qwiq.Identity.IIdentityManagementService
+Qwiq.Identity.IIdentityManagementService.CreateIdentityDescriptor(string! identityType, string! identifier) -> Qwiq.IIdentityDescriptor!
+Qwiq.Identity.IIdentityManagementService.ReadIdentities(Qwiq.IdentitySearchFactor searchFactor, System.Collections.Generic.IEnumerable<string!>! searchFactorValues, Qwiq.Identity.MembershipQuery queryMembership) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, System.Collections.Generic.IEnumerable<Qwiq.ITeamFoundationIdentity!>!>>!
+Qwiq.Identity.IIdentityManagementService.ReadIdentities(Qwiq.IdentitySearchFactor searchFactor, System.Collections.Generic.IEnumerable<string!>! searchFactorValues) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, System.Collections.Generic.IEnumerable<Qwiq.ITeamFoundationIdentity!>!>>!
+Qwiq.Identity.IIdentityManagementService.ReadIdentities(System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>! descriptors, Qwiq.Identity.MembershipQuery queryMembership) -> System.Collections.Generic.IEnumerable<Qwiq.ITeamFoundationIdentity!>!
+Qwiq.Identity.IIdentityManagementService.ReadIdentities(System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>! descriptors) -> System.Collections.Generic.IEnumerable<Qwiq.ITeamFoundationIdentity!>!
+Qwiq.Identity.IIdentityManagementService.ReadIdentity(Qwiq.IdentitySearchFactor searchFactor, string! searchFactorValue, Qwiq.Identity.MembershipQuery queryMembership) -> Qwiq.ITeamFoundationIdentity?
+Qwiq.Identity.IIdentityManagementService.ReadIdentity(Qwiq.IdentitySearchFactor searchFactor, string! searchFactorValue) -> Qwiq.ITeamFoundationIdentity?
+Qwiq.Identity.IIdentityValueConverter<T, U>
+Qwiq.Identity.IIdentityValueConverter<T, U>.Map(System.Collections.Generic.IEnumerable<T>! values) -> System.Collections.Generic.IReadOnlyDictionary<T, U>!
+Qwiq.Identity.IIdentityValueConverter<T, U>.Map(T value) -> U
+Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MembershipQuery.Direct = 1 -> Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MembershipQuery.Expanded = 2 -> Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MembershipQuery.ExpandedDown = 4 -> Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MembershipQuery.ExpandedUp = 3 -> Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MembershipQuery.None = 0 -> Qwiq.Identity.MembershipQuery
+Qwiq.Identity.MultipleIdentitiesFoundException
+Qwiq.Identity.MultipleIdentitiesFoundException.MultipleIdentitiesFoundException() -> void
+Qwiq.Identity.MultipleIdentitiesFoundException.MultipleIdentitiesFoundException(string! displayName, System.Collections.Generic.IEnumerable<string!>! matches) -> void
+Qwiq.Identity.MultipleIdentitiesFoundException.MultipleIdentitiesFoundException(string! message, System.Exception! innerException) -> void
+Qwiq.Identity.MultipleIdentitiesFoundException.MultipleIdentitiesFoundException(string! message) -> void
+virtual Qwiq.Identity.IdentityValueConverterBase.Map(string! value) -> object!

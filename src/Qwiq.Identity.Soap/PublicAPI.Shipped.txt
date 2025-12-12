@@ -1,0 +1,4 @@
+#nullable enable
+Qwiq.Identity.Soap.Extensions
+static Qwiq.Identity.Soap.Extensions.GetIdentityManagementService(this Qwiq.ITeamProjectCollection! teamProjectCollection) -> Qwiq.Identity.IIdentityManagementService!
+static Qwiq.Identity.Soap.Extensions.GetIdentityManagementService(this Qwiq.IWorkItemStore! workItemStore) -> Qwiq.Identity.IIdentityManagementService!

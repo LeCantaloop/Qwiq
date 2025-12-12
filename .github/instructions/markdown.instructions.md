@@ -9,9 +9,19 @@ applyTo: "**/*.md"
 ## Quick Reference
 
 - Use proper heading hierarchy (H1 → H2 → H3)
-- Add language identifiers to code blocks
+- Add language identifiers to code blocks (MD040)
+- Add blank lines around code blocks (MD031) and tables (MD058)
 - Use reference-style links for repeated URLs
+- No bare URLs - use `<url>` or `[text](url)` (MD034)
 - Follow conventional commit format for PR descriptions
+
+## Linting Configuration
+
+This repository uses markdownlint and Prettier for markdown formatting:
+
+- **Configuration**: `.markdownlint-cli2.yaml`, `.prettierrc`
+- **Run linting**: `dotnet pprettier --check "**/*.md"`
+- **Auto-fix**: `dotnet pprettier --write "**/*.md"`
 
 ## Context Loading
 
@@ -20,7 +30,8 @@ When working on Markdown files, you MUST:
 1. Read this entire instruction file before making changes
 2. Preview rendered output before submitting
 3. Check for broken links
-4. Complete the Validation Checklist before submitting
+4. Run `dotnet pprettier --check` to verify formatting
+5. Complete the Validation Checklist before submitting
 
 ## Markdown Standards
 
@@ -137,9 +148,11 @@ Before submitting changes, verify:
 
 - [ ] Headings follow proper hierarchy
 - [ ] Code blocks have language identifiers
-- [ ] Links are not broken
+- [ ] Blank lines around code blocks and tables
+- [ ] Links are not broken (no bare URLs)
 - [ ] Tables render correctly
 - [ ] No trailing whitespace
+- [ ] Linting passes: `dotnet pprettier --check "**/*.md"`
 - [ ] Guidance avoids duplicate identity/configuration details by linking to canonical sources
 - [ ] File ends with newline
 

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rjmurillo/Qwiq/claude/skills/SKILLS-INDEX.json",
+  "version": "1.1",
+  "description": "Claude Skills index for QWIQ repository",
+  "skills": [
+    {
+      "name": "qwiq-csharp",
+      "description": "C# coding patterns for QWIQ including nullable reference types, null validation, exception handling, and established architectural patterns. Use when editing C# files, fixing nullable warnings, or reviewing code quality.",
+      "path": "./qwiq-csharp/SKILL.md",
+      "resources": ["./qwiq-csharp/REFERENCE.md"],
+      "triggers": [
+        "*.cs",
+        "nullable",
+        "CS8600",
+        "CS8601",
+        "CS8602",
+        "CS8603",
+        "CS8604",
+        "CS8618",
+        "CS8619",
+        "CS8625",
+        "null check",
+        "ArgumentNullException",
+        "exception handling",
+        "code review",
+        "IWorkItem",
+        "IFieldDefinition"
+      ]
+    },
+    {
+      "name": "qwiq-build",
+      "description": "Build system guidance for QWIQ including MSBuild configuration, Central Package Management, multi-targeting, and project file conventions. Use when encountering build errors, modifying project files, or managing dependencies.",
+      "path": "./qwiq-build/SKILL.md",
+      "resources": ["./qwiq-build/REFERENCE.md"],
+      "triggers": [
+        "*.csproj",
+        "*.props",
+        "*.targets",
+        "build error",
+        "build fail",
+        "package",
+        "dependency",
+        "NuGet",
+        "NU1605",
+        "multi-target",
+        "net472",
+        "netstandard2.0",
+        "net8.0",
+        "PedanticMode",
+        "file in use",
+        "MSBuild"
+      ]
+    },
+    {
+      "name": "qwiq-testing",
+      "description": "Testing patterns for QWIQ including TDD for refactoring, ContextSpecification base class, test categories, and mock system usage. Use when writing tests, fixing test failures, or refactoring code.",
+      "path": "./qwiq-testing/SKILL.md",
+      "resources": ["./qwiq-testing/REFERENCE.md"],
+      "triggers": [
+        "test",
+        "TDD",
+        "mock",
+        "ContextSpecification",
+        "Shouldly",
+        "refactor",
+        "Given",
+        "When",
+        "Then",
+        "MockWorkItemStore",
+        "MockWorkItem",
+        "TestCategory",
+        "coverage",
+        "dotnet test"
+      ]
+    },
+    {
+      "name": "qwiq-cicd",
+      "description": "CI/CD workflow guidance for QWIQ including GitHub Actions configuration, workflow best practices, and deployment patterns. Use when editing workflow files, debugging CI failures, or setting up new pipelines.",
+      "path": "./qwiq-cicd/SKILL.md",
+      "resources": ["./qwiq-cicd/REFERENCE.md"],
+      "triggers": [
+        "*.yml",
+        "workflow",
+        "CI",
+        "GitHub Actions",
+        "pipeline",
+        "windows-latest",
+        "fetch-depth",
+        "nbgv",
+        "GitVersioning",
+        "artifact",
+        "ContinuousIntegrationBuild",
+        "CI failure"
+      ]
+    },
+    {
+      "name": "nullable-migration",
+      "description": "Nullable reference type migration tracking and analysis for QWIQ. Use when measuring CS8xxx warning counts, planning nullable migration work, or tracking progress across projects.",
+      "path": "./nullable-migration/SKILL.md",
+      "resources": [],
+      "scripts": ["scripts/Count-NullableWarnings.ps1"],
+      "triggers": [
+        "nullable migration",
+        "CS8xxx",
+        "warning count",
+        "baseline",
+        "NRT",
+        "nullable reference type",
+        "migration status",
+        "Count-NullableWarnings"
+      ]
+    },
+    {
+      "name": "sandbox-validation",
+      "description": "Integration test environment validation for QWIQ. Use when setting up the qwiq-sandbox Azure DevOps environment, verifying test prerequisites, or troubleshooting integration test failures.",
+      "path": "./sandbox-validation/SKILL.md",
+      "resources": [],
+      "scripts": ["scripts/Validate-SandboxEnvironment.ps1"],
+      "triggers": [
+        "sandbox",
+        "integration test",
+        "Azure DevOps",
+        "test environment",
+        "qwiq-sandbox",
+        "PAT",
+        "Personal Access Token",
+        "Validate-SandboxEnvironment",
+        "test data",
+        "work item not found"
+      ]
+    },
+    {
+      "name": "wiremock-capture",
+      "description": "HTTP traffic capture and WireMock stub generation for QWIQ integration tests. Use when creating offline test fixtures, recording API responses, or converting HAR files to WireMock stubs.",
+      "path": "./wiremock-capture/SKILL.md",
+      "resources": [],
+      "scripts": [
+        "scripts/Capture-WireMockTraffic.ps1",
+        "scripts/Convert-HarToWireMock.ps1"
+      ],
+      "triggers": [
+        "WireMock",
+        "HAR",
+        "traffic capture",
+        "offline test",
+        "stub",
+        "proxy",
+        "Fiddler",
+        "Charles",
+        "HTTP recording",
+        "API mock",
+        "Convert-HarToWireMock",
+        "Capture-WireMockTraffic"
+      ]
+    }
+  ]
+}

@@ -9,6 +9,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Package Validation: Detect breaking API changes automatically -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <!-- PackageValidationBaselineVersion will be set after next release -->
+    <EnableStrictModeForCompatibleTfms>true</EnableStrictModeForCompatibleTfms>
+    <EnableStrictModeForCompatibleFrameworksInPackage>true</EnableStrictModeForCompatibleFrameworksInPackage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +40,19 @@
     <PackageReference Include="Microsoft.VisualStudio.Services.Client" />
     <PackageReference Include="Microsoft.VisualStudio.Services.InteractiveClient" />
     <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Framework-specific PublicAPI files for polyfill types that only exist in net472 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <AdditionalFiles Include="PublicAPI.Shipped.net472.txt" />
+    <AdditionalFiles Include="PublicAPI.Unshipped.net472.txt" />
   </ItemGroup>
 
   <ItemGroup>

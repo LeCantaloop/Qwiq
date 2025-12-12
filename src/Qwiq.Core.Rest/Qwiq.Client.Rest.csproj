@@ -9,6 +9,11 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Package Validation: Detect breaking API changes automatically -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <!-- PackageValidationBaselineVersion will be set after next release -->
+    <EnableStrictModeForCompatibleTfms>true</EnableStrictModeForCompatibleTfms>
+    <EnableStrictModeForCompatibleFrameworksInPackage>true</EnableStrictModeForCompatibleFrameworksInPackage>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +23,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Qwiq.IntegrationTests" />
     <InternalsVisibleTo Include="Qwiq.Integration.Tests" />
+    <InternalsVisibleTo Include="Qwiq.Core.UnitTests" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +33,28 @@
     <PackageReference Include="System.Threading.Tasks.Dataflow" />
   </ItemGroup>
 
+  <!-- System.Runtime needed for net472 to resolve type conflicts with TFS client libraries -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="System.Runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Link polyfill files from Qwiq.Core for compatibility on older frameworks -->
+    <Compile Include="..\Qwiq.Core\Compatibility\NullableAttributes.cs" Link="Compatibility\NullableAttributes.cs" />
+    <Compile Include="..\Qwiq.Core\Compatibility\EmbeddedAttribute.cs" Link="Compatibility\EmbeddedAttribute.cs" />
+    <Compile Include="..\Qwiq.Core\Compatibility\CallerArgumentExpressionAttribute.cs" Link="Compatibility\CallerArgumentExpressionAttribute.cs" />
+    <Compile Include="..\Qwiq.Core\Compatibility\ArgumentNullExceptionPolyfill.cs" Link="Compatibility\ArgumentNullExceptionPolyfill.cs" />
+    <Compile Include="..\Qwiq.Core\Compatibility\ArgumentOutOfRangeExceptionPolyfill.cs" Link="Compatibility\ArgumentOutOfRangeExceptionPolyfill.cs" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>

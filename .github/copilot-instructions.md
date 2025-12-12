@@ -47,6 +47,9 @@ dotnet build Qwiq.sln -c Release /p:PedanticMode=false
 ```powershell
 # Run tests with category exclusions
 dotnet test Qwiq.sln --configuration Release --no-build --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
+
+# Run tests with code coverage collection
+dotnet test Qwiq.sln --configuration Release --settings coverage.runsettings
 ```
 
 **Test Categories to Exclude:**
@@ -55,6 +58,13 @@ dotnet test Qwiq.sln --configuration Release --no-build --filter "TestCategory!=
 - `Benchmark` - Performance tests
 - `SOAP` / `REST` - Integration tests requiring server
 - `IntegrationTests` - Full integration tests
+
+**Code Coverage:**
+
+- Coverage settings are defined in `coverage.runsettings` at the repository root
+- Output format: Cobertura XML (CI-friendly)
+- Only Qwiq.\* production assemblies are instrumented
+- Use `reportgenerator` to create HTML reports from coverage results
 
 ## Project Layout
 
@@ -235,20 +245,53 @@ results.ShouldHaveSingleItem();
 | `Directory.Build.props`     | Shared MSBuild properties, package metadata    |
 | `Directory.Build.targets`   | Shared build targets                           |
 | `Directory.Packages.props`  | Central Package Management                     |
-| `.config/dotnet-tools.json` | Dotnet tool manifest (nbgv)                    |
+| `.config/dotnet-tools.json` | Dotnet tool manifest (nbgv, pprettier, etc.)   |
 | `version.json`              | Nerdbank.GitVersioning configuration           |
 | `.editorconfig`             | Code style AND analyzer severity configuration |
+| `.prettierrc`               | Prettier formatting rules for markdown/JSON    |
+| `.prettierignore`           | Files to exclude from Prettier formatting      |
+| `.markdownlint-cli2.yaml`   | Markdown linting rules (MD031, MD040, etc.)    |
 | `nuget.config`              | NuGet package sources                          |
+
+### Formatting and Linting Tools
+
+```powershell
+# C# formatting (analyzer fixes)
+dotnet format
+
+# Markdown/JSON formatting (via PackedPrettier)
+dotnet pprettier --write "**/*.md"
+
+# Check formatting without changes
+dotnet pprettier --check "**/*.md"
+```
+
+**Key Markdown Rules:**
+- MD031: Blank lines around fenced code blocks
+- MD040: Language identifiers on code blocks
+- MD034: No bare URLs (use `<url>` or `[text](url)`)
+- MD058: Blank lines around tables
 
 ## Critical Build Notes
 
-### 1. Windows-Only Build for SOAP
+### 1. GitHub Actions Runner Selection
+
+- **Preferred**: `ubuntu-latest` (Linux) - faster startup, lower cost
+- **Use `windows-latest` when**: Building net472 targets (SOAP projects)
+  - Avoids installing mono on Linux runners
+  - Required for `Microsoft.TeamFoundationServer.ExtendedClient`
+- **Examples**:
+  - `main.yml` build job: `windows-latest` (builds net472)
+  - `secrets.yml` scan job: `ubuntu-latest` (no .NET build, gitleaks is Linux tool)
+  - `dependency-review.yml`: `ubuntu-latest` (no .NET build)
+
+### 2. Windows-Only Build for SOAP
 
 - SOAP projects (`Qwiq.Core.Soap`, `Qwiq.Identity.Soap`) require Windows
 - They depend on `Microsoft.TeamFoundationServer.ExtendedClient` which only supports `net472`
-- GitHub Actions workflow uses `windows-latest` runner
+- Main build workflow uses `windows-latest` runner for net472 compatibility
 
-### 2. Multi-Targeting Strategy
+### 3. Multi-Targeting Strategy
 
 - Core libraries: `net472;netstandard2.0;net8.0`
 - SOAP projects: `net472` only (Windows dependency)
@@ -852,6 +895,69 @@ public class Given_some_context : ContextSpecification
 - `IEnumerable` collections (like `IWorkItem.Revisions`) need `.First()` or `.ToList()` for indexing
 - For nullable assertions: use `value.HasValue.ShouldBeFalse()` instead of `ShouldBeNull<T>()` for `int?`
 - SOAP-specific classes are `internal` and require TFS infrastructure for integration testing
+
+## Solutions Repository
+
+Learned patterns from previous problem-solving sessions:
+
+### PublicApiAnalyzers (RS0016/RS0017)
+
+| Problem                                       | Solution                                                                 | Atomicity |
+| --------------------------------------------- | ------------------------------------------------------------------------ | --------- |
+| RS0016: Symbol not declared in public API     | Add symbol to `PublicAPI.Unshipped.txt` OR make type `internal`          | 95%       |
+| Polyfill types triggering RS0016              | Declare polyfills as `internal sealed class` with `[Embedded]` attribute | 95%       |
+| CS0436 type conflicts with InternalsVisibleTo | Add `[Embedded]` attribute to internal polyfill types                    | 95%       |
+
+### Package Test Baselines
+
+| Problem                           | Solution                                                                  | Atomicity |
+| --------------------------------- | ------------------------------------------------------------------------- | --------- |
+| Package manifest/contents changed | Run `dotnet verify accept -w test/Qwiq.Package.Tests` to update baselines | 95%       |
+
+### ArtifactsPath & Package Output
+
+| Problem                                            | Solution                                                                                | Atomicity |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------- | --------- |
+| Packages not found in project `bin` directories    | Check for `ArtifactsPath` in props; packages go to `artifacts/package/{Configuration}/` | 95%       |
+| Unknown actual output path for MSBuild property    | Run `dotnet msbuild -getProperty:PropertyName` to query actual value                    | 95%       |
+| Recursive search returns duplicates in flat folder | Use `SearchOption.TopDirectoryOnly` for centralized output directories                  | 92%       |
+
+### Build Debugging
+
+| Problem                                            | Solution                                                                            | Atomicity |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------- | --------- |
+| CI build fails but local succeeds                  | Reproduce with exact CI flags: `-c Release /p:ContinuousIntegrationBuild=true /m:1` | 95%       |
+| Windows file locking during parallel build         | Use `/m:1 /nodeReuse:false` flags for single-threaded build                         | 95%       |
+| CS0006 ref assembly missing during multi-TFM build | Run clean+build twice OR add `/p:ProduceReferenceAssembly=false`                    | 92%       |
+| Multi-TFM race despite /m:1 flag                   | The /m:1 limits solution parallelism, not project-internal TFM parallelism          | 90%       |
+
+### SDK Version Management
+
+| Problem                           | Solution                                                        | Atomicity |
+| --------------------------------- | --------------------------------------------------------------- | --------- |
+| TimeZone type forwarding mismatch | Add `using TimeZone = System.TimeZone;` alias in affected files | 88%       |
+
+### Constraints (User Preferences)
+
+- **Never suppress RS0016 in .editorconfig** - Fix properly by adding to PublicAPI files or making internal
+- **Never exclude projects from build** - All projects must build always
+- **Local suppressions only** - If suppression needed, use `[SuppressMessage]` on type/member with reason
+
+## Claude Skills
+
+This repository includes Claude Skills in `.claude/skills/` for on-demand capability loading:
+
+| Skill                | Purpose                                 |
+| -------------------- | --------------------------------------- |
+| `qwiq-csharp`        | C# patterns, nullable types, code style |
+| `qwiq-build`         | Build system, MSBuild, packages         |
+| `qwiq-testing`       | Testing patterns, TDD, mocks            |
+| `qwiq-cicd`          | GitHub Actions, CI/CD                   |
+| `nullable-migration` | CS8xxx warning tracking                 |
+| `sandbox-validation` | Integration test environment            |
+| `wiremock-capture`   | HTTP traffic recording                  |
+
+See `.skills/README.md` for the full skill index and usage.
 
 ## Trust These Instructions
 

@@ -8,10 +8,17 @@ on:
   pull_request:
     # Run for ALL pull requests regardless of target branch
   workflow_dispatch:
+  workflow_call:
+    # Allow this workflow to be called by other workflows (e.g., release.yml)
+    # This enables DRY reuse of the build/test/pack logic
+  schedule:
+    # Weekly CodeQL deep scan on Monday at 2:30 AM UTC
+    - cron: "30 2 * * 1"
 
 permissions:
   contents: read
   actions: read
+  security-events: write # Required for CodeQL
 
 jobs:
   build:
@@ -25,7 +32,9 @@ jobs:
 
     env:
       # Test filter matching AppVeyor configuration
-      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
+      # WireMock tests are excluded because they require HTTPS which needs elevated privileges
+      # for SSL certificate binding - this fails on GitHub Actions runners
+      TEST_FILTER: "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests&TestCategory!=WireMock"
 
     steps:
       - name: Checkout
@@ -37,6 +46,12 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           global-json-file: ./global.json
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+          queries: security-extended,security-and-quality
 
       - name: Restore .NET tools
         run: dotnet tool restore
@@ -74,6 +89,33 @@ jobs:
         # Only run on Windows builds (Linux builds don't generate all packages)
         if: github.event_name == 'push' && matrix.os == 'windows-latest'
         run: ./build/scripts/Verify-SourceLink.ps1
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:csharp"
+          output: ${{ runner.temp }}/codeql-results
+          upload: true # When set to true the default CodeQL cannot be configured
+
+      - name: Copy CodeQL SARIF to artifacts
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path ./artifacts/CodeQL -Force | Out-Null
+          if (Test-Path "${{ runner.temp }}/codeql-results") {
+            Copy-Item -Path "${{ runner.temp }}/codeql-results/*.sarif" -Destination ./artifacts/CodeQL/ -Force
+            Write-Host "✅ Copied SARIF files to artifacts/CodeQL"
+          } else {
+            Write-Host "⚠️ No SARIF files found in ${{ runner.temp }}/codeql-results"
+          }
+
+      - name: Upload CodeQL SARIF artifacts
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: codeql-sarif-${{ matrix.os }}
+          path: artifacts/CodeQL/*.sarif
+          if-no-files-found: warn
 
       - name: Run tests with coverage (Windows)
         id: test-windows
@@ -154,4 +196,29 @@ jobs:
             src/**/bin/Release/**/*.snupkg
             test/**/bin/Release/**/*.nupkg
             test/**/bin/Release/**/*.snupkg
+          if-no-files-found: warn
+
+      - name: Get version from nbgv
+        id: nbgv
+        shell: pwsh
+        run: |
+          $version = dotnet nbgv get-version -v NuGetPackageVersion
+          Write-Host "Version: $version"
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Generate SBOM
+        # Generate SBOM for build artifacts
+        # Uses local .NET tool (restored via dotnet tool restore) instead of container action
+        if: success()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path ./artifacts/sbom -Force | Out-Null
+          dotnet sbom-tool generate -b ./src -bc ./ -pn Qwiq -pv ${{ steps.nbgv.outputs.version }} -ps "Qwiq Contributors" -nsb https://github.com/rjmurillo/Qwiq -m ./artifacts/sbom
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v5
+        if: success()
+        with:
+          name: sbom-${{ matrix.os }}
+          path: ./artifacts/sbom/
           if-no-files-found: warn

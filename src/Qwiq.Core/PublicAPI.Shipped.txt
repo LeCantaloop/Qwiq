@@ -1,0 +1,911 @@
+#nullable enable
+abstract Qwiq.TeamFoundationIdentity.Descriptor.get -> Qwiq.IIdentityDescriptor!
+abstract Qwiq.TeamFoundationIdentity.DisplayName.get -> string!
+abstract Qwiq.TeamFoundationIdentity.GetAttribute(string! name, string? defaultValue) -> string?
+abstract Qwiq.TeamFoundationIdentity.GetProperties() -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, object!>>!
+abstract Qwiq.TeamFoundationIdentity.GetProperty(string! name) -> object!
+abstract Qwiq.TfsConnectionFactory<TConnection>.ConnectToTfsCollection(System.Uri! endpoint, Microsoft.VisualStudio.Services.Common.VssCredentials! credentials) -> TConnection
+abstract Qwiq.WorkItemCore.Url.get -> string!
+abstract Qwiq.WorkItemStoreConfiguration.DefaultFields.get -> System.Collections.Generic.IEnumerable<string!>?
+abstract Qwiq.WorkItemStoreConfiguration.DefaultFields.set -> void
+abstract Qwiq.WorkItemStoreConfiguration.WorkItemErrorPolicy.get -> Qwiq.WorkItemErrorPolicy
+abstract Qwiq.WorkItemStoreConfiguration.WorkItemErrorPolicy.set -> void
+abstract Qwiq.WorkItemStoreConfiguration.WorkItemExpand.get -> Qwiq.WorkItemExpand
+abstract Qwiq.WorkItemStoreConfiguration.WorkItemExpand.set -> void
+abstract Qwiq.WorkItemStoreFactory.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.IWorkItemStore!
+const Qwiq.CoreFieldRefNames.AreaId = "System.AreaId" -> string!
+const Qwiq.CoreFieldRefNames.AreaPath = "System.AreaPath" -> string!
+const Qwiq.CoreFieldRefNames.AssignedTo = "System.AssignedTo" -> string!
+const Qwiq.CoreFieldRefNames.AttachedFileCount = "System.AttachedFileCount" -> string!
+const Qwiq.CoreFieldRefNames.AuthorizedAs = "System.AuthorizedAs" -> string!
+const Qwiq.CoreFieldRefNames.AuthorizedDate = "System.AuthorizedDate" -> string!
+const Qwiq.CoreFieldRefNames.BoardColumn = "System.BoardColumn" -> string!
+const Qwiq.CoreFieldRefNames.BoardColumnDone = "System.BoardColumnDone" -> string!
+const Qwiq.CoreFieldRefNames.BoardLane = "System.BoardLane" -> string!
+const Qwiq.CoreFieldRefNames.ChangedBy = "System.ChangedBy" -> string!
+const Qwiq.CoreFieldRefNames.ChangedDate = "System.ChangedDate" -> string!
+const Qwiq.CoreFieldRefNames.CreatedBy = "System.CreatedBy" -> string!
+const Qwiq.CoreFieldRefNames.CreatedDate = "System.CreatedDate" -> string!
+const Qwiq.CoreFieldRefNames.Description = "System.Description" -> string!
+const Qwiq.CoreFieldRefNames.ExternalLinkCount = "System.ExternalLinkCount" -> string!
+const Qwiq.CoreFieldRefNames.History = "System.History" -> string!
+const Qwiq.CoreFieldRefNames.HyperlinkCount = "System.HyperLinkCount" -> string!
+const Qwiq.CoreFieldRefNames.Id = "System.Id" -> string!
+const Qwiq.CoreFieldRefNames.IsDeleted = "System.IsDeleted" -> string!
+const Qwiq.CoreFieldRefNames.IterationId = "System.IterationId" -> string!
+const Qwiq.CoreFieldRefNames.IterationPath = "System.IterationPath" -> string!
+const Qwiq.CoreFieldRefNames.LinkType = "System.Links.LinkType" -> string!
+const Qwiq.CoreFieldRefNames.NodeName = "System.NodeName" -> string!
+const Qwiq.CoreFieldRefNames.Reason = "System.Reason" -> string!
+const Qwiq.CoreFieldRefNames.RelatedLinkCount = "System.RelatedLinkCount" -> string!
+const Qwiq.CoreFieldRefNames.Rev = "System.Rev" -> string!
+const Qwiq.CoreFieldRefNames.RevisedDate = "System.RevisedDate" -> string!
+const Qwiq.CoreFieldRefNames.State = "System.State" -> string!
+const Qwiq.CoreFieldRefNames.Tags = "System.Tags" -> string!
+const Qwiq.CoreFieldRefNames.TeamProject = "System.TeamProject" -> string!
+const Qwiq.CoreFieldRefNames.Title = "System.Title" -> string!
+const Qwiq.CoreFieldRefNames.Watermark = "System.Watermark" -> string!
+const Qwiq.CoreFieldRefNames.WorkItemType = "System.WorkItemType" -> string!
+const Qwiq.CoreLinkTypeEndReferenceNames.Child = "System.LinkTypes.Hierarchy-Reverse" -> string!
+const Qwiq.CoreLinkTypeEndReferenceNames.Duplicate = "System.LinkTypes.Duplicate-Forward" -> string!
+const Qwiq.CoreLinkTypeEndReferenceNames.DuplicateOf = "System.LinkTypes.Duplicate-Reverse" -> string!
+const Qwiq.CoreLinkTypeEndReferenceNames.Parent = "System.LinkTypes.Hierarchy-Forward" -> string!
+const Qwiq.CoreLinkTypeReferenceNames.Dependency = "System.LinkTypes.Dependency" -> string!
+const Qwiq.CoreLinkTypeReferenceNames.Duplicate = "System.LinkTypes.Duplicate" -> string!
+const Qwiq.CoreLinkTypeReferenceNames.Hierarchy = "System.LinkTypes.Hierarchy" -> string!
+const Qwiq.CoreLinkTypeReferenceNames.Related = "System.LinkTypes.Related" -> string!
+const Qwiq.CoreLinkTypes.Child = -2 -> int
+const Qwiq.CoreLinkTypes.Parent = 2 -> int
+const Qwiq.CoreLinkTypes.Predecessor = 3 -> int
+const Qwiq.CoreLinkTypes.Related = 1 -> int
+const Qwiq.CoreLinkTypes.Self = 0 -> int
+const Qwiq.CoreLinkTypes.Successor = -3 -> int
+const Qwiq.FieldRefNames.AttachedFiles = "System.AttachedFiles" -> string!
+const Qwiq.FieldRefNames.BisLinks = "System.BISLinks" -> string!
+const Qwiq.FieldRefNames.LinkedFiles = "System.LinkedFiles" -> string!
+const Qwiq.FieldRefNames.RelatedFiles = "System.RelatedFiles" -> string!
+const Qwiq.FieldRefNames.RelatedLinks = "System.RelatedLinks" -> string!
+const Qwiq.WiqlConstants.DoesNotContain = "DoesNotContain" -> string!
+const Qwiq.WiqlConstants.MayContain = "MayContain" -> string!
+const Qwiq.WiqlConstants.MustContain = "MustContain" -> string!
+const Qwiq.WiqlConstants.Recursive = "Recursive" -> string!
+const Qwiq.WiqlConstants.ReturnMatchingChild = "ReturnMatchingChildren" -> string!
+const Qwiq.WiqlConstants.SourcePrefix = "Source" -> string!
+const Qwiq.WiqlConstants.TargetPrefix = "Target" -> string!
+const Qwiq.WiqlConstants.WorkItemLinkTable = "WorkItemLinks" -> string!
+const Qwiq.WiqlConstants.WorkItemTable = "WorkItems" -> string!
+const Qwiq.WorkItemFields.Keywords = "Microsoft.VSTS.Common.Keywords" -> string!
+override Qwiq.Exceptions.ProxyBase.Equals(object? obj) -> bool
+override Qwiq.Exceptions.ProxyBase.GetHashCode() -> int
+override Qwiq.Exceptions.ProxyBase.ToString() -> string!
+override Qwiq.FieldDefinition.Equals(object? obj) -> bool
+override Qwiq.FieldDefinition.GetHashCode() -> int
+override Qwiq.FieldDefinition.ToString() -> string!
+override Qwiq.FieldDefinitionCollection.Add(Qwiq.IFieldDefinition! value, int index) -> void
+override Qwiq.FieldDefinitionCollection.Equals(object? obj) -> bool
+override Qwiq.FieldDefinitionCollection.GetHashCode() -> int
+override Qwiq.Hyperlink.Equals(object? obj) -> bool
+override Qwiq.Hyperlink.GetHashCode() -> int
+override Qwiq.IdentityDescriptor.Equals(object? obj) -> bool
+override Qwiq.IdentityDescriptor.GetHashCode() -> int
+override Qwiq.IdentityDescriptor.ToString() -> string!
+override Qwiq.IdentityFieldValue.ToString() -> string?
+override Qwiq.Project.Equals(object? obj) -> bool
+override Qwiq.Project.GetHashCode() -> int
+override Qwiq.Project.ToString() -> string!
+override Qwiq.QueryDefinition.Equals(object? obj) -> bool
+override Qwiq.QueryDefinition.GetHashCode() -> int
+override Qwiq.QueryDefinition.ToString() -> string!
+override Qwiq.QueryDefinitionCollection.Equals(object? obj) -> bool
+override Qwiq.QueryDefinitionCollection.GetHashCode() -> int
+override Qwiq.QueryFolder.Equals(object? obj) -> bool
+override Qwiq.QueryFolder.GetHashCode() -> int
+override Qwiq.QueryFolder.ToString() -> string!
+override Qwiq.QueryFolderCollection.Equals(object? obj) -> bool
+override Qwiq.QueryFolderCollection.GetHashCode() -> int
+override Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.Add(T value, int index) -> void
+override Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.Equals(object? obj) -> bool
+override Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.GetHashCode() -> int
+override Qwiq.ReadOnlyObjectWithNameCollection<T>.Add(T value, int index) -> void
+override Qwiq.RelatedLink.Equals(object? obj) -> bool
+override Qwiq.RelatedLink.GetHashCode() -> int
+override Qwiq.TeamFoundationIdentity.Equals(object? obj) -> bool
+override Qwiq.TeamFoundationIdentity.GetHashCode() -> int
+override Qwiq.TeamFoundationIdentity.ToString() -> string!
+override Qwiq.WorkItem.Equals(object? obj) -> bool
+override Qwiq.WorkItem.GetHashCode() -> int
+override Qwiq.WorkItem.this[string! name].get -> object?
+override Qwiq.WorkItem.this[string! name].set -> void
+override Qwiq.WorkItem.ToString() -> string!
+override Qwiq.WorkItemClassificationNode<TId>.Equals(object? obj) -> bool
+override Qwiq.WorkItemClassificationNode<TId>.GetHashCode() -> int
+override Qwiq.WorkItemClassificationNode<TId>.ToString() -> string!
+override Qwiq.WorkItemClassificationNodeCollection<TId>.Equals(object? obj) -> bool
+override Qwiq.WorkItemClassificationNodeCollection<TId>.GetHashCode() -> int
+override Qwiq.WorkItemCollection.Equals(object? obj) -> bool
+override Qwiq.WorkItemCollection.GetHashCode() -> int
+override Qwiq.WorkItemCore.Equals(object? obj) -> bool
+override Qwiq.WorkItemCore.GetHashCode() -> int
+override Qwiq.WorkItemLinkInfo.Equals(object? obj) -> bool
+override Qwiq.WorkItemLinkInfo.GetHashCode() -> int
+override Qwiq.WorkItemLinkInfo.ToString() -> string!
+override Qwiq.WorkItemLinkType.Equals(object? obj) -> bool
+override Qwiq.WorkItemLinkType.GetHashCode() -> int
+override Qwiq.WorkItemLinkType.ToString() -> string!
+override Qwiq.WorkItemLinkTypeCollection.Equals(object? obj) -> bool
+override Qwiq.WorkItemLinkTypeCollection.GetHashCode() -> int
+override Qwiq.WorkItemLinkTypeEnd.Equals(object? obj) -> bool
+override Qwiq.WorkItemLinkTypeEnd.GetHashCode() -> int
+override Qwiq.WorkItemLinkTypeEnd.ToString() -> string!
+override Qwiq.WorkItemType.Equals(object? obj) -> bool
+override Qwiq.WorkItemType.GetHashCode() -> int
+override Qwiq.WorkItemType.ToString() -> string!
+override Qwiq.WorkItemTypeCollection.Equals(object? obj) -> bool
+override Qwiq.WorkItemTypeCollection.GetHashCode() -> int
+Qwiq.AccessDeniedException
+Qwiq.AccessDeniedException.AccessDeniedException() -> void
+Qwiq.AccessDeniedException.AccessDeniedException(string! message, System.Exception! innerException) -> void
+Qwiq.AccessDeniedException.AccessDeniedException(string! message) -> void
+Qwiq.BaseLinkType
+Qwiq.BaseLinkType.ExternalLink = 5 -> Qwiq.BaseLinkType
+Qwiq.BaseLinkType.Hyperlink = 1 -> Qwiq.BaseLinkType
+Qwiq.BaseLinkType.None = 0 -> Qwiq.BaseLinkType
+Qwiq.BaseLinkType.RelatedLink = 2 -> Qwiq.BaseLinkType
+Qwiq.Comparer
+Qwiq.CoreField
+Qwiq.CoreField.AreaId = -2 -> Qwiq.CoreField
+Qwiq.CoreField.AreaPath = -7 -> Qwiq.CoreField
+Qwiq.CoreField.AssignedTo = 24 -> Qwiq.CoreField
+Qwiq.CoreField.AttachedFileCount = -31 -> Qwiq.CoreField
+Qwiq.CoreField.AuthorizedAs = -1 -> Qwiq.CoreField
+Qwiq.CoreField.AuthorizedDate = 3 -> Qwiq.CoreField
+Qwiq.CoreField.BoardColumn = 90 -> Qwiq.CoreField
+Qwiq.CoreField.BoardColumnDone = 91 -> Qwiq.CoreField
+Qwiq.CoreField.BoardLane = 92 -> Qwiq.CoreField
+Qwiq.CoreField.ChangedBy = 9 -> Qwiq.CoreField
+Qwiq.CoreField.ChangedDate = -4 -> Qwiq.CoreField
+Qwiq.CoreField.CreatedBy = 33 -> Qwiq.CoreField
+Qwiq.CoreField.CreatedDate = 32 -> Qwiq.CoreField
+Qwiq.CoreField.Description = 52 -> Qwiq.CoreField
+Qwiq.CoreField.ExternalLinkCount = -57 -> Qwiq.CoreField
+Qwiq.CoreField.History = 54 -> Qwiq.CoreField
+Qwiq.CoreField.HyperlinkCount = -32 -> Qwiq.CoreField
+Qwiq.CoreField.Id = -3 -> Qwiq.CoreField
+Qwiq.CoreField.IsDeleted = -404 -> Qwiq.CoreField
+Qwiq.CoreField.IterationId = -104 -> Qwiq.CoreField
+Qwiq.CoreField.IterationPath = -105 -> Qwiq.CoreField
+Qwiq.CoreField.LinkType = 100 -> Qwiq.CoreField
+Qwiq.CoreField.NodeName = -12 -> Qwiq.CoreField
+Qwiq.CoreField.Reason = 22 -> Qwiq.CoreField
+Qwiq.CoreField.RelatedLinkCount = 75 -> Qwiq.CoreField
+Qwiq.CoreField.Rev = 8 -> Qwiq.CoreField
+Qwiq.CoreField.RevisedDate = -5 -> Qwiq.CoreField
+Qwiq.CoreField.State = 2 -> Qwiq.CoreField
+Qwiq.CoreField.Tags = 80 -> Qwiq.CoreField
+Qwiq.CoreField.TeamProject = -42 -> Qwiq.CoreField
+Qwiq.CoreField.Title = 1 -> Qwiq.CoreField
+Qwiq.CoreField.Watermark = 7 -> Qwiq.CoreField
+Qwiq.CoreField.WorkItemType = 25 -> Qwiq.CoreField
+Qwiq.CoreFieldRefNames
+Qwiq.CoreLinkTypeEndReferenceNames
+Qwiq.CoreLinkTypeReferenceNames
+Qwiq.CoreLinkTypes
+Qwiq.CoreLinkTypes.CoreLinkTypes() -> void
+Qwiq.Credentials.AuthenticationFailedNotification
+Qwiq.Credentials.AuthenticationFailedNotification.AuthenticationFailedNotification(Microsoft.VisualStudio.Services.Common.VssCredentials! credentials, System.Exception! exception) -> void
+Qwiq.Credentials.AuthenticationFailedNotification.AuthenticationFailedNotification(Microsoft.VisualStudio.Services.Common.VssCredentials? credentials) -> void
+Qwiq.Credentials.AuthenticationFailedNotification.AuthenticationFailedNotification(System.Exception! exception) -> void
+Qwiq.Credentials.AuthenticationFailedNotification.Exception.get -> System.Exception?
+Qwiq.Credentials.AuthenticationOptions
+Qwiq.Credentials.AuthenticationOptions.AuthenticationOptions(string! uri, Qwiq.Credentials.AuthenticationTypes authenticationTypes) -> void
+Qwiq.Credentials.AuthenticationOptions.AuthenticationOptions(string! uri) -> void
+Qwiq.Credentials.AuthenticationOptions.AuthenticationOptions(System.Uri! uri, Qwiq.Credentials.AuthenticationTypes authenticationTypes, System.Func<Qwiq.Credentials.AuthenticationTypes, System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Services.Common.VssCredentials!>!>? credentialsFactory) -> void
+Qwiq.Credentials.AuthenticationOptions.AuthenticationOptions(System.Uri! uri, Qwiq.Credentials.AuthenticationTypes authenticationTypes) -> void
+Qwiq.Credentials.AuthenticationOptions.AuthenticationOptions(System.Uri! uri) -> void
+Qwiq.Credentials.AuthenticationOptions.AuthenticationTypes.get -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationOptions.Credentials.get -> System.Collections.Generic.IEnumerable<Microsoft.VisualStudio.Services.Common.VssCredentials!>!
+Qwiq.Credentials.AuthenticationOptions.Notifications.get -> Qwiq.Credentials.CredentialsNotifications!
+Qwiq.Credentials.AuthenticationOptions.Notifications.set -> void
+Qwiq.Credentials.AuthenticationOptions.Uri.get -> System.Uri!
+Qwiq.Credentials.AuthenticationSuccessNotification
+Qwiq.Credentials.AuthenticationSuccessNotification.AuthenticationSuccessNotification(Microsoft.VisualStudio.Services.Common.VssCredentials! credentials, Qwiq.ITeamProjectCollection! teamProjectCollection) -> void
+Qwiq.Credentials.AuthenticationSuccessNotification.TeamProjectCollection.get -> Qwiq.ITeamProjectCollection!
+Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.All = Qwiq.Credentials.AuthenticationTypes.Basic | Qwiq.Credentials.AuthenticationTypes.Windows -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.Basic = Qwiq.Credentials.AuthenticationTypes.OpenAuthorization | Qwiq.Credentials.AuthenticationTypes.PersonalAccessToken -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.None = 0 -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.OpenAuthorization = 1 -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.PersonalAccessToken = 2 -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.AuthenticationTypes.Windows = 4 -> Qwiq.Credentials.AuthenticationTypes
+Qwiq.Credentials.CredentialNotification
+Qwiq.Credentials.CredentialNotification.CredentialNotification(Microsoft.VisualStudio.Services.Common.VssCredentials? credentials) -> void
+Qwiq.Credentials.CredentialNotification.Credentials.get -> Microsoft.VisualStudio.Services.Common.VssCredentials?
+Qwiq.Credentials.CredentialsFactory
+Qwiq.Credentials.CredentialsNotifications
+Qwiq.Credentials.CredentialsNotifications.AuthenticationFailed.get -> System.Func<Qwiq.Credentials.AuthenticationFailedNotification!, System.Threading.Tasks.Task!>!
+Qwiq.Credentials.CredentialsNotifications.AuthenticationSuccess.get -> System.Func<Qwiq.Credentials.AuthenticationSuccessNotification!, System.Threading.Tasks.Task!>!
+Qwiq.Credentials.CredentialsNotifications.CredentialsNotifications() -> void
+Qwiq.Credentials.CredentialsNotifications.CredentialsNotifications(System.Func<Qwiq.Credentials.AuthenticationSuccessNotification!, System.Threading.Tasks.Task!>? success, System.Func<Qwiq.Credentials.AuthenticationFailedNotification!, System.Threading.Tasks.Task!>? failed) -> void
+Qwiq.DeniedOrNotExistException
+Qwiq.DeniedOrNotExistException.DeniedOrNotExistException() -> void
+Qwiq.DeniedOrNotExistException.DeniedOrNotExistException(string! projectName) -> void
+Qwiq.DeniedOrNotExistException.DeniedOrNotExistException(System.Guid projectGuid) -> void
+Qwiq.Exceptions.ExceptionHandlingDynamicProxy
+Qwiq.Exceptions.ExceptionHandlingDynamicProxy.ExceptionHandlingDynamicProxy(Qwiq.Exceptions.IExceptionMapper! exceptionMapper) -> void
+Qwiq.Exceptions.ExceptionHandlingDynamicProxy.Intercept(Castle.DynamicProxy.IInvocation! invocation) -> void
+Qwiq.Exceptions.IExceptionExploder
+Qwiq.Exceptions.IExceptionExploder.Explode(System.Exception! exception) -> System.Collections.ObjectModel.ReadOnlyCollection<System.Exception!>!
+Qwiq.Exceptions.IExceptionMapper
+Qwiq.Exceptions.IExceptionMapper.Map(System.Exception! ex) -> System.Exception?
+Qwiq.Exceptions.ProxyBase
+Qwiq.Exceptions.ProxyBase.ProxyBase() -> void
+Qwiq.Exceptions.TransientException
+Qwiq.Exceptions.TransientException.TransientException(string! message, System.Exception! innerException) -> void
+Qwiq.Extensions
+Qwiq.FieldCollection
+Qwiq.FieldCollection.Contains(int id) -> bool
+Qwiq.FieldCollection.Contains(Qwiq.IField! value) -> bool
+Qwiq.FieldCollection.Contains(string! name) -> bool
+Qwiq.FieldCollection.Count.get -> int
+Qwiq.FieldCollection.Equals(Qwiq.IReadOnlyObjectWithIdCollection<Qwiq.IField!, int>? other) -> bool
+Qwiq.FieldCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<Qwiq.IField!>!
+Qwiq.FieldCollection.GetItem(int index) -> Qwiq.IField!
+Qwiq.FieldCollection.this[int index].get -> Qwiq.IField!
+Qwiq.FieldCollection.this[string! name].get -> Qwiq.IField!
+Qwiq.FieldCollection.TryGetById(int id, out Qwiq.IField? value) -> bool
+Qwiq.FieldCollection.TryGetByName(string! name, out Qwiq.IField! value) -> bool
+Qwiq.FieldDefinition
+Qwiq.FieldDefinition.Equals(Qwiq.IFieldDefinition? other) -> bool
+Qwiq.FieldDefinition.Id.get -> int
+Qwiq.FieldDefinition.Name.get -> string!
+Qwiq.FieldDefinition.ReferenceName.get -> string!
+Qwiq.FieldDefinitionCollection
+Qwiq.FieldDefinitionCollection.Equals(Qwiq.IFieldDefinitionCollection? other) -> bool
+Qwiq.FieldDefinitionCollection.FieldDefinitionCollection(System.Collections.Generic.List<Qwiq.IFieldDefinition!>! fieldDefinitions) -> void
+Qwiq.FieldDefinitionNotExistException
+Qwiq.FieldDefinitionNotExistException.FieldDefinitionNotExistException() -> void
+Qwiq.FieldDefinitionNotExistException.FieldDefinitionNotExistException(string! message, System.Exception! innerException) -> void
+Qwiq.FieldDefinitionNotExistException.FieldDefinitionNotExistException(string! name) -> void
+Qwiq.FieldRefNames
+Qwiq.Hyperlink
+Qwiq.Hyperlink.Equals(Qwiq.IHyperlink? other) -> bool
+Qwiq.Hyperlink.Location.get -> string!
+Qwiq.IAttachment
+Qwiq.IAttachment.AttachedTime.get -> System.DateTime
+Qwiq.IAttachment.Comment.get -> string!
+Qwiq.IAttachment.Comment.set -> void
+Qwiq.IAttachment.CreationTime.get -> System.DateTime
+Qwiq.IAttachment.Extension.get -> string!
+Qwiq.IAttachment.IsSaved.get -> bool
+Qwiq.IAttachment.LastWriteTime.get -> System.DateTime
+Qwiq.IAttachment.Length.get -> long
+Qwiq.IAttachment.Name.get -> string!
+Qwiq.ICommonStructureService
+Qwiq.ICommonStructureService.CreateNode(string! nodeName, string! parentNodeUri, System.DateTime? startDate, System.DateTime? finishDate) -> string!
+Qwiq.ICommonStructureService.GetNodesXml(string![]! nodeUris, bool childNodes) -> System.Xml.XmlElement!
+Qwiq.ICommonStructureService.GetProjectFromName(string! projectName) -> Qwiq.IProjectInfo!
+Qwiq.ICommonStructureService.ListAllProjects() -> System.Collections.Generic.IEnumerable<Qwiq.IProjectInfo!>!
+Qwiq.ICommonStructureService.ListStructures(string! projectUri) -> System.Collections.Generic.IEnumerable<Qwiq.INodeInfo!>!
+Qwiq.ICommonStructureService.SetIterationDates(string! nodeUri, System.DateTime? startDate, System.DateTime? finishDate) -> void
+Qwiq.IdentityDescriptor
+Qwiq.IdentityDescriptor.CompareTo(Qwiq.IdentityDescriptor? other) -> int
+Qwiq.IdentityDescriptor.Equals(Qwiq.IdentityDescriptor? other) -> bool
+Qwiq.IdentityDescriptor.Identifier.get -> string!
+Qwiq.IdentityDescriptor.IdentityDescriptor(string! identityType, string! identifier) -> void
+Qwiq.IdentityDescriptor.IdentityType.get -> string!
+Qwiq.IdentityDescriptor.IdentityTypeId.get -> byte
+Qwiq.IdentityFieldValue
+Qwiq.IdentityFieldValue.AccountName.get -> string?
+Qwiq.IdentityFieldValue.DisplayName.get -> string?
+Qwiq.IdentityFieldValue.DisplayPart.get -> string?
+Qwiq.IdentityFieldValue.Domain.get -> string?
+Qwiq.IdentityFieldValue.Email.get -> string?
+Qwiq.IdentityFieldValue.Identifier.get -> string?
+Qwiq.IdentityFieldValue.IdentityFieldValue(Qwiq.ITeamFoundationIdentity! identity) -> void
+Qwiq.IdentityFieldValue.IdentityFieldValue(string? displayName, string? identifier, string? teamFoundationId) -> void
+Qwiq.IdentityFieldValue.IdentityFieldValue(string? displayName) -> void
+Qwiq.IdentityFieldValue.IdentityName.get -> string?
+Qwiq.IdentityFieldValue.LogonName.get -> string?
+Qwiq.IdentityFieldValue.TeamFoundationId.get -> string?
+Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.AccountName = 0 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.AdministratorsGroup = 2 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.Alias = 6 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.DisplayName = 1 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.General = 5 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.Identifier = 3 -> Qwiq.IdentitySearchFactor
+Qwiq.IdentitySearchFactor.MailAddress = 4 -> Qwiq.IdentitySearchFactor
+Qwiq.IExternalLink
+Qwiq.IExternalLink.ArtifactLinkTypeName.get -> string!
+Qwiq.IExternalLink.LinkedArtifactUri.get -> string!
+Qwiq.IField
+Qwiq.IField.IsChangedByUser.get -> bool
+Qwiq.IField.IsDirty.get -> bool
+Qwiq.IField.IsEditable.get -> bool
+Qwiq.IField.IsRequired.get -> bool
+Qwiq.IField.IsValid.get -> bool
+Qwiq.IField.OriginalValue.get -> object?
+Qwiq.IField.ValidationState.get -> Qwiq.ValidationState
+Qwiq.IField.Value.get -> object?
+Qwiq.IField.Value.set -> void
+Qwiq.IFieldCollection
+Qwiq.IFieldConflict
+Qwiq.IFieldConflict.BaselineValue.get -> object!
+Qwiq.IFieldConflict.FieldReferenceName.get -> string!
+Qwiq.IFieldConflict.LocalValue.get -> object!
+Qwiq.IFieldConflict.ServerValue.get -> object!
+Qwiq.IFieldDefinition
+Qwiq.IFieldDefinition.ReferenceName.get -> string!
+Qwiq.IFieldDefinitionCollection
+Qwiq.IHyperlink
+Qwiq.IHyperlink.Location.get -> string!
+Qwiq.IIdentifiable<TKey>
+Qwiq.IIdentifiable<TKey>.Id.get -> TKey
+Qwiq.IIdentityDescriptor
+Qwiq.IIdentityDescriptor.Identifier.get -> string!
+Qwiq.IIdentityDescriptor.IdentityType.get -> string!
+Qwiq.ILink
+Qwiq.ILink.BaseType.get -> Qwiq.BaseLinkType
+Qwiq.ILink.Comment.get -> string?
+Qwiq.INamed
+Qwiq.INamed.Name.get -> string?
+Qwiq.INodeInfo
+Qwiq.INodeInfo.Uri.get -> string!
+Qwiq.INodeInfo.Uri.set -> void
+Qwiq.IProject
+Qwiq.IProject.AreaRootNodes.get -> Qwiq.IWorkItemClassificationNodeCollection<int>!
+Qwiq.IProject.Guid.get -> System.Guid
+Qwiq.IProject.IterationRootNodes.get -> Qwiq.IWorkItemClassificationNodeCollection<int>!
+Qwiq.IProject.QueryHierarchy.get -> Qwiq.IQueryFolderCollection!
+Qwiq.IProject.WorkItemTypes.get -> Qwiq.IWorkItemTypeCollection!
+Qwiq.IProjectCollection
+Qwiq.IProjectCollection.this[System.Guid id].get -> Qwiq.IProject!
+Qwiq.IProjectInfo
+Qwiq.IProjectInfo.Uri.get -> string!
+Qwiq.IProjectInfo.Uri.set -> void
+Qwiq.IProjectProperty
+Qwiq.IQuery
+Qwiq.IQuery.GetLinkTypes() -> Qwiq.IWorkItemLinkTypeEndCollection!
+Qwiq.IQuery.RunLinkQuery() -> System.Collections.Generic.IEnumerable<Qwiq.IWorkItemLinkInfo!>!
+Qwiq.IQuery.RunQuery() -> Qwiq.IWorkItemCollection!
+Qwiq.IQueryDefinition
+Qwiq.IQueryDefinition.Name.get -> string!
+Qwiq.IQueryDefinition.Path.get -> string!
+Qwiq.IQueryDefinition.Wiql.get -> string!
+Qwiq.IQueryDefinitionCollection
+Qwiq.IQueryFactory
+Qwiq.IQueryFactory.Create(string! wiql, bool dayPrecision = false) -> Qwiq.IQuery!
+Qwiq.IQueryFactory.Create(System.Collections.Generic.IEnumerable<int>! ids, string! wiql) -> Qwiq.IQuery!
+Qwiq.IQueryFactory.Create(System.Collections.Generic.IEnumerable<int>! ids, System.DateTime? asOf = null) -> Qwiq.IQuery!
+Qwiq.IQueryFolder
+Qwiq.IQueryFolder.Name.get -> string!
+Qwiq.IQueryFolder.Path.get -> string!
+Qwiq.IQueryFolder.SavedQueries.get -> Qwiq.IQueryDefinitionCollection!
+Qwiq.IQueryFolder.SubFolders.get -> Qwiq.IQueryFolderCollection!
+Qwiq.IQueryFolderCollection
+Qwiq.IReadOnlyField
+Qwiq.IReadOnlyField.FieldDefinition.get -> Qwiq.IFieldDefinition!
+Qwiq.IReadOnlyField.Name.get -> string?
+Qwiq.IReadOnlyField.ReferenceName.get -> string?
+Qwiq.IReadOnlyField.Value.get -> object?
+Qwiq.IReadOnlyObjectCollection<T>
+Qwiq.IReadOnlyObjectCollection<T>.Contains(T value) -> bool
+Qwiq.IReadOnlyObjectCollection<T>.GetItem(int index) -> T
+Qwiq.IReadOnlyObjectCollection<T>.IndexOf(T value) -> int
+Qwiq.IReadOnlyObjectWithIdCollection<T, TId>
+Qwiq.IReadOnlyObjectWithIdCollection<T, TId>.Contains(TId id) -> bool
+Qwiq.IReadOnlyObjectWithIdCollection<T, TId>.GetById(TId id) -> T
+Qwiq.IReadOnlyObjectWithIdCollection<T, TId>.TryGetById(TId id, out T? value) -> bool
+Qwiq.IReadOnlyObjectWithNameCollection<T>
+Qwiq.IReadOnlyObjectWithNameCollection<T>.Contains(string! name) -> bool
+Qwiq.IReadOnlyObjectWithNameCollection<T>.this[string! name].get -> T
+Qwiq.IReadOnlyObjectWithNameCollection<T>.TryGetByName(string! name, out T value) -> bool
+Qwiq.IRegisteredLinkType
+Qwiq.IRegisteredLinkTypeCollection
+Qwiq.IRelatedLink
+Qwiq.IRelatedLink.LinkTypeEnd.get -> Qwiq.IWorkItemLinkTypeEnd?
+Qwiq.IRelatedLink.RelatedWorkItemId.get -> int
+Qwiq.IResourceReference
+Qwiq.IResourceReference.Uri.get -> System.Uri!
+Qwiq.IRevision
+Qwiq.IRevision.Attachments.get -> System.Collections.Generic.IEnumerable<Qwiq.IAttachment!>!
+Qwiq.IRevision.Fields.get -> Qwiq.IFieldCollection!
+Qwiq.IRevision.GetTagLine() -> string!
+Qwiq.IRevision.Index.get -> int
+Qwiq.IRevision.Links.get -> System.Collections.Generic.IEnumerable<Qwiq.ILink!>!
+Qwiq.IRevision.this[string! name].get -> object?
+Qwiq.IRevision.WorkItem.get -> Qwiq.IWorkItem?
+Qwiq.ITeamFoundationIdentity
+Qwiq.ITeamFoundationIdentity.Descriptor.get -> Qwiq.IIdentityDescriptor!
+Qwiq.ITeamFoundationIdentity.DisplayName.get -> string!
+Qwiq.ITeamFoundationIdentity.GetAttribute(string! name, string? defaultValue) -> string?
+Qwiq.ITeamFoundationIdentity.GetProperties() -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, object!>>!
+Qwiq.ITeamFoundationIdentity.GetProperty(string! name) -> object!
+Qwiq.ITeamFoundationIdentity.IsActive.get -> bool
+Qwiq.ITeamFoundationIdentity.IsContainer.get -> bool
+Qwiq.ITeamFoundationIdentity.MemberOf.get -> System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>!
+Qwiq.ITeamFoundationIdentity.Members.get -> System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>!
+Qwiq.ITeamFoundationIdentity.TeamFoundationId.get -> System.Guid
+Qwiq.ITeamFoundationIdentity.UniqueName.get -> string!
+Qwiq.ITeamFoundationIdentity.UniqueUserId.get -> int
+Qwiq.ITeamProjectCollection
+Qwiq.ITeamProjectCollection.AuthorizedCredentials.get -> Microsoft.VisualStudio.Services.Common.VssCredentials!
+Qwiq.ITeamProjectCollection.AuthorizedIdentity.get -> Qwiq.ITeamFoundationIdentity!
+Qwiq.ITeamProjectCollection.CommonStructureService.get -> Qwiq.ICommonStructureService?
+Qwiq.ITeamProjectCollection.HasAuthenticated.get -> bool
+Qwiq.ITeamProjectCollection.TimeZone.get -> System.TimeZone!
+Qwiq.ITfsConnectionFactory
+Qwiq.ITfsConnectionFactory.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.ITeamProjectCollection!
+Qwiq.ITypeParser
+Qwiq.ITypeParser.Parse(System.Type! destinationType, object? input) -> object?
+Qwiq.ITypeParser.Parse(System.Type! destinationType, object? value, object? defaultValue) -> object?
+Qwiq.ITypeParser.Parse<T>(object? value, T defaultValue) -> T
+Qwiq.ITypeParser.Parse<T>(object? value) -> T
+Qwiq.IWorkItem
+Qwiq.IWorkItem.ApplyRules(bool doNotUpdateChangedBy = false) -> void
+Qwiq.IWorkItem.AttachedFileCount.get -> int
+Qwiq.IWorkItem.Attachments.get -> System.Collections.Generic.IEnumerable<Qwiq.IAttachment!>!
+Qwiq.IWorkItem.ChangedDate.get -> System.DateTime
+Qwiq.IWorkItem.Close() -> void
+Qwiq.IWorkItem.Copy() -> Qwiq.IWorkItem!
+Qwiq.IWorkItem.CreatedDate.get -> System.DateTime
+Qwiq.IWorkItem.CreateHyperlink(string! location) -> Qwiq.IHyperlink!
+Qwiq.IWorkItem.CreateRelatedLink(int relatedWorkItemId, Qwiq.IWorkItemLinkTypeEnd? linkTypeEnd = null) -> Qwiq.IRelatedLink!
+Qwiq.IWorkItem.ExternalLinkCount.get -> int
+Qwiq.IWorkItem.Fields.get -> Qwiq.IFieldCollection!
+Qwiq.IWorkItem.HyperlinkCount.get -> int
+Qwiq.IWorkItem.Id.get -> int
+Qwiq.IWorkItem.IsDirty.get -> bool
+Qwiq.IWorkItem.IsValid() -> bool
+Qwiq.IWorkItem.Links.get -> System.Collections.Generic.ICollection<Qwiq.ILink!>!
+Qwiq.IWorkItem.Open() -> void
+Qwiq.IWorkItem.PartialOpen() -> void
+Qwiq.IWorkItem.RelatedLinkCount.get -> int
+Qwiq.IWorkItem.Reset() -> void
+Qwiq.IWorkItem.Rev.get -> int
+Qwiq.IWorkItem.RevisedDate.get -> System.DateTime
+Qwiq.IWorkItem.Revisions.get -> System.Collections.Generic.IEnumerable<Qwiq.IRevision!>!
+Qwiq.IWorkItem.Save() -> void
+Qwiq.IWorkItem.Save(Qwiq.SaveFlags saveFlags) -> void
+Qwiq.IWorkItem.Type.get -> Qwiq.IWorkItemType!
+Qwiq.IWorkItem.Validate() -> System.Collections.Generic.IEnumerable<Qwiq.IField!>!
+Qwiq.IWorkItemClassificationNode<TId>
+Qwiq.IWorkItemClassificationNode<TId>.Type.get -> Qwiq.NodeType
+Qwiq.IWorkItemClassificationNodeCollection<TId>
+Qwiq.IWorkItemCollection
+Qwiq.IWorkItemCommon
+Qwiq.IWorkItemCommon.AreaId.get -> int?
+Qwiq.IWorkItemCommon.AreaId.set -> void
+Qwiq.IWorkItemCommon.AreaPath.get -> string?
+Qwiq.IWorkItemCommon.AreaPath.set -> void
+Qwiq.IWorkItemCommon.AssignedTo.get -> string?
+Qwiq.IWorkItemCommon.AssignedTo.set -> void
+Qwiq.IWorkItemCommon.AttachedFileCount.get -> int?
+Qwiq.IWorkItemCommon.ChangedBy.get -> string?
+Qwiq.IWorkItemCommon.ChangedDate.get -> System.DateTime?
+Qwiq.IWorkItemCommon.CreatedBy.get -> string?
+Qwiq.IWorkItemCommon.CreatedDate.get -> System.DateTime?
+Qwiq.IWorkItemCommon.Description.get -> string?
+Qwiq.IWorkItemCommon.Description.set -> void
+Qwiq.IWorkItemCommon.ExternalLinkCount.get -> int?
+Qwiq.IWorkItemCommon.History.get -> string!
+Qwiq.IWorkItemCommon.History.set -> void
+Qwiq.IWorkItemCommon.HyperlinkCount.get -> int?
+Qwiq.IWorkItemCommon.IterationId.get -> int?
+Qwiq.IWorkItemCommon.IterationId.set -> void
+Qwiq.IWorkItemCommon.IterationPath.get -> string?
+Qwiq.IWorkItemCommon.IterationPath.set -> void
+Qwiq.IWorkItemCommon.RelatedLinkCount.get -> int?
+Qwiq.IWorkItemCommon.RevisedDate.get -> System.DateTime?
+Qwiq.IWorkItemCommon.State.get -> string?
+Qwiq.IWorkItemCommon.State.set -> void
+Qwiq.IWorkItemCommon.Tags.get -> string?
+Qwiq.IWorkItemCommon.Tags.set -> void
+Qwiq.IWorkItemCommon.TeamProject.get -> string?
+Qwiq.IWorkItemCommon.Title.get -> string?
+Qwiq.IWorkItemCommon.Title.set -> void
+Qwiq.IWorkItemCommon.Watermark.get -> int?
+Qwiq.IWorkItemCommon.WorkItemType.get -> string?
+Qwiq.IWorkItemCore
+Qwiq.IWorkItemCore.Rev.get -> int?
+Qwiq.IWorkItemCore.this[string! name].get -> object?
+Qwiq.IWorkItemCore.this[string! name].set -> void
+Qwiq.IWorkItemLinkInfo
+Qwiq.IWorkItemLinkInfo.LinkType.get -> Qwiq.IWorkItemLinkTypeEnd?
+Qwiq.IWorkItemLinkInfo.SourceId.get -> int
+Qwiq.IWorkItemLinkInfo.TargetId.get -> int
+Qwiq.IWorkItemLinkInfoExtensions
+Qwiq.IWorkItemLinkType
+Qwiq.IWorkItemLinkType.ForwardEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.IWorkItemLinkType.IsActive.get -> bool
+Qwiq.IWorkItemLinkType.IsDirectional.get -> bool
+Qwiq.IWorkItemLinkType.ReferenceName.get -> string!
+Qwiq.IWorkItemLinkType.ReverseEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.IWorkItemLinkTypeCollection
+Qwiq.IWorkItemLinkTypeCollection.LinkTypeEnds.get -> Qwiq.IWorkItemLinkTypeEndCollection!
+Qwiq.IWorkItemLinkTypeEnd
+Qwiq.IWorkItemLinkTypeEnd.ImmutableName.get -> string!
+Qwiq.IWorkItemLinkTypeEnd.IsForwardLink.get -> bool
+Qwiq.IWorkItemLinkTypeEnd.LinkType.get -> Qwiq.IWorkItemLinkType?
+Qwiq.IWorkItemLinkTypeEnd.OppositeEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.IWorkItemLinkTypeEndCollection
+Qwiq.IWorkItemLinkTypeEndExtensions
+Qwiq.IWorkItemLinkTypeExtensions
+Qwiq.IWorkItemReference
+Qwiq.IWorkItemReference.Url.get -> string?
+Qwiq.IWorkItemStore
+Qwiq.IWorkItemStore.AuthorizedCredentials.get -> Microsoft.VisualStudio.Services.Common.VssCredentials!
+Qwiq.IWorkItemStore.AuthorizedIdentity.get -> Qwiq.ITeamFoundationIdentity!
+Qwiq.IWorkItemStore.Configuration.get -> Qwiq.WorkItemStoreConfiguration!
+Qwiq.IWorkItemStore.FieldDefinitions.get -> Qwiq.IFieldDefinitionCollection!
+Qwiq.IWorkItemStore.Projects.get -> Qwiq.IProjectCollection!
+Qwiq.IWorkItemStore.Query(int id, System.DateTime? asOf = null) -> Qwiq.IWorkItem?
+Qwiq.IWorkItemStore.Query(string! wiql, bool dayPrecision = false) -> Qwiq.IWorkItemCollection!
+Qwiq.IWorkItemStore.Query(System.Collections.Generic.IEnumerable<int>! ids, System.DateTime? asOf = null) -> Qwiq.IWorkItemCollection!
+Qwiq.IWorkItemStore.QueryLinks(string! wiql, bool dayPrecision = false) -> System.Collections.Generic.IEnumerable<Qwiq.IWorkItemLinkInfo!>!
+Qwiq.IWorkItemStore.RegisteredLinkTypes.get -> Qwiq.IRegisteredLinkTypeCollection?
+Qwiq.IWorkItemStore.TeamProjectCollection.get -> Qwiq.ITeamProjectCollection!
+Qwiq.IWorkItemStore.TimeZone.get -> System.TimeZone!
+Qwiq.IWorkItemStore.WorkItemLinkTypes.get -> Qwiq.IWorkItemLinkTypeCollection!
+Qwiq.IWorkItemStoreFactory
+Qwiq.IWorkItemStoreFactory.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.IWorkItemStore!
+Qwiq.IWorkItemType
+Qwiq.IWorkItemType.Description.get -> string!
+Qwiq.IWorkItemType.FieldDefinitions.get -> Qwiq.IFieldDefinitionCollection!
+Qwiq.IWorkItemType.NewWorkItem() -> Qwiq.IWorkItem!
+Qwiq.IWorkItemTypeCollection
+Qwiq.Link
+Qwiq.Link.BaseType.get -> Qwiq.BaseLinkType
+Qwiq.Link.Comment.get -> string?
+Qwiq.Link.Link(string? comment, Qwiq.BaseLinkType baseType) -> void
+Qwiq.NodeType
+Qwiq.NodeType.Area = 1 -> Qwiq.NodeType
+Qwiq.NodeType.Iteration = 2 -> Qwiq.NodeType
+Qwiq.NodeType.None = 0 -> Qwiq.NodeType
+Qwiq.PageSizeRangeException
+Qwiq.PageSizeRangeException.PageSizeRangeException() -> void
+Qwiq.Project
+Qwiq.Project.AreaRootNodes.get -> Qwiq.IWorkItemClassificationNodeCollection<int>!
+Qwiq.Project.Equals(Qwiq.IProject? other) -> bool
+Qwiq.Project.Guid.get -> System.Guid
+Qwiq.Project.Id.get -> System.Guid
+Qwiq.Project.IterationRootNodes.get -> Qwiq.IWorkItemClassificationNodeCollection<int>!
+Qwiq.Project.Name.get -> string!
+Qwiq.Project.QueryHierarchy.get -> Qwiq.IQueryFolderCollection!
+Qwiq.Project.Uri.get -> System.Uri!
+Qwiq.Project.WorkItemTypes.get -> Qwiq.IWorkItemTypeCollection!
+Qwiq.QueryDefinition
+Qwiq.QueryDefinition.Equals(Qwiq.IQueryDefinition? other) -> bool
+Qwiq.QueryDefinition.Id.get -> System.Guid
+Qwiq.QueryDefinition.Name.get -> string!
+Qwiq.QueryDefinition.Path.get -> string!
+Qwiq.QueryDefinition.Wiql.get -> string!
+Qwiq.QueryDefinitionCollection
+Qwiq.QueryDefinitionCollection.Equals(Qwiq.IQueryDefinitionCollection? other) -> bool
+Qwiq.QueryFolder
+Qwiq.QueryFolder.Equals(Qwiq.IQueryFolder? other) -> bool
+Qwiq.QueryFolder.Id.get -> System.Guid
+Qwiq.QueryFolder.Name.get -> string!
+Qwiq.QueryFolder.Path.get -> string!
+Qwiq.QueryFolder.Path.set -> void
+Qwiq.QueryFolder.SavedQueries.get -> Qwiq.IQueryDefinitionCollection!
+Qwiq.QueryFolder.SubFolders.get -> Qwiq.IQueryFolderCollection!
+Qwiq.QueryFolderCollection
+Qwiq.QueryFolderCollection.Equals(Qwiq.IQueryFolderCollection? other) -> bool
+Qwiq.ReadOnlyObjectCollection<T>
+Qwiq.ReadOnlyObjectCollection<T>.Add(T value) -> int
+Qwiq.ReadOnlyObjectCollection<T>.Ensure() -> void
+Qwiq.ReadOnlyObjectCollection<T>.ItemFactory.get -> System.Func<System.Collections.Generic.IEnumerable<T>!>?
+Qwiq.ReadOnlyObjectCollection<T>.ItemFactory.set -> void
+Qwiq.ReadOnlyObjectCollection<T>.List.get -> System.Collections.Generic.List<T>!
+Qwiq.ReadOnlyObjectCollection<T>.List.set -> void
+Qwiq.ReadOnlyObjectCollection<T>.ReadOnlyObjectCollection() -> void
+Qwiq.ReadOnlyObjectCollection<T>.ReadOnlyObjectCollection(System.Collections.Generic.IEnumerable<T>! items) -> void
+Qwiq.ReadOnlyObjectCollection<T>.ReadOnlyObjectCollection(System.Collections.Generic.IList<T>? items) -> void
+Qwiq.ReadOnlyObjectCollection<T>.ReadOnlyObjectCollection(System.Func<System.Collections.Generic.IEnumerable<T>!>! itemFactory) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.AddById(TId id, int index) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Collections.Generic.IEnumerable<T>! items) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Collections.Generic.IList<T>! items, System.Func<T, string!>! nameFunc, System.Func<T, TId>! idFunc) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Collections.Generic.IList<T>! items, System.Func<T, string!>! nameFunc) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Collections.Generic.IList<T>! items) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Func<System.Collections.Generic.IEnumerable<T>!>! itemFactory, System.Func<T, string!>! nameFunc, System.Func<T, TId>! idFunc) -> void
+Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.ReadOnlyObjectWithIdCollection(System.Func<System.Collections.Generic.IEnumerable<T>!>! itemFactory, System.Func<T, string!>! nameFunc) -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>
+Qwiq.ReadOnlyObjectWithNameCollection<T>.AddByName(string! name, int index) -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>.ReadOnlyObjectWithNameCollection() -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>.ReadOnlyObjectWithNameCollection(System.Collections.Generic.IEnumerable<T>! items) -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>.ReadOnlyObjectWithNameCollection(System.Collections.Generic.IList<T>? items, System.Func<T, string!>? nameFunc) -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>.ReadOnlyObjectWithNameCollection(System.Collections.Generic.IList<T>? items) -> void
+Qwiq.ReadOnlyObjectWithNameCollection<T>.ReadOnlyObjectWithNameCollection(System.Func<System.Collections.Generic.IEnumerable<T>!>! itemFactory, System.Func<T, string!>? nameFunc) -> void
+Qwiq.RegisteredLinkType
+Qwiq.RegisteredLinkType.Name.get -> string!
+Qwiq.RegisteredLinkType.RegisteredLinkType(string! name) -> void
+Qwiq.RegisteredLinkTypeCollection
+Qwiq.RegisteredLinkTypeCollection.Equals(Qwiq.IRegisteredLinkTypeCollection? other) -> bool
+Qwiq.RelatedLink
+Qwiq.RelatedLink.Equals(Qwiq.IRelatedLink? other) -> bool
+Qwiq.RelatedLink.LinkTypeEnd.get -> Qwiq.IWorkItemLinkTypeEnd?
+Qwiq.RelatedLink.RelatedWorkItemId.get -> int
+Qwiq.Revision
+Qwiq.Revision.Fields.get -> Qwiq.IFieldCollection!
+Qwiq.Revision.GetCurrentFieldValue(Qwiq.IFieldDefinition! fieldDefinition) -> object?
+Qwiq.Revision.Id.get -> int?
+Qwiq.Revision.Index.get -> int
+Qwiq.Revision.Rev.get -> int?
+Qwiq.Revision.Url.get -> string?
+Qwiq.Revision.WorkItem.get -> Qwiq.IWorkItem?
+Qwiq.SaveFlags
+Qwiq.SaveFlags.MergeAll = 2 -> Qwiq.SaveFlags
+Qwiq.SaveFlags.MergeLinks = 1 -> Qwiq.SaveFlags
+Qwiq.SaveFlags.None = 0 -> Qwiq.SaveFlags
+Qwiq.ServerRejectedChangesException
+Qwiq.TeamFoundationIdentity
+Qwiq.TeamFoundationIdentity.Equals(Qwiq.ITeamFoundationIdentity? other) -> bool
+Qwiq.TeamFoundationIdentity.IsActive.get -> bool
+Qwiq.TeamFoundationIdentity.MemberOf.get -> System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>!
+Qwiq.TeamFoundationIdentity.Members.get -> System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>!
+Qwiq.TeamFoundationIdentity.TeamFoundationId.get -> System.Guid
+Qwiq.TeamFoundationIdentity.TeamFoundationIdentity(bool isActive, System.Guid teamFoundationId, int uniqueUserId, System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>! memberOf, System.Collections.Generic.IEnumerable<Qwiq.IIdentityDescriptor!>! members) -> void
+Qwiq.TeamFoundationIdentity.TeamFoundationIdentity(bool isActive, System.Guid teamFoundationId, int uniqueUserId) -> void
+Qwiq.TeamFoundationIdentity.UniqueUserId.get -> int
+Qwiq.TfsConnectionFactory<TConnection>
+Qwiq.TfsConnectionFactory<TConnection>.TfsConnectionFactory() -> void
+Qwiq.TypeParser
+Qwiq.TypeParser.Parse(System.Type! destinationType, object? input) -> object?
+Qwiq.TypeParser.Parse(System.Type! destinationType, object? value, object? defaultValue) -> object?
+Qwiq.TypeParser.Parse<T>(object? value, T defaultValue) -> T
+Qwiq.TypeParser.Parse<T>(object? value) -> T
+Qwiq.ValidationState
+Qwiq.ValidationState.InvalidCharacters = 17 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidComputedField = 15 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidDate = 12 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidEmpty = 1 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidEmptyOrOldValue = 7 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidFormat = 3 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidListValue = 4 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidNotEmpty = 2 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidNotEmptyOrOldValue = 8 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidNotOldValue = 6 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidOldValue = 5 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidPath = 16 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidTooLong = 13 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidType = 14 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidUnknown = 11 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidValueInOtherField = 9 -> Qwiq.ValidationState
+Qwiq.ValidationState.InvalidValueNotInOtherField = 10 -> Qwiq.ValidationState
+Qwiq.ValidationState.Valid = 0 -> Qwiq.ValidationState
+Qwiq.WiqlConstants
+Qwiq.WorkItem
+Qwiq.WorkItem.Equals(Qwiq.IWorkItem? other) -> bool
+Qwiq.WorkItem.WorkItem(Qwiq.IWorkItemType! workItemType, System.Collections.Generic.Dictionary<string!, object?>! fields) -> void
+Qwiq.WorkItem.WorkItem(Qwiq.IWorkItemType! workItemType, System.Func<Qwiq.IFieldCollection!>! fieldCollectionFactory) -> void
+Qwiq.WorkItem.WorkItem(Qwiq.IWorkItemType! workItemType) -> void
+Qwiq.WorkItem.WorkItem(System.Lazy<Qwiq.IWorkItemType!>! type) -> void
+Qwiq.WorkItemClassificationNode<TId>
+Qwiq.WorkItemClassificationNode<TId>.Equals(Qwiq.IWorkItemClassificationNode<TId>? other) -> bool
+Qwiq.WorkItemClassificationNode<TId>.Id.get -> TId
+Qwiq.WorkItemClassificationNode<TId>.Name.get -> string!
+Qwiq.WorkItemClassificationNode<TId>.Type.get -> Qwiq.NodeType
+Qwiq.WorkItemClassificationNode<TId>.Uri.get -> System.Uri!
+Qwiq.WorkItemClassificationNode<TId>.WorkItemClassificationNode(TId id, Qwiq.NodeType nodeType, string! name, System.Uri! uri) -> void
+Qwiq.WorkItemClassificationNodeCollection<TId>
+Qwiq.WorkItemClassificationNodeCollection<TId>.Equals(Qwiq.IWorkItemClassificationNodeCollection<TId>? other) -> bool
+Qwiq.WorkItemClassificationNodeCollection<TId>.WorkItemClassificationNodeCollection(System.Collections.Generic.IEnumerable<Qwiq.IWorkItemClassificationNode<TId>!>! items) -> void
+Qwiq.WorkItemCollection
+Qwiq.WorkItemCollection.Equals(Qwiq.IWorkItemCollection? other) -> bool
+Qwiq.WorkItemCollection.WorkItemCollection(System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! workItems) -> void
+Qwiq.WorkItemCollection.WorkItemCollection(System.Collections.Generic.List<Qwiq.IWorkItem!>! workItems) -> void
+Qwiq.WorkItemCommon
+Qwiq.WorkItemCommon.Equals(Qwiq.IWorkItemCommon? other) -> bool
+Qwiq.WorkItemCommon.WorkItemCommon() -> void
+Qwiq.WorkItemCommon.WorkItemCommon(System.Collections.Generic.Dictionary<string!, object?>! fields) -> void
+Qwiq.WorkItemCopyFlags
+Qwiq.WorkItemCopyFlags.CopyFiles = 1 -> Qwiq.WorkItemCopyFlags
+Qwiq.WorkItemCopyFlags.CopyLinks = 2 -> Qwiq.WorkItemCopyFlags
+Qwiq.WorkItemCopyFlags.None = 0 -> Qwiq.WorkItemCopyFlags
+Qwiq.WorkItemCore
+Qwiq.WorkItemCore.Equals(Qwiq.IWorkItemCore? other) -> bool
+Qwiq.WorkItemCore.GetCurrentFieldValue(Qwiq.IFieldDefinition! fieldDefinition) -> object?
+Qwiq.WorkItemCore.SetFieldValue(Qwiq.IFieldDefinition! fieldDefinition, object? value) -> void
+Qwiq.WorkItemCore.WorkItemCore() -> void
+Qwiq.WorkItemCore.WorkItemCore(System.Collections.Generic.Dictionary<string!, object?>! fields) -> void
+Qwiq.WorkItemErrorPolicy
+Qwiq.WorkItemErrorPolicy.Fail = 1 -> Qwiq.WorkItemErrorPolicy
+Qwiq.WorkItemErrorPolicy.Omit = 2 -> Qwiq.WorkItemErrorPolicy
+Qwiq.WorkItemExpand
+Qwiq.WorkItemExpand.All = 4 -> Qwiq.WorkItemExpand
+Qwiq.WorkItemExpand.Fields = 2 -> Qwiq.WorkItemExpand
+Qwiq.WorkItemExpand.Links = 3 -> Qwiq.WorkItemExpand
+Qwiq.WorkItemExpand.None = 0 -> Qwiq.WorkItemExpand
+Qwiq.WorkItemExpand.Relations = 1 -> Qwiq.WorkItemExpand
+Qwiq.WorkItemFields
+Qwiq.WorkItemLinkInfo
+Qwiq.WorkItemLinkInfo.Equals(Qwiq.IWorkItemLinkInfo? other) -> bool
+Qwiq.WorkItemLinkInfo.LinkType.get -> Qwiq.IWorkItemLinkTypeEnd?
+Qwiq.WorkItemLinkInfo.SourceId.get -> int
+Qwiq.WorkItemLinkInfo.TargetId.get -> int
+Qwiq.WorkItemLinkType
+Qwiq.WorkItemLinkType.Equals(Qwiq.IWorkItemLinkType? other) -> bool
+Qwiq.WorkItemLinkType.ForwardEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.WorkItemLinkType.IsActive.get -> bool
+Qwiq.WorkItemLinkType.IsDirectional.get -> bool
+Qwiq.WorkItemLinkType.Name.get -> string?
+Qwiq.WorkItemLinkType.ReferenceName.get -> string!
+Qwiq.WorkItemLinkType.ReverseEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.WorkItemLinkTypeCollection
+Qwiq.WorkItemLinkTypeCollection.Equals(Qwiq.IWorkItemLinkTypeCollection? other) -> bool
+Qwiq.WorkItemLinkTypeCollection.LinkTypeEnds.get -> Qwiq.IWorkItemLinkTypeEndCollection!
+Qwiq.WorkItemLinkTypeEnd
+Qwiq.WorkItemLinkTypeEnd.Equals(Qwiq.IWorkItemLinkTypeEnd? other) -> bool
+Qwiq.WorkItemLinkTypeEnd.ImmutableName.get -> string!
+Qwiq.WorkItemLinkTypeEnd.IsForwardLink.get -> bool
+Qwiq.WorkItemLinkTypeEnd.LinkType.get -> Qwiq.IWorkItemLinkType!
+Qwiq.WorkItemLinkTypeEnd.Name.get -> string!
+Qwiq.WorkItemLinkTypeEnd.OppositeEnd.get -> Qwiq.IWorkItemLinkTypeEnd!
+Qwiq.WorkItemLinkTypeEndCollection
+Qwiq.WorkItemStoreConfiguration
+Qwiq.WorkItemStoreConfiguration.LazyLoadingEnabled.get -> bool
+Qwiq.WorkItemStoreConfiguration.LazyLoadingEnabled.set -> void
+Qwiq.WorkItemStoreConfiguration.PageSize.get -> int
+Qwiq.WorkItemStoreConfiguration.PageSize.set -> void
+Qwiq.WorkItemStoreConfiguration.ProxyCreationEnabled.get -> bool
+Qwiq.WorkItemStoreConfiguration.ProxyCreationEnabled.set -> void
+Qwiq.WorkItemStoreConfiguration.WorkItemStoreConfiguration() -> void
+Qwiq.WorkItemStoreFactory
+Qwiq.WorkItemStoreFactory.WorkItemStoreFactory() -> void
+Qwiq.WorkItemType
+Qwiq.WorkItemType.Description.get -> string!
+Qwiq.WorkItemType.Equals(Qwiq.IWorkItemType? other) -> bool
+Qwiq.WorkItemType.Name.get -> string!
+Qwiq.WorkItemType.NewWorkItem() -> Qwiq.IWorkItem!
+Qwiq.WorkItemTypeCollection
+Qwiq.WorkItemTypeCollection.Equals(Qwiq.IWorkItemTypeCollection? other) -> bool
+Qwiq.WorkItemTypeDeniedOrNotExistException
+Qwiq.WorkItemTypeDeniedOrNotExistException.WorkItemTypeDeniedOrNotExistException() -> void
+static Qwiq.Comparer.FieldCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IReadOnlyObjectWithIdCollection<Qwiq.IField!, int>!>!
+static Qwiq.Comparer.FieldDefinition.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IFieldDefinition!>!
+static Qwiq.Comparer.FieldDefinitionCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IFieldDefinitionCollection!>!
+static Qwiq.Comparer.Identifiable.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IIdentifiable<int>!>!
+static Qwiq.Comparer.IdentityDescriptor.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IIdentityDescriptor!>!
+static Qwiq.Comparer.NullableIdentity.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IIdentifiable<int?>!>!
+static Qwiq.Comparer.OrdinalIgnoreCase.get -> System.Collections.Generic.IEqualityComparer<string!>!
+static Qwiq.Comparer.Project.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IProject!>!
+static Qwiq.Comparer.QueryDefinition.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IQueryDefinition!>!
+static Qwiq.Comparer.QueryDefinitionCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IReadOnlyObjectWithIdCollection<Qwiq.IQueryDefinition!, System.Guid>!>!
+static Qwiq.Comparer.QueryFolder.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IQueryFolder!>!
+static Qwiq.Comparer.QueryFolderCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IReadOnlyObjectWithIdCollection<Qwiq.IQueryFolder!, System.Guid>!>!
+static Qwiq.Comparer.TeamFoundationIdentity.get -> System.Collections.Generic.IEqualityComparer<Qwiq.ITeamFoundationIdentity!>!
+static Qwiq.Comparer.WorkItem.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItem!>!
+static Qwiq.Comparer.WorkItemClassificationNode.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemClassificationNode<int>!>!
+static Qwiq.Comparer.WorkItemClassificationNodeCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IReadOnlyObjectWithIdCollection<Qwiq.IWorkItemClassificationNode<int>!, int>!>!
+static Qwiq.Comparer.WorkItemCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemCollection!>!
+static Qwiq.Comparer.WorkItemLinkInfo.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemLinkInfo!>!
+static Qwiq.Comparer.WorkItemLinkType.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemLinkType!>!
+static Qwiq.Comparer.WorkItemLinkTypeEnd.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemLinkTypeEnd!>!
+static Qwiq.Comparer.WorkItemType.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemType!>!
+static Qwiq.Comparer.WorkItemTypeCollection.get -> System.Collections.Generic.IEqualityComparer<Qwiq.IWorkItemTypeCollection!>!
+static Qwiq.CoreFieldRefNames.All.get -> System.Collections.Generic.IEnumerable<string!>!
+static Qwiq.CoreFieldRefNames.CoreFieldIdLookup.get -> System.Collections.Generic.IReadOnlyDictionary<string!, int>!
+static Qwiq.CoreFieldRefNames.NameLookup.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+static Qwiq.CoreFieldRefNames.ReferenceNameLookup.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+static Qwiq.Extensions.AddChildLink(this Qwiq.IWorkItem! workItem, Qwiq.IWorkItemStore! store, int childId) -> void
+static Qwiq.Extensions.AddChildrenLink(this Qwiq.IWorkItem! workItem, Qwiq.IWorkItemStore! store, params int[]! childrenIds) -> void
+static Qwiq.Extensions.AddParentLink(this Qwiq.IWorkItem! workItem, Qwiq.IWorkItemStore! store, int parentId) -> void
+static Qwiq.Extensions.AddRelatedLink(this Qwiq.IWorkItem! workItem, Qwiq.IWorkItemStore! store, int targetId) -> void
+static Qwiq.Extensions.AddRelatedLink(this Qwiq.IWorkItem! workItem, Qwiq.IWorkItemStore! store, int[]! targets) -> void
+static Qwiq.Extensions.GetChildLinkTypeEnd(this Qwiq.IWorkItemStore! store) -> Qwiq.IWorkItemLinkTypeEnd!
+static Qwiq.Extensions.GetIdentityName(this Qwiq.ITeamFoundationIdentity? identity) -> string?
+static Qwiq.Extensions.GetLinkType(this Qwiq.IWorkItemStore! store, string! linkTypeReferenceName) -> Qwiq.IWorkItemLinkType!
+static Qwiq.Extensions.GetParentLinkTypeEnd(this Qwiq.IWorkItemStore! store) -> Qwiq.IWorkItemLinkTypeEnd!
+static Qwiq.Extensions.GetUserAccountName(this Qwiq.ITeamFoundationIdentity? identity) -> string?
+static Qwiq.Extensions.GetUserAlias(this Qwiq.ITeamFoundationIdentity? identity) -> string?
+static Qwiq.Extensions.IsCloneable(this Qwiq.IFieldDefinition! definition) -> bool
+static Qwiq.Extensions.IsComputed(this Qwiq.IFieldDefinition! definition) -> bool
+static Qwiq.Extensions.IsEditable(this Qwiq.IFieldDefinition! definition) -> bool
+static Qwiq.Extensions.NewWorkItem(this Qwiq.IWorkItemType! wit, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, object!>>! values) -> Qwiq.IWorkItem!
+static Qwiq.Extensions.NewWorkItems(this Qwiq.IWorkItemType! wit, System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string!, object!>>!>! values) -> System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>!
+static Qwiq.Extensions.ToWorkItemCollection(this System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! items) -> Qwiq.IWorkItemCollection!
+static Qwiq.IdentityFieldValue.implicit operator string?(Qwiq.IdentityFieldValue? value) -> string?
+static Qwiq.IWorkItemLinkInfoExtensions.LinkTypeId(this Qwiq.IWorkItemLinkInfo! item) -> int
+static Qwiq.IWorkItemLinkTypeEndExtensions.LinkTypeId(this Qwiq.IWorkItemLinkTypeEnd! item) -> int
+static Qwiq.IWorkItemLinkTypeExtensions.ForwardEndLinkTypeId(this Qwiq.IWorkItemLinkType! item) -> int
+static Qwiq.IWorkItemLinkTypeExtensions.ReverseEndLinkTypeId(this Qwiq.IWorkItemLinkType! item) -> int
+static Qwiq.TypeParser.Default.get -> Qwiq.ITypeParser!
+static readonly Qwiq.CoreLinkTypeReferenceNames.All -> string![]!
+static readonly Qwiq.TeamFoundationIdentity.ZeroLengthArrayOfIdentityDescriptor -> Qwiq.IIdentityDescriptor![]!
+static System.TypeExtensions.CanAcceptNull(this System.Type! type) -> bool
+static System.TypeExtensions.GetDefaultValueOfType(this System.Type! type) -> object?
+static System.TypeExtensions.IsGenericNullable(this System.Type! type) -> bool
+System.TypeExtensions
+virtual Qwiq.FieldCollection.GetById(int id) -> Qwiq.IField!
+virtual Qwiq.FieldCollection.IndexOf(Qwiq.IField! value) -> int
+virtual Qwiq.ReadOnlyObjectCollection<T>.Add(T value, int index) -> void
+virtual Qwiq.ReadOnlyObjectCollection<T>.Contains(T value) -> bool
+virtual Qwiq.ReadOnlyObjectCollection<T>.Count.get -> int
+virtual Qwiq.ReadOnlyObjectCollection<T>.GetEnumerator() -> System.Collections.Generic.IEnumerator<T>!
+virtual Qwiq.ReadOnlyObjectCollection<T>.GetItem(int index) -> T
+virtual Qwiq.ReadOnlyObjectCollection<T>.IndexOf(T value) -> int
+virtual Qwiq.ReadOnlyObjectCollection<T>.this[int index].get -> T
+virtual Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.Contains(TId id) -> bool
+virtual Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.Equals(Qwiq.IReadOnlyObjectWithIdCollection<T, TId>? other) -> bool
+virtual Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.GetById(TId id) -> T
+virtual Qwiq.ReadOnlyObjectWithIdCollection<T, TId>.TryGetById(TId id, out T? value) -> bool
+virtual Qwiq.ReadOnlyObjectWithNameCollection<T>.Contains(string! name) -> bool
+virtual Qwiq.ReadOnlyObjectWithNameCollection<T>.this[string! name].get -> T
+virtual Qwiq.ReadOnlyObjectWithNameCollection<T>.TryGetByName(string! name, out T value) -> bool
+virtual Qwiq.Revision.Attachments.get -> System.Collections.Generic.IEnumerable<Qwiq.IAttachment!>!
+virtual Qwiq.Revision.GetTagLine() -> string!
+virtual Qwiq.Revision.Links.get -> System.Collections.Generic.IEnumerable<Qwiq.ILink!>!
+virtual Qwiq.Revision.this[string! name].get -> object?
+virtual Qwiq.TeamFoundationIdentity.IsContainer.get -> bool
+virtual Qwiq.TeamFoundationIdentity.UniqueName.get -> string!
+virtual Qwiq.TfsConnectionFactory<TConnection>.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.ITeamProjectCollection!
+virtual Qwiq.WorkItem.ApplyRules(bool doNotUpdateChangedBy = false) -> void
+virtual Qwiq.WorkItem.AttachedFileCount.get -> int
+virtual Qwiq.WorkItem.Attachments.get -> System.Collections.Generic.IEnumerable<Qwiq.IAttachment!>!
+virtual Qwiq.WorkItem.ChangedDate.get -> System.DateTime
+virtual Qwiq.WorkItem.Close() -> void
+virtual Qwiq.WorkItem.Copy() -> Qwiq.IWorkItem!
+virtual Qwiq.WorkItem.CreatedDate.get -> System.DateTime
+virtual Qwiq.WorkItem.CreateHyperlink(string! location) -> Qwiq.IHyperlink!
+virtual Qwiq.WorkItem.CreateRelatedLink(int relatedWorkItemId, Qwiq.IWorkItemLinkTypeEnd? linkTypeEnd = null) -> Qwiq.IRelatedLink!
+virtual Qwiq.WorkItem.ExternalLinkCount.get -> int
+virtual Qwiq.WorkItem.Fields.get -> Qwiq.IFieldCollection!
+virtual Qwiq.WorkItem.HyperlinkCount.get -> int
+virtual Qwiq.WorkItem.Id.get -> int
+virtual Qwiq.WorkItem.IsDirty.get -> bool
+virtual Qwiq.WorkItem.IsValid() -> bool
+virtual Qwiq.WorkItem.Links.get -> System.Collections.Generic.ICollection<Qwiq.ILink!>!
+virtual Qwiq.WorkItem.Open() -> void
+virtual Qwiq.WorkItem.PartialOpen() -> void
+virtual Qwiq.WorkItem.RelatedLinkCount.get -> int
+virtual Qwiq.WorkItem.Reset() -> void
+virtual Qwiq.WorkItem.Rev.get -> int
+virtual Qwiq.WorkItem.RevisedDate.get -> System.DateTime
+virtual Qwiq.WorkItem.Revision.get -> int
+virtual Qwiq.WorkItem.Revisions.get -> System.Collections.Generic.IEnumerable<Qwiq.IRevision!>!
+virtual Qwiq.WorkItem.Save() -> void
+virtual Qwiq.WorkItem.Save(Qwiq.SaveFlags saveFlags) -> void
+virtual Qwiq.WorkItem.Type.get -> Qwiq.IWorkItemType!
+virtual Qwiq.WorkItem.Validate() -> System.Collections.Generic.IEnumerable<Qwiq.IField!>!
+virtual Qwiq.WorkItemCommon.AreaId.get -> int?
+virtual Qwiq.WorkItemCommon.AreaId.set -> void
+virtual Qwiq.WorkItemCommon.AreaPath.get -> string?
+virtual Qwiq.WorkItemCommon.AreaPath.set -> void
+virtual Qwiq.WorkItemCommon.AssignedTo.get -> string?
+virtual Qwiq.WorkItemCommon.AssignedTo.set -> void
+virtual Qwiq.WorkItemCommon.AttachedFileCount.get -> int?
+virtual Qwiq.WorkItemCommon.ChangedBy.get -> string?
+virtual Qwiq.WorkItemCommon.ChangedDate.get -> System.DateTime?
+virtual Qwiq.WorkItemCommon.CreatedBy.get -> string?
+virtual Qwiq.WorkItemCommon.CreatedDate.get -> System.DateTime?
+virtual Qwiq.WorkItemCommon.Description.get -> string?
+virtual Qwiq.WorkItemCommon.Description.set -> void
+virtual Qwiq.WorkItemCommon.ExternalLinkCount.get -> int?
+virtual Qwiq.WorkItemCommon.History.get -> string!
+virtual Qwiq.WorkItemCommon.History.set -> void
+virtual Qwiq.WorkItemCommon.HyperlinkCount.get -> int?
+virtual Qwiq.WorkItemCommon.IterationId.get -> int?
+virtual Qwiq.WorkItemCommon.IterationId.set -> void
+virtual Qwiq.WorkItemCommon.IterationPath.get -> string?
+virtual Qwiq.WorkItemCommon.IterationPath.set -> void
+virtual Qwiq.WorkItemCommon.RelatedLinkCount.get -> int?
+virtual Qwiq.WorkItemCommon.RevisedDate.get -> System.DateTime?
+virtual Qwiq.WorkItemCommon.State.get -> string?
+virtual Qwiq.WorkItemCommon.State.set -> void
+virtual Qwiq.WorkItemCommon.Tags.get -> string?
+virtual Qwiq.WorkItemCommon.Tags.set -> void
+virtual Qwiq.WorkItemCommon.TeamProject.get -> string?
+virtual Qwiq.WorkItemCommon.Title.get -> string?
+virtual Qwiq.WorkItemCommon.Title.set -> void
+virtual Qwiq.WorkItemCommon.Watermark.get -> int?
+virtual Qwiq.WorkItemCommon.WorkItemType.get -> string?
+virtual Qwiq.WorkItemCore.GetValue(string! name) -> object?
+virtual Qwiq.WorkItemCore.GetValue<T>(string! name) -> T
+virtual Qwiq.WorkItemCore.Id.get -> int?
+virtual Qwiq.WorkItemCore.Rev.get -> int?
+virtual Qwiq.WorkItemCore.SetValue(string! name, object? value) -> void
+virtual Qwiq.WorkItemCore.this[string! name].get -> object?
+virtual Qwiq.WorkItemCore.this[string! name].set -> void
+virtual Qwiq.WorkItemType.FieldDefinitions.get -> Qwiq.IFieldDefinitionCollection!

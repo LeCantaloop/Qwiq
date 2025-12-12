@@ -1,0 +1,127 @@
+#nullable enable
+abstract Qwiq.Mapper.Attributes.PropertyReflectorBase.GetAttribute(System.Type! type, System.Reflection.PropertyInfo! property) -> System.Attribute?
+abstract Qwiq.Mapper.Attributes.PropertyReflectorBase.GetCustomAttributes(System.Reflection.PropertyInfo! property, System.Type! attributeType) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+abstract Qwiq.Mapper.Attributes.PropertyReflectorBase.GetCustomAttributes(System.Reflection.PropertyInfo! property) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+abstract Qwiq.Mapper.Attributes.PropertyReflectorBase.GetProperties(System.Type! workItemType) -> System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo!>!
+override Qwiq.Mapper.AttributeMapException.Message.get -> string!
+override Qwiq.Mapper.Attributes.AttributeMapperStrategy.Map(System.Type! targetWorkItemType, System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, Qwiq.IIdentifiable<int?>!>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+override Qwiq.Mapper.Attributes.AttributeMapperStrategy.Map<T>(System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, T>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+override Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.AssignFieldValue(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, object! targetWorkItem, System.Reflection.PropertyInfo! property, string! fieldName, bool convert, object? nullSub, object? fieldValue) -> void
+override Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.GetFieldValue(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, string! fieldName, System.Reflection.PropertyInfo! property) -> object?
+override Qwiq.Mapper.Attributes.PropertyReflector.GetAttribute(System.Type! type, System.Reflection.PropertyInfo! property) -> System.Attribute?
+override Qwiq.Mapper.Attributes.PropertyReflector.GetCustomAttributes(System.Reflection.PropertyInfo! property, System.Type! attributeType) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+override Qwiq.Mapper.Attributes.PropertyReflector.GetCustomAttributes(System.Reflection.PropertyInfo! property) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+override Qwiq.Mapper.Attributes.PropertyReflector.GetProperties(System.Type! workItemType) -> System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo!>!
+override Qwiq.Mapper.Attributes.WorkItemLinksMapperStrategy.Map(System.Type! targetWorkItemType, System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, Qwiq.IIdentifiable<int?>!>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+override Qwiq.Mapper.MapperTeamFoundationServerWorkItemQueryProvider.ExecuteRawQuery(System.Type! workItemType, string! queryString) -> System.Collections.IEnumerable!
+Qwiq.Mapper.AnnotatedPropertyValidator
+Qwiq.Mapper.AnnotatedPropertyValidator.AnnotatedPropertyValidator(Qwiq.Mapper.Attributes.IPropertyInspector! inspector) -> void
+Qwiq.Mapper.AnnotatedPropertyValidator.GetFieldDefinition(System.Reflection.PropertyInfo! property) -> Qwiq.Mapper.Attributes.FieldDefinitionAttribute?
+Qwiq.Mapper.AnnotatedPropertyValidator.GetValidAnnotatedProperties(Qwiq.IWorkItem! workItem, System.Type! targetType) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo!, Qwiq.Mapper.Attributes.FieldDefinitionAttribute!>>!
+Qwiq.Mapper.AnnotatedPropertyValidator.PropertyInfoValidator.get -> System.Func<Qwiq.IWorkItem!, System.Reflection.PropertyInfo!, bool>!
+Qwiq.Mapper.AnnotatedPropertyValidator.PropertyInfoValidator.set -> void
+Qwiq.Mapper.AttributeMapException
+Qwiq.Mapper.AttributeMapException.AttributeMapException() -> void
+Qwiq.Mapper.AttributeMapException.AttributeMapException(string! message, System.Exception! innerException, Qwiq.Mapper.TypePair typePair, Qwiq.Mapper.PropertyMap properties) -> void
+Qwiq.Mapper.AttributeMapException.AttributeMapException(string! message, System.Exception! innerException) -> void
+Qwiq.Mapper.AttributeMapException.AttributeMapException(string! message) -> void
+Qwiq.Mapper.AttributeMapException.PropertyMap.get -> Qwiq.Mapper.PropertyMap?
+Qwiq.Mapper.AttributeMapException.PropertyMap.set -> void
+Qwiq.Mapper.AttributeMapException.Types.get -> Qwiq.Mapper.TypePair?
+Qwiq.Mapper.AttributeMapException.Types.set -> void
+Qwiq.Mapper.Attributes.AttributeMapperStrategy
+Qwiq.Mapper.Attributes.AttributeMapperStrategy.AttributeMapperStrategy() -> void
+Qwiq.Mapper.Attributes.AttributeMapperStrategy.AttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector, Qwiq.ITypeParser! typeParser) -> void
+Qwiq.Mapper.Attributes.AttributeMapperStrategy.AttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector) -> void
+Qwiq.Mapper.Attributes.AttributeMapperStrategy.AttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyReflector! propertyReflector) -> void
+Qwiq.Mapper.Attributes.AttributeMapperStrategy.AttributeMapperStrategy(Qwiq.Mapper.IAnnotatedPropertyValidator! annotatedPropertyValidator, Qwiq.ITypeParser! typeParser) -> void
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.FieldDefinitionAttribute(string! name, bool requireConversion, object? nullSubstitute) -> void
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.FieldDefinitionAttribute(string! name, bool requireConversion) -> void
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.FieldDefinitionAttribute(string! name, object? nullSubstitute) -> void
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.FieldDefinitionAttribute(string! name) -> void
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.FieldName.get -> string!
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.NullSubstitute.get -> object?
+Qwiq.Mapper.Attributes.FieldDefinitionAttribute.RequireConversion.get -> bool
+Qwiq.Mapper.Attributes.IPropertyInspector
+Qwiq.Mapper.Attributes.IPropertyInspector.GetAnnotatedProperties(System.Type! workItemType, System.Type! attributeType) -> System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo!>!
+Qwiq.Mapper.Attributes.IPropertyInspector.GetAttribute<T>(System.Reflection.PropertyInfo! property) -> T?
+Qwiq.Mapper.Attributes.IPropertyReflector
+Qwiq.Mapper.Attributes.IPropertyReflector.GetAttribute(System.Type! type, System.Reflection.PropertyInfo! property) -> System.Attribute?
+Qwiq.Mapper.Attributes.IPropertyReflector.GetCustomAttributes(System.Reflection.PropertyInfo! property, System.Type! attributeType) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+Qwiq.Mapper.Attributes.IPropertyReflector.GetCustomAttributes(System.Reflection.PropertyInfo! property) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+Qwiq.Mapper.Attributes.IPropertyReflector.GetProperties(System.Type! workItemType) -> System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo!>!
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.NoExceptionAttributeMapperStrategy() -> void
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.NoExceptionAttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector, Qwiq.ITypeParser! typeParser) -> void
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.NoExceptionAttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector) -> void
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.NoExceptionAttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyReflector! propertyReflector) -> void
+Qwiq.Mapper.Attributes.NoExceptionAttributeMapperStrategy.NoExceptionAttributeMapperStrategy(Qwiq.Mapper.IAnnotatedPropertyValidator! annotatedPropertyValidator, Qwiq.ITypeParser! typeParser) -> void
+Qwiq.Mapper.Attributes.PropertyInspector
+Qwiq.Mapper.Attributes.PropertyInspector.GetAnnotatedProperties(System.Type! workItemType, System.Type! attributeType) -> System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo!>!
+Qwiq.Mapper.Attributes.PropertyInspector.GetAttribute<T>(System.Reflection.PropertyInfo! property) -> T?
+Qwiq.Mapper.Attributes.PropertyInspector.PropertyInspector(Qwiq.Mapper.Attributes.IPropertyReflector! reflector) -> void
+Qwiq.Mapper.Attributes.PropertyReflector
+Qwiq.Mapper.Attributes.PropertyReflector.PropertyReflector() -> void
+Qwiq.Mapper.Attributes.PropertyReflectorBase
+Qwiq.Mapper.Attributes.PropertyReflectorBase.FilterAttributes(System.Collections.Generic.IEnumerable<System.Attribute!>! attributes, System.Type! type) -> System.Collections.Generic.IEnumerable<System.Attribute!>!
+Qwiq.Mapper.Attributes.PropertyReflectorBase.FindFirstAttribute(System.Collections.Generic.IEnumerable<System.Attribute!>! attributes, System.Type! type) -> System.Attribute?
+Qwiq.Mapper.Attributes.PropertyReflectorBase.PropertyReflectorBase() -> void
+Qwiq.Mapper.Attributes.WorkItemLinkAttribute
+Qwiq.Mapper.Attributes.WorkItemLinkAttribute.LinkName.get -> string!
+Qwiq.Mapper.Attributes.WorkItemLinkAttribute.WorkItemLinkAttribute(System.Type! workItemType, string! linkImmutableName) -> void
+Qwiq.Mapper.Attributes.WorkItemLinkAttribute.WorkItemType.get -> System.Type!
+Qwiq.Mapper.Attributes.WorkItemLinksMapperStrategy
+Qwiq.Mapper.Attributes.WorkItemLinksMapperStrategy.Store.get -> Qwiq.IWorkItemStore!
+Qwiq.Mapper.Attributes.WorkItemLinksMapperStrategy.WorkItemLinksMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector, Qwiq.IWorkItemStore! store) -> void
+Qwiq.Mapper.Attributes.WorkItemTypeAttribute
+Qwiq.Mapper.Attributes.WorkItemTypeAttribute.GetTypeName() -> string!
+Qwiq.Mapper.Attributes.WorkItemTypeAttribute.WorkItemTypeAttribute(string! type) -> void
+Qwiq.Mapper.FieldMapper
+Qwiq.Mapper.FieldMapper.FieldMapper() -> void
+Qwiq.Mapper.FieldMapper.GetFieldName(System.Type! type, string! propertyName) -> string!
+Qwiq.Mapper.FieldMapper.GetFieldNames(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Mapper.FieldMapper.GetWorkItemType(System.Type! type) -> System.Collections.Generic.IEnumerable<string!>!
+Qwiq.Mapper.IAnnotatedPropertyValidator
+Qwiq.Mapper.IAnnotatedPropertyValidator.GetFieldDefinition(System.Reflection.PropertyInfo! property) -> Qwiq.Mapper.Attributes.FieldDefinitionAttribute?
+Qwiq.Mapper.IAnnotatedPropertyValidator.GetValidAnnotatedProperties(Qwiq.IWorkItem! workItem, System.Type! targetType) -> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo!, Qwiq.Mapper.Attributes.FieldDefinitionAttribute!>>!
+Qwiq.Mapper.IAnnotatedPropertyValidator.PropertyInfoValidator.get -> System.Func<Qwiq.IWorkItem!, System.Reflection.PropertyInfo!, bool>!
+Qwiq.Mapper.IAnnotatedPropertyValidator.PropertyInfoValidator.set -> void
+Qwiq.Mapper.IWorkItemMapper
+Qwiq.Mapper.IWorkItemMapper.Create(System.Type! type, System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! collection) -> System.Collections.Generic.IEnumerable<Qwiq.IIdentifiable<int?>!>!
+Qwiq.Mapper.IWorkItemMapper.Create<T>(System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! collection) -> System.Collections.Generic.IEnumerable<T>!
+Qwiq.Mapper.IWorkItemMapper.Default<T>() -> T
+Qwiq.Mapper.IWorkItemMapper.MapperStrategies.get -> System.Collections.Generic.IEnumerable<Qwiq.Mapper.IWorkItemMapperStrategy!>!
+Qwiq.Mapper.IWorkItemMapperStrategy
+Qwiq.Mapper.IWorkItemMapperStrategy.Map(System.Type! targetWorkItemType, System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, Qwiq.IIdentifiable<int?>!>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+Qwiq.Mapper.IWorkItemMapperStrategy.Map<T>(System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, T>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+Qwiq.Mapper.MapperTeamFoundationServerWorkItemQueryProvider
+Qwiq.Mapper.MapperTeamFoundationServerWorkItemQueryProvider.MapperTeamFoundationServerWorkItemQueryProvider(Qwiq.IWorkItemStore! workItemStore, Qwiq.Linq.IWiqlQueryBuilder! queryBuilder, Qwiq.Mapper.IWorkItemMapper! workItemMapper) -> void
+Qwiq.Mapper.MapperTeamFoundationServerWorkItemQueryProvider.WorkItemMapper.get -> Qwiq.Mapper.IWorkItemMapper!
+Qwiq.Mapper.PropertyMap
+Qwiq.Mapper.PropertyMap.DestinationProperty.get -> System.Reflection.PropertyInfo!
+Qwiq.Mapper.PropertyMap.PropertyMap() -> void
+Qwiq.Mapper.PropertyMap.PropertyMap(System.Reflection.PropertyInfo! destinationProperty, string! sourceField) -> void
+Qwiq.Mapper.PropertyMap.SourceField.get -> string!
+Qwiq.Mapper.TypePair
+Qwiq.Mapper.TypePair.Destination.get -> System.Type!
+Qwiq.Mapper.TypePair.Source.get -> Qwiq.IWorkItem!
+Qwiq.Mapper.TypePair.TypePair() -> void
+Qwiq.Mapper.TypePair.TypePair(Qwiq.IWorkItem! source, System.Type! destination) -> void
+Qwiq.Mapper.WorkItemMapper
+Qwiq.Mapper.WorkItemMapper.Create(System.Type! type, System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! collection) -> System.Collections.Generic.IEnumerable<Qwiq.IIdentifiable<int?>!>!
+Qwiq.Mapper.WorkItemMapper.Create<T>(System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>! collection) -> System.Collections.Generic.IEnumerable<T>!
+Qwiq.Mapper.WorkItemMapper.Default<T>() -> T
+Qwiq.Mapper.WorkItemMapper.MapperStrategies.get -> System.Collections.Generic.IEnumerable<Qwiq.Mapper.IWorkItemMapperStrategy!>!
+Qwiq.Mapper.WorkItemMapper.WorkItemMapper(params Qwiq.Mapper.IWorkItemMapperStrategy![]! mapperStrategies) -> void
+Qwiq.Mapper.WorkItemMapper.WorkItemMapper(System.Collections.Generic.IEnumerable<Qwiq.Mapper.IWorkItemMapperStrategy!>! mapperStrategies) -> void
+Qwiq.Mapper.WorkItemMapperStrategyBase
+Qwiq.Mapper.WorkItemMapperStrategyBase.WorkItemMapperStrategyBase() -> void
+virtual Qwiq.Mapper.Attributes.AttributeMapperStrategy.AssignFieldValue(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, object! targetWorkItem, System.Reflection.PropertyInfo! property, string! fieldName, bool convert, object? nullSub, object? fieldValue) -> void
+virtual Qwiq.Mapper.Attributes.AttributeMapperStrategy.GetFieldValue(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, string! fieldName, System.Reflection.PropertyInfo! property) -> object?
+virtual Qwiq.Mapper.Attributes.AttributeMapperStrategy.MapCore(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, object! targetWorkItem) -> void
+virtual Qwiq.Mapper.Attributes.WorkItemLinksMapperStrategy.Query(System.Collections.Generic.IEnumerable<int>! ids) -> System.Collections.Generic.IEnumerable<Qwiq.IWorkItem!>!
+virtual Qwiq.Mapper.WorkItemMapperStrategyBase.Map(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, Qwiq.IIdentifiable<int?>! targetWorkItem, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+virtual Qwiq.Mapper.WorkItemMapperStrategyBase.Map(System.Type! targetWorkItemType, System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, Qwiq.IIdentifiable<int?>!>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+virtual Qwiq.Mapper.WorkItemMapperStrategyBase.Map<T>(Qwiq.IWorkItem! sourceWorkItem, T targetWorkItem, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+virtual Qwiq.Mapper.WorkItemMapperStrategyBase.Map<T>(System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, T>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void

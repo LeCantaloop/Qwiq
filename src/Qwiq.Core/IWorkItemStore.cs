@@ -58,6 +58,7 @@ namespace Qwiq
         ///     <c>false</c>.
         /// </param>
         /// <returns>IEnumerable&lt;IWorkItem&gt;.</returns>
+#pragma warning disable RS0026 // Do not add multiple overloads with optional parameters
         IWorkItemCollection Query(string wiql, bool dayPrecision = false);
 
         /// <summary>
@@ -77,6 +78,7 @@ namespace Qwiq
         ///     <see cref="IWorkItem" />
         /// </returns>
         IWorkItem? Query(int id, DateTime? asOf = null);
+#pragma warning restore RS0026
 
         /// <summary>
         ///     Queries the links.

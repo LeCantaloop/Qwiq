@@ -1,5 +1,12 @@
 <Project>
   <PropertyGroup>
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+  </PropertyGroup>
+
+  <!-- Import Artifacts.props early to establish artifact paths before SDK-driven defaults -->
+  <Import Project="$(MSBuildThisFileDirectory)build/targets/artifacts/Artifacts.props" Condition="Exists('$(MSBuildThisFileDirectory)build/targets/artifacts/Artifacts.props')" />
+
+  <PropertyGroup>
     <!-- Use modern .NET 8 as default, with net472 for Windows-specific components -->
     <TargetFramework Condition="'$(TargetFramework)' == ''">net8.0</TargetFramework>
     <LangVersion>preview</LangVersion>
@@ -24,8 +31,8 @@
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
 
     <!-- Artifact Output Configuration -->
-    <!-- Note: Full ArtifactsPath support requires .NET 9+ SDK. For .NET 8, we only configure test results path. -->
-    <ArtifactsTestResultsPath Condition="'$(ArtifactsTestResultsPath)' == ''">$(MSBuildThisFileDirectory)artifacts\TestResults</ArtifactsTestResultsPath>
+    <!-- ArtifactsPath and ArtifactsTestResultsPath are defined in build/targets/artifacts/Artifacts.props -->
+    <!-- Note: Full ArtifactsPath support requires .NET 9+ SDK (we'll adopt in .NET 10 LTS, skipping .NET 9 STS). For .NET 8, paths are configured manually. -->
 
     <!-- Output Configuration -->
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -70,6 +77,27 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
+  <!--
+    CI stability guardrail:
+    - CS0006 can occur when multi-targeted inner builds run in parallel and a consumer touches
+      a reference assembly before its producer finishes emitting it. /m:1 limits project-level
+      parallelism but not inner-build parallelism. Disabling BuildInParallel (for inner MSBuild
+      tasks) and reference assembly generation on CI mitigates the race at the cost of slightly
+      longer builds.
+  -->
+  <PropertyGroup>
+    <!-- Stop DispatchToInnerBuilds from parallelizing TFM inner builds -->
+    <BuildInParallel>false</BuildInParallel>
+    <MSBuildBuildInParallel>false</MSBuildBuildInParallel>
+
+    <!-- Avoid ref-assembly emission races (CI rarely benefits from ref assemblies) -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+
+    <!-- The defaults are usually fine, but being explicit won't hurt -->
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
   <!-- Source Link Configuration -->
   <PropertyGroup>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -100,6 +128,16 @@
   <!-- Source Link for all projects (even test projects benefit from source linking in debugging) -->
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!--
+    Enable building net472 targets on non-Windows machines (Linux, macOS).
+    Microsoft.NETFramework.ReferenceAssemblies provides the .NET Framework reference assemblies
+    so Mono/.NET SDK can compile net472 without the Windows SDK installed.
+    See: https://github.com/microsoft/dotnet-framework-reference-assemblies
+  -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

@@ -324,4 +324,4 @@ dotnet test test/Qwiq.Linq.Tests/Qwiq.Linq.UnitTests.csproj -c Release --no-buil
 |---------|------|--------|---------|
 | 1.0 | Dec 5, 2025 | Copilot Session | Initial handoff document |
 
-**Location**: `.agents/session-handoff-test-failures.md`
+**Location**: `.agents/sessions/session-handoff-test-failures.md`

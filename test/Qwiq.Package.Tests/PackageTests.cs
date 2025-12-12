@@ -17,42 +17,42 @@ public class PackageTests
 {
     public static TheoryData<string> GetPackages()
     {
-        // Find the solution root by looking for src directory
+        // Find the solution root by looking for artifacts/package directory
         // Start from the test assembly location and walk up
         DirectoryInfo? directory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-        DirectoryInfo? srcDirectory = null;
+        DirectoryInfo? packageDirectory = null;
 
         while (directory != null)
         {
-            DirectoryInfo candidate = new(Path.Combine(directory.FullName, "src"));
+            // Look for artifacts/package/release (where SDK places packages when ArtifactsPath is set)
+            DirectoryInfo candidate = new(Path.Combine(directory.FullName, "artifacts", "package", "release"));
             if (candidate.Exists)
             {
-                srcDirectory = candidate;
+                packageDirectory = candidate;
                 break;
             }
             directory = directory.Parent;
         }
 
-        if (srcDirectory == null)
+        if (packageDirectory == null)
         {
+            // Fall back to looking for src directory for legacy compatibility
+            directory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
             throw new InvalidOperationException(
-                "Could not find 'src' directory. Unable to locate NuGet packages.");
+                "Could not find 'artifacts/package/release' directory. Unable to locate NuGet packages. " +
+                $"Searched from: {directory?.FullName}");
         }
 
-        // Search for both .nupkg and .snupkg packages in src/**/bin/Release/**/
-        FileInfo[] nupkgPackages = srcDirectory.GetFiles("Qwiq*.nupkg", SearchOption.AllDirectories)
-            .Where(f => f.FullName.Contains(Path.Combine("bin", "Release"), StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+        // Search for both .nupkg and .snupkg packages in artifacts/package/release/
+        FileInfo[] nupkgPackages = packageDirectory.GetFiles("Qwiq*.nupkg", SearchOption.TopDirectoryOnly);
 
-        FileInfo[] snupkgPackages = srcDirectory.GetFiles("Qwiq*.snupkg", SearchOption.AllDirectories)
-            .Where(f => f.FullName.Contains(Path.Combine("bin", "Release"), StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+        FileInfo[] snupkgPackages = packageDirectory.GetFiles("Qwiq*.snupkg", SearchOption.TopDirectoryOnly);
 
         if (nupkgPackages.Length == 0)
         {
             throw new InvalidOperationException(
                 "No Qwiq*.nupkg or Qwiq*.snupkg files were found. Ensure the pack step runs before executing this test. " +
-                $"Searched in: {srcDirectory.FullName}");
+                $"Searched in: {packageDirectory.FullName}");
         }
 
         if (snupkgPackages.Length > 0)

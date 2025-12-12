@@ -1,0 +1,13 @@
+#nullable enable
+override Qwiq.Linq.Visitors.IdentityFieldAttributeVisitor.VisitBinary(System.Linq.Expressions.BinaryExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.Visitors.IdentityFieldAttributeVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Linq.Visitors.IdentityFieldAttributeVisitor.VisitMethodCall(System.Linq.Expressions.MethodCallExpression! node) -> System.Linq.Expressions.Expression!
+override Qwiq.Mapper.BulkIdentityAwareAttributeMapperStrategy.Map(System.Type! targetWorkItemType, System.Collections.Generic.IDictionary<Qwiq.IWorkItem!, Qwiq.IIdentifiable<int?>!>! workItemMappings, Qwiq.Mapper.IWorkItemMapper? workItemMapper) -> void
+Qwiq.Linq.Visitors.IdentityFieldAttributeVisitor
+Qwiq.Linq.Visitors.IdentityFieldAttributeVisitor.IdentityFieldAttributeVisitor(Qwiq.Identity.IIdentityValueConverter<string!, object!>! valueConverter) -> void
+Qwiq.Mapper.Attributes.IdentityFieldAttribute
+Qwiq.Mapper.Attributes.IdentityFieldAttribute.IdentityFieldAttribute() -> void
+Qwiq.Mapper.BulkIdentityAwareAttributeMapperStrategy
+Qwiq.Mapper.BulkIdentityAwareAttributeMapperStrategy.BulkIdentityAwareAttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector, Qwiq.Identity.IIdentityManagementService! identityManagementService) -> void
+Qwiq.Mapper.BulkIdentityAwareAttributeMapperStrategy.BulkIdentityAwareAttributeMapperStrategy(Qwiq.Mapper.Attributes.IPropertyInspector! inspector, Qwiq.Identity.IIdentityValueConverter<string!, object!>! identityValueConverter) -> void
+virtual Qwiq.Mapper.BulkIdentityAwareAttributeMapperStrategy.AssignFieldValue(System.Type! targetWorkItemType, Qwiq.IWorkItem! sourceWorkItem, object! targetWorkItem, System.Reflection.PropertyInfo! property, string! fieldName, bool convert, object? nullSub, object? fieldValue) -> void

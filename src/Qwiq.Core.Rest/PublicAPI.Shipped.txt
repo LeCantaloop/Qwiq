@@ -1,0 +1,14 @@
+#nullable enable
+override Qwiq.Client.Rest.WorkItemStoreConfiguration.WorkItemErrorPolicy.get -> Qwiq.WorkItemErrorPolicy
+override Qwiq.Client.Rest.WorkItemStoreConfiguration.WorkItemErrorPolicy.set -> void
+override Qwiq.Client.Rest.WorkItemStoreConfiguration.WorkItemExpand.get -> Qwiq.WorkItemExpand
+override Qwiq.Client.Rest.WorkItemStoreConfiguration.WorkItemExpand.set -> void
+override Qwiq.Client.Rest.WorkItemStoreFactory.Create(Qwiq.Credentials.AuthenticationOptions! options) -> Qwiq.IWorkItemStore!
+override sealed Qwiq.Client.Rest.WorkItemStoreConfiguration.DefaultFields.get -> System.Collections.Generic.IEnumerable<string!>?
+override sealed Qwiq.Client.Rest.WorkItemStoreConfiguration.DefaultFields.set -> void
+Qwiq.Client.Rest.IdentityDescriptor
+Qwiq.Client.Rest.TfsConnectionFactory
+Qwiq.Client.Rest.WorkItemStoreConfiguration
+Qwiq.Client.Rest.WorkItemStoreFactory
+static readonly Qwiq.Client.Rest.TfsConnectionFactory.Default -> Qwiq.ITfsConnectionFactory!
+static readonly Qwiq.Client.Rest.WorkItemStoreFactory.Default -> Qwiq.IWorkItemStoreFactory!

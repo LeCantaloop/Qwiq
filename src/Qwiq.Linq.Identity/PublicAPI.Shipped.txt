@@ -1,0 +1,4 @@
+#nullable enable
+override Qwiq.Linq.Visitors.IdentityMappingVisitor.VisitConstant(System.Linq.Expressions.ConstantExpression! node) -> System.Linq.Expressions.Expression!
+Qwiq.Linq.Visitors.IdentityMappingVisitor
+Qwiq.Linq.Visitors.IdentityMappingVisitor.IdentityMappingVisitor(Qwiq.Identity.IIdentityValueConverter<string!, object!>! valueConverter) -> void

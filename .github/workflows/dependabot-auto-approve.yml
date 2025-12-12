@@ -1,0 +1,23 @@
+# Auto-approve pull requests from dependabot and renovate
+#
+# This workflow automatically approves PRs from dependabot and renovate bots
+# to streamline dependency updates. PRs must still pass CI checks before merging.
+
+name: Auto approve PRs by dependabot or renovate
+
+on:
+  pull_request_target:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  autoapprove:
+    name: Auto-Approve PR by dependabot or renovate
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
+    steps:
+      - name: Auto approve
+        uses: cognitedata/auto-approve-dependabot-action@v3.0.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

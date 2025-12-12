@@ -31,7 +31,7 @@ namespace Qwiq.Identity.Soap
             IEnumerable<IIdentityDescriptor> descriptors,
             MembershipQuery queryMembership)
         {
-            if (descriptors == null) throw new ArgumentNullException(nameof(descriptors));
+            ArgumentNullException.ThrowIfNull(descriptors);
 
             var rawDescriptors = descriptors.Select(
                     descriptor => new Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor(
@@ -62,7 +62,7 @@ namespace Qwiq.Identity.Soap
             IEnumerable<string> searchFactorValues,
             MembershipQuery queryMembership)
         {
-            if (searchFactorValues == null) throw new ArgumentNullException(nameof(searchFactorValues));
+            ArgumentNullException.ThrowIfNull(searchFactorValues);
 
             var searchFactorArray = searchFactorValues.ToArray();
             var factor = (Microsoft.TeamFoundation.Framework.Common.IdentitySearchFactor)searchFactor;

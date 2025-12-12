@@ -1,3 +1,6 @@
 # Default MSBuild arguments applied to all builds
 /m:1
 /nodeReuse:false
+-p:BuildInParallel=false
+-p:MSBuildBuildInParallel=false
+-p:ProduceReferenceAssembly=false

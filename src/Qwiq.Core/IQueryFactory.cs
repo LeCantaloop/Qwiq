@@ -17,7 +17,9 @@ namespace Qwiq
         ///     <c>false</c>.
         /// </param>
         /// <returns>IQuery.</returns>
+#pragma warning disable RS0027 // API with optional parameter(s) should have the most parameters amongst its public overloads
         IQuery Create(string wiql, bool dayPrecision = false);
+#pragma warning restore RS0027
 
         /// <summary>
         ///     Create an instance of <see cref="IQuery" /> with a set of fields that is referred to in <paramref name="wiql" />
@@ -35,6 +37,8 @@ namespace Qwiq
         /// <param name="ids">A collection of work item IDs.</param>
         /// <param name="asOf">Optional: The date of the desired work item state.</param>
         /// <returns><see cref="IQuery"/></returns>
+#pragma warning disable RS0026 // Do not add multiple overloads with optional parameters
         IQuery Create(IEnumerable<int> ids, DateTime? asOf = null);
+#pragma warning restore RS0026
     }
 }

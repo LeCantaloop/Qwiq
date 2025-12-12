@@ -31,9 +31,9 @@ namespace Qwiq.Client.Soap
             Func<TfsWorkItem.WorkItemStore> wisFactory,
             Func<WorkItemStore, IQueryFactory> queryFactory)
         {
-            if (tpcFactory == null) throw new ArgumentNullException(nameof(tpcFactory));
-            if (wisFactory == null) throw new ArgumentNullException(nameof(wisFactory));
-            if (queryFactory == null) throw new ArgumentNullException(nameof(queryFactory));
+            ArgumentNullException.ThrowIfNull(tpcFactory);
+            ArgumentNullException.ThrowIfNull(wisFactory);
+            ArgumentNullException.ThrowIfNull(queryFactory);
 
             _tfs = new Lazy<IInternalTeamProjectCollection>(tpcFactory);
             _workItemStore = new Lazy<TfsWorkItem.WorkItemStore>(wisFactory);
@@ -115,7 +115,7 @@ namespace Qwiq.Client.Soap
 
         public IWorkItemCollection Query(IEnumerable<int> ids, DateTime? asOf = null)
         {
-            if (ids == null) throw new ArgumentNullException(nameof(ids));
+            ArgumentNullException.ThrowIfNull(ids);
             var ids2 = (int[])ids.ToArray().Clone();
             if (ids2.Length == 0) return Enumerable.Empty<IWorkItem>().ToWorkItemCollection();
 

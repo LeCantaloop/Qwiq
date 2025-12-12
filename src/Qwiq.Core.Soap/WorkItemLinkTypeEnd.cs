@@ -13,7 +13,7 @@ namespace Qwiq.Client.Soap
         {
             Contract.Requires(end != null);
 
-            if (end == null) throw new ArgumentNullException(nameof(end));
+            ArgumentNullException.ThrowIfNull(end);
             Id = end.Id;
             LinkType = new WorkItemLinkType(end.LinkType);
             IsForwardLink = end.IsForwardLink;

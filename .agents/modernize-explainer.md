@@ -289,44 +289,70 @@ Total suppressions: ~400 rules
 - Baseline report at `.agents/CS8xxx-baseline.md`
 ---
 
-## Wave 2: Library Excellence 📋 PLANNED
+## Wave 2: Developer Experience & Production Readiness 📋 PLANNED
 
-**Target**: Establish production-grade library patterns and developer experience.
+> **Updated**: December 5, 2025 (Session 12)
+> **Key Changes**: W2.8, W2.9, W2.1, W2.12 deferred to Wave 3. New tasks W2.16-W2.20 added.
+
+**Target**: Establish production-grade release automation, supply chain security, and testing infrastructure.
 
 | ID | Task | Priority | Effort | Status |
 |----|------|----------|--------|--------|
-| W2.1 | Enable AnalysisLevel=latest | High | S | 📋 |
-| W2.2 | Create API compatibility baselines | High | M | 📋 |
-| W2.3 | Add contract tests for public API | Medium | M | 📋 |
-| W2.4 | Implement property-based testing (FsCheck) | Medium | M | 📋 |
-| W2.5 | Add performance benchmarks (BenchmarkDotNet) | Medium | M | 📋 |
-| W2.6 | Migrate to record types (DTOs) | Low | L | 📋 |
-| W2.7 | Add pattern matching to type checking | Low | M | 📋 |
-| W2.8 | Add IConfiguration support for credentials | High | M | 📋 |
-| W2.9 | Migrate Trace to ILogger<T> | Medium | L | 📋 |
-| W2.10 | Add Azure Functions sample | Low | S | 📋 |
-| W2.11 | Create release.yml automation | **Critical** | M | 📋 |
-| W2.12 | Implement NuGet package signing | High | M | 📋 |
-| W2.13 | Generate SBOM (SPDX/CycloneDX) | High | S | 📋 |
-| W2.14 | Add dependency-review-action | Medium | S | 📋 |
-| W2.15 | Pin GitHub Actions by SHA | Medium | S | 📋 |
+| W2.11 | Create release.yml automation (DRY composite) | **CRITICAL** | M | 📋 |
+| W2.15 | Pin GitHub Actions by SHA | **CRITICAL** | S | 📋 |
+| W2.17 | SLSA Provenance Generation | **CRITICAL** | M | 📋 NEW |
+| W2.13 | Generate SBOM (dual-pipeline) | **HIGH** | S | 📋 |
+| W2.14 | Add dependency-review-action | **HIGH** | S | 📋 |
+| W2.16 | REST/SOAP Unit Test Coverage | **HIGH** | L | 📋 NEW |
+| W2.18 | Enable Package Validation | **HIGH** | S | 📋 NEW |
+| W2.2 | Create API compatibility baselines | **HIGH** | M | 📋 |
+| W2.3 | Add contract tests for REST/SOAP parity | Medium | M | 📋 |
+| W2.4 | Benchmark CI Integration | Low | S | 📋 |
+| W2.5 | Create Architecture Decision Records | Medium | M | 📋 |
+| W2.7 | Update CONTRIBUTING.md | Medium | S | 📋 |
+| W2.19 | CodeQL Advanced Security | Medium | S | 📋 NEW |
+| W2.20 | Secrets Scanning | Medium | S | 📋 NEW |
+
+**Deferred to Wave 3**:
+- ~~W2.8~~ → W3.9 (IConfiguration Support)
+- ~~W2.9~~ → W3.8 (Observability Overhaul - consolidates ILogger + OpenTelemetry)
+- ~~W2.1~~ → W3.8 (Observability Overhaul)
+- ~~W2.12~~ → W3.10 (Package Signing - BLOCKED, needs Azure Key Vault)
 
 ---
 
-## Wave 3: Long-Term Excellence 📋 FUTURE
+## Wave 3: Framework Modernization & Long-Term Excellence 📋 FUTURE
 
-**Target**: Prepare for future .NET versions and SOAP deprecation.
+> **Updated**: December 5, 2025 (Session 12)
+> **Key Changes**: W3.8-W3.10 added (deferred from Wave 2)
+
+**Target**: Prepare for future .NET versions, observability overhaul, and SOAP deprecation.
+
+### Deferred from Wave 2
 
 | ID | Task | Priority | Effort | Status |
 |----|------|----------|--------|--------|
-| W3.1 | OpenTelemetry basic tracing | Medium | M | 📋 |
-| W3.2 | .NET 10 SDK upgrade (when available) | Medium | S | 📋 |
-| W3.2a | Add net10.0 TFM | Medium | M | 📋 |
-| W3.3 | ARM64 testing infrastructure | Low | S | 📋 |
-| W3.4 | SOAP client deprecation plan | Low | L | 📋 |
-| W3.5 | API compatibility policy document | Medium | S | 📋 |
-| W3.6 | SOAP → REST migration guide | Medium | M | 📋 |
-| W3.7 | Performance baseline establishment | Low | M | 📋 |
+| W3.8 | Observability Overhaul (ILogger + OpenTelemetry) | P2 | L | 📋 DEFERRED |
+| W3.9 | IConfiguration Support | P3 | M | 📋 DEFERRED |
+| W3.10 | Package Signing | P3 | M | ⏸️ BLOCKED |
+
+### Framework Modernization
+
+| ID | Task | Priority | Effort | Status |
+|----|------|----------|--------|--------|
+| W3.1 | .NET 10 SDK upgrade (Nov 2025 LTS) | P1 | S | 📋 |
+| W3.1a | Add net10.0 TFM | P2 | M | 📋 |
+| W3.2 | ARM64 Validation | P3 | M | 📋 |
+| W3.3 | Remove AppVeyor Configuration | P3 | S | 📋 |
+
+### API & Documentation
+
+| ID | Task | Priority | Effort | Status |
+|----|------|----------|--------|--------|
+| W3.4 | Deprecate netstandard2.0 (Evaluation) | P3 | S | 📋 |
+| W3.5 | API Compatibility Policy Document | P2 | S | 📋 |
+| W3.6 | SOAP → REST Migration Guide | P2 | M | 📋 |
+| W3.7 | Performance Baseline Establishment | P3 | M | 📋 |
 
 ---
 
@@ -334,7 +360,7 @@ Total suppressions: ~400 rules
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        DEPENDENCY MAP (Updated Dec 5, 2025)             │
+│                        DEPENDENCY MAP (Updated Dec 5, 2025 - Session 12)│
 │                                                                         │
 │  ┌──────────────────┐                                                   │
 │  │ Wave 0 ✅        │                                                   │
@@ -343,32 +369,34 @@ Total suppressions: ~400 rules
 │           │                                                             │
 │           ▼                                                             │
 │  ┌────────────────────────────────────────────────────────────────────┐│
-│  │ Wave 1 (68% Complete)                                              ││
+│  │ Wave 1 (74% Complete - 20/27)                                      ││
 │  │ ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              ││
 │  │ │ Dotfiles ✅  │  │ Docs ✅      │  │ Nullable ✅  │              ││
 │  │ └──────────────┘  └──────────────┘  └──────────────┘              ││
-│  │ ┌──────────────┐  ┌──────────────┐                                 ││
-│  │ │ Coverage ✅  │  │ Source Link ✅│                                ││
-│  │ └──────────────┘  └──────────────┘                                 ││
+│  │ ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              ││
+│  │ │ Coverage ✅  │  │ Source Link ✅│  │ PedanticMode✅│              ││
+│  │ └──────────────┘  └──────────────┘  └──────────────┘              ││
 │  │ ┌──────────────────────────────────────────────────┐              ││
-│  │ │ CA Analyzer Debt (~400 rules) 🔴 IN PROGRESS     │              ││
+│  │ │ CA Analyzer Debt (~400→~335) 🟡 IN PROGRESS      │              ││
 │  │ └──────────────────────────────────────────────────┘              ││
 │  └────────────────────────────────────────────────────────────────────┘│
 │           │                                                             │
 │           ▼                                                             │
 │  ┌────────────────────────────────────────────────────────────────────┐│
-│  │ Wave 2 (Planned)                                                   ││
+│  │ Wave 2 (Planned - 16 tasks)                                        ││
 │  │ ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              ││
-│  │ │ API Compat   │  │ IConfiguration│ │ Release Auto │              ││
+│  │ │ Release Auto │  │ SHA Pinning  │  │ SLSA Prov    │              ││
+│  │ │ W2.11 CRIT   │  │ W2.15 CRIT   │  │ W2.17 CRIT   │              ││
 │  │ └──────────────┘  └──────────────┘  └──────────────┘              ││
 │  │ ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              ││
-│  │ │ SBOM Gen     │  │ Pkg Signing  │  │ ILogger<T>   │              ││
+│  │ │ SBOM Gen     │  │ Dep Review   │  │ REST/SOAP    │              ││
+│  │ │ W2.13 HIGH   │  │ W2.14 HIGH   │  │ W2.16 HIGH   │              ││
 │  │ └──────────────┘  └──────────────┘  └──────────────┘              ││
 │  └────────────────────────────────────────────────────────────────────┘│
 │           │                                                             │
 │           ▼                                                             │
 │  ┌────────────────────────────────────────────────────────────────────┐│
-│  │ Wave 3 (Future)                                                    ││
+│  │ Wave 3 (Future - 13 tasks, includes deferred)                      ││
 │  │ ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              ││
 │  │ │ .NET 10 LTS  │  │ OpenTelemetry│  │ SOAP Deprec  │              ││
 │  │ └──────────────┘  └──────────────┘  └──────────────┘              ││
@@ -498,13 +526,33 @@ Modernization is **complete** when:
 - CS8600, CS8602, CS8603, CS8604, CS8619
 - CS8620, CS8625, CS8767, CS8769
 
-### CA1xxx (Design) - ~135 rules suppressed
-### CA2xxx (Reliability) - ~66 rules suppressed
-### CA3xxx-CA5xxx (Security) - ~65 rules suppressed
+### CA1xxx (Design) - ~128 rules suppressed (7 converted to targeted)
+### CA2xxx (Reliability) - ~63 rules suppressed (3 enabled)
+### CA3xxx-CA5xxx (Security) - ✅ 0 suppressed (65 enabled, zero violations)
 ### IDE0xxx (Style) - ~107 rules suppressed
 ### CS (Compiler) - ~27 rules suppressed
 
-**Total**: ~400 analyzer rules currently suppressed
+**Total**: ~335 analyzer rules currently suppressed (down from ~400)
+
+---
+
+## Appendix D: REST/SOAP Unit Test Coverage (NEW)
+
+See detailed PRD in `modernize-TODO.md` under W2.16.
+
+**Problem**: Current REST/SOAP tests require Azure DevOps connectivity.
+
+**Solution**:
+- Phase 1: REST Client Unit Tests with HTTP mocking (cross-platform)
+- Phase 2: SOAP Client Unit Tests with TFS OM mocking (Windows-only)
+
+**Test Categories**:
+- `RestUnit` - REST client unit tests (all platforms)
+- `SoapUnit` - SOAP client unit tests (Windows only)
+
+**Mocking Strategy**:
+- REST: `RichardSzalay.MockHttp` or `WireMock.Net`
+- SOAP: Custom TFS Client OM mock wrappers
 
 ---
 
@@ -515,3 +563,4 @@ Modernization is **complete** when:
 | 1.0 | Dec 4, 2025 | Claudette | Initial comprehensive PRD |
 | 2.0 | Dec 5, 2025 | Claudette (Session 7) | Updated with Wave 1 progress (68%), resolved gaps, added Wave 2/3 tasks, corrected analyzer count (~400), added supply chain security requirements |
 | 2.1 | Dec 5, 2025 | Claudette (Session 8) | Key decision: Skip .NET 9 (STS), adopt .NET 10 (LTS). Strategy: SDK first, then TFM. Updated W3.1-W3.1a. |
+| 3.0 | Dec 5, 2025 | Claudette (Session 12) | **Major Wave 2/3 restructure**: Deferred W2.8, W2.9, W2.1, W2.12 to Wave 3. Updated W2.11 (DRY), W2.13 (dual-pipeline SBOM). Elevated W2.15 to CRITICAL. Added W2.16-W2.20 (REST/SOAP tests, SLSA, Package Validation, CodeQL, Secrets). Created W3.8 (Observability), W3.9 (IConfiguration), W3.10 (Signing BLOCKED). Added Appendix D for REST/SOAP testing. |

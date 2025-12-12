@@ -285,26 +285,46 @@ Code coverage is collected in CI and available as artifacts. The following gates
 To collect and view code coverage locally:
 
 ```powershell
-# Run tests with coverage collection
-dotnet test Qwiq.sln --collect:"XPlat Code Coverage" --settings coverage.runsettings
+# Run tests with coverage collection using repository settings
+dotnet test Qwiq.sln --settings coverage.runsettings
+
+# Or with explicit coverage collector
+dotnet test Qwiq.sln --collect:"Code Coverage" --settings coverage.runsettings
 
 # Generate HTML report using reportgenerator
 dotnet tool restore  # Ensures reportgenerator is available
-dotnet reportgenerator -reports:**/coverage.cobertura.xml -targetdir:./coverage -reporttypes:Html
+reportgenerator -reports:artifacts/TestResults/**/*.cobertura.xml -targetdir:./artifacts/coverage -reporttypes:Html
 
 # Open the report
-start ./coverage/index.html  # Windows
-open ./coverage/index.html   # macOS
-xdg-open ./coverage/index.html  # Linux
+start ./artifacts/coverage/index.html  # Windows
+open ./artifacts/coverage/index.html   # macOS
+xdg-open ./artifacts/coverage/index.html  # Linux
 ```
 
 ### Coverage Configuration
 
-Coverage settings are defined in `coverage.runsettings`:
+Coverage settings are defined in `coverage.runsettings` at the repository root. Key settings:
 
-- Platform: x64 (matches CI environment)
-- Format: Cobertura XML (for report generation)
-- Exclusions: Test projects, generated code, compatibility shims
+| Setting               | Value     | Purpose                                           |
+| --------------------- | --------- | ------------------------------------------------- |
+| `Format`              | cobertura | CI-friendly XML output for GitHub Actions         |
+| `IncludeTestAssembly` | False     | Excludes test assemblies from coverage metrics    |
+| `SkipAutoProps`       | true      | Skips trivial auto-properties for cleaner metrics |
+| `TargetPlatform`      | x64       | Matches CI environment                            |
+
+**Included Assemblies** (explicit list):
+
+- `Qwiq.Core.dll`, `Qwiq.Client.Rest.dll`, `Qwiq.Client.Soap.dll`
+- `Qwiq.Linq.dll`, `Qwiq.Linq.Identity.dll`
+- `Qwiq.Mapper.dll`, `Qwiq.Mapper.Identity.dll`
+- `Qwiq.Identity.dll`, `Qwiq.Identity.Soap.dll`
+
+**Excluded by Pattern**:
+
+- Test projects (`*Tests*`, `*Mocks*`, `*Benchmark*`)
+- Generated code (`*.g.cs`, `*.generated.cs`)
+- Compatibility shims (`Compatibility\*`)
+- Third-party assemblies (by public key token)
 
 ### CI Coverage Workflow
 

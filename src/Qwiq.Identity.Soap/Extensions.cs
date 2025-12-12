@@ -18,9 +18,7 @@ namespace Qwiq.Identity.Soap
         /// <exception cref="ArgumentNullException">teamProjectCollection</exception>
         public static IIdentityManagementService GetIdentityManagementService(this ITeamProjectCollection teamProjectCollection)
         {
-            Contract.Requires(teamProjectCollection != null);
-
-            if (teamProjectCollection == null) throw new ArgumentNullException(nameof(teamProjectCollection));
+            ArgumentNullException.ThrowIfNull(teamProjectCollection);
             return ((IInternalTeamProjectCollection)teamProjectCollection).GetService<IIdentityManagementService2>().AsProxy();
         }
 
@@ -32,12 +30,12 @@ namespace Qwiq.Identity.Soap
         /// <exception cref="ArgumentNullException">workItemStore</exception>
         public static IIdentityManagementService GetIdentityManagementService(this IWorkItemStore workItemStore)
         {
-            if (workItemStore == null) throw new ArgumentNullException(nameof(workItemStore));
+            ArgumentNullException.ThrowIfNull(workItemStore);
             return workItemStore.TeamProjectCollection.GetIdentityManagementService();
         }
         internal static IIdentityDescriptor AsProxy(this Microsoft.TeamFoundation.Framework.Client.IdentityDescriptor descriptor)
         {
-            if (descriptor == null) throw new ArgumentNullException(nameof(descriptor));
+            ArgumentNullException.ThrowIfNull(descriptor);
             return ExceptionHandlingDynamicProxyFactory.Create<IIdentityDescriptor>(new Client.Soap.IdentityDescriptor(descriptor));
         }
 

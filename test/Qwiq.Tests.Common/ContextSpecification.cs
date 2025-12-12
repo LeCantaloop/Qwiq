@@ -128,6 +128,12 @@ namespace Qwiq.Tests.Common
                 Given();
                 When();
             }
+            catch (AssertInconclusiveException)
+            {
+                // Let Assert.Inconclusive pass through - this is intentional test skipping
+                // (e.g., when WireMock HTTPS can't start on CI runners)
+                throw;
+            }
             catch (Exception e)
             {
                 // This is very, very bad.

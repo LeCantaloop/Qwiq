@@ -22,8 +22,6 @@ dotnet_diagnostic.CS1591.severity = none
 # Changing to TimeZoneInfo would be a breaking API change affecting 9+ implementations.
 dotnet_diagnostic.CS0618.severity = none
 
-
-
 #######################################
 # CA17xx: Naming Rules
 #######################################
@@ -61,7 +59,32 @@ dotnet_diagnostic.CA1863.severity = none
 # Tests deliberately test both generic and non-generic overloads for coverage
 dotnet_diagnostic.CA2263.severity = none
 
+#######################################
+# Markdown Files
+#######################################
+[*.md]
+indent_size = 2
+max_line_length = 120
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+#######################################
+# YAML Files
+#######################################
+[*.{yml,yaml}]
+indent_size = 2
+indent_style = space
+
+#######################################
+# JSON Files
+#######################################
+[*.json]
+indent_size = 2
+indent_style = space
+
+#######################################
 # Verify settings
+#######################################
 [*.{received,verified}.{json,txt,xml,nuspec}]
 charset = utf-8-bom
 end_of_line = lf
