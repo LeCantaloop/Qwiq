@@ -1,0 +1,46 @@
+# Auto-merge pull requests from dependabot and renovate
+#
+# This workflow enables auto-merge for PRs from dependabot and renovate bots.
+# Auto-merge will only complete after all required status checks pass.
+#
+# Prerequisites:
+#   1. Branch protection rules must be enabled with required status checks
+#   2. "Allow auto-merge" must be enabled in repository settings
+#   3. GH_ACTIONS_PR_WRITE secret must be configured with a PAT that has:
+#      - repo scope (for private repos) or public_repo scope (for public repos)
+#      - write access to pull requests and contents
+#
+# The workflow:
+#   1. Approves the PR (required for branch protection "required approvals")
+#   2. Enables auto-merge with squash strategy
+#   3. CI checks run (main.yml build/test)
+#   4. If all checks pass, PR is automatically merged
+
+name: Auto-merge Dependabot or Renovate
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  automerge:
+    name: Auto-Merge PR by dependabot or renovate
+    runs-on: ubuntu-latest
+    if:
+      github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
+    steps:
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACTIONS_PR_WRITE }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+
+      - name: Enable auto-merge (squash)
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          GH_TOKEN: ${{ secrets.GH_ACTIONS_PR_WRITE }}
+          PR_URL: ${{ github.event.pull_request.html_url }}

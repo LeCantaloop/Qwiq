@@ -5,6 +5,7 @@
   "timezone": "America/Los_Angeles",
   "labels": ["dependencies"],
   "assignees": ["@rjmurillo"],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "description": "Pin GitHub Actions to commit SHAs for supply chain security",
@@ -17,13 +18,7 @@
     {
       "description": "Group NuGet test dependencies together",
       "matchManagers": ["nuget"],
-      "matchPackagePatterns": [
-        "^MSTest\\.",
-        "^coverlet\\.",
-        "^xunit",
-        "^Verify\\.",
-        "^Shouldly$"
-      ],
+      "matchPackagePatterns": ["^MSTest\\.", "^coverlet\\.", "^xunit", "^Verify\\.", "^Shouldly$"],
       "groupName": "NuGet test dependencies",
       "commitMessagePrefix": "deps:"
     },
@@ -37,10 +32,7 @@
     {
       "description": "Ignore Azure DevOps SDK packages (require careful coordination)",
       "matchManagers": ["nuget"],
-      "matchPackagePatterns": [
-        "^Microsoft\\.TeamFoundationServer\\.",
-        "^Microsoft\\.VisualStudio\\.Services\\."
-      ],
+      "matchPackagePatterns": ["^Microsoft\\.TeamFoundationServer\\.", "^Microsoft\\.VisualStudio\\.Services\\."],
       "enabled": false
     },
     {
@@ -48,6 +40,32 @@
       "matchManagers": ["dotnet-sdk"],
       "commitMessagePrefix": "chore:",
       "commitMessageAction": "update"
+    },
+    {
+      "description": "Automerge non-major updates for test dependencies",
+      "matchPackagePatterns": [
+        "^MSTest\\.",
+        "^coverlet\\.",
+        "^xunit",
+        "^Verify\\.",
+        "^Shouldly$",
+        "^Moq$",
+        "^BenchmarkDotNet"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "Automerge patch updates for stable production dependencies",
+      "matchUpdateTypes": ["patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "description": "Automerge non-major GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true
     }
   ],
   "vulnerabilityAlerts": {

@@ -2,22 +2,31 @@
 #
 # This workflow automatically approves PRs from dependabot and renovate bots
 # to streamline dependency updates. PRs must still pass CI checks before merging.
+#
+# Required secret: GH_ACTIONS_PR_WRITE - A Personal Access Token (PAT) with:
+#   - repo scope (for private repos) or public_repo scope (for public repos)
+#   - write access to pull requests
+#
+# See: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
 
 name: Auto approve PRs by dependabot or renovate
 
 on:
   pull_request_target:
+    types: [opened, synchronize, reopened]
 
 permissions:
   pull-requests: write
+  contents: read
 
 jobs:
   autoapprove:
     name: Auto-Approve PR by dependabot or renovate
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
+    if:
+      github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]' || github.actor == 'renovate[bot]'
     steps:
       - name: Auto approve
-        uses: cognitedata/auto-approve-dependabot-action@v3.0.1
+        uses: cognitedata/auto-approve-dependabot-action@b8bdaf7c4c3b43ba6f8e02ab6cd49d94a3da2bab # v3.0.1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_ACTIONS_PR_WRITE }}

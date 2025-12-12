@@ -3,7 +3,7 @@
 
 ### Agent Working Files ###
 # AI agent working directory (task lists, memory, scripts)
-.agents/
+!.agents/
 
 ### Windows ###
 # Windows thumbnail cache files
