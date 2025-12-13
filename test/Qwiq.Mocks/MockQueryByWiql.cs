@@ -158,7 +158,7 @@ namespace Qwiq.Mocks
 
         private static bool MatchAggregate(bool m, Tuple<string, string, string> e, IWorkItemCore i)
         {
-            m = m & StringComparer.OrdinalIgnoreCase.Equals(e.Item3, i[e.Item2]?.ToString());
+            m = m && StringComparer.OrdinalIgnoreCase.Equals(e.Item3, i[e.Item2]?.ToString());
             return m;
         }
 
