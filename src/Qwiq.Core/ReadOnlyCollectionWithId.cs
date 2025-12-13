@@ -13,6 +13,8 @@ namespace Qwiq
 
         private readonly IDictionary<TId, int> _mapById;
 
+
+
         protected ReadOnlyObjectWithIdCollection([CanBeNull] List<T> items, [CanBeNull] Func<T, string> nameFunc)
             : this(items, nameFunc, arg => arg.Id)
         {
@@ -41,6 +43,23 @@ namespace Qwiq
             :base(items)
         {
             _idFunc = a => a.Id;
+            _mapById = new Dictionary<TId, int>();
+        }
+
+        protected ReadOnlyObjectWithIdCollection(
+            [NotNull] Func<IEnumerable<T>> itemFactory,
+            [CanBeNull] Func<T, string> nameFunc)
+            :this(itemFactory, nameFunc, arg => arg.Id)
+        {
+        }
+
+        protected ReadOnlyObjectWithIdCollection(
+            [NotNull] Func<IEnumerable<T>> itemFactory,
+            [CanBeNull] Func<T, string> nameFunc,
+            [NotNull] Func<T, TId> idFunc)
+            :base(itemFactory, nameFunc)
+        {
+            _idFunc = idFunc ?? throw new ArgumentNullException(nameof(idFunc));
             _mapById = new Dictionary<TId, int>();
         }
 

@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\..\packages\UtilPack.NuGet.MSBuild.2.8.0\build\UtilPack.NuGet.MSBuild.props" Condition="Exists('..\..\packages\UtilPack.NuGet.MSBuild.2.8.0\build\UtilPack.NuGet.MSBuild.props')" />
   <Import Project="..\..\build\targets\common.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -138,7 +139,11 @@
     <Compile Include="IProjectInfo.cs" />
     <Compile Include="IProjectProperty.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="IQueryDefinition.cs" />
     <Compile Include="IQueryFactory.cs" />
+    <Compile Include="IQueryFolder.cs" />
+    <Compile Include="IQueryDefinitionCollection.cs" />
+    <Compile Include="IQueryFolderCollection.cs" />
     <Compile Include="IReadOnlyField.cs" />
     <Compile Include="IReadOnlyObjectCollection.cs" />
     <Compile Include="IReadOnlyObjectList.cs" />
@@ -189,6 +194,12 @@
     <Compile Include="ProjectCollection.cs" />
     <Compile Include="ProjectComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryDefinition.cs" />
+    <Compile Include="QueryDefinitionCollection.cs" />
+    <Compile Include="QueryDefinitionComparer.cs" />
+    <Compile Include="QueryFolder.cs" />
+    <Compile Include="QueryFolderCollection.cs" />
+    <Compile Include="QueryFolderComparer.cs" />
     <Compile Include="ReadOnlyCollectionWithId.cs" />
     <Compile Include="ReadOnlyCollectionWithIdComparer.cs" />
     <Compile Include="ReadOnlyObjectCollection.cs" />
@@ -243,12 +254,13 @@
     <None Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0-beta0012\build\GitVersionTask.targets'))" />
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\packages\UtilPack.NuGet.MSBuild.2.8.0\build\UtilPack.NuGet.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\UtilPack.NuGet.MSBuild.2.8.0\build\UtilPack.NuGet.MSBuild.props'))" />
+    <Error Condition="!Exists('..\..\packages\GitVersionTask.4.0.0\build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\GitVersionTask.4.0.0\build\GitVersionTask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
+  <Import Project="..\..\packages\GitVersionTask.4.0.0\build\GitVersionTask.targets" Condition="Exists('..\..\packages\GitVersionTask.4.0.0\build\GitVersionTask.targets')" />
 </Project>

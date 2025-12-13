@@ -18,8 +18,8 @@ namespace Qwiq.Client.Rest
                   identity.IsActive,
                   identity.Id,
                   identity.UniqueUserId,
-                  identity.MemberOf.Select(item => item.AsProxy()).ToArray(),
-                  identity.Members.Select(item => item.AsProxy()).ToArray())
+                  identity.MemberOf?.Select(item => item.AsProxy()).ToArray() ?? Enumerable.Empty<IIdentityDescriptor>(),
+                  identity.Members?.Select(item => item.AsProxy()).ToArray() ?? Enumerable.Empty<IIdentityDescriptor>())
         {
             Contract.Requires(identity != null);
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
-
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 
@@ -33,8 +33,16 @@ namespace Qwiq.Client.Rest
                             return new WorkItemTypeCollection(wits2);
                         }),
                 new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.BuildAsync(store.NativeWorkItemStore.Value.GetClassificationNodeAsync(project.Name, TreeStructureGroup.Areas, null, int.MaxValue)).GetAwaiter().GetResult()),
-                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.BuildAsync(store.NativeWorkItemStore.Value.GetClassificationNodeAsync(project.Name, TreeStructureGroup.Iterations, null, int.MaxValue)).GetAwaiter().GetResult())
-                )
+                new Lazy<IWorkItemClassificationNodeCollection<int>>(() => WorkItemClassificationNodeCollectionBuilder.BuildAsync(store.NativeWorkItemStore.Value.GetClassificationNodeAsync(project.Name, TreeStructureGroup.Iterations, null, int.MaxValue)).GetAwaiter().GetResult()),
+                new Lazy<IQueryFolderCollection>(() =>
+                {
+                    return new QueryFolderCollection(() =>
+                    {
+                        var queryHierarchyItemRepo = new QueryHiearchyItemRepository(store.NativeWorkItemStore, project.Id);
+                        return queryHierarchyItemRepo.Get().Where(qf => qf != null).Select(qf => new QueryFolder(qf, queryHierarchyItemRepo));
+                    });
+                })
+            )
         {
         }
     }
