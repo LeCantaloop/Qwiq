@@ -24,7 +24,7 @@
 
     <!-- Core Dependencies -->
     <PackageVersion Include="Castle.Core" Version="5.1.1" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageVersion Include="System.Linq.Dynamic.Core" Version="1.6.0" />

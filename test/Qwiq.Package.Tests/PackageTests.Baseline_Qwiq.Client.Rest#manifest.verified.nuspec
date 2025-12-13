@@ -17,7 +17,7 @@
         <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
         <dependency id="Microsoft.TeamFoundationServer.Client" version="16.153.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.4" exclude="Build,Analyzers" />
         <dependency id="System.Runtime" version="4.3.1" exclude="Build,Analyzers" />
         <dependency id="System.Threading.Tasks.Dataflow" version="8.0.1" exclude="Build,Analyzers" />
         <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
@@ -31,7 +31,7 @@
         <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />
         <dependency id="Microsoft.TeamFoundationServer.Client" version="16.153.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.VisualStudio.Services.Client" version="16.153.0" exclude="Build,Analyzers" />
-        <dependency id="Newtonsoft.Json" version="13.0.3" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.4" exclude="Build,Analyzers" />
         <dependency id="System.Threading.Tasks.Dataflow" version="8.0.1" exclude="Build,Analyzers" />
         <dependency id="Castle.Core" version="5.1.1" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNet.WebApi.Client" version="6.0.0" exclude="Build,Analyzers" />
