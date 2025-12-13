@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq.Mapper</RootNamespace>
     <AssemblyName>Qwiq.Mapper</AssemblyName>
     <Description>QWIQ Mapper - Object mapping for Azure DevOps / TFS Work Items</Description>

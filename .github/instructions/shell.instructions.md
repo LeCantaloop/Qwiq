@@ -24,7 +24,7 @@ When working on PowerShell files, you MUST:
 
 ## Script Organization
 
-```
+```text
 scripts/
 └── init/
     ├── Initialize-DownloadLatest.ps1

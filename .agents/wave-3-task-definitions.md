@@ -1,6 +1,7 @@
 # Wave 3: Qwiq Modernization Task Definitions
 
 **Status Legend:**
+
 - 📋 FUTURE - Not yet started, planned for Wave 3
 - 📋 DEFERRED - Moved from Wave 2 to Wave 3
 - ⏸️ BLOCKED - Cannot proceed until dependencies resolved
@@ -15,21 +16,25 @@
 **Dependencies:** .NET 10 GA release (November 2025)
 
 ### Description
+
 Upgrade the repository to target .NET 10 SDK when available.
 
 ### Implementation Notes
+
 - Update `global.json` to pin .NET 10.0.100+ SDK
 - Update CI/CD workflows to use .NET 10
 - Test compatibility with existing multi-targeting (net472, netstandard2.0, net8.0)
 - No breaking changes expected for existing TFMs
 
 ### Acceptance Criteria
+
 - [ ] `global.json` specifies .NET 10 SDK version
 - [ ] CI builds successfully on .NET 10 SDK
 - [ ] All existing target frameworks build and test pass
 - [ ] No degradation in build performance
 
 ### Files to Modify
+
 - `global.json`
 - `.github/workflows/main.yml`
 
@@ -43,9 +48,11 @@ Upgrade the repository to target .NET 10 SDK when available.
 **Dependencies:** W3.1 (SDK upgrade), .NET 10 GA
 
 ### Description
+
 Add `net10.0` as a target framework to all projects currently targeting `net8.0`.
 
 ### Implementation Notes
+
 - Update multi-targeting strings: `net472;netstandard2.0;net8.0;net10.0`
 - Verify no API breakages or platform-specific issues
 - Update package metadata to reflect net10.0 support
@@ -53,6 +60,7 @@ Add `net10.0` as a target framework to all projects currently targeting `net8.0`
 - Consider: net10.0-only features if applicable
 
 ### Acceptance Criteria
+
 - [ ] All `net8.0` projects also target `net10.0`
 - [ ] NuGet packages include `net10.0` binaries
 - [ ] Tests pass on both net8.0 and net10.0
@@ -60,6 +68,7 @@ Add `net10.0` as a target framework to all projects currently targeting `net8.0`
 - [ ] Package readme updated to list net10.0 support
 
 ### Files to Modify
+
 - `src/Qwiq.Core/Qwiq.Core.csproj`
 - `src/Qwiq.Core.Rest/Qwiq.Core.Rest.csproj`
 - `src/Qwiq.Linq/Qwiq.Linq.csproj`
@@ -78,9 +87,11 @@ Add `net10.0` as a target framework to all projects currently targeting `net8.0`
 **Dependencies:** None
 
 ### Description
+
 Add ARM64 testing to CI/CD to ensure compatibility with ARM-based systems (Apple Silicon, Azure ARM VMs).
 
 ### Implementation Notes
+
 - GitHub Actions supports `macos-14` (M1) and `windows-arm64` runners
 - Add ARM64 test jobs in CI workflow (parallel to x64 jobs)
 - May need to exclude net472 on macOS-arm64 (Mono compatibility check)
@@ -88,6 +99,7 @@ Add ARM64 testing to CI/CD to ensure compatibility with ARM-based systems (Apple
 - SOAP client (net472) is Windows-only, test on windows-arm64 if available
 
 ### Acceptance Criteria
+
 - [ ] CI includes ARM64 test jobs for macOS (net8.0/net10.0)
 - [ ] CI includes ARM64 test jobs for Windows (all TFMs) if runners available
 - [ ] All tests pass on ARM64 architecture
@@ -95,6 +107,7 @@ Add ARM64 testing to CI/CD to ensure compatibility with ARM-based systems (Apple
 - [ ] Documentation notes ARM64 support status
 
 ### Files to Modify
+
 - `.github/workflows/main.yml` (add ARM64 matrix)
 - `README.md` (note ARM64 support)
 
@@ -108,9 +121,11 @@ Add ARM64 testing to CI/CD to ensure compatibility with ARM-based systems (Apple
 **Dependencies:** None
 
 ### Description
+
 Create a formal deprecation timeline and strategy for the SOAP client (`Qwiq.Core.Soap`, `Qwiq.Identity.Soap`).
 
 ### Implementation Notes
+
 - SOAP client only supports net472 (Windows-only)
 - REST client is feature-complete and modern
 - Azure DevOps Server 2019+ supports REST API
@@ -121,6 +136,7 @@ Create a formal deprecation timeline and strategy for the SOAP client (`Qwiq.Cor
 - Document migration path in W3.6
 
 ### Acceptance Criteria
+
 - [ ] Deprecation document created in `docs/deprecation/soap-client.md`
 - [ ] Timeline with clear milestones (Obsolete → Optional → Removed)
 - [ ] Communication plan (release notes, README, migration guide)
@@ -128,9 +144,11 @@ Create a formal deprecation timeline and strategy for the SOAP client (`Qwiq.Cor
 - [ ] Package release notes include deprecation notice
 
 ### Files to Create
+
 - `docs/deprecation/soap-client.md`
 
 ### Files to Modify
+
 - `src/Qwiq.Core.Soap/WorkItemStoreFactory.cs` (add `[Obsolete]`)
 - `src/Qwiq.Identity.Soap/IdentityManagementService.cs` (add `[Obsolete]`)
 - `README.md` (add deprecation notice)
@@ -145,9 +163,11 @@ Create a formal deprecation timeline and strategy for the SOAP client (`Qwiq.Cor
 **Dependencies:** None
 
 ### Description
+
 Document the API compatibility and versioning policy for Qwiq.
 
 ### Implementation Notes
+
 - Define semantic versioning commitment (breaking changes → major bump)
 - Specify supported .NET versions and deprecation timeline
 - Document experimental vs. stable API surface
@@ -156,6 +176,7 @@ Document the API compatibility and versioning policy for Qwiq.
 - Include guidance on consuming preview releases
 
 ### Acceptance Criteria
+
 - [ ] Policy document created: `docs/api-compatibility-policy.md`
 - [ ] Covers semantic versioning commitment
 - [ ] Defines "breaking change" for Qwiq context
@@ -164,9 +185,11 @@ Document the API compatibility and versioning policy for Qwiq.
 - [ ] Linked from main README
 
 ### Files to Create
+
 - `docs/api-compatibility-policy.md`
 
 ### Files to Modify
+
 - `README.md` (link to policy)
 
 ---
@@ -179,9 +202,11 @@ Document the API compatibility and versioning policy for Qwiq.
 **Dependencies:** W3.4 (Deprecation Plan)
 
 ### Description
+
 Create comprehensive migration guide for developers moving from SOAP to REST client.
 
 ### Implementation Notes
+
 - Side-by-side code examples (SOAP vs. REST)
 - Authentication differences (credentials, PAT, OAuth)
 - API behavior differences (if any)
@@ -191,6 +216,7 @@ Create comprehensive migration guide for developers moving from SOAP to REST cli
 - Include identity service migration
 
 ### Acceptance Criteria
+
 - [ ] Migration guide created: `docs/migration/soap-to-rest.md`
 - [ ] Code examples for common scenarios (connection, query, identity)
 - [ ] Authentication migration guidance
@@ -199,9 +225,11 @@ Create comprehensive migration guide for developers moving from SOAP to REST cli
 - [ ] Linked from README and deprecation notice
 
 ### Files to Create
+
 - `docs/migration/soap-to-rest.md`
 
 ### Files to Modify
+
 - `README.md` (link to migration guide)
 - `docs/deprecation/soap-client.md` (reference guide)
 
@@ -215,9 +243,11 @@ Create comprehensive migration guide for developers moving from SOAP to REST cli
 **Dependencies:** None
 
 ### Description
+
 Establish performance baseline benchmarks for key operations using BenchmarkDotNet.
 
 ### Implementation Notes
+
 - Expand existing `Qwiq.Benchmark` project
 - Key scenarios:
   - Work item query (WIQL execution)
@@ -230,6 +260,7 @@ Establish performance baseline benchmarks for key operations using BenchmarkDotN
 - Compare SOAP vs. REST performance
 
 ### Acceptance Criteria
+
 - [ ] Benchmarks added to `Qwiq.Benchmark` for all key scenarios
 - [ ] Baseline results documented in `docs/benchmarks/`
 - [ ] Performance regression detection strategy defined
@@ -237,6 +268,7 @@ Establish performance baseline benchmarks for key operations using BenchmarkDotN
 - [ ] Baseline includes SOAP vs. REST comparison
 
 ### Files to Modify
+
 - `test/Qwiq.Benchmark/` (add benchmark classes)
 - `docs/benchmarks/baseline-v2.x.md` (new file)
 
@@ -250,22 +282,27 @@ Establish performance baseline benchmarks for key operations using BenchmarkDotN
 **Dependencies:** None (but should complete Wave 2 first)
 
 ### Description
+
 Modernize logging and diagnostics infrastructure. Replace `System.Diagnostics.Trace` with `Microsoft.Extensions.Logging.ILogger<T>` and add OpenTelemetry support for distributed tracing.
 
 ### Implementation Notes
+
 - **Phase 1: ILogger Migration**
+
   - Replace all `Trace.TraceError/Warning/Information` calls with `ILogger<T>`
   - Add `Microsoft.Extensions.Logging.Abstractions` package
   - Create `QwiqLoggerExtensions` for common log patterns
   - Maintain backward compatibility: provide default NullLogger if not injected
 
 - **Phase 2: OpenTelemetry**
+
   - Add `System.Diagnostics.DiagnosticSource` package
   - Create `QwiqDiagnostics` static class with `ActivitySource`
   - Instrument key operations (queries, HTTP calls, identity resolution)
   - Correlation ID propagation across calls
 
 - **Phase 3: Structured Logging**
+
   - Use strongly-typed log messages with `LoggerMessage.Define`
   - Add context properties (work item IDs, query text, correlation IDs)
   - Ensure no sensitive data (tokens, passwords) in logs
@@ -277,6 +314,7 @@ Modernize logging and diagnostics infrastructure. Replace `System.Diagnostics.Tr
   - Performance impact assessment
 
 ### Acceptance Criteria
+
 - [ ] All `System.Diagnostics.Trace` calls replaced with `ILogger<T>`
 - [ ] `QwiqDiagnostics.ActivitySource` created and instrumented
 - [ ] OpenTelemetry traces emitted for HTTP requests, queries, identity calls
@@ -287,11 +325,13 @@ Modernize logging and diagnostics infrastructure. Replace `System.Diagnostics.Tr
 - [ ] Tests verify log output and Activity creation
 
 ### Files to Create
+
 - `src/Qwiq.Core/Diagnostics/QwiqDiagnostics.cs`
 - `src/Qwiq.Core/Diagnostics/QwiqLoggerExtensions.cs`
 - `docs/observability.md`
 
 ### Files to Modify
+
 - `Directory.Packages.props` (add Microsoft.Extensions.Logging.Abstractions, System.Diagnostics.DiagnosticSource)
 - `src/Qwiq.Core/Qwiq.Core.csproj`
 - `src/Qwiq.Core.Rest/` (instrument HTTP calls)
@@ -301,12 +341,14 @@ Modernize logging and diagnostics infrastructure. Replace `System.Diagnostics.Tr
 - All files currently using `Trace.*` methods
 
 ### Breaking Changes
+
 - Constructor signatures may change if ILogger is required (mitigate with optional parameters)
 - Consumers may need to register ILogger in their DI container (provide guidance)
 
 ### References
-- OpenTelemetry .NET: https://opentelemetry.io/docs/languages/net/
-- ILogger best practices: https://learn.microsoft.com/en-us/dotnet/core/extensions/logging
+
+- OpenTelemetry .NET: <https://opentelemetry.io/docs/languages/net/>
+- ILogger best practices: <https://learn.microsoft.com/en-us/dotnet/core/extensions/logging>
 
 ---
 
@@ -318,11 +360,14 @@ Modernize logging and diagnostics infrastructure. Replace `System.Diagnostics.Tr
 **Dependencies:** None
 
 ### Description
+
 Enable Qwiq to read connection options and credentials from configuration providers (`appsettings.json`, environment variables, Key Vault, etc.).
 
 ### Implementation Notes
+
 - Add `Microsoft.Extensions.Configuration.Abstractions` package
 - Create `QwiqOptions` class for DI registration:
+
   ```csharp
   public class QwiqOptions
   {
@@ -332,15 +377,19 @@ Enable Qwiq to read connection options and credentials from configuration provid
       // ... other options
   }
   ```
+
 - Add extension methods for service registration:
+
   ```csharp
   services.AddQwiq(Configuration.GetSection("Qwiq"));
   ```
+
 - Support multiple named configurations (e.g., dev, prod)
 - Integration with existing `AuthenticationOptions` class
 - Ensure secrets (PATs, passwords) are not logged
 
 ### Acceptance Criteria
+
 - [ ] `QwiqOptions` class created with configuration properties
 - [ ] `IServiceCollection` extension methods for DI registration
 - [ ] Configuration binding works from `appsettings.json`
@@ -350,16 +399,19 @@ Enable Qwiq to read connection options and credentials from configuration provid
 - [ ] Tests verify configuration binding
 
 ### Files to Create
+
 - `src/Qwiq.Core/Configuration/QwiqOptions.cs`
 - `src/Qwiq.Core/Configuration/QwiqServiceCollectionExtensions.cs`
 - `docs/configuration.md`
 
 ### Files to Modify
+
 - `Directory.Packages.props` (add Microsoft.Extensions.Configuration.Abstractions, Microsoft.Extensions.Options.ConfigurationExtensions)
 - `src/Qwiq.Core/Qwiq.Core.csproj`
 - `README.md` (add configuration example)
 
 ### Sample Configuration
+
 ```json
 {
   "Qwiq": {
@@ -381,22 +433,27 @@ Enable Qwiq to read connection options and credentials from configuration provid
 **Blocked By:** Interactive setup required (Azure subscription, certificate purchase)
 
 ### Description
+
 Sign NuGet packages with a code signing certificate to provide authenticity and integrity verification.
 
 ### Implementation Notes
+
 - **Prerequisites (BLOCKED until completed):**
+
   - Azure subscription with Key Vault access
   - Purchase EV code signing certificate (Sectigo, DigiCert, etc.)
   - Import certificate to Azure Key Vault
   - Configure GitHub secrets for Key Vault access
 
 - **Implementation:**
+
   - Use NuGet Sign tool or Azure SignTool
   - Integrate signing into CI/CD pipeline (pack → sign → push)
   - Sign packages before publishing to NuGet.org
   - Timestamp signatures for long-term validity
 
 - **CI/CD Integration:**
+
   ```yaml
   - name: Sign NuGet packages
     run: |
@@ -409,6 +466,7 @@ Sign NuGet packages with a code signing certificate to provide authenticity and 
   ```
 
 ### Acceptance Criteria
+
 - [ ] Code signing certificate obtained and imported to Azure Key Vault
 - [ ] GitHub secrets configured for Key Vault access
 - [ ] CI/CD pipeline signs packages before publishing
@@ -417,10 +475,12 @@ Sign NuGet packages with a code signing certificate to provide authenticity and 
 - [ ] Documentation updated with signing information
 
 ### Files to Modify
+
 - `.github/workflows/main.yml` (add signing step)
 - `README.md` (note that packages are signed)
 
 ### Prerequisites Checklist
+
 - [ ] Azure subscription created
 - [ ] Code signing certificate purchased (cost: ~$300-500/year)
 - [ ] Certificate imported to Azure Key Vault
@@ -432,8 +492,9 @@ Sign NuGet packages with a code signing certificate to provide authenticity and 
   - `AZURE_CLIENT_SECRET` (or use OIDC federation)
 
 ### References
-- NuGet Package Signing: https://learn.microsoft.com/en-us/nuget/create-packages/sign-a-package
-- AzureSignTool: https://github.com/vcsjones/AzureSignTool
+
+- NuGet Package Signing: <https://learn.microsoft.com/en-us/nuget/create-packages/sign-a-package>
+- AzureSignTool: <https://github.com/vcsjones/AzureSignTool>
 
 ---
 
@@ -441,15 +502,15 @@ Sign NuGet packages with a code signing certificate to provide authenticity and 
 
 ### Task Priority Matrix
 
-| Priority | Tasks | Effort |
-|----------|-------|--------|
-| **P1 (High)** | W3.1 | S |
-| **P2 (Medium)** | W3.1a, W3.4, W3.5, W3.6, W3.8 | M-L |
-| **P3 (Low)** | W3.3, W3.7, W3.9, W3.10 | M |
+| Priority        | Tasks                         | Effort |
+| --------------- | ----------------------------- | ------ |
+| **P1 (High)**   | W3.1                          | S      |
+| **P2 (Medium)** | W3.1a, W3.4, W3.5, W3.6, W3.8 | M-L    |
+| **P3 (Low)**    | W3.3, W3.7, W3.9, W3.10       | M      |
 
 ### Dependency Graph
 
-```
+```text
 W3.1 (.NET 10 SDK) → W3.1a (net10.0 TFM)
 W3.4 (SOAP Deprecation) → W3.6 (Migration Guide)
 Wave 2 Completion → W3.8 (Observability)

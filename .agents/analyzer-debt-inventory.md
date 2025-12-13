@@ -12,67 +12,70 @@
 
 ### Current State (After Session 11)
 
-| Rule | Status | Notes |
-|------|--------|-------|
-| CS1591 | 🔴 Suppressed | ~4200 violations, XML docs - large effort |
-| CS0618 | 🔴 Suppressed | TimeZone obsolete - breaking API change |
-| CA1707 | 🔴 Suppressed | 868 violations - test naming pattern |
+| Rule   | Status        | Notes                                          |
+| ------ | ------------- | ---------------------------------------------- |
+| CS1591 | 🔴 Suppressed | ~4200 violations, XML docs - large effort      |
+| CS0618 | 🔴 Suppressed | TimeZone obsolete - breaking API change        |
+| CA1707 | 🔴 Suppressed | 868 violations - test naming pattern           |
 | CA1716 | 🔴 Suppressed | 78 violations - keyword conflicts, intentional |
-| CA1822 | 🔴 Suppressed | 36 violations - API compatibility |
-| CA1859 | 🔴 Suppressed | 30 violations - intentional abstraction |
-| CA1863 | 🔴 Suppressed | 20 violations - requires .NET 8+ API |
-| CA2263 | 🟡 Scoped | Test-specific, scoped to test files |
+| CA1822 | 🔴 Suppressed | 36 violations - API compatibility              |
+| CA1859 | 🔴 Suppressed | 30 violations - intentional abstraction        |
+| CA1863 | 🔴 Suppressed | 20 violations - requires .NET 8+ API           |
+| CA2263 | 🟡 Scoped     | Test-specific, scoped to test files            |
 
 ### Rules Converted to Targeted Suppressions (Session 11)
 
-| Rule | Action | Location |
-|------|--------|----------|
-| CA1036 | `[SuppressMessage]` | `IdentityDescriptor` class |
+| Rule   | Action              | Location                                                                                      |
+| ------ | ------------------- | --------------------------------------------------------------------------------------------- |
+| CA1036 | `[SuppressMessage]` | `IdentityDescriptor` class                                                                    |
 | CA1711 | `[SuppressMessage]` | `SaveFlags`, `WorkItemCopyFlags`, `ITfsTeamProjectCollection`, `MockTfsTeamProjectCollection` |
-| CA1715 | `[SuppressMessage]` | `IIdentityValueConverter<T, U>` interface |
-| CA1720 | `[SuppressMessage]` | `IProject.Guid`, `Project.Guid` properties |
-| CA1725 | Fixed | Parameter renamed `id` → `relatedWorkItemId` |
+| CA1715 | `[SuppressMessage]` | `IIdentityValueConverter<T, U>` interface                                                     |
+| CA1720 | `[SuppressMessage]` | `IProject.Guid`, `Project.Guid` properties                                                    |
+| CA1725 | Fixed               | Parameter renamed `id` → `relatedWorkItemId`                                                  |
 
 ### Rules Enabled via Polyfills (Session 11)
 
-| Rule | Description | Polyfill |
-|------|-------------|----------|
-| CA1510 | Use `ArgumentNullException.ThrowIfNull` | `ArgumentNullExceptionPolyfill.cs` |
+| Rule   | Description                                            | Polyfill                                 |
+| ------ | ------------------------------------------------------ | ---------------------------------------- |
+| CA1510 | Use `ArgumentNullException.ThrowIfNull`                | `ArgumentNullExceptionPolyfill.cs`       |
 | CA1512 | Use `ArgumentOutOfRangeException.ThrowIfNegative/Zero` | `ArgumentOutOfRangeExceptionPolyfill.cs` |
 
 ---
 
 ## Historical Baseline (Before Phase 1D)
 
-| Category | Count | Priority | Notes |
-|----------|-------|----------|-------|
-| Security (CA3xxx-CA5xxx) | 65 | 🔴 Critical | ✅ All enabled (0 violations) |
-| Reliability (CA2xxx) | 66 | 🔴 High | Disposal, null checks |
-| Performance (CA18xx) | 54 | 🟡 Medium | Allocations, boxing |
-| Design (CA1xxx) | 81 | 🟢 Low | API design patterns |
-| Naming (CA17xx) | 12 | 🟢 Low | Convention compliance |
-| Globalization (CA13xx) | 7 | 🟢 Low | Culture-specific |
-| Maintainability (CA15xx) | 11 | 🟡 Medium | Complexity metrics |
-| IDE Rules (IDE0xxx) | 105 | 🟢 Low | Style preferences |
-| Nullable (CS86xx) | 5 | 🟡 Medium | Remaining debt |
-| Other CS | 22 | Various | CLS, XML docs, obsolete |
-| SYSLIB | 3 | 🟢 Low | Framework obsoletions |
-| **TOTAL** | **403** | | |
+| Category                 | Count   | Priority    | Notes                         |
+| ------------------------ | ------- | ----------- | ----------------------------- |
+| Security (CA3xxx-CA5xxx) | 65      | 🔴 Critical | ✅ All enabled (0 violations) |
+| Reliability (CA2xxx)     | 66      | 🔴 High     | Disposal, null checks         |
+| Performance (CA18xx)     | 54      | 🟡 Medium   | Allocations, boxing           |
+| Design (CA1xxx)          | 81      | 🟢 Low      | API design patterns           |
+| Naming (CA17xx)          | 12      | 🟢 Low      | Convention compliance         |
+| Globalization (CA13xx)   | 7       | 🟢 Low      | Culture-specific              |
+| Maintainability (CA15xx) | 11      | 🟡 Medium   | Complexity metrics            |
+| IDE Rules (IDE0xxx)      | 105     | 🟢 Low      | Style preferences             |
+| Nullable (CS86xx)        | 5       | 🟡 Medium   | Remaining debt                |
+| Other CS                 | 22      | Various     | CLS, XML docs, obsolete       |
+| SYSLIB                   | 3       | 🟢 Low      | Framework obsoletions         |
+| **TOTAL**                | **403** |             |                               |
 
 ---
 
 ## Priority Matrix
 
 ### 🔴 Critical Priority (131 rules)
+
 - Security rules: 65
 - Reliability rules: 66
 
 ### 🟡 Medium Priority (70 rules)
+
 - Performance rules: 54
 - Maintainability rules: 11
 - Nullable warnings: 5
 
 ### 🟢 Low Priority (202 rules)
+
 - Design rules: 81
 - IDE rules: 105
 - Naming rules: 12
@@ -83,6 +86,7 @@
 ## Security Rules (CA3xxx-CA5xxx) - 65 Rules
 
 ### Priority: 🔴 Critical
+
 **Rationale**: Security vulnerabilities can lead to data breaches, unauthorized access, and system compromise.
 
 ### Suppressed Security Rules
@@ -154,6 +158,7 @@
 - `CA5403`
 
 **Common Security Issues**:
+
 - SQL injection vulnerabilities (CA2100)
 - Cryptographic weaknesses (CA5xxx)
 - Path traversal risks (CA3xxx)
@@ -167,6 +172,7 @@
 ## Reliability Rules (CA2xxx) - 66 Rules
 
 ### Priority: 🔴 High
+
 **Rationale**: Reliability issues cause crashes, data loss, and unpredictable behavior.
 
 ### Suppressed Reliability Rules
@@ -239,6 +245,7 @@
 - `CA2330`
 
 **Common Reliability Issues**:
+
 - CA1062: Validate arguments of public methods
 - CA2000: Dispose objects before losing scope
 - CA2007: Consider calling ConfigureAwait
@@ -256,6 +263,7 @@
 ## Performance Rules (CA18xx) - 54 Rules
 
 ### Priority: 🟡 Medium
+
 **Rationale**: Performance issues affect user experience but don't cause failures.
 
 ### Suppressed Performance Rules
@@ -316,6 +324,7 @@
 - `CA1863`
 
 **Common Performance Issues**:
+
 - CA1812: Avoid uninstantiated internal classes
 - CA1822: Mark members as static
 - CA1826: Use property instead of Linq Enumerable method
@@ -331,6 +340,7 @@
 ## Design Rules (CA1xxx excluding CA18xx) - 81 Rules
 
 ### Priority: 🟢 Low
+
 **Rationale**: Design rules improve API quality but don't affect runtime behavior.
 
 ### Suppressed Design Rules
@@ -418,6 +428,7 @@
 - `CA1725`
 
 **Common Design Issues**:
+
 - CA1008: Enums should have zero value
 - CA1010: Collections should implement generic interface
 - CA1031: Do not catch general exception types
@@ -433,6 +444,7 @@
 ## Naming Rules (CA17xx) - 12 Rules
 
 ### Priority: 🟢 Low
+
 **Rationale**: Naming conventions improve code readability but don't affect functionality.
 
 ### Suppressed Naming Rules
@@ -451,6 +463,7 @@
 - `CA1725`
 
 **Common Naming Issues**:
+
 - CA1700: Do not name enum values 'Reserved'
 - CA1707: Identifiers should not contain underscores
 - CA1708: Identifiers should differ by more than case
@@ -466,6 +479,7 @@
 ## Globalization Rules (CA13xx) - 7 Rules
 
 ### Priority: �� Low
+
 **Rationale**: Globalization rules ensure international compatibility but most are low risk.
 
 ### Suppressed Globalization Rules
@@ -479,6 +493,7 @@
 - `CA1310`
 
 **Common Globalization Issues**:
+
 - CA1303: Do not pass literals as localized parameters
 - CA1304: Specify CultureInfo
 - CA1305: Specify IFormatProvider
@@ -494,6 +509,7 @@
 ## Maintainability Rules (CA15xx) - 11 Rules
 
 ### Priority: 🟡 Medium
+
 **Rationale**: Maintainability rules prevent code from becoming too complex.
 
 ### Suppressed Maintainability Rules
@@ -511,6 +527,7 @@
 - `CA1513`
 
 **Common Maintainability Issues**:
+
 - CA1501: Avoid excessive inheritance
 - CA1502: Avoid excessive complexity
 - CA1505: Avoid unmaintainable code
@@ -526,6 +543,7 @@
 ## IDE Rules (IDE0xxx) - 105 Rules
 
 ### Priority: 🟢 Low
+
 **Rationale**: IDE rules are code style preferences that don't affect functionality.
 
 ### Suppressed IDE Rules (First 20)
@@ -551,9 +569,10 @@
 - `IDE0024`
 - `IDE0025`
 
-*... and 85 more IDE rules*
+(... and 85 more IDE rules)
 
 **Common IDE Issues**:
+
 - Code simplification suggestions
 - Expression body preferences
 - Pattern matching suggestions
@@ -567,6 +586,7 @@
 ## Nullable Reference Type Warnings (CS86xx) - 5 Rules
 
 ### Priority: 🟡 Medium
+
 **Rationale**: Remaining nullable debt after Phase 1C completion.
 
 ### Suppressed Nullable Rules
@@ -580,6 +600,7 @@
 **Context**: Phase 1C (W1.9-W1.14) was completed via PR #52, which eliminated all CS8xxx warnings. These 5 suppressions remain as a safety net.
 
 **Rules**:
+
 - CS8605: Unboxing a possibly null value
 - CS8618: Non-nullable field must contain non-null value when exiting constructor
 - CS8619: Nullability of reference types in value doesn't match target type
@@ -594,6 +615,7 @@
 ## Other CS Rules - 22 Rules
 
 ### Priority: Various
+
 **Rationale**: Mix of documentation, obsolescence, and CLS compliance warnings.
 
 ### Suppressed Other CS Rules
@@ -622,6 +644,7 @@
 - `CS8769`
 
 **Categories**:
+
 - **CS1591, CS1574, CS1710**: XML documentation warnings (3 rules)
 - **CS0618**: Obsolete API usage (1 rule)
 - **CS3xxx**: CLS compliance warnings (13 rules)
@@ -640,6 +663,7 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 ## SYSLIB Rules - 3 Rules
 
 ### Priority: 🟢 Low
+
 **Rationale**: .NET platform obsoletions that may require significant refactoring.
 
 ### Suppressed SYSLIB Rules
@@ -649,11 +673,13 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 - `SYSLIB0051`
 
 **Rules**:
+
 - SYSLIB0021: MD5CryptoServiceProvider is obsolete
 - SYSLIB0050: Formatter-based serialization is obsolete
 - SYSLIB0051: Legacy serialization support is obsolete
 
 **Context**: These are .NET framework obsoletions that may require significant refactoring:
+
 - MD5 usage should be reviewed for security implications
 - Serialization changes may require BinaryFormatter migration
 
@@ -666,17 +692,20 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 ### Phase 1D (Current - W1.15-W1.18)
 
 **Week 1: W1.15 - Inventory** ✅
+
 - [x] Create this inventory
 - [x] Categorize all rules by priority
 - [x] Document recommendations
 
 **Week 2: W1.16 - Security Rules** (Next)
+
 - [ ] Enable CA3xxx-CA5xxx rules
 - [ ] Review each violation
 - [ ] Fix or justify suppression with comment
 - [ ] Zero unsuppressed security violations
 
-**Week 3: W1.17 - Reliability Rules**
+#### Week 3: W1.17 - Reliability Rules
+
 - [ ] Enable high-priority CA2xxx rules:
   - CA1062 (argument validation - pairs with nullable)
   - CA2000 (dispose objects)
@@ -685,7 +714,8 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 - [ ] Fix violations incrementally
 - [ ] Document justified suppressions
 
-**Week 4: W1.18 - Performance Rules**
+#### Week 4: W1.18 - Performance Rules
+
 - [ ] Enable high-impact CA18xx rules:
   - CA1812 (uninstantiated classes - review DI scenarios)
   - CA1822 (mark static)
@@ -695,10 +725,12 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 - [ ] Document performance tradeoffs
 
 ### Phase 1E (W1.19-W1.22)
+
 - Quality gates and testing documentation
 - No additional analyzer enablement
 
 ### Wave 2 (Future)
+
 - Design rules (CA1xxx)
 - Globalization rules (CA13xx)
 - Maintainability rules (CA15xx)
@@ -712,18 +744,21 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 **Process for Enabling Rules**:
 
 1. **Select One Rule**
+
    ```bash
    # Example: Enable CA2000
    # Change in .editorconfig: severity = none → severity = warning
    ```
 
 2. **Build and Identify Violations**
+
    ```bash
    dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
    # Review all CA2000 warnings
    ```
 
 3. **Fix or Suppress with Justification**
+
    ```csharp
    // Option A: Fix the violation
    using (var disposable = new DisposableResource())
@@ -739,12 +774,14 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
    ```
 
 4. **Verify Zero Warnings**
+
    ```bash
    dotnet build Qwiq.sln -c Release | grep CA2000
    # Should return nothing
    ```
 
 5. **Commit Atomically**
+
    ```bash
    git commit -m "chore(analyzers): enable CA2000 disposal rule"
    ```
@@ -752,6 +789,7 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 6. **Repeat for Next Rule**
 
 **Key Principles**:
+
 - ONE rule at a time
 - NEVER commit with active warnings for enabled rules
 - ALWAYS document why a suppression is justified
@@ -773,14 +811,14 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 
 ### Target Reduction
 
-| Category | Baseline | Target (Phase 1D) | Target (Wave 2) |
-|----------|----------|-------------------|-----------------|
-| Security | 65 | 0 unsuppressed | 0 unsuppressed |
-| Reliability | 66 | ~60 (enable 6) | ~50 |
-| Performance | 54 | ~50 (enable 4) | ~40 |
-| Design | 81 | 81 (no change) | ~60 |
-| Other | 165 | 165 (no change) | ~140 |
-| **Total** | **403** | **~356** | **~290** |
+| Category    | Baseline | Target (Phase 1D) | Target (Wave 2) |
+| ----------- | -------- | ----------------- | --------------- |
+| Security    | 65       | 0 unsuppressed    | 0 unsuppressed  |
+| Reliability | 66       | ~60 (enable 6)    | ~50             |
+| Performance | 54       | ~50 (enable 4)    | ~40             |
+| Design      | 81       | 81 (no change)    | ~60             |
+| Other       | 165      | 165 (no change)   | ~140            |
+| **Total**   | **403**  | **~356**          | **~290**        |
 
 **Note**: Target is to enable ~47 rules in Phase 1D (all security + 10 reliability/performance), reducing suppressions by ~12%.
 
@@ -788,9 +826,9 @@ CS0618 should be reviewed - may indicate use of deprecated APIs that need migrat
 
 ## Document Control
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | Dec 5, 2025 | Copilot Agent | Initial inventory for W1.15 |
+| Version | Date        | Author        | Changes                     |
+| ------- | ----------- | ------------- | --------------------------- |
+| 1.0     | Dec 5, 2025 | Copilot Agent | Initial inventory for W1.15 |
 
 ---
 

@@ -1,0 +1,103 @@
+name: "Restore and Build Solution"
+description: "Restores .NET tools, NuGet packages, and builds the solution with configurable options"
+
+inputs:
+  solution:
+    description: "Path to solution file"
+    required: false
+    default: "Qwiq.sln"
+  configuration:
+    description: "Build configuration (Debug/Release)"
+    required: false
+    default: "Release"
+  enable-pack:
+    description: "Enable package generation during build"
+    required: false
+    default: "false"
+  generate-binlog:
+    description: "Generate binary log for build diagnostics"
+    required: false
+    default: "false"
+  binlog-path:
+    description: "Path for binary log output"
+    required: false
+    default: "./artifacts/logs/build.binlog"
+  additional-build-args:
+    description: "Additional arguments to pass to dotnet build (space-separated)"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Restore .NET tools
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = 'Stop'
+        dotnet tool restore
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      env:
+        SOLUTION_PATH: ${{ inputs.solution }}
+      run: |
+        $ErrorActionPreference = 'Stop'
+        dotnet restore $env:SOLUTION_PATH
+
+    - name: Build solution
+      shell: pwsh
+      env:
+        SOLUTION_PATH: ${{ inputs.solution }}
+        CONFIGURATION: ${{ inputs.configuration }}
+        ENABLE_PACK: ${{ inputs.enable-pack }}
+        GENERATE_BINLOG: ${{ inputs.generate-binlog }}
+        BINLOG_PATH: ${{ inputs.binlog-path }}
+        ADDITIONAL_ARGS: ${{ inputs.additional-build-args }}
+      run: |
+        $ErrorActionPreference = 'Stop'
+
+        $buildArgs = @(
+          'build'
+          $env:SOLUTION_PATH
+          '-c'
+          $env:CONFIGURATION
+          '--no-restore'
+          '/p:ContinuousIntegrationBuild=true'
+          '/p:UseSharedCompilation=false'
+          '/m:1'
+          '/nodeReuse:false'
+        )
+
+        # Add pack target if enabled
+        if ($env:ENABLE_PACK -eq 'true') {
+          $buildArgs += '/t:Build,Pack'
+        } else {
+          $buildArgs += '/p:GeneratePackageOnBuild=false'
+        }
+
+        # Add binary log if enabled
+        if ($env:GENERATE_BINLOG -eq 'true') {
+          # Ensure log directory exists
+          $logDir = Split-Path -Parent $env:BINLOG_PATH
+          if ($logDir -and -not (Test-Path $logDir)) {
+            New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+          }
+          $buildArgs += "/bl:$env:BINLOG_PATH"
+        }
+
+        # Add any additional arguments
+        if ($env:ADDITIONAL_ARGS) {
+          $env:ADDITIONAL_ARGS.Split(' ', [StringSplitOptions]::RemoveEmptyEntries) | ForEach-Object {
+            $buildArgs += $_
+          }
+        }
+
+        Write-Host "::group::Build Command"
+        Write-Host "dotnet $($buildArgs -join ' ')"
+        Write-Host "::endgroup::"
+
+        & dotnet @buildArgs
+
+        if ($LASTEXITCODE -ne 0) {
+          exit $LASTEXITCODE
+        }

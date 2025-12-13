@@ -148,5 +148,5 @@ static partial class Polyfill
 
 - Andrew Lock: "Behind the implementation of the [Embedded] attribute in .NET 10" - <https://andrewlock.net/behind-the-implementation-of-the-embedded-attribute-in-net-10/>
 - SimonCropp/Polyfill `ArgumentNullExceptionPolyfill.cs` (commit e78ac432695270075490e9fbee211e25e4fccb70)
-- C# Extension Members (C# 14 proposal): https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-14.0/extensions
+- C# Extension Members (C# 14 proposal): <https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-14.0/extensions>
 - Qwiq repository compatibility shims (e.g., `NullableAttributes.cs`, `CallerArgumentExpressionAttribute.cs`)

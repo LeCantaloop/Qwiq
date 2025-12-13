@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq.Client.Rest</RootNamespace>
     <AssemblyName>Qwiq.Client.Rest</AssemblyName>
     <Description>QWIQ REST Client - Azure DevOps REST-based Work Item client</Description>
@@ -24,6 +24,7 @@
     <InternalsVisibleTo Include="Qwiq.IntegrationTests" />
     <InternalsVisibleTo Include="Qwiq.Integration.Tests" />
     <InternalsVisibleTo Include="Qwiq.Core.UnitTests" />
+    <InternalsVisibleTo Include="Qwiq.WireMock.Tests" />
   </ItemGroup>
 
   <ItemGroup>

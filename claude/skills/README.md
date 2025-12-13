@@ -48,12 +48,14 @@ When working on QWIQ tasks, the agent will:
 
 1. Create a new directory under `claude/skills/`
 2. Add `SKILL.md` with frontmatter and structured sections:
+
    ```yaml
    ---
    name: skill-name
    description: Brief description of what the skill does and when to use it.
    ---
    ```
+
 3. Optionally add `REFERENCE.md`, `TEMPLATES.md`, and helper scripts in `scripts/`
 4. Update this README's skill index table
 5. Add entry to `SKILLS-INDEX.json` with triggers

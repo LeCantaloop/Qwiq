@@ -34,7 +34,7 @@ go install github.com/slsa-framework/slsa-verifier/v2/cli/slsa-verifier@latest
 
 ### Verification Steps
 
-**Step 1: Download the package and provenance**
+#### Step 1: Download the package and provenance
 
 ```bash
 # Download the package you want to verify
@@ -44,7 +44,7 @@ wget https://www.nuget.org/api/v2/package/Qwiq.Core/10.0.0
 wget https://github.com/rjmurillo/Qwiq/releases/download/v10.0.0/qwiq-provenance.intoto.jsonl
 ```
 
-**Step 2: Verify the provenance**
+#### Step 2: Verify the provenance
 
 ```bash
 slsa-verifier verify-artifact \

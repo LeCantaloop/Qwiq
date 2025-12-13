@@ -1,0 +1,83 @@
+name: CodeQL Analysis
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    # Run for ALL pull requests regardless of target branch
+  schedule:
+    # Weekly deep scan on Monday at 2:30 AM UTC
+    - cron: "30 2 * * 1"
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: ./.github/actions/setup-dotnet
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: csharp
+          queries: security-extended,security-and-quality
+
+      - name: Restore and Build (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: ./.github/actions/restore-build
+        with:
+          enable-pack: "false"
+          generate-binlog: "false"
+
+      - name: Restore and Build (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        uses: ./.github/actions/restore-build
+        with:
+          enable-pack: "false"
+          generate-binlog: "false"
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:csharp"
+          output: ${{ runner.temp }}/codeql-results
+          upload: true
+
+      - name: Copy CodeQL SARIF to artifacts
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path ./artifacts/CodeQL -Force | Out-Null
+          if (Test-Path "${{ runner.temp }}/codeql-results") {
+            Copy-Item -Path "${{ runner.temp }}/codeql-results/*.sarif" -Destination ./artifacts/CodeQL/ -Force
+            Write-Host "Copied SARIF files to artifacts/CodeQL"
+          } else {
+            Write-Host "No SARIF files found in ${{ runner.temp }}/codeql-results"
+          }
+
+      - name: Upload CodeQL SARIF artifacts
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: codeql-sarif-${{ matrix.os }}
+          path: artifacts/CodeQL/*.sarif
+          if-no-files-found: warn

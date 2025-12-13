@@ -19,14 +19,15 @@
 
 Analyzed workflows from `rjmurillo/moq.analyzers` repository:
 
-| File | Purpose |
-|------|---------|
-| `auto-approve-and-merge-renovate.yml` | Approves and auto-merges renovate PRs |
-| `dependabot-approve-and-auto-merge.yml` | Full workflow for dependabot |
-| `dependabot-auto-approve.yml` | Uses `cognitedata/auto-approve-dependabot-action@v3.0.1` |
-| `dependabot-auto-merge.yml` | Uses `gh pr merge --auto --squash` |
+| File                                    | Purpose                                                  |
+| --------------------------------------- | -------------------------------------------------------- |
+| `auto-approve-and-merge-renovate.yml`   | Approves and auto-merges renovate PRs                    |
+| `dependabot-approve-and-auto-merge.yml` | Full workflow for dependabot                             |
+| `dependabot-auto-approve.yml`           | Uses `cognitedata/auto-approve-dependabot-action@v3.0.1` |
+| `dependabot-auto-merge.yml`             | Uses `gh pr merge --auto --squash`                       |
 
 **Key Patterns Identified**:
+
 1. Uses `GH_ACTIONS_PR_WRITE` secret (PAT with PR write access) instead of `GITHUB_TOKEN`
 2. Uses `pull_request_target` event with types `[opened, synchronize, reopened]`
 3. SHA-pins all GitHub Actions for supply chain security
@@ -39,11 +40,13 @@ Analyzed workflows from `rjmurillo/moq.analyzers` repository:
 ### 1. Updated `.github/workflows/dependabot-auto-approve.yml`
 
 **Before**:
+
 - Used `GITHUB_TOKEN` (insufficient permissions for approval)
 - No SHA pinning
 - No explicit event types
 
 **After**:
+
 - Changed to `GH_ACTIONS_PR_WRITE` secret
 - SHA-pinned action: `cognitedata/auto-approve-dependabot-action@b8bdaf7c4c3b43ba6f8e02ab6cd49d94a3da2bab`
 - Added event types: `[opened, synchronize, reopened]`
@@ -52,6 +55,7 @@ Analyzed workflows from `rjmurillo/moq.analyzers` repository:
 ### 2. Created `.github/workflows/dependabot-auto-merge.yml`
 
 New workflow that:
+
 - Approves PRs with `gh pr review --approve`
 - Enables auto-merge with `gh pr merge --auto --squash`
 - Only triggers for `dependabot[bot]`, `dependabot-preview[bot]`, and `renovate[bot]`
@@ -60,6 +64,7 @@ New workflow that:
 ### 3. Updated `renovate.json`
 
 **Added**:
+
 - `"platformAutomerge": true` - Enables Renovate's platform-native auto-merge
 - Automerge rule for test dependencies (minor/patch)
 - Automerge rule for stable production deps (patch only, non-0.x versions)
@@ -69,23 +74,23 @@ New workflow that:
 
 ## Decisions Made
 
-| Decision | Rationale |
-|----------|-----------|
-| Use `GH_ACTIONS_PR_WRITE` secret | `GITHUB_TOKEN` has insufficient permissions for PR approval in some branch protection scenarios |
-| SHA-pin the auto-approve action | Supply chain security per W2.22 requirements |
-| Separate auto-approve and auto-merge workflows | Mirrors moq.analyzers pattern, clearer separation of concerns |
-| Only auto-merge patch/minor for stable deps | Major versions may have breaking changes requiring review |
-| Exclude Azure DevOps SDK packages from automerge | These require careful coordination (already in renovate.json `enabled: false`) |
+| Decision                                         | Rationale                                                                                       |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| Use `GH_ACTIONS_PR_WRITE` secret                 | `GITHUB_TOKEN` has insufficient permissions for PR approval in some branch protection scenarios |
+| SHA-pin the auto-approve action                  | Supply chain security per W2.22 requirements                                                    |
+| Separate auto-approve and auto-merge workflows   | Mirrors moq.analyzers pattern, clearer separation of concerns                                   |
+| Only auto-merge patch/minor for stable deps      | Major versions may have breaking changes requiring review                                       |
+| Exclude Azure DevOps SDK packages from automerge | These require careful coordination (already in renovate.json `enabled: false`)                  |
 
 ---
 
 ## Files Changed
 
-| File | Change Type |
-|------|-------------|
-| `.github/workflows/dependabot-auto-approve.yml` | Modified |
-| `.github/workflows/dependabot-auto-merge.yml` | Created |
-| `renovate.json` | Modified |
+| File                                            | Change Type |
+| ----------------------------------------------- | ----------- |
+| `.github/workflows/dependabot-auto-approve.yml` | Modified    |
+| `.github/workflows/dependabot-auto-merge.yml`   | Created     |
+| `renovate.json`                                 | Modified    |
 
 ---
 
@@ -118,7 +123,7 @@ New workflow that:
 
 ## How the System Works
 
-```
+```text
 1. Bot (dependabot/renovate) creates PR
    ↓
 2. `dependabot-auto-approve.yml` triggers → Approves PR

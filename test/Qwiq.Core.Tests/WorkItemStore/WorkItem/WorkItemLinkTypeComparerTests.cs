@@ -73,8 +73,6 @@ namespace Qwiq.WorkItemStore.WorkItem
         }
     }
 
-    #region WorkItemLinkTypeEndComparer Tests
-
     /// <summary>
     /// Tests for <see cref="WorkItemLinkTypeEndComparer"/> to verify correct equality behavior,
     /// especially around null handling for the Name property.
@@ -298,6 +296,4 @@ namespace Qwiq.WorkItemStore.WorkItem
             _comparer.GetHashCode(_first).ShouldEqual(_comparer.GetHashCode(_second));
         }
     }
-
-    #endregion
 }

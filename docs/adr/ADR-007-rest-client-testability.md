@@ -210,7 +210,7 @@ public class WorkItemStoreBuilder
 
 ## Decision
 
-**Adopt Option 3a: Factory Method Pattern with Internal Overload**
+Adopt Option 3a: Factory Method Pattern with Internal Overload
 
 ### Implementation Plan
 
@@ -227,19 +227,19 @@ public class WorkItemStoreBuilder
 
 #### Phase 2: Test Implementation
 
-5. Implement REST unit tests:
+1. Implement REST unit tests:
    - Query execution (WIQL parsing, result mapping)
    - Work item retrieval by ID
    - Work item collections
    - Field definitions and types
    - Link type handling
-6. Add `[TestCategory("RestUnit")]` to all REST unit tests
-7. Update CI to run `TestCategory=RestUnit` on all platforms
+2. Add `[TestCategory("RestUnit")]` to all REST unit tests
+3. Update CI to run `TestCategory=RestUnit` on all platforms
 
 #### Phase 3: SOAP Tests (Future)
 
-8. Apply same pattern to `Qwiq.Client.Soap.WorkItemStoreFactory`
-9. Create SOAP unit tests with Moq (Windows-only, `TestCategory=SoapUnit`)
+1. Apply same pattern to `Qwiq.Client.Soap.WorkItemStoreFactory`
+2. Create SOAP unit tests with Moq (Windows-only, `TestCategory=SoapUnit`)
 
 ---
 

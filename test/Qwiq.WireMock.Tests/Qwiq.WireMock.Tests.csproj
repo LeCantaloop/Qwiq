@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- WireMock.Net works properly on modern .NET with Kestrel hosting -->
+    <!-- .NET Framework has OWIN hosting deadlock issues in test runners -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>Qwiq.WireMock</RootNamespace>
+    <AssemblyName>Qwiq.WireMock.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.Client" />
+    <PackageReference Include="WireMock.Net" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" />
+    <ProjectReference Include="..\..\src\Qwiq.Core.Rest\Qwiq.Client.Rest.csproj" />
+    <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj" />
+  </ItemGroup>
+
+  <!-- Copy WireMock stubs to output directory -->
+  <ItemGroup>
+    <None Update="WireMock\Stubs\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

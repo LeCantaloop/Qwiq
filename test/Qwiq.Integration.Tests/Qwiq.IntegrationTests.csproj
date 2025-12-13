@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Services.Client" />
     <PackageReference Include="Microsoft.TeamFoundationServer.ExtendedClient" />
     <PackageReference Include="JetBrains.DotMemoryUnit" />
-    <PackageReference Include="WireMock.Net" />
     <PackageReference Include="Moq" />
     <PackageReference Include="Moq.Analyzers" />
   </ItemGroup>
@@ -40,14 +39,6 @@
   <!-- InternalsVisibleTo for testing -->
   <ItemGroup>
     <InternalsVisibleTo Include="Qwiq.Test" />
-  </ItemGroup>
-
-  <!-- Copy WireMock stubs to output directory -->
-  <ItemGroup>
-    <None Include="WireMock\Stubs\*.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Link>WireMock\Stubs\%(Filename)%(Extension)</Link>
-    </None>
   </ItemGroup>
 
 </Project>

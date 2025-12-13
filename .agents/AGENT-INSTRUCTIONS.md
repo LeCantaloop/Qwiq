@@ -10,7 +10,11 @@
 Before starting work, complete these steps IN ORDER:
 
 - [ ] Read this file completely
-- [ ] Read `modernize-TODO.md` to understand current state
+- [ ] Read `modernize-TODO-index.md` for overview and navigation
+- [ ] Read the appropriate wave file for your assigned tasks:
+  - `modernize-wave1.md` - Wave 0-1 tasks
+  - `modernize-wave2.md` - Wave 2 tasks
+  - `modernize-wave3-5.md` - Waves 3-5 tasks
 - [ ] Read `modernize-explainer.md` for architectural context
 - [ ] Check `HANDOFF.md` for previous session notes
 - [ ] Identify your assigned phase (e.g., "Phase 2A")
@@ -20,13 +24,16 @@ Before starting work, complete these steps IN ORDER:
 
 ## Document Hierarchy
 
-| Document | Purpose | When to Update |
-|----------|---------|----------------|
-| `AGENT-INSTRUCTIONS.md` | How to execute work (this file) | Rarely - only if process changes |
-| `modernize-TODO.md` | Task tracking, checkboxes, progress | After EVERY task completion |
-| `modernize-explainer.md` | Architecture, decisions, rationale | When design decisions are made |
-| `HANDOFF.md` | Session-to-session context transfer | At END of every session |
-| `sessions/*.md` | Detailed session logs | Throughout session |
+| Document                  | Purpose                             | When to Update                   |
+| ------------------------- | ----------------------------------- | -------------------------------- |
+| `AGENT-INSTRUCTIONS.md`   | How to execute work (this file)     | Rarely - only if process changes |
+| `modernize-TODO-index.md` | Overview, metrics, session log      | After EVERY session              |
+| `modernize-wave1.md`      | Wave 0-1 task tracking              | After Wave 0-1 task completion   |
+| `modernize-wave2.md`      | Wave 2 task tracking                | After Wave 2 task completion     |
+| `modernize-wave3-5.md`    | Waves 3-5 task tracking             | After Wave 3-5 task completion   |
+| `modernize-explainer.md`  | Architecture, decisions, rationale  | When design decisions are made   |
+| `HANDOFF.md`              | Session-to-session context transfer | At END of every session          |
+| `sessions/*.md`           | Detailed session logs               | Throughout session               |
 
 ---
 
@@ -36,10 +43,11 @@ Before starting work, complete these steps IN ORDER:
 
 ```markdown
 ## Session Start Checklist
+
 - [ ] Created session log: `.agents/sessions/YYYY-MM-DD-phase-XX.md`
 - [ ] Read HANDOFF.md from previous session
 - [ ] Identified all tasks in assigned phase
-- [ ] Verified build passes: `dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false`
+- [ ] Verified CI build passes: `dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false`
 - [ ] Verified tests pass: `dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"`
 - [ ] Noted starting git state: `git status`
 ```
@@ -47,11 +55,16 @@ Before starting work, complete these steps IN ORDER:
 ### 2. Task Execution (FOR EACH TASK)
 
 **Before starting a task:**
-1. Read the full task description in `modernize-TODO.md`
+
+1. Read the full task description in the appropriate wave file:
+   - `modernize-wave1.md` - Wave 0-1 tasks
+   - `modernize-wave2.md` - Wave 2 tasks
+   - `modernize-wave3-5.md` - Waves 3-5 tasks
 2. Understand acceptance criteria
 3. Plan the implementation approach
 
 **During task execution:**
+
 1. Work incrementally - small, atomic changes
 2. Commit frequently with conventional commit messages
 3. Run `dotnet format` after code changes
@@ -59,7 +72,8 @@ Before starting work, complete these steps IN ORDER:
 5. Run tests after each significant change
 
 **After completing a task:**
-1. ✅ Check off the task in `modernize-TODO.md`
+
+1. ✅ Check off the task in the appropriate wave file
 2. Update session log with:
    - What was done
    - Decisions made and why
@@ -73,13 +87,18 @@ Before starting work, complete these steps IN ORDER:
 
 ```markdown
 ## Session End Checklist
-- [ ] All assigned tasks checked off in modernize-TODO.md
+
+- [ ] All assigned tasks checked off in the appropriate wave file
 - [ ] Session log complete with all details
 - [ ] HANDOFF.md updated with:
   - [ ] What was completed
   - [ ] What's next
   - [ ] Any blockers or concerns
   - [ ] Commands to verify state
+- [ ] Linting passes (run autofix before committing):
+  - [ ] `npx markdownlint-cli2 --fix "**/*.md"` - Fix markdown issues
+  - [ ] `dotnet format` - Fix C# formatting
+  - [ ] `dotnet pprettier --write .` - Fix general formatting
 - [ ] All files committed (including .agents/ files)
 - [ ] Build passes
 - [ ] Tests pass
@@ -92,7 +111,7 @@ Before starting work, complete these steps IN ORDER:
 
 Use conventional commits:
 
-```
+```text
 <type>(<scope>): <short description>
 
 <optional body with details>
@@ -101,6 +120,7 @@ Use conventional commits:
 ```
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation only
@@ -109,7 +129,8 @@ Use conventional commits:
 - `test` - Adding/fixing tests
 
 **Examples:**
-```
+
+```text
 chore(ci): pin GitHub Actions to SHA
 
 - actions/checkout@v4 → @b4ffde65f46336ab88eb53be808477a3936bae11
@@ -119,7 +140,7 @@ chore(ci): pin GitHub Actions to SHA
 Refs: W2.15
 ```
 
-```
+```text
 docs(adr): add ADR-001 for factory pattern
 
 Document the WorkItemStoreFactory design decision including:
@@ -137,16 +158,18 @@ Refs: W2.5
 
 Create this file at session start: `.agents/sessions/YYYY-MM-DD-phase-XX.md`
 
-```markdown
+````markdown
 # Session Log: Phase XX - [Date]
 
 ## Session Info
+
 - **Date**: YYYY-MM-DD
 - **Phase**: 2A (or whichever phase)
 - **Branch**: `chore/modernize-wave-2`
 - **Starting Commit**: [SHA]
 
 ## Pre-Flight Checks
+
 - [ ] Build passes
 - [ ] Tests pass (X/X)
 - [ ] Read HANDOFF.md
@@ -155,26 +178,33 @@ Create this file at session start: `.agents/sessions/YYYY-MM-DD-phase-XX.md`
 ## Tasks Completed
 
 ### W2.XX - [Task Name]
+
 **Status**: ✅ Complete | 🔄 In Progress | ❌ Blocked
 
 **What was done**:
+
 - [Specific changes made]
 
 **Decisions made**:
+
 - [Decision]: [Rationale]
 
 **Challenges**:
+
 - [Challenge]: [Resolution]
 
 **Files changed**:
+
 - `path/to/file.cs` - [description]
 
 **Commits**:
+
 - `abc1234` - [commit message]
 
 ---
 
 ### W2.YY - [Task Name]
+
 [Same structure]
 
 ---
@@ -186,9 +216,10 @@ Create this file at session start: `.agents/sessions/YYYY-MM-DD-phase-XX.md`
 **Next up**: [What the next session should do]
 
 ## Verification Commands
+
 ```powershell
-# Verify build
-dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
+# Verify CI build (ALWAYS use CI flags before pushing)
+dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false
 
 # Verify tests
 dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
@@ -196,24 +227,25 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 # Verify specific changes
 [any specific verification commands]
 ```
+````
 
 ## Notes for Next Session
+
 - [Important context]
 - [Gotchas discovered]
 - [Recommendations]
-```
 
+`````markdown
 ---
 
 ## HANDOFF.md Template
 
 Update this file at session end:
 
-```markdown
+````markdown
 # Handoff Document
 
-> **Last Updated**: YYYY-MM-DD by [Agent/Session ID]
-> **Current Phase**: 2A (or current)
+> **Last Updated**: YYYY-MM-DD by [Agent/Session ID] > **Current Phase**: 2A (or current)
 > **Branch**: `chore/modernize-wave-2`
 
 ## Current State
@@ -226,6 +258,7 @@ Update this file at session end:
 ## What Was Completed
 
 ### Phase 2A (or current phase)
+
 - [x] W2.XX - [Brief description of what was done]
 - [x] W2.YY - [Brief description]
 - [ ] W2.ZZ - [Not started / In progress]
@@ -233,14 +266,15 @@ Update this file at session end:
 ## What's Next
 
 The next session should:
+
 1. [Specific first action]
 2. [Specific second action]
 3. [etc.]
 
 ## Blockers & Concerns
 
-| Issue | Impact | Mitigation |
-|-------|--------|------------|
+| Issue   | Impact   | Mitigation   |
+| ------- | -------- | ------------ |
 | [Issue] | [Impact] | [What to do] |
 
 ## Quick Verification
@@ -248,46 +282,58 @@ The next session should:
 ```powershell
 # Run these commands to verify state
 git log --oneline -5
-dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
+# IMPORTANT: Use CI build flags to catch analyzer errors early
+dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false
 dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
 ```
 
+---
+
 ## Session History
 
-| Date | Phase | Tasks | Status |
-|------|-------|-------|--------|
-| YYYY-MM-DD | 2A | W2.5, W2.2 | ✅ Complete |
-| YYYY-MM-DD | 2A | W2.15 | 🔄 In Progress |
+| Date       | Phase | Tasks      | Status         |
+| ---------- | ----- | ---------- | -------------- |
+| YYYY-MM-DD | 2A    | W2.5, W2.2 | ✅ Complete    |
+| YYYY-MM-DD | 2A    | W2.15      | 🔄 In Progress |
 
 ## Files to Review
 
 If you need context, read these files in order:
+
 1. `.agents/AGENT-INSTRUCTIONS.md` (this process)
-2. `.agents/modernize-TODO.md` (task details)
-3. `.agents/sessions/YYYY-MM-DD-phase-XX.md` (last session details)
-```
+2. `.agents/modernize-TODO-index.md` (overview and navigation)
+3. The appropriate wave file for your tasks:
+   - `.agents/modernize-wave1.md` - Wave 0-1 tasks
+   - `.agents/modernize-wave2.md` - Wave 2 tasks
+   - `.agents/modernize-wave3-5.md` - Waves 3-5 tasks
+4. `.agents/sessions/YYYY-MM-DD-phase-XX.md` (last session details)
 
 ---
 
 ## Phase Definitions
 
 ### Phase 2A: Release Automation (CRITICAL)
+
 **Tasks**: W2.5, W2.2, W2.15, W2.18, W2.11
 **Goal**: Establish foundational documentation and release infrastructure
 
 ### Phase 2B: Supply Chain Security (CRITICAL)
+
 **Tasks**: W2.17, W2.13, W2.14
 **Goal**: Implement supply chain security measures
 
 ### Phase 2C: Testing Enhancements
+
 **Tasks**: W2.16, W2.3, W2.4
 **Goal**: Add unit test coverage for REST/SOAP clients
 
 ### Phase 2D: Security Hardening
+
 **Tasks**: W2.19, W2.20
 **Goal**: Add security scanning to CI
 
 ### Phase 2E: Documentation
+
 **Tasks**: W2.7
 **Goal**: Update contribution guidelines
 
@@ -296,9 +342,10 @@ If you need context, read these files in order:
 ## Tools & Commands Reference
 
 ### Build & Test
+
 ```powershell
-# Full build (single-threaded to avoid file locking)
-dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
+# CI build - ALWAYS USE THIS BEFORE PUSHING (matches CI pipeline)
+dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false
 
 # Run tests with standard filters
 dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
@@ -306,8 +353,10 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 # Format code
 dotnet format Qwiq.sln
 ```
+`````
 
 ### Git Operations
+
 ```powershell
 # Check status
 git status
@@ -324,6 +373,7 @@ git add -f .agents/sessions/*.md
 ```
 
 ### Verification
+
 ```powershell
 # Count warnings
 dotnet build Qwiq.sln -c Release 2>&1 | Select-String "warning"
@@ -334,9 +384,51 @@ Select-String -Path ".github/workflows/*.yml" -Pattern "uses:"
 
 ---
 
+## Lessons Learned
+
+> **Note**: This section captures real issues discovered during modernization work.
+> Read these carefully to avoid repeating past mistakes.
+
+### Session 39: CI Build Command Mismatch (2025-12-13)
+
+**Issue**: Session 38 introduced tests that passed local builds but failed CI with CA1711, CA1001, and CA1861 analyzer errors.
+
+**Root Cause**: Local builds used `dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false` which does NOT enable CI-specific analyzer strictness. The CI pipeline uses:
+
+```powershell
+dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false
+```
+
+**Key Differences**:
+
+- `/p:ContinuousIntegrationBuild=true` - Enables stricter warnings/errors
+- `/p:UseSharedCompilation=false` - Prevents shared compiler state issues
+
+**Prevention**:
+
+1. **ALWAYS** use the CI build command locally before pushing:
+
+   ```powershell
+   dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false
+   ```
+
+2. Check for these common test class issues:
+   - **CA1711**: Test class names ending in "Collection", "Dictionary", "Queue", etc.
+   - **CA1001**: Test classes owning disposable fields without implementing IDisposable
+   - **CA1861**: Inline array allocations that should be `static readonly` fields
+
+**Fix Applied**:
+
+- Added `#pragma warning disable CA1001` with explanation comment
+- Renamed classes ending in "Collection" to use "ToWIC" abbreviation
+- Extracted inline arrays to `static readonly` fields in a `TestArrays` class
+
+---
+
 ## Critical Reminders
 
-### DO:
+### DO
+
 - ✅ Read ALL instructions before starting
 - ✅ Work incrementally with small commits
 - ✅ Update documentation as you go
@@ -346,7 +438,8 @@ Select-String -Path ".github/workflows/*.yml" -Pattern "uses:"
 - ✅ Update HANDOFF.md before session ends
 - ✅ Force-add `.agents/` files if needed
 
-### DON'T:
+### DON'T
+
 - ❌ Skip the pre-flight checklist
 - ❌ Make large commits with multiple unrelated changes
 - ❌ Forget to update modernize-TODO.md checkboxes
@@ -369,6 +462,7 @@ If something goes wrong:
 
 ## Document Control
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.0 | 2025-12-06 | Initial agent instructions |
+| Version | Date       | Changes                                                    |
+| ------- | ---------- | ---------------------------------------------------------- |
+| 1.0     | 2025-12-06 | Initial agent instructions                                 |
+| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands   |

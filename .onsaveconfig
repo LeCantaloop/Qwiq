@@ -1,0 +1,7 @@
+[*.{js,jsx,ts,tsx,css,less,scss,vue,json,gql,md}]
+command = dotnet
+arguments = pprettier --write "{file}"
+
+[*.{csproj,cs,sln}]
+command = dotnet
+arguments = format

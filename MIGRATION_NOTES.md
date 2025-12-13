@@ -281,7 +281,7 @@ When Verify.Nupkg adds `.snupkg` support:
 ### References
 
 - Feature request: `docs/issues/verify-nupkg-snupkg-support.md`
-- Upstream issue: https://github.com/MattKotsenas/Verify.Nupkg/issues/38
+- Upstream issue: <https://github.com/MattKotsenas/Verify.Nupkg/issues/38>
 - Test implementation: `test/Qwiq.Package.Tests/PackageTests.cs`
 
 ---

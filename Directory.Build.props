@@ -131,12 +131,12 @@
   </ItemGroup>
 
   <!--
-    Enable building net472 targets on non-Windows machines (Linux, macOS).
+    Enable building .NET Framework targets on non-Windows machines (Linux, macOS).
     Microsoft.NETFramework.ReferenceAssemblies provides the .NET Framework reference assemblies
-    so Mono/.NET SDK can compile net472 without the Windows SDK installed.
+    so Mono/.NET SDK can compile net472/net48/net481 without the Windows SDK installed.
     See: https://github.com/microsoft/dotnet-framework-reference-assemblies
   -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" />
   </ItemGroup>
 

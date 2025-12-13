@@ -21,12 +21,14 @@
 ### W2.4 - Benchmark CI Integration ✅ COMPLETE
 
 **Evidence**:
+
 - Session log `2025-12-06-phase-2c.md` confirms all 3 benchmark projects compile in CI
 - Verified in PR #68 description: "Verified all 3 benchmark projects compile in CI (Windows/Linux)"
 - Benchmarks excluded from test execution via `TestCategory!=Benchmark`
 
 **Status**: ✅ COMPLETE
 **Acceptance Criteria Met**:
+
 - [x] Benchmark projects compile in CI (Windows and Linux)
 - [ ] Optional performance regression detection (deferred - out of scope)
 
@@ -35,6 +37,7 @@
 ### W2.16 Phase 1 - REST Unit Tests with WireMock.Net ✅ COMPLETE
 
 **Evidence**:
+
 - WireMock implementation complete as documented in `.agents/WIREMOCK-IMPLEMENTATION-COMPLETE.md`
 - ADR-008 created: `docs/adr/008-wiremock-offline-rest-testing.md`
 - 9 WireMock tests passing using real captured Azure DevOps traffic
@@ -44,11 +47,13 @@
 
 **Status**: ✅ COMPLETE
 **Acceptance Criteria Met**:
+
 - [x] REST offline tests pass without Azure DevOps (WireMock category)
 - [x] Documented via ADR-008
 - [x] Infrastructure and tooling in place
 
 **Additional Work Completed (W2.16 Extensions)**:
+
 - **ADR-007**: REST client testability refactoring via factory pattern
 - **ADR-009**: Polyfill strategy with `[Embedded]` attribute for cross-assembly compatibility
 - **Factory Refactoring**: Added internal `Create(AuthenticationOptions, ITfsConnectionFactory)` overload to `WorkItemStoreFactory`
@@ -62,6 +67,7 @@
 **Reason**: SOAP offline tests require Windows-only net472 environment and Moq-based mocking. Work was deferred to focus on REST client testability.
 
 **Blockers**:
+
 - Build currently failing with CS7069 TimeZone type forwarding errors
 - Requires separate architectural approach for SOAP client mocking
 
@@ -82,6 +88,7 @@
 The solution build is failing with the following errors:
 
 1. **CS7069 TimeZone Type Forwarding** (4 errors):
+
    - `Qwiq.Core.Rest/WorkItemStore.cs(12,36)`
    - `Qwiq.Core.Rest/VssConnectionAdapter.cs(8,43)`
    - `Qwiq.Mocks/MockTfsTeamProjectCollection.cs(13,49)`
@@ -98,9 +105,11 @@ The `global.json` was updated to .NET 10.0.100 SDK, which has type forwarding ch
 
 1. **Option A**: Downgrade `global.json` to .NET 8.0.404 (stable LTS)
 2. **Option B**: Add explicit type aliases to resolve forwarding:
+
    ```csharp
    using TimeZone = System.TimeZone;
    ```
+
 3. **Option C**: Wait for TFS Client OM update that resolves .NET 10 compatibility
 
 ---
@@ -108,16 +117,18 @@ The `global.json` was updated to .NET 10.0.100 SDK, which has type forwarding ch
 ## Session Summary
 
 **Evaluation Results**:
-| Task | Status | Notes |
-|------|--------|-------|
-| W2.4 | ✅ COMPLETE | Benchmarks compile in CI |
-| W2.16 Phase 1 | ✅ COMPLETE | WireMock offline REST tests (9 passing) |
-| W2.16 Phase 2 | ⏸️ NOT STARTED | SOAP offline tests deferred |
-| W2.3 | ⏸️ BLOCKED | Depends on W2.16 Phase 2 |
+
+| Task          | Status         | Notes                                   |
+| ------------- | -------------- | --------------------------------------- |
+| W2.4          | ✅ COMPLETE    | Benchmarks compile in CI                |
+| W2.16 Phase 1 | ✅ COMPLETE    | WireMock offline REST tests (9 passing) |
+| W2.16 Phase 2 | ⏸️ NOT STARTED | SOAP offline tests deferred             |
+| W2.3          | ⏸️ BLOCKED     | Depends on W2.16 Phase 2                |
 
 **Phase 2C Progress**: 1.5/3 tasks (W2.4 complete, W2.16 Phase 1 complete, Phase 2 pending)
 
 **Key Accomplishments in Branch**:
+
 1. ✅ WireMock-based offline REST testing infrastructure
 2. ✅ 9 WireMock tests using real captured Azure DevOps traffic
 3. ✅ ADR-007, ADR-008, ADR-009 documenting architectural decisions
@@ -126,6 +137,7 @@ The `global.json` was updated to .NET 10.0.100 SDK, which has type forwarding ch
 6. ✅ Benchmark CI validation
 
 **Outstanding Issues**:
+
 1. ⚠️ Build failing with CS7069 TimeZone errors (.NET 10 SDK compatibility)
 2. ⏸️ W2.16 Phase 2 (SOAP offline tests) not started
 3. ⏸️ W2.3 (Contract tests) blocked
@@ -135,10 +147,12 @@ The `global.json` was updated to .NET 10.0.100 SDK, which has type forwarding ch
 ## Next Steps
 
 1. **Immediate**: Resolve CS7069 TimeZone type forwarding errors
+
    - Consider reverting `global.json` to 8.0.404
    - Or add explicit type aliases where needed
 
 2. **Short-term**: Complete W2.16 Phase 2 (SOAP offline tests)
+
    - Windows-only net472 tests
    - Moq-based mocking for TFS Client OM
 
@@ -149,6 +163,7 @@ The `global.json` was updated to .NET 10.0.100 SDK, which has type forwarding ch
 ## Files Changed
 
 This evaluation session reviewed existing work and documented findings:
+
 - Created: `.agents/sessions/2025-12-09-phase-2c-evaluation.md` (this file)
 - To Update: `.agents/HANDOFF.md`
 - To Update: `.agents/modernize-TODO.md`

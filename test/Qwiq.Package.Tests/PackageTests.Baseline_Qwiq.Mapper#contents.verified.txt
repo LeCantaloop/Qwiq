@@ -2,9 +2,21 @@
 |-- Qwiq.Mapper.nuspec
 |-- README.md
 |-- lib
+|   |-- net10.0
+|   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml
 |   |-- net472
 |   |   |-- Qwiq.Mapper.dll
 |   |   |-- Qwiq.Mapper.xml
+|   |-- net48
+|   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml
+|   |-- net481
+|   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml
 |   |-- net8.0
+|   |   |-- Qwiq.Mapper.dll
+|   |   |-- Qwiq.Mapper.xml
+|   |-- net9.0
 |   |   |-- Qwiq.Mapper.dll
 |   |   |-- Qwiq.Mapper.xml

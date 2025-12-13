@@ -1,0 +1,24 @@
+# Gitleaks Configuration
+# See: https://github.com/gitleaks/gitleaks
+
+title = "Qwiq Repository Gitleaks Configuration"
+
+# Global allowlist for paths that should be excluded from secret scanning
+# These are historical files that have been removed but exist in git history
+[allowlist]
+  description = "Global allowlist for Qwiq repository"
+  
+  # Historical files that contained development/test credentials
+  # These files have been removed from the repository but exist in git history
+  paths = [
+    '''\.agents/qwiq\.har''',          # HAR file with test JWT tokens (removed in 20a73831)
+    '''WireMockRecordings/.*''',        # WireMock test recordings with auth headers
+  ]
+
+# Additional rules can be added here to customize scanning behavior
+# For example, to allow specific patterns in test files:
+# [[rules]]
+#   id = "test-credentials"
+#   description = "Allow test credentials in test files"
+#   regex = '''(?i)test[-_]?(password|secret|token)'''
+#   allowlist = { paths = ['''test/.*'''] }

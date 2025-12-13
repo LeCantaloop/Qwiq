@@ -1,0 +1,10 @@
+name: "Setup .NET SDK"
+description: "Sets up .NET SDK using global.json specification"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: ./global.json

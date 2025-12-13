@@ -21,7 +21,8 @@ This repository uses markdownlint and Prettier for markdown formatting:
 
 - **Configuration**: `.markdownlint-cli2.yaml`, `.prettierrc`
 - **Run linting**: `dotnet pprettier --check "**/*.md"`
-- **Auto-fix**: `dotnet pprettier --write "**/*.md"`
+- **Auto-fix Prettier**: `dotnet pprettier --write .`
+- **Auto-fix Markdown lint**: `npx markdownlint-cli2 --fix "**/*.md"`
 
 ## Context Loading
 
@@ -158,39 +159,37 @@ Before submitting changes, verify:
 
 ## Common Mistakes to AVOID
 
-```markdown
+````markdown
 <!-- ❌ WRONG: No language identifier -->
-```
 
+```text
 dotnet build
-
+```
 ````
 
 <!-- ✅ CORRECT: With language identifier -->
+
 ```powershell
 dotnet build
-````
+```
 
 <!-- ❌ WRONG: Bold instead of heading -->
-
-**Section Title**
+<!-- **Section Title** -->
 
 <!-- ✅ CORRECT: Proper heading -->
+<!-- ## Section Title -->
 
-## Section Title
+Use proper headings (`##`) instead of bold text (`**...**`) for sections.
 
 <!-- ❌ WRONG: Inconsistent list markers -->
-
-- Item 1
-
-* Item 2
+<!-- - Item 1 -->
+<!-- * Item 2 -->
 
 <!-- ✅ CORRECT: Consistent list markers -->
+<!-- - Item 1 -->
+<!-- - Item 2 -->
 
-- Item 1
-- Item 2
-
-```
+Use consistent list markers (always `-`, never mix with `*`).
 
 ## Decision Trees
 
@@ -210,4 +209,3 @@ dotnet build
 
 - [generic.instructions.md](generic.instructions.md) - For multi-file changes
 - [csharp.instructions.md](csharp.instructions.md) - For code examples in docs
-```

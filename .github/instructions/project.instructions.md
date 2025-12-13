@@ -44,6 +44,7 @@ All package versions are defined in `Directory.Packages.props` at the repository
    ```
 
 2. Reference in .csproj WITHOUT version:
+
    ```xml
    <PackageReference Include="NewPackage" />
    ```

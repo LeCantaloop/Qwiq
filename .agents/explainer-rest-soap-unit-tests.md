@@ -62,13 +62,13 @@ This explainer defines a plan to implement **unit test coverage** for REST and S
 **Decision**: Use real captured Azure DevOps HTTP traffic (via Fiddler HAR capture) converted to WireMock stubs. This approach was documented in ADR-008 and successfully implemented.
 
 **Rationale**:
+
 - Manual synthetic stubs failed due to serialization format mismatches
 - Real captured traffic ensures authentic API response formats
 - Captured stubs are deterministic and can be updated by recapturing traffic
 - No sensitive data: stubs contain only test work item data from sandbox environment
 
-See: `docs/adr/008-wiremock-offline-rest-testing.md` for full decision rationale.
-6. **Testing Framework Changes**: Continue using existing Moq, Shouldly, and ContextSpecification patterns
+See: `docs/adr/008-wiremock-offline-rest-testing.md` for full decision rationale. 6. **Testing Framework Changes**: Continue using existing Moq, Shouldly, and ContextSpecification patterns
 
 ---
 
@@ -100,13 +100,13 @@ See: `docs/adr/008-wiremock-offline-rest-testing.md` for full decision rationale
 
 ### Current Challenges
 
-| Problem | Impact | Evidence |
-|---------|--------|----------|
-| **Integration-Only Tests** | All REST/SOAP tests require Azure DevOps connectivity | `TestCategory=REST`, `TestCategory=SOAP`, `TestCategory=IntegrationTests` all excluded from CI |
-| **High Barrier to Entry** | New contributors need Azure DevOps credentials and sandbox access | Contributors cannot run full test suite locally |
-| **Slow Feedback Loops** | Integration tests are slow (network latency, authentication) | Test runs take minutes instead of seconds |
-| **CI Unreliability** | External dependency on Azure DevOps service availability | Builds fail due to transient network issues or service outages |
-| **Limited Platform Coverage** | SOAP tests only run on Windows; REST tests could run cross-platform but are excluded from CI | No validation on Linux/macOS |
+| Problem                       | Impact                                                                                       | Evidence                                                                                       |
+| ----------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Integration-Only Tests**    | All REST/SOAP tests require Azure DevOps connectivity                                        | `TestCategory=REST`, `TestCategory=SOAP`, `TestCategory=IntegrationTests` all excluded from CI |
+| **High Barrier to Entry**     | New contributors need Azure DevOps credentials and sandbox access                            | Contributors cannot run full test suite locally                                                |
+| **Slow Feedback Loops**       | Integration tests are slow (network latency, authentication)                                 | Test runs take minutes instead of seconds                                                      |
+| **CI Unreliability**          | External dependency on Azure DevOps service availability                                     | Builds fail due to transient network issues or service outages                                 |
+| **Limited Platform Coverage** | SOAP tests only run on Windows; REST tests could run cross-platform but are excluded from CI | No validation on Linux/macOS                                                                   |
 
 ### Why This Matters
 
@@ -121,13 +121,13 @@ See: `docs/adr/008-wiremock-offline-rest-testing.md` for full decision rationale
 
 ### Existing Test Structure
 
-| Test Project | Target Frameworks | Current Focus | CI Execution |
-|--------------|-------------------|---------------|--------------|
-| `Qwiq.Core.Tests` | net472;net8.0 | Core abstractions (interfaces, mocks) | ✅ Full coverage in CI |
-| `Qwiq.Linq.Tests` | net472;net8.0 | LINQ provider, WIQL translation | ✅ Full coverage in CI |
-| `Qwiq.Mapper.Tests` | net472;net8.0 | Object mapping | ✅ Full coverage in CI |
-| `Qwiq.Identity.Tests` | net472;net8.0 | Identity management | ✅ Full coverage in CI |
-| `Qwiq.IntegrationTests` | net472 | Full integration (REST + SOAP) | ❌ Excluded (requires Azure DevOps) |
+| Test Project            | Target Frameworks | Current Focus                         | CI Execution                        |
+| ----------------------- | ----------------- | ------------------------------------- | ----------------------------------- |
+| `Qwiq.Core.Tests`       | net472;net8.0     | Core abstractions (interfaces, mocks) | ✅ Full coverage in CI              |
+| `Qwiq.Linq.Tests`       | net472;net8.0     | LINQ provider, WIQL translation       | ✅ Full coverage in CI              |
+| `Qwiq.Mapper.Tests`     | net472;net8.0     | Object mapping                        | ✅ Full coverage in CI              |
+| `Qwiq.Identity.Tests`   | net472;net8.0     | Identity management                   | ✅ Full coverage in CI              |
+| `Qwiq.IntegrationTests` | net472            | Full integration (REST + SOAP)        | ❌ Excluded (requires Azure DevOps) |
 
 ### Existing Test Categories
 
@@ -141,6 +141,7 @@ See: `docs/adr/008-wiremock-offline-rest-testing.md` for full decision rationale
 ```
 
 **CI Test Filter** (from `.github/workflows/main.yml`):
+
 ```powershell
 --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
 ```
@@ -177,12 +178,13 @@ public class Given_some_context : ContextSpecification
 
 ### Client Architecture
 
-| Client | Project | Wrapper Pattern | SDK Dependency |
-|--------|---------|-----------------|----------------|
-| **REST** | `Qwiq.Core.Rest` | Thin adapter over VSS Client | `Microsoft.VisualStudio.Services.Client` |
+| Client   | Project          | Wrapper Pattern                 | SDK Dependency                                  |
+| -------- | ---------------- | ------------------------------- | ----------------------------------------------- |
+| **REST** | `Qwiq.Core.Rest` | Thin adapter over VSS Client    | `Microsoft.VisualStudio.Services.Client`        |
 | **SOAP** | `Qwiq.Core.Soap` | Thin adapter over TFS Client OM | `Microsoft.TeamFoundationServer.ExtendedClient` |
 
 **Key Classes** (targets for unit tests):
+
 - `WorkItemStore` - implements `IWorkItemStore`
 - `WorkItem` - implements `IWorkItem`
 - `Query` - implements `IQuery`
@@ -195,9 +197,11 @@ public class Given_some_context : ContextSpecification
 ### Phase 1: REST Client Unit Tests (Priority)
 
 #### FR1: Query Execution Tests
+
 The system must validate REST client query execution logic without requiring Azure DevOps connectivity.
 
 **Acceptance Criteria**:
+
 - Mock `WorkItemTrackingHttpClient` responses for WIQL queries
 - Validate query parameter handling (WIQL string, page size, time zone)
 - Verify result parsing (work item IDs, field mappings)
@@ -205,9 +209,11 @@ The system must validate REST client query execution logic without requiring Azu
 - Tests run on all platforms (Windows, Linux, macOS)
 
 #### FR2: Work Item Retrieval Tests
+
 The system must validate REST client work item retrieval and field access patterns.
 
 **Acceptance Criteria**:
+
 - Mock `GetWorkItemsAsync` responses with captured Azure DevOps API responses (WireMock stubs)
 - Validate field value extraction (System.Id, System.Title, custom fields)
 - Test batch retrieval (multiple work items)
@@ -215,18 +221,22 @@ The system must validate REST client work item retrieval and field access patter
 - Test link retrieval and parsing
 
 #### FR3: Authentication Flow Tests
+
 The system must validate authentication option handling without requiring real credentials.
 
 **Acceptance Criteria**:
+
 - Mock authentication providers for each `AuthenticationType` (Windows, PAT, OAuth, Basic)
 - Validate credential factory invocation
 - Test connection URI handling
 - Verify authentication error scenarios
 
 #### FR4: Factory Pattern Tests
+
 The system must validate `WorkItemStoreFactory` creation logic.
 
 **Acceptance Criteria**:
+
 - Test factory creates correct store instance for REST options
 - Validate option validation (null checks, URI validation)
 - Test error handling for invalid options
@@ -234,18 +244,22 @@ The system must validate `WorkItemStoreFactory` creation logic.
 ### Phase 2: SOAP Client Unit Tests (Secondary Priority)
 
 #### FR5: SOAP Query Tests
+
 The system must validate SOAP client query execution logic (Windows-only).
 
 **Acceptance Criteria**:
+
 - Mock `WorkItemStore` from TFS Client OM
 - Validate query execution and result parsing
 - Test SOAP-specific error handling
 - Tests run on Windows only
 
 #### FR6: SOAP Work Item Tests
+
 The system must validate SOAP client work item retrieval patterns.
 
 **Acceptance Criteria**:
+
 - Mock TFS Client OM work item responses
 - Validate field access patterns
 - Test revision handling
@@ -254,18 +268,22 @@ The system must validate SOAP client work item retrieval patterns.
 ### Phase 3: CI/CD Integration
 
 #### FR7: Test Category Configuration
+
 The system must provide granular test category controls for CI execution.
 
 **Acceptance Criteria**:
+
 - New test category `RestUnit` for REST unit tests
 - New test category `SoapUnit` for SOAP unit tests
 - CI filter updated to include `RestUnit` and `SoapUnit`
 - Documentation updated with category usage
 
 #### FR8: Cross-Platform Validation
+
 The system must validate REST client on multiple platforms.
 
 **Acceptance Criteria**:
+
 - REST unit tests run on Linux, Windows, macOS in CI
 - Build matrix configuration for multi-platform testing
 - Platform-specific test exclusions (SOAP on Windows only)
@@ -341,6 +359,7 @@ public class Given_REST_query_execution : ContextSpecification
 ### Test Data Management
 
 **Test Data Principles** (Updated per ADR-008):
+
 1. **Captured Real Traffic**: Use real Azure DevOps API responses captured via Fiddler and converted to WireMock stubs
 2. **Sandbox Environment Only**: Capture traffic from test/sandbox Azure DevOps instances, not production
 3. **Deterministic**: Same captured responses every test execution
@@ -350,6 +369,7 @@ public class Given_REST_query_execution : ContextSpecification
 **Note**: Original plan specified synthetic data only, but manual stub creation failed due to Azure DevOps SDK serialization requirements. Real captured traffic ensures authentic API response formats. See ADR-008 for full rationale.
 
 **Example Captured Work Item Data** (from WireMock stubs):
+
 ```csharp
 public static class TestWorkItems
 {
@@ -374,6 +394,7 @@ public static class TestWorkItems
 ### Dependency Injection for Testability
 
 **Current Architecture** (thin adapter):
+
 ```csharp
 // Qwiq.Core.Rest/WorkItemStore.cs (simplified)
 public class WorkItemStore : IWorkItemStore
@@ -394,6 +415,7 @@ public class WorkItemStore : IWorkItemStore
 ```
 
 **Testing Approach**:
+
 - Use `internal` constructor with mocked `WorkItemTrackingHttpClient`
 - `InternalsVisibleTo` already configured for test projects
 - No refactoring needed - adapter is already testable
@@ -408,18 +430,18 @@ public class WorkItemStore : IWorkItemStore
 
 **Tasks**:
 
-| ID | Task | Deliverable | Acceptance |
-|----|------|-------------|------------|
-| R1.1 | Create test class structure in `Qwiq.Core.Tests` | `Given_REST_WorkItemStore_*` classes | File structure exists |
-| R1.2 | Implement query execution tests with Moq | Mock `WorkItemTrackingHttpClient.QueryByWiqlAsync` | Tests pass locally |
-| R1.3 | Implement work item retrieval tests | Mock `GetWorkItemsAsync` responses | Tests validate field mapping |
-| R1.4 | Implement field access pattern tests | Test `IWorkItem.GetField<T>()` variants | Edge cases covered |
-| R1.5 | Implement authentication flow tests | Mock credential providers | All `AuthenticationType` values tested |
-| R1.6 | Implement factory pattern tests | Test `WorkItemStoreFactory.Create()` | Validation logic tested |
-| R1.7 | Add `RestUnit` test category | Apply `[TestCategory("RestUnit")]` attribute | Category defined |
-| R1.8 | Update CI filter to include `RestUnit` | Modify `.github/workflows/main.yml` | Tests run in CI |
-| R1.9 | Add cross-platform matrix to CI | Test on Windows, Linux, macOS | All platforms pass |
-| R1.10 | Document REST testing patterns | Add section to `TESTING.md` | Contributors have examples |
+| ID    | Task                                             | Deliverable                                        | Acceptance                             |
+| ----- | ------------------------------------------------ | -------------------------------------------------- | -------------------------------------- |
+| R1.1  | Create test class structure in `Qwiq.Core.Tests` | `Given_REST_WorkItemStore_*` classes               | File structure exists                  |
+| R1.2  | Implement query execution tests with Moq         | Mock `WorkItemTrackingHttpClient.QueryByWiqlAsync` | Tests pass locally                     |
+| R1.3  | Implement work item retrieval tests              | Mock `GetWorkItemsAsync` responses                 | Tests validate field mapping           |
+| R1.4  | Implement field access pattern tests             | Test `IWorkItem.GetField<T>()` variants            | Edge cases covered                     |
+| R1.5  | Implement authentication flow tests              | Mock credential providers                          | All `AuthenticationType` values tested |
+| R1.6  | Implement factory pattern tests                  | Test `WorkItemStoreFactory.Create()`               | Validation logic tested                |
+| R1.7  | Add `RestUnit` test category                     | Apply `[TestCategory("RestUnit")]` attribute       | Category defined                       |
+| R1.8  | Update CI filter to include `RestUnit`           | Modify `.github/workflows/main.yml`                | Tests run in CI                        |
+| R1.9  | Add cross-platform matrix to CI                  | Test on Windows, Linux, macOS                      | All platforms pass                     |
+| R1.10 | Document REST testing patterns                   | Add section to `TESTING.md`                        | Contributors have examples             |
 
 **Example Test Case**: Query Execution with Pagination
 
@@ -501,14 +523,14 @@ public class Given_REST_query_with_pagination : ContextSpecification
 
 **Tasks**:
 
-| ID | Task | Deliverable | Acceptance |
-|----|------|-------------|------------|
-| S2.1 | Create test class structure | `Given_SOAP_WorkItemStore_*` classes | File structure exists |
-| S2.2 | Implement query execution tests | Mock TFS Client OM query methods | Tests pass on Windows |
-| S2.3 | Implement work item retrieval tests | Mock `WorkItemCollection` responses | Field access validated |
-| S2.4 | Add `SoapUnit` test category | Apply `[TestCategory("SoapUnit")]` attribute | Category defined |
-| S2.5 | Update CI filter for SOAP tests | Windows-only execution in CI | Tests run on Windows |
-| S2.6 | Document SOAP testing patterns | Add section to `TESTING.md` | Contributors have examples |
+| ID   | Task                                | Deliverable                                  | Acceptance                 |
+| ---- | ----------------------------------- | -------------------------------------------- | -------------------------- |
+| S2.1 | Create test class structure         | `Given_SOAP_WorkItemStore_*` classes         | File structure exists      |
+| S2.2 | Implement query execution tests     | Mock TFS Client OM query methods             | Tests pass on Windows      |
+| S2.3 | Implement work item retrieval tests | Mock `WorkItemCollection` responses          | Field access validated     |
+| S2.4 | Add `SoapUnit` test category        | Apply `[TestCategory("SoapUnit")]` attribute | Category defined           |
+| S2.5 | Update CI filter for SOAP tests     | Windows-only execution in CI                 | Tests run on Windows       |
+| S2.6 | Document SOAP testing patterns      | Add section to `TESTING.md`                  | Contributors have examples |
 
 **Note**: SOAP priority is lower; defer until REST tests are stable.
 
@@ -516,12 +538,12 @@ public class Given_REST_query_with_pagination : ContextSpecification
 
 **Tasks**:
 
-| ID | Task | Deliverable | Acceptance |
-|----|------|-------------|------------|
+| ID   | Task                                    | Deliverable                        | Acceptance                 |
+| ---- | --------------------------------------- | ---------------------------------- | -------------------------- |
 | D3.1 | Update `TESTING.md` with new categories | Document `RestUnit` and `SoapUnit` | Clear category definitions |
-| D3.2 | Add adapter testing guide | Section on mocking SDK types | Contributors have patterns |
-| D3.3 | Create example tests | 3-5 representative examples | Copy-paste ready |
-| D3.4 | Update `copilot-instructions.md` | Add unit test guidelines | Agents understand patterns |
+| D3.2 | Add adapter testing guide               | Section on mocking SDK types       | Contributors have patterns |
+| D3.3 | Create example tests                    | 3-5 representative examples        | Copy-paste ready           |
+| D3.4 | Update `copilot-instructions.md`        | Add unit test guidelines           | Agents understand patterns |
 
 ---
 
@@ -530,30 +552,28 @@ public class Given_REST_query_with_pagination : ContextSpecification
 ### Test Focus Areas
 
 **Priority 1 (Must Have)**:
+
 1. **Query Execution** - WIQL query handling, parameter passing, result parsing
 2. **Work Item Retrieval** - Field access, batch retrieval, revision handling
 3. **Error Handling** - Invalid input, SDK exceptions, null handling
 
-**Priority 2 (Should Have)**:
-4. **Authentication Flow** - Credential provider setup, connection initialization
-5. **Factory Patterns** - Store creation, option validation
+**Priority 2 (Should Have)**: 4. **Authentication Flow** - Credential provider setup, connection initialization 5. **Factory Patterns** - Store creation, option validation
 
-**Priority 3 (Nice to Have)**:
-6. **Link Handling** - Work item links, attachments
-7. **Advanced Queries** - AsOf queries, identity fields
+**Priority 3 (Nice to Have)**: 6. **Link Handling** - Work item links, attachments 7. **Advanced Queries** - AsOf queries, identity fields
 
 ### Test Types
 
-| Test Type | Purpose | Example |
-|-----------|---------|---------|
-| **State Tests** | Verify correct output for given input | Query returns expected work items |
-| **Behavior Tests** | Verify correct actions taken | Factory validates options before creating store |
-| **Edge Case Tests** | Verify boundary conditions | Empty query results, null fields |
-| **Error Tests** | Verify error handling | Invalid WIQL throws meaningful exception |
+| Test Type           | Purpose                               | Example                                         |
+| ------------------- | ------------------------------------- | ----------------------------------------------- |
+| **State Tests**     | Verify correct output for given input | Query returns expected work items               |
+| **Behavior Tests**  | Verify correct actions taken          | Factory validates options before creating store |
+| **Edge Case Tests** | Verify boundary conditions            | Empty query results, null fields                |
+| **Error Tests**     | Verify error handling                 | Invalid WIQL throws meaningful exception        |
 
 ### Test Quality Standards
 
 **Required for All Tests**:
+
 - ✅ Fast execution (< 5 seconds per test class)
 - ✅ Deterministic (no flaky tests)
 - ✅ Isolated (no shared state between tests)
@@ -561,6 +581,7 @@ public class Given_REST_query_with_pagination : ContextSpecification
 - ✅ Maintainable (captured stubs can be updated by recapturing traffic)
 
 **Forbidden Practices**:
+
 - ❌ Recording/playback of real Azure DevOps responses
 - ❌ Hard-coded credentials or tokens
 - ❌ Network calls to external services
@@ -585,24 +606,26 @@ public class Given_REST_query_with_pagination : ContextSpecification
 
 **Updated Category Summary**:
 
-| Category | Purpose | Platforms | CI Execution |
-|----------|---------|-----------|--------------|
-| `RestUnit` | REST client unit tests | All | ✅ Always |
-| `SoapUnit` | SOAP client unit tests | Windows | ✅ Windows-only |
-| `REST` | REST integration tests | All | ❌ Manual only |
-| `SOAP` | SOAP integration tests | Windows | ❌ Manual only |
-| `IntegrationTests` | Full integration suite | Windows | ❌ Manual only |
-| `Benchmark` | Performance tests | All | ❌ Manual only |
-| `localOnly` | Local TFS tests | Windows | ❌ Manual only |
+| Category           | Purpose                | Platforms | CI Execution    |
+| ------------------ | ---------------------- | --------- | --------------- |
+| `RestUnit`         | REST client unit tests | All       | ✅ Always       |
+| `SoapUnit`         | SOAP client unit tests | Windows   | ✅ Windows-only |
+| `REST`             | REST integration tests | All       | ❌ Manual only  |
+| `SOAP`             | SOAP integration tests | Windows   | ❌ Manual only  |
+| `IntegrationTests` | Full integration suite | Windows   | ❌ Manual only  |
+| `Benchmark`        | Performance tests      | All       | ❌ Manual only  |
+| `localOnly`        | Local TFS tests        | Windows   | ❌ Manual only  |
 
 ### CI Pipeline Changes
 
 **Current Filter** (`.github/workflows/main.yml`):
+
 ```powershell
 --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
 ```
 
 **Updated Filter** (includes new categories):
+
 ```powershell
 --filter "TestCategory!=localOnly&TestCategory!=Benchmark&TestCategory!=SOAP&TestCategory!=REST&TestCategory!=IntegrationTests"
 # RestUnit and SoapUnit are included by default (not excluded)
@@ -639,12 +662,12 @@ jobs:
 
 ### Build Performance Targets
 
-| Metric | Current | Target (After Phase 1) |
-|--------|---------|------------------------|
-| **Total CI Time** | ~5 minutes | ~5 minutes (unchanged) |
-| **Unit Test Time** | ~10 seconds | ~15 seconds (+5s for REST unit tests) |
-| **REST Unit Tests** | 0 | 30-50 tests |
-| **Platform Coverage** | Windows only | Windows, Linux, macOS |
+| Metric                | Current      | Target (After Phase 1)                |
+| --------------------- | ------------ | ------------------------------------- |
+| **Total CI Time**     | ~5 minutes   | ~5 minutes (unchanged)                |
+| **Unit Test Time**    | ~10 seconds  | ~15 seconds (+5s for REST unit tests) |
+| **REST Unit Tests**   | 0            | 30-50 tests                           |
+| **Platform Coverage** | Windows only | Windows, Linux, macOS                 |
 
 ---
 
@@ -652,31 +675,33 @@ jobs:
 
 ### Technical Dependencies
 
-| Dependency | Version | Purpose | Availability |
-|------------|---------|---------|--------------|
-| **Moq** | 4.x | Mocking framework | ✅ Already in use |
-| **Shouldly** | 4.x | Assertion library | ✅ Already in use |
-| **MSTest** | 3.x | Test framework | ✅ Already in use |
-| **.NET SDK** | 8.0 | Build tooling | ✅ Pinned in `global.json` |
+| Dependency   | Version | Purpose           | Availability               |
+| ------------ | ------- | ----------------- | -------------------------- |
+| **Moq**      | 4.x     | Mocking framework | ✅ Already in use          |
+| **Shouldly** | 4.x     | Assertion library | ✅ Already in use          |
+| **MSTest**   | 3.x     | Test framework    | ✅ Already in use          |
+| **.NET SDK** | 8.0     | Build tooling     | ✅ Pinned in `global.json` |
 
 ### Project Prerequisites
 
-| Prerequisite | Status | Notes |
-|--------------|--------|-------|
-| **SDK-Style Projects** | ✅ Complete | Migrated in Wave 0 |
-| **Central Package Management** | ✅ Complete | `Directory.Packages.props` |
-| **InternalsVisibleTo** | ✅ Configured | Test projects have access |
-| **Nullable Annotations** | ✅ Complete (REST) | REST client fully annotated |
-| **GitHub Actions CI** | ✅ Configured | `.github/workflows/main.yml` |
+| Prerequisite                   | Status             | Notes                        |
+| ------------------------------ | ------------------ | ---------------------------- |
+| **SDK-Style Projects**         | ✅ Complete        | Migrated in Wave 0           |
+| **Central Package Management** | ✅ Complete        | `Directory.Packages.props`   |
+| **InternalsVisibleTo**         | ✅ Configured      | Test projects have access    |
+| **Nullable Annotations**       | ✅ Complete (REST) | REST client fully annotated  |
+| **GitHub Actions CI**          | ✅ Configured      | `.github/workflows/main.yml` |
 
 ### Knowledge Prerequisites
 
 **Contributors Need**:
+
 - ✅ Basic understanding of mocking with Moq
 - ✅ Familiarity with ContextSpecification pattern
 - ✅ Understanding of Azure DevOps work item concepts (query, field, revision)
 
 **Not Required**:
+
 - ❌ Azure DevOps credentials or access
 - ❌ TFS on-premises setup
 - ❌ Deep knowledge of VSS SDK internals
@@ -692,6 +717,7 @@ jobs:
 **Likelihood**: Medium | **Impact**: High
 
 **Mitigation**:
+
 1. Retain integration tests as source of truth for SDK behavior
 2. Review SDK release notes for breaking changes
 3. Cross-validate unit test assumptions against integration tests
@@ -706,12 +732,14 @@ jobs:
 **Likelihood**: Medium | **Impact**: Medium
 
 **Mitigation**:
+
 1. Focus tests on **output validation** (state testing) not call verification
 2. Use `Mock.Verify()` sparingly, only for critical side effects
 3. Code review guideline: "Is this testing the mock or the adapter?"
 4. Document anti-patterns in `TESTING.md`
 
 **Example Anti-Pattern**:
+
 ```csharp
 // BAD: Testing the mock
 [TestMethod]
@@ -737,12 +765,14 @@ public void Should_return_work_items_with_correct_fields()
 **Likelihood**: Low | **Impact**: Medium
 
 **Mitigation**:
+
 1. Identify unmockable types during Phase 1 planning
 2. Consider adapter refactoring if critical paths are unmockable
 3. Document gaps in test coverage explicitly
 4. Fall back to integration tests for unmockable scenarios
 
 **Known Constraints**:
+
 - `WorkItemTrackingHttpClient` is mockable (virtual methods)
 - TFS Client OM has some sealed types (assess during Phase 2)
 
@@ -753,6 +783,7 @@ public void Should_return_work_items_with_correct_fields()
 **Likelihood**: High | **Impact**: Low
 
 **Mitigation**:
+
 1. Prioritize REST tests (cross-platform)
 2. SOAP is maintenance-only mode (fewer changes)
 3. Document Windows requirement clearly in `TESTING.md`
@@ -767,6 +798,7 @@ public void Should_return_work_items_with_correct_fields()
 **Likelihood**: Medium | **Impact**: Medium
 
 **Mitigation**:
+
 1. Provide 3-5 comprehensive test examples in `TESTING.md`
 2. Document "copy-paste ready" test templates
 3. Code review feedback on test quality
@@ -781,6 +813,7 @@ public void Should_return_work_items_with_correct_fields()
 ### Definition of Done: Phase 1 (REST)
 
 **Must Have**:
+
 - ✅ 30-50 REST unit tests covering query execution, work item retrieval, field access, authentication
 - ✅ All tests pass locally on Windows, Linux, macOS
 - ✅ All tests pass in CI on Windows, Linux, macOS
@@ -790,17 +823,20 @@ public void Should_return_work_items_with_correct_fields()
 - ✅ Cross-platform CI matrix configured
 
 **Should Have**:
+
 - ✅ `TESTING.md` updated with REST testing patterns and examples
 - ✅ Code coverage for critical REST paths (query, retrieve, field access)
 - ✅ Zero failures on first CI run
 
 **Nice to Have**:
+
 - ✅ Mocking helper utilities for common SDK responses
 - ✅ WireMock stubs with captured Azure DevOps API responses
 
 ### Quality Gates
 
 **Required for PR Approval**:
+
 1. All new REST/SOAP code has accompanying unit tests
 2. Unit tests follow ContextSpecification pattern
 3. No hard-coded credentials or real Azure DevOps data
@@ -809,13 +845,13 @@ public void Should_return_work_items_with_correct_fields()
 
 ### Metrics
 
-| Metric | Baseline | Phase 1 Target | Measurement |
-|--------|----------|----------------|-------------|
-| **REST Unit Test Count** | 0 | 30-50 | Test count in `Qwiq.Core.Tests` |
-| **SOAP Unit Test Count** | 0 | 20-30 (Phase 2) | Test count in `Qwiq.Core.Tests` |
-| **CI Execution Time** | ~10s | ~15s | CI logs |
-| **Platform Coverage** | Windows | Windows, Linux, macOS | CI matrix runs |
-| **Contributor Friction** | High (requires Azure DevOps) | Low (local-only) | Contributor feedback |
+| Metric                   | Baseline                     | Phase 1 Target        | Measurement                     |
+| ------------------------ | ---------------------------- | --------------------- | ------------------------------- |
+| **REST Unit Test Count** | 0                            | 30-50                 | Test count in `Qwiq.Core.Tests` |
+| **SOAP Unit Test Count** | 0                            | 20-30 (Phase 2)       | Test count in `Qwiq.Core.Tests` |
+| **CI Execution Time**    | ~10s                         | ~15s                  | CI logs                         |
+| **Platform Coverage**    | Windows                      | Windows, Linux, macOS | CI matrix runs                  |
+| **Contributor Friction** | High (requires Azure DevOps) | Low (local-only)      | Contributor feedback            |
 
 ---
 
@@ -823,27 +859,27 @@ public void Should_return_work_items_with_correct_fields()
 
 ### Phase 1: REST Client Unit Tests
 
-| Task | Estimated Effort | Assignee Type |
-|------|------------------|---------------|
-| **R1.1-R1.6**: Implement REST tests | 8-12 hours | Intermediate developer |
-| **R1.7-R1.9**: CI integration | 2-4 hours | Maintainer |
-| **R1.10**: Documentation | 2-3 hours | Maintainer |
-| **Total Phase 1** | **12-19 hours** | ~2-3 days |
+| Task                                | Estimated Effort | Assignee Type          |
+| ----------------------------------- | ---------------- | ---------------------- |
+| **R1.1-R1.6**: Implement REST tests | 8-12 hours       | Intermediate developer |
+| **R1.7-R1.9**: CI integration       | 2-4 hours        | Maintainer             |
+| **R1.10**: Documentation            | 2-3 hours        | Maintainer             |
+| **Total Phase 1**                   | **12-19 hours**  | ~2-3 days              |
 
 ### Phase 2: SOAP Client Unit Tests
 
-| Task | Estimated Effort | Assignee Type |
-|------|------------------|---------------|
-| **S2.1-S2.3**: Implement SOAP tests | 6-10 hours | Intermediate developer (Windows) |
-| **S2.4-S2.5**: CI integration | 1-2 hours | Maintainer |
-| **S2.6**: Documentation | 1-2 hours | Maintainer |
-| **Total Phase 2** | **8-14 hours** | ~1-2 days |
+| Task                                | Estimated Effort | Assignee Type                    |
+| ----------------------------------- | ---------------- | -------------------------------- |
+| **S2.1-S2.3**: Implement SOAP tests | 6-10 hours       | Intermediate developer (Windows) |
+| **S2.4-S2.5**: CI integration       | 1-2 hours        | Maintainer                       |
+| **S2.6**: Documentation             | 1-2 hours        | Maintainer                       |
+| **Total Phase 2**                   | **8-14 hours**   | ~1-2 days                        |
 
 ### Phase 3: Documentation
 
-| Task | Estimated Effort | Assignee Type |
-|------|------------------|---------------|
-| **D3.1-D3.4**: Documentation updates | 2-4 hours | Maintainer |
+| Task                                 | Estimated Effort | Assignee Type |
+| ------------------------------------ | ---------------- | ------------- |
+| **D3.1-D3.4**: Documentation updates | 2-4 hours        | Maintainer    |
 
 ### Total Estimated Effort
 

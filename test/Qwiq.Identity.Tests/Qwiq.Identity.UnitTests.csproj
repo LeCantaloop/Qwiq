@@ -1,1 +1,42 @@
-<Project Sdk="Microsoft.NET.Sdk">  <PropertyGroup>    <TargetFrameworks>net472;net8.0</TargetFrameworks>    <RootNamespace>Qwiq.Identity.Tests</RootNamespace>    <AssemblyName>Qwiq.Identity.UnitTests</AssemblyName>    <IsPackable>false</IsPackable>    <IsTestProject>true</IsTestProject>  </PropertyGroup>  <ItemGroup>    <PackageReference Include="Microsoft.NET.Test.Sdk" />    <PackageReference Include="MSTest.TestAdapter" />    <PackageReference Include="MSTest.TestFramework" />    <PackageReference Include="coverlet.collector" />    <PackageReference Include="Shouldly" />    <PackageReference Include="Microsoft.VisualStudio.Services.Client" />  </ItemGroup>  <ItemGroup>    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />    <ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />    <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />  </ItemGroup>  <!-- Add Mapper reference (multi-target) -->  <ItemGroup>    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />    <ProjectReference Include="..\..\src\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />  </ItemGroup>  <!-- SOAP-only tests - exclude from net8.0 -->  <ItemGroup Condition="'$(TargetFramework)' != 'net472'">    <Compile Remove="Mocks\MockIdentityManagementService2.cs" />    <Compile Remove="Soap\**" />  </ItemGroup>  <!-- InternalsVisibleTo for testing -->  <ItemGroup>    <InternalsVisibleTo Include="Qwiq.Identity.Benchmark.Tests" />  </ItemGroup></Project>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
+    <RootNamespace>Qwiq.Identity.Tests</RootNamespace>
+    <AssemblyName>Qwiq.Identity.UnitTests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="MSTest.TestAdapter" />
+    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="Microsoft.VisualStudio.Services.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+  </ItemGroup>
+
+  <!-- Add Mapper reference (multi-target) -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Qwiq.Mapper\Qwiq.Mapper.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\..\src\Qwiq.Mapper.Identity\Qwiq.Mapper.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+  </ItemGroup>
+
+  <!-- SOAP-only tests - exclude from net8.0 -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472'">
+    <Compile Remove="Mocks\MockIdentityManagementService2.cs" />
+    <Compile Remove="Soap\**" />
+  </ItemGroup>
+
+  <!-- InternalsVisibleTo for testing -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="Qwiq.Identity.Benchmark.Tests" />
+  </ItemGroup>
+</Project>

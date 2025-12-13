@@ -24,6 +24,7 @@
 ### Code Changes (Committed: c0e2158d, 1d3dfed5)
 
 #### test/Qwiq.Package.Tests/PackageTests.cs
+
 - **Removed**: 150+ lines of custom ZIP parsing (`ReadManifest`, `BuildContentsTree`, `WriteTree`, `PackageNode` class)
 - **Added**: `GetPackages()` method with timestamp-based deduplication logic
 - **Added**: `GetPackageDiscriminator()` and `ExtractPackageName()` for robust version parsing
@@ -32,16 +33,20 @@
 - **Note**: Only `.nupkg` files are discovered; `.snupkg` skipped pending upstream support
 
 #### test/Qwiq.Package.Tests/ModuleInitializer.cs
+
 - **Added**: `VerifyNupkg.Initialize();` call before existing scrubber registration
 
 #### test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj
+
 - **Added**: `<PackageReference Include="Verify.Nupkg" />` (version managed by CPM)
 
 #### .github/workflows/main.yml
+
 - **Removed**: Redundant `dotnet pack` step (packages now generated via `GeneratePackageOnBuild`)
 - **Note**: User subsequently removed `dotnet nuget verify` step that was initially added
 
 #### Deleted Files
+
 - **Removed**: 9 `.snupkg.verified` baseline files:
   - `PackageTests.Baseline_Qwiq.Client.Rest.snupkg.verified`
   - `PackageTests.Baseline_Qwiq.Client.Soap.snupkg.verified`
@@ -56,12 +61,14 @@
 ### Documentation Changes (Committed: e03abd45)
 
 #### docs/issues/verify-nupkg-snupkg-support.md (NEW)
+
 - **Created**: Comprehensive feature request template for upstream Verify.Nupkg repository
 - **Content**: Problem statement, use case, proposed solutions, acceptance criteria
 - **Purpose**: Enables filing issue #38 in MattKotsenas/Verify.Nupkg
 - **Includes**: Code samples, migration path, expected API usage
 
 #### MIGRATION_NOTES.md
+
 - **Added**: "Package Testing Modernization" section documenting:
   - Verify.Nupkg integration details
   - Package deduplication strategy
@@ -71,6 +78,7 @@
   - References to feature request and test implementation
 
 #### TESTING.md
+
 - **Added**: "Package Baseline Testing" section with:
   - Overview of Verify.Nupkg snapshot testing approach
   - Step-by-step explanation of test workflow
@@ -85,11 +93,13 @@
 ## Test Results
 
 ### Package Tests
+
 - **Before**: 18 tests (9 .nupkg + 9 .snupkg) with custom parsing
 - **Current**: 10 tests (9 .nupkg packages + 1 shared test method)
 - **Status**: ✅ All 10 tests passing
 
 ### Validation Commands
+
 ```powershell
 # Build packages
 dotnet build Qwiq.sln -c Release
@@ -99,6 +109,7 @@ dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj -c Release --no-bu
 ```
 
 ### Key Success Metric
+
 - ✅ Package deduplication resolved "prefix has already been used" errors
 - ✅ Reduced from 150+ lines of custom logic to ~10 lines using Verify.Nupkg
 - ✅ All existing `.nupkg` baselines continue to work
@@ -108,7 +119,7 @@ dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj -c Release --no-bu
 
 ## Git Commit History
 
-```
+```text
 e03abd45 (HEAD -> copilot/start-wave-1-task-w1-1, origin/copilot/start-wave-1-task-w1-1)
   docs: document package testing modernization for session handoff
 
@@ -136,6 +147,7 @@ c0e2158d
 **Documentation**: `docs/issues/verify-nupkg-snupkg-support.md`
 
 **When Upstream Adds Support:**
+
 1. Update `GetPackages()` to discover `*.snupkg` files
 2. Remove skip logging for symbol packages
 3. Regenerate 9 `.snupkg.verified` baseline files
@@ -145,6 +157,7 @@ c0e2158d
 ### Workflow State Note
 
 The workflow file was modified during this session and by the user:
+
 - **Session added**: `dotnet nuget verify` step for package integrity validation
 - **User removed**: Same step after initial commits (deliberately simplified)
 - **Current state**: Workflow only validates Source Link, not general package integrity
@@ -154,13 +167,16 @@ The workflow file was modified during this session and by the user:
 ## Package Deduplication Strategy
 
 ### Problem
+
 Incremental builds create multiple package versions in `bin/Release/`:
+
 - `Qwiq.Core.2.0.1.nupkg`
 - `Qwiq.Core.2.0.2.nupkg`
 
 This caused Verify framework to fail with "The prefix has already been used" errors.
 
 ### Solution
+
 ```csharp
 .GroupBy(GetPackageDiscriminator, StringComparer.OrdinalIgnoreCase)
 .Select(group => group.OrderByDescending(fileInfo => fileInfo.LastWriteTimeUtc).First())
@@ -169,6 +185,7 @@ This caused Verify framework to fail with "The prefix has already been used" err
 **Effect**: Only the **latest** version of each package by timestamp is tested.
 
 ### Implementation Details
+
 - `GetPackageDiscriminator()`: Strips `.nupkg`/`.snupkg` and version from filename
 - `ExtractPackageName()`: Uses `NuGetVersion.TryParse()` to find version boundary
 - Case-insensitive comparison using `StringComparer.OrdinalIgnoreCase`
@@ -178,7 +195,7 @@ This caused Verify framework to fail with "The prefix has already been used" err
 
 ## Files Modified This Session
 
-```
+```text
 .github/workflows/main.yml               (removed dotnet pack, user removed verify step)
 test/Qwiq.Package.Tests/
   ├── PackageTests.cs                    (refactored to use Verify.Nupkg)
@@ -225,6 +242,7 @@ SearchOption.AllDirectories
 ```
 
 **Actions Required:**
+
 1. Remove skip logging (lines 44-57)
 2. Update `GetPackages()` to include `.snupkg` discovery
 3. Regenerate 9 `.snupkg.verified` baseline files
@@ -234,6 +252,7 @@ SearchOption.AllDirectories
 ### Broader Modernization (See .agents/modernize-TODO.md)
 
 Continue with Wave 1 tasks:
+
 - W1.4: Create CODEOWNERS file
 - W1.5: Update README with current status
 - W1.6: Create CONTRIBUTING.md
@@ -244,32 +263,40 @@ Continue with Wave 1 tasks:
 ## Key Technical Decisions
 
 ### 1. Verify.Nupkg Over Custom Logic
+
 **Decision**: Use upstream plugin instead of maintaining custom ZIP parsing
 **Rationale**:
+
 - Reduces maintenance burden (150+ lines deleted)
 - More reliable ZIP extraction
 - Consistent with other snapshot tests
 - Easier to update when package format changes
 
 ### 2. Timestamp-Based Deduplication
+
 **Decision**: Keep latest package version by `LastWriteTimeUtc`
 **Rationale**:
+
 - Simple and deterministic
 - Mirrors typical build behavior (newer is better)
 - Avoids complex version comparison logic
 - Works with Nerdbank.GitVersioning's timestamp-based versions
 
 ### 3. Defer Symbol Package Testing
+
 **Decision**: Skip `.snupkg` baselines until upstream support
 **Rationale**:
+
 - Verify.Nupkg doesn't support extension (technical limitation)
 - CI still validates Source Link (partial coverage)
 - Feature request filed upstream (issue #38)
 - Easy restoration path when supported
 
 ### 4. Central Package Management
+
 **Decision**: Reference Verify.Nupkg without version in csproj
 **Rationale**:
+
 - Consistent with repository's CPM strategy
 - Version managed in `Directory.Packages.props`
 - Easier to update across multiple projects
@@ -324,13 +351,13 @@ cat test/Qwiq.Package.Tests/PackageTests.cs
 
 ### Key Files to Review
 
-| File | Purpose |
-|------|---------|
-| `docs/issues/verify-nupkg-snupkg-support.md` | Upstream feature request content |
-| `test/Qwiq.Package.Tests/PackageTests.cs` | Test implementation with deduplication |
-| `MIGRATION_NOTES.md` | Migration context and rationale |
-| `TESTING.md` | Operational testing instructions |
-| `.agents/modernize-TODO.md` | Broader modernization task list |
+| File                                         | Purpose                                |
+| -------------------------------------------- | -------------------------------------- |
+| `docs/issues/verify-nupkg-snupkg-support.md` | Upstream feature request content       |
+| `test/Qwiq.Package.Tests/PackageTests.cs`    | Test implementation with deduplication |
+| `MIGRATION_NOTES.md`                         | Migration context and rationale        |
+| `TESTING.md`                                 | Operational testing instructions       |
+| `.agents/modernize-TODO.md`                  | Broader modernization task list        |
 
 ### Questions Next Agent Might Have
 

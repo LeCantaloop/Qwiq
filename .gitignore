@@ -74,7 +74,12 @@ dlldata.c
 # .NET Core
 project.lock.json
 project.fragment.lock.json
+
+# Build artifacts directory - NEVER commit anything from here
+# Contains: build outputs, packages, test results, coverage reports, logs
+# All contents are regenerated on demand and must not be in version control
 /artifacts/
+
 **/Properties/launchSettings.json
 
 *_i.c
@@ -327,6 +332,9 @@ __pycache__/
 
 # Verify snapshot testing artifacts
 *.received.*
+
+# Stryker.NET mutation testing output
+StrykerOutput/
 
 
 #Ignore vscode AI rules

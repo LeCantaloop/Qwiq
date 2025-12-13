@@ -189,7 +189,7 @@ When making refactoring changes (nullable fixes, initialization changes, interfa
 
 ### TDD Workflow
 
-**Step 1: Write Tests BEFORE Code Changes**
+#### Step 1: Write Tests BEFORE Code Changes
 
 ```csharp
 // Document current behavior with tests
@@ -213,14 +213,14 @@ public class Given_WorkItemCore_with_parameterless_constructor : ContextSpecific
 }
 ```
 
-**Step 2: Verify Tests Pass**
+#### Step 2: Verify Tests Pass
 
 ```bash
 dotnet test --filter "FullyQualifiedName~WorkItemCore"
 # All tests should PASS before making changes
 ```
 
-**Step 3: Make Code Changes**
+#### Step 3: Make Code Changes
 
 ```csharp
 // Fix null! suppression with proper initialization
@@ -232,7 +232,7 @@ protected internal WorkItemCore()
 }
 ```
 
-**Step 4: Verify Tests Still Pass**
+#### Step 4: Verify Tests Still Pass
 
 ```bash
 dotnet test --filter "FullyQualifiedName~WorkItemCore"

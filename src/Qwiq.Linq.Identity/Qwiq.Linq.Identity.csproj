@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq.Linq.Identity</RootNamespace>
     <AssemblyName>Qwiq.Linq.Identity</AssemblyName>
     <Description>QWIQ Linq Identity - Identity-aware LINQ extensions for QWIQ</Description>

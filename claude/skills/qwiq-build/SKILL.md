@@ -122,10 +122,11 @@ dotnet build /m:1 /nodeReuse:false -v:minimal
 ```
 
 **Package Conflicts:**
-| Package | Problem | Solution |
-|---------|---------|----------|
-| `Polyfill` | Conflicts with VSS Client | Use custom `NullableAttributes.cs` |
-| `Should` | Conflicts with modern frameworks | Use `Shouldly` |
+
+| Package    | Problem                          | Solution                           |
+| ---------- | -------------------------------- | ---------------------------------- |
+| `Polyfill` | Conflicts with VSS Client        | Use custom `NullableAttributes.cs` |
+| `Should`   | Conflicts with modern frameworks | Use `Shouldly`                     |
 
 **Multi-TFM Race Conditions:**
 

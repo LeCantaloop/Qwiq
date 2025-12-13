@@ -196,7 +196,7 @@ git commit -m "deps: upgrade Shouldly to 4.2.1"
 
 ### Alternative 2: Paket Package Manager
 
-```
+```text
 source https://api.nuget.org/v3/index.json
 nuget Newtonsoft.Json 13.0.3
 ```

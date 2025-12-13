@@ -11,7 +11,7 @@
 
 1. [W2.11 Release Automation](#w211-release-automation-critical)
 2. [W2.13 SBOM Generation](#w213-sbom-generation-high)
-3. [W2.16 REST/SOAP Unit Test Coverage](#w216-restsoapunit-test-coverage-high)
+3. [W2.16 REST/SOAP Unit Test Coverage](#w216-restsoap-unit-test-coverage-high)
 4. [Task Dependencies](#task-dependencies)
 5. [Implementation Sequence](#implementation-sequence)
 
@@ -43,31 +43,31 @@ Automate NuGet package publishing on version tags using GitHub Actions, followin
 
 ### Files to Create/Modify
 
-| File | Action | Description |
-|------|--------|-------------|
-| `.github/workflows/release.yml` | Create | Main release workflow triggered by tags |
-| `.github/actions/setup-dotnet-build/action.yml` | Create | Composite action for common setup steps |
-| `.github/workflows/main.yml` | Modify | Add `workflow_call` trigger for reusability |
-| `README.md` | Update | Document release process |
+| File                                            | Action | Description                                 |
+| ----------------------------------------------- | ------ | ------------------------------------------- |
+| `.github/workflows/release.yml`                 | Create | Main release workflow triggered by tags     |
+| `.github/actions/setup-dotnet-build/action.yml` | Create | Composite action for common setup steps     |
+| `.github/workflows/main.yml`                    | Modify | Add `workflow_call` trigger for reusability |
+| `README.md`                                     | Update | Document release process                    |
 
 ### Implementation Details
 
 #### 1. Composite Action: `.github/actions/setup-dotnet-build/action.yml`
 
 ```yaml
-name: 'Setup .NET and Build'
-description: 'Reusable composite action for .NET setup, restore, and build'
+name: "Setup .NET and Build"
+description: "Reusable composite action for .NET setup, restore, and build"
 
 inputs:
   configuration:
-    description: 'Build configuration (Debug/Release)'
+    description: "Build configuration (Debug/Release)"
     required: false
-    default: 'Release'
+    default: "Release"
 
   enable-pack:
-    description: 'Enable NuGet pack during build'
+    description: "Enable NuGet pack during build"
     required: false
-    default: 'false'
+    default: "false"
 
 runs:
   using: composite
@@ -105,12 +105,11 @@ on:
       - master
   pull_request:
   workflow_dispatch:
-  workflow_call:  # ADD THIS - enables reuse from release.yml
+  workflow_call: # ADD THIS - enables reuse from release.yml
     inputs:
       configuration:
         type: string
-        default: 'Release'
-
+        default: "Release"
 # Rest of existing workflow...
 ```
 
@@ -122,12 +121,12 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
-  workflow_dispatch:  # Allow manual trigger for testing
+      - "v*"
+  workflow_dispatch: # Allow manual trigger for testing
 
 permissions:
-  contents: write  # Required for creating GitHub releases
-  packages: write  # Required for publishing packages
+  contents: write # Required for creating GitHub releases
+  packages: write # Required for publishing packages
 
 jobs:
   # Reuse main build workflow for consistency
@@ -187,12 +186,14 @@ jobs:
 **Before Merging PR**:
 
 1. **Local Build Test**:
+
    ```powershell
    dotnet build Qwiq.sln -c Release /t:Build,Pack
    # Verify packages created in src/*/bin/Release/
    ```
 
 2. **Workflow Syntax Validation**:
+
    ```powershell
    # Install actionlint
    gh extension install actionlint
@@ -200,6 +201,7 @@ jobs:
    ```
 
 3. **Test with Pre-release Tag**:
+
    ```powershell
    # Create test tag
    git tag v1.0.0-alpha.1
@@ -227,12 +229,12 @@ jobs:
 
 ### Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
+| Issue                         | Solution                                       |
+| ----------------------------- | ---------------------------------------------- |
 | `401 Unauthorized` from NuGet | Verify `NUGET_API_KEY` secret is set correctly |
-| Packages not found | Ensure `build` job uploads packages artifact |
-| Source Link validation fails | Only run on pushed tags, not manual triggers |
-| `409 Conflict` on duplicate | Expected behavior with `--skip-duplicate` |
+| Packages not found            | Ensure `build` job uploads packages artifact   |
+| Source Link validation fails  | Only run on pushed tags, not manual triggers   |
+| `409 Conflict` on duplicate   | Expected behavior with `--skip-duplicate`      |
 
 ### References
 
@@ -269,39 +271,39 @@ Generate SPDX-compliant Software Bill of Materials (SBOM) in BOTH build and rele
 
 ### Files to Create/Modify
 
-| File | Action | Description |
-|------|--------|-------------|
-| `.github/workflows/main.yml` | Modify | Add SBOM generation step to build |
-| `.github/workflows/release.yml` | Modify | Add SBOM generation and upload to releases |
-| `.github/actions/generate-sbom/action.yml` | Create | Composite action for SBOM generation |
-| `SECURITY.md` | Update | Document SBOM availability |
+| File                                       | Action | Description                                |
+| ------------------------------------------ | ------ | ------------------------------------------ |
+| `.github/workflows/main.yml`               | Modify | Add SBOM generation step to build          |
+| `.github/workflows/release.yml`            | Modify | Add SBOM generation and upload to releases |
+| `.github/actions/generate-sbom/action.yml` | Create | Composite action for SBOM generation       |
+| `SECURITY.md`                              | Update | Document SBOM availability                 |
 
 ### Implementation Details
 
 #### 1. Composite Action: `.github/actions/generate-sbom/action.yml`
 
 ```yaml
-name: 'Generate SBOM'
-description: 'Generate Software Bill of Materials using Microsoft SBOM Tool'
+name: "Generate SBOM"
+description: "Generate Software Bill of Materials using Microsoft SBOM Tool"
 
 inputs:
   build-drop-path:
-    description: 'Path to build output directory'
+    description: "Path to build output directory"
     required: true
 
   output-path:
-    description: 'Path to output SBOM files'
+    description: "Path to output SBOM files"
     required: true
 
   package-name:
-    description: 'Name of the package'
+    description: "Name of the package"
     required: true
-    default: 'Qwiq'
+    default: "Qwiq"
 
   package-version:
-    description: 'Version of the package'
+    description: "Version of the package"
     required: false
-    default: '0.0.0-dev'
+    default: "0.0.0-dev"
 
 runs:
   using: composite
@@ -434,6 +436,7 @@ jobs:
 **Before Merging PR**:
 
 1. **Local SBOM Generation**:
+
    ```powershell
    # Install tool
    dotnet tool install --global Microsoft.Sbom.DotNetTool
@@ -450,6 +453,7 @@ jobs:
    ```
 
 2. **SBOM Validation**:
+
    ```powershell
    # Verify all expected packages present
    $sbom = Get-Content ./test-sbom/_manifest/spdx_2.2/*.spdx.json | ConvertFrom-Json
@@ -476,12 +480,12 @@ jobs:
 
 ### Common Issues & Solutions
 
-| Issue | Solution |
-|-------|----------|
-| SBOM tool not found | Ensure `dotnet tool install` runs before generation |
-| Empty SBOM | Verify `BuildDropPath` points to built artifacts |
+| Issue                | Solution                                              |
+| -------------------- | ----------------------------------------------------- |
+| SBOM tool not found  | Ensure `dotnet tool install` runs before generation   |
+| Empty SBOM           | Verify `BuildDropPath` points to built artifacts      |
 | Missing dependencies | Ensure NuGet restore completed before SBOM generation |
-| Large SBOM file | Expected for projects with many dependencies |
+| Large SBOM file      | Expected for projects with many dependencies          |
 
 ### SBOM Use Cases
 
@@ -517,10 +521,10 @@ Implement comprehensive unit test coverage for REST and SOAP client adapters, en
 
 This task is split into two sequential phases:
 
-| Phase | Target | Effort | Priority | Platform |
-|-------|--------|--------|----------|----------|
-| **Phase 1** | REST Client | M (1-1.5 weeks) | High | Cross-platform |
-| **Phase 2** | SOAP Client | L (1.5-2 weeks) | Medium | Windows-only |
+| Phase       | Target      | Effort          | Priority | Platform       |
+| ----------- | ----------- | --------------- | -------- | -------------- |
+| **Phase 1** | REST Client | M (1-1.5 weeks) | High     | Cross-platform |
+| **Phase 2** | SOAP Client | L (1.5-2 weeks) | Medium   | Windows-only   |
 
 ### Key Requirements
 
@@ -539,6 +543,7 @@ This task is split into two sequential phases:
 **GitHub Issue**: [Create tracking issue in Phase 1]
 
 **Key PRD Sections**:
+
 - Section 7: Functional Requirements
 - Section 8: Technical Approach
 - Section 9: Implementation Phases
@@ -556,30 +561,30 @@ This task is split into two sequential phases:
 
 #### Files to Create/Modify
 
-| File | Action | Description |
-|------|--------|-------------|
-| `test/Qwiq.Core.Rest.Tests/` | Create | New test project for REST client |
-| `test/Qwiq.Core.Rest.Tests/Qwiq.Core.Rest.UnitTests.csproj` | Create | Test project file |
-| `test/Qwiq.Core.Rest.Tests/Given_REST_WorkItemStore_*.cs` | Create | Test classes for REST adapter |
-| `.github/workflows/main.yml` | Modify | Add `RestUnit` tests to CI |
-| `TESTING.md` | Update | Document REST testing patterns |
-| `coverage.runsettings` | Modify | Include REST tests in coverage |
+| File                                                        | Action | Description                      |
+| ----------------------------------------------------------- | ------ | -------------------------------- |
+| `test/Qwiq.Core.Rest.Tests/`                                | Create | New test project for REST client |
+| `test/Qwiq.Core.Rest.Tests/Qwiq.Core.Rest.UnitTests.csproj` | Create | Test project file                |
+| `test/Qwiq.Core.Rest.Tests/Given_REST_WorkItemStore_*.cs`   | Create | Test classes for REST adapter    |
+| `.github/workflows/main.yml`                                | Modify | Add `RestUnit` tests to CI       |
+| `TESTING.md`                                                | Update | Document REST testing patterns   |
+| `coverage.runsettings`                                      | Modify | Include REST tests in coverage   |
 
 #### Implementation Tasks
 
-| ID | Task | Deliverable | Acceptance |
-|----|------|-------------|------------|
-| R1.1 | Create REST test project structure | `Qwiq.Core.Rest.UnitTests.csproj` | Project builds |
-| R1.2 | Add test infrastructure dependencies | Moq, Shouldly, MSTest packages | Dependencies resolved |
-| R1.3 | Implement query execution tests | `Given_REST_WorkItemStore_query_execution.cs` | WIQL queries mocked |
-| R1.4 | Implement work item retrieval tests | `Given_REST_WorkItemStore_work_item_retrieval.cs` | GetWorkItems mocked |
-| R1.5 | Implement field access pattern tests | `Given_REST_WorkItemStore_field_access.cs` | Field mapping validated |
-| R1.6 | Implement authentication flow tests | `Given_REST_WorkItemStore_authentication.cs` | All auth types tested |
-| R1.7 | Implement factory pattern tests | `Given_WorkItemStoreFactory_REST.cs` | Factory validation logic |
-| R1.8 | Add `RestUnit` test category | Apply `[TestCategory("RestUnit")]` | Category defined |
-| R1.9 | Update CI filter to include `RestUnit` | Modify `.github/workflows/main.yml` | Tests run in CI |
-| R1.10 | Add cross-platform CI matrix | Test on Windows, Linux, macOS | All platforms pass |
-| R1.11 | Document REST testing patterns | Add section to `TESTING.md` | Contributor guide exists |
+| ID    | Task                                   | Deliverable                                       | Acceptance               |
+| ----- | -------------------------------------- | ------------------------------------------------- | ------------------------ |
+| R1.1  | Create REST test project structure     | `Qwiq.Core.Rest.UnitTests.csproj`                 | Project builds           |
+| R1.2  | Add test infrastructure dependencies   | Moq, Shouldly, MSTest packages                    | Dependencies resolved    |
+| R1.3  | Implement query execution tests        | `Given_REST_WorkItemStore_query_execution.cs`     | WIQL queries mocked      |
+| R1.4  | Implement work item retrieval tests    | `Given_REST_WorkItemStore_work_item_retrieval.cs` | GetWorkItems mocked      |
+| R1.5  | Implement field access pattern tests   | `Given_REST_WorkItemStore_field_access.cs`        | Field mapping validated  |
+| R1.6  | Implement authentication flow tests    | `Given_REST_WorkItemStore_authentication.cs`      | All auth types tested    |
+| R1.7  | Implement factory pattern tests        | `Given_WorkItemStoreFactory_REST.cs`              | Factory validation logic |
+| R1.8  | Add `RestUnit` test category           | Apply `[TestCategory("RestUnit")]`                | Category defined         |
+| R1.9  | Update CI filter to include `RestUnit` | Modify `.github/workflows/main.yml`               | Tests run in CI          |
+| R1.10 | Add cross-platform CI matrix           | Test on Windows, Linux, macOS                     | All platforms pass       |
+| R1.11 | Document REST testing patterns         | Add section to `TESTING.md`                       | Contributor guide exists |
 
 #### Example Test Implementation
 
@@ -652,6 +657,7 @@ namespace Qwiq.Client.Rest.UnitTests
 #### Critical Test Scenarios
 
 1. **Query Execution**:
+
    - Basic WIQL query
    - Query with field selection
    - Query with AsOf date
@@ -659,6 +665,7 @@ namespace Qwiq.Client.Rest.UnitTests
    - Empty result set
 
 2. **Work Item Retrieval**:
+
    - GetWorkItem by ID
    - GetWorkItems batch (multiple IDs)
    - Batch size limits (200 max per request)
@@ -666,12 +673,14 @@ namespace Qwiq.Client.Rest.UnitTests
    - Work item not found (404)
 
 3. **Field Access Patterns**:
+
    - `IWorkItem.GetField<T>(fieldName)`
    - `IWorkItem[fieldName]` indexer
    - Field type conversions
    - Missing field handling
 
 4. **Authentication Flows**:
+
    - PersonalAccessToken authentication
    - OAuth token authentication
    - Windows authentication (if applicable)
@@ -732,35 +741,37 @@ jobs:
 
 #### Files to Create/Modify
 
-| File | Action | Description |
-|------|--------|-------------|
-| `test/Qwiq.Core.Soap.Tests/` | Create | New test project for SOAP client |
-| `test/Qwiq.Core.Soap.Tests/Qwiq.Core.Soap.UnitTests.csproj` | Create | Test project file (net472 only) |
-| `test/Qwiq.Core.Soap.Tests/Given_SOAP_WorkItemStore_*.cs` | Create | Test classes for SOAP adapter |
-| `.github/workflows/main.yml` | Modify | Add `SoapUnit` tests (Windows only) |
-| `TESTING.md` | Update | Document SOAP testing patterns |
+| File                                                        | Action | Description                         |
+| ----------------------------------------------------------- | ------ | ----------------------------------- |
+| `test/Qwiq.Core.Soap.Tests/`                                | Create | New test project for SOAP client    |
+| `test/Qwiq.Core.Soap.Tests/Qwiq.Core.Soap.UnitTests.csproj` | Create | Test project file (net472 only)     |
+| `test/Qwiq.Core.Soap.Tests/Given_SOAP_WorkItemStore_*.cs`   | Create | Test classes for SOAP adapter       |
+| `.github/workflows/main.yml`                                | Modify | Add `SoapUnit` tests (Windows only) |
+| `TESTING.md`                                                | Update | Document SOAP testing patterns      |
 
 #### Implementation Tasks
 
-| ID | Task | Deliverable | Acceptance |
-|----|------|-------------|------------|
-| S2.1 | Create SOAP test project structure | `Qwiq.Core.Soap.UnitTests.csproj` | Project builds on Windows |
-| S2.2 | Add SOAP test dependencies | TFS Client OM mocks | Dependencies resolved |
-| S2.3 | Implement query execution tests | `Given_SOAP_WorkItemStore_query_execution.cs` | TFS OM queries mocked |
+| ID   | Task                                | Deliverable                                       | Acceptance                |
+| ---- | ----------------------------------- | ------------------------------------------------- | ------------------------- |
+| S2.1 | Create SOAP test project structure  | `Qwiq.Core.Soap.UnitTests.csproj`                 | Project builds on Windows |
+| S2.2 | Add SOAP test dependencies          | TFS Client OM mocks                               | Dependencies resolved     |
+| S2.3 | Implement query execution tests     | `Given_SOAP_WorkItemStore_query_execution.cs`     | TFS OM queries mocked     |
 | S2.4 | Implement work item retrieval tests | `Given_SOAP_WorkItemStore_work_item_retrieval.cs` | WorkItemCollection mocked |
-| S2.5 | Implement field access tests | `Given_SOAP_WorkItemStore_field_access.cs` | Field access validated |
-| S2.6 | Add `SoapUnit` test category | Apply `[TestCategory("SoapUnit")]` | Category defined |
-| S2.7 | Update CI filter for SOAP tests | Modify `.github/workflows/main.yml` | Tests run on Windows only |
-| S2.8 | Document SOAP testing patterns | Add section to `TESTING.md` | Contributor guide exists |
+| S2.5 | Implement field access tests        | `Given_SOAP_WorkItemStore_field_access.cs`        | Field access validated    |
+| S2.6 | Add `SoapUnit` test category        | Apply `[TestCategory("SoapUnit")]`                | Category defined          |
+| S2.7 | Update CI filter for SOAP tests     | Modify `.github/workflows/main.yml`               | Tests run on Windows only |
+| S2.8 | Document SOAP testing patterns      | Add section to `TESTING.md`                       | Contributor guide exists  |
 
 #### SOAP-Specific Challenges
 
 1. **TFS Client OM Complexity**:
+
    - `WorkItemStore` is sealed class (requires wrapper interface)
    - `WorkItemCollection` is concrete class
    - Field access via `WorkItem.Fields[name]`
 
 2. **Mocking Strategy**:
+
    - Create `IWorkItemStore` interface wrapping TFS OM
    - Mock interface instead of sealed classes
    - Use test doubles for `WorkItemCollection`
@@ -790,7 +801,7 @@ jobs:
 
 Add new sections:
 
-```markdown
+````markdown
 ## Unit Testing Without Azure DevOps
 
 ### REST Client Unit Tests
@@ -801,9 +812,11 @@ Tests run on all platforms (Windows, Linux, macOS) without Azure DevOps.
 **Test Category**: `RestUnit`
 
 **Running REST Tests**:
+
 ```powershell
 dotnet test --filter "TestCategory=RestUnit"
 ```
+````
 
 **Example Test**:
 [Include example from R1.3 above]
@@ -816,6 +829,7 @@ Tests run on Windows only (net472 requirement).
 **Test Category**: `SoapUnit`
 
 **Running SOAP Tests**:
+
 ```powershell
 dotnet test --filter "TestCategory=SoapUnit"
 ```
@@ -823,12 +837,14 @@ dotnet test --filter "TestCategory=SoapUnit"
 ### Writing Adapter Tests
 
 When testing thin adapters:
+
 1. Focus on adapter behavior, not SDK verification
 2. Use synthetic test data, not recorded responses
 3. Mock at SDK boundaries (`WorkItemTrackingHttpClient`, TFS OM)
 4. Test error handling and edge cases
 5. Validate output state, not mock call counts
-```
+
+````text
 
 ### Validation & Testing
 
@@ -841,19 +857,21 @@ When testing thin adapters:
 
    # Phase 2: SOAP tests (Windows only)
    dotnet test --filter "TestCategory=SoapUnit"
-   ```
+````
 
-2. **Code Coverage Validation**:
+1. **Code Coverage Validation**:
+
    ```powershell
    dotnet test --collect:"XPlat Code Coverage" --filter "TestCategory=RestUnit"
    # Verify coverage >80% for REST adapter code
    ```
 
-3. **CI Validation**:
+2. **CI Validation**:
+
    - Push feature branch and verify all CI platforms pass
    - Check test execution logs for cross-platform success
 
-4. **Integration Test Compatibility**:
+3. **Integration Test Compatibility**:
    - Ensure unit tests don't conflict with existing integration tests
    - Verify `TestCategory` filtering works correctly
 
@@ -880,7 +898,7 @@ When testing thin adapters:
 
 ### Dependency Graph
 
-```
+```text
 W2.11 (Release Automation)
   └─> W2.13 (SBOM Generation)
 
@@ -897,12 +915,12 @@ W2.16 (REST/SOAP Unit Tests)
 
 ### Prerequisites
 
-| Task | Prerequisites | Status |
-|------|---------------|--------|
-| W2.11 | W1.2 (Source Link) | ✅ Complete |
-| W2.13 | W2.11 | 📋 Planned |
-| W2.16-P1 | PRD created | ✅ Complete |
-| W2.16-P2 | Phase 1 complete | ⏳ Waiting |
+| Task     | Prerequisites      | Status      |
+| -------- | ------------------ | ----------- |
+| W2.11    | W1.2 (Source Link) | ✅ Complete |
+| W2.13    | W2.11              | 📋 Planned  |
+| W2.16-P1 | PRD created        | ✅ Complete |
+| W2.16-P2 | Phase 1 complete   | ⏳ Waiting  |
 
 ---
 
@@ -911,14 +929,17 @@ W2.16 (REST/SOAP Unit Tests)
 ### Recommended Order
 
 1. **Week 1**: W2.11 (Release Automation)
+
    - High impact, unblocks manual release process
    - Prerequisite for W2.13
 
 2. **Week 2**: W2.13 (SBOM Generation)
+
    - Builds on W2.11
    - Security compliance requirement
 
 3. **Week 3-4**: W2.16 Phase 1 (REST Unit Tests)
+
    - High value for CI validation
    - Cross-platform testing
 
@@ -935,9 +956,9 @@ W2.16 (REST/SOAP Unit Tests)
 
 ## Version History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | Dec 5, 2025 | AI Assistant | Initial task definitions for W2.11, W2.13, W2.16 |
+| Version | Date        | Author       | Changes                                          |
+| ------- | ----------- | ------------ | ------------------------------------------------ |
+| 1.0     | Dec 5, 2025 | AI Assistant | Initial task definitions for W2.11, W2.13, W2.16 |
 
 ---
 

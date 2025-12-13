@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq.Linq.Tests</RootNamespace>
     <AssemblyName>Qwiq.Linq.UnitTests</AssemblyName>
     <IsPackable>false</IsPackable>
@@ -17,7 +17,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Qwiq.Core\Qwiq.Core.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\..\src\Qwiq.Identity\Qwiq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
     <ProjectReference Include="..\..\src\Qwiq.Linq\Qwiq.Linq.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
+    <ProjectReference Include="..\..\src\Qwiq.Linq.Identity\Qwiq.Linq.Identity.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
     <ProjectReference Include="..\Qwiq.Mocks\Qwiq.Mocks.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
     <ProjectReference Include="..\Qwiq.Tests.Common\Qwiq.Tests.Common.csproj" SetTargetFramework="TargetFramework=$(TargetFramework)" />
   </ItemGroup>

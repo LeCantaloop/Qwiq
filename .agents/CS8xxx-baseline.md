@@ -13,17 +13,18 @@ Total CS8xxx warnings across all source projects: **0**
 
 ## Warning Breakdown by Project
 
-| Project | Total Warnings | Status |
-|---------|----------------|--------|
-| Qwiq.Client.Rest | 0 | ✅ Clean |
-| Qwiq.Client.Soap | 0 | ✅ Clean |
-| Qwiq.Core | 0 | ✅ Clean |
-| Qwiq.Identity.Soap | 0 | ✅ Clean |
-| Qwiq.Identity | 0 | ✅ Clean |
-| Qwiq.Linq.Identity | 0 | ✅ Clean |
-| Qwiq.Linq | 0 | ✅ Clean |
-| Qwiq.Mapper.Identity | 0 | ✅ Clean |
-| Qwiq.Mapper | 0 | ✅ Clean |
+| Project              | Total Warnings | Status   |
+| -------------------- | -------------- | -------- |
+| Qwiq.Client.Rest     | 0              | ✅ Clean |
+| Qwiq.Client.Soap     | 0              | ✅ Clean |
+| Qwiq.Core            | 0              | ✅ Clean |
+| Qwiq.Identity.Soap   | 0              | ✅ Clean |
+| Qwiq.Identity        | 0              | ✅ Clean |
+| Qwiq.Linq.Identity   | 0              | ✅ Clean |
+| Qwiq.Linq            | 0              | ✅ Clean |
+| Qwiq.Mapper.Identity | 0              | ✅ Clean |
+| Qwiq.Mapper          | 0              | ✅ Clean |
+
 ---
 
 ## Detailed Warnings by Project
@@ -92,4 +93,4 @@ Per CS8xxx-mitigation.md PRD:
 
 ---
 
-**End of Report**
+## End of Report

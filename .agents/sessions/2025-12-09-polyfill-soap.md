@@ -17,6 +17,7 @@ This session extended the `[Embedded]` attribute polyfill strategy to the SOAP p
 Added polyfill file links to both SOAP project files:
 
 **Qwiq.Client.Soap.csproj**:
+
 ```xml
 <Compile Include="..\Qwiq.Core\Compatibility\EmbeddedAttribute.cs" Link="Compatibility\EmbeddedAttribute.cs" />
 <Compile Include="..\Qwiq.Core\Compatibility\CallerArgumentExpressionAttribute.cs" Link="Compatibility\CallerArgumentExpressionAttribute.cs" />
@@ -24,6 +25,7 @@ Added polyfill file links to both SOAP project files:
 ```
 
 **Qwiq.Identity.Soap.csproj**:
+
 ```xml
 <Compile Include="..\Qwiq.Core\Compatibility\EmbeddedAttribute.cs" Link="Compatibility\EmbeddedAttribute.cs" />
 <Compile Include="..\Qwiq.Core\Compatibility\CallerArgumentExpressionAttribute.cs" Link="Compatibility\CallerArgumentExpressionAttribute.cs" />
@@ -35,6 +37,7 @@ Added polyfill file links to both SOAP project files:
 Replaced 14 traditional null checks with `ArgumentNullException.ThrowIfNull`:
 
 **Qwiq.Core.Soap (9 replacements in 6 files)**:
+
 - `WorkItemStore.cs` - 4 replacements (tpcFactory, wisFactory, queryFactory, ids)
 - `WorkItemStoreFactory.cs` - 1 replacement (options)
 - `WorkItemType.cs` - 1 replacement (type)
@@ -43,6 +46,7 @@ Replaced 14 traditional null checks with `ArgumentNullException.ThrowIfNull`:
 - `QueryFactory.cs` - 1 replacement (ids)
 
 **Qwiq.Identity.Soap (5 replacements in 2 files)**:
+
 - `IdentityManagementService.cs` - 2 replacements (descriptors, searchFactorValues)
 - `Extensions.cs` - 3 replacements (teamProjectCollection, workItemStore, descriptor)
 
@@ -58,6 +62,7 @@ Replaced 14 traditional null checks with `ArgumentNullException.ThrowIfNull`:
 ⚠️ **Build has pre-existing issues** - The solution build fails with CS0006 errors (missing reference assemblies) that appear to be related to parallel build issues with the .NET 10 SDK, not the changes made in this session.
 
 Individual project builds succeed:
+
 - `Qwiq.Client.Soap` - ✅ Builds successfully (with CS0436 warning about MaybeNullWhenAttribute)
 - `Qwiq.Identity.Soap` - ✅ Builds successfully
 
@@ -71,18 +76,18 @@ The CS0436 warning about `MaybeNullWhenAttribute` is a pre-existing issue where 
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `src/Qwiq.Core.Soap/Qwiq.Client.Soap.csproj` | Added polyfill links |
-| `src/Qwiq.Identity.Soap/Qwiq.Identity.Soap.csproj` | Added polyfill links |
-| `src/Qwiq.Core.Soap/WorkItemStore.cs` | 4 ThrowIfNull replacements |
-| `src/Qwiq.Core.Soap/WorkItemStoreFactory.cs` | 1 ThrowIfNull replacement |
-| `src/Qwiq.Core.Soap/WorkItemType.cs` | 1 ThrowIfNull replacement |
-| `src/Qwiq.Core.Soap/WorkItemLinkTypeEnd.cs` | 1 ThrowIfNull replacement |
-| `src/Qwiq.Core.Soap/WorkItemLinkType.cs` | 1 ThrowIfNull replacement |
-| `src/Qwiq.Core.Soap/QueryFactory.cs` | 1 ThrowIfNull replacement |
+| File                                                  | Change                     |
+| ----------------------------------------------------- | -------------------------- |
+| `src/Qwiq.Core.Soap/Qwiq.Client.Soap.csproj`          | Added polyfill links       |
+| `src/Qwiq.Identity.Soap/Qwiq.Identity.Soap.csproj`    | Added polyfill links       |
+| `src/Qwiq.Core.Soap/WorkItemStore.cs`                 | 4 ThrowIfNull replacements |
+| `src/Qwiq.Core.Soap/WorkItemStoreFactory.cs`          | 1 ThrowIfNull replacement  |
+| `src/Qwiq.Core.Soap/WorkItemType.cs`                  | 1 ThrowIfNull replacement  |
+| `src/Qwiq.Core.Soap/WorkItemLinkTypeEnd.cs`           | 1 ThrowIfNull replacement  |
+| `src/Qwiq.Core.Soap/WorkItemLinkType.cs`              | 1 ThrowIfNull replacement  |
+| `src/Qwiq.Core.Soap/QueryFactory.cs`                  | 1 ThrowIfNull replacement  |
 | `src/Qwiq.Identity.Soap/IdentityManagementService.cs` | 2 ThrowIfNull replacements |
-| `src/Qwiq.Identity.Soap/Extensions.cs` | 3 ThrowIfNull replacements |
+| `src/Qwiq.Identity.Soap/Extensions.cs`                | 3 ThrowIfNull replacements |
 
 ## Session Context (from conversation summary)
 

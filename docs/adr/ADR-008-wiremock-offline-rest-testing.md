@@ -163,7 +163,7 @@ We implemented a two-phase approach:
 
 ### Test Results
 
-```
+```text
 Test Run Successful.
 Total tests: 9
      Passed: 9
@@ -309,11 +309,11 @@ dotnet test --filter "TestCategory=WireMock" --logger "console;verbosity=detaile
 # 1. Start Fiddler with HTTPS decryption enabled
 # 2. Execute desired Azure DevOps operations (login, query work items, etc.)
 # 3. File > Export Sessions > All Sessions > HTTP Archive 1.2
-# 4. Save to .agents/qwiq.har
+# 4. Save to artifacts/qwiq.har
 
 # 5. Convert HAR to WireMock stubs
 .\scripts\Convert-HarToWireMock.ps1 `
-    -HarFilePath ".agents\qwiq.har" `
+    -HarFilePath "artifacts\qwiq.har" `
     -OutputPath "test\Qwiq.Integration.Tests\WireMock\Stubs\azure-devops-stubs.json"
 
 # 6. Rebuild and verify tests still pass
@@ -335,7 +335,7 @@ dotnet test --filter "TestCategory=WireMock"
 - [WireMock.Net Documentation](https://github.com/WireMock-Net/WireMock.Net)
 - [HAR 1.2 Specification](http://www.softwareishard.com/blog/har-12-spec/)
 - [Fiddler Documentation](https://docs.telerik.com/fiddler/configure-fiddler/tasks/decrypthttps)
-- Issue: Captured traffic in `.agents/qwiq.har` (1.7 MB, 22 entries → 5 unique mappings)
+- Issue: Captured traffic in `artifacts/qwiq.har` (1.7 MB, 22 entries → 5 unique mappings)
 - Pull Request: Contains WireMock implementation with 8 atomic commits
 
 ---

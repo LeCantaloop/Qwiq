@@ -66,6 +66,11 @@ config:
   # MD058: Tables should be surrounded by blank lines
   MD058: true
 
+  # MD060: Table column count - disabled for agent docs with complex tables
+  # The rule requires consistent column counts across all rows, which is overly
+  # restrictive for documentation tables with varied content
+  MD060: false
+
 # Files to lint
 globs:
   - "**/*.md"
@@ -79,3 +84,8 @@ ignores:
   # Verify snapshot files have their own formatting rules
   - "**/*.verified.md"
   - "**/*.received.md"
+  # PROMPTS.md contains nested code blocks (prompts with embedded code samples)
+  # These are intentional and can't be linted correctly
+  - ".agents/PROMPTS.md"
+  # BenchmarkDotNet auto-generated reports
+  - "**/BenchmarkDotNet.Artifacts/**"

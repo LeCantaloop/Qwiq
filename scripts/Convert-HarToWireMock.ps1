@@ -17,7 +17,7 @@
     Only include requests to this host. Default is "qwiq-sandbox.visualstudio.com".
 
 .EXAMPLE
-    .\Convert-HarToWireMock.ps1 -HarFile ".agents\qwiq.har" -OutputFile "test\Qwiq.Integration.Tests\WireMock\Stubs\azure-devops-stubs.json"
+    .\Convert-HarToWireMock.ps1 -HarFile "artifacts\qwiq.har" -OutputFile "test\Qwiq.Integration.Tests\WireMock\Stubs\azure-devops-stubs.json"
 #>
 
 [CmdletBinding()]

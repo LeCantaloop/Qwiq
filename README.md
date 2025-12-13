@@ -38,7 +38,7 @@ Once the feed is configured, install via the nuget UI or via the nuget package m
 From the NuGet package manager console
 NuGet
 
-```
+```powershell
 PM> Install-Package Qwiq.Core
 ```
 
@@ -46,7 +46,7 @@ Or via the UI [Qwiq.Core](https://www.nuget.org/packages/Qwiq.Core/)
 
 MyGet
 
-```
+```powershell
 PM> Install-Package Qwiq.Core -Source https://www.myget.org/F/qwiq/api/v3/index.json
 ```
 
@@ -57,7 +57,7 @@ Or via the UI [Qwiq.Core](https://www.myget.org/feed/qwiq/package/nuget/Qwiq.Cor
 We now have two clients: one for SOAP, and one for REST
 NuGet
 
-```
+```powershell
 PM> Install-Package Qwiq.Client.Soap
 ```
 
@@ -66,7 +66,7 @@ Or via the UI [Qwiq.Client.Soap](https://www.nuget.org/packages/Qwiq.Client.Soap
 From the NuGet package manager console
 MyGet
 
-```
+```powershell
 PM> Install-Package Qwiq.Client.Soap -Source https://www.myget.org/F/qwiq/api/v3/index.json
 ```
 
@@ -123,7 +123,7 @@ $items = $store.Query(@"
 
 ## Contributing
 
-**Getting started with Git and GitHub**
+### Getting started with Git and GitHub
 
 - [Setting up Git for Windows and connecting to GitHub](http://help.github.com/win-set-up-git/)
 - [Forking a GitHub repository](http://help.github.com/fork-a-repo/)

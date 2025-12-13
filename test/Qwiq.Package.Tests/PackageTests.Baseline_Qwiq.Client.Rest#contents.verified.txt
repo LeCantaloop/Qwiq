@@ -2,9 +2,21 @@
 |-- Qwiq.Client.Rest.nuspec
 |-- README.md
 |-- lib
+|   |-- net10.0
+|   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml
 |   |-- net472
 |   |   |-- Qwiq.Client.Rest.dll
 |   |   |-- Qwiq.Client.Rest.xml
+|   |-- net48
+|   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml
+|   |-- net481
+|   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml
 |   |-- net8.0
+|   |   |-- Qwiq.Client.Rest.dll
+|   |   |-- Qwiq.Client.Rest.xml
+|   |-- net9.0
 |   |   |-- Qwiq.Client.Rest.dll
 |   |   |-- Qwiq.Client.Rest.xml

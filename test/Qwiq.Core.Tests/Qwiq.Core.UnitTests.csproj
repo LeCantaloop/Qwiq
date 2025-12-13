@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq</RootNamespace>
     <AssemblyName>Qwiq.Core.UnitTests</AssemblyName>
     <IsPackable>false</IsPackable>
@@ -43,8 +43,8 @@
     <ProjectReference Include="$(RepoRoot)\test\Qwiq.Integration.Tests\Qwiq.IntegrationTests.csproj" SetTargetFramework="TargetFramework=net472" />
   </ItemGroup>
 
-  <!-- Exclude REST integration tests from net8.0 build (they require Integration.Tests which only targets net472) -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <!-- Exclude REST integration tests from non-net472 builds (they require Integration.Tests which only targets net472) -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net472'">
     <Compile Remove="Client\Rest\RestWorkItemStoreQueryTests.cs" />
   </ItemGroup>
 

@@ -18,16 +18,16 @@ Multi-agent analysis reached consensus on the following key findings:
 
 ### The 8 Active Suppressions (Design Decisions)
 
-| Rule | Count | Justification |
-|------|-------|---------------|
-| CS1591 | ~4200 | XML docs - large effort, low ROI for internal library |
-| CS0618 | 1 | TimeZone obsolete - breaking API change |
-| CA1707 | 868 | Test naming pattern (Given_When_Then) - intentional |
-| CA1716 | 78 | Keyword conflicts - intentional API design |
-| CA1822 | 36 | Static methods - API compatibility |
-| CA1859 | 30 | Concrete types - intentional abstraction |
-| CA1863 | 20 | CompositeFormat - .NET 8+ only |
-| CA2263 | scoped | Test-specific - appropriate scope |
+| Rule   | Count  | Justification                                         |
+| ------ | ------ | ----------------------------------------------------- |
+| CS1591 | ~4200  | XML docs - large effort, low ROI for internal library |
+| CS0618 | 1      | TimeZone obsolete - breaking API change               |
+| CA1707 | 868    | Test naming pattern (Given_When_Then) - intentional   |
+| CA1716 | 78     | Keyword conflicts - intentional API design            |
+| CA1822 | 36     | Static methods - API compatibility                    |
+| CA1859 | 30     | Concrete types - intentional abstraction              |
+| CA1863 | 20     | CompositeFormat - .NET 8+ only                        |
+| CA2263 | scoped | Test-specific - appropriate scope                     |
 
 ### Recommended Actions
 
@@ -38,6 +38,7 @@ Multi-agent analysis reached consensus on the following key findings:
 ### Current Wave 2 Status (9/25 complete)
 
 **Completed**:
+
 - W2.4 (Benchmark CI) ✅
 - W2.13 (SBOM) ✅
 - W2.14 (Dependency Review) ✅
@@ -49,11 +50,13 @@ Multi-agent analysis reached consensus on the following key findings:
 - W2.5 (ADRs) ✅
 
 **Partial**:
+
 - W2.11 (Release automation) - Partial
 
 ## Changes Made
 
 This session updated modernize-TODO.md with:
+
 1. Updated Quick Reference table showing Wave 1 complete
 2. Updated Next Session Quick Start with Session 13 findings
 3. Added Session 13 Activity Log entry

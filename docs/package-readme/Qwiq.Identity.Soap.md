@@ -1,6 +1,6 @@
 # Qwiq.Identity.Soap
 
-**⚠️ Windows Only | Legacy SOAP Client**
+⚠️ Windows Only | Legacy SOAP Client
 
 SOAP-specific identity management services for Team Foundation Server (TFS) and legacy Azure DevOps Server instances.
 

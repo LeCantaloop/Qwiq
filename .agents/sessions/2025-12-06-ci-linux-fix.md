@@ -10,7 +10,8 @@
 ## Problem Summary
 
 GitHub Actions run 19983820834 failed on both Windows and Ubuntu runners with the error:
-```
+
+```text
 The file '/home/runner/work/Qwiq/Qwiq/src/Qwiq.Core/bin/Release/net472/Qwiq.Core.dll' to be packed was not found on disk.
 ```
 
@@ -20,16 +21,17 @@ The workflow was using `/t:Build,Pack` on Linux, which forces an **outer-build P
 
 ### Technical Details
 
-| Build Approach | Pack Behavior | Linux Compatibility |
-|----------------|---------------|---------------------|
+| Build Approach                | Pack Behavior                     | Linux Compatibility          |
+| ----------------------------- | --------------------------------- | ---------------------------- |
 | `GeneratePackageOnBuild=true` | Pack runs inside each inner build | ✅ Respects OS TFM filtering |
-| `/t:Build,Pack` | Pack runs as outer build step | ❌ Expects all TFMs |
+| `/t:Build,Pack`               | Pack runs as outer build step     | ❌ Expects all TFMs          |
 
 When using `dotnet build` with `GeneratePackageOnBuild=true` (default), Pack runs inside each inner build and respects OS-level TFM filtering. When using `/t:Build,Pack`, Pack runs as an outer build step that expects all TFMs to have been built.
 
 ## Solution Applied
 
 ### Before (Complex, Failing)
+
 ```yaml
 # Linux: Build each project individually to avoid quoting issues
 dotnet build src/Qwiq.Core/Qwiq.Core.csproj -c Release --no-restore /t:Build,Pack ...
@@ -38,6 +40,7 @@ dotnet build src/Qwiq.Core.Rest/Qwiq.Client.Rest.csproj -c Release --no-restore 
 ```
 
 ### After (Simple, Working)
+
 ```yaml
 if [ "${{ matrix.os }}" = "windows-latest" ]; then
   # Windows: Full build with packing for all TFMs
@@ -49,6 +52,7 @@ fi
 ```
 
 ### Test Step Simplification
+
 ```yaml
 # Before: Separate per-project test commands for Linux
 # After: Single solution-level test for both platforms
@@ -57,11 +61,11 @@ run: dotnet test Qwiq.sln -c Release --no-build --filter "${{ env.TEST_FILTER }}
 
 ## Validation
 
-| Check | Result |
-|-------|--------|
-| Windows build with `/t:Build,Pack` | ✅ All packages created |
-| Linux-style build with `/p:GeneratePackageOnBuild=false` | ✅ Build succeeds |
-| Unit tests | ✅ 196 tests pass (108 + 10 + 16 + 34 + 28) |
+| Check                                                    | Result                                      |
+| -------------------------------------------------------- | ------------------------------------------- |
+| Windows build with `/t:Build,Pack`                       | ✅ All packages created                     |
+| Linux-style build with `/p:GeneratePackageOnBuild=false` | ✅ Build succeeds                           |
+| Unit tests                                               | ✅ 196 tests pass (108 + 10 + 16 + 34 + 28) |
 
 ## Files Changed
 
@@ -71,7 +75,8 @@ run: dotnet test Qwiq.sln -c Release --no-build --filter "${{ env.TEST_FILTER }}
 ## Commits
 
 ### Commit 1: Simplify cross-platform build
-```
+
+```text
 fix(ci): simplify cross-platform build by skipping pack on Linux
 
 Root cause: /t:Build,Pack forces outer-build Pack step that expects
@@ -87,7 +92,8 @@ Fixes: GitHub Actions run 19983820834
 ```
 
 ### Commit 2: Fix MSBuild syntax for bash
-```
+
+```text
 fix(ci): use dash syntax for MSBuild args in bash
 
 The forward slash syntax (/t:, /p:, /m:, /bl:) can be misinterpreted

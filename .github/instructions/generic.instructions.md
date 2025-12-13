@@ -83,30 +83,30 @@ Before submitting changes, verify:
 
 Include in your PR description:
 
-```markdown
+````markdown
 ## Validation Log
 
 ### Build
-```
 
+```text
 dotnet build output showing success
-
 ```
 
 ### Tests
-```
 
+```text
 Test results showing all pass
-
 ```
 
 ### Files Changed
+
 - `path/to/file1.cs` - Description of change
 - `path/to/file2.md` - Description of change
 
 ## CI Evidence
+
 Link to CI run: [#123](link)
-```
+````
 
 ## Escalation Path
 

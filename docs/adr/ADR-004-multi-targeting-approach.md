@@ -190,7 +190,7 @@ When .NET 10 LTS is released (November 2025):
 
 ### Alternative 2: Separate Packages Per Framework
 
-```
+```text
 Qwiq.Core.Net472
 Qwiq.Core.NetStandard20
 Qwiq.Core.Net80
@@ -214,7 +214,7 @@ Qwiq.Core.Net80
 **Rejected because:**
 
 - Lowest common denominator, can't use modern APIs
-- Performance loss (no Span<T>, no modern JSON, etc.)
+- Performance loss (no `Span<T>`, no modern JSON, etc.)
 - Still requires net472 for SOAP client
 
 ### Alternative 4: Maximum TFM Coverage

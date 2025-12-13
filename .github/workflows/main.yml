@@ -8,17 +8,14 @@ on:
   pull_request:
     # Run for ALL pull requests regardless of target branch
   workflow_dispatch:
+    # Allow manual triggering of the build
   workflow_call:
     # Allow this workflow to be called by other workflows (e.g., release.yml)
     # This enables DRY reuse of the build/test/pack logic
-  schedule:
-    # Weekly CodeQL deep scan on Monday at 2:30 AM UTC
-    - cron: "30 2 * * 1"
 
 permissions:
   contents: read
   actions: read
-  security-events: write # Required for CodeQL
 
 jobs:
   build:
@@ -43,41 +40,27 @@ jobs:
           fetch-depth: 0
 
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v5
-        with:
-          global-json-file: ./global.json
+        uses: ./.github/actions/setup-dotnet
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
-        with:
-          languages: csharp
-          queries: security-extended,security-and-quality
-
-      - name: Restore .NET tools
-        run: dotnet tool restore
-
-      - name: Restore NuGet packages
-        run: dotnet restore Qwiq.sln
-
-      - name: Build and pack solution (Windows)
+      - name: Restore and Build (Windows)
         # Windows: Use /t:Build,Pack to ensure all packages are generated during build.
         # This produces packages for all target frameworks including net472.
         if: matrix.os == 'windows-latest'
-        shell: pwsh
-        run:
-          dotnet build Qwiq.sln -c Release --no-restore /t:Build,Pack /p:ContinuousIntegrationBuild=true /m:1
-          /nodeReuse:false /bl:./artifacts/logs/build.binlog
+        uses: ./.github/actions/restore-build
+        with:
+          enable-pack: "true"
+          generate-binlog: "true"
 
-      - name: Build solution (Linux)
+      - name: Restore and Build (Linux)
         # Linux: Build solution without packing.
         # Linux cannot build net472 (requires Windows/.NET Framework), so we skip packing.
         # The SDK automatically filters out Windows-only TFMs during inner builds.
         # Packages are only produced on Windows where all TFMs can be built.
         if: matrix.os == 'ubuntu-latest'
-        shell: pwsh
-        run:
-          dotnet build Qwiq.sln -c Release --no-restore /p:GeneratePackageOnBuild=false
-          /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build.binlog
+        uses: ./.github/actions/restore-build
+        with:
+          enable-pack: "false"
+          generate-binlog: "true"
 
       - name: Validate package output
         # Scans csproj files to find packable projects and validates each produced
@@ -93,33 +76,6 @@ jobs:
         # Only run on Windows builds (Linux builds don't generate all packages)
         if: github.event_name == 'push' && matrix.os == 'windows-latest'
         run: ./build/scripts/Verify-SourceLink.ps1
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
-        with:
-          category: "/language:csharp"
-          output: ${{ runner.temp }}/codeql-results
-          upload: true # When set to true the default CodeQL cannot be configured
-
-      - name: Copy CodeQL SARIF to artifacts
-        if: always()
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Path ./artifacts/CodeQL -Force | Out-Null
-          if (Test-Path "${{ runner.temp }}/codeql-results") {
-            Copy-Item -Path "${{ runner.temp }}/codeql-results/*.sarif" -Destination ./artifacts/CodeQL/ -Force
-            Write-Host "✅ Copied SARIF files to artifacts/CodeQL"
-          } else {
-            Write-Host "⚠️ No SARIF files found in ${{ runner.temp }}/codeql-results"
-          }
-
-      - name: Upload CodeQL SARIF artifacts
-        uses: actions/upload-artifact@v6
-        if: always()
-        with:
-          name: codeql-sarif-${{ matrix.os }}
-          path: artifacts/CodeQL/*.sarif
-          if-no-files-found: warn
 
       - name: Run tests with coverage (Windows)
         id: test-windows

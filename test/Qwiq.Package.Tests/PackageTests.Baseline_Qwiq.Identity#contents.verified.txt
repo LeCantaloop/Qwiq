@@ -2,9 +2,21 @@
 |-- Qwiq.Identity.nuspec
 |-- README.md
 |-- lib
+|   |-- net10.0
+|   |   |-- Qwiq.Identity.dll
+|   |   |-- Qwiq.Identity.xml
 |   |-- net472
 |   |   |-- Qwiq.Identity.dll
 |   |   |-- Qwiq.Identity.xml
+|   |-- net48
+|   |   |-- Qwiq.Identity.dll
+|   |   |-- Qwiq.Identity.xml
+|   |-- net481
+|   |   |-- Qwiq.Identity.dll
+|   |   |-- Qwiq.Identity.xml
 |   |-- net8.0
+|   |   |-- Qwiq.Identity.dll
+|   |   |-- Qwiq.Identity.xml
+|   |-- net9.0
 |   |   |-- Qwiq.Identity.dll
 |   |   |-- Qwiq.Identity.xml

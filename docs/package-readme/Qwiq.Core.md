@@ -74,7 +74,7 @@ Assert.Single(results);
 
 ## Architecture
 
-```
+```text
 Your Application
        ↓
   Qwiq.Core (interfaces)

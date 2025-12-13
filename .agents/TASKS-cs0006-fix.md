@@ -7,6 +7,7 @@ Fix intermittent CS0006 build failures in GitHub Actions CI caused by race condi
 ## Root Cause Analysis
 
 ### The Problem
+
 - **Multi-TFM builds** (net472, netstandard2.0, net8.0) use MSBuild's `DispatchToInnerBuilds` for inner-build parallelism
 - **`/m:1` limitation**: Only controls solution-level parallelism, NOT inner-build parallelism within multi-targeted projects
 - **Reference assembly race**: Reference assemblies (`obj/Release/ref/*.dll`) can be accessed by downstream projects before fully written
@@ -17,6 +18,7 @@ Fix intermittent CS0006 build failures in GitHub Actions CI caused by race condi
 **Two-part fix implemented:**
 
 1. **Disable inner-build parallelism** (in `Directory.Build.props` and `Directory.Build.rsp`):
+
 ```xml
 <PropertyGroup>
   <BuildInParallel>false</BuildInParallel>
@@ -25,7 +27,8 @@ Fix intermittent CS0006 build failures in GitHub Actions CI caused by race condi
 </PropertyGroup>
 ```
 
-2. **Add .NET Framework reference assemblies for Linux** (in `Directory.Build.props`):
+1. **Add .NET Framework reference assemblies for Linux** (in `Directory.Build.props`):
+
 ```xml
 <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
   <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="All" />
@@ -33,7 +36,7 @@ Fix intermittent CS0006 build failures in GitHub Actions CI caused by race condi
 ```
 
 This allows building net472 targets on Linux/macOS without the Windows SDK installed.
-See: https://github.com/microsoft/dotnet-framework-reference-assemblies
+See: <https://github.com/microsoft/dotnet-framework-reference-assemblies>
 
 ## Current Situation
 
@@ -70,21 +73,25 @@ The following high-level tasks break down the work needed to complete this fix:
 ## Tasks
 
 - [ ] **Task 1: Commit and Push the CS0006 Fix**
+
   - Verify uncommitted changes in `Directory.Build.props`
   - Commit with conventional commit message
   - Push to `origin/copilot/sub-pr-65`
 
 - [ ] **Task 2: Verify Fix Application in CI Environment**
+
   - Download binlog from failing CI run
   - Analyze binlog to confirm MSBuild properties
   - Verify `ContinuousIntegrationBuild=true` is set
 
 - [ ] **Task 3: Local CI-Equivalent Validation**
+
   - Reproduce CI build conditions locally
   - Verify fix prevents CS0006 errors
   - Measure build time impact
 
 - [ ] **Task 4: CI Workflow Enhancement (Optional)**
+
   - Evaluate if `dotnet clean` step needed before build
   - Consider cache invalidation for obj/bin folders
   - Add diagnostic logging for build parallelism settings
@@ -101,12 +108,14 @@ The following high-level tasks break down the work needed to complete this fix:
 **Objective**: Commit the local changes to `Directory.Build.props` and push to the remote branch so CI can apply the fix.
 
 ### Prerequisites
+
 - Uncommitted changes in `Directory.Build.props` (confirmed present)
 - Clean working directory otherwise
 
 ### Sub-tasks
 
 - [ ] **1.1: Review uncommitted changes**
+
   - Run `git diff Directory.Build.props` to review changes
   - Verify the added PropertyGroup contains:
     - `BuildInParallel=false`
@@ -116,10 +125,12 @@ The following high-level tasks break down the work needed to complete this fix:
   - Confirm comment block explains the race condition
 
 - [ ] **1.2: Stage and commit changes**
+
   - Run `git add Directory.Build.props`
   - Commit with message: `ci: disable inner-build parallelism to fix CS0006 race conditions`
   - Body text:
-    ```
+
+    ```text
     Fixes intermittent CS0006 errors in CI by:
     - Disabling BuildInParallel for multi-TFM inner builds
     - Disabling reference assembly generation on CI
@@ -134,6 +145,7 @@ The following high-level tasks break down the work needed to complete this fix:
     ```
 
 - [ ] **1.3: Push to remote**
+
   - Run `git push origin copilot/sub-pr-65`
   - Verify push succeeds
   - Confirm commit appears in GitHub UI
@@ -144,6 +156,7 @@ The following high-level tasks break down the work needed to complete this fix:
   - Check GitHub Actions tab for new CI run
 
 ### Expected Outcome
+
 - Commit appears on `origin/copilot/sub-pr-65`
 - CI workflow triggers automatically
 - Changes ready for CI validation
@@ -155,6 +168,7 @@ The following high-level tasks break down the work needed to complete this fix:
 **Objective**: Confirm that the MSBuild properties are actually being applied during CI builds by analyzing build logs.
 
 ### Prerequisites
+
 - CI run has started (after Task 1.3 push)
 - Access to GitHub Actions logs
 - (Optional) binlog artifact downloaded
@@ -162,14 +176,16 @@ The following high-level tasks break down the work needed to complete this fix:
 ### Sub-tasks
 
 - [ ] **2.1: Monitor new CI run**
+
   - Go to GitHub Actions tab
   - Find CI run triggered by latest commit
   - Wait for build to complete (or fail)
   - Note run ID for reference
 
 - [ ] **2.2: Download and analyze binlog (if available)**
+
   - Download `build.binlog` from artifacts
-  - Open in MSBuild Structured Log Viewer (https://msbuildlog.com/)
+  - Open in MSBuild Structured Log Viewer (<https://msbuildlog.com/>)
   - Search for properties:
     - `BuildInParallel`
     - `MSBuildBuildInParallel`
@@ -178,11 +194,13 @@ The following high-level tasks break down the work needed to complete this fix:
   - Verify all are set correctly during Windows build
 
 - [ ] **2.3: Check build logs for CS0006 errors**
+
   - Search logs for "CS0006"
   - Search logs for "Qwiq.Core.dll' could not be found"
   - If errors exist, note which project and TFM
 
 - [ ] **2.4: Verify build time impact**
+
   - Compare new build duration to previous runs
   - Expected: 10-20% increase due to serial inner builds
   - Document actual increase in task notes
@@ -192,13 +210,16 @@ The following high-level tasks break down the work needed to complete this fix:
   - Verify Linux build unaffected (already avoids CS0006 due to fewer TFMs)
 
 ### Expected Outcome
+
 - binlog confirms properties applied
 - No CS0006 errors in logs
 - Build completes successfully on both platforms
 - Build time impact documented
 
 ### Troubleshooting
+
 If CS0006 still occurs:
+
 - Check if `Directory.Build.props` is being imported (search binlog for "Directory.Build.props")
 - Verify `ContinuousIntegrationBuild` is `true` (should be set in workflow)
 - Check for project-level overrides of these properties
@@ -211,6 +232,7 @@ If CS0006 still occurs:
 **Objective**: Reproduce CI build conditions locally to validate the fix before relying solely on CI feedback loops.
 
 ### Prerequisites
+
 - All changes committed (Task 1 complete)
 - Windows development machine (for full TFM coverage)
 - Clean working directory
@@ -218,19 +240,24 @@ If CS0006 still occurs:
 ### Sub-tasks
 
 - [ ] **3.1: Clean local build artifacts**
+
   - Run `git clean -xdf` to remove all untracked files (CAUTION: saves your work first!)
   - OR manually: `Remove-Item -Recurse -Force artifacts, src/**/obj, src/**/bin, test/**/obj, test/**/bin`
   - Run `dotnet clean Qwiq.sln`
 
 - [ ] **3.2: Reproduce CI build command (Windows)**
+
   - Run exact CI command with CI properties:
+
     ```powershell
     dotnet build Qwiq.sln -c Release --no-restore /t:Build,Pack /p:ContinuousIntegrationBuild=true /m:1 /nodeReuse:false /bl:./artifacts/logs/build-local-ci.binlog
     ```
+
   - Watch for CS0006 errors
   - Note build duration
 
 - [ ] **3.3: Analyze local binlog**
+
   - Open `build-local-ci.binlog` in MSBuild Structured Log Viewer
   - Verify properties applied:
     - `ContinuousIntegrationBuild=true`
@@ -239,11 +266,14 @@ If CS0006 still occurs:
   - Check "Messages" node for parallelism indicators
 
 - [ ] **3.4: Run without CI properties (control test)**
+
   - Clean again: `dotnet clean`
   - Run local build WITHOUT CI properties:
+
     ```powershell
     dotnet build Qwiq.sln -c Release /m:1 /bl:./artifacts/logs/build-local-dev.binlog
     ```
+
   - Compare binlog: properties should be default values
   - Confirm `ProduceReferenceAssembly=true` (default) in dev build
 
@@ -254,13 +284,16 @@ If CS0006 still occurs:
   - Document results: pass rate, timing variance
 
 ### Expected Outcome
+
 - Local CI-equivalent build passes 5/5 times
 - Properties correctly applied only when `ContinuousIntegrationBuild=true`
 - No CS0006 errors in any run
 - Build time ~10-20% slower than dev build
 
 ### Troubleshooting
+
 If CS0006 occurs locally:
+
 - Check if `Directory.Build.props` is imported (search binlog)
 - Try adding `/p:BuildInParallel=false` explicitly to command
 - Check for project-level `<BuildInParallel>true</BuildInParallel>` overrides
@@ -273,12 +306,14 @@ If CS0006 occurs locally:
 **Objective**: Evaluate and implement additional CI workflow changes to prevent CS0006 recurrence or improve diagnosis.
 
 ### Prerequisites
+
 - Task 2 complete (CI validation results available)
 - Task 3 complete (local validation results available)
 
 ### Sub-tasks
 
 - [ ] **4.1: Evaluate `dotnet clean` necessity**
+
   - **Context**: GitHub Actions uses fresh runners, caching is opt-in
   - Check workflow for cache actions (e.g., `actions/cache`)
   - **Decision point**:
@@ -287,6 +322,7 @@ If CS0006 occurs locally:
   - Document decision rationale
 
 - [ ] **4.2: Consider obj/bin cache invalidation**
+
   - IF caching is used, check cache key includes:
     - `Directory.Packages.props` hash
     - `Directory.Build.props` hash
@@ -294,18 +330,24 @@ If CS0006 occurs locally:
   - Update cache key if missing critical files
 
 - [ ] **4.3: Add diagnostic logging**
+
   - Option A: Add diagnostic step before build:
+
     ```yaml
     - name: Show MSBuild properties
       run: dotnet msbuild Qwiq.sln /t:Restore /p:ContinuousIntegrationBuild=true /pp:./artifacts/logs/preprocessed.xml
     ```
+
   - Option B: Use `/v:diag` for one-time verbose build:
+
     ```yaml
     /bl:./artifacts/logs/build.binlog /v:diag > ./artifacts/logs/build.log
     ```
+
   - Commit whichever option provides value for future debugging
 
 - [ ] **4.4: Consider RestoreUseStaticGraphEvaluation**
+
   - **Context**: Static graph restore can avoid some dependency race conditions
   - Test locally with: `/p:RestoreUseStaticGraphEvaluation=true`
   - If beneficial, add to `Directory.Build.props` for CI
@@ -318,12 +360,15 @@ If CS0006 occurs locally:
   - Document findings, update workflow if needed
 
 ### Expected Outcome
+
 - Workflow enhanced with any valuable changes
 - Diagnostic capabilities improved for future issues
 - OR: Documented reasons for NOT adding each enhancement
 
 ### Decision Criteria
+
 Only implement changes that:
+
 1. Measurably improve reliability OR
 2. Significantly improve debuggability OR
 3. Are zero-cost (no performance impact)
@@ -335,6 +380,7 @@ Only implement changes that:
 **Objective**: Update repository documentation with the CS0006 fix, build insights, and lessons learned for future maintainers.
 
 ### Prerequisites
+
 - All previous tasks complete
 - CI passing consistently
 - Local validation results documented
@@ -342,18 +388,24 @@ Only implement changes that:
 ### Sub-tasks
 
 - [ ] **5.1: Update Solutions Repository**
+
   - Open `.github/copilot-instructions.md`
   - Navigate to `## Solutions Repository` section
   - Add new entry under "Build Debugging" table:
+
     ```markdown
     | CS0006 in multi-TFM CI builds | Disable inner-build parallelism: BuildInParallel=false, ProduceReferenceAssembly=false | 98% |
     ```
+
   - Add detailed notes if pattern differs from description
 
 - [ ] **5.2: Document build time tradeoffs**
+
   - In copilot-instructions.md, add note in "Build Commands" section:
+
     ```markdown
     **CI Build Performance**: CI builds use `/p:ContinuousIntegrationBuild=true` which:
+
     - Disables inner-build parallelism (BuildInParallel=false)
     - Disables reference assembly generation (ProduceReferenceAssembly=false)
     - Results in ~10-20% slower builds but prevents CS0006 race conditions
@@ -361,11 +413,13 @@ Only implement changes that:
     ```
 
 - [ ] **5.3: Update TESTING.md (if exists)**
+
   - Check if `TESTING.md` or similar exists
   - If so, add section on reproducing CI builds locally
   - Include the exact command from Task 3.2
 
 - [ ] **5.4: Consider ADR (Architecture Decision Record)**
+
   - **Decision point**: Is this significant enough for an ADR?
   - Criteria: Affects build architecture, has tradeoffs, future maintainers need context
   - **If YES**: Create `docs/adr/NNNN-disable-ci-build-parallelism.md`
@@ -376,6 +430,7 @@ Only implement changes that:
     - Alternatives considered: /restore, static graph, explicit ordering
 
 - [ ] **5.5: Update session notes**
+
   - Create or update `.agents/sessions/2025-12-10-cs0006-fix.md`
   - Document:
     - Root cause analysis
@@ -390,6 +445,7 @@ Only implement changes that:
   - Note CI stability improvement
 
 ### Expected Outcome
+
 - Future maintainers understand why build parallelism is disabled
 - Pattern documented for similar issues
 - Build time tradeoffs clearly communicated
@@ -412,11 +468,13 @@ MSBuild has multiple levels of parallelism that can interact:
 ### Reference Assembly Race Condition
 
 Reference assemblies (`obj/*/ref/*.dll`) enable faster incremental compilation:
+
 - **Producer**: Project A builds, emits `ref/A.dll` (contains only public API metadata)
 - **Consumer**: Project B compiles against `ref/A.dll` instead of full `bin/A.dll`
 - **Race**: If B starts before A finishes writing `ref/A.dll` → CS0006
 
 **Why CI is affected more than local**:
+
 - CI: Slower disk I/O, timing more variable
 - Local: Faster SSD, timing more consistent
 
@@ -436,6 +494,7 @@ Reference assemblies (`obj/*/ref/*.dll`) enable faster incremental compilation:
 ### Key Files to Watch
 
 If CS0006 recurs, check these for overrides:
+
 - Individual `*.csproj` files (project-level overrides)
 - `Directory.Build.targets` (late-binding property sets)
 - Workflow YAML (CLI argument overrides)
@@ -449,6 +508,7 @@ If CS0006 recurs, check these for overrides:
 ### Testing Checklist
 
 Before marking complete, verify:
+
 - ✅ Windows CI build passes
 - ✅ Linux CI build passes (unaffected, but verify)
 - ✅ Local CI-equivalent build passes 5/5 times
@@ -464,6 +524,7 @@ Before marking complete, verify:
 _Document progress here as you work through tasks. Include timestamps, decisions, and unexpected findings._
 
 ### [YYYY-MM-DD HH:MM] - Task X.Y: Description
+
 - Action taken
 - Result
 - Next steps

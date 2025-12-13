@@ -1,0 +1,124 @@
+name: Mutation Testing
+
+on:
+  workflow_dispatch:
+    inputs:
+      run-mutation-testing:
+        description: "Run mutation testing (slow, ~30 min)"
+        required: false
+        default: true
+        type: boolean
+  schedule:
+    # Weekly mutation testing on Monday at 3:00 AM UTC (after CodeQL)
+    - cron: "0 3 * * 1"
+
+permissions:
+  contents: read
+
+# Mutation Testing Job
+# Runs on schedule (weekly) or when manually triggered
+# Advisory mode: does not block the build, provides test quality insights
+jobs:
+  mutation-testing:
+    name: Stryker.NET Mutation Testing
+    runs-on: windows-latest
+    # Only run when explicitly requested or on schedule
+    if: github.event_name == 'schedule' || github.event.inputs.run-mutation-testing == 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDK
+        uses: ./.github/actions/setup-dotnet
+
+      - name: Restore and Build
+        uses: ./.github/actions/restore-build
+        with:
+          enable-pack: "false"
+          generate-binlog: "false"
+
+      - name: Run Stryker mutation testing
+        id: stryker
+        shell: pwsh
+        run: |
+          dotnet stryker --config-file stryker-config.json --output ./artifacts/StrykerOutput
+        continue-on-error: true
+
+      - name: Upload mutation report (HTML)
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: mutation-report-html
+          path: artifacts/StrykerOutput/**/reports/**/*.html
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload mutation report (JSON)
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: mutation-report-json
+          path: artifacts/StrykerOutput/**/reports/**/*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Extract and report mutation score
+        if: always()
+        shell: pwsh
+        run: |
+          $jsonReport = Get-ChildItem -Path "artifacts/StrykerOutput" -Filter "*.json" -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -like "*mutation*" } |
+            Select-Object -First 1
+
+          if ($jsonReport) {
+            $report = Get-Content $jsonReport.FullName | ConvertFrom-Json
+            $score = [math]::Round($report.mutationScore, 2)
+            $killed = $report.killed
+            $survived = $report.survived
+            $total = $killed + $survived
+
+            Write-Host "============================================"
+            Write-Host "MUTATION TESTING RESULTS"
+            Write-Host "============================================"
+            Write-Host "Mutation Score: $score%"
+            Write-Host "Killed: $killed"
+            Write-Host "Survived: $survived"
+            Write-Host "Total Mutants: $total"
+            Write-Host "============================================"
+
+            echo "MUTATION_SCORE=$score" >> $env:GITHUB_ENV
+            echo "MUTANTS_KILLED=$killed" >> $env:GITHUB_ENV
+            echo "MUTANTS_SURVIVED=$survived" >> $env:GITHUB_ENV
+          }
+
+      - name: Add job summary
+        if: always()
+        shell: pwsh
+        run: |
+          $score = $env:MUTATION_SCORE
+          $killed = $env:MUTANTS_KILLED
+          $survived = $env:MUTANTS_SURVIVED
+
+          if ($score) {
+            @"
+          ## Mutation Testing Results - Qwiq.Core
+
+          | Metric | Value |
+          |--------|-------|
+          | **Mutation Score** | **$score%** |
+          | Killed | $killed |
+          | Survived | $survived |
+          | Target Framework | net8.0 |
+          | Mutation Level | Standard |
+
+          Download the **mutation-report-html** artifact for detailed analysis.
+          "@ >> $env:GITHUB_STEP_SUMMARY
+          } else {
+            @"
+          ## Mutation Testing - No Results
+          Stryker did not produce results. Check the workflow logs.
+          "@ >> $env:GITHUB_STEP_SUMMARY
+          }

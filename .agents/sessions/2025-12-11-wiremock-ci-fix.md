@@ -18,6 +18,7 @@
 ## Problem Analysis
 
 ### Root Cause
+
 WireMock tests were failing with "Service start failed with error: One or more errors occurred." because:
 
 1. **WireMock HTTPS requires elevated privileges** - SSL certificate binding on Windows requires admin rights
@@ -25,6 +26,7 @@ WireMock tests were failing with "Service start failed with error: One or more e
 3. **VssBasicCredential enforces HTTPS** - The Azure DevOps SDK throws "Basic authentication requires a secure connection to the server" when using HTTP
 
 ### Agent Consultation Process
+
 Per user request, consulted multiple agents to develop a consensus solution:
 
 1. **csharp-expert (Initial)**: Recommended HTTPS-to-HTTP fallback approach
@@ -33,8 +35,10 @@ Per user request, consulted multiple agents to develop a consensus solution:
 4. **csharp-expert (Reconciliation)**: After testing showed HTTP doesn't work (VssBasicCredential requires HTTPS), recommended excluding tests from CI
 
 ### Key Finding
+
 Testing confirmed that `VssBasicCredential` **does** enforce HTTPS - the independent-thinker's hypothesis was incorrect. HTTP-only approach fails with:
-```
+
+```text
 Basic authentication requires a secure connection to the server.
 ```
 
@@ -43,29 +47,35 @@ Basic authentication requires a secure connection to the server.
 ## Solution Implemented
 
 ### Approach: Graceful CI Exclusion
+
 Since HTTPS is required but unavailable on CI runners, the solution excludes WireMock tests from CI while preserving local test coverage.
 
 ### Changes Made
 
 #### 1. WireMockRestStoreContext.cs
+
 - Added `WireMockHttpsStartupException` custom exception class
 - Added `IsSslBindingFailure()` helper method to detect SSL binding errors
 - Wrapped WireMock server startup in try-catch to throw custom exception on failure
 
 #### 2. WireMockRestContextSpecification.cs
+
 - Updated `Given()` to catch `WireMockHttpsStartupException`
 - Calls `Assert.Inconclusive()` when HTTPS startup fails
 - Added comprehensive documentation about CI behavior
 
 #### 3. ContextSpecification.cs (Qwiq.Tests.Common)
+
 - Added catch block for `AssertInconclusiveException` to let it pass through
 - Previously, all exceptions in `TestInitialize` were converted to `Assert.Fail`
 
 #### 4. main.yml (GitHub Actions workflow)
+
 - Added `TestCategory!=WireMock` to the test filter
 - Added comment explaining why WireMock tests are excluded
 
 #### 5. ADR-008-wiremock-offline-rest-testing.md
+
 - Updated test infrastructure description
 - Added "CI Compatibility" section documenting the HTTPS requirement and solution
 
@@ -74,18 +84,22 @@ Since HTTPS is required but unavailable on CI runners, the solution excludes Wir
 ## Commits Made
 
 1. **fix(tests): handle WireMock HTTPS startup failure on CI runners**
+
    - Added WireMockHttpsStartupException
    - Added IsSslBindingFailure() detection
    - Updated WireMockRestContextSpecification
 
 2. **docs(adr): update ADR-008 with CI compatibility notes**
+
    - Documented HTTPS requirement
    - Documented CI graceful handling
 
 3. **fix(tests): call Assert.Inconclusive in Given() for immediate effect**
+
    - Moved Assert.Inconclusive to Given() method
 
 4. **fix(tests): allow AssertInconclusiveException to pass through TestInitialize**
+
    - Updated ContextSpecification base class
 
 5. **ci: exclude WireMock tests from CI test filter**
@@ -96,14 +110,17 @@ Since HTTPS is required but unavailable on CI runners, the solution excludes Wir
 ## Challenges Encountered
 
 ### Challenge 1: HTTP-only approach failed
+
 **Issue**: Initial consensus was to use HTTP instead of HTTPS
 **Resolution**: Testing revealed VssBasicCredential enforces HTTPS, so this approach was abandoned
 
 ### Challenge 2: Assert.Inconclusive not working
+
 **Issue**: MSTest treats exceptions during TestInitialize as failures, not inconclusive
 **Resolution**: Updated ContextSpecification to let AssertInconclusiveException pass through
 
 ### Challenge 3: Still failing after Assert.Inconclusive fix
+
 **Issue**: Even with the fix, tests were still reported as "Failed" in CI
 **Resolution**: Added WireMock to the CI test filter exclusion list
 
@@ -112,6 +129,7 @@ Since HTTPS is required but unavailable on CI runners, the solution excludes Wir
 ## Verification
 
 ### Local Testing
+
 ```powershell
 # WireMock tests pass locally (HTTPS works with admin privileges)
 dotnet test test/Qwiq.Integration.Tests/Qwiq.IntegrationTests.csproj -c Release --no-build --filter "TestCategory=WireMock"
@@ -123,6 +141,7 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 ```
 
 ### CI Verification
+
 - **Run ID**: 20148162606
 - **Windows**: ✅ Success
 - **Ubuntu**: ✅ Success
@@ -131,13 +150,13 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 
 ## Files Changed
 
-| File | Change Type | Description |
-|------|-------------|-------------|
-| `test/Qwiq.Integration.Tests/WireMock/WireMockRestStoreContext.cs` | Modified | Added exception handling for HTTPS startup failures |
-| `test/Qwiq.Integration.Tests/WireMock/WireMockRestContextSpecification.cs` | Modified | Added Assert.Inconclusive on startup failure |
-| `test/Qwiq.Tests.Common/ContextSpecification.cs` | Modified | Allow AssertInconclusiveException to pass through |
-| `.github/workflows/main.yml` | Modified | Added WireMock to test filter exclusion |
-| `docs/adr/ADR-008-wiremock-offline-rest-testing.md` | Modified | Documented CI compatibility |
+| File                                                                       | Change Type | Description                                         |
+| -------------------------------------------------------------------------- | ----------- | --------------------------------------------------- |
+| `test/Qwiq.Integration.Tests/WireMock/WireMockRestStoreContext.cs`         | Modified    | Added exception handling for HTTPS startup failures |
+| `test/Qwiq.Integration.Tests/WireMock/WireMockRestContextSpecification.cs` | Modified    | Added Assert.Inconclusive on startup failure        |
+| `test/Qwiq.Tests.Common/ContextSpecification.cs`                           | Modified    | Allow AssertInconclusiveException to pass through   |
+| `.github/workflows/main.yml`                                               | Modified    | Added WireMock to test filter exclusion             |
+| `docs/adr/ADR-008-wiremock-offline-rest-testing.md`                        | Modified    | Documented CI compatibility                         |
 
 ---
 

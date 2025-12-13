@@ -1,8 +1,7 @@
 # Session Log: Package Validation Fix
 
 > **Date**: 2025-12-10
-> **Branch**: `copilot/sub-pr-65`
-> **Focus**: Fix package validation script and tests failing due to centralized package output
+> **Branch**: `copilot/sub-pr-65` > **Focus**: Fix package validation script and tests failing due to centralized package output
 
 ---
 
@@ -15,13 +14,16 @@ Fixed GitHub Actions workflow run #20110086011 where `Validate-PackageOutput.ps1
 ## Tasks Completed
 
 ### 1. Investigated CI Failure
+
 - Analyzed GitHub Actions run #20110086011 logs
 - Found all 10 packages reported as missing
 - Confirmed locally that packages are in `artifacts/package/release/`
 - Traced configuration to `build/targets/artifacts/Artifacts.props` → `ArtifactsPath`
 
 ### 2. Fixed Validate-PackageOutput.ps1
+
 **Changes:**
+
 - Added new `-PackageOutputPath` parameter for custom output directories
 - Changed default search path from `{project}/bin/{Configuration}` to `artifacts/package/{Configuration}`
 - Removed per-project `BinPath` tracking (packages are now centralized)
@@ -29,19 +31,23 @@ Fixed GitHub Actions workflow run #20110086011 where `Validate-PackageOutput.ps1
 - Updated script documentation with new parameter and examples
 
 **Validation:**
+
 - Script now finds all 10 packages successfully
 - Works with both Release and Debug configurations
 
 ### 3. Fixed PackageTests.cs
+
 **Discovered:** The package tests had the same issue - looking in `src/**/bin/Release/**`
 
 **Changes:**
+
 - Updated `GetPackages()` to search in `artifacts/package/release`
 - Simplified search from recursive with filters to `TopDirectoryOnly`
 - Improved error messages to show actual search path
 - Added `Qwiq.Mocks` package baselines (newly packable project)
 
 **Validation:**
+
 - All 11 package tests pass
 - Full test suite: 206 passed, 1 skipped
 
@@ -49,12 +55,12 @@ Fixed GitHub Actions workflow run #20110086011 where `Validate-PackageOutput.ps1
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `build/scripts/Validate-PackageOutput.ps1` | Fixed to search in centralized artifacts directory |
-| `test/Qwiq.Package.Tests/PackageTests.cs` | Fixed to search in centralized artifacts directory |
-| `test/Qwiq.Package.Tests/PackageTests.Baseline_Qwiq.Mocks#contents.verified.txt` | Added new baseline |
-| `test/Qwiq.Package.Tests/PackageTests.Baseline_Qwiq.Mocks#manifest.verified.nuspec` | Added new baseline |
+| File                                                                                | Change                                             |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `build/scripts/Validate-PackageOutput.ps1`                                          | Fixed to search in centralized artifacts directory |
+| `test/Qwiq.Package.Tests/PackageTests.cs`                                           | Fixed to search in centralized artifacts directory |
+| `test/Qwiq.Package.Tests/PackageTests.Baseline_Qwiq.Mocks#contents.verified.txt`    | Added new baseline                                 |
+| `test/Qwiq.Package.Tests/PackageTests.Baseline_Qwiq.Mocks#manifest.verified.nuspec` | Added new baseline                                 |
 
 ---
 

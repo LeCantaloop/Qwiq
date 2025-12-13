@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;net8.0</TargetFrameworks>
+    <TargetFrameworks>net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
     <RootNamespace>Qwiq</RootNamespace>
     <AssemblyName>Qwiq.Core</AssemblyName>
     <Description>QWIQ Core - Quick Work Item Query library for Azure DevOps / TFS</Description>
@@ -32,6 +32,7 @@
     <InternalsVisibleTo Include="Qwiq.Mapper" />
     <InternalsVisibleTo Include="Qwiq.Mapper.Identity" />
     <InternalsVisibleTo Include="Qwiq.Identity.UnitTests" />
+    <InternalsVisibleTo Include="Qwiq.WireMock.Tests" />
   </ItemGroup>
 
   <ItemGroup>
