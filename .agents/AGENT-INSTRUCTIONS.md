@@ -1,7 +1,30 @@
-# Copilot Agent Instructions for Qwiq Modernization
+# Agent Instructions for Qwiq Development
 
 > **CRITICAL**: Read this entire document before starting ANY work.
-> This document governs how Copilot agents execute modernization phases.
+> This document governs how agents execute development tasks.
+
+---
+
+## Agent System Overview
+
+This repository uses a coordinated multi-agent system. See `AGENT-SYSTEM.md` for:
+
+- Full agent catalog and capabilities
+- Workflow patterns and routing heuristics
+- Memory system using `cloudmcp-manager`
+- Handoff protocols and conflict resolution
+
+**Quick Reference - Common Agents:**
+
+| Agent | Use When |
+|-------|----------|
+| `orchestrator` | Complex multi-step tasks |
+| `implementer` | Writing C# code and tests |
+| `analyst` | Research and investigation |
+| `architect` | Design decisions and ADRs |
+| `planner` | Breaking down work |
+| `critic` | Validating plans before implementation |
+| `qa` | Test strategy and verification |
 
 ---
 
