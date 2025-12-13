@@ -117,6 +117,7 @@ namespace Qwiq
             }
             catch (WorkItemTypeDeniedOrNotExistException)
             {
+                // Swallow exception and return false - TryGetById pattern
             }
             return false;
         }

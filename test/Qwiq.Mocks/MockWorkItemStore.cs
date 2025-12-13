@@ -170,9 +170,7 @@ namespace Qwiq.Mocks
 
         protected void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-            }
+            // No resources to dispose.
         }
 
         private void Save(IWorkItem item)

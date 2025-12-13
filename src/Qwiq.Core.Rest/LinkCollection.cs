@@ -46,6 +46,7 @@ namespace Qwiq.Client.Rest
                 }
                 else if ("AttachedFile".Equals(relation.Rel, StringComparison.OrdinalIgnoreCase))
                 {
+                    // AttachedFile relations are skipped; attachments are handled separately via the Attachments property.
                 }
                 else
                 {

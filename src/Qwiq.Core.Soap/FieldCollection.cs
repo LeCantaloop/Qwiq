@@ -115,6 +115,7 @@ namespace Qwiq.Client.Soap
             }
             catch (Exception)
             {
+                // Swallow exception and return false - TryGetById pattern
             }
 
             value = null;
