@@ -307,8 +307,8 @@ See: `.agents/sessions/2025-12-13-session-31-crap-score-plan.md` for full detail
 **Files Changed**:
 
 - `appveyor.yml` - **Deleted**
-- `.agents/modernize-wave3-5.md` - Marked W3.3 complete
-- `.agents/modernize-TODO-index.md` - Updated progress (45/80, 56%)
+- `.agents/planning/modernize-wave3-5.md` - Marked W3.3 complete
+- `.agents/planning/modernize-TODO-index.md` - Updated progress (45/80, 56%)
 
 **Next Recommended**: W2.22 (SHA Pinning) or W2.33 (NuGet v11.0.0 Publish)
 
@@ -612,7 +612,7 @@ See: `.agents/sessions/2025-12-12-wiremock-fix.md` for full details
    - Branch: `feat/modernize-3`
    - Multi-targeting strategy with compiler optimization notes
 
-3. ✅ Updated `.agents/modernize-explainer.md`
+3. ✅ Updated `.agents/planning/modernize-explainer.md`
 
    - Replaced "MAINTENANCE MODE" (Session 27) with "PRODUCTION v11.0.0"
    - Added strategic pivot explanation (why Session 27 was invalid)
@@ -1199,12 +1199,12 @@ dotnet build Qwiq.sln -c Release 2>&1 | Select-String "CS7069.*TimeZone|CS7069.*
 If you need context, read these files in order:
 
 1. `.agents/AGENT-INSTRUCTIONS.md` - **READ FIRST** - Process instructions
-2. `.agents/modernize-TODO-index.md` - Overview, metrics, and navigation
+2. `.agents/planning/modernize-TODO-index.md` - Overview, metrics, and navigation
 3. The appropriate wave file for your tasks:
-   - `.agents/modernize-wave1.md` - Wave 0-1 tasks
-   - `.agents/modernize-wave2.md` - Wave 2 tasks
-   - `.agents/modernize-wave3-5.md` - Waves 3-5 tasks
-4. `.agents/modernize-explainer.md` - Architecture and design decisions
+   - `.agents/planning/modernize-wave1.md` - Wave 0-1 tasks
+   - `.agents/planning/modernize-wave2.md` - Wave 2 tasks
+   - `.agents/planning/modernize-wave3-5.md` - Waves 3-5 tasks
+4. `.agents/planning/modernize-explainer.md` - Architecture and design decisions
 5. `.github/copilot-instructions.md` - Repository coding standards
 
 ## Important Notes for Next Session

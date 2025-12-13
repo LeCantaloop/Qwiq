@@ -33,12 +33,12 @@ This repository uses a coordinated multi-agent system. See `AGENT-SYSTEM.md` for
 Before starting work, complete these steps IN ORDER:
 
 - [ ] Read this file completely
-- [ ] Read `modernize-TODO-index.md` for overview and navigation
+- [ ] Read `planning/modernize-TODO-index.md` for overview and navigation
 - [ ] Read the appropriate wave file for your assigned tasks:
-  - `modernize-wave1.md` - Wave 0-1 tasks
-  - `modernize-wave2.md` - Wave 2 tasks
-  - `modernize-wave3-5.md` - Waves 3-5 tasks
-- [ ] Read `modernize-explainer.md` for architectural context
+  - `planning/modernize-wave1.md` - Wave 0-1 tasks
+  - `planning/modernize-wave2.md` - Wave 2 tasks
+  - `planning/modernize-wave3-5.md` - Waves 3-5 tasks
+- [ ] Read `planning/modernize-explainer.md` for architectural context
 - [ ] Check `HANDOFF.md` for previous session notes
 - [ ] Identify your assigned phase (e.g., "Phase 2A")
 - [ ] Create a session log file: `.agents/sessions/YYYY-MM-DD-phase-XX.md`
@@ -50,11 +50,11 @@ Before starting work, complete these steps IN ORDER:
 | Document                  | Purpose                             | When to Update                   |
 | ------------------------- | ----------------------------------- | -------------------------------- |
 | `AGENT-INSTRUCTIONS.md`   | How to execute work (this file)     | Rarely - only if process changes |
-| `modernize-TODO-index.md` | Overview, metrics, session log      | After EVERY session              |
-| `modernize-wave1.md`      | Wave 0-1 task tracking              | After Wave 0-1 task completion   |
-| `modernize-wave2.md`      | Wave 2 task tracking                | After Wave 2 task completion     |
-| `modernize-wave3-5.md`    | Waves 3-5 task tracking             | After Wave 3-5 task completion   |
-| `modernize-explainer.md`  | Architecture, decisions, rationale  | When design decisions are made   |
+| `planning/modernize-TODO-index.md` | Overview, metrics, session log      | After EVERY session              |
+| `planning/modernize-wave1.md`      | Wave 0-1 task tracking              | After Wave 0-1 task completion   |
+| `planning/modernize-wave2.md`      | Wave 2 task tracking                | After Wave 2 task completion     |
+| `planning/modernize-wave3-5.md`    | Waves 3-5 task tracking             | After Wave 3-5 task completion   |
+| `planning/modernize-explainer.md`  | Architecture, decisions, rationale  | When design decisions are made   |
 | `HANDOFF.md`              | Session-to-session context transfer | At END of every session          |
 | `sessions/*.md`           | Detailed session logs               | Throughout session               |
 
@@ -80,9 +80,9 @@ Before starting work, complete these steps IN ORDER:
 **Before starting a task:**
 
 1. Read the full task description in the appropriate wave file:
-   - `modernize-wave1.md` - Wave 0-1 tasks
-   - `modernize-wave2.md` - Wave 2 tasks
-   - `modernize-wave3-5.md` - Waves 3-5 tasks
+   - `planning/modernize-wave1.md` - Wave 0-1 tasks
+   - `planning/modernize-wave2.md` - Wave 2 tasks
+   - `planning/modernize-wave3-5.md` - Waves 3-5 tasks
 2. Understand acceptance criteria
 3. Plan the implementation approach
 
@@ -324,11 +324,11 @@ dotnet test Qwiq.sln -c Release --no-build --filter "TestCategory!=localOnly&Tes
 If you need context, read these files in order:
 
 1. `.agents/AGENT-INSTRUCTIONS.md` (this process)
-2. `.agents/modernize-TODO-index.md` (overview and navigation)
+2. `.agents/planning/modernize-TODO-index.md` (overview and navigation)
 3. The appropriate wave file for your tasks:
-   - `.agents/modernize-wave1.md` - Wave 0-1 tasks
-   - `.agents/modernize-wave2.md` - Wave 2 tasks
-   - `.agents/modernize-wave3-5.md` - Waves 3-5 tasks
+   - `.agents/planning/modernize-wave1.md` - Wave 0-1 tasks
+   - `.agents/planning/modernize-wave2.md` - Wave 2 tasks
+   - `.agents/planning/modernize-wave3-5.md` - Waves 3-5 tasks
 4. `.agents/sessions/YYYY-MM-DD-phase-XX.md` (last session details)
 
 ---
