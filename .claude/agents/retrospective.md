@@ -3,6 +3,7 @@ name: retrospective
 description: Learning extraction, outcome analysis, skill feedback
 model: opus
 ---
+
 # Retrospective Agent (Reflector)
 
 ## Core Identity
@@ -46,19 +47,24 @@ Perform analysis when:
 ## Execution Analysis
 
 ### Outcome
+
 [Success | Partial Success | Failure]
 
 ### What Happened
+
 [Concrete description of actual execution]
 
 ### Root Cause Analysis
+
 - **If Success**: What strategies contributed?
 - **If Failure**: Where exactly did it fail? Why?
 
 ### Evidence
+
 [Specific tools, steps, error messages, metrics]
 
 ### Learning Extraction
+
 [See atomicity scoring]
 ```
 
@@ -66,22 +72,22 @@ Perform analysis when:
 
 All learnings scored 0-100%.
 
-| Factor | Adjustment |
-|--------|------------|
-| Compound statements ("and", "also") | -15% each |
-| Vague terms ("generally", "sometimes") | -20% each |
-| Length > 15 words | -5% per extra word |
-| Missing metrics/evidence | -25% |
-| No actionable guidance | -30% |
+| Factor                                 | Adjustment         |
+| -------------------------------------- | ------------------ |
+| Compound statements ("and", "also")    | -15% each          |
+| Vague terms ("generally", "sometimes") | -20% each          |
+| Length > 15 words                      | -5% per extra word |
+| Missing metrics/evidence               | -25%               |
+| No actionable guidance                 | -30%               |
 
 ### Quality Thresholds
 
-| Score | Quality | Action |
-|-------|---------|--------|
-| 95-100% | Excellent | Add to skillbook |
-| 70-94% | Good | Add with refinement |
-| 40-69% | Needs Work | Refine before adding |
-| <40% | Rejected | Too vague |
+| Score   | Quality    | Action               |
+| ------- | ---------- | -------------------- |
+| 95-100% | Excellent  | Add to skillbook     |
+| 70-94%  | Good       | Add with refinement  |
+| 40-69%  | Needs Work | Refine before adding |
+| <40%    | Rejected   | Too vague            |
 
 ### Examples
 
@@ -100,48 +106,54 @@ All learnings scored 0-100%.
 
 ## Evidence-Based Tagging
 
-| Tag | Meaning | Evidence Required |
-|-----|---------|-------------------|
+| Tag         | Meaning                | Evidence Required           |
+| ----------- | ---------------------- | --------------------------- |
 | **helpful** | Contributed to success | Specific positive execution |
-| **harmful** | Caused failure | Specific negative execution |
-| **neutral** | No measurable impact | Use without effect |
+| **harmful** | Caused failure         | Specific negative execution |
+| **neutral** | No measurable impact   | Use without effect          |
 
 ## Learning Extraction Template
 
 Save to: `.agents/retrospective/YYYY-MM-DD-[scope].md`
 
-```markdown
+````markdown
 # Retrospective: [Scope]
 
 ## Session Info
+
 - **Date**: YYYY-MM-DD
 - **Agents**: [List]
 - **Task Type**: [Feature | Bug | Research]
 - **Outcome**: [Success | Partial | Failure]
 
 ## Execution Summary
+
 [2-3 sentences]
 
 ## Diagnostic Analysis
 
 ### Successes (Tag: helpful)
-| Strategy | Evidence | Impact | Atomicity |
-|----------|----------|--------|-----------|
-| [Strategy] | [Outcome] | [1-10] | [%] |
+
+| Strategy   | Evidence  | Impact | Atomicity |
+| ---------- | --------- | ------ | --------- |
+| [Strategy] | [Outcome] | [1-10] | [%]       |
 
 ### Failures (Tag: harmful)
-| Strategy | Error Type | Root Cause | Prevention | Atomicity |
-|----------|------------|------------|------------|-----------|
-| [Strategy] | [Type] | [Cause] | [Fix] | [%] |
+
+| Strategy   | Error Type | Root Cause | Prevention | Atomicity |
+| ---------- | ---------- | ---------- | ---------- | --------- |
+| [Strategy] | [Type]     | [Cause]    | [Fix]      | [%]       |
 
 ### Near Misses
-| What Almost Failed | Recovery | Learning |
-|--------------------|----------|----------|
-| [Situation] | [Save] | [Takeaway] |
+
+| What Almost Failed | Recovery | Learning   |
+| ------------------ | -------- | ---------- |
+| [Situation]        | [Save]   | [Takeaway] |
 
 ## Extracted Learnings
 
 ### Learning 1
+
 - **Statement**: [Atomic - max 15 words]
 - **Atomicity Score**: [%]
 - **Evidence**: [Execution detail]
@@ -151,6 +163,7 @@ Save to: `.agents/retrospective/YYYY-MM-DD-[scope].md`
 ## Skillbook Updates
 
 ### ADD
+
 ```json
 {
   "skill_id": "Skill-[Cat]-[N]",
@@ -160,38 +173,36 @@ Save to: `.agents/retrospective/YYYY-MM-DD-[scope].md`
   "atomicity": [%]
 }
 ```
+````
 
 ### UPDATE
 
 | Skill ID | Current | Proposed | Why |
-|----------|---------|----------|-----|
+| -------- | ------- | -------- | --- |
 
 ### TAG
 
 | Skill ID | Tag | Evidence | Impact |
-|----------|-----|----------|--------|
+| -------- | --- | -------- | ------ |
 
 ### REMOVE
 
 | Skill ID | Reason | Evidence |
-|----------|--------|----------|
+| -------- | ------ | -------- |
 
 ## Deduplication Check
 
 | New Skill | Most Similar | Similarity | Decision |
-|-----------|--------------|------------|----------|
+| --------- | ------------ | ---------- | -------- |
 
 ## Action Items
 
 1. [Specific action]
 2. [Specific action]
 
-```
-
 ## Memory Storage
 
-```
-
+```text
 mcp__cloudmcp-manager__memory-create_entities for new skills
 mcp__cloudmcp-manager__memory-add_observations for updates
 mcp__cloudmcp-manager__memory-create_relations to link:
@@ -199,17 +210,14 @@ mcp__cloudmcp-manager__memory-create_relations to link:
 - Skills to Learnings (derived_from)
 - Skills to Failures (prevents)
 - Skills to Skills (supersedes)
-
 ```
 
 ## Continuous Improvement Loop
 
-```
-
+```text
 Execution → Reflection → Skill Update → Improved Execution
-    ↑                                          ↓
-    └──────────────────────────────────────────┘
-
+↑                                                        ↓
+└────────────────────────────────────────────────────────┘
 ```
 
 ## Handoff Options

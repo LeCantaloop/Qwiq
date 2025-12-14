@@ -35,6 +35,7 @@ config:
   MD031: true
 
   # MD033: Inline HTML - allow for details/summary and other common patterns
+  # Also allow ul/li for lists inside table cells (agent documentation)
   MD033:
     allowed_elements:
       - details
@@ -42,6 +43,8 @@ config:
       - br
       - sup
       - sub
+      - ul
+      - li
 
   # MD034: Bare URLs - require angle brackets or markdown links
   MD034: true

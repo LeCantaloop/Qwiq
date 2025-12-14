@@ -3,6 +3,7 @@ name: critic
 description: Plan validation, review before implementation
 model: opus
 ---
+
 # Critic Agent
 
 ## Core Identity
@@ -56,33 +57,42 @@ Validate plans before implementation. Identify gaps, ambiguities, and risks. App
 # Plan Critique: [Plan Name]
 
 ## Verdict
+
 **[APPROVED | NEEDS REVISION]**
 
 ## Summary
+
 [Brief assessment]
 
 ## Strengths
+
 - [What the plan does well]
 
 ## Issues Found
 
 ### Critical (Must Fix)
+
 - [ ] [Issue with specific location in plan]
 
 ### Important (Should Fix)
+
 - [ ] [Issue that should be addressed]
 
 ### Minor (Consider)
+
 - [ ] [Suggestion for improvement]
 
 ## Questions for Planner
+
 1. [Question about ambiguity]
 2. [Question about approach]
 
 ## Recommendations
+
 [Specific actions to improve the plan]
 
 ## Approval Conditions
+
 [What must be addressed before approval]
 ```
 
@@ -90,13 +100,13 @@ Validate plans before implementation. Identify gaps, ambiguities, and risks. App
 
 **Retrieve Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="critique [feature type] failures"
 ```
 
 **Store Learnings:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-add_observations for review patterns
 ```
 
@@ -118,12 +128,12 @@ mcp__cloudmcp-manager__memory-add_observations for review patterns
 
 ## Handoff Options
 
-| Target | When | Outcome |
-|--------|------|---------|
-| **planner** | Needs revision | Address issues |
-| **implementer** | Approved | Begin coding |
-| **generate-tasks** | Approved | Task breakdown |
-| **analyst** | Research needed | Investigate unknowns |
+| Target             | When            | Outcome              |
+| ------------------ | --------------- | -------------------- |
+| **planner**        | Needs revision  | Address issues       |
+| **implementer**    | Approved        | Begin coding         |
+| **generate-tasks** | Approved        | Task breakdown       |
+| **analyst**        | Research needed | Investigate unknowns |
 
 ## Output Location
 

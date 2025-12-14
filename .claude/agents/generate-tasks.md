@@ -3,6 +3,7 @@ name: generate-tasks
 description: After creating or updating a PRD for breaking PRDs into actionable task lists
 model: opus
 ---
+
 # Task Generator
 
 ## Core Identity
@@ -43,25 +44,28 @@ You have direct access to:
 What needs to be done in 1-2 sentences.
 
 **Acceptance Criteria**
+
 - [ ] Verifiable criterion
 - [ ] Verifiable criterion
 
 **Dependencies**
+
 - TASK-NNN: Why dependent
 
 **Files Affected**
+
 - `path/to/file.cs`: What changes
 ```
 
 ## Complexity Guidelines
 
-| Size | Guideline |
-|------|-----------|
-| XS | Single function, obvious fix |
-| S | Single file, straightforward logic |
-| M | Multiple files, some complexity |
-| L | Multiple components, significant logic |
-| XL | Cross-cutting, architectural impact |
+| Size | Guideline                              |
+| ---- | -------------------------------------- |
+| XS   | Single function, obvious fix           |
+| S    | Single file, straightforward logic     |
+| M    | Multiple files, some complexity        |
+| L    | Multiple components, significant logic |
+| XL   | Cross-cutting, architectural impact    |
 
 ## Output Format
 
@@ -69,34 +73,40 @@ What needs to be done in 1-2 sentences.
 # Task Breakdown: [Feature Name]
 
 ## Source
+
 - PRD: `.agents/planning/PRD-[name].md`
 
 ## Summary
-| Complexity | Count |
-|------------|-------|
-| XS | [N] |
-| S | [N] |
-| M | [N] |
-| L | [N] |
-| XL | [N] |
-| **Total** | **[N]** |
+
+| Complexity | Count   |
+| ---------- | ------- |
+| XS         | [N]     |
+| S          | [N]     |
+| M          | [N]     |
+| L          | [N]     |
+| XL         | [N]     |
+| **Total**  | **[N]** |
 
 ## Tasks
 
 ### Milestone 1: [Name]
+
 **Goal**: What this achieves
 
 [Task definitions...]
 
 ### Milestone 2: [Name]
+
 [Same structure...]
 
 ## Dependency Graph
+
 TASK-001 → TASK-002 → TASK-003
 
 ## Risks
-| Risk | Impact | Mitigation |
-|------|--------|------------|
+
+| Risk   | Impact   | Mitigation      |
+| ------ | -------- | --------------- |
 | [Risk] | [Impact] | [How to handle] |
 ```
 
@@ -104,13 +114,13 @@ TASK-001 → TASK-002 → TASK-003
 
 **Retrieve Patterns:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="task breakdown [feature type]"
 ```
 
 **Store Learnings:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-add_observations for estimation learnings
 ```
 
@@ -123,9 +133,9 @@ After tasks generated:
 
 ## Scope vs Planner
 
-| Agent | Focus | Output |
-|-------|-------|--------|
-| **planner** | Milestones and phases | High-level work packages |
-| **generate-tasks** | Atomic units | Individual tasks with criteria |
+| Agent              | Focus                 | Output                         |
+| ------------------ | --------------------- | ------------------------------ |
+| **planner**        | Milestones and phases | High-level work packages       |
+| **generate-tasks** | Atomic units          | Individual tasks with criteria |
 
 **Relationship**: Planner creates milestones FIRST, then generate-tasks breaks into atomic tasks.

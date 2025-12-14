@@ -33,33 +33,33 @@ Based on multi-agent analysis (Plan, C# Expert, Architecture, Independent Thinke
 
 ## Baseline Data
 
-| Date       | Score      | Killed | Survived | Timeout | No Coverage | Run Time | Notes |
-| ---------- | ---------- | ------ | -------- | ------- | ----------- | -------- | ----- |
-| 2025-12-13 | **48.79%** | 747    | 366      | 0       | 418         | 8.6 min  | +93 tests (Session 38) |
+| Date       | Score      | Killed | Survived | Timeout | No Coverage | Run Time | Notes                         |
+| ---------- | ---------- | ------ | -------- | ------- | ----------- | -------- | ----------------------------- |
+| 2025-12-13 | **48.79%** | 747    | 366      | 0       | 418         | 8.6 min  | +93 tests (Session 38)        |
 | 2025-12-13 | 43.96%     | 656    | 354      | 17      | 504         | 11 min   | Initial baseline (Session 35) |
 
 ### High Performers (≥75%)
 
-| File                              | Score   | Notes                     |
-| --------------------------------- | ------- | ------------------------- |
-| WorkItemTypeCollection.cs         | 100%    | All mutants killed        |
-| TeamFoundationIdentityComparer.cs | 100%    | All mutants killed        |
-| IWorkItemLinkType.Extensions.cs   | 100%    | All mutants killed        |
-| CoreFieldRefNames.cs              | 97.14%  | 1 no coverage mutant      |
-| ExceptionMapper.cs                | 79.17%  | Good exception handling   |
-| WorkItemLinkInfo.cs               | 77.78%  | Solid test coverage       |
-| FieldCollection.cs                | 75.47%  | Well-tested collection    |
+| File                              | Score  | Notes                   |
+| --------------------------------- | ------ | ----------------------- |
+| WorkItemTypeCollection.cs         | 100%   | All mutants killed      |
+| TeamFoundationIdentityComparer.cs | 100%   | All mutants killed      |
+| IWorkItemLinkType.Extensions.cs   | 100%   | All mutants killed      |
+| CoreFieldRefNames.cs              | 97.14% | 1 no coverage mutant    |
+| ExceptionMapper.cs                | 79.17% | Good exception handling |
+| WorkItemLinkInfo.cs               | 77.78% | Solid test coverage     |
+| FieldCollection.cs                | 75.47% | Well-tested collection  |
 
 ### Priority Improvements (Low scores, high impact)
 
-| File                        | Before | After    | Status      | Notes                          |
-| --------------------------- | ------ | -------- | ----------- | ------------------------------ |
+| File                        | Before | After    | Status       | Notes                          |
+| --------------------------- | ------ | -------- | ------------ | ------------------------------ |
 | IWorkItem.Extensions.cs     | 0%     | Improved | ✅ ADDRESSED | +33 tests (Session 38)         |
 | CredentialsFactory.cs       | 0%     | Improved | ✅ ADDRESSED | +25 tests (Session 38)         |
 | GenericComparer.cs          | 31.91% | Improved | ✅ ADDRESSED | +35 tests (Session 38)         |
-| IdentityFieldValue.cs       | 49%    | -        | MEDIUM      | Next priority                  |
-| TypeParser.cs               | 57.75% | -        | MEDIUM      | Good existing coverage         |
-| WorkItemLinkTypeComparer.cs | 18.75% | -        | MEDIUM      | Few no-coverage mutants remain |
+| IdentityFieldValue.cs       | 49%    | -        | MEDIUM       | Next priority                  |
+| TypeParser.cs               | 57.75% | -        | MEDIUM       | Good existing coverage         |
+| WorkItemLinkTypeComparer.cs | 18.75% | -        | MEDIUM       | Few no-coverage mutants remain |
 
 ## Threshold Progression Plan
 

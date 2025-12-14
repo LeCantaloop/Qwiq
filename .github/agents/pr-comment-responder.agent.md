@@ -68,7 +68,7 @@ Use `#runSubagent` to orchestrate with specialized agents:
 
 ## Commit Message Format
 
-```
+```text
 fix: address PR review comment - [brief description]
 
 - [What was changed]
@@ -129,13 +129,13 @@ fix: address PR review comment - [brief description]
 
 ### Retrieval
 
-```
+```text
 cloudmcp-manager/memory-search_nodes with query="PR review patterns"
 ```
 
 ### Storage
 
-```
+```text
 cloudmcp-manager/memory-add_observations for reviewer preferences
 cloudmcp-manager/memory-create_entities for new patterns learned
 ```

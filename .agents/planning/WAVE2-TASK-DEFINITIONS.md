@@ -816,6 +816,7 @@ Tests run on all platforms (Windows, Linux, macOS) without Azure DevOps.
 ```powershell
 dotnet test --filter "TestCategory=RestUnit"
 ```
+```text
 ````
 
 **Example Test**:

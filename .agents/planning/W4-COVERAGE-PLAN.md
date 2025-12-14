@@ -34,7 +34,7 @@ This plan increases Qwiq test coverage from **51.1% to 70%** with a focus on **b
 | Qwiq.Identity        | 70.1%   | 70%    | 0%     | Maintain     |
 | Qwiq.Mapper.Identity | 66%     | 70%    | +4%    | Low          |
 
-_Note: REST/SOAP clients deferred to W4.2 (WireMock infrastructure required)_
+**Note:** REST/SOAP clients deferred to W4.2 (WireMock infrastructure required)
 
 ---
 
@@ -46,7 +46,7 @@ _Note: REST/SOAP clients deferred to W4.2 (WireMock infrastructure required)_
 
 **Files to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Links/ExternalLinkTests.cs
 test/Qwiq.Core.Tests/Links/RelatedLinkTests.cs
 ```
@@ -62,7 +62,7 @@ test/Qwiq.Core.Tests/Links/RelatedLinkTests.cs
 
 **Files to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Query/QueryDefinitionTests.cs
 test/Qwiq.Core.Tests/Query/QueryFolderTests.cs
 ```
@@ -78,7 +78,7 @@ test/Qwiq.Core.Tests/Query/QueryFolderTests.cs
 
 **Files to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Comparers/QueryDefinitionComparerTests.cs
 test/Qwiq.Core.Tests/Comparers/QueryFolderComparerTests.cs
 test/Qwiq.Core.Tests/Comparers/WorkItemLinkInfoComparerTests.cs
@@ -107,7 +107,7 @@ test/Qwiq.Core.Tests/Comparers/WorkItemLinkInfoComparerTests.cs
 
 **File to update:**
 
-```
+```text
 test/Qwiq.Core.Tests/Exceptions/CustomExceptionTests.cs
 ```
 
@@ -126,7 +126,7 @@ test/Qwiq.Core.Tests/Exceptions/CustomExceptionTests.cs
 
 **Files to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Fields/FieldDefinitionTests.cs
 test/Qwiq.Core.Tests/Fields/FieldTests.cs
 ```
@@ -135,7 +135,7 @@ test/Qwiq.Core.Tests/Fields/FieldTests.cs
 
 **File to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Identity/IdentityDescriptorComparerTests.cs
 ```
 
@@ -153,7 +153,7 @@ test/Qwiq.Core.Tests/Identity/IdentityDescriptorComparerTests.cs
 
 **File to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Credentials/AuthenticationOptionsTests.cs
 ```
 
@@ -163,7 +163,7 @@ test/Qwiq.Core.Tests/Credentials/AuthenticationOptionsTests.cs
 
 **File to create:**
 
-```
+```text
 test/Qwiq.Core.Tests/Collections/ReadOnlyCollectionWithIdTests.cs
 ```
 
@@ -180,7 +180,7 @@ test/Qwiq.Core.Tests/Collections/ReadOnlyCollectionWithIdTests.cs
 
 **File to create:**
 
-```
+```text
 test/Qwiq.Mapper.Tests/FieldMapperEdgeCaseTests.cs
 ```
 

@@ -243,20 +243,16 @@ Before adding new skills, verify no semantic duplicates:
 
 [Links between entities]
 
-```
-
 ---
 
 ## PART 5: Continuous Improvement Loop
 
 ### Feedback Cycle
 
-```
-
+```text
 Execution → Reflection → Skill Update → Improved Execution
     ↑                                          ↓
     └──────────────────────────────────────────┘
-
 ```
 
 ### Integration Protocol
@@ -301,7 +297,7 @@ After execution:
 
 **After Reflection:**
 
-```
+```text
 cloudmcp-manager/memory-create_entities for new skills
 cloudmcp-manager/memory-add_observations for skill updates
 cloudmcp-manager/memory-create_relations to link:

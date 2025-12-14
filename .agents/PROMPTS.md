@@ -32,12 +32,12 @@
 
 The modernization TODO was split into multiple files for AI agent readability:
 
-| File                                               | Content                     |
-| -------------------------------------------------- | --------------------------- |
-| [modernize-TODO-index.md](modernize-TODO-index.md) | Index, metrics, session log |
-| [modernize-wave1.md](modernize-wave1.md)           | Wave 0 + Wave 1 tasks       |
-| [modernize-wave2.md](modernize-wave2.md)           | Wave 2 tasks                |
-| [modernize-wave3-5.md](modernize-wave3-5.md)       | Wave 3-5 tasks              |
+| File                                                        | Content                     |
+| ----------------------------------------------------------- | --------------------------- |
+| [modernize-TODO-index.md](planning/modernize-TODO-index.md) | Index, metrics, session log |
+| [modernize-wave1.md](planning/modernize-wave1.md)           | Wave 0 + Wave 1 tasks       |
+| [modernize-wave2.md](planning/modernize-wave2.md)           | Wave 2 tasks                |
+| [modernize-wave3-5.md](planning/modernize-wave3-5.md)       | Wave 3-5 tasks              |
 
 ---
 
@@ -929,11 +929,11 @@ You have lost context. Follow these steps to recover:
 ## Step 1: Read Core Documentation (in this order)
 1. `.agents/AGENT-INSTRUCTIONS.md` - Process instructions
 2. `.agents/HANDOFF.md` - Previous session context
-3. `.agents/modernize-TODO-index.md` - Overview and navigation
+3. `.agents/planning/modernize-TODO-index.md` - Overview and navigation
 4. Then read the appropriate wave file based on your task:
-   - `.agents/modernize-wave1.md` - Wave 0-1 tasks
-   - `.agents/modernize-wave2.md` - Wave 2 tasks
-   - `.agents/modernize-wave3-5.md` - Wave 3-5 tasks
+   - `.agents/planning/modernize-wave1.md` - Wave 0-1 tasks
+   - `.agents/planning/modernize-wave2.md` - Wave 2 tasks
+   - `.agents/planning/modernize-wave3-5.md` - Wave 3-5 tasks
 
 ## Step 2: Review Recent Session Logs
 Check `.agents/sessions/` for recent logs (most recent first).
@@ -943,7 +943,7 @@ git status
 git log --oneline -5
 
 ## Step 4: Resume Work
-Continue with current sprint priorities from modernize-TODO-index.md.
+Continue with current sprint priorities from planning/modernize-TODO-index.md.
 
 ## Build Commands for Verification
 dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
@@ -965,10 +965,10 @@ Complete these steps immediately before ending the session:
 
 ## 1. Update Task Tracking
 - [ ] Check off ALL completed tasks in the appropriate wave file:
-  - `.agents/modernize-wave1.md` - Wave 0-1 tasks
-  - `.agents/modernize-wave2.md` - Wave 2 tasks
-  - `.agents/modernize-wave3-5.md` - Wave 3-5 tasks
-- [ ] Update metrics in `.agents/modernize-TODO-index.md`
+  - `.agents/planning/modernize-wave1.md` - Wave 0-1 tasks
+  - `.agents/planning/modernize-wave2.md` - Wave 2 tasks
+  - `.agents/planning/modernize-wave3-5.md` - Wave 3-5 tasks
+- [ ] Update metrics in `.agents/planning/modernize-TODO-index.md`
 
 ## 2. Complete Session Log
 Update your session log in `.agents/sessions/` (example: `.agents/sessions/2025-12-12-session-01.md`) with:
@@ -1101,7 +1101,7 @@ Read the contents of the `.agents` directory before starting work:
 
 1. **FIRST**: Read `.agents/AGENT-INSTRUCTIONS.md` - operational protocol
 2. **SECOND**: Read `.agents/HANDOFF.md` - previous session context
-3. **THIRD**: Read `.agents/modernize-TODO-index.md` - task details and current state
+3. **THIRD**: Read `.agents/planning/modernize-TODO-index.md` - task details and current state
 
 ## Project Context
 
@@ -1118,7 +1118,7 @@ Read the contents of the `.agents` directory before starting work:
 1. Create session log: `.agents/sessions/YYYY-MM-DD-session-NN.md`
 2. Complete pre-flight checklist from AGENT-INSTRUCTIONS.md
 3. Work incrementally with small, conventional commits
-4. Check off tasks in modernize-TODO-index.md and related modernize-wave\*.md files as completed
+4. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
 5. Update session log with decisions and challenges
 
 ## Build Commands
@@ -1148,10 +1148,10 @@ Before ending, complete ALL mandatory steps:
 
 ## 1. Documentation Updates
 - [ ] All completed tasks checked off in the appropriate wave file:
-  - `.agents/modernize-wave1.md` - Wave 0-1 tasks
-  - `.agents/modernize-wave2.md` - Wave 2 tasks
-  - `.agents/modernize-wave3-5.md` - Wave 3-5 tasks
-- [ ] Update metrics in `.agents/modernize-TODO-index.md`
+  - `.agents/planning/modernize-wave1.md` - Wave 0-1 tasks
+  - `.agents/planning/modernize-wave2.md` - Wave 2 tasks
+  - `.agents/planning/modernize-wave3-5.md` - Wave 3-5 tasks
+- [ ] Update metrics in `.agents/planning/modernize-TODO-index.md`
 - [ ] Session log complete at `.agents/sessions/YYYY-MM-DD-session-NN.md`:
   - What was done for each task
   - Decisions made and rationale

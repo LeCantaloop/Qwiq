@@ -1,0 +1,33 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    # Run for ALL pull requests regardless of target branch
+  workflow_dispatch:
+    # Allow manual triggering of the linting
+
+permissions:
+  contents: read
+
+jobs:
+  lint-markdown:
+    runs-on: ubuntu-latest
+    name: Lint Markdown
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify markdown files
+        # Verify all markdown files pass linting (no auto-fix in CI)
+        # This catches commits that bypassed the pre-commit hook
+        run: npx markdownlint-cli2 "**/*.md"

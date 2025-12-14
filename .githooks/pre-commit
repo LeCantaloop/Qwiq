@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 #
 # Pre-commit hook for Qwiq repository
-# Enforces linting before commits using documented linters:
-#   - markdownlint-cli2 for markdown files
-#   - dotnet format for C# files
-#   - pprettier (dotnet tool) for JSON/YAML files
+# AUTOMATICALLY FIXES linting issues and re-stages corrected files.
+#
+# Linters:
+#   - markdownlint-cli2 for markdown files (auto-fix enabled)
+#   - dotnet format for C# files (auto-fix enabled)
+#   - pprettier (dotnet tool) for JSON/YAML files (auto-fix enabled)
 #
 # To enable: git config core.hooksPath .githooks
 # To bypass:  git commit --no-verify (use sparingly)
+#
+# Environment variables:
+#   SKIP_AUTOFIX=1  - Check only, don't auto-fix (CI mode)
+#
+# SECURITY NOTE (2025-12-13):
+# This hook uses bash arrays and quoted expansions to safely pass filenames
+# to external tools. This prevents shell injection attacks via malicious
+# filenames containing metacharacters (;, `, $(), etc.).
+# See: https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633463
+#
 
 set -e
 
@@ -15,6 +27,7 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Check if we're in a terminal that supports colors
@@ -22,6 +35,7 @@ if [ ! -t 1 ]; then
     RED=''
     GREEN=''
     YELLOW=''
+    CYAN=''
     NC=''
 fi
 
@@ -41,8 +55,22 @@ echo_info() {
     echo "$1"
 }
 
+echo_action() {
+    echo -e "${CYAN}FIXING:${NC} $1"
+}
+
 # Track overall exit status
 EXIT_STATUS=0
+
+# Track if any files were auto-fixed
+FILES_FIXED=0
+
+# Auto-fix mode (default: enabled)
+AUTOFIX=1
+if [ "${SKIP_AUTOFIX:-}" = "1" ]; then
+    AUTOFIX=0
+    echo_info "Auto-fix disabled (SKIP_AUTOFIX=1)"
+fi
 
 # Get repository root
 REPO_ROOT=$(git rev-parse --show-toplevel)
@@ -65,24 +93,39 @@ STAGED_JSON_YAML_FILES=$(echo "$STAGED_FILES" | grep -E '\.(json|ya?ml)$' || tru
 # 1. Markdown Linting with markdownlint-cli2
 #
 if [ -n "$STAGED_MD_FILES" ]; then
-    echo_info "Checking markdown files with markdownlint-cli2..."
+    echo_info "Checking markdown files..."
 
-    # Check if npx is available
     if ! command -v npx &> /dev/null; then
-        echo_error "npx not found. Install Node.js to enable markdown linting."
-        echo_info "  Download: https://nodejs.org/"
-        EXIT_STATUS=1
+        echo_warning "npx not found. Skipping markdown linting."
     else
-        # Convert to space-separated list for npx
-        # Use --no-globs to prevent config's glob patterns from expanding to all files
-        MD_FILE_LIST=$(echo "$STAGED_MD_FILES" | tr '\n' ' ')
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t MD_FILE_ARRAY <<< "$STAGED_MD_FILES"
 
-        if ! npx markdownlint-cli2 --no-globs $MD_FILE_LIST; then
-            echo_error "Markdown linting failed."
-            echo_info "  Fix with: npx markdownlint-cli2 --fix \"**/*.md\""
+        # First, try to auto-fix
+        if [ "$AUTOFIX" = "1" ]; then
+            echo_action "Auto-fixing markdown files..."
+            # Fix in place (ignore exit code, we'll verify after)
+            # Use quoted array expansion to safely pass filenames
+            npx markdownlint-cli2 --fix --no-globs "${MD_FILE_ARRAY[@]}" 2>/dev/null || true
+        fi
+
+        # Verify the files pass linting now
+        # Use quoted array expansion to safely pass filenames
+        if ! npx markdownlint-cli2 --no-globs "${MD_FILE_ARRAY[@]}" 2>&1; then
+            echo_error "Markdown linting failed (some issues cannot be auto-fixed)."
+            echo_info "  Review errors above and fix manually."
             EXIT_STATUS=1
         else
-            echo_success "Markdown files passed linting."
+            # Check if files were modified by the fix
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${MD_FILE_ARRAY[@]}"; do
+                if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
+                    echo_success "Fixed: $file"
+                    git add "$file"
+                    FILES_FIXED=1
+                fi
+            done
+            echo_success "Markdown files OK."
         fi
     fi
 fi
@@ -91,40 +134,48 @@ fi
 # 2. C# Formatting with dotnet format
 #
 if [ -n "$STAGED_CS_FILES" ]; then
-    echo_info "Checking C# files with dotnet format..."
+    echo_info "Checking C# files..."
 
-    # Check if dotnet is available
     if ! command -v dotnet &> /dev/null; then
-        echo_error "dotnet not found. Install .NET SDK to enable C# formatting checks."
-        echo_info "  Download: https://dot.net/"
-        EXIT_STATUS=1
+        echo_warning "dotnet not found. Skipping C# formatting."
+    elif [ ! -f "Qwiq.sln" ]; then
+        echo_warning "Qwiq.sln not found. Skipping C# formatting."
     else
-        # Check if solution can be found
-        if [ ! -f "Qwiq.sln" ]; then
-            echo_warning "Qwiq.sln not found. Skipping dotnet format."
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t CS_FILE_ARRAY <<< "$STAGED_CS_FILES"
+
+        # Build include arguments array (each --include and filename is separate element)
+        # This prevents shell metacharacters in filenames from breaking the command
+        CS_INCLUDE_ARGS=()
+        for file in "${CS_FILE_ARRAY[@]}"; do
+            normalized_file=$(echo "$file" | sed 's/\\/\//g')
+            CS_INCLUDE_ARGS+=("--include" "$normalized_file")
+        done
+
+        if [ "$AUTOFIX" = "1" ]; then
+            echo_action "Auto-fixing C# files..."
+            # Run format (fix in place)
+            # Use quoted array expansion to safely pass arguments
+            dotnet format Qwiq.sln --no-restore "${CS_INCLUDE_ARGS[@]}" 2>&1 || true
+        fi
+
+        # Verify the files pass now
+        # Use quoted array expansion to safely pass arguments
+        if ! dotnet format Qwiq.sln --verify-no-changes --no-restore "${CS_INCLUDE_ARGS[@]}" 2>&1; then
+            echo_error "C# formatting failed."
+            echo_info "  Fix with: dotnet format"
+            EXIT_STATUS=1
         else
-            # Build include arguments for dotnet format
-            # Convert to comma-separated list of relative paths
-            CS_INCLUDE_ARGS=""
-            for file in $STAGED_CS_FILES; do
-                # Normalize path separators for cross-platform
-                normalized_file=$(echo "$file" | sed 's/\\/\//g')
-                if [ -z "$CS_INCLUDE_ARGS" ]; then
-                    CS_INCLUDE_ARGS="--include $normalized_file"
-                else
-                    CS_INCLUDE_ARGS="$CS_INCLUDE_ARGS --include $normalized_file"
+            # Check if files were modified by the fix
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${CS_FILE_ARRAY[@]}"; do
+                if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
+                    echo_success "Fixed: $file"
+                    git add "$file"
+                    FILES_FIXED=1
                 fi
             done
-
-            # Run dotnet format with --verify-no-changes
-            # Using --no-restore to speed up (assumes restore was done during development)
-            if ! dotnet format Qwiq.sln --verify-no-changes --no-restore $CS_INCLUDE_ARGS 2>&1; then
-                echo_error "C# formatting check failed."
-                echo_info "  Fix with: dotnet format"
-                EXIT_STATUS=1
-            else
-                echo_success "C# files passed formatting check."
-            fi
+            echo_success "C# files OK."
         fi
     fi
 fi
@@ -133,30 +184,40 @@ fi
 # 3. JSON/YAML Formatting with pprettier (dotnet tool)
 #
 if [ -n "$STAGED_JSON_YAML_FILES" ]; then
-    echo_info "Checking JSON/YAML files with pprettier..."
+    echo_info "Checking JSON/YAML files..."
 
-    # Check if dotnet is available
     if ! command -v dotnet &> /dev/null; then
-        echo_error "dotnet not found. Install .NET SDK to enable prettier checks."
-        echo_info "  Download: https://dot.net/"
-        EXIT_STATUS=1
+        echo_warning "dotnet not found. Skipping JSON/YAML formatting."
+    elif ! dotnet tool list 2>/dev/null | grep -q "packedprettier"; then
+        echo_warning "pprettier not installed. Run 'dotnet tool restore'."
     else
-        # Check if pprettier tool is available
-        if ! dotnet tool list | grep -q "packedprettier"; then
-            echo_warning "pprettier tool not installed. Run 'dotnet tool restore' first."
-            echo_info "  Fix with: dotnet tool restore"
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t JSON_YAML_FILE_ARRAY <<< "$STAGED_JSON_YAML_FILES"
+
+        if [ "$AUTOFIX" = "1" ]; then
+            echo_action "Auto-fixing JSON/YAML files..."
+            # Fix in place
+            # Use quoted array expansion to safely pass filenames
+            dotnet pprettier --write "${JSON_YAML_FILE_ARRAY[@]}" 2>/dev/null || true
+        fi
+
+        # Verify the files pass now
+        # Use quoted array expansion to safely pass filenames
+        if ! dotnet pprettier --check "${JSON_YAML_FILE_ARRAY[@]}" 2>&1; then
+            echo_error "JSON/YAML formatting failed."
+            echo_info "  Fix with: dotnet pprettier --write ."
             EXIT_STATUS=1
         else
-            # Convert to space-separated list for pprettier
-            JSON_YAML_FILE_LIST=$(echo "$STAGED_JSON_YAML_FILES" | tr '\n' ' ')
-
-            if ! dotnet pprettier --check $JSON_YAML_FILE_LIST 2>&1; then
-                echo_error "JSON/YAML formatting check failed."
-                echo_info "  Fix with: dotnet pprettier --write ."
-                EXIT_STATUS=1
-            else
-                echo_success "JSON/YAML files passed formatting check."
-            fi
+            # Check if files were modified by the fix
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${JSON_YAML_FILE_ARRAY[@]}"; do
+                if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
+                    echo_success "Fixed: $file"
+                    git add "$file"
+                    FILES_FIXED=1
+                fi
+            done
+            echo_success "JSON/YAML files OK."
         fi
     fi
 fi
@@ -164,13 +225,16 @@ fi
 #
 # Final Summary
 #
+echo ""
 if [ $EXIT_STATUS -ne 0 ]; then
-    echo ""
-    echo_error "Pre-commit checks failed. Please fix the issues above before committing."
+    echo_error "Pre-commit checks failed. Please fix the issues above."
     echo_info "  To bypass (use sparingly): git commit --no-verify"
     exit 1
 fi
 
-echo ""
-echo_success "All pre-commit checks passed."
+if [ "$FILES_FIXED" = "1" ]; then
+    echo_success "All checks passed. Some files were auto-fixed and re-staged."
+else
+    echo_success "All pre-commit checks passed."
+fi
 exit 0
