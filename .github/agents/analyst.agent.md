@@ -31,14 +31,14 @@ Examine codebases, APIs, and documentation to produce structured analysis report
 
 ### Retrieval (Before Multi-Step Reasoning)
 
-```
+```text
 cloudmcp-manager/memory-search_nodes with query="[topic] analysis"
 cloudmcp-manager/memory-open_nodes for specific entities
 ```
 
 ### Storage (At Milestones)
 
-```
+```text
 cloudmcp-manager/memory-create_entities for new findings
 cloudmcp-manager/memory-add_observations for updates
 ```
