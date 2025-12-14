@@ -815,6 +815,7 @@ Tests run on all platforms (Windows, Linux, macOS) without Azure DevOps.
 
 ```powershell
 dotnet test --filter "TestCategory=RestUnit"
+```
 ```text
 ````
 
@@ -830,6 +831,7 @@ Tests run on Windows only (net472 requirement).
 
 **Running SOAP Tests**:
 
+```
 ```powershell
 dotnet test --filter "TestCategory=SoapUnit"
 ```
@@ -861,6 +863,7 @@ When testing thin adapters:
 
 1. **Code Coverage Validation**:
 
+   ```
    ```powershell
    dotnet test --collect:"XPlat Code Coverage" --filter "TestCategory=RestUnit"
    # Verify coverage >80% for REST adapter code

@@ -15,6 +15,7 @@ Three critical shell injection vulnerabilities (`CWE-78`) existed in `.githooks/
 **Key Finding**: The agent system was deployed but not being used routinely for infrastructure changes. Workflow decisions, CI modifications, and developer-facing scripts were implemented without security/devops review gates.
 
 **Impact**:
+
 - Arbitrary command execution vulnerability exposed to all developers
 - Required reactive fix during PR review rather than proactive prevention
 - Undermines "shift left" security philosophy
@@ -28,12 +29,14 @@ Three critical shell injection vulnerabilities (`CWE-78`) existed in `.githooks/
 ### Phase 1: Early Session - Skills Extraction (Commits 22370653-6dceb1f0)
 
 **What Happened**:
+
 - Retrospective analysis of 600+ lines of agent documentation
 - Extraction of 22 atomic skills from learning history
 - Creation of `.agents/skills/` directory structure
 - Update of AGENT-INSTRUCTIONS.md with workflows
 
 **Agents Invoked**:
+
 - ✅ retrospective agent - to analyze documentation
 - ❌ **MISSED**: architect agent - to assess skills repository design
 - ❌ **MISSED**: critic agent - to validate skills categorization
@@ -45,19 +48,22 @@ Three critical shell injection vulnerabilities (`CWE-78`) existed in `.githooks/
 ### Phase 2: PR Comment Response (Commits 5ad2d731, earlier work)
 
 **What Happened**:
-- User requested: "on https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616622365, create a new @.github\workflows\ that runs on ubuntu-latest that just does the linting"
+
+- User requested: "on <https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616622365>, create a new @.github\workflows\ that runs on ubuntu-latest that just does the linting"
 - Changes made to `.github/workflows/main.yml` (removed Node.js setup and markdown linting)
 - New `.github/workflows/lint.yml` created
 - Commit: `408909cd` - "refactor(ci): separate markdown linting to dedicated workflow"
 
 **Agents Invoked**:
+
 - ❌ **CRITICAL MISS**: security agent - for CI/workflow review
 - ❌ **CRITICAL MISS**: devops agent - for infrastructure changes
 - ❌ **CRITICAL MISS**: architect agent - for workflow design decisions
 - ✅ (implicitly) general-purpose agent - for implementation
 
 **What Should Have Happened**:
-```
+
+```text
 User Request (CI change)
     ↓
 Invoke: devops agent → review workflow design
@@ -72,6 +78,7 @@ Testing & Verification
 ```
 
 **Why This Was Critical**: The CI workflow changes were infrastructure-level decisions that touch:
+
 - Build pipeline security (environment variables, artifact handling)
 - Developer machine security (pre-commit hooks running with developer privileges)
 - Access control (who can trigger which workflows)
@@ -81,11 +88,13 @@ Testing & Verification
 ### Phase 3: PR Review Comments (User Action)
 
 **What Happened**:
-- User asked: "review the PR comment https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633464 and https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633465"
+
+- User asked: "review the PR comment <https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633464> and <https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633465>"
 - This exposed shell injection vulnerabilities in `.githooks/pre-commit`
 - Vulnerabilities existed but were **discovered reactively by GitHub Copilot bot**, not caught by agent system
 
 **Agents Invoked**:
+
 - ❌ **SHOULD HAVE BEEN**: security agent (to review for command injection)
 - ✅ (retrospectively) general-purpose agent - to analyze and plan the fix
 - ✅ (then implemented) direct fixes applied
@@ -101,16 +110,19 @@ Testing & Verification
 **Problem**: When changes touch CI, workflows, or scripts, no systematic decision point exists to invoke appropriate agents.
 
 **Current Process**:
-```
+
+```text
 User Request → Direct Implementation → Commit
 ```
 
 **Should Be**:
-```
+
+```text
 User Request → Change Type Assessment → Agent Selection → Design Review → Implementation → Testing → Verification
 ```
 
 **Example - What Was Missing for Workflow Changes**:
+
 - ❓ Is this a CI/build infrastructure change? → If yes, invoke DevOps
 - ❓ Does this touch scripts/hooks? → If yes, invoke Security
 - ❓ Does this affect system architecture? → If yes, invoke Architect
@@ -123,6 +135,7 @@ User Request → Change Type Assessment → Agent Selection → Design Review �
 **Problem**: The agent system in `.agents/AGENT-INSTRUCTIONS.md` describes when to use agents, but this guidance wasn't consulted during execution.
 
 **Evidence from Session**:
+
 - Agent instructions file updated with workflows (including security recommendations)
 - Multiple agent types documented (architect, critic, security, devops, qa)
 - Yet these agents were not invoked for infrastructure changes
@@ -134,6 +147,7 @@ User Request → Change Type Assessment → Agent Selection → Design Review �
 **Problem**: Pre-commit hooks run with developer privilege and can execute arbitrary commands. This should trigger automatic security review, but it didn't.
 
 **Missing Mental Model**:
+
 - Hook code = privileged execution on developer machines
 - Workflow code = access to CI environment and secrets
 - Both should default to security review
@@ -145,11 +159,13 @@ User Request → Change Type Assessment → Agent Selection → Design Review �
 **Problem**: When security/devops agents weren't invoked, there was no mechanism to catch and warn about this gap.
 
 **Current State**:
+
 - Changes made and committed
 - PR review happens externally (GitHub Copilot)
 - Issues found during PR review (reactive)
 
 **Should Be**:
+
 - Change type assessed before implementation
 - Missing agent invocation flagged
 - Design review completed before coding
@@ -160,6 +176,7 @@ User Request → Change Type Assessment → Agent Selection → Design Review �
 **Problem**: AGENT-INSTRUCTIONS.md exists but doesn't provide clear heuristics for "given THIS change, invoke THESE agents."
 
 **What Exists**:
+
 ```markdown
 ## Recommended Agent Workflows
 Feature Development: analyst → architect → planner → critic → csharp-expert → qa → retrospective
@@ -170,6 +187,7 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 **What's Missing**: Heuristics for "when should I use these workflows?"
 
 **Should Include**:
+
 - Change type detection (feature? bug fix? infrastructure? security?)
 - Agent selection matrix
 - Go/no-go gates for each agent
@@ -188,6 +206,7 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 | Supply chain risk (if committed upstream) | Same duration | All repository users | CRITICAL |
 
 **Cost of Late Detection**:
+
 - Issue found during PR review instead of design phase
 - Required reactive fix instead of preventive design
 - Code already in repository (in PR) before security review
@@ -196,11 +215,13 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 ### DevOps & Architecture Gaps
 
 **Workflow Design Issues Not Caught**:
+
 1. Separation of lint and build workflows (good) - but no design documentation
 2. Conditional Node.js setup (ubuntu-only) - efficiency improvement, but no formal review
 3. Pre-commit hook design - never formally reviewed for security/reliability
 
 **Process Gaps**:
+
 - No DevOps checkpoints for workflow changes
 - No architecture review for new workflows
 - No security review for scripts/hooks
@@ -214,6 +235,7 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 **Misconception**: "The user asked for a workflow change, so this is implementation, not design."
 
 **Reality**:
+
 - Workflow changes ARE infrastructure design decisions
 - Hook scripts ARE critical security boundaries
 - Both require architect/security review
@@ -223,11 +245,13 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 ### Factor 2: No Visible Friction When Skipping Agents
 
 **Current State**:
+
 - Skipping agents = no immediate feedback
 - Changes can be committed without agent review
 - Only caught later by external PR review
 
 **Should Be**:
+
 - Skipping agents for certain change types = explicit decision with risk acknowledgment
 - High-risk skips (security, infrastructure) = require explicit justification
 - Checkpoints that flag missing agent invocations
@@ -235,11 +259,13 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 ### Factor 3: "Shift Left" Philosophy Documented but Not Operationalized
 
 **Documentation Exists**:
+
 - `.agents/AGENT-INSTRUCTIONS.md` with recommended workflows
 - Skill repository documenting best practices
 - Session notes about agent system
 
 **What's Missing**:
+
 - Integration of "shift left" into change assessment workflow
 - Proactive agent invocation as first step, not last resort
 - Clear go/no-go gates
@@ -247,11 +273,13 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 ### Factor 4: Agent System Complexity May Exceed Practical Usage
 
 **Documented**:
+
 - 15 different agent types
 - Multiple recommended workflows
 - Conditional usage based on change type
 
 **Practical Usage**:
+
 - Only 2-3 agents used routinely (general-purpose, implementation)
 - Others exist in documentation but aren't referenced
 - No decision tree to navigate the options
@@ -265,7 +293,8 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 ### Correct Process for CI/Hook Changes
 
 **Step 1: Change Assessment** (Should take 2 minutes)
-```
+
+```text
 User: "Create new workflow for markdown linting"
 
 Assessment:
@@ -278,7 +307,8 @@ Assessment:
 ```
 
 **Step 2: DevOps Review** (Should take 10 minutes)
-```
+
+```text
 devops agent:
 "Review .github/workflows/lint.yml design"
 
@@ -290,7 +320,8 @@ Review points:
 ```
 
 **Step 3: Security Review** (Should take 15 minutes)
-```
+
+```text
 security agent:
 "Review .github/workflows/lint.yml and .githooks/pre-commit for security"
 
@@ -306,7 +337,8 @@ Recommendations:
 ```
 
 **Step 4: Architect Review** (Should take 10 minutes)
-```
+
+```text
 architect agent:
 "Review separation of markdown linting from main build workflow"
 
@@ -320,7 +352,8 @@ Decision: Create ADR-003-Workflow-Separation.md
 ```
 
 **Step 5: Implementation** (Should take 5 minutes)
-```
+
+```text
 Now implement the fix:
 - Add arrays to pre-commit hook
 - Commit with security notes
@@ -328,7 +361,8 @@ Now implement the fix:
 ```
 
 **Step 6: QA Review** (Should take 5 minutes)
-```
+
+```text
 qa agent:
 "Verify workflow behavior and security fixes"
 
@@ -347,18 +381,21 @@ Tests:
 ## The Cost of Missing the Security Review
 
 ### Immediate Costs
+
 - 1 critical vulnerability in production hook code
 - Affects all active developers
 - Exposed to arbitrary command execution
 - Required reactive fix during PR review
 
 ### Long-term Costs
+
 - Repository has documented shell injection gap in git history
 - May need to audit other scripts/hooks for similar issues
 - Developers may have executed compromised versions
 - Trust in process reduced
 
 ### Process Costs
+
 - Security review moved to external bot (GitHub Copilot) instead of internal agent
 - "Shift left" not achieved for infrastructure changes
 - Agent system proven insufficient without operational procedures
@@ -370,12 +407,14 @@ Tests:
 ### The Agent System Is Documented But Not Operational
 
 **What Exists**:
+
 - `.agents/AGENT-INSTRUCTIONS.md` - comprehensive documentation
 - 15 specialized agent types
 - Recommended workflows documented
 - Skills repository with 22 documented best practices
 
 **What's Missing**:
+
 - **Operational procedures**: When and how to trigger agents
 - **Decision trees**: "Given change type X, invoke agents Y"
 - **Checkpoints**: Automated gates that flag missing agent reviews
@@ -387,11 +426,13 @@ Tests:
 ### No "Shift Left" Integration for Infrastructure Changes
 
 **Stated Goal** (from previous sessions):
+
 - Catch issues as early as possible
 - Use agents proactively before implementation
 - Reduce reactive PR review loops
 
 **Actual Behavior**:
+
 - Implementation-first approach
 - Agent consultation after-the-fact (if at all)
 - Reactive fixes during PR review
@@ -407,6 +448,7 @@ Tests:
 **What**: Before implementing any change, assess its type and required agents.
 
 **Implementation**:
+
 ```bash
 # Add to .agents/ or CONTRIBUTING.md
 
@@ -483,6 +525,7 @@ Legend:
 **What**: Any change to shell scripts, pre-commit hooks, or CI configuration must include security agent review.
 
 **Implementation**:
+
 ```markdown
 ## Mandatory Security Review Gates
 
@@ -581,7 +624,7 @@ When making changes to:
 
 ### For CI/Infrastructure Changes
 
-```
+```text
 User Request (Infrastructure Change)
     ↓
 [ASSESSMENT] Identify change type as Infrastructure
@@ -620,7 +663,7 @@ Commit with references to agent reviews
 
 ### For Security-Critical Changes
 
-```
+```text
 User Request (Security Change)
     ↓
 Invoke: security agent (FIRST)
@@ -655,7 +698,8 @@ Commit and deploy
 ### Preventing This Issue Going Forward
 
 **If Change Assessment Gate existed in this session**:
-```
+
+```text
 Step 1: User says "create workflow for markdown linting"
 
 Step 2: Assessment
@@ -675,6 +719,7 @@ Step 4: Would have discovered
 ```
 
 **Instead, what happened**:
+
 - Implementation done first
 - Security review only during external PR bot
 - Reactive fix required
@@ -683,16 +728,19 @@ Step 4: Would have discovered
 ### Shifting from Reactive to Proactive
 
 **Current (Reactive)**:
-```
+
+```text
 User request → Implement → Commit → PR → Bot review → Issue found → Fix → Re-commit
 ```
 
 **Proposed (Proactive)**:
-```
+
+```text
 User request → Assess → Invoke agents → Review → Implement → Test → Commit
 ```
 
 **Time Impact**:
+
 - Reactive: Issue found after 2+ commits, requiring rework
 - Proactive: Issue prevented before first commit
 
@@ -725,6 +773,7 @@ User request → Assess → Invoke agents → Review → Implement → Test → 
 This session revealed that the agent system exists but isn't being used. The gap between documented best practices and actual behavior created a security vulnerability that required external bot detection.
 
 By operationalizing the agent system through these process changes, you can:
+
 - ✅ Catch infrastructure issues early (before implementation)
 - ✅ Ensure security reviews happen proactively (not reactively)
 - ✅ Apply "shift left" philosophy to all change types
@@ -736,24 +785,28 @@ By operationalizing the agent system through these process changes, you can:
 ## Action Items
 
 ### Immediate (This Week)
+
 - [ ] Create `.agents/CHANGE-ASSESSMENT-GATE.md` with decision tree
 - [ ] Create `.agents/INFRASTRUCTURE-CHECKLIST.md` with requirements
 - [ ] Update `CONTRIBUTING.md` to reference agent invocation gates
 - [ ] Add security review gate for script/hook changes
 
 ### Short-term (This Month)
+
 - [ ] Create agent selection decision tree as visual flowchart
 - [ ] Add "Agent Invocation" section to `AGENT-INSTRUCTIONS.md`
 - [ ] Document risk levels for each change type
 - [ ] Train team on change assessment gate procedure
 
 ### Medium-term (Next Quarter)
+
 - [ ] Implement CI check that validates agent reviews (via commit messages)
 - [ ] Create metrics: "% of infrastructure changes with security review"
 - [ ] Establish "shift left" metrics dashboard
 - [ ] Review all existing hooks/scripts for similar vulnerabilities
 
 ### Long-term
+
 - [ ] Fully operationalize agent system as workflow gate
 - [ ] Achieve 100% security review for security-critical changes
 - [ ] Achieve 100% devops review for infrastructure changes

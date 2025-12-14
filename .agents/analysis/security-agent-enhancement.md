@@ -10,7 +10,7 @@
 
 ### Current (Too Narrow)
 
-```
+```text
 security agent = Threat modeling + Vulnerability review + Code security review
 ```
 
@@ -23,7 +23,7 @@ security agent = Threat modeling + Vulnerability review + Code security review
 
 ### Proposed (Comprehensive)
 
-```
+```text
 security agent = Comprehensive code audit + risk assessment
 
 Responsibilities:
@@ -55,7 +55,7 @@ Responsibilities:
 
 **Example**:
 
-```
+```text
 security agent receives: .githooks/pre-commit
 
 Analysis:
@@ -90,7 +90,7 @@ Analysis:
 
 **Example**:
 
-```
+```text
 security agent receives: src/Services/ApiClient.cs
 
 Analysis:
@@ -120,7 +120,7 @@ Analysis:
 
 **Example**:
 
-```
+```text
 security agent receives: .github/workflows/main.yml + .githooks/pre-commit
 
 Analysis:
@@ -154,7 +154,7 @@ Analysis:
 
 **Example**:
 
-```
+```text
 security agent receives: src/Services/AuthenticationService.cs (843 lines)
 
 Analysis:
@@ -191,7 +191,7 @@ Analysis:
 
 **Example**:
 
-```
+```text
 security agent receives: src/Controllers/UserController.cs
 
 Analysis:
@@ -264,7 +264,7 @@ Analysis:
 
 **Security agent should be automatically suggested for**:
 
-```
+```text
 File patterns that trigger security review:
   ├─ `.github/workflows/*` → infrastructure code
   ├─ `.githooks/*` → pre-commit/post-commit/etc
@@ -300,7 +300,7 @@ File patterns that trigger security review:
 
 ### Without Enhanced Security Agent
 
-```
+```text
 User: "Create workflow for markdown linting"
 → Skipped security agent
 → Implemented directly
@@ -311,7 +311,7 @@ User: "Create workflow for markdown linting"
 
 ### With Enhanced Security Agent
 
-```
+```text
 User: "Create workflow for markdown linting"
 → Infrastructure file detected (.github/workflows/lint.yml)
 → Security agent AUTO-INVOKED

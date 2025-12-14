@@ -153,6 +153,8 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
        Line 42: npx cmd $UNQUOTED_VAR
        Mitigation: Use arrays with quoted expansion: "${ARRAY[@]}"
 
+     ```
+
      ```text
 
 2. **FR-2: Secret Detection**
@@ -163,12 +165,15 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Environment variable leaks
    - Output examples:
 
+     ```
      ```text
      ✗ CRITICAL: Hardcoded API key detected
        File: src/Services/ApiClient.cs, Line 42
        Pattern: `private const string API_KEY = "sk-123..."`
        Risk: Exposed in source code
        Mitigation: Use environment variable or secrets vault
+
+     ```
 
      ```text
 
@@ -180,10 +185,13 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Missing null validation on sensitive parameters
    - Output examples:
 
+     ```
      ```text
      ✗ FILE TOO LARGE: 843 lines
        Risk: Hard to review, easy to miss security issues
        Recommendation: Split into smaller modules
+
+     ```
 
      ```text
 
@@ -194,11 +202,14 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - What code handles sensitive data?
    - Output examples:
 
+     ```
      ```text
      ⚠ HIGH: Pre-commit hook runs with full developer privileges
        Risk: Can read all files, execute arbitrary commands
        Boundary: Developer machine ↔ Untrusted filenames
        Mitigation: Use arrays for filename args, validate input
+
+     ```
 
      ```text
 
@@ -211,11 +222,14 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Testing coverage for security-critical code
    - Output examples:
 
+     ```
      ```text
      ✗ MISSING INPUT VALIDATION: UpdateUser endpoint
        Line 45: `_service.Update(id, request)`
        Missing validation of: request.Email, request.Phone
        Risk: Injection attacks, privilege escalation
+
+     ```
 
      ```text
 
@@ -309,6 +323,7 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
      - **Invocation Rule**: When to use this agent
    - Example Entry (security agent):
 
+     ```
      ```text
      | Property | Value |
      |----------|-------|
@@ -317,6 +332,8 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
      | **Limitations** | <ul><li>Cannot implement fixes</li><li>Cannot test implementations</li><li>Cannot make architectural decisions alone</li><li>Requires expert security knowledge</li></ul> |
      | **Best Paired With** | qa (for security testing), csharp-expert (for fixes) |
      | **Invocation Rule** | MANDATORY for infrastructure changes, authentication, cryptography |
+
+     ```
 
      ```text
 
@@ -865,3 +882,5 @@ All PRDs reference this session's incident:
 - `.agents/analysis/orchestrator-capabilities-matrix.md` - Orchestrator assessment
 - `.agents/analysis/security-agent-enhancement.md` - Security agent expansion
 - `.agents/security/shell-injection-fix.md` - Technical vulnerability details
+
+     ```

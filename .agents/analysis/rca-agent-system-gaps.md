@@ -279,6 +279,8 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 ## Deliverables
 
 1. Create `.github/PULL_REQUEST_TEMPLATE.md` with mandatory section:
+```
+
    ```markdown
    ## Security Review (if infrastructure change)
    - [ ] This PR modifies `.github/workflows/*`, `.githooks/*`, or build scripts
@@ -337,6 +339,8 @@ This analysis performs a 5-Why investigation into each root cause and identifies
    - Max 3 questions to determine which agents to invoke
    - Embedded in `.agents/QUICK-START.md` (new file)
    - Example:
+```
+
      ```text
      Is this a code change?
      ├─ YES → Is it a feature? → Call: analyst, architect, planner, critic
@@ -346,20 +350,22 @@ This analysis performs a 5-Why investigation into each root cause and identifies
      ```
 
 3. Consolidate agent descriptions in `.agents/AGENT-SYSTEM.md`:
-   - Remove redundant agents (e.g., merge csharp-pod into csharp-expert if overlap)
-   - Add selection criteria to each agent description
-   - Add "when to use" heuristics
 
-4. Create agent "quick start" at `.agents/QUICK-START.md`:
+- Remove redundant agents (e.g., merge csharp-pod into csharp-expert if overlap)
+- Add selection criteria to each agent description
+- Add "when to use" heuristics
+
+1. Create agent "quick start" at `.agents/QUICK-START.md`:
    - Two-question flowchart for 80% of use cases
    - Fallback to full `.agents/AGENT-SYSTEM.md` for edge cases
    - Examples: "I'm implementing a feature", "I'm fixing a bug", "I'm changing CI"
 
-5. File upstream issue: `rjmurillo/vs-code-agents#NNN`
+2. File upstream issue: `rjmurillo/vs-code-agents#NNN`
    - Title: "Consolidate agent catalog and create selection heuristics"
    - Description: Current 15 agents have cognitive overhead, propose TIER 1-3 categorization + decision tree
    - Reference: This session's retrospective showing agents skipped due to complexity
-```
+
+```text
 
 **Effort**: Medium (1-2 days for consolidation, 1 day for decision tree design)
 **Risk**: Low (documentation only, no behavior change)
@@ -374,6 +380,8 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 **Root Cause**: No metrics, no logging, no feedback loops
 
 **Remediation**:
+
+```
 
 ```markdown
 ## Deliverables
@@ -445,19 +453,19 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 - Risk: Privilege escalation if hook runs with elevated privileges
 - Mitigation: Use arrays for filenames, validate inputs, document assumptions
 
-2. Add threat model reference to hook header:
+1. Add threat model reference to hook header:
 
    ```bash
    # Threat Model: https://github.com/rjmurillo/Qwiq/blob/develop/.agents/analysis/infrastructure-threat-model.md
    # Risk Level: HIGH (runs with developer privileges)
    ```
 
-1. Create `.agents/INFRASTRUCTURE-SECURITY.md`:
+2. Create `.agents/INFRASTRUCTURE-SECURITY.md`:
    - When to involve security agent
    - Threat categories (CWE-78, environment variable injection, etc.)
    - Review checklist (what security agent looks for)
 
-2. File upstream issue: `rjmurillo/vs-code-agents#NNN`
+3. File upstream issue: `rjmurillo/vs-code-agents#NNN`
    - Title: "Document threat models for infrastructure code categories"
    - Description: Propose explicit threat models for pre-commit hooks, CI workflows, build scripts
    - Reference: Shell injection discovery in this session
@@ -521,6 +529,8 @@ Key sections:
 ## Deliverables
 
 1. Extend `.githooks/pre-commit` with change detection:
+```
+
    ```bash
    # Detect infrastructure changes
    INFRASTRUCTURE_FILES=$(git diff --cached --name-only | grep -E '\.github/workflows/|\.githooks/|build/scripts/')
@@ -562,7 +572,7 @@ Key sections:
      ```
      | 2025-12-13 | Infrastructure | security | #113 | Shell injection fix in pre-commit |
      | 2025-12-13 | Feature | analyst,architect,planner,critic | --- | Auth refactoring |
-     ```
+     ```text
 
 2. CI job to generate usage report:
    - Parse agent review comments in merged PRs
@@ -590,10 +600,13 @@ Key sections:
 
 **Remediation**:
 
+     ```
 ```markdown
 ## Deliverables (Future)
 
 1. CLI tool: `claude-agents.sh` or `poetry run agents`
+```
+
    ```bash
    $ claude-agents suggest
    > Analyzing change type...

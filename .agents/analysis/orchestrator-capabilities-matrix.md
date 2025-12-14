@@ -72,7 +72,7 @@ Task needs pre-implementation review?
 
 **Should Have Triggered**:
 
-```
+```text
 ✓ Affects multiple domains?
   YES - CI/workflow (devops), architecture (design), security (runs scripts)
 
@@ -360,7 +360,7 @@ Step 4: Monitor Execution
 
 **Orchestrator Should Have Done**:
 
-```
+```text
 Step 1: Assess Change Type
   → Infrastructure (CI workflow change)
   → Requires: architect, devops, security, critic, csharp-expert, qa
@@ -389,7 +389,7 @@ Step 4: Result
 
 **What Actually Happened**:
 
-```
+```text
 User request
   ↓
 Direct implementation (skipped orchestrator)

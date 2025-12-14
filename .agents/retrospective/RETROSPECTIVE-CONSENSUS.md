@@ -15,11 +15,13 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 **Key Finding**: The agent system is deployed (documentation exists) but not operationalized (not used in practice). This is a **process gap**, not a technology gap.
 
 **Honest Assessment**: Proposed solutions require acknowledging trade-offs:
+
 - **Cost**: Adding security review gates will increase infrastructure change time from ~5 minutes to ~45 minutes (9x overhead)
 - **Benefit**: Earlier detection of security issues, preventing post-merge vulnerabilities
 - **Tradeoff**: This is justified for HIGH-RISK changes (auth, cryptography, infrastructure code), NOT all changes
 
 **Path Forward**:
+
 1. Implement enforcement mechanisms (not just checklists)
 2. Create cost-benefit framework (not all changes need full review)
 3. Simplify agent system (not all 15 agents needed)
@@ -32,6 +34,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 ### Timeline
 
 **Phase 1: Skills Extraction & Documentation (Early Session)**
+
 - Retrospective analysis of agent system
 - Creation of 22 atomic skills in `.agents/skills/`
 - Update of AGENT-INSTRUCTIONS.md
@@ -44,12 +47,14 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 ---
 
 **Phase 2: Infrastructure Changes (Mid Session)**
+
 - User request: "Create new GitHub Actions workflow for markdown linting"
 - Change: Separate `lint.yml` from `main.yml`, remove Node.js setup from matrix
 - Commit: `408909cd` - "refactor(ci): separate markdown linting to dedicated workflow"
 
 **Agents Invoked**: ❌ NONE (direct implementation)
 **Agents Should Have Been Invoked**:
+
 - ✅ orchestrator (entry point for multi-specialty tasks)
 - ✅ devops (workflow design)
 - ✅ architect (separation of concerns)
@@ -60,6 +65,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 ---
 
 **Phase 3: PR Review - External Bot Detection**
+
 - GitHub Copilot bot comments during PR review
 - Identifies 3 CWE-78 shell injection vulnerabilities:
   - `$MD_FILE_LIST` unquoted in markdown linting (comment r2616633463)
@@ -76,7 +82,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 
 ### Root Cause: The Five Whys
 
-```
+```text
 1. Why weren't agents invoked?
    → No systematic decision point for when to invoke agents
 
@@ -110,13 +116,15 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 ### What's Required to "Shift Left"
 
 **Current State (Reactive)**:
-```
+
+```text
 User request → Direct implementation → Commit → PR → Bot review → Issue found → Fix → Re-commit
 Time: Fast (5 min implementation) | Outcome: Issues caught late
 ```
 
 **Proposed State (Proactive)**:
-```
+
+```text
 User request → Orchestrator assessment → Agent review (security + design) → Implementation → Commit
 Time: Slow (45 min for full reviews) | Outcome: Issues prevented
 ```
@@ -124,6 +132,7 @@ Time: Slow (45 min for full reviews) | Outcome: Issues prevented
 ### Cost-Benefit Analysis
 
 **Velocity Impact**:
+
 - Estimated time for infrastructure change review: 45 minutes
   - Change assessment: 2 minutes
   - Orchestrator routing: 1 minute
@@ -146,6 +155,7 @@ Time: Slow (45 min for full reviews) | Outcome: Issues prevented
 | **UI/non-critical** | 5 min | 5 min | 1x | ❌ NOT JUSTIFIED - Skip full review |
 
 **Benefit Quantification**:
+
 - This session: 1 critical vulnerability caught (shell injection)
 - Cost of late detection: 1 external bot review + 1 reactive fix commit
 - Cost of repeating this: Unknown, but likely to increase
@@ -154,12 +164,14 @@ Time: Slow (45 min for full reviews) | Outcome: Issues prevented
 ### Is This Trade-Off Acceptable?
 
 **YES, with conditions**:
+
 1. ✅ High-risk changes MUST have full review (auth, cryptography, infrastructure)
 2. ✅ Medium-risk changes should have abbreviated review (API endpoints, data handling)
 3. ✅ Low-risk changes should skip review (UI, refactoring, documentation)
 4. ✅ Asynchronous review acceptable for non-blocking changes (catch before merge, not before commit)
 
 **NO, if**:
+
 - ❌ Applied equally to ALL changes (would severely impact velocity)
 - ❌ Implemented without enforcement (checklists are ignored)
 - ❌ No alternative approaches explored (agent simplification, auto-detection)
@@ -173,6 +185,7 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### TIER 1: CRITICAL (MUST HAVE FULL REVIEW)
 
 **File patterns that ALWAYS trigger full agent review**:
+
 - `.github/workflows/*` - CI/CD pipelines
 - `.githooks/*` - Pre-commit/post-commit hooks
 - `src/**/Auth/**` - Authentication code
@@ -180,6 +193,7 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 - Anything touching credentials, keys, secrets
 
 **Review Requirements**:
+
 - ✅ Orchestrator assessment (2 min)
 - ✅ Security review (15 min)
 - ✅ Architecture review (10 min)
@@ -192,11 +206,13 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### TIER 2: HIGH (SHOULD HAVE BRIEF REVIEW)
 
 **File patterns that trigger abbreviated review**:
+
 - `src/**/Controllers/*` - API endpoints (input validation)
 - `src/**/*Service*.cs` - External integrations
 - Database/data access code
 
 **Review Requirements**:
+
 - ✅ Security spot-check (5 min) OR async comment review
 - ✅ Implementation (5 min)
 - **Total: 10 minutes**
@@ -206,6 +222,7 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### TIER 3: LOW (SKIP REVIEW)
 
 **File patterns that can skip agent review**:
+
 - UI/frontend code
 - Documentation
 - Refactoring without behavior change
@@ -221,12 +238,14 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Phase 1: Foundation (Weeks 1-2)
 
 **Deliverables**:
+
 - [ ] Create `.agents/INFRASTRUCTURE-CHANGE-POLICY.md` documenting risk tiers
 - [ ] Add PR template with tiered checklists
 - [ ] Create `.agents/orchestrator/ENTRY-CRITERIA.md` (when orchestrator must be invoked)
 - [ ] Document security agent as comprehensive code audit tool
 
 **Enforcement**:
+
 - Warning-only detection (pre-commit hook warns on infrastructure changes)
 - No blocking yet, just visibility
 
@@ -238,12 +257,14 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Phase 2: Detection (Weeks 3-4)
 
 **Deliverables**:
+
 - [ ] Extend pre-commit hook with file pattern detection
 - [ ] Create CI workflow to track infrastructure changes without security review
 - [ ] Establish baseline metrics: "X% of infrastructure changes reviewed"
 - [ ] Create agent invocation log/registry (`.agents/usage-log.md`)
 
 **Enforcement**:
+
 - Pre-commit hook detects and warns (non-blocking)
 - CI job logs violations
 - Monthly dashboard report generated
@@ -256,12 +277,14 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Phase 3: Enforcement (Weeks 5-8)
 
 **Deliverables**:
+
 - [ ] Implement CI gate blocking TIER 1 changes without security review
 - [ ] Create dashboard with metrics/trends
 - [ ] Document bypass process (explicit justification required)
 - [ ] Train team on new process
 
 **Enforcement**:
+
 - CI gate blocks merge if TIER 1 file changed AND no security review comment
 - Allows bypass with explicit comment: `[no-security-review] Justification: ...`
 - All bypasses logged and reviewed monthly
@@ -274,6 +297,7 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Phase 4: Optimization (Weeks 9-12)
 
 **Deliverables**:
+
 - [ ] Implement auto-invocation of security agent for TIER 1 files
 - [ ] Create metrics dashboard with trend analysis
 - [ ] Review effectiveness (did we catch vulnerabilities earlier?)
@@ -289,16 +313,19 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### CRITICAL PRIORITY
 
 **Issue 1**: Orchestrator Entry Criteria
+
 - **Title**: `enhancement: Define mandatory entry criteria for orchestrator agent`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Orchestrator should be mandatory for multi-specialty tasks; currently optional
 
 **Issue 2**: Security Agent Enhancement
+
 - **Title**: `enhancement: Expand security agent to perform comprehensive code audits`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Security agent currently narrow (threat modeling only); should include CWE scanning, secret detection, code quality audit
 
 **Issue 3**: Agent Capabilities Matrix
+
 - **Title**: `documentation: Publish comprehensive agent capabilities matrix with explicit limitations`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Orchestrator and developers need to know what each agent can/cannot do; currently implicit
@@ -308,16 +335,19 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### HIGH PRIORITY
 
 **Issue 4**: Security Agent Auto-Detection
+
 - **Title**: `enhancement: Auto-trigger security agent for infrastructure & auth code`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Pre-commit hooks and workflows should automatically route to security agent
 
 **Issue 5**: Threat Model Documentation
+
 - **Title**: `documentation: Create explicit threat models for infrastructure code categories`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Pre-commit hooks run with developer privilege; this should be explicit, not implicit
 
 **Issue 6**: Agent System Governance
+
 - **Title**: `enhancement: Create governance framework for agent system (ADR template, steering, consolidation)`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: 15 agents without governance; unclear how many is too many; ADR needed for major agent decisions
@@ -327,16 +357,19 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### MEDIUM PRIORITY
 
 **Issue 7**: Agent Invocation Metrics
+
 - **Title**: `enhancement: Add observability and metrics to agent system`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Agent invocations invisible; no feedback when agents skipped; no measurement of shift-left effectiveness
 
 **Issue 8**: Capabilities Discovery Protocol
+
 - **Title**: `enhancement: Implement "agent interview" protocol for capabilities discovery`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: As agents are added/updated, capabilities should be formally documented; currently informal
 
 **Issue 9**: Orchestrator Routing Logic
+
 - **Title**: `enhancement: Implement orchestrator decision logic for task routing`
 - **Scope**: `rjmurillo/vs-code-agents`
 - **Justification**: Orchestrator needs systematic routing algorithm, not implicit heuristics
@@ -372,6 +405,7 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Alternative 1: Agent System Simplification (Instead of Adding Process)
 
 **Approach**: Reduce 15 agents to 5 core agents with non-overlapping responsibilities
+
 - **builder**: Code implementation
 - **reviewer**: Code/security review
 - **designer**: Architecture and design decisions
@@ -379,12 +413,14 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 - **coordinator**: Orchestration and routing
 
 **Pros**:
+
 - Simpler mental model
 - Easier to remember "which agent to use"
 - Reduced cognitive load
 - May improve adoption
 
 **Cons**:
+
 - Significant refactoring of agent definitions
 - Loss of specialized agents (skillbook, memory, feature-request-review)
 - Requires upstream consolidation in vs-code-agents
@@ -397,17 +433,20 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Alternative 2: Asynchronous Review (Instead of Blocking Gates)
 
 **Approach**: Security review happens post-commit but pre-merge
+
 - Developers commit with infrastructure changes
 - Security agent reviews asynchronously (within 24 hours)
 - CI gate requires security sign-off before merge
 
 **Pros**:
+
 - Doesn't block developers
 - Maintains velocity
 - Catches issues before merge
 - Less friction than 45-minute review
 
 **Cons**:
+
 - Issues might be committed (not ideal)
 - Requires faster agent response time
 - Only works if agent queue is managed
@@ -420,18 +459,21 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ### Alternative 3: Auto-Detection with Auto-Invocation (Instead of Manual Checklists)
 
 **Approach**: Infrastructure file changes automatically invoke security agent
+
 - Pre-commit hook detects `.github/workflows/*`, `.githooks/*` patterns
 - Automatically spawns security agent as subprocess
 - Results embedded in commit message
 - No manual checklist needed
 
 **Pros**:
+
 - Cannot be skipped (automatic)
 - No developer decision-making required
 - Fast feedback (runs locally)
 - High adoption likelihood
 
 **Cons**:
+
 - Requires agent CLI/subprocess capability
 - May not exist in current vs-code-agents setup
 - Performance impact (agents run on every commit)
@@ -444,18 +486,23 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 ## Lessons Learned
 
 ### Lesson 1: Documentation ≠ Operations
+
 Systems must be **operationalized**, not just documented. A reference architecture (markdown docs) will be bypassed under normal development pressure unless enforced through tooling.
 
 ### Lesson 2: Implicit Models Are Dangerous
+
 Threat models, security assumptions, and architectural decisions must be **explicit** and placed where they're actually used. Implicit assumptions (e.g., "developers understand hooks run with privilege") create blind spots.
 
 ### Lesson 3: Complexity Requires Active Governance
+
 The agent system has 15 agents without clear governance, overlap, or consolidation. This creates decision paralysis. **Governance structures are needed**: steering committee, agent consolidation review, maximum agent count constraint.
 
 ### Lesson 4: Feedback Loops Matter
+
 Process gaps are only detected reactively (external bot catches vulnerability) when there's no proactive monitoring. **Build feedback loops**: track agent invocations, flag violations, measure shift-left effectiveness.
 
 ### Lesson 5: Cost-Benefit Must Be Explicit
+
 Proposed process changes require honest acknowledgment of trade-offs. A 9x time increase needs clear justification tied to measurable risk reduction, not just aspirational security improvements.
 
 ---
@@ -485,6 +532,7 @@ Proposed process changes require honest acknowledgment of trade-offs. A 9x time 
 The shell injection vulnerability in this session was **preventable** if the orchestrator and security agents had been invoked before implementation. The root cause is not a capability gap (agents exist) but an **operationalization gap** (agents not used).
 
 Fixing this requires:
+
 1. **Enforcement mechanisms** - Not just checklists, but tooling and gates
 2. **Risk-tiered approach** - Not all changes require 45-minute review
 3. **Upstream improvements** - Enhance orchestrator and security agents
@@ -498,6 +546,7 @@ This retrospective is ready for implementation if the proposed trade-offs are ac
 ## Appendix: Document Cross-References
 
 **Related Analysis Documents Created This Session**:
+
 - `.agents/retrospective/security-shift-left-gap.md` - Original detailed retrospective
 - `.agents/analysis/rca-agent-system-gaps.md` - Deep root cause analysis (5-Why method)
 - `.agents/analysis/orchestrator-capabilities-matrix.md` - Orchestrator assessment and capabilities matrix
@@ -506,6 +555,7 @@ This retrospective is ready for implementation if the proposed trade-offs are ac
 - `.agents/critique/001-security-shift-left-retrospective-critique.md` - Critic agent feedback
 
 **Related Fixed Issues**:
+
 - Commit `2dd96a6d` - Security fix for pre-commit hook shell injection
 - Commit `408909cd` - Original workflow refactoring (where risk was introduced)
 - PR #113 - Discussion and discovery of vulnerabilities
