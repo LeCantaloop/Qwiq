@@ -14,6 +14,12 @@
 # Environment variables:
 #   SKIP_AUTOFIX=1  - Check only, don't auto-fix (CI mode)
 #
+# SECURITY NOTE (2025-12-13):
+# This hook uses bash arrays and quoted expansions to safely pass filenames
+# to external tools. This prevents shell injection attacks via malicious
+# filenames containing metacharacters (;, `, $(), etc.).
+# See: https://github.com/rjmurillo/Qwiq/pull/113#discussion_r2616633463
+#
 
 set -e
 
@@ -92,23 +98,27 @@ if [ -n "$STAGED_MD_FILES" ]; then
     if ! command -v npx &> /dev/null; then
         echo_warning "npx not found. Skipping markdown linting."
     else
-        MD_FILE_LIST=$(echo "$STAGED_MD_FILES" | tr '\n' ' ')
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t MD_FILE_ARRAY < <(echo "$STAGED_MD_FILES")
 
         # First, try to auto-fix
         if [ "$AUTOFIX" = "1" ]; then
             echo_action "Auto-fixing markdown files..."
             # Fix in place (ignore exit code, we'll verify after)
-            npx markdownlint-cli2 --fix --no-globs $MD_FILE_LIST 2>/dev/null || true
+            # Use quoted array expansion to safely pass filenames
+            npx markdownlint-cli2 --fix --no-globs "${MD_FILE_ARRAY[@]}" 2>/dev/null || true
         fi
 
         # Verify the files pass linting now
-        if ! npx markdownlint-cli2 --no-globs $MD_FILE_LIST 2>&1; then
+        # Use quoted array expansion to safely pass filenames
+        if ! npx markdownlint-cli2 --no-globs "${MD_FILE_ARRAY[@]}" 2>&1; then
             echo_error "Markdown linting failed (some issues cannot be auto-fixed)."
             echo_info "  Review errors above and fix manually."
             EXIT_STATUS=1
         else
             # Check if files were modified by the fix
-            for file in $STAGED_MD_FILES; do
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${MD_FILE_ARRAY[@]}"; do
                 if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
                     echo_success "Fixed: $file"
                     git add "$file"
@@ -131,27 +141,34 @@ if [ -n "$STAGED_CS_FILES" ]; then
     elif [ ! -f "Qwiq.sln" ]; then
         echo_warning "Qwiq.sln not found. Skipping C# formatting."
     else
-        # Build include arguments
-        CS_INCLUDE_ARGS=""
-        for file in $STAGED_CS_FILES; do
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t CS_FILE_ARRAY < <(echo "$STAGED_CS_FILES")
+
+        # Build include arguments array (each --include and filename is separate element)
+        # This prevents shell metacharacters in filenames from breaking the command
+        CS_INCLUDE_ARGS=()
+        for file in "${CS_FILE_ARRAY[@]}"; do
             normalized_file=$(echo "$file" | sed 's/\\/\//g')
-            CS_INCLUDE_ARGS="$CS_INCLUDE_ARGS --include $normalized_file"
+            CS_INCLUDE_ARGS+=("--include" "$normalized_file")
         done
 
         if [ "$AUTOFIX" = "1" ]; then
             echo_action "Auto-fixing C# files..."
             # Run format (fix in place)
-            dotnet format Qwiq.sln --no-restore $CS_INCLUDE_ARGS 2>&1 || true
+            # Use quoted array expansion to safely pass arguments
+            dotnet format Qwiq.sln --no-restore "${CS_INCLUDE_ARGS[@]}" 2>&1 || true
         fi
 
         # Verify the files pass now
-        if ! dotnet format Qwiq.sln --verify-no-changes --no-restore $CS_INCLUDE_ARGS 2>&1; then
+        # Use quoted array expansion to safely pass arguments
+        if ! dotnet format Qwiq.sln --verify-no-changes --no-restore "${CS_INCLUDE_ARGS[@]}" 2>&1; then
             echo_error "C# formatting failed."
             echo_info "  Fix with: dotnet format"
             EXIT_STATUS=1
         else
             # Check if files were modified by the fix
-            for file in $STAGED_CS_FILES; do
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${CS_FILE_ARRAY[@]}"; do
                 if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
                     echo_success "Fixed: $file"
                     git add "$file"
@@ -174,22 +191,26 @@ if [ -n "$STAGED_JSON_YAML_FILES" ]; then
     elif ! dotnet tool list 2>/dev/null | grep -q "packedprettier"; then
         echo_warning "pprettier not installed. Run 'dotnet tool restore'."
     else
-        JSON_YAML_FILE_LIST=$(echo "$STAGED_JSON_YAML_FILES" | tr '\n' ' ')
+        # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
+        mapfile -t JSON_YAML_FILE_ARRAY < <(echo "$STAGED_JSON_YAML_FILES")
 
         if [ "$AUTOFIX" = "1" ]; then
             echo_action "Auto-fixing JSON/YAML files..."
             # Fix in place
-            dotnet pprettier --write $JSON_YAML_FILE_LIST 2>/dev/null || true
+            # Use quoted array expansion to safely pass filenames
+            dotnet pprettier --write "${JSON_YAML_FILE_ARRAY[@]}" 2>/dev/null || true
         fi
 
         # Verify the files pass now
-        if ! dotnet pprettier --check $JSON_YAML_FILE_LIST 2>&1; then
+        # Use quoted array expansion to safely pass filenames
+        if ! dotnet pprettier --check "${JSON_YAML_FILE_ARRAY[@]}" 2>&1; then
             echo_error "JSON/YAML formatting failed."
             echo_info "  Fix with: dotnet pprettier --write ."
             EXIT_STATUS=1
         else
             # Check if files were modified by the fix
-            for file in $STAGED_JSON_YAML_FILES; do
+            # Use quoted array iteration to safely handle filenames with spaces/metacharacters
+            for file in "${JSON_YAML_FILE_ARRAY[@]}"; do
                 if [ -f "$file" ] && ! git diff --quiet -- "$file" 2>/dev/null; then
                     echo_success "Fixed: $file"
                     git add "$file"
