@@ -225,21 +225,25 @@ Analysis:
 **All of these REQUIRE security agent review before implementation**:
 
 1. **Authentication/Authorization Changes**
+
    - Login flows, password reset, permission systems
    - Token management, session handling
    - Multi-factor authentication, OAuth integration
 
 2. **Infrastructure Code**
+
    - Pre-commit hooks, build scripts
    - CI/CD workflows, deployment scripts
    - Docker files, cloud configuration
 
 3. **Cryptography/Secrets**
+
    - Key generation, key storage
    - Secret management, encryption/decryption
    - Hashing, salting operations
 
 4. **External API Integration**
+
    - Third-party service calls, API clients
    - Webhook handlers, callback endpoints
    - File upload/download operations
@@ -283,16 +287,16 @@ File patterns that trigger security review:
 
 ## Enhanced Capabilities Matrix for Security Agent
 
-| Dimension | Capability | Input | Output |
-|-----------|-----------|-------|--------|
-| **Threat Modeling** | Identify attack vectors, trust boundaries | Architecture, code flow | Threat assessment, risk matrix |
-| **Static Analysis** | Scan for CWE patterns, vulnerabilities | Code, configuration | Vulnerability list, severity, location |
-| **Secret Detection** | Find hardcoded credentials, env leaks | All source files, configs | Secret findings, exposure risk |
-| **Architecture Review** | Privilege analysis, boundary validation | System design, deployment | Architecture assessment, recommendations |
-| **Code Quality** | File size, complexity, coupling analysis | Source code metrics | Quality report, refactoring suggestions |
-| **Best Practices** | Input validation, error handling, logging | Code review | Best practices violations, fixes |
-| **Dependency Audit** | Vulnerable dependency detection | Package manifests | Dependency vulnerabilities, updates |
-| **Compliance Check** | GDPR, SOC2, security standards | Code, data handling | Compliance gaps, remediation steps |
+| Dimension               | Capability                                | Input                     | Output                                   |
+| ----------------------- | ----------------------------------------- | ------------------------- | ---------------------------------------- |
+| **Threat Modeling**     | Identify attack vectors, trust boundaries | Architecture, code flow   | Threat assessment, risk matrix           |
+| **Static Analysis**     | Scan for CWE patterns, vulnerabilities    | Code, configuration       | Vulnerability list, severity, location   |
+| **Secret Detection**    | Find hardcoded credentials, env leaks     | All source files, configs | Secret findings, exposure risk           |
+| **Architecture Review** | Privilege analysis, boundary validation   | System design, deployment | Architecture assessment, recommendations |
+| **Code Quality**        | File size, complexity, coupling analysis  | Source code metrics       | Quality report, refactoring suggestions  |
+| **Best Practices**      | Input validation, error handling, logging | Code review               | Best practices violations, fixes         |
+| **Dependency Audit**    | Vulnerable dependency detection           | Package manifests         | Dependency vulnerabilities, updates      |
+| **Compliance Check**    | GDPR, SOC2, security standards            | Code, data handling       | Compliance gaps, remediation steps       |
 
 ---
 
@@ -337,7 +341,9 @@ User: "Create workflow for markdown linting"
 
 ```markdown
 ## Current Limitations
+
 Security agent is limited to threat modeling and code review. This misses:
+
 - Secret exposure (hardcoded credentials, env leaks)
 - Code complexity from security perspective (files > 500 LOC)
 - Architecture security (privilege boundaries, coupling)
@@ -345,6 +351,7 @@ Security agent is limited to threat modeling and code review. This misses:
 - Vulnerable dependencies
 
 ## Proposed Enhancement
+
 Expand security agent to perform:
 
 1. **Static Analysis**: CWE scanning, OWASP Top 10, pattern detection
@@ -354,6 +361,7 @@ Expand security agent to perform:
 5. **Best Practices**: Input validation, error handling, cryptography
 
 ## Benefits
+
 - Catch security issues earlier (before implementation)
 - Comprehensive security perspective (not just threats)
 - Identify infrastructure security risks (hooks, workflows, scripts)
@@ -361,6 +369,7 @@ Expand security agent to perform:
 - Recommend structural improvements
 
 ## Reference
+
 See: https://github.com/rjmurillo/Qwiq/tree/develop/.agents/analysis/
 ```
 
@@ -372,11 +381,14 @@ See: https://github.com/rjmurillo/Qwiq/tree/develop/.agents/analysis/
 
 ```markdown
 ## Problem
+
 Security agent not invoked unless explicitly requested. This session discovered
 shell injection because security review was not automatic for infrastructure changes.
 
 ## Proposed Solution
+
 Create file pattern matcher that auto-suggests security agent for:
+
 - `.github/workflows/*` - CI/CD pipelines
 - `.githooks/*` - Pre-commit/post-commit hooks
 - `src/**/Auth/*` - Authentication code
@@ -385,11 +397,13 @@ Create file pattern matcher that auto-suggests security agent for:
 - Any file modified that contains: credentials, secrets, tokens, keys
 
 ## Implementation
+
 1. Pre-commit hook: Detect infrastructure files, warn "Security review recommended"
 2. PR template: Auto-check "Security agent review completed" for security-critical files
 3. CI gate: Flag infrastructure changes without security review comment (Phase 2)
 
 ## Benefit
+
 Security-critical code automatically routed to security agent.
 ```
 
@@ -401,10 +415,13 @@ Security-critical code automatically routed to security agent.
 
 ```markdown
 ## Current Positioning
+
 Security agent presented as "threat modeling" specialist.
 
 ## Proposed Repositioning
+
 Security agent is comprehensive code audit tool:
+
 - CWE/OWASP scanning (static analysis)
 - Secret exposure detection
 - Code quality from security perspective
@@ -412,6 +429,7 @@ Security agent is comprehensive code audit tool:
 - Best practices enforcement
 
 ## Update Documentation
+
 1. Expand AGENT-SYSTEM.md security agent description
 2. Create SECURITY-AGENT-GUIDE.md with:
    - What to ask security agent
@@ -451,13 +469,13 @@ Security agent is comprehensive code audit tool:
 
 ## Success Metrics
 
-| Metric | Current | Target (3 months) |
-|--------|---------|------------------|
-| Infrastructure changes reviewed by security | 0% | 100% |
-| Shell injection vulnerabilities caught pre-impl | 0 | 100% |
-| Hardcoded secrets detected automatically | 0% | 100% |
-| Files > 500 LOC flagged for review | Unknown | 100% |
-| Security agent invocation rate | ~5% | 80%+ for security-critical code |
+| Metric                                          | Current | Target (3 months)               |
+| ----------------------------------------------- | ------- | ------------------------------- |
+| Infrastructure changes reviewed by security     | 0%      | 100%                            |
+| Shell injection vulnerabilities caught pre-impl | 0       | 100%                            |
+| Hardcoded secrets detected automatically        | 0%      | 100%                            |
+| Files > 500 LOC flagged for review              | Unknown | 100%                            |
+| Security agent invocation rate                  | ~5%     | 80%+ for security-critical code |
 
 ---
 

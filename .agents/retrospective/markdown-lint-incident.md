@@ -16,15 +16,15 @@ GitHub Actions CI failed with 321 markdown lint errors that should have been cau
 
 ## Incident Timeline
 
-| Time | Event | Commit |
-|------|-------|--------|
-| 02:18:53 | Pre-commit hook added | `ccef65a5` |
-| 15:52:42 | Hook enhanced with auto-fix | `08b50c18` |
-| 16:14:33 | CI lint check added | `00ddff1e` |
+| Time      | Event                        | Commit                   |
+| --------- | ---------------------------- | ------------------------ |
+| 02:18:53  | Pre-commit hook added        | `ccef65a5`               |
+| 15:52:42  | Hook enhanced with auto-fix  | `08b50c18`               |
+| 16:14:33  | CI lint check added          | `00ddff1e`               |
 | 16:14:33+ | Multiple markdown docs added | `e1cee45e` to `8e650ea8` |
-| 02:47:07 | CI run fails with 321 errors | Run 20201556849 |
-| 19:02:08 | Lint errors partially fixed | `dd203487` |
-| 19:06:43 | Remaining errors fixed | `6a7d623e` |
+| 02:47:07  | CI run fails with 321 errors | Run 20201556849          |
+| 19:02:08  | Lint errors partially fixed  | `dd203487`               |
+| 19:06:43  | Remaining errors fixed       | `6a7d623e`               |
 
 ---
 
@@ -34,13 +34,13 @@ GitHub Actions CI failed with 321 markdown lint errors that should have been cau
 
 The 321 errors came from **new markdown files created on the branch** that were never validated. Error breakdown:
 
-| Rule | Count | Description |
-|------|-------|-------------|
-| MD033 | ~280 | Inline HTML (ul/li elements in table cells) |
-| MD040 | ~25 | Missing language specifiers on code fences |
-| MD031 | ~8 | Missing blank lines around fences |
-| MD036 | ~5 | Bold text used as headings |
-| MD046 | ~3 | Indented vs fenced code blocks |
+| Rule  | Count | Description                                 |
+| ----- | ----- | ------------------------------------------- |
+| MD033 | ~280  | Inline HTML (ul/li elements in table cells) |
+| MD040 | ~25   | Missing language specifiers on code fences  |
+| MD031 | ~8    | Missing blank lines around fences           |
+| MD036 | ~5    | Bold text used as headings                  |
+| MD046 | ~3    | Indented vs fenced code blocks              |
 
 ### Were They Pre-existing or Newly Introduced?
 
@@ -71,12 +71,12 @@ This means:
 
 ### CI vs Hook Execution Difference
 
-| Aspect | Pre-commit Hook | CI Workflow |
-|--------|-----------------|-------------|
-| Scope | Staged files only | All files (`**/*.md`) |
-| When | Before each commit | On push/PR |
-| Auto-fix | Yes (enabled) | No (check only) |
-| Bypass | `git commit --no-verify` | Cannot bypass |
+| Aspect   | Pre-commit Hook          | CI Workflow           |
+| -------- | ------------------------ | --------------------- |
+| Scope    | Staged files only        | All files (`**/*.md`) |
+| When     | Before each commit       | On push/PR            |
+| Auto-fix | Yes (enabled)            | No (check only)       |
+| Bypass   | `git commit --no-verify` | Cannot bypass         |
 
 ### Coverage Gap Analysis
 
@@ -116,12 +116,12 @@ CI checks ALL files <-- Catches errors hook missed
 
 ### Contributing Factors
 
-| Factor | Impact | Evidence |
-|--------|--------|----------|
-| Hook not installed by default | High | Requires manual `git config core.hooksPath .githooks` |
-| No baseline validation | High | No initial run to clean up existing files |
-| Agent-generated markdown | Medium | Agents created files without lint validation |
-| Configuration mismatch | Medium | MD033 config didn't include ul/li until fix |
+| Factor                        | Impact | Evidence                                              |
+| ----------------------------- | ------ | ----------------------------------------------------- |
+| Hook not installed by default | High   | Requires manual `git config core.hooksPath .githooks` |
+| No baseline validation        | High   | No initial run to clean up existing files             |
+| Agent-generated markdown      | Medium | Agents created files without lint validation          |
+| Configuration mismatch        | Medium | MD033 config didn't include ul/li until fix           |
 
 ### Timeline of Accumulation
 
@@ -137,12 +137,12 @@ CI checks ALL files <-- Catches errors hook missed
 
 ### Immediate Actions (Completed)
 
-| Action | Status | Commit |
-|--------|--------|--------|
-| Add ul/li to MD033 allowed elements | Done | `dd203487` |
-| Create fix-markdown-fences utilities | Done | `dd203487` |
-| Fix duplicate fence patterns | Done | `6a7d623e` |
-| Fix emphasis-as-heading issues | Done | `6a7d623e` |
+| Action                               | Status | Commit     |
+| ------------------------------------ | ------ | ---------- |
+| Add ul/li to MD033 allowed elements  | Done   | `dd203487` |
+| Create fix-markdown-fences utilities | Done   | `dd203487` |
+| Fix duplicate fence patterns         | Done   | `6a7d623e` |
+| Fix emphasis-as-heading issues       | Done   | `6a7d623e` |
 
 ### Process Improvements (Recommended)
 
@@ -179,6 +179,7 @@ Add markdown linting to agent output validation:
 
 ```markdown
 ## Agent Output Checklist
+
 - [ ] Run `npx markdownlint-cli2 --fix <file>` on generated markdown
 - [ ] Verify code fences have language specifiers
 - [ ] Avoid HTML in tables (use markdown lists)
@@ -194,6 +195,7 @@ Add to CONTRIBUTING.md:
 ## Pre-commit Hook Limitations
 
 The pre-commit hook only validates **staged files**. This means:
+
 - Existing files are not re-validated on each commit
 - Run `npx markdownlint-cli2 "**/*.md"` periodically for full validation
 - CI is the final safety net and will catch any missed issues
@@ -201,10 +203,10 @@ The pre-commit hook only validates **staged files**. This means:
 
 ### Tooling Improvements
 
-| Tool | Purpose | Location |
-|------|---------|----------|
-| `fix_fences.py` | Fix malformed closing fences | `.agents/utilities/fix-markdown-fences/` |
-| `add_fence_language.py` | Add language to bare fences | `.agents/utilities/fix-markdown-fences/` |
+| Tool                    | Purpose                      | Location                                 |
+| ----------------------- | ---------------------------- | ---------------------------------------- |
+| `fix_fences.py`         | Fix malformed closing fences | `.agents/utilities/fix-markdown-fences/` |
+| `add_fence_language.py` | Add language to bare fences  | `.agents/utilities/fix-markdown-fences/` |
 
 ---
 
@@ -285,12 +287,12 @@ The pre-commit hook only validates **staged files**. This means:
 
 ## Deduplication Check
 
-| New Skill | Most Similar Existing | Similarity | Decision |
-|-----------|----------------------|------------|----------|
-| Skill-Lint-001 | None found | N/A | Add |
-| Skill-CI-001 | None found | N/A | Add |
-| Skill-Lint-003 | None found | N/A | Add |
-| Skill-Agent-001 | None found | N/A | Add |
+| New Skill       | Most Similar Existing | Similarity | Decision |
+| --------------- | --------------------- | ---------- | -------- |
+| Skill-Lint-001  | None found            | N/A        | Add      |
+| Skill-CI-001    | None found            | N/A        | Add      |
+| Skill-Lint-003  | None found            | N/A        | Add      |
+| Skill-Agent-001 | None found            | N/A        | Add      |
 
 ---
 
@@ -307,21 +309,21 @@ The pre-commit hook only validates **staged files**. This means:
 
 ## Handoff
 
-| Target | Purpose |
-|--------|---------|
-| **skillbook** | Store the 4 new skills extracted from this incident |
-| **architect** | Consider ADR for hook vs CI validation scope decision |
+| Target          | Purpose                                                    |
+| --------------- | ---------------------------------------------------------- |
+| **skillbook**   | Store the 4 new skills extracted from this incident        |
+| **architect**   | Consider ADR for hook vs CI validation scope decision      |
 | **implementer** | Update CONTRIBUTING.md with hook limitations documentation |
 
 ---
 
 ## Metrics
 
-| Metric | Value |
-|--------|-------|
-| Errors detected | 321 |
-| Errors from MD033 (HTML) | ~280 (87%) |
-| Time to detect | ~10 hours (hook add to CI fail) |
-| Time to fix | ~4 hours (CI fail to resolution) |
-| Files affected | 12 |
-| New utilities created | 2 (fix_fences.py, add_fence_language.py) |
+| Metric                   | Value                                    |
+| ------------------------ | ---------------------------------------- |
+| Errors detected          | 321                                      |
+| Errors from MD033 (HTML) | ~280 (87%)                               |
+| Time to detect           | ~10 hours (hook add to CI fail)          |
+| Time to fix              | ~4 hours (CI fail to resolution)         |
+| Files affected           | 12                                       |
+| New utilities created    | 2 (fix_fences.py, add_fence_language.py) |

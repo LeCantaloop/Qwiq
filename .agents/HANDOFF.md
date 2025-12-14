@@ -1,7 +1,7 @@
 # Handoff Document
 
-> **Last Updated**: 2025-12-13 by Claude (Session 39 - CI Build Fix)
-> **Current Phase**: Wave 4 - Maintenance
+> **Last Updated**: 2025-12-14 by Claude (Session 40 - SHA Pinning + v11.0.0 Version)
+> **Current Phase**: Final Sprint - Ship v11.0.0
 > **Branch**: `chore/modernize-4` > **Target**: Production v11.0.0 Release
 
 ---
@@ -29,6 +29,42 @@
 - Must pass enterprise security review
 - **Git Hooks**: ✅ Pre-commit hooks enabled for linting enforcement
 - **Mutation Testing**: ✅ Stryker.NET configured, weekly CI runs scheduled
+
+### Session Summary (Session 40 - SHA Pinning + v11.0.0 - 2025-12-14)
+
+**Purpose**: Complete W2.22 (SHA pinning) and W2.33 (v11.0.0 version configuration).
+
+**Work Completed**:
+
+1. **W2.22 - Pinned 11 GitHub Actions to SHA digests** in 10 workflow files:
+
+   - actions/checkout, actions/upload-artifact, actions/download-artifact
+   - github/codeql-action, gitleaks/gitleaks-action, softprops/action-gh-release
+   - slsa-framework/slsa-github-generator, microsoft/DevSkim-Action, etc.
+
+2. **W2.33 - Version configured to 11.0**:
+
+   - Updated `version.json` from "10.0" to "11.0"
+   - Verified nbgv output: `11.0.1-gd26f0b2ea1`
+   - Publish tasks deferred until all modernization work completed
+
+3. **Documented PowerShell build requirement** (Skills updated):
+
+   - .NET 10 SDK parses MSBuild switches incorrectly through bash
+   - Added CRITICAL note to CLAUDE.md
+   - Created Skill-Build-003 (git clean), Skill-CI-004 (Renovate SHA automation)
+
+4. **Future updates automated**: Renovate will maintain SHA pins via `helpers:pinGitHubActionDigests` preset.
+
+**Commits**:
+
+- `940e69bd` - ci(security): pin all GitHub Actions to SHA digests (W2.22)
+- `d26f0b2e` - chore(version): bump version to 11.0.0 for upcoming release
+- `a29839f7` - docs: update session log with Session 40 accomplishments
+
+See: `.agents/sessions/2025-12-14-session-40.md` for full details
+
+---
 
 ### Session Summary (Session 39 - CI Build Fix - 2025-12-13)
 

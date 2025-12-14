@@ -222,12 +222,12 @@ Execution → Reflection → Skill Update → Improved Execution
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **skillbook** | Learnings ready | Store skills |
-| **implementer** | Coding skill found | Apply next time |
-| **planner** | Process improvement | Update approach |
-| **architect** | Design insight | Update guidance |
+| Target          | When                | Purpose         |
+| --------------- | ------------------- | --------------- |
+| **skillbook**   | Learnings ready     | Store skills    |
+| **implementer** | Coding skill found  | Apply next time |
+| **planner**     | Process improvement | Update approach |
+| **architect**   | Design insight      | Update guidance |
 
 ## Execution Mindset
 

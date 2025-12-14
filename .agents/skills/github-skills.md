@@ -99,12 +99,12 @@ gh issue comment 6 -b "@copilot Can you review this installation bug?"
 
 **GitHub API Comparison**:
 
-| Operation | API | Status | Alternative |
-|-----------|-----|--------|-------------|
-| Assign user | `--add-assignee username` | ✅ Works | User must be valid |
-| Assign bot | `--add-assignee copilot` | ❌ Fails | Use mentions in comments |
-| Mention bot | Comment with @copilot | ✅ Works | Triggers via webhook |
-| Run workflow | `workflow_run` event | ✅ Works | Automatic on events |
+| Operation    | API                       | Status   | Alternative              |
+| ------------ | ------------------------- | -------- | ------------------------ |
+| Assign user  | `--add-assignee username` | ✅ Works | User must be valid       |
+| Assign bot   | `--add-assignee copilot`  | ❌ Fails | Use mentions in comments |
+| Mention bot  | Comment with @copilot     | ✅ Works | Triggers via webhook     |
+| Run workflow | `workflow_run` event      | ✅ Works | Automatic on events      |
 
 **Best Practices**:
 
@@ -172,12 +172,15 @@ Please fix.
 # Issue: Script overwrites files instead of appending
 
 ## Problem
+
 The `install-claude-repo.ps1` script uses `Out-File` without `-Append` flag, replacing CLAUDE.md instead of merging new content.
 
 ## Root Cause
+
 Line 45: `Out-File -FilePath $configPath` should append, not replace.
 
 ## Suggested Fix
+
 Replace:
 \`\`\`powershell
 '<content>' | Out-File -FilePath $configPath
@@ -189,11 +192,13 @@ With:
 \`\`\`
 
 ## Evidence
+
 - Reproduced on clean clone
 - CLAUDE.md lost 200+ lines of config
 - Fixed with: `git checkout -- CLAUDE.md`
 
 ## Impact
+
 High - Anyone installing on existing repo loses configuration
 ```
 
@@ -203,29 +208,36 @@ High - Anyone installing on existing repo loses configuration
 # [Type] [Brief Description]
 
 ## Expected Behavior
+
 What should happen?
 
 ## Actual Behavior
+
 What actually happens?
 
 ## Steps to Reproduce
+
 1. Step 1
 2. Step 2
 3. Step 3
 
 ## Suggested Fix
+
 \`\`\`[language]
 [Your proposed code change]
 \`\`\`
 
 ## Why This Fix Works
+
 [Explanation]
 
 ## Alternative Approaches
+
 - [Other possible fixes]
 - [Trade-offs]
 
 ## Environment
+
 - Tool version: X.Y.Z
 - OS: Windows/Linux/macOS
 ```
@@ -236,13 +248,16 @@ What actually happens?
 # Script overwrites CLAUDE.md when installing agents
 
 ## Problem
+
 Running `install-claude-repo.ps1` on a repo with existing CLAUDE.md
 replaces the file instead of appending new content.
 
 ## Root Cause
+
 Out-File uses default behavior (replace) instead of append.
 
 ## Fix
+
 Line 45 in install-claude-repo.ps1:
 
 FROM:
@@ -256,18 +271,19 @@ $content | Out-File -FilePath $claude_md_path -Encoding UTF8 -Append
 \`\`\`
 
 ## Result
+
 Script was updated with proposed fix and issue resolved ✓
 ```
 
 **Benefits of Detailed Issues**:
 
-| Element | Impact | Example |
-|---------|--------|---------|
-| Root cause | ↑ Speed | "Line 45 uses Out-File without -Append" |
-| Code fix | ↑ Clarity | Show exact change needed |
-| Impact statement | ↑ Priority | "Affects all installations on existing repos" |
-| Reproduction steps | ↑ Acceptance | Easy to verify fix works |
-| Test case | ↑ Confidence | CI validation of fix |
+| Element            | Impact       | Example                                       |
+| ------------------ | ------------ | --------------------------------------------- |
+| Root cause         | ↑ Speed      | "Line 45 uses Out-File without -Append"       |
+| Code fix           | ↑ Clarity    | Show exact change needed                      |
+| Impact statement   | ↑ Priority   | "Affects all installations on existing repos" |
+| Reproduction steps | ↑ Acceptance | Easy to verify fix works                      |
+| Test case          | ↑ Confidence | CI validation of fix                          |
 
 **Submitting Code Suggestions**:
 

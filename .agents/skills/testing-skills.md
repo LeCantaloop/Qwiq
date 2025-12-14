@@ -66,10 +66,12 @@
 **Implementation Workflow**:
 
 1. **Configure Fiddler**:
+
    - Enable system-level proxy capture
    - Capture all HTTPS traffic
 
 2. **Capture Traffic**:
+
    - Run your application/tests
    - Perform operations that generate HTTP requests
    - Export as HAR (HTTP Archive) format

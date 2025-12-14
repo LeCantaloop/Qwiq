@@ -5,6 +5,11 @@
 # AI agent working directory (task lists, memory, scripts)
 !.agents/
 
+### AI Tooling ###
+# Codebase indexing (MCP servers)
+.codebase-index.json
+.codebase-intelligence.json
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db

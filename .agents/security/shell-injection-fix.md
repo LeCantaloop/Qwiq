@@ -115,14 +115,14 @@ dotnet pprettier --write "${JSON_YAML_FILE_ARRAY[@]}"  # SECURE
 
 ### Attack Vectors Prevented
 
-| Metacharacter | Before | After |
-|---------------|--------|-------|
-| `` ` `` (backticks) | ✅ VULNERABLE | ❌ BLOCKED |
+| Metacharacter                | Before        | After      |
+| ---------------------------- | ------------- | ---------- |
+| `` ` `` (backticks)          | ✅ VULNERABLE | ❌ BLOCKED |
 | `$()` (command substitution) | ✅ VULNERABLE | ❌ BLOCKED |
-| `;` (command separator) | ✅ VULNERABLE | ❌ BLOCKED |
-| `\|` (pipe) | ✅ VULNERABLE | ❌ BLOCKED |
-| `&` (background) | ✅ VULNERABLE | ❌ BLOCKED |
-| `>` (redirect) | ✅ VULNERABLE | ❌ BLOCKED |
+| `;` (command separator)      | ✅ VULNERABLE | ❌ BLOCKED |
+| `\|` (pipe)                  | ✅ VULNERABLE | ❌ BLOCKED |
+| `&` (background)             | ✅ VULNERABLE | ❌ BLOCKED |
+| `>` (redirect)               | ✅ VULNERABLE | ❌ BLOCKED |
 
 ### Functional Guarantees
 

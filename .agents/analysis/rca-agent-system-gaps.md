@@ -236,30 +236,30 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 
 ### Architectural Root Causes
 
-| Root Cause | Impact | Evidence |
-|-----------|--------|----------|
-| **Reference architecture, not operational system** | Agent invocations remain voluntary | Docs exist, system not used |
-| **Unmanaged growth (15 agents)** | Cognitive load exceeds usage | Only 2-3 agents used routinely |
-| **No consolidation/deduplication** | Unclear which agent for which task | Overlap between architect/csharp-pod |
-| **Implicit threat models** | Security boundaries not recognized | Hook created without security review |
+| Root Cause                                         | Impact                             | Evidence                             |
+| -------------------------------------------------- | ---------------------------------- | ------------------------------------ |
+| **Reference architecture, not operational system** | Agent invocations remain voluntary | Docs exist, system not used          |
+| **Unmanaged growth (15 agents)**                   | Cognitive load exceeds usage       | Only 2-3 agents used routinely       |
+| **No consolidation/deduplication**                 | Unclear which agent for which task | Overlap between architect/csharp-pod |
+| **Implicit threat models**                         | Security boundaries not recognized | Hook created without security review |
 
 ### Process Root Causes
 
-| Root Cause | Impact | Evidence |
-|-----------|--------|----------|
-| **No decision gates/checkpoints** | Infrastructure changes bypass review | Workflow change made without agent invocation |
-| **Documentation-first approach** | Assumes reading, doesn't enforce | Agent docs ignored in favor of direct implementation |
-| **No mandatory checklist** | Reviewable only if developer remembers | Hook created without mentioning `.agents/AGENT-INSTRUCTIONS.md` |
-| **No pattern matching/detection** | Invisible when violations occur | File changes to `.githooks/` and `.github/workflows/` not flagged |
+| Root Cause                        | Impact                                 | Evidence                                                          |
+| --------------------------------- | -------------------------------------- | ----------------------------------------------------------------- |
+| **No decision gates/checkpoints** | Infrastructure changes bypass review   | Workflow change made without agent invocation                     |
+| **Documentation-first approach**  | Assumes reading, doesn't enforce       | Agent docs ignored in favor of direct implementation              |
+| **No mandatory checklist**        | Reviewable only if developer remembers | Hook created without mentioning `.agents/AGENT-INSTRUCTIONS.md`   |
+| **No pattern matching/detection** | Invisible when violations occur        | File changes to `.githooks/` and `.github/workflows/` not flagged |
 
 ### Organizational Root Causes
 
-| Root Cause | Impact | Evidence |
-|-----------|--------|----------|
-| **No observability/metrics** | Invisible process gaps | Vulnerability discovered by external bot, not internal system |
-| **No governance structure** | Agents accumulate without review | 15 agents without steering committee or max count |
-| **Assumption-driven (not validation-driven)** | False assumptions about behavior | "Developers will know it's infrastructure" → violated |
-| **No "owner" assigned** | Nobody responsible for system health | Documentation created but never maintained/enforced |
+| Root Cause                                    | Impact                               | Evidence                                                      |
+| --------------------------------------------- | ------------------------------------ | ------------------------------------------------------------- |
+| **No observability/metrics**                  | Invisible process gaps               | Vulnerability discovered by external bot, not internal system |
+| **No governance structure**                   | Agents accumulate without review     | 15 agents without steering committee or max count             |
+| **Assumption-driven (not validation-driven)** | False assumptions about behavior     | "Developers will know it's infrastructure" → violated         |
+| **No "owner" assigned**                       | Nobody responsible for system health | Documentation created but never maintained/enforced           |
 
 ---
 
@@ -281,24 +281,28 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 1. Create `.github/PULL_REQUEST_TEMPLATE.md` with mandatory section:
 ```
 
-   ```markdown
-   ## Security Review (if infrastructure change)
-   - [ ] This PR modifies `.github/workflows/*`, `.githooks/*`, or build scripts
-   - [ ] If YES: Confirm security agent reviewed and approved
-   - [ ] Security agent review: [link to agent review in PR comments]
-   ```
+```markdown
+## Security Review (if infrastructure change)
+
+- [ ] This PR modifies `.github/workflows/*`, `.githooks/*`, or build scripts
+- [ ] If YES: Confirm security agent reviewed and approved
+- [ ] Security agent review: [link to agent review in PR comments]
+```
 
 1. Add pre-commit hook detection:
+
    - Detect: files matching `.github/workflows/*`, `.githooks/*`, `build/scripts/*`
    - Action: Warn (non-blocking) that infrastructure change detected
    - Message: "Infrastructure change detected. Ensure security agent reviews this PR."
 
 2. Create CI gate in `.github/workflows/main.yml`:
+
    - Check: PR comments contain evidence of security agent review for infrastructure changes
    - Block merge if: Infrastructure files changed AND no security review comment found
    - Allow bypass with explicit `[no-review]` comment + justification
 
 3. Create `.agents/INFRASTRUCTURE-CHANGE-CHECKLIST.md`:
+
    - Mandatory when `.github/workflows/*`, `.githooks/*`, or `build/scripts/*` changed
    - Embedded in PR template
    - Requires checkbox: "Security review completed"
@@ -321,20 +325,23 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 
 **Remediation**:
 
-```markdown
+````markdown
 ## Deliverables
 
 1. Audit all 15 agents and categorize by frequency/importance:
+
    - TIER 1 (Core): Used in 80%+ of workflows
    - TIER 2 (Common): Used in 20-80% of workflows
    - TIER 3 (Specialist): Used in <20% of workflows
 
    From retrospective analysis:
+
    - TIER 1: general-purpose, csharp-expert, qa
    - TIER 2: architect, analyst, planner, critic, retrospective
    - TIER 3: Others (skillbook, memory, feature-request-review, etc.)
 
 2. Create explicit selection heuristics:
+
    - Single decision tree (visual flowchart, not text list)
    - Max 3 questions to determine which agents to invoke
    - Embedded in `.agents/QUICK-START.md` (new file)
@@ -355,6 +362,7 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 - Add "when to use" heuristics
 
 1. Create agent "quick start" at `.agents/QUICK-START.md`:
+
    - Two-question flowchart for 80% of use cases
    - Fallback to full `.agents/AGENT-SYSTEM.md` for edge cases
    - Examples: "I'm implementing a feature", "I'm fixing a bug", "I'm changing CI"
@@ -379,29 +387,33 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 **Root Cause**: No metrics, no logging, no feedback loops
 
 **Remediation**:
-
 ```
+````
 
 ```markdown
 ## Deliverables
 
 1. Define success metrics for agent system:
+
    - Baseline: % of infrastructure changes with security review (currently 0%)
    - Target: 100% of infrastructure changes with security agent comment in PR
    - Measurement: Automated PR analysis (grep for `security-agent:` comments)
 
 2. Create `.agents/METRICS.md` documenting:
+
    - How to measure agent invocation rate
    - How to measure agent effectiveness (prevented issues, cycle time impact)
    - Reporting frequency (monthly review of metrics)
    - Dashboard (if possible) tracking invocation rates
 
 3. Add agent review metadata to commits:
+
    - Recommended: Include `Agent-Review: [agent-name]` in commit messages
    - Tracked in: `.agents/usage-log.md` updated quarterly
    - Example: "Reviewed-By: security-agent, architect-agent"
 
 4. Create CI job to track metrics:
+
    - Parse `.agents/critique/`, `.agents/qa/`, `.agents/security/` files
    - Count agent reviews by type
    - Monthly report generated and stored in `.agents/metrics/`
@@ -433,12 +445,13 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 ## Deliverables
 
 1. Document threat model for infrastructure changes:
+
    - File: `.agents/analysis/infrastructure-threat-model.md`
    - Cover: Pre-commit hooks, CI workflows, build scripts, .editorconfig (analyzer config)
    - For each: document privilege level, what it can access, potential attack vectors
 
 2. Example for pre-commit hooks:
-   ```
+```
 
 ## Pre-commit Hooks: Threat Model
 
@@ -460,6 +473,7 @@ This analysis performs a 5-Why investigation into each root cause and identifies
    ```
 
 2. Create `.agents/INFRASTRUCTURE-SECURITY.md`:
+
    - When to involve security agent
    - Threat categories (CWE-78, environment variable injection, etc.)
    - Review checklist (what security agent looks for)
@@ -489,6 +503,7 @@ This analysis performs a 5-Why investigation into each root cause and identifies
 Create `.agents/architecture/ADR-011-agent-system-governance.md`:
 
 Key sections:
+
 1. Decision: Mandatory security agent review for infrastructure changes
 2. Context: Shell injection vulnerability discovered in pre-commit hook
 3. Options considered:
@@ -530,18 +545,18 @@ Key sections:
 1. Extend `.githooks/pre-commit` with change detection:
 ```
 
-   ```bash
-   # Detect infrastructure changes
-   INFRASTRUCTURE_FILES=$(git diff --cached --name-only | grep -E '\.github/workflows/|\.githooks/|build/scripts/')
+```bash
+# Detect infrastructure changes
+INFRASTRUCTURE_FILES=$(git diff --cached --name-only | grep -E '\.github/workflows/|\.githooks/|build/scripts/')
 
-   if [ -n "$INFRASTRUCTURE_FILES" ]; then
-       echo_warning "Infrastructure change detected:"
-       echo_warning "Please ensure the following agents have reviewed this change:"
-       echo_warning "  - security agent (for vulnerabilities)"
-       echo_warning "  - architect agent (for design)"
-       echo_warning "Please document review in PR description."
-   fi
-   ```
+if [ -n "$INFRASTRUCTURE_FILES" ]; then
+    echo_warning "Infrastructure change detected:"
+    echo_warning "Please ensure the following agents have reviewed this change:"
+    echo_warning "  - security agent (for vulnerabilities)"
+    echo_warning "  - architect agent (for design)"
+    echo_warning "Please document review in PR description."
+fi
+```
 
 1. No blocking initially (warning only) to avoid friction
 2. Version 2 (next sprint): Make blocking with bypass option
@@ -561,19 +576,22 @@ Key sections:
 
 **Remediation**:
 
-```markdown
+`````markdown
 ## Deliverables
 
 1. Create `.agents/usage-log.md`:
+
    - Maintained quarterly
    - Format: Date | Change Type | Agents Involved | Issue # | Notes
    - Example:
-     ```
+     ````
      | 2025-12-13 | Infrastructure | security | #113 | Shell injection fix in pre-commit |
      | 2025-12-13 | Feature | analyst,architect,planner,critic | --- | Auth refactoring |
      ```text
+     ````
 
 2. CI job to generate usage report:
+
    - Parse agent review comments in merged PRs
    - Count by agent type, change type
    - Monthly trend report
@@ -600,20 +618,22 @@ Key sections:
 **Remediation**:
 
      ```
+
 ```markdown
 ## Deliverables (Future)
 
 1. CLI tool: `claude-agents.sh` or `poetry run agents`
 ```
+`````
 
-   ```bash
-   $ claude-agents suggest
-   > Analyzing change type...
-   > Files changed: .github/workflows/lint.yml
-   > Detected: Infrastructure change
-   > Recommended agents: architect, devops, security
-   > Invoke? (Y/n)
-   ```
+```bash
+$ claude-agents suggest
+> Analyzing change type...
+> Files changed: .github/workflows/lint.yml
+> Detected: Infrastructure change
+> Recommended agents: architect, devops, security
+> Invoke? (Y/n)
+```
 
 1. VS Code extension (future):
    - Detects file being edited
@@ -639,21 +659,25 @@ Based on analysis, recommend filing these issues upstream:
 
 ```markdown
 ## Problem
+
 This session discovered shell injection vulnerabilities in pre-commit hook that
 were not caught until external GitHub Copilot bot review. Root cause: security
 agent was not invoked because no mandatory gate existed for infrastructure changes.
 
 ## Root Cause
+
 Agent system is "reference architecture" (documentation) rather than operational
 system (enforcement). Security review gate is aspirational but not implemented.
 
 ## Proposed Solution
+
 1. Add PR template requiring security review for infrastructure changes
 2. Add CI gate that blocks merge if security review missing
 3. Add pre-commit hook detection for infrastructure file patterns
 4. Document threat models for infrastructure code categories
 
 ## Implementation
+
 See: https://github.com/rjmurillo/Qwiq/blob/develop/.agents/retrospective/security-shift-left-gap.md
 ```
 
@@ -664,21 +688,25 @@ See: https://github.com/rjmurillo/Qwiq/blob/develop/.agents/retrospective/securi
 
 ```markdown
 ## Problem
+
 15 agents with unclear selection rules create cognitive overload. Developers
 skip agent system in favor of direct implementation due to decision paralysis.
 
 ## Evidence
+
 - Only 2-3 agents used out of 15 documented
 - Multiple agents with overlapping responsibilities (e.g., architect vs. csharp-pod)
 - No clear decision tree for "which agent should I use?"
 
 ## Proposed Solution
+
 1. Categorize agents into TIER 1 (core), TIER 2 (common), TIER 3 (specialist)
 2. Create single-page decision tree/flowchart
 3. Consolidate overlapping agents
 4. Document selection heuristics explicitly
 
 ## Impact
+
 Reduced cognitive load → higher agent invocation rate → better code quality
 ```
 
@@ -689,16 +717,19 @@ Reduced cognitive load → higher agent invocation rate → better code quality
 
 ```markdown
 ## Problem
+
 Agent invocations are invisible. Skip detection only happens via external
 PR review (reactive, not proactive). No way to measure if shift-left is working.
 
 ## Proposed Solution
+
 1. Define metrics: % of infrastructure changes with security review
 2. Add agent review metadata to commits/PRs
 3. Create dashboard tracking invocation rates by agent type
 4. Monthly trend reporting
 
 ## Benefits
+
 - Visibility into agent system health
 - Early detection when agents are skipped
 - Data-driven improvements
@@ -711,17 +742,20 @@ PR review (reactive, not proactive). No way to measure if shift-left is working.
 
 ```markdown
 ## Problem
+
 Pre-commit hooks run with developer privileges (security-critical) but this
 wasn't recognized as security-relevant. Shell injection vulnerability not
 caught because threat model was implicit, not explicit.
 
 ## Proposed Solution
+
 1. Document threat model for pre-commit hooks (CWE-78, etc.)
 2. Document threat model for CI workflows
 3. Document threat model for build scripts
 4. Reference threat models in code where infrastructure runs
 
 ## Benefits
+
 - Developers understand "why" security review matters for infrastructure
 - Explicit boundaries (code vs. infrastructure vs. CI)
 ```
@@ -733,16 +767,19 @@ caught because threat model was implicit, not explicit.
 
 ```markdown
 ## Problem
+
 Agent system lacks governance structure. Each repository adds agents
 independently without consolidation or review.
 
 ## Proposed Solution
+
 1. Create ADR template for agent-related decisions
 2. Recommend ADR for any decision to add/remove/modify agents
 3. Establish steering committee review for new agents
 4. Define maximum agent count constraint
 
 ## Upstream Benefit
+
 Provides structure for managing agent systems across multiple repositories
 ```
 
@@ -794,13 +831,13 @@ Provides structure for managing agent systems across multiple repositories
 
 ## Success Criteria
 
-| Metric | Current | Target (3 months) |
-|--------|---------|------------------|
-| Infrastructure changes with security review | 0% | 100% |
-| Agent system invocation rate | ~15% | 80%+ |
-| Time to detect infrastructure issues | Post-merge | Pre-merge |
-| Developer satisfaction with agent system | Unknown | 4/5+ (survey) |
-| Shift-left effectiveness | Unknown | TBD after metrics |
+| Metric                                      | Current    | Target (3 months) |
+| ------------------------------------------- | ---------- | ----------------- |
+| Infrastructure changes with security review | 0%         | 100%              |
+| Agent system invocation rate                | ~15%       | 80%+              |
+| Time to detect infrastructure issues        | Post-merge | Pre-merge         |
+| Developer satisfaction with agent system    | Unknown    | 4/5+ (survey)     |
+| Shift-left effectiveness                    | Unknown    | TBD after metrics |
 
 ---
 

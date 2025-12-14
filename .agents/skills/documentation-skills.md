@@ -97,9 +97,7 @@ modernize-TODO.md (45,651 tokens) → split into:
 ```markdown
 # Handoff Document
 
-> **Last Updated**: YYYY-MM-DD HH:MM by [Agent/Session]
-> **Current Phase**: [Phase name]
-> **Branch**: [git branch]
+> **Last Updated**: YYYY-MM-DD HH:MM by [Agent/Session] > **Current Phase**: [Phase name] > **Branch**: [git branch]
 
 ## Current State
 
@@ -117,20 +115,23 @@ modernize-TODO.md (45,651 tokens) → split into:
 ## What's Next
 
 The next session should:
+
 1. Specific action
 2. Specific action
 3. etc.
 
 ## Blockers & Concerns
 
-| Issue | Impact | Mitigation |
-|-------|--------|-----------|
-| [Issue] | [Impact] | [Action] |
+| Issue   | Impact   | Mitigation |
+| ------- | -------- | ---------- |
+| [Issue] | [Impact] | [Action]   |
 
 ## Quick Verification
 
 \`\`\`powershell
+
 # Verify state commands
+
 git log --oneline -5
 dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true ...
 dotnet test Qwiq.sln -c Release --no-build ...
@@ -138,9 +139,9 @@ dotnet test Qwiq.sln -c Release --no-build ...
 
 ## Session History
 
-| Date | Phase | Tasks | Status |
-|------|-------|-------|--------|
-| YYYY-MM-DD | Phase | W2.5 | ✅ Complete |
+| Date       | Phase | Tasks | Status      |
+| ---------- | ----- | ----- | ----------- |
+| YYYY-MM-DD | Phase | W2.5  | ✅ Complete |
 ```
 
 **Best Practices**:

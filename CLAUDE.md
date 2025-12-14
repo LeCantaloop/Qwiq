@@ -23,7 +23,12 @@ dotnet build Qwiq.sln -c Release /p:PedanticMode=false
 
 # Single-threaded build (avoids Windows file locking issues)
 dotnet build Qwiq.sln -c Release /m:1 /nodeReuse:false
+
+# CI build (use PowerShell, not bash - see CRITICAL note below)
+pwsh -NoProfile -NonInteractive -Command "dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false"
 ```
+
+> **CRITICAL**: When running from Claude Code or non-PowerShell shells, always wrap dotnet commands in `pwsh -Command "..."`. The .NET 10 SDK parses MSBuild switches (`/m:1`, `/nodeReuse:false`) incorrectly when invoked through bash, interpreting them as separate arguments instead of build properties. This causes cryptic "MSB1008: Only one project can be specified" errors.
 
 ## Test Commands
 

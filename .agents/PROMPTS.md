@@ -1117,9 +1117,11 @@ Read the contents of the `.agents` directory before starting work:
 
 1. Create session log: `.agents/sessions/YYYY-MM-DD-session-NN.md`
 2. Complete pre-flight checklist from AGENT-INSTRUCTIONS.md
-3. Work incrementally with small, conventional commits
-4. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
-5. Update session log with decisions and challenges
+3. Identify the next task. Delegate that to the orchestrate agent.
+4. Work incrementally with small, conventional commits
+5. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
+6. Update session log with decisions and challenges
+7. Before completing, use the retrospective agent
 
 ## Build Commands
 
@@ -1162,6 +1164,13 @@ Before ending, complete ALL mandatory steps:
   - What was completed this session
   - What's next for following session
   - Any blockers or concerns
+- [ ] retrospective agent run with all participants and findings documented
+  - [ ] Commit documentation:
+    - `git add .agents/`
+    - `git add -f .agents/sessions/*.md`
+    - `git commit -m "docs: update session documentation"`
+    - `git add .serena/memories/`
+    - `git commit -m "docs: update agent memories"`
 
 ## 2. Linting (run BEFORE committing)
 - [ ] Fix markdown: `npx markdownlint-cli2 --fix "**/*.md"`

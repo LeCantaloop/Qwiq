@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
 
@@ -36,7 +36,7 @@ jobs:
         uses: ./.github/actions/setup-dotnet
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@1b168cd39490f61582a9beae412bb7057a6b2c4e # v4
         with:
           languages: csharp
           queries: security-extended,security-and-quality
@@ -56,7 +56,7 @@ jobs:
           generate-binlog: "false"
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@1b168cd39490f61582a9beae412bb7057a6b2c4e # v4
         with:
           category: "/language:csharp"
           output: ${{ runner.temp }}/codeql-results
@@ -75,7 +75,7 @@ jobs:
           }
 
       - name: Upload CodeQL SARIF artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: codeql-sarif-${{ matrix.os }}

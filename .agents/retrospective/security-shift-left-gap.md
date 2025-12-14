@@ -179,6 +179,7 @@ User Request → Change Type Assessment → Agent Selection → Design Review �
 
 ```markdown
 ## Recommended Agent Workflows
+
 Feature Development: analyst → architect → planner → critic → csharp-expert → qa → retrospective
 Quick Fix: csharp-expert → qa
 Strategic Decision: analyst → independent-thinker → high-level-advisor
@@ -199,11 +200,11 @@ Strategic Decision: analyst → independent-thinker → high-level-advisor
 
 ### Security Risk Exposure
 
-| Risk | Duration | Exposure | Severity |
-|------|----------|----------|----------|
-| Shell injection via malicious filenames | Pre-session to PR review | All developers with commit rights | HIGH |
-| Arbitrary command execution | Same duration | On any developer machine | HIGH |
-| Supply chain risk (if committed upstream) | Same duration | All repository users | CRITICAL |
+| Risk                                      | Duration                 | Exposure                          | Severity |
+| ----------------------------------------- | ------------------------ | --------------------------------- | -------- |
+| Shell injection via malicious filenames   | Pre-session to PR review | All developers with commit rights | HIGH     |
+| Arbitrary command execution               | Same duration            | On any developer machine          | HIGH     |
+| Supply chain risk (if committed upstream) | Same duration            | All repository users              | CRITICAL |
 
 **Cost of Late Detection**:
 
@@ -502,17 +503,17 @@ When starting work on a change:
 ```markdown
 ## Agent Invocation Matrix by Change Type
 
-| Change Type | Security Agent | DevOps Agent | Architect Agent | Critic Agent | Risk Level |
-|-------------|---|---|---|---|---|
-| App code feature | ○ | ○ | ◎ | ◎ | LOW |
-| Bug fix (code) | ○ | ○ | ○ | ○ | LOW |
-| Bug fix (hooks/scripts) | ● | ● | ◎ | ◎ | HIGH |
-| CI workflow change | ◎ | ● | ◎ | ◎ | MEDIUM |
-| Build script change | ◎ | ● | ◎ | ◎ | MEDIUM |
-| Pre-commit hook change | ● | ● | ◎ | ◎ | CRITICAL |
-| Security feature | ● | ◎ | ● | ● | CRITICAL |
-| Authentication change | ● | ● | ● | ● | CRITICAL |
-| Infrastructure design | ◎ | ● | ● | ● | MEDIUM |
+| Change Type             | Security Agent | DevOps Agent | Architect Agent | Critic Agent | Risk Level |
+| ----------------------- | -------------- | ------------ | --------------- | ------------ | ---------- |
+| App code feature        | ○              | ○            | ◎               | ◎            | LOW        |
+| Bug fix (code)          | ○              | ○            | ○               | ○            | LOW        |
+| Bug fix (hooks/scripts) | ●              | ●            | ◎               | ◎            | HIGH       |
+| CI workflow change      | ◎              | ●            | ◎               | ◎            | MEDIUM     |
+| Build script change     | ◎              | ●            | ◎               | ◎            | MEDIUM     |
+| Pre-commit hook change  | ●              | ●            | ◎               | ◎            | CRITICAL   |
+| Security feature        | ●              | ◎            | ●               | ●            | CRITICAL   |
+| Authentication change   | ●              | ●            | ●               | ●            | CRITICAL   |
+| Infrastructure design   | ◎              | ●            | ●               | ●            | MEDIUM     |
 
 Legend:
 ● = Mandatory (blocks implementation)
@@ -541,6 +542,7 @@ The following file types/changes MUST be reviewed by security agent:
 **Why**: These files run with elevated privileges or control developer/CI environments.
 
 **Enforcement**:
+
 - CI gate: Commits to these files must have security review comment
 - Pre-commit hook: Can't commit without security check passing
 - Code review: PR requires security team approval
@@ -586,12 +588,14 @@ END: Invoke identified agents before implementation
 ## Infrastructure Change Review Checklist
 
 When making changes to:
+
 - `.github/workflows/*.yml`
 - `.githooks/pre-commit`, `.githooks/pre-push`, etc.
 - `build/scripts/*`
 - CI configuration
 
 **Before Implementation**:
+
 - [ ] Change type assessed (infrastructure)
 - [ ] Security agent invoked (review for CWE/command injection)
 - [ ] DevOps agent invoked (review for workflow/reliability)
@@ -600,6 +604,7 @@ When making changes to:
 - [ ] ADR created (if architectural decision)
 
 **Implementation**:
+
 - [ ] Changes follow secure coding guidelines
 - [ ] Comments document security decisions
 - [ ] Array/quoting used for filenames (bash)
@@ -607,12 +612,14 @@ When making changes to:
 - [ ] Input validation for external data
 
 **Testing**:
+
 - [ ] QA agent involved (security/functional testing)
 - [ ] Edge cases tested (spaces, special chars in filenames)
 - [ ] Manual verification completed
 - [ ] CI/hooks validated
 
 **Review**:
+
 - [ ] Security review approved
 - [ ] DevOps review approved
 - [ ] Architect review approved
@@ -750,13 +757,13 @@ User request → Assess → Invoke agents → Review → Implement → Test → 
 
 ### The Gap
 
-| Aspect | Current State | Required State |
-|--------|---|---|
-| Agent System | Documented but not operational | Integrated into change workflow |
-| Security Review | Reactive (external bot) | Proactive (internal gate) |
-| Infrastructure Changes | Direct implementation | Assessment + agent review + gates |
-| "Shift Left" | Philosophy stated | Operationalized in process |
-| Risk Assessment | Informal/implicit | Explicit, documented, with gates |
+| Aspect                 | Current State                  | Required State                    |
+| ---------------------- | ------------------------------ | --------------------------------- |
+| Agent System           | Documented but not operational | Integrated into change workflow   |
+| Security Review        | Reactive (external bot)        | Proactive (internal gate)         |
+| Infrastructure Changes | Direct implementation          | Assessment + agent review + gates |
+| "Shift Left"           | Philosophy stated              | Operationalized in process        |
+| Risk Assessment        | Informal/implicit              | Explicit, documented, with gates  |
 
 ### The Fix
 

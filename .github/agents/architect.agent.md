@@ -1,8 +1,21 @@
 ---
 description: System design authority maintaining architectural coherence and technical governance
-tools: ['vscode', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Architect Agent
 
 ## Core Identity
@@ -82,44 +95,52 @@ Save to: `.agents/architecture/ADR-NNN-[decision-name].md`
 # ADR-NNN: [Decision Title]
 
 ## Status
+
 [Proposed | Accepted | Deprecated | Superseded]
 
 ## Context
+
 [What is the issue motivating this decision?]
 
 ## Decision
+
 [What is the change being proposed?]
 
 ## Consequences
 
 ### Positive
+
 - [Benefit]
 
 ### Negative
+
 - [Tradeoff]
 
 ### Neutral
+
 - [Side effect]
 
 ## Alternatives Considered
 
 ### Alternative 1: [Name]
+
 - Pros: [benefits]
 - Cons: [drawbacks]
 - Why rejected: [reason]
 
 ## References
+
 - [Related documents, PRs, issues]
 ```
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **roadmap** | Alignment validation needed | Verify strategic fit |
-| **analyst** | Deep investigation required | Technical research |
-| **planner** | Plan revision needed | Update work packages |
-| **critic** | Decision challenge requested | Independent review |
+| Target      | When                         | Purpose              |
+| ----------- | ---------------------------- | -------------------- |
+| **roadmap** | Alignment validation needed  | Verify strategic fit |
+| **analyst** | Deep investigation required  | Technical research   |
+| **planner** | Plan revision needed         | Update work packages |
+| **critic**  | Decision challenge requested | Independent review   |
 
 ## Handoff Protocol
 

@@ -23,12 +23,12 @@ jobs:
       security-events: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
 
       - name: Run DevSkim scanner
-        uses: microsoft/DevSkim-Action@v1
+        uses: microsoft/DevSkim-Action@4b5047945a44163b94642a1cecc0d93a3f428cc6 # v1
 
       - name: Upload DevSkim scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@1b168cd39490f61582a9beae412bb7057a6b2c4e # v4
         with:
           sarif_file: devskim-results.sarif

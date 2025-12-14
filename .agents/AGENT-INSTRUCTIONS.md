@@ -187,11 +187,11 @@ Refs: W2.5
 
 ```markdown
 <!-- ❌ WRONG - triggers MD040 -->
-` ` `
-some code
-` ` `
+
+` ` `some code` ` `
 
 <!-- ✅ CORRECT -->
+
 ` ` `text
 some code
 ` ` `
@@ -199,15 +199,15 @@ some code
 
 Common language identifiers:
 
-| Content Type | Language ID |
-|--------------|-------------|
-| C# code | `csharp` |
-| PowerShell/shell commands | `powershell` or `bash` |
-| JSON/JSON-like | `json` |
-| Markdown templates | `markdown` |
-| Plain text, pseudo-code, diagrams | `text` |
-| Tool calls (cloudmcp-manager) | `text` |
-| Workflow diagrams (→ arrows) | `text` |
+| Content Type                      | Language ID            |
+| --------------------------------- | ---------------------- |
+| C# code                           | `csharp`               |
+| PowerShell/shell commands         | `powershell` or `bash` |
+| JSON/JSON-like                    | `json`                 |
+| Markdown templates                | `markdown`             |
+| Plain text, pseudo-code, diagrams | `text`                 |
+| Tool calls (cloudmcp-manager)     | `text`                 |
+| Workflow diagrams (→ arrows)      | `text`                 |
 
 ### Pre-commit Hook
 
@@ -505,15 +505,15 @@ Use this workflow for any non-trivial feature to ensure quality and documentatio
 analyst → architect → planner → critic → csharp-expert → qa → retrospective
 ```
 
-| Step | Agent | Purpose | Output |
-|------|-------|---------|--------|
-| 1 | `analyst` | Research existing code, gather requirements | `.agents/analysis/` |
-| 2 | `architect` | Design decision, create ADR if needed | `.agents/architecture/` |
-| 3 | `planner` | Break down into tasks with acceptance criteria | `.agents/planning/` |
-| 4 | `critic` | **Validate plan before implementation** | `.agents/critique/` |
-| 5 | `csharp-expert` | Implement code following the plan | Source files |
-| 6 | `qa` | Verify implementation, document test strategy | `.agents/qa/` |
-| 7 | `retrospective` | Extract learnings, update skills | `.agents/retrospective/` |
+| Step | Agent           | Purpose                                        | Output                   |
+| ---- | --------------- | ---------------------------------------------- | ------------------------ |
+| 1    | `analyst`       | Research existing code, gather requirements    | `.agents/analysis/`      |
+| 2    | `architect`     | Design decision, create ADR if needed          | `.agents/architecture/`  |
+| 3    | `planner`       | Break down into tasks with acceptance criteria | `.agents/planning/`      |
+| 4    | `critic`        | **Validate plan before implementation**        | `.agents/critique/`      |
+| 5    | `csharp-expert` | Implement code following the plan              | Source files             |
+| 6    | `qa`            | Verify implementation, document test strategy  | `.agents/qa/`            |
+| 7    | `retrospective` | Extract learnings, update skills               | `.agents/retrospective/` |
 
 ### Quick Fix Workflow
 
@@ -718,76 +718,76 @@ If something goes wrong:
 
 ### Build & CI Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Build-001 | Use `/p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false` for local builds to match CI analyzer strictness | 96% |
-| Skill-Build-002 | Set `BuildInParallel=false` and `ProduceReferenceAssembly=false` for Windows multi-framework builds | 93% |
-| Skill-CI-001 | CI should verify lint rules without auto-fix to catch commits bypassing pre-commit hooks | 95% |
+| Skill ID        | Statement                                                                                                                                     | Atomicity |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Skill-Build-001 | Use `/p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false` for local builds to match CI analyzer strictness | 96%       |
+| Skill-Build-002 | Set `BuildInParallel=false` and `ProduceReferenceAssembly=false` for Windows multi-framework builds                                           | 93%       |
+| Skill-CI-001    | CI should verify lint rules without auto-fix to catch commits bypassing pre-commit hooks                                                      | 95%       |
 
 ### Testing Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Test-001 | WireMock.Net OWIN hosting deadlocks on .NET Framework 4.7.2; use dedicated net8.0+ test project | 95% |
-| Skill-Test-002 | Capture real HTTP traffic with Fiddler system proxy for WireMock stubs; SDK bypasses WireMock Cloud recording | 91% |
-| Skill-Test-003 | IdentityDescriptor must be string format in captured stubs, not object serialization | 94% |
+| Skill ID       | Statement                                                                                                     | Atomicity |
+| -------------- | ------------------------------------------------------------------------------------------------------------- | --------- |
+| Skill-Test-001 | WireMock.Net OWIN hosting deadlocks on .NET Framework 4.7.2; use dedicated net8.0+ test project               | 95%       |
+| Skill-Test-002 | Capture real HTTP traffic with Fiddler system proxy for WireMock stubs; SDK bypasses WireMock Cloud recording | 91%       |
+| Skill-Test-003 | IdentityDescriptor must be string format in captured stubs, not object serialization                          | 94%       |
 
 ### Code Quality Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Quality-001 | Test classes ending in "Collection" trigger CA1711; use abbreviations like "ToWIC" | 92% |
-| Skill-Quality-002 | Add `#pragma warning disable CA1001` with explanation when test cleanup handles disposal via [TestCleanup] | 90% |
-| Skill-Quality-003 | Extract inline test arrays to `static readonly` fields to satisfy CA1861 | 88% |
+| Skill ID          | Statement                                                                                                  | Atomicity |
+| ----------------- | ---------------------------------------------------------------------------------------------------------- | --------- |
+| Skill-Quality-001 | Test classes ending in "Collection" trigger CA1711; use abbreviations like "ToWIC"                         | 92%       |
+| Skill-Quality-002 | Add `#pragma warning disable CA1001` with explanation when test cleanup handles disposal via [TestCleanup] | 90%       |
+| Skill-Quality-003 | Extract inline test arrays to `static readonly` fields to satisfy CA1861                                   | 88%       |
 
 ### Strategic Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Strategic-001 | Always verify deployment scale (100+ team members vs external adoption) before declaring maintenance mode | 97% |
-| Skill-Strategic-002 | SOAP clients cannot deploy to Kubernetes (net472 Windows-only); deprecate in favor of REST | 94% |
+| Skill ID            | Statement                                                                                                 | Atomicity |
+| ------------------- | --------------------------------------------------------------------------------------------------------- | --------- |
+| Skill-Strategic-001 | Always verify deployment scale (100+ team members vs external adoption) before declaring maintenance mode | 97%       |
+| Skill-Strategic-002 | SOAP clients cannot deploy to Kubernetes (net472 Windows-only); deprecate in favor of REST                | 94%       |
 
 ### Documentation Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Doc-001 | Split documentation files when approaching 25,000 token AI agent limit | 93% |
-| Skill-Doc-002 | Update HANDOFF.md at session end with build/test status, completed work, and next steps | 95% |
+| Skill ID      | Statement                                                                               | Atomicity |
+| ------------- | --------------------------------------------------------------------------------------- | --------- |
+| Skill-Doc-001 | Split documentation files when approaching 25,000 token AI agent limit                  | 93%       |
+| Skill-Doc-002 | Update HANDOFF.md at session end with build/test status, completed work, and next steps | 95%       |
 
 ### Git Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Git-001 | Use `git checkout -- [file]` to immediately restore accidentally overwritten files | 97% |
-| Skill-Git-002 | Use `git mv` for file moves to preserve history during reorganization | 91% |
+| Skill ID      | Statement                                                                          | Atomicity |
+| ------------- | ---------------------------------------------------------------------------------- | --------- |
+| Skill-Git-001 | Use `git checkout -- [file]` to immediately restore accidentally overwritten files | 97%       |
+| Skill-Git-002 | Use `git mv` for file moves to preserve history during reorganization              | 91%       |
 
 ### Markdown Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Markdown-001 | Always add language identifier to code fences; use 'text' for pseudo-code or diagrams | 98% |
-| Skill-Markdown-002 | Generic type syntax like `ArrayPool<T>` triggers MD033; use code blocks instead | 96% |
+| Skill ID           | Statement                                                                             | Atomicity |
+| ------------------ | ------------------------------------------------------------------------------------- | --------- |
+| Skill-Markdown-001 | Always add language identifier to code fences; use 'text' for pseudo-code or diagrams | 98%       |
+| Skill-Markdown-002 | Generic type syntax like `ArrayPool<T>` triggers MD033; use code blocks instead       | 96%       |
 
 ### Developer Experience Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-DevEx-001 | Pre-commit hooks should auto-fix issues then verify, failing only on unfixable errors | 97% |
-| Skill-GitHooks-001 | Auto-fix hooks must re-stage modified files with `git add` after applying fixes | 99% |
+| Skill ID           | Statement                                                                             | Atomicity |
+| ------------------ | ------------------------------------------------------------------------------------- | --------- |
+| Skill-DevEx-001    | Pre-commit hooks should auto-fix issues then verify, failing only on unfixable errors | 97%       |
+| Skill-GitHooks-001 | Auto-fix hooks must re-stage modified files with `git add` after applying fixes       | 99%       |
 
 ### Workflow Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-Workflow-001 | Check for installation scripts in source repos before manual file operations | 95% |
-| Skill-Install-001 | Installation scripts may replace config files; backup or verify before running | 91% |
+| Skill ID           | Statement                                                                      | Atomicity |
+| ------------------ | ------------------------------------------------------------------------------ | --------- |
+| Skill-Workflow-001 | Check for installation scripts in source repos before manual file operations   | 95%       |
+| Skill-Install-001  | Installation scripts may replace config files; backup or verify before running | 91%       |
 
 ### GitHub Skills
 
-| Skill ID | Statement | Atomicity |
-|----------|-----------|-----------|
-| Skill-GitHub-001 | GitHub @copilot cannot be assigned to issues; use comment mentions for bot integration | 98% |
-| Skill-Issue-001 | Include suggested fix code in bug reports to accelerate resolution | 92% |
+| Skill ID         | Statement                                                                              | Atomicity |
+| ---------------- | -------------------------------------------------------------------------------------- | --------- |
+| Skill-GitHub-001 | GitHub @copilot cannot be assigned to issues; use comment mentions for bot integration | 98%       |
+| Skill-Issue-001  | Include suggested fix code in bug reports to accelerate resolution                     | 92%       |
 
 ### Skill Citation Protocol
 
@@ -808,8 +808,8 @@ When applying a skill, cite it explicitly:
 
 ## Document Control
 
-| Version | Date       | Changes                                                  |
-| ------- | ---------- | -------------------------------------------------------- |
-| 1.0     | 2025-12-06 | Initial agent instructions                               |
-| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands |
+| Version | Date       | Changes                                                          |
+| ------- | ---------- | ---------------------------------------------------------------- |
+| 1.0     | 2025-12-06 | Initial agent instructions                                       |
+| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands         |
 | 1.2     | 2025-12-13 | Added Recommended Agent Workflows and Extracted Skills Reference |

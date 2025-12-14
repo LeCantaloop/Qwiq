@@ -22,11 +22,9 @@
 **Pattern - Wrong** ❌:
 
 ```markdown
-` ` `
-function hello() {
+` ` `function hello() {
   console.log("Hello");
-}
-` ` `
+}` ` `
 ```
 
 **Pattern - Correct** ✅:
@@ -34,48 +32,51 @@ function hello() {
 ```markdown
 \`\`\`javascript
 function hello() {
-  console.log("Hello");
+console.log("Hello");
 }
 \`\`\`
 ```
 
 **Language Identifiers by Content Type**:
 
-| Content | Identifier | Example |
-|---------|-----------|---------|
-| C# code | `csharp` | Class definitions, methods |
-| PowerShell commands | `powershell` | Build scripts, setup |
-| Bash/shell | `bash` | Linux commands |
-| JSON data | `json` | Configuration, API responses |
-| XML/YAML | `xml`, `yaml` | Configuration files |
-| Markdown examples | `markdown` | Documentation samples |
-| **Pseudo-code** | `text` | Algorithm descriptions |
-| **Diagrams** | `text` | ASCII art, flowcharts |
-| **Tool output** | `text` | Command output, logs |
-| **Workflows** | `text` | → arrows, process flows |
+| Content             | Identifier    | Example                      |
+| ------------------- | ------------- | ---------------------------- |
+| C# code             | `csharp`      | Class definitions, methods   |
+| PowerShell commands | `powershell`  | Build scripts, setup         |
+| Bash/shell          | `bash`        | Linux commands               |
+| JSON data           | `json`        | Configuration, API responses |
+| XML/YAML            | `xml`, `yaml` | Configuration files          |
+| Markdown examples   | `markdown`    | Documentation samples        |
+| **Pseudo-code**     | `text`        | Algorithm descriptions       |
+| **Diagrams**        | `text`        | ASCII art, flowcharts        |
+| **Tool output**     | `text`        | Command output, logs         |
+| **Workflows**       | `text`        | → arrows, process flows      |
 
 **Real Examples**:
 
 ```markdown
 # Pseudo-code example
+
 \`\`\`text
 FOR each build error:
-  IF is_analyzer_error:
-    FIX analyzer issue
-  ELSE:
-    FIX syntax error
-  END IF
+IF is_analyzer_error:
+FIX analyzer issue
+ELSE:
+FIX syntax error
+END IF
 END FOR
 \`\`\`
 
 # Workflow diagram
+
 \`\`\`text
 developer → pre-commit hook → git add → CI pipeline → deploy
-                ↓
-            auto-fix lint
+↓
+auto-fix lint
 \`\`\`
 
 # Generic type syntax (triggers MD033 without code block)
+
 \`\`\`text
 Example: IEnumerable<T> where T : IDisposable
 \`\`\`
@@ -83,12 +84,12 @@ Example: IEnumerable<T> where T : IDisposable
 
 **Common Violations**:
 
-| Pattern | Rule | Fix |
-|---------|------|-----|
-| Missing identifier | MD040 | Add language ID |
+| Pattern                     | Rule  | Fix                            |
+| --------------------------- | ----- | ------------------------------ |
+| Missing identifier          | MD040 | Add language ID                |
 | Generic types `<T>` in text | MD033 | Wrap in code block with `text` |
-| Command output | MD040 | Use `text` or `powershell` |
-| Diagram with arrows | MD040 | Use `text` |
+| Command output              | MD040 | Use `text` or `powershell`     |
+| Diagram with arrows         | MD040 | Use `text`                     |
 
 **Enforcement**:
 
@@ -141,7 +142,7 @@ Method signature:
 \`\`\`csharp
 public class Repository<T> where T : IDisposable
 {
-    public IEnumerable<T> GetAll();
+public IEnumerable<T> GetAll();
 }
 \`\`\`
 ```
@@ -216,15 +217,15 @@ MD033:
     - br
     - sup
     - sub
-    - ul      # Add for table cell lists
-    - li      # Add for table cell lists
+    - ul # Add for table cell lists
+    - li # Add for table cell lists
 ```
 
 **Pattern - Triggers MD033** ❌:
 
 ```markdown
-| Agent | Capabilities |
-|-------|-------------|
+| Agent   | Capabilities                           |
+| ------- | -------------------------------------- |
 | analyst | <ul><li>Research</li><li>RCA</li></ul> |
 ```
 

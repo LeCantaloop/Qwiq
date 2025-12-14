@@ -40,6 +40,7 @@ The orchestrator agent is powerful but underutilized. Developers don't know when
 #### Functional Requirements
 
 1. **FR-1: Document Entry Criteria** (Hard Rules)
+
    - Define objective criteria where orchestrator MUST be invoked (non-negotiable)
    - Criteria Examples:
      - Changes affecting multiple domains (CI + security + architecture)
@@ -49,12 +50,14 @@ The orchestrator agent is powerful but underutilized. Developers don't know when
    - Output: `.agents/orchestrator/ENTRY-CRITERIA.md`
 
 2. **FR-2: Create Decision Tree** (Visual Navigation)
+
    - Single-page flowchart for developers
    - Max 3 questions to determine if orchestrator needed
    - Decision outcomes: "Invoke Orchestrator", "Use Specific Agent", "Proceed Directly"
    - Output: Visual diagram + markdown
 
 3. **FR-3: Integration Points** (Automation)
+
    - Specify how to integrate entry criteria into:
      - Pre-commit hooks (warn if infrastructure change without orchestrator)
      - CI workflows (flag multi-domain changes)
@@ -85,11 +88,11 @@ The orchestrator agent is powerful but underutilized. Developers don't know when
 
 ### Metrics/KPIs
 
-| Metric | Current | Target | Measurement |
-|--------|---------|--------|-------------|
-| Orchestrator invocation rate | 5% | 80%+ | Parse commit messages for orchestrator reference |
-| Decision time (developer asks "should I?") | Unknown | <30 sec | Survey feedback |
-| Multi-domain tasks without orchestrator | 100% of complex tasks | 0% | Audit multi-domain PRs |
+| Metric                                     | Current               | Target  | Measurement                                      |
+| ------------------------------------------ | --------------------- | ------- | ------------------------------------------------ |
+| Orchestrator invocation rate               | 5%                    | 80%+    | Parse commit messages for orchestrator reference |
+| Decision time (developer asks "should I?") | Unknown               | <30 sec | Survey feedback                                  |
+| Multi-domain tasks without orchestrator    | 100% of complex tasks | 0%      | Audit multi-domain PRs                           |
 
 ### Timeline
 
@@ -140,6 +143,7 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
 #### Functional Requirements
 
 1. **FR-1: Static Analysis for CWE Patterns**
+
    - Scan code for common vulnerability patterns:
      - CWE-78: Shell injection (unquoted variables, command substitution)
      - CWE-79: XSS vulnerabilities
@@ -156,8 +160,9 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      ```
 
 2. **FR-2: Secret Detection**
+
    - Scan for hardcoded credentials:
-     - API keys (AWS_ACCESS_KEY, sk-*, Bearer tokens)
+     - API keys (AWS_ACCESS_KEY, sk-\*, Bearer tokens)
      - Database passwords, connection strings
      - Private keys, certificates
      - Environment variable leaks
@@ -173,6 +178,7 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      ```
 
 3. **FR-3: Code Quality Audit (Security Perspective)**
+
    - Flag code organization issues:
      - Files > 500 lines (difficult to review, easy to miss vulnerabilities)
      - Functions > 20 lines with branches (complex, untestable)
@@ -187,6 +193,7 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      ```
 
 4. **FR-4: Architecture Review (Security Perspective)**
+
    - Analyze privilege boundaries:
      - What runs with what privileges?
      - What code runs with user input?
@@ -201,6 +208,7 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      ```
 
 5. **FR-5: Best Practices Enforcement**
+
    - Verify security-critical code patterns:
      - Input validation on all endpoints
      - Error handling adequate (doesn't leak secrets)
@@ -242,12 +250,12 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
 
 ### Metrics/KPIs
 
-| Metric | Current | Target | Measurement |
-|--------|---------|--------|-------------|
-| Vulnerabilities caught pre-implementation | 0% | 90%+ | Track where issues found (PR vs. pre-impl) |
-| Hardcoded secrets detected | 0% | 100% of cases | Manual audit of commits |
-| Files > 500 LOC flagged | 0% | 100% | Security agent report |
-| Security agent invocation rate | 5% | 90%+ for infrastructure | Commit message analysis |
+| Metric                                    | Current | Target                  | Measurement                                |
+| ----------------------------------------- | ------- | ----------------------- | ------------------------------------------ |
+| Vulnerabilities caught pre-implementation | 0%      | 90%+                    | Track where issues found (PR vs. pre-impl) |
+| Hardcoded secrets detected                | 0%      | 100% of cases           | Manual audit of commits                    |
+| Files > 500 LOC flagged                   | 0%      | 100%                    | Security agent report                      |
+| Security agent invocation rate            | 5%      | 90%+ for infrastructure | Commit message analysis                    |
 
 ### Timeline
 
@@ -297,6 +305,7 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
 #### Functional Requirements
 
 1. **FR-1: Comprehensive Matrix**
+
    - Document each agent with:
      - **Specialty**: Core domain of expertise
      - **Capabilities**: 5-10 specific tasks it excels at
@@ -319,12 +328,14 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
      ```
 
 2. **FR-2: Tier the Agents**
+
    - TIER 1 (Core): Agents used in 80%+ of workflows
    - TIER 2 (Common): Agents used in 20-80% of workflows
    - TIER 3 (Specialist): Agents used in <20% of workflows
    - Help developers quickly identify which agents are essential
 
 3. **FR-3: Limitations Section**
+
    - Explicitly document what agents CANNOT do
    - This is as important as capabilities
    - Help developers avoid misuse
@@ -355,10 +366,10 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
 
 ### Metrics/KPIs
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| Agent documentation completeness | Unknown | 100% (all agents documented) |
-| Developer satisfaction with "which agent?" clarity | Unknown | 4/5+ |
+| Metric                                             | Current | Target                       |
+| -------------------------------------------------- | ------- | ---------------------------- |
+| Agent documentation completeness                   | Unknown | 100% (all agents documented) |
+| Developer satisfaction with "which agent?" clarity | Unknown | 4/5+                         |
 
 ### Timeline
 
@@ -399,6 +410,7 @@ Security agent is not invoked unless explicitly requested. Infrastructure code (
 #### Functional Requirements
 
 1. **FR-1: File Pattern Detection**
+
    - Define file patterns that auto-trigger security agent:
      - `.github/workflows/*` - CI/CD pipelines
      - `.githooks/*` - Pre-commit/post-commit hooks
@@ -471,6 +483,7 @@ Infrastructure code (pre-commit hooks, CI workflows, build scripts) runs with el
 #### Functional Requirements
 
 1. **FR-1: Pre-commit Hooks Threat Model**
+
    - Document:
      - Privilege level: Developer machine, full developer privileges
      - Access: Full filesystem, environment variables, network access
@@ -481,6 +494,7 @@ Infrastructure code (pre-commit hooks, CI workflows, build scripts) runs with el
    - Reference: Include this session's shell injection as example
 
 2. **FR-2: CI/CD Workflows Threat Model**
+
    - Document:
      - Privilege level: CI runner, limited permissions
      - Access: Source code, build artifacts, secrets (if configured)
@@ -488,6 +502,7 @@ Infrastructure code (pre-commit hooks, CI workflows, build scripts) runs with el
      - Mitigations: Secrets management, audit logging, access control
 
 3. **FR-3: Build Scripts Threat Model**
+
    - Document privilege, access, risks, mitigations
 
 4. **FR-4: Configuration Files Threat Model (.editorconfig, appsettings, etc.)**
@@ -556,6 +571,7 @@ Agent system has grown to 15+ agents without clear governance:
 #### Functional Requirements
 
 1. **FR-1: ADR Template for Agent Decisions**
+
    - Create template for ADRs related to agent system
    - Sections:
      - Decision: What's being decided?
@@ -567,6 +583,7 @@ Agent system has grown to 15+ agents without clear governance:
    - Example: ADR-011-Infrastructure-Review-Gates (required for this session's fix)
 
 2. **FR-2: Steering Committee Charter**
+
    - Define:
      - Who reviews new agent proposals?
      - What criteria must new agents meet?
@@ -575,6 +592,7 @@ Agent system has grown to 15+ agents without clear governance:
      - What's the maximum agent count?
 
 3. **FR-3: Agent Design Principles**
+
    - Non-overlapping responsibilities
    - Clear entry criteria (when to invoke)
    - Explicit limitations (what it cannot do)
@@ -648,6 +666,7 @@ Agent invocations are invisible. No way to:
 #### Functional Requirements
 
 1. **FR-1: Define Metrics**
+
    - Invocation rate: % of complex tasks using orchestrator
    - Coverage: % of infrastructure changes with security review
    - Shift-left effectiveness: % of vulnerabilities caught pre-implementation
@@ -655,6 +674,7 @@ Agent invocations are invisible. No way to:
    - Turnaround time: How long agents take (P50, P95)
 
 2. **FR-2: Measurement Infrastructure**
+
    - Agent review metadata in commits (e.g., `Reviewed-By: security-agent`)
    - CI job parsing agent review comments from merged PRs
    - Manual audit of issue discovery points (pre-impl, PR, post-merge)
@@ -775,6 +795,7 @@ Orchestrator needs systematic decision logic for routing tasks to appropriate ag
 #### Functional Requirements
 
 1. **FR-1: Routing Algorithm**
+
    - Pseudocode/flowchart for:
      - Task type classification (feature, bug, infrastructure, security, strategic)
      - Complexity assessment (simple, multi-step, multi-domain)
@@ -784,6 +805,7 @@ Orchestrator needs systematic decision logic for routing tasks to appropriate ag
      - Result synthesis
 
 2. **FR-2: Execution Strategy**
+
    - Define when agents run sequentially vs. in parallel
    - Example:
      - SERIAL: Design blocks implementation (architect → critic → implement)
@@ -820,17 +842,17 @@ Orchestrator needs systematic decision logic for routing tasks to appropriate ag
 
 ## Summary Table
 
-| # | Title | Priority | Complexity | Effort | Depends On |
-|---|-------|----------|-----------|--------|-----------|
-| 1 | Orchestrator Entry Criteria | CRITICAL | Medium | 2-3d | None |
-| 2 | Security Agent Enhancement | CRITICAL | High | 2-4w | #3 |
-| 3 | Agent Capabilities Matrix | CRITICAL | Medium | 1-2w | None |
-| 4 | Security Agent Auto-Detection | HIGH | Medium | 1-2w | #3 |
-| 5 | Threat Model Documentation | HIGH | Medium | 1-2w | Session analysis |
-| 6 | Agent System Governance | HIGH | High | 2-3w | #3 |
-| 7 | Agent Invocation Metrics | MEDIUM | Medium | 1-2w | #3 |
-| 8 | Capabilities Discovery Protocol | MEDIUM | Low | 3-5d | None |
-| 9 | Orchestrator Routing Logic | MEDIUM | Medium | 1-2w | #1, #3 |
+| #   | Title                           | Priority | Complexity | Effort | Depends On       |
+| --- | ------------------------------- | -------- | ---------- | ------ | ---------------- |
+| 1   | Orchestrator Entry Criteria     | CRITICAL | Medium     | 2-3d   | None             |
+| 2   | Security Agent Enhancement      | CRITICAL | High       | 2-4w   | #3               |
+| 3   | Agent Capabilities Matrix       | CRITICAL | Medium     | 1-2w   | None             |
+| 4   | Security Agent Auto-Detection   | HIGH     | Medium     | 1-2w   | #3               |
+| 5   | Threat Model Documentation      | HIGH     | Medium     | 1-2w   | Session analysis |
+| 6   | Agent System Governance         | HIGH     | High       | 2-3w   | #3               |
+| 7   | Agent Invocation Metrics        | MEDIUM   | Medium     | 1-2w   | #3               |
+| 8   | Capabilities Discovery Protocol | MEDIUM   | Low        | 3-5d   | None             |
+| 9   | Orchestrator Routing Logic      | MEDIUM   | Medium     | 1-2w   | #1, #3           |
 
 ### Filing Recommendation
 

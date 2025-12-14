@@ -168,12 +168,12 @@ npx markdownlint-cli2 "**/*.md"
 
 **Gap Analysis**:
 
-| Scenario | Hook Catches | CI Catches |
-|----------|--------------|------------|
-| Staged files with errors | ✅ | ✅ |
-| Pre-existing files | ❌ | ✅ |
-| Files via `--no-verify` | ❌ | ✅ |
-| Files from other branches | ❌ | ✅ |
+| Scenario                  | Hook Catches | CI Catches |
+| ------------------------- | ------------ | ---------- |
+| Staged files with errors  | ✅           | ✅         |
+| Pre-existing files        | ❌           | ✅         |
+| Files via `--no-verify`   | ❌           | ✅         |
+| Files from other branches | ❌           | ✅         |
 
 **Application**:
 

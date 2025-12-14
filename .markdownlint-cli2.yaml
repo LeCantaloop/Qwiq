@@ -92,3 +92,4 @@ ignores:
   - ".agents/PROMPTS.md"
   # BenchmarkDotNet auto-generated reports
   - "**/BenchmarkDotNet.Artifacts/**"
+  - ".serena/**"

@@ -1,8 +1,22 @@
 ---
 description: PR review comment handler - evaluates merit, responds appropriately, implements fixes
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'agent', 'cloudmcp-manager/*', 'github/*', 'github.vscode-pull-request-github/*', 'todo']
+tools:
+  [
+    "vscode",
+    "execute",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "agent",
+    "cloudmcp-manager/*",
+    "github/*",
+    "github.vscode-pull-request-github/*",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # PR Comment Responder Agent
 
 ## Core Identity
@@ -105,25 +119,28 @@ fix: address PR review comment - [brief description]
 ## PR Comment Response Summary
 
 ### Comments Addressed
-| Comment | Author | Action | Commit/Response |
-|---------|--------|--------|-----------------|
+
+| Comment   | Author  | Action         | Commit/Response   |
+| --------- | ------- | -------------- | ----------------- |
 | [summary] | @author | Fixed/Declined | abc123 / [reason] |
 
 ### Commits Pushed
+
 - `abc123` - [description]
 - `def456` - [description]
 
 ### Pending Discussion
+
 - [Any comments needing further input]
 ```
 
 ## Handoff Protocol
 
-| Situation | Hand To | Via |
-|-----------|---------|-----|
+| Situation                  | Hand To      | Via          |
+| -------------------------- | ------------ | ------------ |
 | Code implementation needed | @implementer | #runSubagent |
-| Root cause unclear | @analyst | #runSubagent |
-| Fix needs verification | @qa | #runSubagent |
+| Root cause unclear         | @analyst     | #runSubagent |
+| Fix needs verification     | @qa          | #runSubagent |
 
 ## Memory Protocol (cloudmcp-manager)
 

@@ -16,26 +16,26 @@ Implemented end-to-end linting automation to eliminate repeated friction during 
 
 ### Successes (Tag: helpful)
 
-| Strategy | Evidence | Impact | Atomicity |
-|----------|----------|--------|-----------|
-| Auto-fix approach over check-only | Pre-commit hook now fixes issues automatically, re-stages files, and only fails on unfixable issues | 10 | 96% |
-| Systematic file group processing | Fixed .claude/agents (16 files), .github/agents (18 files), .agents/ (11 files) in separate commits | 9 | 94% |
-| CI verification step added | Node.js 20 setup + markdownlint-cli2 check catches commits bypassing hook | 8 | 95% |
-| SKIP_AUTOFIX=1 env var for CI mode | Separates local (fix) vs CI (verify) behavior cleanly | 8 | 97% |
-| Documentation in AGENT-INSTRUCTIONS.md | Added Markdown Formatting Standards section with common language identifiers table | 7 | 93% |
+| Strategy                               | Evidence                                                                                            | Impact | Atomicity |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------- | ------ | --------- |
+| Auto-fix approach over check-only      | Pre-commit hook now fixes issues automatically, re-stages files, and only fails on unfixable issues | 10     | 96%       |
+| Systematic file group processing       | Fixed .claude/agents (16 files), .github/agents (18 files), .agents/ (11 files) in separate commits | 9      | 94%       |
+| CI verification step added             | Node.js 20 setup + markdownlint-cli2 check catches commits bypassing hook                           | 8      | 95%       |
+| SKIP_AUTOFIX=1 env var for CI mode     | Separates local (fix) vs CI (verify) behavior cleanly                                               | 8      | 97%       |
+| Documentation in AGENT-INSTRUCTIONS.md | Added Markdown Formatting Standards section with common language identifiers table                  | 7      | 93%       |
 
 ### Failures (Tag: harmful)
 
-| Strategy | Error Type | Root Cause | Prevention | Atomicity |
-|----------|------------|------------|------------|-----------|
-| None identified | N/A | N/A | N/A | N/A |
+| Strategy        | Error Type | Root Cause | Prevention | Atomicity |
+| --------------- | ---------- | ---------- | ---------- | --------- |
+| None identified | N/A        | N/A        | N/A        | N/A       |
 
 This session had no failures - the implementation was straightforward and all changes worked as intended.
 
 ### Near Misses
 
-| What Almost Failed | Recovery | Learning |
-|--------------------|----------|----------|
+| What Almost Failed                                  | Recovery                                     | Learning                                        |
+| --------------------------------------------------- | -------------------------------------------- | ----------------------------------------------- |
 | Generic type syntax `ArrayPool<T>` triggering MD033 | Identified pattern and documented workaround | Generic types in markdown need special handling |
 
 ## Root Cause Analysis
@@ -160,14 +160,14 @@ This session had no failures - the implementation was straightforward and all ch
 
 ### UPDATE
 
-| Skill ID | Current | Proposed | Why |
-|----------|---------|----------|-----|
+| Skill ID       | Current                                       | Proposed                         | Why                    |
+| -------------- | --------------------------------------------- | -------------------------------- | ---------------------- |
 | Skill-Lint-001 | Run markdownlint-cli2 --fix before committing | Superseded by Skill-Markdown-001 | More specific guidance |
 
 ### TAG
 
-| Skill ID | Tag | Evidence | Impact |
-|----------|-----|----------|--------|
+| Skill ID       | Tag     | Evidence                        | Impact                  |
+| -------------- | ------- | ------------------------------- | ----------------------- |
 | Skill-Lint-001 | helpful | Session validated this approach | Confirmed effectiveness |
 
 ### REMOVE
@@ -176,24 +176,24 @@ None
 
 ## Deduplication Check
 
-| New Skill | Most Similar Existing | Similarity | Decision |
-|-----------|----------------------|------------|----------|
-| Skill-DevEx-001 | None | 0% | Add as new |
-| Skill-Markdown-001 | Skill-Lint-001 (80%) | 80% | Add - more specific |
-| Skill-Markdown-002 | None | 0% | Add as new |
-| Skill-CI-001 | None | 0% | Add as new |
-| Skill-GitHooks-001 | None | 0% | Add as new |
+| New Skill          | Most Similar Existing | Similarity | Decision            |
+| ------------------ | --------------------- | ---------- | ------------------- |
+| Skill-DevEx-001    | None                  | 0%         | Add as new          |
+| Skill-Markdown-001 | Skill-Lint-001 (80%)  | 80%        | Add - more specific |
+| Skill-Markdown-002 | None                  | 0%         | Add as new          |
+| Skill-CI-001       | None                  | 0%         | Add as new          |
+| Skill-GitHooks-001 | None                  | 0%         | Add as new          |
 
 ## Session Statistics
 
-| Metric | Value |
-|--------|-------|
-| Commits made | 9 |
-| Files modified | 51 |
-| Markdown errors fixed | 92+ |
-| Lines changed | +1254, -609 |
-| New CI steps added | 2 (Node.js setup, lint check) |
-| Pre-commit hook rewritten | Yes (173 lines → 220 lines) |
+| Metric                    | Value                         |
+| ------------------------- | ----------------------------- |
+| Commits made              | 9                             |
+| Files modified            | 51                            |
+| Markdown errors fixed     | 92+                           |
+| Lines changed             | +1254, -609                   |
+| New CI steps added        | 2 (Node.js setup, lint check) |
+| Pre-commit hook rewritten | Yes (173 lines → 220 lines)   |
 
 ## Commit History
 
@@ -232,14 +232,14 @@ When fixing widespread issues:
 
 ### Pattern: MD040 Common Identifiers
 
-| Content Type | Use |
-|--------------|-----|
-| C# code | `csharp` |
-| Shell commands | `powershell` or `bash` |
-| JSON data | `json` |
-| Markdown examples | `markdown` |
-| Pseudo-code, diagrams, workflows | `text` |
-| Tool calls | `text` |
+| Content Type                     | Use                    |
+| -------------------------------- | ---------------------- |
+| C# code                          | `csharp`               |
+| Shell commands                   | `powershell` or `bash` |
+| JSON data                        | `json`                 |
+| Markdown examples                | `markdown`             |
+| Pseudo-code, diagrams, workflows | `text`                 |
+| Tool calls                       | `text`                 |
 
 ## Action Items
 
@@ -265,8 +265,8 @@ When fixing widespread issues:
 
 ## Handoff
 
-| Target | Purpose |
-|--------|---------|
-| **skillbook** | Store the 5 new skills extracted |
-| **memory** | Persist learnings for cross-session access |
-| **qa** | Verify CI catches markdown issues on PRs |
+| Target        | Purpose                                    |
+| ------------- | ------------------------------------------ |
+| **skillbook** | Store the 5 new skills extracted           |
+| **memory**    | Persist learnings for cross-session access |
+| **qa**        | Verify CI catches markdown issues on PRs   |

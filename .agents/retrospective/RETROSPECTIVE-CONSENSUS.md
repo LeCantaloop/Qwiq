@@ -146,13 +146,13 @@ Time: Slow (45 min for full reviews) | Outcome: Issues prevented
 
 **Cost Per Change Type**:
 
-| Change Type | Current | Proposed | Overhead | Justification |
-|------------|---------|----------|----------|---------------|
-| **Auth/Crypto** | 5 min | 45 min | 9x | ✅ JUSTIFIED - High security risk |
-| **Infrastructure (hooks/workflows)** | 5 min | 45 min | 9x | ✅ JUSTIFIED - Runs with privilege |
-| **API endpoints** | 5 min | 30 min | 6x | ✅ JUSTIFIED - Input validation critical |
-| **Configuration** | 5 min | 20 min | 4x | ⚠️ CONDITIONAL - Only if secrets involved |
-| **UI/non-critical** | 5 min | 5 min | 1x | ❌ NOT JUSTIFIED - Skip full review |
+| Change Type                          | Current | Proposed | Overhead | Justification                             |
+| ------------------------------------ | ------- | -------- | -------- | ----------------------------------------- |
+| **Auth/Crypto**                      | 5 min   | 45 min   | 9x       | ✅ JUSTIFIED - High security risk         |
+| **Infrastructure (hooks/workflows)** | 5 min   | 45 min   | 9x       | ✅ JUSTIFIED - Runs with privilege        |
+| **API endpoints**                    | 5 min   | 30 min   | 6x       | ✅ JUSTIFIED - Input validation critical  |
+| **Configuration**                    | 5 min   | 20 min   | 4x       | ⚠️ CONDITIONAL - Only if secrets involved |
+| **UI/non-critical**                  | 5 min   | 5 min    | 1x       | ❌ NOT JUSTIFIED - Skip full review       |
 
 **Benefit Quantification**:
 
@@ -380,16 +380,16 @@ Instead of mandatory 45-minute review for every change, implement **risk-tiered 
 
 ### Baseline (Current State - 2025-12-13)
 
-| Metric | Baseline | Target (3 months) | Evidence |
-|--------|----------|------------------|----------|
-| **Orchestrator invocation rate** | ~5% | 80%+ for multi-specialty tasks | Commit messages reference orchestrator |
-| **Agent invocation for infrastructure changes** | 0% | 100% for TIER 1 files | Security + architect review comments in PRs |
-| **Security vulnerabilities caught pre-implementation** | 0% | 90%+ | Vulnerabilities fixed in implementation phase, not PR review |
-| **Infrastructure changes reviewed by security** | 0% | 100% | Security agent involved before merge |
-| **Hardcoded secrets detected automatically** | 0% | 100% | Security agent scans for exposure patterns |
-| **Files >500 LOC flagged for review** | Unknown | 100% of new files | Security agent flags complexity issues |
-| **Agent system documented limitations** | 0% (implicit only) | 100% (explicit matrix) | Capabilities matrix published |
-| **Shift-left effectiveness (issues caught early)** | 0 | 90%+ | Track at 3-month review |
+| Metric                                                 | Baseline           | Target (3 months)              | Evidence                                                     |
+| ------------------------------------------------------ | ------------------ | ------------------------------ | ------------------------------------------------------------ |
+| **Orchestrator invocation rate**                       | ~5%                | 80%+ for multi-specialty tasks | Commit messages reference orchestrator                       |
+| **Agent invocation for infrastructure changes**        | 0%                 | 100% for TIER 1 files          | Security + architect review comments in PRs                  |
+| **Security vulnerabilities caught pre-implementation** | 0%                 | 90%+                           | Vulnerabilities fixed in implementation phase, not PR review |
+| **Infrastructure changes reviewed by security**        | 0%                 | 100%                           | Security agent involved before merge                         |
+| **Hardcoded secrets detected automatically**           | 0%                 | 100%                           | Security agent scans for exposure patterns                   |
+| **Files >500 LOC flagged for review**                  | Unknown            | 100% of new files              | Security agent flags complexity issues                       |
+| **Agent system documented limitations**                | 0% (implicit only) | 100% (explicit matrix)         | Capabilities matrix published                                |
+| **Shift-left effectiveness (issues caught early)**     | 0                  | 90%+                           | Track at 3-month review                                      |
 
 ### Measurement Method
 
@@ -510,12 +510,14 @@ Proposed process changes require honest acknowledgment of trade-offs. A 9x time 
 ## Next Steps (Immediately After Review)
 
 1. **User Review** (this document)
+
    - [ ] Agree/disagree with root cause analysis
    - [ ] Agree/disagree with trade-off assessment
    - [ ] Approve risk-tiered approach
    - [ ] Confirm upstream issues worth filing
 
 2. **File Upstream Issues** (once approved)
+
    - [ ] Open 9 issues in `rjmurillo/vs-code-agents`
    - [ ] Reference this retrospective as evidence
    - [ ] Link to shell injection vulnerability fix

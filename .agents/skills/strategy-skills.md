@@ -21,26 +21,28 @@
 
 **Decision Criteria**:
 
-| Factor | Maintenance Mode | Active Development |
-|--------|------------------|-------------------|
-| Internal Users | <10 team members | 100+ team members |
-| External Adoption | None/minimal | Active/growing |
-| Bug Fix Rate | <1 per month | Multiple per week |
-| Feature Requests | Rare | Regular |
-| Upgrade Frequency | Annual patches | Quarterly releases |
-| Support Load | Minimal | High |
+| Factor            | Maintenance Mode | Active Development |
+| ----------------- | ---------------- | ------------------ |
+| Internal Users    | <10 team members | 100+ team members  |
+| External Adoption | None/minimal     | Active/growing     |
+| Bug Fix Rate      | <1 per month     | Multiple per week  |
+| Feature Requests  | Rare             | Regular            |
+| Upgrade Frequency | Annual patches   | Quarterly releases |
+| Support Load      | Minimal          | High               |
 
 **Application**:
 
 Before making strategic decisions about a project:
 
 1. **Gather Evidence**:
+
    - Count internal team members using the library
    - Check external adoption metrics (NuGet downloads, GitHub stars)
    - Review issue/bug report frequency
    - Assess feature request volume
 
 2. **Avoid Assumptions**:
+
    - Don't assume low GitHub activity = low usage
    - Don't assume old last release = no active development
    - Don't assume no recent commits = no interest
@@ -76,22 +78,24 @@ Before making strategic decisions about a project:
 
 **Comparison**:
 
-| Aspect | SOAP Client | REST Client |
-|--------|------------|------------|
-| Target Framework | .NET Framework 4.7.2 | net6.0+ |
-| Platform Support | Windows-only | Cross-platform |
-| Container Ready | ❌ No | ✅ Yes |
-| Kubernetes | ❌ No | ✅ Yes |
-| Modern .NET | ❌ No | ✅ Yes |
-| Maintenance | Deprecating | Active |
+| Aspect           | SOAP Client          | REST Client    |
+| ---------------- | -------------------- | -------------- |
+| Target Framework | .NET Framework 4.7.2 | net6.0+        |
+| Platform Support | Windows-only         | Cross-platform |
+| Container Ready  | ❌ No                | ✅ Yes         |
+| Kubernetes       | ❌ No                | ✅ Yes         |
+| Modern .NET      | ❌ No                | ✅ Yes         |
+| Maintenance      | Deprecating          | Active         |
 
 **Deprecation Strategy**:
 
 1. **Current** (v11.x):
+
    - Both clients available
    - SOAP marked as obsolete in docs
 
 2. **Transition** (v12.0):
+
    - SOAP client removed from package
    - Migration guide provided
    - REST client as primary

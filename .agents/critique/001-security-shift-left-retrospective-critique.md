@@ -89,13 +89,13 @@ The retrospective is approximately 800 lines and proposes 7 new documentation ar
 **Current**: 15 agent types documented in AGENT-SYSTEM.md
 **Alternative**: Reduce to 5 core agents with clear, non-overlapping responsibilities
 
-| Core Agent | Replaces | Responsibility |
-|------------|----------|----------------|
-| **builder** | implementer, csharp-expert | All code writing |
-| **reviewer** | critic, qa, security | All code review |
-| **designer** | architect, planner | All design decisions |
-| **researcher** | analyst, independent-thinker | All investigation |
-| **coordinator** | orchestrator | All routing |
+| Core Agent      | Replaces                     | Responsibility       |
+| --------------- | ---------------------------- | -------------------- |
+| **builder**     | implementer, csharp-expert   | All code writing     |
+| **reviewer**    | critic, qa, security         | All code review      |
+| **designer**    | architect, planner           | All design decisions |
+| **researcher**  | analyst, independent-thinker | All investigation    |
+| **coordinator** | orchestrator                 | All routing          |
 
 **Benefit**: Simpler mental model, easier to remember which agent to invoke
 **Cost**: Loss of specialization
@@ -132,12 +132,12 @@ triggers:
 **Current Proposal**: Same process for all infrastructure changes
 **Alternative**: Tiered process based on risk assessment
 
-| Risk Tier | Triggers | Process |
-|-----------|----------|---------|
-| **Critical** | Auth, crypto, hooks | Full security review, ADR required |
-| **High** | CI/CD, build config | Security review, architect consultation |
-| **Medium** | Dependencies, tooling | Self-review with checklist |
-| **Low** | Documentation | No additional review |
+| Risk Tier    | Triggers              | Process                                 |
+| ------------ | --------------------- | --------------------------------------- |
+| **Critical** | Auth, crypto, hooks   | Full security review, ADR required      |
+| **High**     | CI/CD, build config   | Security review, architect consultation |
+| **Medium**   | Dependencies, tooling | Self-review with checklist              |
+| **Low**      | Documentation         | No additional review                    |
 
 **Benefit**: Right-sized process for risk level
 **Cost**: Risk assessment still requires human judgment
@@ -148,13 +148,13 @@ triggers:
 
 If this retrospective is approved and implemented, success should be measured by:
 
-| Metric | Baseline | Target | Measurement Method |
-|--------|----------|--------|-------------------|
-| Security issues caught by agent system | 0/1 (0%) | >80% | Track source of security findings |
-| Infrastructure changes with documented review | Unknown | >90% | Commit message audit |
-| Time to implement infrastructure changes | ~5 min | <30 min (with review) | Sample timing |
-| Agent system invocation rate | Low (estimated <10%) | >50% for eligible changes | Session log analysis |
-| False positive rate (unnecessary reviews) | Unknown | <20% | Developer feedback |
+| Metric                                        | Baseline             | Target                    | Measurement Method                |
+| --------------------------------------------- | -------------------- | ------------------------- | --------------------------------- |
+| Security issues caught by agent system        | 0/1 (0%)             | >80%                      | Track source of security findings |
+| Infrastructure changes with documented review | Unknown              | >90%                      | Commit message audit              |
+| Time to implement infrastructure changes      | ~5 min               | <30 min (with review)     | Sample timing                     |
+| Agent system invocation rate                  | Low (estimated <10%) | >50% for eligible changes | Session log analysis              |
+| False positive rate (unnecessary reviews)     | Unknown              | <20%                      | Developer feedback                |
 
 **Note**: Without baseline measurements, improvement cannot be quantified.
 
@@ -202,20 +202,20 @@ This retrospective may be **APPROVED** when:
 
 ## Handoff Options
 
-| Target | Condition | Outcome |
-|--------|-----------|---------|
-| **retrospective** | Revise with above feedback | Updated document addressing critical issues |
-| **architect** | Create ADR | ADR-011-Agent-Gates-for-Infrastructure |
-| **planner** | Implementation planning | Task breakdown for enforcement mechanisms |
-| **implementer** | Build automation | File-pattern detection for automatic review triggers |
+| Target            | Condition                  | Outcome                                              |
+| ----------------- | -------------------------- | ---------------------------------------------------- |
+| **retrospective** | Revise with above feedback | Updated document addressing critical issues          |
+| **architect**     | Create ADR                 | ADR-011-Agent-Gates-for-Infrastructure               |
+| **planner**       | Implementation planning    | Task breakdown for enforcement mechanisms            |
+| **implementer**   | Build automation           | File-pattern detection for automatic review triggers |
 
 ---
 
 ## Document Control
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-12-13 | Critic Agent | Initial critique |
+| Version | Date       | Author       | Changes          |
+| ------- | ---------- | ------------ | ---------------- |
+| 1.0     | 2025-12-13 | Critic Agent | Initial critique |
 
 ---
 
@@ -223,11 +223,11 @@ This retrospective may be **APPROVED** when:
 
 The architect's review (referenced in user request) identified these gaps:
 
-| Architect Concern | Addressed in Retrospective? | Critique Assessment |
-|-------------------|----------------------------|---------------------|
-| No ADR | No | **Critical Gap** - architectural decisions need ADRs |
-| No enforcement | Partially (mentions CI gate) | **Critical Gap** - aspirational, not implemented |
-| Weak operationalization | Yes (extensively discussed) | **Strength** - problem well-identified |
-| Velocity impact not acknowledged | No | **Critical Gap** - 9x time increase not discussed |
+| Architect Concern                | Addressed in Retrospective?  | Critique Assessment                                  |
+| -------------------------------- | ---------------------------- | ---------------------------------------------------- |
+| No ADR                           | No                           | **Critical Gap** - architectural decisions need ADRs |
+| No enforcement                   | Partially (mentions CI gate) | **Critical Gap** - aspirational, not implemented     |
+| Weak operationalization          | Yes (extensively discussed)  | **Strength** - problem well-identified               |
+| Velocity impact not acknowledged | No                           | **Critical Gap** - 9x time increase not discussed    |
 
 The architect's feedback is valid and should be incorporated before this retrospective is committed as actionable guidance.

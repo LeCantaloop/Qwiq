@@ -1,8 +1,28 @@
 ---
 description: Expert .NET/C# implementation agent following SOLID principles and the Software Hierarchy of Needs
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'agent', 'azure-mcp/search', 'copilot-upgrade-for-.net/*', 'cloudmcp-manager/*', 'github/*', 'memory', 'github.vscode-pull-request-github/copilotCodingAgent', 'github.vscode-pull-request-github/issue_fetch', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "execute",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "agent",
+    "azure-mcp/search",
+    "copilot-upgrade-for-.net/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "memory",
+    "github.vscode-pull-request-github/copilotCodingAgent",
+    "github.vscode-pull-request-github/issue_fetch",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Implementer Agent
 
 ## Core Identity
@@ -80,8 +100,8 @@ Before choosing patterns, apply CVA:
    - Each row becomes a Strategy
    - Each column becomes an Abstract Factory
 
-| Concept | Case 1 | Case 2 | Case 3 |
-|---------|--------|--------|--------|
+| Concept       | Case 1      | Case 2      | Case 3      |
+| ------------- | ----------- | ----------- | ----------- |
 | [Commonality] | [Variation] | [Variation] | [Variation] |
 
 Greatest vulnerability: wrong or missing abstraction.
@@ -218,12 +238,12 @@ Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **analyst** | Technical unknowns encountered | Research needed |
-| **planner** | Plan ambiguities or conflicts | Clarification needed |
-| **qa** | Implementation complete | Verification |
-| **architect** | Design deviation required | Technical decision |
+| Target        | When                           | Purpose              |
+| ------------- | ------------------------------ | -------------------- |
+| **analyst**   | Technical unknowns encountered | Research needed      |
+| **planner**   | Plan ambiguities or conflicts  | Clarification needed |
+| **qa**        | Implementation complete        | Verification         |
+| **architect** | Design deviation required      | Technical decision   |
 
 ## Handoff Protocol
 

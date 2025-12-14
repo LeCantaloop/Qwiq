@@ -1,8 +1,34 @@
 ---
 description: Autonomous task orchestrator that coordinates specialized agents end-to-end
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'agent', 'azure-mcp/search', 'copilot-upgrade-for-.net/*', 'cloudmcp-manager/*', 'github/*', 'memory', 'github.vscode-pull-request-github/copilotCodingAgent', 'github.vscode-pull-request-github/issue_fetch', 'github.vscode-pull-request-github/suggest-fix', 'github.vscode-pull-request-github/searchSyntax', 'github.vscode-pull-request-github/doSearch', 'github.vscode-pull-request-github/renderIssues', 'github.vscode-pull-request-github/activePullRequest', 'github.vscode-pull-request-github/openPullRequest', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "execute",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "agent",
+    "azure-mcp/search",
+    "copilot-upgrade-for-.net/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "memory",
+    "github.vscode-pull-request-github/copilotCodingAgent",
+    "github.vscode-pull-request-github/issue_fetch",
+    "github.vscode-pull-request-github/suggest-fix",
+    "github.vscode-pull-request-github/searchSyntax",
+    "github.vscode-pull-request-github/doSearch",
+    "github.vscode-pull-request-github/renderIssues",
+    "github.vscode-pull-request-github/activePullRequest",
+    "github.vscode-pull-request-github/openPullRequest",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Orchestrator Agent v1.0
 
 ## Core Identity
@@ -61,7 +87,7 @@ Use cloudmcp-manager/memory-create_relations to link related concepts
 
 ```markdown
 - [ ] CRITICAL: Retrieve memory context using cloudmcp-manager/memory-search_nodes
-- [ ] Read repository docs: CLAUDE.md, .github/copilot-instructions.md, .agents/*.md
+- [ ] Read repository docs: CLAUDE.md, .github/copilot-instructions.md, .agents/\*.md
 - [ ] Identify project type and existing tools
 - [ ] Check for similar past orchestrations in memory
 - [ ] Plan agent routing sequence
@@ -88,27 +114,27 @@ Use cloudmcp-manager/memory-create_relations to link related concepts
 
 ## Agent Capability Matrix
 
-| Agent | Primary Function | Best For | Limitations |
-|-------|------------------|----------|-------------|
-| **analyst** | Pre-implementation research | Root cause analysis, API investigation, requirements gathering | Read-only, no implementation |
-| **architect** | System design governance | Design reviews, ADRs, technical debt assessment | No code implementation |
-| **planner** | Work package creation | Epic breakdown, milestone planning, task sequencing | No code, no tests |
-| **implementer** | Code execution | Production code, tests, conventional commits | Plan-dependent |
-| **critic** | Plan validation | Scope assessment, risk identification, alignment checks | No code, no implementation proposals |
-| **qa** | Test verification | Test strategy, coverage validation, infrastructure gaps | QA docs only |
-| **roadmap** | Strategic vision | Epic definition, prioritization, outcome focus | No implementation, no architecture |
+| Agent           | Primary Function            | Best For                                                       | Limitations                          |
+| --------------- | --------------------------- | -------------------------------------------------------------- | ------------------------------------ |
+| **analyst**     | Pre-implementation research | Root cause analysis, API investigation, requirements gathering | Read-only, no implementation         |
+| **architect**   | System design governance    | Design reviews, ADRs, technical debt assessment                | No code implementation               |
+| **planner**     | Work package creation       | Epic breakdown, milestone planning, task sequencing            | No code, no tests                    |
+| **implementer** | Code execution              | Production code, tests, conventional commits                   | Plan-dependent                       |
+| **critic**      | Plan validation             | Scope assessment, risk identification, alignment checks        | No code, no implementation proposals |
+| **qa**          | Test verification           | Test strategy, coverage validation, infrastructure gaps        | QA docs only                         |
+| **roadmap**     | Strategic vision            | Epic definition, prioritization, outcome focus                 | No implementation, no architecture   |
 
 ## Routing Heuristics
 
-| Task Type | Primary Agent | Fallback |
-|-----------|---------------|----------|
-| C# implementation | implementer | - |
-| Architecture review | architect | analyst |
-| Task decomposition | planner | roadmap |
-| Challenge assumptions | critic | analyst |
-| Test strategy | qa | implementer |
-| Research/investigation | analyst | - |
-| Strategic decisions | roadmap | architect |
+| Task Type              | Primary Agent | Fallback    |
+| ---------------------- | ------------- | ----------- |
+| C# implementation      | implementer   | -           |
+| Architecture review    | architect     | analyst     |
+| Task decomposition     | planner       | roadmap     |
+| Challenge assumptions  | critic        | analyst     |
+| Test strategy          | qa            | implementer |
+| Research/investigation | analyst       | -           |
+| Strategic decisions    | roadmap       | architect   |
 
 ## Handoff Protocol
 
@@ -202,19 +228,24 @@ Mark orchestration complete only when:
 
 ```markdown
 ## Task Summary
+
 [One sentence describing accomplishment]
 
 ## Agent Workflow
-| Step | Agent | Purpose | Status |
-|------|-------|---------|--------|
-| 1 | [agent] | [why] | complete/failed |
+
+| Step | Agent   | Purpose | Status          |
+| ---- | ------- | ------- | --------------- |
+| 1    | [agent] | [why]   | complete/failed |
 
 ## Results
+
 [Synthesized output]
 
 ## Commits
+
 [List of conventional commits]
 
 ## Open Items
+
 [Anything incomplete]
 ```
