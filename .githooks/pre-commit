@@ -99,7 +99,7 @@ if [ -n "$STAGED_MD_FILES" ]; then
         echo_warning "npx not found. Skipping markdown linting."
     else
         # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
-        mapfile -t MD_FILE_ARRAY < <(echo "$STAGED_MD_FILES")
+        mapfile -t MD_FILE_ARRAY <<< "$STAGED_MD_FILES"
 
         # First, try to auto-fix
         if [ "$AUTOFIX" = "1" ]; then
@@ -142,7 +142,7 @@ if [ -n "$STAGED_CS_FILES" ]; then
         echo_warning "Qwiq.sln not found. Skipping C# formatting."
     else
         # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
-        mapfile -t CS_FILE_ARRAY < <(echo "$STAGED_CS_FILES")
+        mapfile -t CS_FILE_ARRAY <<< "$STAGED_CS_FILES"
 
         # Build include arguments array (each --include and filename is separate element)
         # This prevents shell metacharacters in filenames from breaking the command
@@ -192,7 +192,7 @@ if [ -n "$STAGED_JSON_YAML_FILES" ]; then
         echo_warning "pprettier not installed. Run 'dotnet tool restore'."
     else
         # Convert newline-delimited files to bash array (SECURITY: prevents shell injection)
-        mapfile -t JSON_YAML_FILE_ARRAY < <(echo "$STAGED_JSON_YAML_FILES")
+        mapfile -t JSON_YAML_FILE_ARRAY <<< "$STAGED_JSON_YAML_FILES"
 
         if [ "$AUTOFIX" = "1" ]; then
             echo_action "Auto-fixing JSON/YAML files..."
