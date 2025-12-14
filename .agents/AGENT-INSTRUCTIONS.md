@@ -16,15 +16,15 @@ This repository uses a coordinated multi-agent system. See `AGENT-SYSTEM.md` for
 
 **Quick Reference - Common Agents:**
 
-| Agent | Use When |
-|-------|----------|
-| `orchestrator` | Complex multi-step tasks |
-| `implementer` | Writing C# code and tests |
-| `analyst` | Research and investigation |
-| `architect` | Design decisions and ADRs |
-| `planner` | Breaking down work |
-| `critic` | Validating plans before implementation |
-| `qa` | Test strategy and verification |
+| Agent          | Use When                               |
+| -------------- | -------------------------------------- |
+| `orchestrator` | Complex multi-step tasks               |
+| `implementer`  | Writing C# code and tests              |
+| `analyst`      | Research and investigation             |
+| `architect`    | Design decisions and ADRs              |
+| `planner`      | Breaking down work                     |
+| `critic`       | Validating plans before implementation |
+| `qa`           | Test strategy and verification         |
 
 ---
 
@@ -47,16 +47,16 @@ Before starting work, complete these steps IN ORDER:
 
 ## Document Hierarchy
 
-| Document                  | Purpose                             | When to Update                   |
-| ------------------------- | ----------------------------------- | -------------------------------- |
-| `AGENT-INSTRUCTIONS.md`   | How to execute work (this file)     | Rarely - only if process changes |
+| Document                           | Purpose                             | When to Update                   |
+| ---------------------------------- | ----------------------------------- | -------------------------------- |
+| `AGENT-INSTRUCTIONS.md`            | How to execute work (this file)     | Rarely - only if process changes |
 | `planning/modernize-TODO-index.md` | Overview, metrics, session log      | After EVERY session              |
 | `planning/modernize-wave1.md`      | Wave 0-1 task tracking              | After Wave 0-1 task completion   |
 | `planning/modernize-wave2.md`      | Wave 2 task tracking                | After Wave 2 task completion     |
 | `planning/modernize-wave3-5.md`    | Waves 3-5 task tracking             | After Wave 3-5 task completion   |
 | `planning/modernize-explainer.md`  | Architecture, decisions, rationale  | When design decisions are made   |
-| `HANDOFF.md`              | Session-to-session context transfer | At END of every session          |
-| `sessions/*.md`           | Detailed session logs               | Throughout session               |
+| `HANDOFF.md`                       | Session-to-session context transfer | At END of every session          |
+| `sessions/*.md`                    | Detailed session logs               | Throughout session               |
 
 ---
 
@@ -174,6 +174,51 @@ Document the WorkItemStoreFactory design decision including:
 
 Refs: W2.5
 ```
+
+---
+
+## Markdown Formatting Standards
+
+**CRITICAL**: All markdown files must pass linting. The pre-commit hook auto-fixes most issues, but some require manual attention.
+
+### Code Block Language Identifiers (MD040)
+
+**ALWAYS** add a language identifier to code blocks:
+
+```markdown
+<!-- ❌ WRONG - triggers MD040 -->
+` ` `
+some code
+` ` `
+
+<!-- ✅ CORRECT -->
+` ` `text
+some code
+` ` `
+```
+
+Common language identifiers:
+
+| Content Type | Language ID |
+|--------------|-------------|
+| C# code | `csharp` |
+| PowerShell/shell commands | `powershell` or `bash` |
+| JSON/JSON-like | `json` |
+| Markdown templates | `markdown` |
+| Plain text, pseudo-code, diagrams | `text` |
+| Tool calls (cloudmcp-manager) | `text` |
+| Workflow diagrams (→ arrows) | `text` |
+
+### Pre-commit Hook
+
+The repository has a pre-commit hook that auto-fixes linting issues. It will:
+
+1. Auto-fix markdown with `markdownlint-cli2 --fix`
+2. Auto-fix C# with `dotnet format`
+3. Auto-fix JSON/YAML with `dotnet pprettier --write`
+4. Re-stage corrected files automatically
+
+If issues can't be auto-fixed (like missing language identifiers), the commit will fail with instructions.
 
 ---
 
@@ -485,7 +530,7 @@ If something goes wrong:
 
 ## Document Control
 
-| Version | Date       | Changes                                                    |
-| ------- | ---------- | ---------------------------------------------------------- |
-| 1.0     | 2025-12-06 | Initial agent instructions                                 |
-| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands   |
+| Version | Date       | Changes                                                  |
+| ------- | ---------- | -------------------------------------------------------- |
+| 1.0     | 2025-12-06 | Initial agent instructions                               |
+| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands |
