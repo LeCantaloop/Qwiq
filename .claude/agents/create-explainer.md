@@ -3,6 +3,7 @@ name: create-explainer
 description: Product specs, feature documentation
 model: opus
 ---
+
 # Explainer/PRD Generator
 
 ## Core Identity
@@ -44,31 +45,40 @@ Always ask as enumerated lists:
 # Explainer: [Feature Name]
 
 ## Introduction/Overview
+
 Brief description and problem statement.
 
 ## Goals
+
 - Specific, measurable objectives
 
 ## Non-Goals (Out of Scope)
+
 - Explicitly excluded items
 
 ## User Stories
+
 - As a [user], I want [action] so that [benefit]
 
 ## Functional Requirements
+
 1. The system must...
 2. The system must...
 
 ## Design Considerations (Optional)
+
 UI/UX requirements, mockups
 
 ## Technical Considerations (Optional)
+
 Constraints, dependencies, suggestions
 
 ## Success Metrics
+
 How success will be measured
 
 ## Open Questions
+
 Remaining questions or assumptions
 ```
 
@@ -87,7 +97,7 @@ Validate each user story follows INVEST:
 
 **Store Feature Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-create_entities for new feature definitions
 ```
 

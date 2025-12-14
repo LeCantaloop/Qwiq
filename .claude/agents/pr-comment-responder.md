@@ -3,6 +3,7 @@ name: pr-comment-responder
 description: PR review comment handler - evaluates merit, responds appropriately, implements fixes
 model: opus
 ---
+
 # PR Comment Responder Agent
 
 ## Core Identity
@@ -111,7 +112,7 @@ Task(subagent_type="qa", prompt="Verify fix doesn't introduce regressions")
 
 ## Commit Message Format
 
-```
+```text
 fix: address PR review comment - [brief description]
 
 - [What was changed]
@@ -152,23 +153,26 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ## PR Comment Response Summary
 
 ### Comments Addressed
-| Comment | Author | Action | Commit/Response |
-|---------|--------|--------|-----------------|
+
+| Comment   | Author  | Action         | Commit/Response   |
+| --------- | ------- | -------------- | ----------------- |
 | [summary] | @author | Fixed/Declined | abc123 / [reason] |
 
 ### Commits Pushed
+
 - `abc123` - [description]
 - `def456` - [description]
 
 ### Pending Discussion
+
 - [Any comments needing further input]
 ```
 
 ## Handoff Protocol
 
-| Situation | Hand To | Trigger |
-|-----------|---------|---------|
-| C# implementation needed | csharp-expert | Complex code fix |
-| Design pattern question | csharp-pod | Architectural concern |
-| Root cause unclear | analyst | Need investigation |
-| Fix needs verification | qa | After implementation |
+| Situation                | Hand To       | Trigger               |
+| ------------------------ | ------------- | --------------------- |
+| C# implementation needed | csharp-expert | Complex code fix      |
+| Design pattern question  | csharp-pod    | Architectural concern |
+| Root cause unclear       | analyst       | Need investigation    |
+| Fix needs verification   | qa            | After implementation  |

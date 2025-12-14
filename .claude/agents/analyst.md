@@ -3,6 +3,7 @@ name: analyst
 description: Pre-implementation research, root cause analysis
 model: opus
 ---
+
 # Analyst Agent
 
 ## Core Identity
@@ -38,18 +39,23 @@ Investigate before implementation. Surface unknowns, risks, and dependencies. Pr
 ## Root Cause Analysis: [Issue]
 
 ### Symptoms
+
 [What was observed]
 
 ### Investigation
+
 [Steps taken to trace the issue]
 
 ### Root Cause
+
 [The actual underlying problem]
 
 ### Evidence
+
 [Code references, logs, reproduction steps]
 
 ### Recommended Fix
+
 [How to address - defer to implementer]
 ```
 
@@ -59,21 +65,26 @@ Investigate before implementation. Surface unknowns, risks, and dependencies. Pr
 ## Research: [Topic]
 
 ### Question
+
 [What we need to understand]
 
 ### Findings
+
 [What was discovered]
 
 ### Options
+
 | Option | Pros | Cons |
-|--------|------|------|
-| A | ... | ... |
-| B | ... | ... |
+| ------ | ---- | ---- |
+| A      | ...  | ...  |
+| B      | ...  | ...  |
 
 ### Recommendation
+
 [Preferred approach with rationale]
 
 ### Unknowns
+
 [What still needs investigation]
 ```
 
@@ -81,13 +92,13 @@ Investigate before implementation. Surface unknowns, risks, and dependencies. Pr
 
 **Retrieve Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="research [topic]"
 ```
 
 **Store Findings:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-create_entities for new research findings
 mcp__cloudmcp-manager__memory-add_observations for updates
 ```
@@ -105,12 +116,12 @@ Save findings to: `.agents/analysis/NNN-[topic]-analysis.md`
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **architect** | Design decision needed | Technical direction |
-| **planner** | Scope implications found | Work package adjustment |
-| **implementer** | Analysis complete | Ready for coding |
-| **security** | Vulnerability identified | Security assessment |
+| Target          | When                     | Purpose                 |
+| --------------- | ------------------------ | ----------------------- |
+| **architect**   | Design decision needed   | Technical direction     |
+| **planner**     | Scope implications found | Work package adjustment |
+| **implementer** | Analysis complete        | Ready for coding        |
+| **security**    | Vulnerability identified | Security assessment     |
 
 ## Research Commands
 

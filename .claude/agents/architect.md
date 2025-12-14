@@ -3,6 +3,7 @@ name: architect
 description: Design governance, ADRs, technical decisions
 model: opus
 ---
+
 # Architect Agent
 
 ## Core Identity
@@ -38,36 +39,45 @@ Save to: `.agents/architecture/ADR-NNN-[decision].md`
 # ADR-NNN: [Decision Title]
 
 ## Status
+
 [Proposed | Accepted | Deprecated | Superseded by ADR-XXX]
 
 ## Context
+
 What is the issue we're seeing that motivates this decision?
 
 ## Decision
+
 What is the change we're proposing and/or doing?
 
 ## Consequences
 
 ### Positive
+
 - [Benefit 1]
 - [Benefit 2]
 
 ### Negative
+
 - [Drawback 1]
 - [Drawback 2]
 
 ### Neutral
+
 - [Neutral impact]
 
 ## Alternatives Considered
 
 ### Option A: [Name]
+
 [Description, why rejected]
 
 ### Option B: [Name]
+
 [Description, why rejected]
 
 ## References
+
 - [Link to relevant documentation]
 ```
 
@@ -95,13 +105,13 @@ What is the change we're proposing and/or doing?
 
 **Retrieve Decisions:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="ADR architecture [topic]"
 ```
 
 **Store Decisions:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-create_entities for new ADRs
 mcp__cloudmcp-manager__memory-add_observations for updates
 ```
@@ -116,12 +126,12 @@ mcp__cloudmcp-manager__memory-add_observations for updates
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **planner** | Architecture approved | Proceed with planning |
-| **analyst** | More research needed | Investigate options |
-| **high-level-advisor** | Major decision conflict | Strategic guidance |
-| **implementer** | Design finalized | Begin implementation |
+| Target                 | When                    | Purpose               |
+| ---------------------- | ----------------------- | --------------------- |
+| **planner**            | Architecture approved   | Proceed with planning |
+| **analyst**            | More research needed    | Investigate options   |
+| **high-level-advisor** | Major decision conflict | Strategic guidance    |
+| **implementer**        | Design finalized        | Begin implementation  |
 
 ## Output Location
 
