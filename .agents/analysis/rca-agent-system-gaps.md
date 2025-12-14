@@ -339,7 +339,6 @@ This analysis performs a 5-Why investigation into each root cause and identifies
    - Max 3 questions to determine which agents to invoke
    - Embedded in `.agents/QUICK-START.md` (new file)
    - Example:
-```
 
      ```text
      Is this a code change?

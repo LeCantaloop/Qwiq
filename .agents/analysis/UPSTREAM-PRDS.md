@@ -155,8 +155,6 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
 
      ```
 
-     ```text
-
 2. **FR-2: Secret Detection**
    - Scan for hardcoded credentials:
      - API keys (AWS_ACCESS_KEY, sk-*, Bearer tokens)
@@ -165,7 +163,6 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Environment variable leaks
    - Output examples:
 
-     ```
      ```text
      ✗ CRITICAL: Hardcoded API key detected
        File: src/Services/ApiClient.cs, Line 42
@@ -175,8 +172,6 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
 
      ```
 
-     ```text
-
 3. **FR-3: Code Quality Audit (Security Perspective)**
    - Flag code organization issues:
      - Files > 500 lines (difficult to review, easy to miss vulnerabilities)
@@ -185,15 +180,11 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Missing null validation on sensitive parameters
    - Output examples:
 
-     ```
      ```text
      ✗ FILE TOO LARGE: 843 lines
        Risk: Hard to review, easy to miss security issues
        Recommendation: Split into smaller modules
-
      ```
-
-     ```text
 
 4. **FR-4: Architecture Review (Security Perspective)**
    - Analyze privilege boundaries:
@@ -202,16 +193,12 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - What code handles sensitive data?
    - Output examples:
 
-     ```
      ```text
      ⚠ HIGH: Pre-commit hook runs with full developer privileges
        Risk: Can read all files, execute arbitrary commands
        Boundary: Developer machine ↔ Untrusted filenames
        Mitigation: Use arrays for filename args, validate input
-
      ```
-
-     ```text
 
 5. **FR-5: Best Practices Enforcement**
    - Verify security-critical code patterns:
@@ -222,7 +209,6 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
      - Testing coverage for security-critical code
    - Output examples:
 
-     ```
      ```text
      ✗ MISSING INPUT VALIDATION: UpdateUser endpoint
        Line 45: `_service.Update(id, request)`
@@ -230,8 +216,6 @@ Security agent is currently narrow in scope (threat modeling + code review). Thi
        Risk: Injection attacks, privilege escalation
 
      ```
-
-     ```text
 
 #### Non-Functional Requirements
 
@@ -323,7 +307,6 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
      - **Invocation Rule**: When to use this agent
    - Example Entry (security agent):
 
-     ```
      ```text
      | Property | Value |
      |----------|-------|
@@ -334,8 +317,6 @@ The orchestrator (and developers) don't have comprehensive knowledge of what eac
      | **Invocation Rule** | MANDATORY for infrastructure changes, authentication, cryptography |
 
      ```
-
-     ```text
 
 2. **FR-2: Tier the Agents**
    - TIER 1 (Core): Agents used in 80%+ of workflows
@@ -882,5 +863,3 @@ All PRDs reference this session's incident:
 - `.agents/analysis/orchestrator-capabilities-matrix.md` - Orchestrator assessment
 - `.agents/analysis/security-agent-enhancement.md` - Security agent expansion
 - `.agents/security/shell-injection-fix.md` - Technical vulnerability details
-
-     ```

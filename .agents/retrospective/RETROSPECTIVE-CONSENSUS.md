@@ -33,7 +33,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 
 ### Timeline
 
-**Phase 1: Skills Extraction & Documentation (Early Session)**
+#### Phase 1: Skills Extraction & Documentation (Early Session)
 
 - Retrospective analysis of agent system
 - Creation of 22 atomic skills in `.agents/skills/`
@@ -46,7 +46,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 
 ---
 
-**Phase 2: Infrastructure Changes (Mid Session)**
+#### Phase 2: Infrastructure Changes (Mid Session)
 
 - User request: "Create new GitHub Actions workflow for markdown linting"
 - Change: Separate `lint.yml` from `main.yml`, remove Node.js setup from matrix
@@ -64,7 +64,7 @@ This session discovered **three critical security vulnerabilities (CWE-78)** in 
 
 ---
 
-**Phase 3: PR Review - External Bot Detection**
+#### Phase 3: PR Review - External Bot Detection
 
 - GitHub Copilot bot comments during PR review
 - Identifies 3 CWE-78 shell injection vulnerabilities:
