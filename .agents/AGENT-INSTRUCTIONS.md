@@ -598,12 +598,75 @@ Task(subagent_type="retrospective", prompt="Analyze session and extract learning
 ### Memory Operations (When Available)
 
 ```python
-# Search for relevant context before starting
+# READ OPERATIONS - Search for relevant context before starting
 mcp__cloudmcp-manager__memory-search_nodes(query="[topic]")
+mcp__cloudmcp-manager__memory-read_graph()
+mcp__cloudmcp-manager__memory-open_nodes(names=["entity-name"])
 
-# Store learnings at session end
+# WRITE OPERATIONS - Store learnings at session end
 mcp__cloudmcp-manager__memory-create_entities(entities=[...])
 mcp__cloudmcp-manager__memory-add_observations(observations=[...])
+mcp__cloudmcp-manager__memory-create_relations(relations=[...])
+
+# DELETE OPERATIONS - Remove or update incorrect learnings
+mcp__cloudmcp-manager__memory-delete_entities(entityNames=[...])
+mcp__cloudmcp-manager__memory-delete_observations(deletions=[...])
+mcp__cloudmcp-manager__memory-delete_relations(relations=[...])
+```
+
+### Memory Service Fallback
+
+If cloudmcp-manager memory service is unavailable:
+
+**For READ operations** (`memory-search_nodes`, `memory-read_graph`, `memory-open_nodes`):
+
+- Use `.agents/skills/README.md` to navigate available skills
+- Open relevant skill files in `.agents/skills/[category]-skills.md`
+- Use `grep` or search to find specific skills by ID or keyword
+
+**For WRITE operations** (`memory-create_entities`, `memory-add_observations`, `memory-create_relations`):
+
+- Add new skills to appropriate file in `.agents/skills/[category]-skills.md`
+- Follow the skill format: statement, atomicity, category, context, evidence, details
+- Create new category file if needed (e.g., `performance-skills.md`)
+- Commit changes with descriptive message
+
+**For DELETE operations** (`memory-delete_entities`, `memory-delete_observations`, `memory-delete_relations`):
+
+- Edit relevant skill file in `.agents/skills/[category]-skills.md`
+- Remove or update the skill section
+- Delete entire file if all skills removed
+- Commit deletion with message: `chore(skills): remove [skill-id] - [reason]`
+
+**Example - Reading a skill:**
+
+```bash
+# Instead of:
+mcp__cloudmcp-manager__memory-search_nodes(query="CI build")
+
+# Use:
+grep -r "CI build\|ContinuousIntegrationBuild" .agents/skills/
+# Returns: .agents/skills/build-skills.md
+cat .agents/skills/build-skills.md  # Open and review
+```
+
+**Example - Adding a skill:**
+
+```bash
+# Instead of:
+mcp__cloudmcp-manager__memory-create_entities(entities=[...])
+
+# Edit the appropriate file:
+vim .agents/skills/[category]-skills.md
+
+# Add new skill following this format:
+## Skill-[Category]-NNN
+
+**Statement**: [Your skill statement]
+**Atomicity**: XX%
+**Category**: [Category]
+**Context**: [When to use]
+**Evidence**: [Where discovered]
 ```
 
 ---
