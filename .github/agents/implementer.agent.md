@@ -122,9 +122,9 @@ cloudmcp-manager/memory-add_observations for implementation notes
 
 ### Performance
 
-- Minimize allocations. Use `ArrayPool<T>`, `Span<T>`, stackalloc
+- Minimize allocations. Use `ArrayPool<T>`, `Span<T>`, `stackalloc`
 - Favor SIMD and hardware intrinsics where beneficial. Fall back to software
-- Start with Vector256, fall back to Vector128, then scalar
+- Start with `Vector256`, fall back to `Vector128`, then scalar
 - Optimize for branch prediction
 
 ### Testing

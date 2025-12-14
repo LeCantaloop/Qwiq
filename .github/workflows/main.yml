@@ -43,6 +43,7 @@ jobs:
         uses: ./.github/actions/setup-dotnet
 
       - name: Setup Node.js
+        if: matrix.os == 'ubuntu-latest'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -50,6 +51,8 @@ jobs:
       - name: Lint markdown files
         # Verify all markdown files pass linting (no auto-fix in CI)
         # This catches commits that bypassed the pre-commit hook
+        # Only run on Ubuntu - markdown linting is platform-agnostic
+        if: matrix.os == 'ubuntu-latest'
         run: npx markdownlint-cli2 "**/*.md"
 
       - name: Restore and Build (Windows)
