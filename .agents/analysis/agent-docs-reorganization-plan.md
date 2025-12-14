@@ -16,45 +16,45 @@ The `.agents/` directory currently contains 75 files across various subdirectori
 
 ### Root-Level Files (23 files)
 
-| File | Current Purpose | Proposed Category |
-|------|-----------------|-------------------|
-| `AGENT-SYSTEM.md` | Agent catalog, workflows, memory system | **Keep at root** (system documentation) |
-| `AGENT-INSTRUCTIONS.md` | Task execution protocol | **Keep at root** (system documentation) |
-| `HANDOFF.md` | Session-to-session context | **Keep at root** (critical handoff) |
-| `PROMPTS.md` | Reusable agent prompts | **Keep at root** (system documentation) |
-| `modernize-TODO-index.md` | Wave summary, navigation, metrics | `planning/` |
-| `modernize-wave1.md` | Wave 0-1 task tracking | `planning/` |
-| `modernize-wave2.md` | Wave 2 task tracking | `planning/` |
-| `modernize-wave3-5.md` | Waves 3-5 task tracking | `planning/` |
-| `modernize-explainer.md` | PRD for modernization effort | `planning/` |
-| `wave-3-task-definitions.md` | Wave 3 detailed tasks | `planning/` |
-| `WAVE2-TASK-DEFINITIONS.md` | Wave 2 detailed tasks | `planning/` |
-| `WAVE4-TASKS.md` | Wave 4 task list | `planning/` |
-| `W4-COVERAGE-PLAN.md` | Coverage improvement plan | `planning/` |
-| `WAVE4-TEST-IMPROVEMENT-PLAN.md` | Test quality roadmap | `planning/` |
-| `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md` | CRAP score reduction plan | `planning/` |
-| `TASKS-cs0006-fix.md` | CS0006 fix task plan | `planning/` |
-| `TASKS-fix-linux-ci-build.md` | Linux CI fix task plan | `planning/` |
-| `analyzer-debt-inventory.md` | Analyzer violations inventory | `analysis/` |
-| `remaining-analyzer-work.md` | Remaining analyzer work plan | `analysis/` |
-| `CS8xxx-baseline.md` | Nullable reference type baseline | `metrics/` |
-| `WIREMOCK-IMPLEMENTATION-COMPLETE.md` | WireMock implementation summary | `retrospective/` |
-| `contract-tests-plan.md` | Contract testing plan | `planning/` |
-| `explainer-rest-soap-unit-tests.md` | REST/SOAP test PRD | `planning/` |
+| File                                  | Current Purpose                         | Proposed Category                       |
+| ------------------------------------- | --------------------------------------- | --------------------------------------- |
+| `AGENT-SYSTEM.md`                     | Agent catalog, workflows, memory system | **Keep at root** (system documentation) |
+| `AGENT-INSTRUCTIONS.md`               | Task execution protocol                 | **Keep at root** (system documentation) |
+| `HANDOFF.md`                          | Session-to-session context              | **Keep at root** (critical handoff)     |
+| `PROMPTS.md`                          | Reusable agent prompts                  | **Keep at root** (system documentation) |
+| `modernize-TODO-index.md`             | Wave summary, navigation, metrics       | `planning/`                             |
+| `modernize-wave1.md`                  | Wave 0-1 task tracking                  | `planning/`                             |
+| `modernize-wave2.md`                  | Wave 2 task tracking                    | `planning/`                             |
+| `modernize-wave3-5.md`                | Waves 3-5 task tracking                 | `planning/`                             |
+| `modernize-explainer.md`              | PRD for modernization effort            | `planning/`                             |
+| `wave-3-task-definitions.md`          | Wave 3 detailed tasks                   | `planning/`                             |
+| `WAVE2-TASK-DEFINITIONS.md`           | Wave 2 detailed tasks                   | `planning/`                             |
+| `WAVE4-TASKS.md`                      | Wave 4 task list                        | `planning/`                             |
+| `W4-COVERAGE-PLAN.md`                 | Coverage improvement plan               | `planning/`                             |
+| `WAVE4-TEST-IMPROVEMENT-PLAN.md`      | Test quality roadmap                    | `planning/`                             |
+| `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md`  | CRAP score reduction plan               | `planning/`                             |
+| `TASKS-cs0006-fix.md`                 | CS0006 fix task plan                    | `planning/`                             |
+| `TASKS-fix-linux-ci-build.md`         | Linux CI fix task plan                  | `planning/`                             |
+| `analyzer-debt-inventory.md`          | Analyzer violations inventory           | `analysis/`                             |
+| `remaining-analyzer-work.md`          | Remaining analyzer work plan            | `analysis/`                             |
+| `CS8xxx-baseline.md`                  | Nullable reference type baseline        | `metrics/`                              |
+| `WIREMOCK-IMPLEMENTATION-COMPLETE.md` | WireMock implementation summary         | `retrospective/`                        |
+| `contract-tests-plan.md`              | Contract testing plan                   | `planning/`                             |
+| `explainer-rest-soap-unit-tests.md`   | REST/SOAP test PRD                      | `planning/`                             |
 
 ### Subdirectory Contents
 
-| Directory | Current Files | Expected Purpose |
-|-----------|---------------|------------------|
-| `analysis/` | `.gitkeep` only | Analyst findings, research reports |
-| `architecture/` | `.gitkeep` only | ADRs (but ADRs are in `docs/adr/`) |
-| `critique/` | `.gitkeep` only | Plan reviews, validations |
-| `metrics/` | `crap-score-baseline.md` | Metrics and measurements |
-| `planning/` | `.gitkeep` only | Plans, PRDs, task definitions |
-| `plans/` | `git-hooks-plan.md` | Should merge with `planning/` |
-| `qa/` | `.gitkeep` only | Test strategies, reports |
-| `retrospective/` | `2025-12-13-session-40-agent-installation.md` | Learning extractions |
-| `sessions/` | 32 session log files | Session logs |
+| Directory        | Current Files                                 | Expected Purpose                   |
+| ---------------- | --------------------------------------------- | ---------------------------------- |
+| `analysis/`      | `.gitkeep` only                               | Analyst findings, research reports |
+| `architecture/`  | `.gitkeep` only                               | ADRs (but ADRs are in `docs/adr/`) |
+| `critique/`      | `.gitkeep` only                               | Plan reviews, validations          |
+| `metrics/`       | `crap-score-baseline.md`                      | Metrics and measurements           |
+| `planning/`      | `.gitkeep` only                               | Plans, PRDs, task definitions      |
+| `plans/`         | `git-hooks-plan.md`                           | Should merge with `planning/`      |
+| `qa/`            | `.gitkeep` only                               | Test strategies, reports           |
+| `retrospective/` | `2025-12-13-session-40-agent-installation.md` | Learning extractions               |
+| `sessions/`      | 32 session log files                          | Session logs                       |
 
 ---
 
@@ -118,35 +118,35 @@ The `.agents/` directory currently contains 75 files across various subdirectori
 
 ### Phase 1: Move Root Files to Appropriate Subdirectories
 
-| Action | Source | Destination | Rationale |
-|--------|--------|-------------|-----------|
-| Move | `modernize-TODO-index.md` | `planning/` | Task tracking and navigation |
-| Move | `modernize-wave1.md` | `planning/` | Wave task definitions |
-| Move | `modernize-wave2.md` | `planning/` | Wave task definitions |
-| Move | `modernize-wave3-5.md` | `planning/` | Wave task definitions |
-| Move | `modernize-explainer.md` | `planning/` | PRD document |
-| Move | `wave-3-task-definitions.md` | `planning/` | Task definitions |
-| Move | `WAVE2-TASK-DEFINITIONS.md` | `planning/` | Task definitions |
-| Move | `WAVE4-TASKS.md` | `planning/` | Task definitions |
-| Move | `W4-COVERAGE-PLAN.md` | `planning/` | Coverage plan |
-| Move | `WAVE4-TEST-IMPROVEMENT-PLAN.md` | `planning/` | Test improvement plan |
-| Move | `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md` | `planning/` | CRAP score plan |
-| Move | `TASKS-cs0006-fix.md` | `planning/` | Task plan |
-| Move | `TASKS-fix-linux-ci-build.md` | `planning/` | Task plan |
-| Move | `contract-tests-plan.md` | `planning/` | Contract test plan |
-| Move | `explainer-rest-soap-unit-tests.md` | `planning/` | PRD document |
-| Move | `analyzer-debt-inventory.md` | `analysis/` | Analysis document |
-| Move | `remaining-analyzer-work.md` | `analysis/` | Analysis document |
-| Move | `CS8xxx-baseline.md` | `metrics/` | Metrics baseline |
-| Move | `WIREMOCK-IMPLEMENTATION-COMPLETE.md` | `retrospective/` | Implementation retrospective |
+| Action | Source                                | Destination      | Rationale                    |
+| ------ | ------------------------------------- | ---------------- | ---------------------------- |
+| Move   | `modernize-TODO-index.md`             | `planning/`      | Task tracking and navigation |
+| Move   | `modernize-wave1.md`                  | `planning/`      | Wave task definitions        |
+| Move   | `modernize-wave2.md`                  | `planning/`      | Wave task definitions        |
+| Move   | `modernize-wave3-5.md`                | `planning/`      | Wave task definitions        |
+| Move   | `modernize-explainer.md`              | `planning/`      | PRD document                 |
+| Move   | `wave-3-task-definitions.md`          | `planning/`      | Task definitions             |
+| Move   | `WAVE2-TASK-DEFINITIONS.md`           | `planning/`      | Task definitions             |
+| Move   | `WAVE4-TASKS.md`                      | `planning/`      | Task definitions             |
+| Move   | `W4-COVERAGE-PLAN.md`                 | `planning/`      | Coverage plan                |
+| Move   | `WAVE4-TEST-IMPROVEMENT-PLAN.md`      | `planning/`      | Test improvement plan        |
+| Move   | `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md`  | `planning/`      | CRAP score plan              |
+| Move   | `TASKS-cs0006-fix.md`                 | `planning/`      | Task plan                    |
+| Move   | `TASKS-fix-linux-ci-build.md`         | `planning/`      | Task plan                    |
+| Move   | `contract-tests-plan.md`              | `planning/`      | Contract test plan           |
+| Move   | `explainer-rest-soap-unit-tests.md`   | `planning/`      | PRD document                 |
+| Move   | `analyzer-debt-inventory.md`          | `analysis/`      | Analysis document            |
+| Move   | `remaining-analyzer-work.md`          | `analysis/`      | Analysis document            |
+| Move   | `CS8xxx-baseline.md`                  | `metrics/`       | Metrics baseline             |
+| Move   | `WIREMOCK-IMPLEMENTATION-COMPLETE.md` | `retrospective/` | Implementation retrospective |
 
 ### Phase 2: Merge Duplicate Directories
 
-| Action | Source | Destination | Rationale |
-|--------|--------|-------------|-----------|
-| Merge | `plans/` | `planning/` | Single location for plans |
-| Move | `plans/git-hooks-plan.md` | `planning/` | Consolidate plans |
-| Delete | `plans/` | N/A | Empty after merge |
+| Action | Source                    | Destination | Rationale                 |
+| ------ | ------------------------- | ----------- | ------------------------- |
+| Merge  | `plans/`                  | `planning/` | Single location for plans |
+| Move   | `plans/git-hooks-plan.md` | `planning/` | Consolidate plans         |
+| Delete | `plans/`                  | N/A         | Empty after merge         |
 
 ### Phase 3: Update Internal References
 
@@ -164,19 +164,19 @@ Files that reference moved documents need updates:
 
 These files should remain at the `.agents/` root level:
 
-| File | Reason |
-|------|--------|
-| `AGENT-SYSTEM.md` | Core agent system documentation, referenced by all agents |
-| `AGENT-INSTRUCTIONS.md` | Operational protocol, must be immediately accessible |
-| `HANDOFF.md` | Critical session handoff, needs high visibility |
-| `PROMPTS.md` | Reusable prompts, frequently accessed |
+| File                    | Reason                                                    |
+| ----------------------- | --------------------------------------------------------- |
+| `AGENT-SYSTEM.md`       | Core agent system documentation, referenced by all agents |
+| `AGENT-INSTRUCTIONS.md` | Operational protocol, must be immediately accessible      |
+| `HANDOFF.md`            | Critical session handoff, needs high visibility           |
+| `PROMPTS.md`            | Reusable prompts, frequently accessed                     |
 
 ---
 
 ## Files to Archive or Remove
 
-| File | Action | Rationale |
-|------|--------|-----------|
+| File             | Action | Rationale                             |
+| ---------------- | ------ | ------------------------------------- |
 | `plans/.gitkeep` | Remove | Directory will be deleted after merge |
 
 ---
@@ -185,24 +185,24 @@ These files should remain at the `.agents/` root level:
 
 ### Proposed Naming Standards
 
-| Category | Pattern | Example |
-|----------|---------|---------|
-| Analysis | `NNN-[topic]-analysis.md` | `001-analyzer-debt-analysis.md` |
-| Planning | `[scope]-[type].md` | `wave4-tasks.md`, `coverage-plan.md` |
-| Metrics | `[metric]-baseline.md` | `crap-score-baseline.md` |
-| Sessions | `YYYY-MM-DD-session-NN-[topic].md` | `2025-12-13-session-40-agent-install.md` |
-| Retrospective | `YYYY-MM-DD-[scope].md` | `2025-12-13-wiremock-implementation.md` |
+| Category      | Pattern                            | Example                                  |
+| ------------- | ---------------------------------- | ---------------------------------------- |
+| Analysis      | `NNN-[topic]-analysis.md`          | `001-analyzer-debt-analysis.md`          |
+| Planning      | `[scope]-[type].md`                | `wave4-tasks.md`, `coverage-plan.md`     |
+| Metrics       | `[metric]-baseline.md`             | `crap-score-baseline.md`                 |
+| Sessions      | `YYYY-MM-DD-session-NN-[topic].md` | `2025-12-13-session-40-agent-install.md` |
+| Retrospective | `YYYY-MM-DD-[scope].md`            | `2025-12-13-wiremock-implementation.md`  |
 
 ### Files to Rename (Optional)
 
-| Current Name | Proposed Name | Rationale |
-|--------------|---------------|-----------|
-| `WAVE4-TASKS.md` | `wave4-tasks.md` | Consistent lowercase |
-| `W4-COVERAGE-PLAN.md` | `wave4-coverage-plan.md` | Consistent naming |
-| `WAVE4-TEST-IMPROVEMENT-PLAN.md` | `wave4-test-improvement-plan.md` | Consistent lowercase |
-| `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md` | `wave4-crap-score-plan.md` | Consistent lowercase, shorter |
-| `TASKS-cs0006-fix.md` | `task-cs0006-fix.md` | Consistent naming |
-| `TASKS-fix-linux-ci-build.md` | `task-linux-ci-fix.md` | Consistent naming |
+| Current Name                         | Proposed Name                    | Rationale                     |
+| ------------------------------------ | -------------------------------- | ----------------------------- |
+| `WAVE4-TASKS.md`                     | `wave4-tasks.md`                 | Consistent lowercase          |
+| `W4-COVERAGE-PLAN.md`                | `wave4-coverage-plan.md`         | Consistent naming             |
+| `WAVE4-TEST-IMPROVEMENT-PLAN.md`     | `wave4-test-improvement-plan.md` | Consistent lowercase          |
+| `WAVE4-CRAP-SCORE-REDUCTION-PLAN.md` | `wave4-crap-score-plan.md`       | Consistent lowercase, shorter |
+| `TASKS-cs0006-fix.md`                | `task-cs0006-fix.md`             | Consistent naming             |
+| `TASKS-fix-linux-ci-build.md`        | `task-linux-ci-fix.md`           | Consistent naming             |
 
 ---
 
@@ -212,11 +212,11 @@ These files should remain at the `.agents/` root level:
 
 Moving the following files will require updating references:
 
-| File | Impact | Affected Files |
-|------|--------|----------------|
-| `modernize-TODO-index.md` | High | HANDOFF.md, PROMPTS.md, AGENT-INSTRUCTIONS.md |
-| `modernize-wave*.md` | High | HANDOFF.md, PROMPTS.md, AGENT-INSTRUCTIONS.md |
-| `modernize-explainer.md` | Medium | modernize-TODO-index.md |
+| File                      | Impact | Affected Files                                |
+| ------------------------- | ------ | --------------------------------------------- |
+| `modernize-TODO-index.md` | High   | HANDOFF.md, PROMPTS.md, AGENT-INSTRUCTIONS.md |
+| `modernize-wave*.md`      | High   | HANDOFF.md, PROMPTS.md, AGENT-INSTRUCTIONS.md |
+| `modernize-explainer.md`  | Medium | modernize-TODO-index.md                       |
 
 ### Low-Risk Moves
 
@@ -331,6 +331,6 @@ The `architecture/` directory is currently empty (`.gitkeep` only). The actual A
 
 ## Document Control
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-12-13 | Analyst Agent | Initial reorganization plan |
+| Version | Date       | Author        | Changes                     |
+| ------- | ---------- | ------------- | --------------------------- |
+| 1.0     | 2025-12-13 | Analyst Agent | Initial reorganization plan |

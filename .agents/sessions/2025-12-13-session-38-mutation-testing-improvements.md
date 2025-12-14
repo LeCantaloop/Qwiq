@@ -19,11 +19,11 @@
 
 This session continues the mutation testing initiative from Session 35 by addressing the three highest-priority files identified in the baseline:
 
-| File                    | Baseline Score | Target   | Status    |
-| ----------------------- | -------------- | -------- | --------- |
-| IWorkItem.Extensions    | 0%             | 60%+     | COMPLETED |
-| CredentialsFactory      | 0%             | 60%+     | COMPLETED |
-| GenericComparer         | 31.91%         | 60%+     | COMPLETED |
+| File                 | Baseline Score | Target | Status    |
+| -------------------- | -------------- | ------ | --------- |
+| IWorkItem.Extensions | 0%             | 60%+   | COMPLETED |
+| CredentialsFactory   | 0%             | 60%+   | COMPLETED |
+| GenericComparer      | 31.91%         | 60%+   | COMPLETED |
 
 ## Tasks Completed
 
@@ -145,10 +145,10 @@ dotnet stryker --config-file stryker-config.json --mutate "src/Qwiq.Core/Generic
 
 ## Files Created/Modified
 
-| File | Action | Purpose |
-| ---- | ------ | ------- |
-| `test/Qwiq.Core.Tests/Credentials/CredentialsFactoryTests.cs` | Created | 25 tests for CredentialsFactory |
-| `test/Qwiq.Core.Tests/Comparers/ComparerTests.cs` | Modified | 35 new GenericComparer tests |
+| File                                                          | Action   | Purpose                         |
+| ------------------------------------------------------------- | -------- | ------------------------------- |
+| `test/Qwiq.Core.Tests/Credentials/CredentialsFactoryTests.cs` | Created  | 25 tests for CredentialsFactory |
+| `test/Qwiq.Core.Tests/Comparers/ComparerTests.cs`             | Modified | 35 new GenericComparer tests    |
 
 ## Notes for Next Session
 

@@ -82,10 +82,10 @@ Updated `.agents/AGENT-INSTRUCTIONS.md` v1.1:
 
 ## Files Modified
 
-| File | Changes |
-| ---- | ------- |
+| File                                                         | Changes                                        |
+| ------------------------------------------------------------ | ---------------------------------------------- |
 | `test/Qwiq.Core.Tests/Extensions/WorkItemExtensionsTests.cs` | +17/-7 lines - Fixed all three analyzer issues |
-| `.agents/AGENT-INSTRUCTIONS.md` | Added lessons learned, updated build commands |
+| `.agents/AGENT-INSTRUCTIONS.md`                              | Added lessons learned, updated build commands  |
 
 ## Commits
 
