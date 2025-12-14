@@ -1106,7 +1106,7 @@ Read the contents of the `.agents` directory before starting work:
 ## Project Context
 
 - **Repository**: Qwiq - .NET library for Azure DevOps work item queries
-- **Branch**: `chore/modernize-4`
+- **Branch**: `develop`
 - **Target**: Production v11.0.0 for 100+ team members
 - **Timeline**: 6-8 weeks
 - **Build Status**: 0 errors, 0 warnings (MUST maintain)
@@ -1118,10 +1118,11 @@ Read the contents of the `.agents` directory before starting work:
 1. Create session log: `.agents/sessions/YYYY-MM-DD-session-NN.md`
 2. Complete pre-flight checklist from AGENT-INSTRUCTIONS.md
 3. Identify the next task. Delegate that to the orchestrate agent.
-4. Work incrementally with small, conventional commits
-5. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
-6. Update session log with decisions and challenges
-7. Before completing, use the retrospective agent
+4. Create a new branch if needed (naming: `chore/modernize-<wave>-<task>`)
+5. Work incrementally with small, conventional commits
+6. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
+7. Update session log with decisions and challenges
+8. Before completing, use the retrospective agent
 
 ## Build Commands
 
