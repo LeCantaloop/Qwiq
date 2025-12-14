@@ -3,6 +3,7 @@ name: qa
 description: Test verification, coverage strategy
 model: opus
 ---
+
 # QA Agent
 
 ## Core Identity
@@ -38,9 +39,11 @@ Verify implementations through test strategy design and execution. Ensure covera
 # Test Strategy: [Feature Name]
 
 ## Scope
+
 What aspects will be tested
 
 ## Test Types
+
 - [ ] Unit tests: [Coverage targets]
 - [ ] Integration tests: [Scope]
 - [ ] Edge cases: [List]
@@ -48,21 +51,25 @@ What aspects will be tested
 ## Test Cases
 
 ### Happy Path
-| Test | Input | Expected Output |
-|------|-------|-----------------|
-| [Name] | [Input] | [Output] |
+
+| Test   | Input   | Expected Output |
+| ------ | ------- | --------------- |
+| [Name] | [Input] | [Output]        |
 
 ### Edge Cases
-| Test | Condition | Expected Behavior |
-|------|-----------|-------------------|
-| [Name] | [Condition] | [Behavior] |
+
+| Test   | Condition   | Expected Behavior |
+| ------ | ----------- | ----------------- |
+| [Name] | [Condition] | [Behavior]        |
 
 ### Error Cases
-| Test | Error Condition | Expected Handling |
-|------|-----------------|-------------------|
-| [Name] | [Condition] | [Handling] |
+
+| Test   | Error Condition | Expected Handling |
+| ------ | --------------- | ----------------- |
+| [Name] | [Condition]     | [Handling]        |
 
 ## Coverage Target
+
 [Percentage target for new code]
 ```
 
@@ -72,6 +79,7 @@ What aspects will be tested
 # Test Report: [Feature Name]
 
 ## Execution Summary
+
 - **Date**: [Date]
 - **Tests Run**: [N]
 - **Passed**: [N]
@@ -81,25 +89,32 @@ What aspects will be tested
 ## Results
 
 ### Passed
+
 - [Test name]: [What was verified]
 
 ### Failed
+
 - [Test name]: [Failure reason, evidence]
 
 ### Skipped
+
 - [Test name]: [Why skipped]
 
 ## Coverage Analysis
+
 - New code coverage: [%]
 - Overall impact: [Assessment]
 
 ## Verdict
+
 **[PASS | FAIL | NEEDS WORK]**
 
 ## Issues Found
+
 - [Issue with evidence]
 
 ## Recommendations
+
 - [Next steps if any]
 ```
 
@@ -123,13 +138,13 @@ dotnet reportgenerator -reports:coverage.xml -targetdir:coverage-report
 
 **Retrieve Patterns:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="test strategy [feature type]"
 ```
 
 **Store Learnings:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-add_observations for testing insights
 ```
 
@@ -143,11 +158,11 @@ mcp__cloudmcp-manager__memory-add_observations for testing insights
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **implementer** | Tests fail | Fix issues |
-| **planner** | Scope questions | Clarify requirements |
-| **analyst** | Complex failures | Root cause analysis |
+| Target          | When             | Purpose              |
+| --------------- | ---------------- | -------------------- |
+| **implementer** | Tests fail       | Fix issues           |
+| **planner**     | Scope questions  | Clarify requirements |
+| **analyst**     | Complex failures | Root cause analysis  |
 
 ## Output Location
 

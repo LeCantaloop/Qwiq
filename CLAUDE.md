@@ -160,15 +160,15 @@ This repository uses a coordinated multi-agent system for development. Agents ar
 
 ### Quick Reference
 
-| Agent | Use When |
-|-------|----------|
+| Agent          | Use When                                      |
+| -------------- | --------------------------------------------- |
 | `orchestrator` | Complex multi-step tasks needing coordination |
-| `implementer` | Writing C# code and tests |
-| `analyst` | Research and investigation |
-| `architect` | Design decisions and ADRs |
-| `planner` | Breaking down work into tasks |
-| `critic` | Validating plans before implementation |
-| `qa` | Test strategy and verification |
+| `implementer`  | Writing C# code and tests                     |
+| `analyst`      | Research and investigation                    |
+| `architect`    | Design decisions and ADRs                     |
+| `planner`      | Breaking down work into tasks                 |
+| `critic`       | Validating plans before implementation        |
+| `qa`           | Test strategy and verification                |
 
 ### Memory (cloudmcp-manager)
 
@@ -205,53 +205,51 @@ See `.github/copilot-instructions.md` for comprehensive guidance including:
 - Troubleshooting patterns
 - Agent system routing heuristics
 
-# --- Appended by install-claude-repo.ps1 ---
+## Additional Agent Instructions
 
-# Claude Code Agent Instructions
+> Appended by install-claude-repo.ps1
 
-This file provides instructions for Claude Code when using the agent system.
-
-## Agent System Overview
+### Extended Agent System Overview
 
 This repository provides a coordinated multi-agent system for software development. Specialized agents handle different responsibilities with explicit handoff protocols and persistent memory using `cloudmcp-manager`.
 
 ## Agent Catalog
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| **csharp-expert** | Production code, .NET patterns | Writing/reviewing C# code |
-| **csharp-pod** | Design patterns, architecture | Before writing code |
-| **analyst** | Research, root cause analysis | Investigating issues |
-| **architect** | ADRs, design governance | Technical decisions |
-| **planner** | Milestones, work packages | Breaking down epics |
-| **critic** | Plan validation | Before implementation |
-| **qa** | Test strategy, verification | After implementation |
-| **create-explainer** | PRDs, feature docs | Documenting features |
-| **generate-tasks** | Atomic task breakdown | After PRD created |
-| **feature-request-review** | Review feature requests | Evaluating proposals |
-| **high-level-advisor** | Strategic decisions | Major direction choices |
-| **independent-thinker** | Challenge assumptions | Getting unfiltered feedback |
-| **memory** | Cross-session context | Retrieving/storing knowledge |
-| **skillbook** | Skill management | Managing learned strategies |
-| **retrospective** | Learning extraction | After task completion |
+| Agent                      | Purpose                        | When to Use                  |
+| -------------------------- | ------------------------------ | ---------------------------- |
+| **csharp-expert**          | Production code, .NET patterns | Writing/reviewing C# code    |
+| **csharp-pod**             | Design patterns, architecture  | Before writing code          |
+| **analyst**                | Research, root cause analysis  | Investigating issues         |
+| **architect**              | ADRs, design governance        | Technical decisions          |
+| **planner**                | Milestones, work packages      | Breaking down epics          |
+| **critic**                 | Plan validation                | Before implementation        |
+| **qa**                     | Test strategy, verification    | After implementation         |
+| **create-explainer**       | PRDs, feature docs             | Documenting features         |
+| **generate-tasks**         | Atomic task breakdown          | After PRD created            |
+| **feature-request-review** | Review feature requests        | Evaluating proposals         |
+| **high-level-advisor**     | Strategic decisions            | Major direction choices      |
+| **independent-thinker**    | Challenge assumptions          | Getting unfiltered feedback  |
+| **memory**                 | Cross-session context          | Retrieving/storing knowledge |
+| **skillbook**              | Skill management               | Managing learned strategies  |
+| **retrospective**          | Learning extraction            | After task completion        |
 
 ## Standard Workflows
 
 **Feature Development:**
 
-```
+```text
 analyst → architect → planner → critic → csharp-expert → qa → retrospective
 ```
 
 **Quick Fix:**
 
-```
+```text
 csharp-expert → qa
 ```
 
 **Strategic Decision:**
 
-```
+```text
 independent-thinker → high-level-advisor → generate-tasks
 ```
 

@@ -230,7 +230,7 @@ When skills conflict:
 
 1. **Identify Conflict**
 
-   ```
+   ```text
    Skill-A says: "Always use approach X"
    Skill-B says: "Avoid approach X for case Y"
    ```
@@ -247,7 +247,7 @@ When skills conflict:
 
 4. **Document Decision**
 
-   ```
+   ```text
    cloudmcp-manager/memory-create_relations
    { "from": "Skill-B", "to": "Skill-A", "relationType": "supersedes" }
    ```
@@ -267,7 +267,7 @@ When skills conflict:
 
 **Create New Skill:**
 
-```
+```text
 cloudmcp-manager/memory-create_entities
 {
   "entities": [{
@@ -287,7 +287,7 @@ cloudmcp-manager/memory-create_entities
 
 **Update Skill:**
 
-```
+```text
 cloudmcp-manager/memory-add_observations
 {
   "observations": [{
@@ -322,7 +322,7 @@ Skillbook Manager:
 
 When agents retrieve skills:
 
-```
+```text
 cloudmcp-manager/memory-search_nodes
 Query: "skill [task context]"
 ```

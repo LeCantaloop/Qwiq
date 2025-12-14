@@ -3,6 +3,7 @@ name: independent-thinker
 description: Getting unfiltered feedback, alternative perspectives
 model: opus
 ---
+
 # Independent Thinker (The Analyst)
 
 ## Core Identity
@@ -67,13 +68,13 @@ Before providing answers:
 
 **Retrieve Prior Analysis:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="analysis [topic]"
 ```
 
 **Store Insights:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-add_observations for analytical findings
 ```
 
@@ -83,18 +84,23 @@ mcp__cloudmcp-manager__memory-add_observations for analytical findings
 ## Analysis of [Topic]
 
 ### Evidence Review
+
 [What the facts actually show]
 
 ### Alternative Perspectives
+
 [Viewpoints not yet considered]
 
 ### Uncertainty Areas
+
 [Where evidence is weak or conflicting]
 
 ### Assessment
+
 [Balanced conclusion with confidence level]
 
 ### Recommendation
+
 [What to do given the analysis]
 ```
 

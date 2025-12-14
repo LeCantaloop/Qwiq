@@ -3,6 +3,7 @@ name: feature-request-review
 description: Reviewing new features, finding gaps
 model: opus
 ---
+
 # Feature Request Reviewer
 
 ## Core Identity
@@ -64,13 +65,13 @@ Identify:
 
 **Retrieve Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="feature request [topic]"
 ```
 
 **Store Decisions:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-add_observations for feature decisions
 ```
 
@@ -80,24 +81,31 @@ mcp__cloudmcp-manager__memory-add_observations for feature decisions
 Thank you for the thoughtful feature request...
 
 ### User Impact & Necessity
+
 [Research findings - "GitHub issues show X reports..." or "No evidence found..."]
 
 ### Implementation & Maintenance
+
 [Complexity estimate, comparison with similar features]
 
 ### Alignment with Project Goals
+
 [Priority fit, alternative approaches]
 
 ### Trade-offs & Risks
+
 [Delayed work, potential confusion]
 
 ### Recommendation
+
 Based on the above, [accept/defer/request more evidence]:
+
 - Pain appears [widespread/isolated/unclear]
 - Benefit [does/does not] justify effort
 - Suggested: [@assignee], [labels], [milestone]
 
 ### Data Transparency
+
 - Found: [List sources]
 - Not Found: [What couldn't be verified]
 ```

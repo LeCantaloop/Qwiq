@@ -16,26 +16,26 @@ Successfully installed 16 Claude Code agents from the vs-code-agents repository 
 
 ### Successes (Tag: helpful)
 
-| Strategy | Evidence | Impact | Atomicity |
-|----------|----------|--------|-----------|
-| Using git checkout to restore overwritten file | `git checkout -- CLAUDE.md` successfully restored 200+ lines of project config | 10 | 95% |
-| Creating detailed GitHub issue with reproduction steps and fix suggestion | Issue #6 accepted with suggested PowerShell fix code | 8 | 92% |
-| Running markdown linter before committing | Caught MD040 (missing language specifiers) and MD033 (inline HTML) in 22 files | 7 | 90% |
-| Committing with conventional commit format | Clean commit message with full context of 22 files added | 6 | 88% |
+| Strategy                                                                  | Evidence                                                                       | Impact | Atomicity |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------ | --------- |
+| Using git checkout to restore overwritten file                            | `git checkout -- CLAUDE.md` successfully restored 200+ lines of project config | 10     | 95%       |
+| Creating detailed GitHub issue with reproduction steps and fix suggestion | Issue #6 accepted with suggested PowerShell fix code                           | 8      | 92%       |
+| Running markdown linter before committing                                 | Caught MD040 (missing language specifiers) and MD033 (inline HTML) in 22 files | 7      | 90%       |
+| Committing with conventional commit format                                | Clean commit message with full context of 22 files added                       | 6      | 88%       |
 
 ### Failures (Tag: harmful)
 
-| Strategy | Error Type | Root Cause | Prevention | Atomicity |
-|----------|------------|------------|------------|-----------|
-| Manual file download approach | Inefficiency | Did not check for existing installation tooling | Always check for install scripts in repos first | 93% |
-| Attempting @copilot assignment on GitHub issue | API limitation | GitHub user "copilot" does not exist as assignable user | Use comment mention instead of assignment for bot integrations | 91% |
+| Strategy                                       | Error Type     | Root Cause                                              | Prevention                                                     | Atomicity |
+| ---------------------------------------------- | -------------- | ------------------------------------------------------- | -------------------------------------------------------------- | --------- |
+| Manual file download approach                  | Inefficiency   | Did not check for existing installation tooling         | Always check for install scripts in repos first                | 93%       |
+| Attempting @copilot assignment on GitHub issue | API limitation | GitHub user "copilot" does not exist as assignable user | Use comment mention instead of assignment for bot integrations | 91%       |
 
 ### Near Misses
 
-| What Almost Failed | Recovery | Learning |
-|--------------------|----------|----------|
-| Loss of project CLAUDE.md content | Immediate git checkout recovery | Installation scripts may overwrite - always backup first |
-| Markdown lint errors blocking commit | Pre-commit linting caught issues | Run linters proactively before commit |
+| What Almost Failed                   | Recovery                         | Learning                                                 |
+| ------------------------------------ | -------------------------------- | -------------------------------------------------------- |
+| Loss of project CLAUDE.md content    | Immediate git checkout recovery  | Installation scripts may overwrite - always backup first |
+| Markdown lint errors blocking commit | Pre-commit linting caught issues | Run linters proactively before commit                    |
 
 ## Extracted Learnings
 
@@ -165,25 +165,25 @@ None
 
 ## Deduplication Check
 
-| New Skill | Most Similar Existing | Similarity | Decision |
-|-----------|----------------------|------------|----------|
-| Skill-Workflow-001 | None found | 0% | Add as new |
-| Skill-Git-001 | None found | 0% | Add as new |
-| Skill-GitHub-001 | None found | 0% | Add as new |
-| Skill-Lint-001 | None found | 0% | Add as new |
-| Skill-Install-001 | None found | 0% | Add as new |
-| Skill-Issue-001 | None found | 0% | Add as new |
+| New Skill          | Most Similar Existing | Similarity | Decision   |
+| ------------------ | --------------------- | ---------- | ---------- |
+| Skill-Workflow-001 | None found            | 0%         | Add as new |
+| Skill-Git-001      | None found            | 0%         | Add as new |
+| Skill-GitHub-001   | None found            | 0%         | Add as new |
+| Skill-Lint-001     | None found            | 0%         | Add as new |
+| Skill-Install-001  | None found            | 0%         | Add as new |
+| Skill-Issue-001    | None found            | 0%         | Add as new |
 
 ## Session Statistics
 
-| Metric | Value |
-|--------|-------|
-| Files committed | 22 |
-| Agent files added | 16 |
-| Directory placeholders | 6 |
-| Markdown lint fixes | 30+ |
-| GitHub issues created | 1 |
-| Recovery operations | 1 (git checkout) |
+| Metric                 | Value            |
+| ---------------------- | ---------------- |
+| Files committed        | 22               |
+| Agent files added      | 16               |
+| Directory placeholders | 6                |
+| Markdown lint fixes    | 30+              |
+| GitHub issues created  | 1                |
+| Recovery operations    | 1 (git checkout) |
 
 ## Action Items
 
@@ -194,7 +194,7 @@ None
 
 ## Handoff
 
-| Target | Purpose |
-|--------|---------|
-| **skillbook** | Store the 6 new skills extracted |
-| **memory** | Persist learnings for cross-session access |
+| Target        | Purpose                                    |
+| ------------- | ------------------------------------------ |
+| **skillbook** | Store the 6 new skills extracted           |
+| **memory**    | Persist learnings for cross-session access |

@@ -43,13 +43,13 @@ Provide unfiltered feedback that challenges unsupported claims. Be the voice tha
 
 ### Retrieval
 
-```
+```text
 cloudmcp-manager/memory-search_nodes with query="independent analysis [topic]"
 ```
 
 ### Storage
 
-```
+```text
 cloudmcp-manager/memory-create_entities for alternative viewpoints
 cloudmcp-manager/memory-add_observations for assumption challenges
 ```

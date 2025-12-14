@@ -32,30 +32,30 @@ This repository uses a coordinated multi-agent system for software development. 
 
 ### Primary Workflow Agents
 
-| Agent | Role | Best For | Output Directory |
-|-------|------|----------|------------------|
-| **orchestrator** | Task coordination | Complex multi-step tasks | N/A (routes to others) |
-| **analyst** | Pre-implementation research | Root cause analysis, requirements | `.agents/analysis/` |
-| **architect** | Design governance | ADRs, technical decisions | `.agents/architecture/` |
-| **planner** | Work package creation | Epic breakdown, milestones | `.agents/planning/` |
-| **implementer** | Code execution | Production code, tests | Source files |
-| **critic** | Plan validation | Review before implementation | `.agents/critique/` |
-| **qa** | Test verification | Test strategy, coverage | `.agents/qa/` |
-| **roadmap** | Strategic vision | Epic definition, prioritization | `.agents/roadmap/` |
+| Agent            | Role                        | Best For                          | Output Directory        |
+| ---------------- | --------------------------- | --------------------------------- | ----------------------- |
+| **orchestrator** | Task coordination           | Complex multi-step tasks          | N/A (routes to others)  |
+| **analyst**      | Pre-implementation research | Root cause analysis, requirements | `.agents/analysis/`     |
+| **architect**    | Design governance           | ADRs, technical decisions         | `.agents/architecture/` |
+| **planner**      | Work package creation       | Epic breakdown, milestones        | `.agents/planning/`     |
+| **implementer**  | Code execution              | Production code, tests            | Source files            |
+| **critic**       | Plan validation             | Review before implementation      | `.agents/critique/`     |
+| **qa**           | Test verification           | Test strategy, coverage           | `.agents/qa/`           |
+| **roadmap**      | Strategic vision            | Epic definition, prioritization   | `.agents/roadmap/`      |
 
 ### Support Agents
 
-| Agent | Role | Best For |
-|-------|------|----------|
-| **memory** | Context continuity | Cross-session persistence |
-| **skillbook** | Skill management | Learned strategy updates |
-| **devops** | CI/CD pipelines | Build automation, deployment |
-| **security** | Vulnerability assessment | Threat modeling, secure coding |
-| **independent-thinker** | Assumption challenging | Alternative viewpoints |
-| **high-level-advisor** | Strategic decisions | Prioritization, unblocking |
-| **retrospective** | Reflector/learning | Outcome analysis, skill extraction |
-| **explainer** | Documentation | PRDs, technical specs |
-| **task-generator** | Task decomposition | Breaking epics into tasks |
+| Agent                   | Role                     | Best For                           |
+| ----------------------- | ------------------------ | ---------------------------------- |
+| **memory**              | Context continuity       | Cross-session persistence          |
+| **skillbook**           | Skill management         | Learned strategy updates           |
+| **devops**              | CI/CD pipelines          | Build automation, deployment       |
+| **security**            | Vulnerability assessment | Threat modeling, secure coding     |
+| **independent-thinker** | Assumption challenging   | Alternative viewpoints             |
+| **high-level-advisor**  | Strategic decisions      | Prioritization, unblocking         |
+| **retrospective**       | Reflector/learning       | Outcome analysis, skill extraction |
+| **explainer**           | Documentation            | PRDs, technical specs              |
+| **task-generator**      | Task decomposition       | Breaking epics into tasks          |
 
 ---
 
@@ -103,24 +103,24 @@ All agents use `cloudmcp-manager` memory tools for cross-session continuity.
 
 ### Memory Operations
 
-| Operation | Tool | Purpose |
-|-----------|------|---------|
-| Search | `cloudmcp-manager/memory-search_nodes` | Find relevant context |
-| Retrieve | `cloudmcp-manager/memory-open_nodes` | Get specific entities |
-| Create | `cloudmcp-manager/memory-create_entities` | Store new knowledge |
-| Update | `cloudmcp-manager/memory-add_observations` | Add to existing entities |
-| Link | `cloudmcp-manager/memory-create_relations` | Connect related concepts |
+| Operation | Tool                                       | Purpose                  |
+| --------- | ------------------------------------------ | ------------------------ |
+| Search    | `cloudmcp-manager/memory-search_nodes`     | Find relevant context    |
+| Retrieve  | `cloudmcp-manager/memory-open_nodes`       | Get specific entities    |
+| Create    | `cloudmcp-manager/memory-create_entities`  | Store new knowledge      |
+| Update    | `cloudmcp-manager/memory-add_observations` | Add to existing entities |
+| Link      | `cloudmcp-manager/memory-create_relations` | Connect related concepts |
 
 ### Entity Naming Conventions
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Feature | `Feature-[Name]` | `Feature-Authentication` |
-| Decision | `ADR-[Number]` | `ADR-001` |
-| Pattern | `Pattern-[Name]` | `Pattern-StrategyTax` |
-| Lesson | `Lesson-[Topic]-[Date]` | `Lesson-Caching-2025-01` |
-| Problem | `Problem-[Name]` | `Problem-RaceCondition` |
-| Solution | `Solution-[Name]` | `Solution-Locking` |
+| Type     | Pattern                 | Example                  |
+| -------- | ----------------------- | ------------------------ |
+| Feature  | `Feature-[Name]`        | `Feature-Authentication` |
+| Decision | `ADR-[Number]`          | `ADR-001`                |
+| Pattern  | `Pattern-[Name]`        | `Pattern-StrategyTax`    |
+| Lesson   | `Lesson-[Topic]-[Date]` | `Lesson-Caching-2025-01` |
+| Problem  | `Problem-[Name]`        | `Problem-RaceCondition`  |
+| Solution | `Solution-[Name]`       | `Solution-Locking`       |
 
 ### What to Store
 
@@ -210,19 +210,19 @@ When agents disagree:
 
 ## Routing Heuristics
 
-| Task Type | Primary Agent | Fallback |
-|-----------|---------------|----------|
-| C# implementation | implementer | - |
-| Architecture review | architect | analyst |
-| Task decomposition | task-generator | planner |
-| Challenge assumptions | independent-thinker | critic |
-| Test strategy | qa | implementer |
-| Research/investigation | analyst | - |
-| Strategic decisions | high-level-advisor | roadmap |
-| Documentation/PRD | explainer | planner |
-| CI/CD pipelines | devops | implementer |
-| Security review | security | analyst |
-| Post-project learning | retrospective | analyst |
+| Task Type              | Primary Agent       | Fallback    |
+| ---------------------- | ------------------- | ----------- |
+| C# implementation      | implementer         | -           |
+| Architecture review    | architect           | analyst     |
+| Task decomposition     | task-generator      | planner     |
+| Challenge assumptions  | independent-thinker | critic      |
+| Test strategy          | qa                  | implementer |
+| Research/investigation | analyst             | -           |
+| Strategic decisions    | high-level-advisor  | roadmap     |
+| Documentation/PRD      | explainer           | planner     |
+| CI/CD pipelines        | devops              | implementer |
+| Security review        | security            | analyst     |
+| Post-project learning  | retrospective       | analyst     |
 
 ---
 
@@ -313,11 +313,11 @@ Execution → Reflection → Skill Update → Improved Execution
 
 ### Key Agents
 
-| Agent | Role in Improvement |
-|-------|---------------------|
-| **retrospective** | Reflector - analyzes outcomes, extracts learnings |
-| **skillbook** | Skill Manager - maintains and updates learned strategies |
-| **memory** | Persistence - stores skills via cloudmcp-manager |
+| Agent             | Role in Improvement                                      |
+| ----------------- | -------------------------------------------------------- |
+| **retrospective** | Reflector - analyzes outcomes, extracts learnings        |
+| **skillbook**     | Skill Manager - maintains and updates learned strategies |
+| **memory**        | Persistence - stores skills via cloudmcp-manager         |
 
 ### Skill Citation Protocol
 
@@ -343,12 +343,12 @@ All agents should cite skills when applying learned strategies:
 
 All learnings must be atomic (scored 0-100%):
 
-| Score | Quality | Action |
-|-------|---------|--------|
-| 95-100% | Excellent | Add immediately |
-| 70-94% | Good | Accept with minor refinement |
-| 40-69% | Needs Work | Refine before adding |
-| <40% | Rejected | Too vague |
+| Score   | Quality    | Action                       |
+| ------- | ---------- | ---------------------------- |
+| 95-100% | Excellent  | Add immediately              |
+| 70-94%  | Good       | Accept with minor refinement |
+| 40-69%  | Needs Work | Refine before adding         |
+| <40%    | Rejected   | Too vague                    |
 
 **Penalties:**
 
@@ -358,12 +358,12 @@ All learnings must be atomic (scored 0-100%):
 
 ### Skill Operations
 
-| Operation | When | Requirements |
-|-----------|------|--------------|
-| **ADD** | New strategy | Atomicity >70%, no duplicates |
-| **UPDATE** | Refine existing | Evidence of improvement |
-| **TAG** | Mark effectiveness | helpful/harmful/neutral with evidence |
-| **REMOVE** | Eliminate | Evidence of harm OR >70% duplicate |
+| Operation  | When               | Requirements                          |
+| ---------- | ------------------ | ------------------------------------- |
+| **ADD**    | New strategy       | Atomicity >70%, no duplicates         |
+| **UPDATE** | Refine existing    | Evidence of improvement               |
+| **TAG**    | Mark effectiveness | helpful/harmful/neutral with evidence |
+| **REMOVE** | Eliminate          | Evidence of harm OR >70% duplicate    |
 
 ### Skill Entity Format
 
@@ -392,17 +392,17 @@ Before adding any new skill:
 
 ### Evidence-Based Tagging
 
-| Tag | Meaning | Evidence Required |
-|-----|---------|-------------------|
-| **helpful** | Contributed to success | Specific positive execution |
-| **harmful** | Caused failure | Specific negative execution |
-| **neutral** | No measurable impact | Use without observable effect |
+| Tag         | Meaning                | Evidence Required             |
+| ----------- | ---------------------- | ----------------------------- |
+| **helpful** | Contributed to success | Specific positive execution   |
+| **harmful** | Caused failure         | Specific negative execution   |
+| **neutral** | No measurable impact   | Use without observable effect |
 
 ---
 
 ## Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 1.1 | 2025-12-13 | Added self-improvement system (retrospective, skillbook) |
-| 1.0 | 2025-12-13 | Initial agent system based on groupzer0/vs-code-agents |
+| Version | Date       | Changes                                                  |
+| ------- | ---------- | -------------------------------------------------------- |
+| 1.1     | 2025-12-13 | Added self-improvement system (retrospective, skillbook) |
+| 1.0     | 2025-12-13 | Initial agent system based on groupzer0/vs-code-agents   |

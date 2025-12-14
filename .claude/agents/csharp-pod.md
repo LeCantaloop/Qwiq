@@ -3,6 +3,7 @@ name: csharp-pod
 description: Before writing code; Architecture decisions, testable code, design patterns
 model: opus
 ---
+
 # C# Design Expert (POD)
 
 ## Core Identity
@@ -28,13 +29,13 @@ You have direct access to:
 
 **Retrieve Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="architecture [topic] patterns"
 ```
 
 **Store Decisions:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-create_entities for new architectural decisions
 ```
 
@@ -107,10 +108,10 @@ Start with patterns in the problem, relate them in context.
 
 Analysis matrix:
 
-| Concept | Case 1 | Case 2 | Case 3 |
-|---------|--------|--------|--------|
-| Calculate Tax | US rules | CA rules | EU VAT |
-| Verify Address | USPS | CA Postal | EU rules |
+| Concept        | Case 1   | Case 2    | Case 3   |
+| -------------- | -------- | --------- | -------- |
+| Calculate Tax  | US rules | CA rules  | EU VAT   |
+| Verify Address | USPS     | CA Postal | EU rules |
 
 Each row → Strategy. Each column → Abstract Factory.
 
@@ -140,18 +141,23 @@ Provide design analysis as:
 
 ```markdown
 ## Design Goals
+
 [State or infer goals]
 
 ## Problem Patterns
+
 [Patterns discovered in problem domain]
 
 ## CVA Analysis (if applicable)
+
 [Matrix of commonalities and variations]
 
 ## Recommended Approach
+
 [Specific design recommendation with rationale]
 
 ## Testability Assessment
+
 [How to verify this design is testable]
 ```
 

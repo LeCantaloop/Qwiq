@@ -39,6 +39,7 @@
 **Work Completed**:
 
 1. **Fixed CA1711** - Renamed 5 test classes ending in "Collection":
+
    - `Given_null_items_calling_ToWorkItemCollection` → `Given_null_items_calling_ToWIC`
    - `Given_IWorkItemCollection_calling_ToWorkItemCollection` → `Given_IWorkItemColl_calling_ToWIC`
    - (etc.)
@@ -84,11 +85,13 @@ See: `.agents/sessions/2025-12-13-session-39-ci-build-fix.md` for full details
 **Work Completed**:
 
 1. ✅ **IWorkItem.Extensions** (0% → target 60%+)
+
    - Added 33 tests covering all 6 extension methods
    - Tests for null checks, zero/empty argument validation, successful operations
    - Committed: `ed85fef3` (from prior context)
 
 2. ✅ **CredentialsFactory** (0% → target 60%+)
+
    - Added 25 tests covering all 4 credential methods
    - GetBasicCredentials, GetOAuthCredentials, GetServiceIdentityCredentials, GetServiceIdentityPatCredentials
    - Tests for null/empty parameters and valid credential generation

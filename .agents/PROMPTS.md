@@ -32,8 +32,8 @@
 
 The modernization TODO was split into multiple files for AI agent readability:
 
-| File                                               | Content                     |
-| -------------------------------------------------- | --------------------------- |
+| File                                                        | Content                     |
+| ----------------------------------------------------------- | --------------------------- |
 | [modernize-TODO-index.md](planning/modernize-TODO-index.md) | Index, metrics, session log |
 | [modernize-wave1.md](planning/modernize-wave1.md)           | Wave 0 + Wave 1 tasks       |
 | [modernize-wave2.md](planning/modernize-wave2.md)           | Wave 2 tasks                |
@@ -1118,7 +1118,7 @@ Read the contents of the `.agents` directory before starting work:
 1. Create session log: `.agents/sessions/YYYY-MM-DD-session-NN.md`
 2. Complete pre-flight checklist from AGENT-INSTRUCTIONS.md
 3. Work incrementally with small, conventional commits
-4. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave*.md files as completed
+4. Check off tasks in planning/modernize-TODO-index.md and related planning/modernize-wave\*.md files as completed
 5. Update session log with decisions and challenges
 
 ## Build Commands

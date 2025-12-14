@@ -16,15 +16,15 @@ This repository uses a coordinated multi-agent system. See `AGENT-SYSTEM.md` for
 
 **Quick Reference - Common Agents:**
 
-| Agent | Use When |
-|-------|----------|
-| `orchestrator` | Complex multi-step tasks |
-| `implementer` | Writing C# code and tests |
-| `analyst` | Research and investigation |
-| `architect` | Design decisions and ADRs |
-| `planner` | Breaking down work |
-| `critic` | Validating plans before implementation |
-| `qa` | Test strategy and verification |
+| Agent          | Use When                               |
+| -------------- | -------------------------------------- |
+| `orchestrator` | Complex multi-step tasks               |
+| `implementer`  | Writing C# code and tests              |
+| `analyst`      | Research and investigation             |
+| `architect`    | Design decisions and ADRs              |
+| `planner`      | Breaking down work                     |
+| `critic`       | Validating plans before implementation |
+| `qa`           | Test strategy and verification         |
 
 ---
 
@@ -47,16 +47,16 @@ Before starting work, complete these steps IN ORDER:
 
 ## Document Hierarchy
 
-| Document                  | Purpose                             | When to Update                   |
-| ------------------------- | ----------------------------------- | -------------------------------- |
-| `AGENT-INSTRUCTIONS.md`   | How to execute work (this file)     | Rarely - only if process changes |
+| Document                           | Purpose                             | When to Update                   |
+| ---------------------------------- | ----------------------------------- | -------------------------------- |
+| `AGENT-INSTRUCTIONS.md`            | How to execute work (this file)     | Rarely - only if process changes |
 | `planning/modernize-TODO-index.md` | Overview, metrics, session log      | After EVERY session              |
 | `planning/modernize-wave1.md`      | Wave 0-1 task tracking              | After Wave 0-1 task completion   |
 | `planning/modernize-wave2.md`      | Wave 2 task tracking                | After Wave 2 task completion     |
 | `planning/modernize-wave3-5.md`    | Waves 3-5 task tracking             | After Wave 3-5 task completion   |
 | `planning/modernize-explainer.md`  | Architecture, decisions, rationale  | When design decisions are made   |
-| `HANDOFF.md`              | Session-to-session context transfer | At END of every session          |
-| `sessions/*.md`           | Detailed session logs               | Throughout session               |
+| `HANDOFF.md`                       | Session-to-session context transfer | At END of every session          |
+| `sessions/*.md`                    | Detailed session logs               | Throughout session               |
 
 ---
 
@@ -174,6 +174,51 @@ Document the WorkItemStoreFactory design decision including:
 
 Refs: W2.5
 ```
+
+---
+
+## Markdown Formatting Standards
+
+**CRITICAL**: All markdown files must pass linting. The pre-commit hook auto-fixes most issues, but some require manual attention.
+
+### Code Block Language Identifiers (MD040)
+
+**ALWAYS** add a language identifier to code blocks:
+
+```markdown
+<!-- ❌ WRONG - triggers MD040 -->
+` ` `
+some code
+` ` `
+
+<!-- ✅ CORRECT -->
+` ` `text
+some code
+` ` `
+```
+
+Common language identifiers:
+
+| Content Type | Language ID |
+|--------------|-------------|
+| C# code | `csharp` |
+| PowerShell/shell commands | `powershell` or `bash` |
+| JSON/JSON-like | `json` |
+| Markdown templates | `markdown` |
+| Plain text, pseudo-code, diagrams | `text` |
+| Tool calls (cloudmcp-manager) | `text` |
+| Workflow diagrams (→ arrows) | `text` |
+
+### Pre-commit Hook
+
+The repository has a pre-commit hook that auto-fixes linting issues. It will:
+
+1. Auto-fix markdown with `markdownlint-cli2 --fix`
+2. Auto-fix C# with `dotnet format`
+3. Auto-fix JSON/YAML with `dotnet pprettier --write`
+4. Re-stage corrected files automatically
+
+If issues can't be auto-fixed (like missing language identifiers), the commit will fail with instructions.
 
 ---
 
@@ -448,6 +493,184 @@ dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseShared
 
 ---
 
+## Recommended Agent Workflows
+
+> **Note**: The retrospective analysis (2025-12-13) identified several underutilized agents. Use these workflows to maximize agent effectiveness.
+
+### Full Feature Development (Recommended)
+
+Use this workflow for any non-trivial feature to ensure quality and documentation:
+
+```text
+analyst → architect → planner → critic → csharp-expert → qa → retrospective
+```
+
+| Step | Agent | Purpose | Output |
+|------|-------|---------|--------|
+| 1 | `analyst` | Research existing code, gather requirements | `.agents/analysis/` |
+| 2 | `architect` | Design decision, create ADR if needed | `.agents/architecture/` |
+| 3 | `planner` | Break down into tasks with acceptance criteria | `.agents/planning/` |
+| 4 | `critic` | **Validate plan before implementation** | `.agents/critique/` |
+| 5 | `csharp-expert` | Implement code following the plan | Source files |
+| 6 | `qa` | Verify implementation, document test strategy | `.agents/qa/` |
+| 7 | `retrospective` | Extract learnings, update skills | `.agents/retrospective/` |
+
+### Quick Fix Workflow
+
+For small bug fixes or simple changes:
+
+```text
+csharp-expert → qa
+```
+
+### Strategic Decision Workflow
+
+For major architectural or strategic decisions:
+
+```text
+analyst → independent-thinker → high-level-advisor → architect
+```
+
+### Post-Implementation Learning
+
+After completing significant work:
+
+```text
+csharp-expert → retrospective → skillbook
+```
+
+### Plan Validation (Often Skipped - Don't Skip!)
+
+**IMPORTANT**: The `critique/` directory is currently empty. Always invoke the critic agent before implementation:
+
+```text
+Task(subagent_type="critic", prompt="Validate plan at .agents/planning/[plan-file].md")
+```
+
+The critic will:
+
+- Identify gaps in the plan
+- Challenge assumptions
+- Suggest improvements
+- Flag risks
+
+### QA Documentation (Often Skipped - Don't Skip!)
+
+**IMPORTANT**: The `qa/` directory is currently empty. Always invoke the qa agent after implementation:
+
+```text
+Task(subagent_type="qa", prompt="Create test strategy for [feature], document in .agents/qa/")
+```
+
+The QA agent will:
+
+- Define test coverage requirements
+- Document edge cases
+- Create acceptance criteria
+- Verify implementation meets requirements
+
+---
+
+## Agent Invocation Reference
+
+### Claude Code CLI
+
+```python
+# Research before implementation
+Task(subagent_type="analyst", prompt="Investigate [topic]")
+
+# Design review before coding
+Task(subagent_type="csharp-pod", prompt="Review design for [feature]")
+
+# Plan validation (REQUIRED before implementation)
+Task(subagent_type="critic", prompt="Validate plan at .agents/planning/...")
+
+# Implementation
+Task(subagent_type="csharp-expert", prompt="Implement [feature] per plan")
+
+# Test verification (REQUIRED after implementation)
+Task(subagent_type="qa", prompt="Verify [feature] and document test strategy")
+
+# Extract learnings (after significant work)
+Task(subagent_type="retrospective", prompt="Analyze session and extract learnings")
+```
+
+### Memory Operations (When Available)
+
+```python
+# READ OPERATIONS - Search for relevant context before starting
+mcp__cloudmcp-manager__memory-search_nodes(query="[topic]")
+mcp__cloudmcp-manager__memory-read_graph()
+mcp__cloudmcp-manager__memory-open_nodes(names=["entity-name"])
+
+# WRITE OPERATIONS - Store learnings at session end
+mcp__cloudmcp-manager__memory-create_entities(entities=[...])
+mcp__cloudmcp-manager__memory-add_observations(observations=[...])
+mcp__cloudmcp-manager__memory-create_relations(relations=[...])
+
+# DELETE OPERATIONS - Remove or update incorrect learnings
+mcp__cloudmcp-manager__memory-delete_entities(entityNames=[...])
+mcp__cloudmcp-manager__memory-delete_observations(deletions=[...])
+mcp__cloudmcp-manager__memory-delete_relations(relations=[...])
+```
+
+### Memory Service Fallback
+
+If cloudmcp-manager memory service is unavailable:
+
+**For READ operations** (`memory-search_nodes`, `memory-read_graph`, `memory-open_nodes`):
+
+- Use `.agents/skills/README.md` to navigate available skills
+- Open relevant skill files in `.agents/skills/[category]-skills.md`
+- Use `grep` or search to find specific skills by ID or keyword
+
+**For WRITE operations** (`memory-create_entities`, `memory-add_observations`, `memory-create_relations`):
+
+- Add new skills to appropriate file in `.agents/skills/[category]-skills.md`
+- Follow the skill format: statement, atomicity, category, context, evidence, details
+- Create new category file if needed (e.g., `performance-skills.md`)
+- Commit changes with descriptive message
+
+**For DELETE operations** (`memory-delete_entities`, `memory-delete_observations`, `memory-delete_relations`):
+
+- Edit relevant skill file in `.agents/skills/[category]-skills.md`
+- Remove or update the skill section
+- Delete entire file if all skills removed
+- Commit deletion with message: `chore(skills): remove [skill-id] - [reason]`
+
+**Example - Reading a skill:**
+
+```bash
+# Instead of:
+mcp__cloudmcp-manager__memory-search_nodes(query="CI build")
+
+# Use:
+grep -r "CI build\|ContinuousIntegrationBuild" .agents/skills/
+# Returns: .agents/skills/build-skills.md
+cat .agents/skills/build-skills.md  # Open and review
+```
+
+**Example - Adding a skill:**
+
+```bash
+# Instead of:
+mcp__cloudmcp-manager__memory-create_entities(entities=[...])
+
+# Edit the appropriate file:
+vim .agents/skills/[category]-skills.md
+
+# Add new skill following this format:
+## Skill-[Category]-NNN
+
+**Statement**: [Your skill statement]
+**Atomicity**: XX%
+**Category**: [Category]
+**Context**: [When to use]
+**Evidence**: [Where discovered]
+```
+
+---
+
 ## Critical Reminders
 
 ### DO
@@ -460,6 +683,9 @@ dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseShared
 - ✅ Use `dotnet format` after code changes
 - ✅ Update HANDOFF.md before session ends
 - ✅ Force-add `.agents/` files if needed
+- ✅ **Invoke critic agent** before major implementations
+- ✅ **Invoke qa agent** after implementations
+- ✅ **Run retrospective agent** after significant sessions
 
 ### DON'T
 
@@ -469,6 +695,8 @@ dotnet build Qwiq.sln -c Release /p:ContinuousIntegrationBuild=true /p:UseShared
 - ❌ Leave session without updating HANDOFF.md
 - ❌ Assume the next session has context you didn't document
 - ❌ Skip verification steps
+- ❌ **Skip critic validation** - empty critique/ directory is a warning sign
+- ❌ **Skip qa documentation** - empty qa/ directory is a warning sign
 
 ---
 
@@ -483,9 +711,105 @@ If something goes wrong:
 
 ---
 
+## Extracted Skills Reference
+
+> **Source**: Comprehensive retrospective analysis (2025-12-13)
+> **Status**: Skills should be stored in cloudmcp-manager memory when service is available
+
+### Build & CI Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Build-001 | Use `/p:ContinuousIntegrationBuild=true /p:UseSharedCompilation=false /m:1 /nodeReuse:false` for local builds to match CI analyzer strictness | 96% |
+| Skill-Build-002 | Set `BuildInParallel=false` and `ProduceReferenceAssembly=false` for Windows multi-framework builds | 93% |
+| Skill-CI-001 | CI should verify lint rules without auto-fix to catch commits bypassing pre-commit hooks | 95% |
+
+### Testing Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Test-001 | WireMock.Net OWIN hosting deadlocks on .NET Framework 4.7.2; use dedicated net8.0+ test project | 95% |
+| Skill-Test-002 | Capture real HTTP traffic with Fiddler system proxy for WireMock stubs; SDK bypasses WireMock Cloud recording | 91% |
+| Skill-Test-003 | IdentityDescriptor must be string format in captured stubs, not object serialization | 94% |
+
+### Code Quality Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Quality-001 | Test classes ending in "Collection" trigger CA1711; use abbreviations like "ToWIC" | 92% |
+| Skill-Quality-002 | Add `#pragma warning disable CA1001` with explanation when test cleanup handles disposal via [TestCleanup] | 90% |
+| Skill-Quality-003 | Extract inline test arrays to `static readonly` fields to satisfy CA1861 | 88% |
+
+### Strategic Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Strategic-001 | Always verify deployment scale (100+ team members vs external adoption) before declaring maintenance mode | 97% |
+| Skill-Strategic-002 | SOAP clients cannot deploy to Kubernetes (net472 Windows-only); deprecate in favor of REST | 94% |
+
+### Documentation Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Doc-001 | Split documentation files when approaching 25,000 token AI agent limit | 93% |
+| Skill-Doc-002 | Update HANDOFF.md at session end with build/test status, completed work, and next steps | 95% |
+
+### Git Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Git-001 | Use `git checkout -- [file]` to immediately restore accidentally overwritten files | 97% |
+| Skill-Git-002 | Use `git mv` for file moves to preserve history during reorganization | 91% |
+
+### Markdown Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Markdown-001 | Always add language identifier to code fences; use 'text' for pseudo-code or diagrams | 98% |
+| Skill-Markdown-002 | Generic type syntax like `ArrayPool<T>` triggers MD033; use code blocks instead | 96% |
+
+### Developer Experience Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-DevEx-001 | Pre-commit hooks should auto-fix issues then verify, failing only on unfixable errors | 97% |
+| Skill-GitHooks-001 | Auto-fix hooks must re-stage modified files with `git add` after applying fixes | 99% |
+
+### Workflow Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-Workflow-001 | Check for installation scripts in source repos before manual file operations | 95% |
+| Skill-Install-001 | Installation scripts may replace config files; backup or verify before running | 91% |
+
+### GitHub Skills
+
+| Skill ID | Statement | Atomicity |
+|----------|-----------|-----------|
+| Skill-GitHub-001 | GitHub @copilot cannot be assigned to issues; use comment mentions for bot integration | 98% |
+| Skill-Issue-001 | Include suggested fix code in bug reports to accelerate resolution | 92% |
+
+### Skill Citation Protocol
+
+When applying a skill, cite it explicitly:
+
+```markdown
+**Applying**: Skill-Build-001
+**Strategy**: Use CI build flags locally
+**Expected**: Match CI analyzer behavior
+
+[Execute command...]
+
+**Result**: Build succeeded with same warnings as CI
+**Skill Validated**: Yes
+```
+
+---
+
 ## Document Control
 
-| Version | Date       | Changes                                                    |
-| ------- | ---------- | ---------------------------------------------------------- |
-| 1.0     | 2025-12-06 | Initial agent instructions                                 |
-| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands   |
+| Version | Date       | Changes                                                  |
+| ------- | ---------- | -------------------------------------------------------- |
+| 1.0     | 2025-12-06 | Initial agent instructions                               |
+| 1.1     | 2025-12-13 | Added Lessons Learned section; updated CI build commands |
+| 1.2     | 2025-12-13 | Added Recommended Agent Workflows and Extracted Skills Reference |

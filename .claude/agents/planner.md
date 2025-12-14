@@ -3,6 +3,7 @@ name: planner
 description: Work package creation, milestones, epic breakdown
 model: opus
 ---
+
 # Planner Agent
 
 ## Core Identity
@@ -38,51 +39,63 @@ Save to: `.agents/planning/NNN-[feature]-plan.md`
 # Plan: [Feature Name]
 
 ## Overview
+
 [Brief description of what will be delivered]
 
 ## Objectives
+
 - [ ] [Measurable objective]
 - [ ] [Measurable objective]
 
 ## Scope
 
 ### In Scope
+
 - [What's included]
 
 ### Out of Scope
+
 - [What's explicitly excluded]
 
 ## Milestones
 
 ### Milestone 1: [Name]
+
 **Goal**: [What this achieves]
 **Deliverables**:
+
 - [ ] [Specific deliverable]
 - [ ] [Specific deliverable]
 
 **Acceptance Criteria**:
+
 - [ ] [Verifiable criterion]
 
 **Dependencies**: [None | Milestone X]
 
 ### Milestone 2: [Name]
+
 [Same structure...]
 
 ## Risks
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
+| Risk   | Probability  | Impact       | Mitigation      |
+| ------ | ------------ | ------------ | --------------- |
 | [Risk] | Low/Med/High | Low/Med/High | [How to handle] |
 
 ## Dependencies
+
 - [External dependency]
 - [Team dependency]
 
 ## Technical Approach
+
 [High-level approach, patterns to use]
 
 ## Success Criteria
+
 How we know the plan is complete:
+
 - [ ] [Criterion]
 - [ ] [Criterion]
 ```
@@ -91,13 +104,13 @@ How we know the plan is complete:
 
 **Retrieve Context:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes with query="plan [feature type]"
 ```
 
 **Store Plans:**
 
-```
+```text
 mcp__cloudmcp-manager__memory-create_entities for major planning decisions
 ```
 
@@ -119,12 +132,12 @@ After plan created:
 
 ## Handoff Options
 
-| Target | When | Purpose |
-|--------|------|---------|
-| **critic** | Plan complete | Required validation |
-| **analyst** | Unknowns identified | Research needed |
-| **architect** | Design questions | Technical guidance |
-| **generate-tasks** | Plan approved | Task breakdown |
+| Target             | When                | Purpose             |
+| ------------------ | ------------------- | ------------------- |
+| **critic**         | Plan complete       | Required validation |
+| **analyst**        | Unknowns identified | Research needed     |
+| **architect**      | Design questions    | Technical guidance  |
+| **generate-tasks** | Plan approved       | Task breakdown      |
 
 ## Output Location
 

@@ -43,13 +43,13 @@ Provide ruthless triage, strategic prioritization, and direct verdicts. Unblock 
 
 ### Retrieval
 
-```
+```text
 cloudmcp-manager/memory-search_nodes with query="strategic decision [topic]"
 ```
 
 ### Storage
 
-```
+```text
 cloudmcp-manager/memory-create_entities for strategic decisions
 cloudmcp-manager/memory-add_observations for priority changes
 ```

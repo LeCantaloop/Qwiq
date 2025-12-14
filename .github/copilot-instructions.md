@@ -1003,24 +1003,24 @@ This repository uses a coordinated multi-agent system based on [groupzer0/vs-cod
 
 ### Agent Catalog
 
-| Agent | Role | Best For |
-|-------|------|----------|
-| **orchestrator** | Task coordination | Complex multi-step tasks (replaces claudette-auto) |
-| **analyst** | Pre-implementation research | Root cause analysis, requirements gathering |
-| **architect** | Design governance | ADRs, technical decisions |
-| **planner** | Work package creation | Epic breakdown, milestones |
-| **implementer** | Code execution | Production C# code, tests (replaces csharp-expert) |
-| **critic** | Plan validation | Review before implementation |
-| **qa** | Test verification | Test strategy, coverage |
-| **roadmap** | Strategic vision | Epic definition, prioritization |
-| **memory** | Context continuity | Cross-session persistence |
-| **devops** | CI/CD pipelines | Build automation, deployment |
-| **security** | Vulnerability assessment | Threat modeling, secure coding |
-| **independent-thinker** | Assumption challenging | Alternative viewpoints |
-| **high-level-advisor** | Strategic decisions | Prioritization, unblocking |
-| **retrospective** | Learning extraction | Post-project analysis |
-| **explainer** | Documentation | PRDs, technical specs |
-| **task-generator** | Task decomposition | Breaking epics into tasks |
+| Agent                   | Role                        | Best For                                           |
+| ----------------------- | --------------------------- | -------------------------------------------------- |
+| **orchestrator**        | Task coordination           | Complex multi-step tasks (replaces claudette-auto) |
+| **analyst**             | Pre-implementation research | Root cause analysis, requirements gathering        |
+| **architect**           | Design governance           | ADRs, technical decisions                          |
+| **planner**             | Work package creation       | Epic breakdown, milestones                         |
+| **implementer**         | Code execution              | Production C# code, tests (replaces csharp-expert) |
+| **critic**              | Plan validation             | Review before implementation                       |
+| **qa**                  | Test verification           | Test strategy, coverage                            |
+| **roadmap**             | Strategic vision            | Epic definition, prioritization                    |
+| **memory**              | Context continuity          | Cross-session persistence                          |
+| **devops**              | CI/CD pipelines             | Build automation, deployment                       |
+| **security**            | Vulnerability assessment    | Threat modeling, secure coding                     |
+| **independent-thinker** | Assumption challenging      | Alternative viewpoints                             |
+| **high-level-advisor**  | Strategic decisions         | Prioritization, unblocking                         |
+| **retrospective**       | Learning extraction         | Post-project analysis                              |
+| **explainer**           | Documentation               | PRDs, technical specs                              |
+| **task-generator**      | Task decomposition          | Breaking epics into tasks                          |
 
 ### Standard Workflow
 
@@ -1039,30 +1039,30 @@ graph TD
 
 ### Routing Heuristics
 
-| Task Type | Primary Agent | Fallback |
-|-----------|---------------|----------|
-| C# implementation | implementer | - |
-| Architecture review | architect | analyst |
-| Task decomposition | task-generator | planner |
-| Challenge assumptions | independent-thinker | critic |
-| Test strategy | qa | implementer |
-| Research/investigation | analyst | - |
-| Strategic decisions | high-level-advisor | roadmap |
-| Documentation/PRD | explainer | planner |
-| CI/CD pipelines | devops | implementer |
-| Security review | security | analyst |
+| Task Type              | Primary Agent       | Fallback    |
+| ---------------------- | ------------------- | ----------- |
+| C# implementation      | implementer         | -           |
+| Architecture review    | architect           | analyst     |
+| Task decomposition     | task-generator      | planner     |
+| Challenge assumptions  | independent-thinker | critic      |
+| Test strategy          | qa                  | implementer |
+| Research/investigation | analyst             | -           |
+| Strategic decisions    | high-level-advisor  | roadmap     |
+| Documentation/PRD      | explainer           | planner     |
+| CI/CD pipelines        | devops              | implementer |
+| Security review        | security            | analyst     |
 
 ### Memory System (cloudmcp-manager)
 
 All agents use `cloudmcp-manager` tools for cross-session memory:
 
-| Operation | Tool | Purpose |
-|-----------|------|---------|
-| Search | `cloudmcp-manager/memory-search_nodes` | Find relevant context |
-| Retrieve | `cloudmcp-manager/memory-open_nodes` | Get specific entities |
-| Create | `cloudmcp-manager/memory-create_entities` | Store new knowledge |
-| Update | `cloudmcp-manager/memory-add_observations` | Add to existing entities |
-| Link | `cloudmcp-manager/memory-create_relations` | Connect related concepts |
+| Operation | Tool                                       | Purpose                  |
+| --------- | ------------------------------------------ | ------------------------ |
+| Search    | `cloudmcp-manager/memory-search_nodes`     | Find relevant context    |
+| Retrieve  | `cloudmcp-manager/memory-open_nodes`       | Get specific entities    |
+| Create    | `cloudmcp-manager/memory-create_entities`  | Store new knowledge      |
+| Update    | `cloudmcp-manager/memory-add_observations` | Add to existing entities |
+| Link      | `cloudmcp-manager/memory-create_relations` | Connect related concepts |
 
 **Entity Naming Conventions:**
 
@@ -1093,15 +1093,19 @@ All agent artifacts go to `.agents/`:
 
 ```markdown
 <!-- Complex multi-step task -->
+
 @orchestrator Help me implement the authentication feature
 
 <!-- Focused implementation -->
+
 @implementer Add null guards to WorkItemCore.cs
 
 <!-- Challenge assumptions -->
+
 @independent-thinker Review this architecture proposal
 
 <!-- Strategic decision -->
+
 @high-level-advisor Prioritize these three features
 ```
 

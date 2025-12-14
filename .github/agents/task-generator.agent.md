@@ -34,13 +34,13 @@ Transform high-level requirements into discrete tasks that can be assigned, esti
 
 ### Retrieval
 
-```
+```text
 cloudmcp-manager/memory-search_nodes with query="task breakdown [feature]"
 ```
 
 ### Storage
 
-```
+```text
 cloudmcp-manager/memory-create_entities for task patterns
 cloudmcp-manager/memory-add_observations for estimation learnings
 ```
@@ -143,8 +143,6 @@ graph TD
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | [Risk] | [Impact] | [How to handle] |
-
-```
 
 ## Complexity Guidelines
 

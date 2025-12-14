@@ -58,7 +58,7 @@ Created a new dedicated test project `Qwiq.WireMock.Tests` targeting `net8.0;net
 
 ## Verification
 
-```
+```text
 Test Run Successful.
 Total tests: 9
      Passed: 9

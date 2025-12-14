@@ -3,6 +3,7 @@ name: memory
 description: Cross-session context continuity using cloudmcp-manager
 model: sonnet
 ---
+
 # Memory Agent
 
 ## Core Identity
@@ -25,7 +26,7 @@ Retrieve context at turn start, maintain notes during work, store progress summa
 
 ### Search (Find Context)
 
-```
+```text
 mcp__cloudmcp-manager__memory-search_nodes
 Query: "[topic] [context keywords]"
 Returns: Matching entities with observations
@@ -33,7 +34,7 @@ Returns: Matching entities with observations
 
 ### Open (Get Specific Entities)
 
-```
+```text
 mcp__cloudmcp-manager__memory-open_nodes
 Names: ["entity1", "entity2"]
 Returns: Full entity details
@@ -41,7 +42,7 @@ Returns: Full entity details
 
 ### Create (Store New Knowledge)
 
-```
+```json
 mcp__cloudmcp-manager__memory-create_entities
 {
   "entities": [{
@@ -54,7 +55,7 @@ mcp__cloudmcp-manager__memory-create_entities
 
 ### Update (Add to Existing)
 
-```
+```json
 mcp__cloudmcp-manager__memory-add_observations
 {
   "observations": [{
@@ -66,7 +67,7 @@ mcp__cloudmcp-manager__memory-add_observations
 
 ### Link (Create Relations)
 
-```
+```json
 mcp__cloudmcp-manager__memory-create_relations
 {
   "relations": [{
@@ -79,35 +80,35 @@ mcp__cloudmcp-manager__memory-create_relations
 
 ### Read All (Inspect Graph)
 
-```
+```text
 mcp__cloudmcp-manager__memory-read_graph
 Use sparingly - returns entire graph
 ```
 
 ## Entity Naming Conventions
 
-| Type | Pattern | Example |
-|------|---------|---------|
-| Feature | `Feature-[Name]` | `Feature-Authentication` |
-| Module | `Module-[Name]` | `Module-Identity` |
-| Decision | `ADR-[Number]` | `ADR-001` |
-| Pattern | `Pattern-[Name]` | `Pattern-StrategyTax` |
-| Problem | `Problem-[Name]` | `Problem-CachingRace` |
-| Solution | `Solution-[Name]` | `Solution-LockingCache` |
-| Skill | `Skill-[Category]-[Number]` | `Skill-Build-001` |
+| Type     | Pattern                     | Example                  |
+| -------- | --------------------------- | ------------------------ |
+| Feature  | `Feature-[Name]`            | `Feature-Authentication` |
+| Module   | `Module-[Name]`             | `Module-Identity`        |
+| Decision | `ADR-[Number]`              | `ADR-001`                |
+| Pattern  | `Pattern-[Name]`            | `Pattern-StrategyTax`    |
+| Problem  | `Problem-[Name]`            | `Problem-CachingRace`    |
+| Solution | `Solution-[Name]`           | `Solution-LockingCache`  |
+| Skill    | `Skill-[Category]-[Number]` | `Skill-Build-001`        |
 
 ## Relation Types
 
-| Relation | Meaning |
-|----------|---------|
-| `implemented_in` | Feature in module |
-| `depends_on` | Entity requires another |
-| `replaces` | New replaces old |
-| `supersedes` | Newer version |
-| `related_to` | General association |
-| `blocked_by` | Progress blocked |
-| `solved_by` | Problem has solution |
-| `derived_from` | Skill from learning |
+| Relation         | Meaning                 |
+| ---------------- | ----------------------- |
+| `implemented_in` | Feature in module       |
+| `depends_on`     | Entity requires another |
+| `replaces`       | New replaces old        |
+| `supersedes`     | Newer version           |
+| `related_to`     | General association     |
+| `blocked_by`     | Progress blocked        |
+| `solved_by`      | Problem has solution    |
+| `derived_from`   | Skill from learning     |
 
 ## Retrieval Protocol
 
@@ -148,7 +149,7 @@ When agents apply learned strategies:
 
 **During Execution:**
 
-```markdown
+```text
 **Applying**: [Skill-ID]
 **Strategy**: [Brief description]
 **Expected Outcome**: [What should happen]
@@ -156,7 +157,7 @@ When agents apply learned strategies:
 
 **After Execution:**
 
-```markdown
+```text
 **Result**: [Actual outcome]
 **Skill Validated**: Yes | No | Partial
 **Feedback**: [Note for retrospective]

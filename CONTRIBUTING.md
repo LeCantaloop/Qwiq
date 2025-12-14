@@ -46,11 +46,11 @@ dotnet test Qwiq.sln -c Release --filter "TestCategory!=localOnly&TestCategory!=
 
 ## Git Hooks
 
-This repository uses pre-commit hooks to enforce code quality before commits. The hooks check:
+This repository uses pre-commit hooks that **automatically fix** linting issues before commits:
 
-- **Markdown files** - Linted with `markdownlint-cli2`
-- **C# files** - Formatted with `dotnet format`
-- **JSON/YAML files** - Formatted with `pprettier`
+- **Markdown files** - Auto-fixed with `markdownlint-cli2 --fix`
+- **C# files** - Auto-fixed with `dotnet format`
+- **JSON/YAML files** - Auto-fixed with `dotnet pprettier --write`
 
 ### Enable Git Hooks
 
@@ -62,24 +62,50 @@ git config core.hooksPath .githooks
 
 ### How It Works
 
-The pre-commit hook runs automatically when you `git commit`. It only checks **staged files**, so commits remain fast.
+The pre-commit hook runs automatically when you `git commit`:
 
-If any linter fails, the commit is blocked with actionable error messages:
+1. **Detects** staged files by extension (.md, .cs, .json, .yaml)
+2. **Auto-fixes** formatting issues in place
+3. **Re-stages** corrected files automatically
+4. **Verifies** all files pass linting
+5. **Commits** if everything passes
+
+Example output:
 
 ```text
-ERROR: Markdown linting failed.
-  Fix with: npx markdownlint-cli2 --fix "**/*.md"
+Checking markdown files...
+FIXING: Auto-fixing markdown files...
+SUCCESS: Fixed: docs/README.md
+SUCCESS: Markdown files OK.
+
+All checks passed. Some files were auto-fixed and re-staged.
+```
+
+### When Auto-Fix Can't Help
+
+Some issues require manual intervention (semantic errors vs. formatting):
+
+- Missing language identifiers on code blocks (MD040)
+- Bare URLs that need context to convert to links (MD034)
+- Structural markdown issues
+
+These will still fail with actionable error messages.
+
+### Disabling Auto-Fix (CI Mode)
+
+To check without fixing (e.g., in CI):
+
+```bash
+SKIP_AUTOFIX=1 git commit
 ```
 
 ### Bypassing Hooks (Use Sparingly)
-
-If you need to bypass the hooks temporarily:
 
 ```bash
 git commit --no-verify
 ```
 
-Only use this for legitimate reasons (e.g., work-in-progress commits to a feature branch).
+Only use this for legitimate reasons (e.g., work-in-progress commits).
 
 ## Development Workflow
 

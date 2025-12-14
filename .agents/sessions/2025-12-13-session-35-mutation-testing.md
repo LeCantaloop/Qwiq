@@ -179,15 +179,15 @@ Changed from explicit include patterns to exclusion-only patterns:
 
 **Actual Baseline Results**:
 
-| Metric            | Value      |
-| ----------------- | ---------- |
-| Mutation Score    | **43.96%** |
-| Killed            | 656        |
-| Survived          | 354        |
-| Timeout           | 17         |
-| No Coverage       | 504        |
-| Compile Errors    | 138        |
-| Execution Time    | 11 minutes |
+| Metric         | Value      |
+| -------------- | ---------- |
+| Mutation Score | **43.96%** |
+| Killed         | 656        |
+| Survived       | 354        |
+| Timeout        | 17         |
+| No Coverage    | 504        |
+| Compile Errors | 138        |
+| Execution Time | 11 minutes |
 
 **Key Findings**:
 
