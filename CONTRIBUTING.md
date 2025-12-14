@@ -52,9 +52,25 @@ This repository uses pre-commit hooks that **automatically fix** linting issues 
 - **C# files** - Auto-fixed with `dotnet format`
 - **JSON/YAML files** - Auto-fixed with `dotnet pprettier --write`
 
-### Enable Git Hooks
+### Automatic Setup (GitHub Codespaces / Dev Containers)
 
-After cloning, run this command once to enable the pre-commit hooks:
+If you're using **GitHub Codespaces** or **VS Code Dev Containers**, git hooks are **automatically enabled** when the container is created. No manual setup required!
+
+The devcontainer also sets `SKIP_AUTOFIX=0` to ensure auto-fix mode is enabled.
+
+### GitHub Copilot Workspace
+
+If you're using **GitHub Copilot Workspace**, run the setup script once:
+
+```bash
+bash .github/copilot-setup.sh
+```
+
+This will enable git hooks, set `SKIP_AUTOFIX=0`, and install required linting tools.
+
+### Manual Setup (Local Development)
+
+If you're working locally outside a devcontainer, run this command once after cloning to enable the pre-commit hooks:
 
 ```bash
 git config core.hooksPath .githooks
