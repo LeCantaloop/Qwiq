@@ -75,7 +75,7 @@ Before adding ANY new skill:
 
 ### Similarity Search
 
-`mcp__cloudmcp-manager__memory-search_nodes`
+mcp**cloudmcp-manager**memory-search_nodes
 Query: "skill [topic] [keywords]"
 
 ### Most Similar Existing

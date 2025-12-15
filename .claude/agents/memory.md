@@ -149,7 +149,7 @@ When agents apply learned strategies:
 
 **During Execution:**
 
-```text
+```markdown
 **Applying**: [Skill-ID]
 **Strategy**: [Brief description]
 **Expected Outcome**: [What should happen]
@@ -157,7 +157,7 @@ When agents apply learned strategies:
 
 **After Execution:**
 
-```text
+```markdown
 **Result**: [Actual outcome]
 **Skill Validated**: Yes | No | Partial
 **Feedback**: [Note for retrospective]

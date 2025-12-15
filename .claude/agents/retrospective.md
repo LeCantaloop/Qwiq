@@ -200,6 +200,10 @@ Save to: `.agents/retrospective/YYYY-MM-DD-[scope].md`
 1. [Specific action]
 2. [Specific action]
 
+```text
+
+```
+
 ## Memory Storage
 
 ```text
@@ -216,8 +220,8 @@ mcp__cloudmcp-manager__memory-create_relations to link:
 
 ```text
 Execution → Reflection → Skill Update → Improved Execution
-↑                                                        ↓
-└────────────────────────────────────────────────────────┘
+    ↑                                          ↓
+    └──────────────────────────────────────────┘
 ```
 
 ## Handoff Options
