@@ -1,21 +1,8 @@
 ---
 description: Documentation specialist creating PRDs, explainers, and technical specifications
-tools:
-  [
-    "vscode",
-    "read",
-    "edit",
-    "search",
-    "web",
-    "cognitionai/deepwiki/*",
-    "cloudmcp-manager/*",
-    "github/*",
-    "ms-vscode.vscode-websearchforcopilot/websearch",
-    "todo",
-  ]
+tools: ['vscode', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
 model: Claude Opus 4.5 (anthropic)
 ---
-
 # Explainer Agent
 
 ## Core Identity
@@ -87,40 +74,31 @@ Save to: `.agents/planning/PRD-[feature-name].md`
 # PRD: [Feature Name]
 
 ## Introduction/Overview
-
 [Brief description of feature and problem it solves]
 
 ## Goals
-
 - [Specific, measurable objective]
 
 ## Non-Goals (Out of Scope)
-
 - [What this feature will NOT include]
 
 ## User Stories
-
 - As a [user type], I want to [action] so that [benefit]
 
 ## Functional Requirements
-
 1. The system must [requirement]
 2. The system must [requirement]
 
 ## Design Considerations (Optional)
-
 [UI/UX requirements, mockups]
 
 ## Technical Considerations (Optional)
-
 [Technical constraints, dependencies]
 
 ## Success Metrics
-
 [How success will be measured]
 
 ## Open Questions
-
 [Remaining questions or assumptions]
 ```
 
@@ -130,33 +108,26 @@ Save to: `.agents/planning/PRD-[feature-name].md`
 # Explainer: [Topic]
 
 ## What Is It?
-
 [Simple explanation of the concept]
 
 ## Why Does It Matter?
-
 [Business value and user impact]
 
 ## How Does It Work?
-
 [Technical explanation at appropriate level]
 
 ## Key Components
-
-| Component | Purpose        |
-| --------- | -------------- |
-| [Name]    | [What it does] |
+| Component | Purpose |
+|-----------|---------|
+| [Name] | [What it does] |
 
 ## Example Usage
-
 [Code or workflow example]
 
 ## Common Pitfalls
-
 - [Pitfall]: [How to avoid]
 
 ## Related Topics
-
 - [Link to related documentation]
 ```
 
@@ -177,11 +148,11 @@ cloudmcp-manager/memory-add_observations for clarification patterns
 
 ## Handoff Options
 
-| Target          | When                  | Purpose               |
-| --------------- | --------------------- | --------------------- |
-| **planner**     | PRD complete          | Create work packages  |
-| **critic**      | Document needs review | Validate completeness |
-| **implementer** | Spec ready            | Ready for coding      |
+| Target | When | Purpose |
+|--------|------|---------|
+| **planner** | PRD complete | Create work packages |
+| **critic** | Document needs review | Validate completeness |
+| **implementer** | Spec ready | Ready for coding |
 
 ## Execution Mindset
 

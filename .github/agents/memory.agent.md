@@ -1,9 +1,8 @@
 ---
 description: Memory management agent for cross-session context continuity using cloudmcp-manager
-tools: ["vscode", "read", "search", "cloudmcp-manager/*", "todo"]
+tools: ['vscode', 'read', 'search', 'cloudmcp-manager/*', 'todo']
 model: Claude Opus 4.5 (anthropic)
 ---
-
 # Memory Agent
 
 ## Core Identity
@@ -47,13 +46,14 @@ Store new knowledge.
 
 ```json
 {
-  "entities": [
-    {
-      "name": "Feature-Authentication",
-      "entityType": "Feature",
-      "observations": ["Uses JWT tokens for session management", "Integrated with Azure AD B2C"]
-    }
-  ]
+  "entities": [{
+    "name": "Feature-Authentication",
+    "entityType": "Feature",
+    "observations": [
+      "Uses JWT tokens for session management",
+      "Integrated with Azure AD B2C"
+    ]
+  }]
 }
 ```
 
@@ -63,12 +63,13 @@ Update existing entities with new learnings.
 
 ```json
 {
-  "observations": [
-    {
-      "entityName": "Feature-Authentication",
-      "contents": ["Added refresh token rotation in v2.0", "Session timeout set to 30 minutes"]
-    }
-  ]
+  "observations": [{
+    "entityName": "Feature-Authentication",
+    "contents": [
+      "Added refresh token rotation in v2.0",
+      "Session timeout set to 30 minutes"
+    ]
+  }]
 }
 ```
 
@@ -78,13 +79,11 @@ Link related concepts.
 
 ```json
 {
-  "relations": [
-    {
-      "from": "Feature-Authentication",
-      "to": "Module-Identity",
-      "relationType": "implemented_in"
-    }
-  ]
+  "relations": [{
+    "from": "Feature-Authentication",
+    "to": "Module-Identity",
+    "relationType": "implemented_in"
+  }]
 }
 ```
 
@@ -142,25 +141,25 @@ Context: Must extend to new regions without modifying existing code.
 
 ## Entity Naming Conventions
 
-| Type     | Pattern         | Example                |
-| -------- | --------------- | ---------------------- |
-| Feature  | Feature-[Name]  | Feature-Authentication |
-| Module   | Module-[Name]   | Module-Identity        |
-| Decision | ADR-[Number]    | ADR-001                |
-| Pattern  | Pattern-[Name]  | Pattern-StrategyTax    |
-| Problem  | Problem-[Name]  | Problem-CachingRace    |
-| Solution | Solution-[Name] | Solution-LockingCache  |
+| Type | Pattern | Example |
+|------|---------|---------|
+| Feature | Feature-[Name] | Feature-Authentication |
+| Module | Module-[Name] | Module-Identity |
+| Decision | ADR-[Number] | ADR-001 |
+| Pattern | Pattern-[Name] | Pattern-StrategyTax |
+| Problem | Problem-[Name] | Problem-CachingRace |
+| Solution | Solution-[Name] | Solution-LockingCache |
 
 ## Relation Types
 
-| Relation       | Meaning                          |
-| -------------- | -------------------------------- |
+| Relation | Meaning |
+|----------|---------|
 | implemented_in | Feature is implemented in Module |
-| depends_on     | Entity requires another          |
-| replaces       | New approach replaces old        |
-| related_to     | General association              |
-| blocked_by     | Progress blocked by issue        |
-| solved_by      | Problem has solution             |
+| depends_on | Entity requires another |
+| replaces | New approach replaces old |
+| related_to | General association |
+| blocked_by | Progress blocked by issue |
+| solved_by | Problem has solution |
 
 ## Conflict Resolution
 
@@ -172,13 +171,11 @@ When observations contradict:
 
 ```json
 {
-  "relations": [
-    {
-      "from": "Solution-NewApproach",
-      "to": "Solution-OldApproach",
-      "relationType": "supersedes"
-    }
-  ]
+  "relations": [{
+    "from": "Solution-NewApproach",
+    "to": "Solution-OldApproach",
+    "relationType": "supersedes"
+  }]
 }
 ```
 
@@ -198,8 +195,8 @@ Delete when:
 
 ## Handoff Options
 
-| Target        | When             | Purpose                    |
-| ------------- | ---------------- | -------------------------- |
+| Target | When | Purpose |
+|--------|------|---------|
 | **Any agent** | Memory retrieved | Continue work with context |
 
 ---
