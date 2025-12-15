@@ -74,6 +74,51 @@ jobs:
 | `dotnet tool restore` | Restores nbgv from dotnet tool manifest             |
 | `global-json-file`    | Uses pinned SDK version from repository             |
 
+### GitHub CLI (gh) Support
+
+The `copilot-setup-steps.yml` workflow includes `GH_TOKEN: ${{ github.token }}` to enable GitHub CLI commands and API access. This allows:
+
+**For GitHub Agents/Copilot:**
+
+- View workflow run logs and status
+- Monitor action execution in real-time
+- Query PR information and comments
+- Check CI/CD pipeline status
+
+**Common gh commands available:**
+
+```bash
+# View workflow runs
+gh run list --workflow=main.yml
+
+# Get workflow run status
+gh run view <run-id>
+
+# View workflow logs
+gh run view <run-id> --log
+
+# Check PR status
+gh pr view <pr-number>
+
+# List PR checks
+gh pr checks <pr-number>
+```
+
+**Usage in workflow steps:**
+
+```yaml
+jobs:
+  setup:
+    env:
+      GH_TOKEN: ${{ github.token }} # Available to all steps in copilot-setup-steps.yml
+
+    steps:
+      - name: Monitor other workflows
+        run: gh run list --workflow=main.yml --limit 5
+```
+
+**Note:** For security and principle of least privilege, GH_TOKEN is only enabled in `copilot-setup-steps.yml`. Other workflows do not have GitHub CLI access unless specifically required.
+
 ### Deterministic Builds
 
 Include these flags for reproducible builds:

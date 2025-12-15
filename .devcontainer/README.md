@@ -37,9 +37,9 @@ The devcontainer automatically sets up:
 
 ## Environment Variables
 
-| Variable        | Default | Description                                      |
-| --------------- | ------- | ------------------------------------------------ |
-| `SKIP_AUTOFIX`  | `0`     | Controls auto-fix mode (0=enabled, 1=check only) |
+| Variable       | Default | Description                                      |
+| -------------- | ------- | ------------------------------------------------ |
+| `SKIP_AUTOFIX` | `0`     | Controls auto-fix mode (0=enabled, 1=check only) |
 
 ## Verification
 

@@ -3,9 +3,14 @@ name: Copilot Workspace Setup
 # This workflow runs setup steps for GitHub Copilot Workspace environments
 # to ensure git hooks and linting tools are properly configured.
 #
+# This workflow also provides GitHub CLI access for GitHub Copilot agents to monitor
+# workflows, view logs, and interact with the repository programmatically.
+#
+# The GH_TOKEN environment variable enables gh CLI commands without authentication.
+#
 # Triggers:
 # - workflow_dispatch: Manual trigger for testing or re-setup
-# - Can be called from Copilot Workspace creation scripts
+# - workflow_call: Can be called from other workflows or Copilot Workspace creation scripts
 
 on:
   workflow_dispatch:
@@ -14,14 +19,23 @@ on:
         description: 'Reason for running setup'
         required: false
         default: 'Manual setup trigger'
+  workflow_call:
+    # Allow this workflow to be called by other workflows
 
 permissions:
   contents: read
+  actions: read
+  pull-requests: read
 
 jobs:
-  setup:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
     name: Configure Git Hooks and Linting Tools
     runs-on: ubuntu-latest
+    
+    env:
+      # Enable GitHub CLI for GitHub agents or scripts
+      GH_TOKEN: ${{ github.token }}
     
     steps:
       - name: Checkout repository
@@ -53,6 +67,14 @@ jobs:
           npm --version
           echo ""
           echo "✓ Node.js and npm are ready"
+      
+      - name: Verify GitHub CLI availability
+        run: |
+          echo "Verifying GitHub CLI availability..."
+          gh --version
+          echo ""
+          echo "✓ GitHub CLI is available"
+          echo "✓ GH_TOKEN is configured for Copilot agents"
       
       - name: Enable git hooks
         run: |
@@ -107,6 +129,10 @@ jobs:
             if dotnet tool list 2>/dev/null | grep -q "nbgv"; then
               echo "✓ nbgv tool is installed"
             fi
+          fi
+          
+          if command -v gh &> /dev/null; then
+            echo "✓ GitHub CLI is available for workflow monitoring"
           fi
           
           echo ""

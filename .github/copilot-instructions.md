@@ -553,6 +553,85 @@ When adding or updating .NET workflows in this repo, follow these guidelines:
 - Upload binlogs as artifacts for debugging: `/bl:./artifacts/logs/build.binlog`
 - Prefer `.runsettings` files or environment variables for complex test filters instead of long inline strings
 
+### GitHub CLI Support in Workflows
+
+The `copilot-setup-steps.yml` workflow includes `GH_TOKEN: ${{ github.token }}` environment variable to enable GitHub CLI (`gh`) commands. This allows GitHub agents and Copilot to:
+
+**Monitor and debug workflow execution:**
+
+```bash
+# View workflow runs
+gh run list --workflow=main.yml --limit 10
+
+# Check specific run status
+gh run view <run-id>
+
+# View logs from a run
+gh run view <run-id> --log
+
+# Download logs for analysis
+gh run download <run-id>
+```
+
+**Check PR and CI status:**
+
+```bash
+# View PR details
+gh pr view <pr-number>
+
+# Check all PR checks/workflows
+gh pr checks <pr-number>
+
+# View specific check logs
+gh pr checks <pr-number> --watch
+```
+
+**Usage in workflow steps:**
+
+```yaml
+# Only in copilot-setup-steps.yml workflow
+jobs:
+  setup:
+    env:
+      GH_TOKEN: ${{ github.token }} # Available to all steps
+
+    steps:
+      - name: Monitor other workflows
+        run: gh run list --workflow=main.yml --limit 5
+```
+
+The `GH_TOKEN` uses the automatic `github.token` (not a PAT), which has permissions based on the workflow's `permissions:` block.
+
+**Note:** For security and principle of least privilege, GH_TOKEN is only enabled in `copilot-setup-steps.yml`. Other workflows do not have GitHub CLI access unless specifically required.
+
+### YAML Validation (For Agents)
+
+**CRITICAL: DO NOT manually validate YAML files.** This wastes tokens.
+
+❌ **NEVER do this after editing YAML:**
+
+```bash
+# ❌ WASTES TOKENS - pre-commit hook does this automatically
+python3 -c "import yaml; yaml.safe_load(open('file.yml'))"
+dotnet pprettier --check file.yml
+pwsh .github/scripts/Validate-Yaml.ps1 file.yml
+```
+
+✅ **Correct workflow:**
+
+```bash
+# Edit YAML file
+# Just commit - pre-commit hook validates automatically
+git add .github/workflows/my-workflow.yml
+git commit -m "feat: add workflow"
+# Pre-commit hook auto-validates and auto-fixes
+# Zero tokens spent on validation
+```
+
+**Why?** The pre-commit hook at `.githooks/pre-commit` automatically runs `dotnet pprettier` which validates and formats YAML. Running manual validation creates an unnecessary OODA loop and wastes tokens.
+
+**For details:** See [YAML Validation Guide](.github/docs/yaml-validation.md)
+
 ## ⚠️ CRITICAL: Commit Practices
 
 **This is very important.** All changes must be committed incrementally, with small, atomic commits.
@@ -805,6 +884,29 @@ The `Qwiq.Package.Tests` project validates NuGet package contents using Verify. 
 - Changing package metadata (`<PackageIcon>`, `<PackageLicenseExpression>`, etc.)
 - Adding/removing packaged files (`<None Include="..." Pack="true">`)
 - Changing target frameworks (affects `<dependencies>` groups)
+- **Merging branches that add .md files** (SDK-style projects include .md files by default)
+
+> **⚠️ CRITICAL: After Merging Branches**
+>
+> When merging from `develop` or other branches, ALWAYS run package tests if the merge adds or modifies any of these:
+>
+> - .md files in project directories (README.md, CHANGELOG.md, etc.)
+> - Project files (.csproj, Directory.Build.props, Directory.Packages.props)
+> - Files with `Pack="true"` in project files
+>
+> **Why**: SDK-style projects automatically include .md files in NuGet packages unless explicitly excluded.
+>
+> **Note**: `AGENTS.md` files are explicitly excluded from all packages (in `Directory.Build.props`) as they are for AI agents working on the repository only, not for package consumers.
+>
+> **What to do**:
+>
+> 1. Complete the merge
+> 2. Run: `dotnet build Qwiq.sln -c Release`
+> 3. Run: `dotnet pack Qwiq.sln -c Release --no-build`
+> 4. Run: `dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj --configuration Release --no-build`
+> 5. If tests fail, verify changes are expected, then update baselines (see above)
+>
+> **Reference**: See `.agents/retrospective/2025-12-14-package-baseline-merge-conflict.md` for lessons learned
 
 **Example:** Adding `README.md` files to packages requires updating:
 

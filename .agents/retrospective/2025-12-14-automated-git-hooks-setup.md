@@ -105,14 +105,14 @@ SKIP_AUTOFIX: 0 (0=enabled, 1=disabled)
 
 ### Verification Checks
 
-| Check                  | Expected          | Actual            | Status |
-| ---------------------- | ----------------- | ----------------- | ------ |
-| Git hooks path set     | `.githooks`       | `.githooks`       | ✅     |
-| SKIP_AUTOFIX env       | `0`               | `0`               | ✅     |
-| markdownlint installed | `available`       | `available`       | ✅     |
-| Script syntax valid    | `no errors`       | `no errors`       | ✅     |
-| JSON syntax valid      | `valid`           | `valid`           | ✅     |
-| Graceful error handling| `warnings only`   | `warnings only`   | ✅     |
+| Check                   | Expected        | Actual          | Status |
+| ----------------------- | --------------- | --------------- | ------ |
+| Git hooks path set      | `.githooks`     | `.githooks`     | ✅     |
+| SKIP_AUTOFIX env        | `0`             | `0`             | ✅     |
+| markdownlint installed  | `available`     | `available`     | ✅     |
+| Script syntax valid     | `no errors`     | `no errors`     | ✅     |
+| JSON syntax valid       | `valid`         | `valid`         | ✅     |
+| Graceful error handling | `warnings only` | `warnings only` | ✅     |
 
 ---
 
@@ -168,22 +168,22 @@ SKIP_AUTOFIX: 0 (0=enabled, 1=disabled)
 
 ### Positive Impacts
 
-| Impact                          | Severity | Evidence                                   |
-| ------------------------------- | -------- | ------------------------------------------ |
-| Reduced CI linting failures     | High     | Prevents 321-error incidents               |
-| Improved developer experience   | High     | Zero-config setup in Codespaces            |
-| Consistent environment          | Medium   | All developers have same linting tools     |
-| Earlier error detection         | Medium   | Issues caught at commit time, not CI time  |
-| Documentation clarity           | Medium   | Clear distinction between setup methods    |
+| Impact                        | Severity | Evidence                                  |
+| ----------------------------- | -------- | ----------------------------------------- |
+| Reduced CI linting failures   | High     | Prevents 321-error incidents              |
+| Improved developer experience | High     | Zero-config setup in Codespaces           |
+| Consistent environment        | Medium   | All developers have same linting tools    |
+| Earlier error detection       | Medium   | Issues caught at commit time, not CI time |
+| Documentation clarity         | Medium   | Clear distinction between setup methods   |
 
 ### Potential Risks & Mitigations
 
-| Risk                               | Severity | Mitigation                                  |
-| ---------------------------------- | -------- | ------------------------------------------- |
-| SDK version mismatch               | Low      | Graceful failure with clear warning message |
-| Devcontainer build time increase   | Low      | Minimal impact (~5-10 seconds)              |
-| Hook bypassed with --no-verify     | Low      | CI still validates (defense in depth)       |
-| Network issues during npm install  | Low      | Setup script continues with warning         |
+| Risk                              | Severity | Mitigation                                  |
+| --------------------------------- | -------- | ------------------------------------------- |
+| SDK version mismatch              | Low      | Graceful failure with clear warning message |
+| Devcontainer build time increase  | Low      | Minimal impact (~5-10 seconds)              |
+| Hook bypassed with --no-verify    | Low      | CI still validates (defense in depth)       |
+| Network issues during npm install | Low      | Setup script continues with warning         |
 
 ---
 
@@ -315,12 +315,12 @@ SKIP_AUTOFIX: 0 (0=enabled, 1=disabled)
 
 ## Deduplication Check
 
-| New Skill          | Most Similar Existing     | Similarity | Decision |
-| ------------------ | ------------------------- | ---------- | -------- |
-| Skill-DevOps-001   | None found                | N/A        | Add      |
-| Skill-DevOps-002   | None found                | N/A        | Add      |
-| Skill-DevOps-003   | None found                | N/A        | Add      |
-| Skill-Docs-001     | Skill-Agent-001 (partial) | 30%        | Add      |
+| New Skill        | Most Similar Existing     | Similarity | Decision |
+| ---------------- | ------------------------- | ---------- | -------- |
+| Skill-DevOps-001 | None found                | N/A        | Add      |
+| Skill-DevOps-002 | None found                | N/A        | Add      |
+| Skill-DevOps-003 | None found                | N/A        | Add      |
+| Skill-Docs-001   | Skill-Agent-001 (partial) | 30%        | Add      |
 
 ---
 

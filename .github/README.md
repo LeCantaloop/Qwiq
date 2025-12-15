@@ -24,12 +24,14 @@ This will:
 The script automatically detects and installs missing prerequisites:
 
 1. **.NET SDK** - If not installed or wrong version, the script will:
+
    - Download the .NET install script from Microsoft
    - Install the exact version specified in `global.json` to `~/.dotnet`
    - Add it to your PATH for the current session
    - Provide instructions to persist the PATH change
 
 2. **Node.js/npm** - If not installed, provides installation instructions:
+
    - Direct download from <https://nodejs.org/>
    - Or via nvm (Node Version Manager)
 
@@ -58,15 +60,15 @@ Or from the GitHub Actions UI:
 
 ## Comparison with DevContainer
 
-| Feature                | DevContainer              | Copilot Workspace          |
-| ---------------------- | ------------------------- | -------------------------- |
-| .NET SDK install       | Pre-installed in image    | Auto-installed if missing  |
-| Node.js install        | Pre-installed in image    | Manual (with instructions) |
-| Git hooks setup        | Automatic (postCreate)    | Automatic (in script)      |
-| SKIP_AUTOFIX           | Set via containerEnv      | Set via script             |
-| Dotnet tools           | Automatic restore         | Automatic restore          |
-| markdownlint-cli2      | Automatic install         | Automatic install          |
-| Trigger                | Container creation        | Manual script execution    |
+| Feature           | DevContainer           | Copilot Workspace          |
+| ----------------- | ---------------------- | -------------------------- |
+| .NET SDK install  | Pre-installed in image | Auto-installed if missing  |
+| Node.js install   | Pre-installed in image | Manual (with instructions) |
+| Git hooks setup   | Automatic (postCreate) | Automatic (in script)      |
+| SKIP_AUTOFIX      | Set via containerEnv   | Set via script             |
+| Dotnet tools      | Automatic restore      | Automatic restore          |
+| markdownlint-cli2 | Automatic install      | Automatic install          |
+| Trigger           | Container creation     | Manual script execution    |
 
 ## Environment Variables
 
