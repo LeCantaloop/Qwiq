@@ -300,18 +300,19 @@ When changing MSBuild properties in Directory.Build.props:
 When implementing ADRs that change build configuration:
 
 1. **Before coding:** Search codebase for affected files
+
    ```bash
    grep -r "<property_name>" build/ .github/ docs/
    ```
 
 1. **Add findings to PR description:** List ALL affected files, including those NOT being updated
 
-2. **Flag out-of-scope files:** If a file needs updating but is out-of-scope, add to "Follow-up Required" section
+1. **Flag out-of-scope files:** If a file needs updating but is out-of-scope, add to "Follow-up Required" section
 ````
 
 #### For DevOps Agent
 
-````markdown
+```markdown
 ### Validation Script Maintenance
 
 When updating CI/CD workflows:
@@ -321,7 +322,7 @@ When updating CI/CD workflows:
 2. **Test affected scripts:** Run each script that depends on changed configuration
 
 3. **Update workflows AND scripts:** Don't update `release.yml` without checking `main.yml` and `build/scripts/`
-````
+```
 
 #### For QA Agent
 
@@ -333,6 +334,7 @@ Before approving PRs that modify build configuration:
 1. **Build packages:** `dotnet build Qwiq.sln -c Release`
 
 2. **Execute ALL validation scripts:**
+
    ```powershell
    ./build/scripts/Validate-PackageOutput.ps1
    ./build/scripts/Verify-SourceLink.ps1
@@ -364,7 +366,7 @@ for prop in DebugType IncludeSymbols SymbolPackageFormat; do
 done
 
 # 3. Add affected scripts to PR checklist
-````
+```
 
 **Success Criteria:** All scripts that reference changed properties are listed in PR description
 
@@ -429,7 +431,7 @@ Scripts that need updating but are out-of-scope:
 
 ```markdown
 | Script | Config Dependencies | Updated By ADR | Last Review |
-|--------|---------------------|----------------|-------------|
+| ------ | ------------------- | -------------- | ----------- |
 | Name   | Properties it reads | ADR number     | Date        |
 ```
 
