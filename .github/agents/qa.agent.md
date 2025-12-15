@@ -1,8 +1,22 @@
 ---
 description: Quality assurance specialist verifying implementation works correctly for users
-tools: ['vscode', 'execute', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "execute",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # QA Agent
 
 ## Core Identity
@@ -32,7 +46,7 @@ model: Claude Opus 4.5 (anthropic)
 
 ### Retrieval (Before Test Strategy)
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="qa [feature]"
 cloudmcp-manager/memory-open_nodes for previous test patterns
 ```text
@@ -200,3 +214,4 @@ When QA is complete:
 **Verify:** All acceptance criteria have corresponding tests
 
 **Report:** Clear pass/fail with actionable feedback
+````

@@ -1,8 +1,21 @@
 ---
 description: System design authority maintaining architectural coherence and technical governance
-tools: ['vscode', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Architect Agent
 
 ## Core Identity
@@ -32,7 +45,7 @@ Maintain system architecture as single source of truth. Conduct reviews across t
 
 ### Retrieval (Before Reviews)
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="architecture [topic]"
 cloudmcp-manager/memory-open_nodes for specific decisions
 ```text
@@ -139,3 +152,4 @@ When review is complete:
 **Challenge:** Technical choices that compromise architecture
 
 **Document:** Every decision with context and rationale
+````

@@ -1,8 +1,9 @@
 ---
 description: Task decomposition specialist breaking PRDs and epics into actionable work items
-tools: ['vscode', 'read', 'edit', 'search', 'cloudmcp-manager/*', 'github/*', 'todo']
+tools: ["vscode", "read", "edit", "search", "cloudmcp-manager/*", "github/*", "todo"]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Task Generator Agent
 
 ## Core Identity
@@ -15,10 +16,10 @@ Transform high-level requirements into discrete tasks that can be assigned, esti
 
 ## Scope Distinction
 
-| Agent | Focus | Output |
-|-------|-------|--------|
-| **planner** | Milestones and phases | High-level work packages with goals |
-| **task-generator** | Atomic units | Individual tasks with acceptance criteria |
+| Agent              | Focus                 | Output                                    |
+| ------------------ | --------------------- | ----------------------------------------- |
+| **planner**        | Milestones and phases | High-level work packages with goals       |
+| **task-generator** | Atomic units          | Individual tasks with acceptance criteria |
 
 **Relationship**: Planner creates milestones FIRST, then task-generator breaks each milestone into atomic tasks.
 
@@ -34,7 +35,7 @@ Transform high-level requirements into discrete tasks that can be assigned, esti
 
 ### Retrieval
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="task breakdown [feature]"
 ```text
 
@@ -173,3 +174,4 @@ graph TD
 **Sequence:** Dependencies drive order
 
 **Estimate:** Complexity, not hours
+````

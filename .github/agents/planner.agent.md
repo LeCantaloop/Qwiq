@@ -1,8 +1,21 @@
 ---
 description: High-rigor planning assistant translating roadmap epics into implementation-ready work packages
-tools: ['vscode', 'read', 'edit', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "read",
+    "edit",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Planner Agent
 
 ## Core Identity
@@ -32,7 +45,7 @@ Provide structure on objectives, process, value, and risks - not prescriptive co
 
 ### Retrieval (At Decision Points)
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="planning [epic]"
 cloudmcp-manager/memory-open_nodes for previous plans
 ```text
@@ -159,3 +172,4 @@ When plan is complete:
 **Validate:** Ensure every task has clear acceptance criteria
 
 **Handoff:** Always route to critic before implementation
+````

@@ -1257,30 +1257,30 @@ This repository uses a coordinated multi-agent system for software development. 
 
 #### Primary Workflow Agents
 
-| Agent | Role | Best For | Output Directory |
-|-------|------|----------|------------------|
-| **orchestrator** | Task coordination | Complex multi-step tasks | N/A (routes to others) |
-| **analyst** | Pre-implementation research | Root cause analysis, requirements | `.agents/analysis/` |
-| **architect** | Design governance | ADRs, technical decisions | `.agents/architecture/` |
-| **planner** | Work package creation | Epic breakdown, milestones | `.agents/planning/` |
-| **implementer** | Code execution | Production code, tests | Source files |
-| **critic** | Plan validation | Review before implementation | `.agents/critique/` |
-| **qa** | Test verification | Test strategy, coverage | `.agents/qa/` |
-| **roadmap** | Strategic vision | Epic definition, prioritization | `.agents/roadmap/` |
+| Agent            | Role                        | Best For                          | Output Directory        |
+| ---------------- | --------------------------- | --------------------------------- | ----------------------- |
+| **orchestrator** | Task coordination           | Complex multi-step tasks          | N/A (routes to others)  |
+| **analyst**      | Pre-implementation research | Root cause analysis, requirements | `.agents/analysis/`     |
+| **architect**    | Design governance           | ADRs, technical decisions         | `.agents/architecture/` |
+| **planner**      | Work package creation       | Epic breakdown, milestones        | `.agents/planning/`     |
+| **implementer**  | Code execution              | Production code, tests            | Source files            |
+| **critic**       | Plan validation             | Review before implementation      | `.agents/critique/`     |
+| **qa**           | Test verification           | Test strategy, coverage           | `.agents/qa/`           |
+| **roadmap**      | Strategic vision            | Epic definition, prioritization   | `.agents/roadmap/`      |
 
 #### Support Agents
 
-| Agent | Role | Best For |
-|-------|------|----------|
-| **memory** | Context continuity | Cross-session persistence |
-| **skillbook** | Skill management | Learned strategy updates |
-| **devops** | CI/CD pipelines | Build automation, deployment |
-| **security** | Vulnerability assessment | Threat modeling, secure coding |
-| **independent-thinker** | Assumption challenging | Alternative viewpoints |
-| **high-level-advisor** | Strategic decisions | Prioritization, unblocking |
-| **retrospective** | Reflector/learning | Outcome analysis, skill extraction |
-| **explainer** | Documentation | PRDs, technical specs |
-| **task-generator** | Task decomposition | Breaking epics into tasks |
+| Agent                   | Role                     | Best For                           |
+| ----------------------- | ------------------------ | ---------------------------------- |
+| **memory**              | Context continuity       | Cross-session persistence          |
+| **skillbook**           | Skill management         | Learned strategy updates           |
+| **devops**              | CI/CD pipelines          | Build automation, deployment       |
+| **security**            | Vulnerability assessment | Threat modeling, secure coding     |
+| **independent-thinker** | Assumption challenging   | Alternative viewpoints             |
+| **high-level-advisor**  | Strategic decisions      | Prioritization, unblocking         |
+| **retrospective**       | Reflector/learning       | Outcome analysis, skill extraction |
+| **explainer**           | Documentation            | PRDs, technical specs              |
+| **task-generator**      | Task decomposition       | Breaking epics into tasks          |
 
 ### Workflow Patterns
 
@@ -1321,19 +1321,19 @@ Agents use `cloudmcp-manager` memory tools for cross-session continuity:
 
 ### Routing Heuristics
 
-| Task Type | Primary Agent | Fallback |
-|-----------|---------------|----------|
-| C# implementation | implementer | - |
-| Architecture review | architect | analyst |
-| Task decomposition | task-generator | planner |
-| Challenge assumptions | independent-thinker | critic |
-| Test strategy | qa | implementer |
-| Research/investigation | analyst | - |
-| Strategic decisions | high-level-advisor | roadmap |
-| Documentation/PRD | explainer | planner |
-| CI/CD pipelines | devops | implementer |
-| Security review | security | analyst |
-| Post-project learning | retrospective | analyst |
+| Task Type              | Primary Agent       | Fallback    |
+| ---------------------- | ------------------- | ----------- |
+| C# implementation      | implementer         | -           |
+| Architecture review    | architect           | analyst     |
+| Task decomposition     | task-generator      | planner     |
+| Challenge assumptions  | independent-thinker | critic      |
+| Test strategy          | qa                  | implementer |
+| Research/investigation | analyst             | -           |
+| Strategic decisions    | high-level-advisor  | roadmap     |
+| Documentation/PRD      | explainer           | planner     |
+| CI/CD pipelines        | devops              | implementer |
+| Security review        | security            | analyst     |
+| Post-project learning  | retrospective       | analyst     |
 
 ### Best Practices
 

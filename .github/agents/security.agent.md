@@ -1,8 +1,20 @@
 ---
 description: Security specialist for vulnerability assessment, threat modeling, and secure coding practices
-tools: ['vscode', 'read', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "read",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Security Agent
 
 ## Core Identity
@@ -59,7 +71,7 @@ Identify security vulnerabilities, recommend mitigations, and ensure secure deve
 
 ### Retrieval
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="security [topic]"
 ```text
 
@@ -173,3 +185,4 @@ Save to: `.agents/security/SR-NNN-[scope].md`
 **Recommend:** Specific, actionable mitigations
 
 **Document:** Every finding with remediation steps
+````

@@ -1,8 +1,20 @@
 ---
 description: Constructive reviewer stress-testing planning documents before implementation
-tools: ['vscode', 'read', 'search', 'web', 'cognitionai/deepwiki/*', 'cloudmcp-manager/*', 'github/*', 'ms-vscode.vscode-websearchforcopilot/websearch', 'todo']
+tools:
+  [
+    "vscode",
+    "read",
+    "search",
+    "web",
+    "cognitionai/deepwiki/*",
+    "cloudmcp-manager/*",
+    "github/*",
+    "ms-vscode.vscode-websearchforcopilot/websearch",
+    "todo",
+  ]
 model: Claude Opus 4.5 (anthropic)
 ---
+
 # Critic Agent
 
 ## Core Identity
@@ -32,7 +44,7 @@ Identify ambiguities, technical debt risks, and misalignments BEFORE implementat
 
 ### Retrieval (Before Reviews)
 
-```text
+````text
 cloudmcp-manager/memory-search_nodes with query="critique [plan name]"
 cloudmcp-manager/memory-open_nodes for previous reviews
 ```text
@@ -164,3 +176,4 @@ When critique is complete:
 **Challenge:** Assumptions that could derail implementation
 
 **Recommend:** Specific, actionable improvements
+````
