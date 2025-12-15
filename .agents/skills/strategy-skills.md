@@ -115,3 +115,65 @@ When planning infrastructure modernization:
 5. Provide migration path
 
 **Note**: Strategic infrastructure decisions should inform library architecture, not vice versa
+
+---
+
+## Skill-Proj-CTX-001
+
+**Statement**: Revalidate priority context when foundational deployment scope or security requirements change between sessions
+
+**Atomicity**: 88%
+
+**Category**: Strategy
+
+**Context**: At session start when context may have shifted (adoption metrics, deployment targets, security reviews)
+
+**Evidence**: Session 27→41 - "Maintenance mode" based on incorrect adoption metrics; production context (100+ users, Kubernetes, enterprise security review) discovered later
+
+**Details**:
+
+- Context drift accumulates across sessions
+- Enterprise vs. open-source deployment affects priority
+- Internal vs. external usage impacts feature requirements
+- Container vs. traditional hosting changes TFM targets
+- Explicit revalidation is cheaper than mid-sprint misalignment
+
+**Revalidation Protocol**:
+
+```text
+Before starting work on a session:
+
+1. Query: "Has deployment scope changed?"
+   - Internal team only → External adoption
+   - Traditional hosting → Container/Kubernetes
+   - Single platform → Multi-platform
+
+2. Query: "Has security requirements changed?"
+   - OSS standards → Enterprise security review
+   - Public packages → Private registry
+   - No signing → Package signing required
+
+3. If YES to any: Re-align priorities accordingly
+```
+
+**Real Example** (Sessions 27-41):
+
+| Session | Context Assumption     | Actual Context        | Impact                   |
+| ------- | ---------------------- | --------------------- | ------------------------ |
+| 27      | Low adoption, OSS-only | 100+ team members     | Declared maintenance     |
+| 28      | (Clarified by user)    | Enterprise Kubernetes | Re-activated Waves 3-5   |
+| 41      | Priorities confirmed   | Production v11.0.0    | Strategic deferrals made |
+
+**Priority Deferrals Enabled by Context Clarity** (Session 41):
+
+- W3.10 (Package Signing) → W5.10 (defer to late Wave 5)
+- W3.8 (Observability) → Deferred indefinitely
+- W5.2 (Container Deployment) → Removed (consumer concern)
+- W2.33 (NuGet Publish) → W5.99 (absolute last task)
+
+**Benefits**:
+
+- Prevents misaligned effort
+- Enables informed deferrals
+- Clarifies "must-have" vs "nice-to-have"
+- Reduces rework from context surprises

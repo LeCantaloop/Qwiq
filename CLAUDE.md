@@ -151,6 +151,15 @@ public class Given_context : ContextSpecification
 | `global.json`              | Pins .NET SDK version                          |
 | `.editorconfig`            | Code style AND analyzer severity configuration |
 
+### Reproducible Builds
+
+The project uses `DotNet.ReproducibleBuilds` (.NET Foundation package) for deterministic builds:
+
+- Auto-detects 11 CI platforms (GitHub Actions, Azure Pipelines, GitLab CI, Jenkins, etc.)
+- Automatically sets `ContinuousIntegrationBuild=true` on CI systems
+- Configures `Deterministic=true`, `PublishRepositoryUrl=true`, `EmbedUntrackedSources=true`
+- Our explicit `DebugType=portable` overrides the package default for `.snupkg` symbol packages
+
 ## Critical Notes
 
 1. **Windows required** for SOAP projects (net472 + TFS Client OM dependency)

@@ -5,7 +5,10 @@
 .DESCRIPTION
     This script scans all .csproj files to identify projects marked as packable
     (IsPackable=true and GeneratePackageOnBuild=true), then validates that each
-    produced both a .nupkg and .snupkg file in the centralized package output directory.
+    produced a .nupkg file in the centralized package output directory.
+
+    Qwiq uses embedded symbols (DebugType=embedded, IncludeSymbols=false) per ADR-012,
+    so no separate .snupkg files are generated. Symbols are embedded in the .dll/.nupkg.
 
     The SDK places packages in artifacts/package/{Configuration} when ArtifactsPath is set.
 
@@ -39,6 +42,9 @@
 .NOTES
     This script should be run after 'dotnet build /t:Build,Pack' completes.
     It will exit with code 1 if any expected packages are missing.
+
+    Qwiq uses embedded symbols per ADR-012. Symbols are embedded in .dll files
+    within the .nupkg, eliminating the need for separate .snupkg symbol packages.
 #>
 
 [CmdletBinding()]
@@ -72,7 +78,7 @@ if (-not $PackageOutputPath) {
     $PackageOutputPath = Join-Path $SolutionRoot "artifacts" "package" $Configuration.ToLower()
 }
 
-Write-Host "  Package output: $PackageOutputPath" -ForegroundColor White
+Write-Host "  Package output:   $PackageOutputPath" -ForegroundColor White
 
 # Find all packable projects by scanning csproj files
 $packableProjects = @()
@@ -129,7 +135,6 @@ if ($packableProjects.Count -eq 0) {
 
 # Validate each packable project produced its packages
 $missingNupkg = @()
-$missingSnupkg = @()
 $foundPackages = @()
 
 Write-Host "`n----------------------------------------" -ForegroundColor Cyan
@@ -149,36 +154,21 @@ foreach ($proj in $packableProjects) {
         Where-Object { $_.Name -notmatch "\.snupkg$" } |
         Select-Object -First 1
 
-    # Find .snupkg file
-    $snupkg = Get-ChildItem -Path $PackageOutputPath -Filter "$($proj.Name).*.snupkg" -File |
-        Select-Object -First 1
-
     $status = ""
     $color = "Green"
 
-    if ($nupkg -and $snupkg) {
-        $status = "OK (.nupkg + .snupkg)"
+    # Embedded symbols mode: only expect .nupkg (symbols are embedded)
+    if ($nupkg) {
+        $status = "OK (.nupkg with embedded symbols)"
         $foundPackages += [PSCustomObject]@{
             Name = $proj.Name
             Nupkg = $nupkg.Name
-            Snupkg = $snupkg.Name
         }
     }
-    elseif ($nupkg -and -not $snupkg) {
-        $status = "PARTIAL (missing .snupkg)"
-        $color = "Yellow"
-        $missingSnupkg += $proj.Name
-    }
-    elseif (-not $nupkg -and $snupkg) {
-        $status = "PARTIAL (missing .nupkg)"
-        $color = "Yellow"
-        $missingNupkg += $proj.Name
-    }
     else {
-        $status = "MISSING (no packages found)"
+        $status = "MISSING (.nupkg not found)"
         $color = "Red"
         $missingNupkg += $proj.Name
-        $missingSnupkg += $proj.Name
     }
 
     Write-Host "  $($proj.Name): " -NoNewline -ForegroundColor White
@@ -199,15 +189,8 @@ if ($missingNupkg.Count -gt 0) {
     }
 }
 
-if ($missingSnupkg.Count -gt 0) {
-    Write-Host "  Missing .snupkg:   $($missingSnupkg.Count)" -ForegroundColor Red
-    foreach ($missing in $missingSnupkg) {
-        Write-Host "    - $missing" -ForegroundColor Red
-    }
-}
-
 # Exit with error if any packages are missing
-if ($missingNupkg.Count -gt 0 -or $missingSnupkg.Count -gt 0) {
+if ($missingNupkg.Count -gt 0) {
     Write-Host "`nERROR: Package validation failed!" -ForegroundColor Red
     Write-Host "Build produced $($foundPackages.Count) of $($packableProjects.Count) expected packages." -ForegroundColor Red
     Write-Host "Ensure 'dotnet build /t:Build,Pack' completed successfully." -ForegroundColor Yellow

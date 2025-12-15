@@ -127,3 +127,60 @@ dotnet build Qwiq.sln -c Release
 **Validated**: 1
 
 **Summary**: GitHub Actions should be pinned to commit SHA digests instead of version tags for supply chain security. Manually maintaining these is tedious. Renovate's `helpers:pinGitHubActionDigests` preset automatically creates PRs to update SHA pins when new versions are released. Combines with `schedule:weekly` for controlled update cadence.
+
+---
+
+## Skill-Build-PKG-001
+
+**Entity Type**: Skill
+**Statement**: Use .NET Foundation packages (DotNet.ReproducibleBuilds) to replace 4+ manual build properties
+**Atomicity**: 92%
+**Category**: Build
+**Context**: When implementing build automation features that require CI platform detection and deterministic configuration
+**Evidence**: Session 41 - Replaced 4 manual properties with single PackageReference
+**Tag**: helpful
+**Impact**: 9
+**Validated**: 1
+
+**Summary**: DotNet.ReproducibleBuilds auto-detects 11 CI platforms (GitHub Actions, Azure Pipelines, GitLab CI, Jenkins, etc.) and automatically sets ContinuousIntegrationBuild=true. Configures Deterministic=true, PublishRepositoryUrl=true, EmbedUntrackedSources=true. Reduces configuration entropy and maintenance burden.
+
+**Application Example**:
+
+```xml
+<!-- Directory.Packages.props -->
+<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.39" />
+
+<!-- Directory.Build.props -->
+<ItemGroup>
+  <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
+</ItemGroup>
+
+<!-- REMOVE these - now handled by package -->
+<!-- <Deterministic>true</Deterministic> -->
+<!-- <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild> -->
+```
+
+---
+
+## Skill-Build-CFG-002
+
+**Entity Type**: Skill
+**Statement**: Override package defaults only when target format requirements differ from package defaults
+**Atomicity**: 87%
+**Category**: Build
+**Context**: When integrating dependency packages that provide build configuration automation
+**Evidence**: Session 41 - Kept DebugType=portable override for .snupkg generation
+**Tag**: helpful
+**Impact**: 8
+**Validated**: 1
+
+**Summary**: DotNet.ReproducibleBuilds defaults DebugType=embedded for symbol packages. QWIQ uses separate .snupkg symbol packages requiring DebugType=portable. All other package defaults (Deterministic, SourceLink) were removed as redundant. Each override must have documented reason tied to project requirements.
+
+**Decision Matrix**:
+
+| Property              | Package Default | Project Need | Action |
+| --------------------- | --------------- | ------------ | ------ |
+| Deterministic         | true            | true         | REMOVE |
+| ContinuousIntegration | auto-detect     | auto-detect  | REMOVE |
+| PublishRepositoryUrl  | true            | true         | REMOVE |
+| DebugType             | embedded        | portable     | KEEP   |

@@ -287,3 +287,105 @@ When generating markdown files:
 - Reduces fix-commit cycles
 - Maintains documentation quality
 - Prevents lint error accumulation
+
+---
+
+## Skill-Agent-WF-001
+
+**Statement**: Multi-agent Epic workflow (analyst → roadmap → explainer → task-generator) produces zero-rework PRDs and atomic task lists
+
+**Atomicity**: 90%
+
+**Category**: Workflow
+
+**Context**: When breaking down complex features requiring design validation before implementation
+
+**Evidence**: Session 41 - Reproducible Builds Epic (W2.34-W2.37) produced 4 atomic tasks that mapped 1:1 to execution with zero rework cycles
+
+**Details**:
+
+- Multi-agent perspective catches edge cases
+- Analyst identifies technical details and constraints
+- Roadmap agent frames strategic vision
+- Explainer creates comprehensive PRD
+- Task-generator atomizes into implementable tasks
+- Pipeline validates completeness before implementation begins
+
+**Workflow Pipeline**:
+
+```text
+Complex Feature Request
+        ↓
+    ┌───────────┐
+    │  ANALYST  │ ← Research technical approach, constraints, risks
+    └───────────┘
+        ↓
+    ┌───────────┐
+    │  ROADMAP  │ ← Frame strategic vision and Epic scope
+    └───────────┘
+        ↓
+    ┌───────────┐
+    │ EXPLAINER │ ← Write comprehensive PRD with requirements
+    └───────────┘
+        ↓
+    ┌───────────┐
+    │TASK-GENER │ ← Create atomic, implementable task list
+    └───────────┘
+        ↓
+Implementation Tasks (W2.34, W2.35, W2.36, W2.37)
+```
+
+**Real Example** (Session 41 - Reproducible Builds Epic):
+
+| Agent     | Output                                                          |
+| --------- | --------------------------------------------------------------- |
+| analyst   | Research: DotNet.ReproducibleBuilds features, CI detection      |
+| roadmap   | Epic vision: Deterministic builds for production deployment     |
+| explainer | PRD: `.agents/planning/PRD-reproducible-builds.md`              |
+| task-gen  | W2.34 (add pkg), W2.35 (integrate), W2.36 (verify), W2.37 (doc) |
+
+**Implementation Results**:
+
+- 4 tasks created by task-generator
+- 4 tasks completed as specified (no changes needed)
+- 0 rework cycles
+- Build passed first try (0 warnings)
+- All 724 tests passed
+
+**When to Use Epic Workflow**:
+
+| Scenario                        | Use Epic Workflow? |
+| ------------------------------- | ------------------ |
+| New feature integration         | ✅ Yes             |
+| Bug fix                         | ❌ No              |
+| Configuration change            | ❌ No              |
+| Multi-file architectural change | ✅ Yes             |
+| Research + implementation       | ✅ Yes             |
+| Simple code edit                | ❌ No              |
+
+**Invocation Pattern**:
+
+```python
+# Step 1: Research
+Task(subagent_type="analyst", prompt="Research DotNet.ReproducibleBuilds package...")
+
+# Step 2: Strategic vision
+Task(subagent_type="roadmap", prompt="Create Epic vision for reproducible builds...")
+
+# Step 3: PRD creation
+Task(subagent_type="explainer", prompt="Write PRD for reproducible builds integration...")
+
+# Step 4: Task breakdown
+Task(subagent_type="task-generator", prompt="Generate atomic tasks from PRD...")
+
+# Step 5: Implementation (per task)
+# Execute each task sequentially
+```
+
+**Benefits**:
+
+- PRD completeness validated before implementation
+- Atomic tasks prevent scope creep
+- Multi-perspective review catches edge cases
+- Zero rework from misunderstood requirements
+- Clear audit trail of decisions

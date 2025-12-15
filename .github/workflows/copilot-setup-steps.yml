@@ -16,9 +16,9 @@ on:
   workflow_dispatch:
     inputs:
       reason:
-        description: 'Reason for running setup'
+        description: "Reason for running setup"
         required: false
-        default: 'Manual setup trigger'
+        default: "Manual setup trigger"
   workflow_call:
     # Allow this workflow to be called by other workflows
 
@@ -32,21 +32,21 @@ jobs:
   copilot-setup-steps:
     name: Configure Git Hooks and Linting Tools
     runs-on: ubuntu-latest
-    
+
     env:
       # Enable GitHub CLI for GitHub agents or scripts
       GH_TOKEN: ${{ github.token }}
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
-      
+
       - name: Setup .NET SDK from global.json
         uses: ./.github/actions/setup-dotnet
         id: setup-dotnet
-      
+
       - name: Verify .NET SDK installation
         run: |
           echo "Verifying .NET SDK installation..."
@@ -54,12 +54,12 @@ jobs:
           dotnet --list-sdks
           echo ""
           echo "✓ .NET SDK is ready"
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 'lts/*'
-      
+          node-version: "lts/*"
+
       - name: Verify Node.js installation
         run: |
           echo "Verifying Node.js installation..."
@@ -67,7 +67,7 @@ jobs:
           npm --version
           echo ""
           echo "✓ Node.js and npm are ready"
-      
+
       - name: Verify GitHub CLI availability
         run: |
           echo "Verifying GitHub CLI availability..."
@@ -75,17 +75,17 @@ jobs:
           echo ""
           echo "✓ GitHub CLI is available"
           echo "✓ GH_TOKEN is configured for Copilot agents"
-      
+
       - name: Enable git hooks
         run: |
           echo "Configuring git hooks..."
           git config core.hooksPath .githooks
           echo "✓ Git hooks enabled at .githooks/"
-          
+
           # Verify hooks are configured
           HOOKS_PATH=$(git config --get core.hooksPath)
           echo "Current hooks path: $HOOKS_PATH"
-      
+
       - name: Restore dotnet tools
         run: |
           echo "Restoring dotnet tools..."
@@ -96,18 +96,18 @@ jobs:
             echo "  This may indicate an issue with the .NET SDK setup"
             exit 1
           fi
-      
+
       - name: Install markdownlint-cli2
         run: |
           echo "Installing markdownlint-cli2..."
           npm install --global markdownlint-cli2
           echo "✓ markdownlint-cli2 installed"
-      
+
       - name: Set SKIP_AUTOFIX environment variable
         run: |
           echo "SKIP_AUTOFIX=0" >> $GITHUB_ENV
           echo "✓ SKIP_AUTOFIX set to 0 (auto-fix enabled)"
-      
+
       - name: Verify setup
         run: |
           echo ""
@@ -115,7 +115,7 @@ jobs:
           echo "Git hooks path: $(git config --get core.hooksPath)"
           echo "SKIP_AUTOFIX: ${SKIP_AUTOFIX:-0} (0=enabled, 1=disabled)"
           echo ""
-          
+
           # Test that tools are available
           if command -v npx &> /dev/null; then
             echo "✓ npx is available"
@@ -123,17 +123,17 @@ jobs:
               echo "✓ markdownlint-cli2 is installed"
             fi
           fi
-          
+
           if command -v dotnet &> /dev/null; then
             echo "✓ dotnet CLI is available"
             if dotnet tool list 2>/dev/null | grep -q "nbgv"; then
               echo "✓ nbgv tool is installed"
             fi
           fi
-          
+
           if command -v gh &> /dev/null; then
             echo "✓ GitHub CLI is available for workflow monitoring"
           fi
-          
+
           echo ""
           echo "✓ Setup complete! Pre-commit hooks will auto-fix linting issues."

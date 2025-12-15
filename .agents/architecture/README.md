@@ -26,6 +26,9 @@ Each ADR follows this structure:
 - [ADR-007: REST Client Testability](ADR-007-rest-client-testability.md)
 - [ADR-008: WireMock-Based Offline REST Client Testing](ADR-008-wiremock-offline-rest-testing.md)
 - [ADR-009: Polyfill Strategy for ArgumentNullException.ThrowIfNull](ADR-009-polyfill-argument-null-exception.md)
+- [ADR-010: SOAP Client Deprecation Strategy](ADR-010-soap-client-deprecation-strategy.md)
+- [ADR-011: Portable Debug Symbols with Symbol Packages](ADR-011-portable-symbols-snupkg.md) _(Superseded by ADR-012)_
+- [ADR-012: Embedded Debug Symbols](ADR-012-embedded-symbols.md) ✨ **Current**
 
 ## Creating a New ADR
 

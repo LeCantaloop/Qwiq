@@ -121,6 +121,18 @@ $items = $store.Query(@"
     WHERE [System.WorkItemType] = 'Bug' AND State = 'Active'", $false)
 ```
 
+## Debugging
+
+QWIQ packages include embedded debug symbols for seamless debugging without additional configuration.
+
+**Visual Studio, Rider, or VS Code**: Press F11 to step into QWIQ source code—no symbol server configuration needed.
+
+### Why Embedded Symbols?
+
+QWIQ serves enterprise developers who are often behind corporate firewalls that block external symbol servers. Embedded symbols ensure debugging "just works" for everyone, regardless of network environment.
+
+For more details, see [ADR-012: Embedded Debug Symbols](docs/architecture/adr-012-embedded-symbols.md).
+
 ## Contributing
 
 ### Getting started with Git and GitHub

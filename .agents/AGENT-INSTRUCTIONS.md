@@ -85,6 +85,8 @@ Before starting work, complete these steps IN ORDER:
    - `planning/modernize-wave3-5.md` - Waves 3-5 tasks
 2. Understand acceptance criteria
 3. Plan the implementation approach
+4. **If task involves build configuration changes** (Directory.Build.props, Directory.Packages.props, or ADRs):
+   - [ ] **MANDATORY:** Complete Impact Ripple Analysis (see below)
 
 **During task execution:**
 
@@ -127,6 +129,122 @@ Before starting work, complete these steps IN ORDER:
 - [ ] Tests pass
 - [ ] Git status is clean (or intentionally dirty with explanation)
 ```
+
+---
+
+## Impact Ripple Analysis (Build Configuration Changes)
+
+**MANDATORY** when making changes to:
+
+- `Directory.Build.props`
+- `Directory.Packages.props`
+- Any ADR that modifies MSBuild properties
+
+**Purpose:** Prevent validation script misses by systematically discovering affected files.
+
+### Analysis Steps
+
+1. Identify Changed Properties
+
+```bash
+# If modifying Directory.Build.props
+git diff HEAD -- Directory.Build.props | grep "<.*>"
+
+# Example output: DebugType, IncludeSymbols, SymbolPackageFormat
+```
+
+1. Search for Affected Validation Scripts
+
+```bash
+# Search build/scripts/ for property references
+for prop in DebugType IncludeSymbols SymbolPackageFormat; do
+  echo "=== $prop ==="
+  grep -r "$prop" build/scripts/
+done
+```
+
+1. Search for Affected Workflows
+
+```bash
+# Search CI/CD workflows for property references
+for prop in DebugType IncludeSymbols SymbolPackageFormat snupkg; do
+  echo "=== $prop ==="
+  grep -r "$prop" .github/workflows/
+done
+```
+
+1. Consult Validation Script Inventory
+
+- Read `.agents/utilities/validation-script-inventory.md`
+- Identify scripts that depend on changed properties
+- Add to checklist
+
+1. Create Impact Analysis Section in ADR
+
+```markdown
+## Impact Analysis - Affected Files
+
+### Validation Scripts
+
+- [ ] `Validate-PackageOutput.ps1` - Update required (DebugType change)
+- [ ] `Verify-SourceLink.ps1` - No change (informational comment only)
+- [ ] Other scripts - No impact
+
+### CI/CD Workflows
+
+- [ ] `.github/workflows/main.yml` - Update artifact paths
+- [ ] `.github/workflows/release.yml` - Already updated
+
+### Documentation
+
+- [ ] `CLAUDE.md` - Add configuration notes
+- [ ] ADR - Document decision
+```
+
+### Verification Checklist
+
+After implementing build config changes:
+
+- [ ] **Build succeeds:** `dotnet build Qwiq.sln -c Release`
+- [ ] **Pack succeeds:** `dotnet pack Qwiq.sln -c Release --no-build`
+- [ ] **All affected validation scripts execute successfully:**
+
+  ```powershell
+  # Run each script identified in Impact Analysis
+  ./build/scripts/Validate-PackageOutput.ps1
+  ./build/scripts/Verify-SourceLink.ps1
+  # etc.
+  ```
+
+- [ ] **Update validation script inventory:**
+  - Set "Updated By ADR" column
+  - Set "Last Review" date
+- [ ] **All changes committed together**
+
+### Agent-Specific Responsibilities
+
+**Implementer Agent:**
+
+- Run Impact Ripple Analysis BEFORE making changes
+- Add "Impact Analysis" section to ADR
+- List affected files even if not updating them (flag as "Follow-up Required")
+
+**DevOps Agent:**
+
+- Verify ALL CI/CD workflows checked (not just one workflow)
+- Update validation script inventory after changes
+- Test validation scripts in CI before merge
+
+**QA Agent:**
+
+- Execute ALL validation scripts identified in Impact Analysis
+- Verify scripts exit with code 0
+- Block PR approval if any script fails
+
+**Architect Agent:**
+
+- Include "Impact Analysis" checklist in ADR template
+- Review Impact Analysis completeness during ADR approval
 
 ---
 

@@ -9,6 +9,7 @@ Use this as a quick reference to ensure you are following the correct guidance f
 
 | Pattern                | Instruction File                                             | Description                     |
 | ---------------------- | ------------------------------------------------------------ | ------------------------------- |
+| `**`                   | [pii-oii.instructions.md](pii-oii.instructions.md)           | PII/OII prevention (all files)  |
 | `*.cs`                 | [csharp.instructions.md](csharp.instructions.md)             | C# source files                 |
 | `*.csproj`, `*.sln`    | [project.instructions.md](project.instructions.md)           | Project/solution files          |
 | `*.props`, `*.targets` | [msbuild.instructions.md](msbuild.instructions.md)           | MSBuild property/target files   |

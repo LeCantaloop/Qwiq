@@ -138,6 +138,8 @@ Before submitting changes, verify:
 - [ ] `dotnet build Qwiq.sln -c Release` succeeds with 0 errors (PedanticMode=true)
 - [ ] No new warnings introduced
 - [ ] Tests pass with filters applied
+- [ ] **Package tests pass** (if modifying packable projects or build configuration)
+- [ ] Package baselines updated if manifests/contents changed
 - [ ] Package versions are in `Directory.Packages.props` (not individual csproj)
 - [ ] InternalsVisibleTo entries are correct
 

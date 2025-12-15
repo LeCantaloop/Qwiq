@@ -1,15 +1,15 @@
 # Handoff Document
 
-> **Last Updated**: 2025-12-14 by Claude (Session 40 - SHA Pinning + v11.0.0 Version)
+> **Last Updated**: 2025-12-14 by Claude (Session 41 - Reproducible Builds + Priority Deferrals)
 > **Current Phase**: Final Sprint - Ship v11.0.0
-> **Branch**: `chore/modernize-4` > **Target**: Production v11.0.0 Release
+> **Branch**: `develop` > **Target**: Production v11.0.0 Release
 
 ---
 
 ## Current State
 
 **Build Status**: ✅ Passing - 0 errors, 0 warnings (CI build validated)
-**Test Status**: ✅ All tests passing (701 tests - Core: 578, Identity: 25, Mapper: 53, Linq: 45)
+**Test Status**: ✅ All tests passing (724 tests - Core: 578, Identity: 25, Mapper: 53, Linq: 45, WireMock: 9, Package: 3, Integration: 11)
 **Nullable Status**: ✅ 0 CS8xxx warnings across all source projects
 **TFM Status**: ✅ 6 target frameworks (net472, net48, net481, net8.0, net9.0, net10.0)
 **Coverage**: **6/6 NuGet libraries meet 70% target** ✅ **(W4.1 COMPLETE)**
@@ -17,7 +17,7 @@
 **Test Execution**: **~200ms** (target: <300s) ✅ **Exceeds target**
 **Security**: ✅ CodeQL and Gitleaks workflows active
 **CI Warning Gate**: ✅ PedanticMode enforces warnings-as-errors on CI (W2.32 verified)
-**CRAP Baselines**: ✅ Validated (W4.CRAP.0 COMPLETE)
+**Reproducible Builds**: ✅ DotNet.ReproducibleBuilds v1.2.39 integrated (W2.34-W2.37 COMPLETE)
 **Mutation Testing**: ✅ Baseline: **43.96%** (W4.6, W4.7, W4.9, W4.10 COMPLETE)
 
 **Project Context**:
@@ -29,6 +29,59 @@
 - Must pass enterprise security review
 - **Git Hooks**: ✅ Pre-commit hooks enabled for linting enforcement
 - **Mutation Testing**: ✅ Stryker.NET configured, weekly CI runs scheduled
+
+### Session Summary (Session 41 - Reproducible Builds + Priority Deferrals - 2025-12-14)
+
+**Purpose**: Defer low-priority tasks, create and implement Reproducible Builds Epic (W2.34-W2.37).
+
+**Priority Deferrals** (per user request):
+
+| Task                        | Action   | New Location                            |
+| --------------------------- | -------- | --------------------------------------- |
+| W3.10 (Package Signing)     | Moved    | W5.10                                   |
+| W3.8 (Observability)        | Deferred | Indefinitely - requires careful thought |
+| W5.2 (Container Deployment) | Removed  | Consumer concern                        |
+| W2.33 (NuGet Publish)       | Moved    | W5.99 - LAST thing we do                |
+
+**Reproducible Builds Epic** (W2.34-W2.37):
+
+1. Researched DotNet.ReproducibleBuilds via DeepWiki + analyst agent
+2. Created Epic vision (roadmap agent)
+3. Wrote PRD at `.agents/planning/PRD-reproducible-builds.md` (explainer agent)
+4. Generated 4 atomic tasks (task-generator agent)
+5. Implemented all 4 tasks:
+   - W2.34: Added package version to Directory.Packages.props ✅
+   - W2.35: Added PackageReference to Directory.Build.props ✅
+   - W2.36: Verified integration (724 tests pass) ✅
+   - W2.37: Documented in CLAUDE.md ✅
+
+**Bonus - Property Reconciliation**:
+
+Removed redundant properties now handled by package:
+
+- `Deterministic=true`
+- `ContinuousIntegrationBuild` condition
+- `PublishRepositoryUrl=true`
+- `EmbedUntrackedSources=true`
+- Kept `DebugType=portable` to override package default
+
+**Progress Update**:
+
+- Wave 2: 17/31 complete (55%)
+- Total: 51/84 complete (61%)
+
+**Files Changed**:
+
+- `Directory.Packages.props` - Added DotNet.ReproducibleBuilds v1.2.39
+- `Directory.Build.props` - Added PackageReference, cleaned up properties
+- `CLAUDE.md` - Added Reproducible Builds documentation
+- `.agents/planning/modernize-wave2.md` - Added Phase 2G, marked tasks complete
+- `.agents/planning/modernize-TODO-index.md` - Updated metrics and tiers
+- `.agents/planning/PRD-reproducible-builds.md` - New PRD
+
+See: `.agents/sessions/2025-12-14-session-41.md` for full details
+
+---
 
 ### Session Summary (Session 40 - SHA Pinning + v11.0.0 - 2025-12-14)
 

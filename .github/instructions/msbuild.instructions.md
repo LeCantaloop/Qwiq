@@ -76,6 +76,48 @@ dotnet build Qwiq.sln /m:1 /nodeReuse:false -c Release
 dotnet build Qwiq.sln -c Release
 ```
 
+## Package Test Validation
+
+**CRITICAL**: When modifying Directory.Build.props, Directory.Build.targets, or Directory.Packages.props, package metadata changes and baselines MUST be validated.
+
+### Required Steps
+
+**ALWAYS run package tests before committing:**
+
+```powershell
+# Build packages
+dotnet build Qwiq.sln -c Release
+
+# Run package tests
+dotnet test test/Qwiq.Package.Tests/Qwiq.Package.Tests.csproj --no-build -c Release
+```
+
+### If Package Tests Fail
+
+Review the diff between `.received` and `.verified` files:
+
+```powershell
+# View differences
+ls test/Qwiq.Package.Tests/*.received.*
+
+# If changes are expected (e.g., metadata updates), rebaseline:
+dotnet verify accept -w test/Qwiq.Package.Tests
+
+# Or manually (in non-interactive environments):
+cd test/Qwiq.Package.Tests
+for file in *.received.*; do cp "$file" "${file/received/verified}"; done
+```
+
+### Common Triggers for Rebaselining
+
+- Adding/removing `PackageReference` in Directory.Packages.props
+- Changing build configuration (`DebugType`, `IncludeSymbols`, `SymbolPackageFormat`, etc.)
+- Updating DotNet.ReproducibleBuilds or SourceLink packages
+- Building from a feature branch (branch name appears in repository metadata)
+- Changing package metadata properties (Authors, Description, etc.)
+
+**Example**: Switching from `DebugType=portable` to `DebugType=embedded` changes package contents and manifests.
+
 ## Validation Checklist
 
 Before submitting changes, verify:
@@ -84,6 +126,8 @@ Before submitting changes, verify:
 - [ ] 0 errors, minimal warnings
 - [ ] All test projects still build
 - [ ] `dotnet test` with filters passes
+- [ ] **Package tests pass** (required for Directory.Build.props/targets changes)
+- [ ] Package baselines updated if metadata changed
 - [ ] Changes documented in PR description
 - [ ] Impact on all projects understood
 

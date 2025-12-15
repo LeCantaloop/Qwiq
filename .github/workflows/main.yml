@@ -64,7 +64,8 @@ jobs:
 
       - name: Validate package output
         # Scans csproj files to find packable projects and validates each produced
-        # both .nupkg and .snupkg files. Fails the build if any are missing.
+        # .nupkg files. With embedded symbols (DebugType=embedded), no separate
+        # .snupkg files are generated. Fails the build if any .nupkg are missing.
         # Only run on Windows (Linux builds don't generate all packages)
         if: matrix.os == 'windows-latest'
         run: ./build/scripts/Validate-PackageOutput.ps1
@@ -163,9 +164,7 @@ jobs:
           name: packages
           path: |
             src/**/bin/Release/**/*.nupkg
-            src/**/bin/Release/**/*.snupkg
             test/**/bin/Release/**/*.nupkg
-            test/**/bin/Release/**/*.snupkg
           if-no-files-found: warn
 
       - name: Get version from nbgv

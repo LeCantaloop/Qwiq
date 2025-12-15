@@ -25,15 +25,6 @@
 
 ### Phase 3A: Deferred Tasks
 
-#### W3.8 Structured Logging/Observability
-
-- [ ] **Task**: Add structured logging via Microsoft.Extensions.Logging
-- **Status**: ⏸️ DEFERRED to maintenance phase
-- **Rationale**: Low priority, requires significant API surface changes
-- **Effort**: L (1 week)
-
----
-
 #### W3.9 Modernize Configuration via IConfiguration
 
 - [ ] **Task**: Replace legacy config with Microsoft.Extensions.Configuration
@@ -43,12 +34,13 @@
 
 ---
 
-#### W3.10 Package Signing (Authenticode/StrongName)
+#### W3.10 Package Signing (Authenticode/StrongName) → MOVED TO W5.10
 
 - [ ] **Task**: Add package signing for enterprise trust
-- **Status**: ⏸️ DEFERRED to maintenance phase
-- **Rationale**: Requires certificate management, Azure Key Vault integration
+- **Status**: ⏸️ MOVED to Wave 5 (W5.10)
+- **Rationale**: Requires certificate management, Azure Key Vault integration - not blocking v11.0.0
 - **Effort**: L (1 week)
+- **Note**: Moved to Wave 5 per Session 41
 
 ---
 
@@ -165,11 +157,10 @@
 
 ---
 
-### W5.2 Container Deployment Support
+### W5.2 Container Deployment Support ❌ REMOVED
 
-- [ ] **Task**: Add Dockerfile and container deployment guidance
-- **Effort**: M (1 week)
-- **Priority**: Low
+- **Status**: ❌ REMOVED per Session 41
+- **Rationale**: Nothing for the library owner to do here - container deployment is a consumer concern
 
 ---
 
@@ -219,6 +210,45 @@
 - [ ] **Task**: Publish automated benchmark results
 - **Effort**: M (1 week)
 - **Priority**: Low
+
+---
+
+### W5.10 Package Signing (Authenticode/StrongName)
+
+- [ ] **Task**: Add package signing for enterprise trust
+- **Effort**: L (1 week)
+- **Priority**: Medium (enterprise requirement)
+- **Note**: Moved from W3.10 per Session 41
+- **Dependencies**: Azure Key Vault integration, certificate management
+
+---
+
+### W5.99 NuGet v11.0.0 Publish (FINAL TASK)
+
+- [ ] **Task**: Publish first NuGet release in 7 years
+- **Effort**: S (2-4 hours)
+- **Priority**: **CRITICAL** - This is the LAST task before release
+- **Dependencies**: ALL other tasks in Waves 1-5 complete
+- **Note**: Publishing will be the absolute last thing we do per Session 41
+
+---
+
+## Future / Deferred Indefinitely 🔮
+
+> **Note**: These tasks are deferred indefinitely and do NOT block v11.0.0 release. They require careful thought and may never be implemented.
+
+### W3.8 Structured Logging/Observability
+
+- [ ] **Task**: Add structured logging via Microsoft.Extensions.Logging
+- **Status**: 🔮 DEFERRED INDEFINITELY
+- **Rationale**: Nice-to-have, requires VERY careful thought about API surface changes and breaking changes. Would affect all consumers.
+- **Effort**: L (1 week)
+- **Note**: Moved from Wave 3 per Session 41 - not blocking v11.0.0 release
+- **Considerations**:
+  - Breaking API change (adding logging parameters)
+  - Consumer must provide ILogger or ILoggerFactory
+  - May warrant separate "Qwiq.Diagnostics" package instead
+  - Could use source generators for zero-allocation logging
 
 ---
 

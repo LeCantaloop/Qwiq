@@ -236,3 +236,107 @@ git config core.hooksPath .githooks  # Now enable hooks
 ```
 
 **Prevention**: Always run baseline validation before enabling incremental hooks
+
+---
+
+## Skill-Build-PKG-001
+
+**Statement**: Use .NET Foundation packages (DotNet.ReproducibleBuilds) to replace 4+ manual build properties
+
+**Atomicity**: 92%
+
+**Category**: Build
+
+**Context**: When implementing build automation features that require CI platform detection and deterministic configuration
+
+**Evidence**: Session 41 - Replaced 4 manual properties with single PackageReference
+
+**Details**:
+
+- DotNet.ReproducibleBuilds auto-detects 11 CI platforms (GitHub Actions, Azure Pipelines, GitLab CI, Jenkins, etc.)
+- Automatically sets ContinuousIntegrationBuild=true on detected CI systems
+- Configures Deterministic=true, PublishRepositoryUrl=true, EmbedUntrackedSources=true
+- Reduces configuration entropy and maintenance burden
+- Single source of truth for deterministic build settings
+
+**Implementation**:
+
+1. Add to `Directory.Packages.props`:
+
+```xml
+<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.39" />
+```
+
+1. Add to `Directory.Build.props`:
+
+```xml
+<ItemGroup>
+  <PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />
+</ItemGroup>
+```
+
+1. Remove redundant manual properties:
+
+```xml
+<!-- REMOVE these - now handled by package -->
+<Deterministic>true</Deterministic>
+<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+<PublishRepositoryUrl>true</PublishRepositoryUrl>
+<EmbedUntrackedSources>true</EmbedUntrackedSources>
+```
+
+**Benefits**:
+
+- 4 properties → 1 PackageReference
+- Auto-detection of CI platforms (no manual conditions)
+- Maintained by .NET Foundation
+- Consistent with .NET ecosystem best practices
+
+---
+
+## Skill-Build-CFG-002
+
+**Statement**: Override package defaults only when target format requirements differ from package defaults
+
+**Atomicity**: 87%
+
+**Category**: Build
+
+**Context**: When integrating dependency packages that provide build configuration automation
+
+**Evidence**: Session 41 - Kept DebugType=portable override for .snupkg generation
+
+**Details**:
+
+- DotNet.ReproducibleBuilds defaults DebugType=embedded for symbol packages
+- QWIQ uses separate .snupkg symbol packages requiring DebugType=portable
+- All other package defaults (Deterministic, SourceLink) were removed as redundant
+- Each override must have documented reason tied to project requirements
+
+**Pattern**:
+
+```xml
+<!-- KEEP: Override when project requirements differ from package default -->
+<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <!-- Override DotNet.ReproducibleBuilds default of 'embedded' to 'portable' for separate .snupkg symbol packages -->
+  <DebugType>portable</DebugType>
+</PropertyGroup>
+
+<!-- REMOVE: Properties that duplicate package defaults -->
+<!-- Package already sets these, no need for manual config -->
+```
+
+**Decision Matrix**:
+
+| Property              | Package Default | Project Need | Action |
+| --------------------- | --------------- | ------------ | ------ |
+| Deterministic         | true            | true         | REMOVE |
+| ContinuousIntegration | auto-detect     | auto-detect  | REMOVE |
+| PublishRepositoryUrl  | true            | true         | REMOVE |
+| DebugType             | embedded        | portable     | KEEP   |
+
+**Rationale for Override**:
+
+- embedded: Symbols in main DLL (no separate file)
+- portable: Symbols in .snupkg (required for NuGet.org symbol server)
+- Symbol server integration requires portable debug type

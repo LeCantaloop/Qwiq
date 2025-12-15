@@ -83,15 +83,15 @@ SKIP_AUTOFIX=1 git commit
 
 ## Common YAML Issues (Auto-Fixed)
 
-| Issue                    | Auto-Fixed? | Example                |
-| ------------------------ | ----------- | ---------------------- |
-| Inconsistent indentation | ✓ Yes       | 2 vs 4 spaces          |
-| Trailing whitespace      | ✓ Yes       | `value:` → `value:`    |
-| Missing newline at EOF   | ✓ Yes       | Adds `\n`              |
-| Line length              | ✓ Yes       | Wraps long lines       |
-| Quote style              | ✓ Yes       | Normalizes quotes      |
-| **Syntax errors**        | ✗ No        | Must fix manually      |
-| **Duplicate keys**       | ✗ No        | Must fix manually      |
+| Issue                    | Auto-Fixed? | Example             |
+| ------------------------ | ----------- | ------------------- |
+| Inconsistent indentation | ✓ Yes       | 2 vs 4 spaces       |
+| Trailing whitespace      | ✓ Yes       | `value:` → `value:` |
+| Missing newline at EOF   | ✓ Yes       | Adds `\n`           |
+| Line length              | ✓ Yes       | Wraps long lines    |
+| Quote style              | ✓ Yes       | Normalizes quotes   |
+| **Syntax errors**        | ✗ No        | Must fix manually   |
+| **Duplicate keys**       | ✗ No        | Must fix manually   |
 
 ## Syntax Errors (Manual Fix Required)
 

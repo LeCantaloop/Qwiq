@@ -807,6 +807,11 @@ To enable a specific rule, change its severity from `none` to `warning` or `erro
 - Add `Version` attributes to PackageReference when using Central Package Management (add version to `Directory.Packages.props` instead)
 - Use both `Contract.Requires` AND runtime null checks for the same parameter (pick one)
 - Swallow exceptions silently with empty catch blocks - log errors or let them propagate
+- **Commit PII/OII** - See [pii-oii.instructions.md](instructions/pii-oii.instructions.md) for prevention guidance:
+  - Never use absolute paths with usernames (e.g., `C:\Users\name\...`, `/home/user/...`)
+  - Never commit real email addresses in documentation (use `user@example.com`)
+  - Always use repository-relative paths (e.g., `src/file.cs`, not `D:\src\GitHub\user\Qwiq\src\file.cs`)
+  - Code review bots flag PII/OII as **HIGH SEVERITY** issues
 
 ## Test Configuration
 

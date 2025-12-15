@@ -11,7 +11,7 @@
     <description>QWIQ Linq Identity - Identity-aware LINQ extensions for QWIQ</description>
     <copyright>Copyright (c) 2025 Qwiq Contributors</copyright>
     <tags>Microsoft Team Foundation Server TFS Azure DevOps VSO Visual Studio Online Agile WIT Work Item Tracking VSTS TeamFoundation</tags>
-    <repository type="git" url="https://github.com/rjmurillo/Qwiq.git" commit="****************************************" />
+    <repository type="git" url="https://github.com/rjmurillo/Qwiq.git" branch="****************************************" commit="****************************************" />
     <dependencies>
       <group targetFramework=".NETFramework4.7.2">
         <dependency id="Qwiq.Core" version="*" exclude="Build,Analyzers" />

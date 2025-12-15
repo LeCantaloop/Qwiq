@@ -170,3 +170,85 @@ Before marking session complete, next session should:
 - ❌ Missing verification commands
 
 **Enforcement**: HANDOFF.md update is part of session end checklist (MANDATORY)
+
+---
+
+## Skill-Doc-CFG-001
+
+**Statement**: Remove superfluous comments from configuration files when property purpose is self-evident
+
+**Atomicity**: 84%
+
+**Category**: Documentation
+
+**Context**: During documentation maintenance and configuration cleanup phases
+
+**Evidence**: Session 41 - Removed outdated comment from Directory.Build.props; kept only non-obvious tradeoff comments
+
+**Details**:
+
+- Configuration entropy increases maintenance cost
+- Comments that repeat property semantics become noise over time
+- Keep only comments explaining non-obvious tradeoffs
+- Self-documenting property names don't need redundant comments
+
+**Pattern - REMOVE**:
+
+```xml
+<!-- REMOVE: Comments that state the obvious -->
+
+<!-- Set the version number -->
+<Version>11.0.0</Version>
+
+<!-- Enable nullable reference types -->
+<Nullable>enable</Nullable>
+
+<!-- Set deterministic build -->
+<Deterministic>true</Deterministic>
+```
+
+**Pattern - KEEP**:
+
+```xml
+<!-- KEEP: Comments explaining WHY, not WHAT -->
+
+<!-- Override DotNet.ReproducibleBuilds default of 'embedded' to 'portable' for separate .snupkg symbol packages -->
+<DebugType>portable</DebugType>
+
+<!-- CI stability guardrail: CS0006 occurs when multi-targeted inner builds race on reference assemblies -->
+<BuildInParallel>false</BuildInParallel>
+```
+
+**Decision Criteria**:
+
+| Comment Type                      | Action | Rationale                           |
+| --------------------------------- | ------ | ----------------------------------- |
+| Repeats property name             | REMOVE | Self-evident from XML element name  |
+| States obvious behavior           | REMOVE | Property docs already explain this  |
+| Explains override reason          | KEEP   | Non-obvious tradeoff                |
+| Documents workaround              | KEEP   | Future maintainers need context     |
+| References external documentation | KEEP   | Helps locate authoritative source   |
+| Explains "why this value"         | KEEP   | Value choice isn't self-documenting |
+
+**Real Example** (Session 41):
+
+```xml
+<!-- REMOVED - No enduring value, obvious from context -->
+<!--
+  Deterministic Builds: DotNet.ReproducibleBuilds package now handles:
+  - Deterministic=true (automatically set)
+  - ContinuousIntegrationBuild=true (auto-detected on 11 CI platforms)
+  We no longer need to set these manually.
+-->
+
+<!-- KEPT - Explains package override reason -->
+<!-- Override DotNet.ReproducibleBuilds default of 'embedded' to 'portable' for separate .snupkg symbol packages -->
+<DebugType>portable</DebugType>
+```
+
+**Benefits**:
+
+- Reduced configuration noise
+- Faster scanning of config files
+- Comments that remain are high-value
+- Easier maintenance over time

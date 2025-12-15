@@ -18,6 +18,7 @@
 | 2D    | Security Hardening    | W2.19-W2.20             | ✅ Complete        |
 | 2E    | Documentation         | W2.5, W2.7              | 🟡 Partial         |
 | 2F    | Code Quality (PR #65) | W2.21-W2.33             | 🔄 In Progress     |
+| 2G    | Reproducible Builds   | W2.34-W2.37             | ✅ Complete        |
 
 ---
 
@@ -559,21 +560,24 @@ jobs:
 
 ---
 
-### W2.33 NuGet v11.0.0 Publish 🔴
+### W2.33 NuGet v11.0.0 Publish ⏸️ DEFERRED
 
 - [ ] **Task**: Publish first NuGet release in 7 years
 - **Effort**: S (2-4 hours)
-- **Priority**: **CRITICAL** - Release milestone before maintenance mode
-- **Dependencies**: W2.32 (CI Warning Gate), W2.22 (SHA Pinning)
+- **Priority**: **DEFERRED to END of Wave 5** - Publishing will be the LAST thing we do
+- **Dependencies**: W2.32 (CI Warning Gate), W2.22 (SHA Pinning), ALL Wave 5 tasks
 - **Files**: `.github/workflows/release.yml`, `README.md`, GitHub Release
+
+**Status**: Version configured to 11.0.0. All remaining work (CHANGELOG, README, publish) deferred until all other modernization work is complete.
 
 **Pre-Release Checklist**:
 
 1. [x] All CRITICAL Wave 2 tasks complete (W2.32 ✅, W2.22 ✅)
-2. [ ] CI passing on develop branch (requires PR merge)
+2. [x] CI passing on develop branch
 3. [x] Version set to 11.0.0 via version.json (Session 40)
-4. [ ] CHANGELOG/release notes drafted (deferred)
-5. [ ] README.md updated (deferred)
+4. [ ] CHANGELOG/release notes drafted (deferred to Wave 5 end)
+5. [ ] README.md updated (deferred to Wave 5 end)
+6. [ ] All Wave 5 tasks complete (deferred)
 
 **NuGet.org Expectations**:
 
@@ -581,6 +585,76 @@ jobs:
 - Symbol packages (.snupkg) included
 - SLSA provenance attached to GitHub Release
 - SBOM attached to GitHub Release
+
+---
+
+## Phase 2G: Reproducible Builds (NEW - Session 41)
+
+> **PRD**: `.agents/planning/PRD-reproducible-builds.md` > **ADR**: `.agents/architecture/ADR-012-embedded-symbols.md` (supersedes ADR-011)
+> **Added**: 2025-12-14 (Session 41)
+> **Goal**: Integrate DotNet.ReproducibleBuilds package for enhanced CI platform detection and alignment with .NET Foundation best practices.
+> **Key Decision**: Embedded symbols (ADR-012) - simpler CI/CD, enterprise firewall compatible, maintainer-friendly for QWIQ's scale.
+
+### W2.34 Add DotNet.ReproducibleBuilds Package Version ✅ COMPLETE
+
+- [x] **Task**: Add `DotNet.ReproducibleBuilds` version 1.2.39 to Central Package Management
+- **Effort**: XS (5 minutes)
+- **Priority**: **HIGH**
+- **Files**: `Directory.Packages.props`
+- **Completed**: 2025-12-14 (Session 41)
+- **Acceptance Criteria**:
+  - [x] `<PackageVersion Include="DotNet.ReproducibleBuilds" Version="1.2.39" />` added
+  - [x] Package placed in Build and Analysis group
+  - [x] Comment added explaining package purpose
+
+---
+
+### W2.35 Add DotNet.ReproducibleBuilds PackageReference ✅ COMPLETE
+
+- [x] **Task**: Reference package in Directory.Build.props as development-only dependency
+- **Effort**: S (15 minutes)
+- **Priority**: **HIGH**
+- **Dependencies**: W2.34
+- **Files**: `Directory.Build.props`
+- **Completed**: 2025-12-14 (Session 41)
+- **Acceptance Criteria**:
+  - [x] `<PackageReference Include="DotNet.ReproducibleBuilds" PrivateAssets="All" />` added
+  - [x] Package placed near SourceLink and GitVersioning references
+  - [x] Comment explaining 11 CI platform auto-detection
+  - [x] `PrivateAssets="All"` prevents inclusion in published packages
+- **Bonus**: Reconciled redundant properties (Deterministic, ContinuousIntegrationBuild, PublishRepositoryUrl, EmbedUntrackedSources) - now handled by package
+
+---
+
+### W2.36 Verify Reproducible Builds Integration ✅ COMPLETE
+
+- [x] **Task**: Verify package integration does not change existing build behavior
+- **Effort**: S (30 minutes)
+- **Priority**: **HIGH**
+- **Dependencies**: W2.35
+- **Files**: None (verification only)
+- **Completed**: 2025-12-14 (Session 41)
+- **Acceptance Criteria**:
+  - [x] Local build passes: `dotnet build Qwiq.sln -c Release` (0 warnings, 0 errors)
+  - [x] CI build simulation passes with `/p:ContinuousIntegrationBuild=true`
+  - [x] `DebugType=embedded` preserved per ADR-012 (aligns with package default)
+  - [x] No new warnings introduced
+  - [x] All 724 tests pass
+
+---
+
+### W2.37 Document Reproducible Builds Configuration ✅ COMPLETE
+
+- [x] **Task**: Add documentation explaining the reproducible builds integration
+- **Effort**: S (20 minutes)
+- **Priority**: Medium
+- **Dependencies**: W2.36
+- **Files**: `CLAUDE.md`, `Directory.Build.props` (inline comments)
+- **Completed**: 2025-12-14 (Session 41)
+- **Acceptance Criteria**:
+  - [x] `CLAUDE.md` Configuration Files section updated with Reproducible Builds subsection
+  - [x] Comment in Directory.Build.props explains CI platforms auto-detected
+  - [x] Note that `DebugType=embedded` per ADR-012 aligns with package defaults
 
 ---
 

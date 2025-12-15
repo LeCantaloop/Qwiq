@@ -45,8 +45,8 @@ jobs:
         id: hash
         shell: pwsh
         run: |
-          # Compute SHA256 hashes of all .nupkg files (excluding .snupkg)
-          $nupkgFiles = Get-ChildItem -Path ./packages -Filter '*.nupkg' -Recurse | Where-Object { $_.Name -notlike '*.snupkg' }
+          # Compute SHA256 hashes of all .nupkg files (no .snupkg - using embedded symbols)
+          $nupkgFiles = Get-ChildItem -Path ./packages -Filter '*.nupkg' -Recurse
           $hashes = $nupkgFiles | ForEach-Object {
             $hash = (Get-FileHash -Path $_.FullName -Algorithm SHA256).Hash.ToLower()
             $relativePath = $_.FullName.Replace((Get-Location).Path + [IO.Path]::DirectorySeparatorChar, '').Replace('\', '/')
@@ -88,7 +88,7 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "📦 Packages to publish:"
-          Get-ChildItem ./packages -Recurse -Include *.nupkg, *.snupkg | ForEach-Object {
+          Get-ChildItem ./packages -Recurse -Include *.nupkg | ForEach-Object {
             Write-Host "  - $($_.Name)"
           }
 
@@ -98,22 +98,11 @@ jobs:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           $nupkgFiles = Get-ChildItem ./packages -Recurse -Include *.nupkg
-          $snupkgFiles = Get-ChildItem ./packages -Recurse -Include *.snupkg
 
           Write-Host "🚀 Publishing $($nupkgFiles.Count) packages to NuGet..."
 
           foreach ($file in $nupkgFiles) {
             Write-Host "Publishing: $($file.Name)"
-            dotnet nuget push $file.FullName --api-key "$env:NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
-            if ($LASTEXITCODE -ne 0) {
-              Write-Warning "Failed to push $($file.Name), but continuing..."
-            }
-          }
-
-          Write-Host "🔍 Publishing $($snupkgFiles.Count) symbol packages..."
-
-          foreach ($file in $snupkgFiles) {
-            Write-Host "Publishing symbols: $($file.Name)"
             dotnet nuget push $file.FullName --api-key "$env:NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
             if ($LASTEXITCODE -ne 0) {
               Write-Warning "Failed to push $($file.Name), but continuing..."

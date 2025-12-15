@@ -4,19 +4,21 @@
 
 This is the master index of all skills stored in the Qwiq repository's skillbook. Skills are organized by category and stored in separate memory files for efficient retrieval.
 
-**Total Skills**: 31
+**Total Skills**: 36
 **Categories**: 12
 **Storage Method**: Serena memory tools (cloudmcp-manager was full)
 
 ## Quick Access by Category
 
-### Build & CI Skills (7 skills)
+### Build & CI Skills (9 skills)
 
 **File**: `skillbook-build-ci.md`
 
 - **Skill-Build-001** (96%): Use CI flags for local builds to match CI analyzer strictness
 - **Skill-Build-002** (93%): Set BuildInParallel=false for Windows multi-framework builds
 - **Skill-Build-003** (94%): Use git clean -fdx before builds when file locks persist
+- **Skill-Build-PKG-001** (92%): Use .NET Foundation packages to replace 4+ manual build properties
+- **Skill-Build-CFG-002** (87%): Override package defaults only when format requirements differ
 - **Skill-CI-001** (95%): CI should verify lint rules without auto-fix
 - **Skill-CI-002** (92%): CI must validate all files, not just changes
 - **Skill-CI-003** (88%): Run baseline validation when enabling hooks
@@ -29,12 +31,13 @@ This is the master index of all skills stored in the Qwiq repository's skillbook
 - **Skill-DevEx-001** (97%): Pre-commit hooks should auto-fix issues then verify
 - **Skill-GitHooks-001** (99%): Auto-fix hooks must re-stage modified files with git add
 
-### Documentation Skills (2 skills)
+### Documentation Skills (3 skills)
 
 **File**: `skillbook-documentation.md`
 
 - **Skill-Doc-001** (93%): Split documentation files when approaching 25,000 token limit
 - **Skill-Doc-002** (95%): Update HANDOFF.md at session end
+- **Skill-Doc-CFG-001** (84%): Remove superfluous comments from config files when purpose is self-evident
 
 ### GitHub & Git Skills (4 skills)
 
@@ -69,12 +72,13 @@ This is the master index of all skills stored in the Qwiq repository's skillbook
 - **Skill-Quality-002** (90%): Add pragma warning disable CA1001 for test cleanup
 - **Skill-Quality-003** (88%): Extract inline test arrays to static readonly fields
 
-### Strategy Skills (2 skills)
+### Strategy Skills (3 skills)
 
 **File**: `skillbook-strategy.md`
 
 - **Skill-Strategic-001** (97%): Verify deployment scale before declaring maintenance mode
 - **Skill-Strategic-002** (94%): SOAP clients cannot deploy to Kubernetes; deprecate for REST
+- **Skill-Proj-CTX-001** (88%): Revalidate priority context when deployment scope/security requirements change
 
 ### Testing Skills (3 skills)
 
@@ -84,13 +88,14 @@ This is the master index of all skills stored in the Qwiq repository's skillbook
 - **Skill-Test-002** (91%): Capture real HTTP traffic with Fiddler for WireMock stubs
 - **Skill-Test-003** (94%): IdentityDescriptor must be string format in stubs
 
-### Workflow & Installation Skills (3 skills)
+### Workflow & Installation Skills (4 skills)
 
 **File**: `skillbook-workflow-install.md`
 
 - **Skill-Workflow-001** (95%): Check for installation scripts before manual file operations
 - **Skill-Install-001** (91%): Installation scripts may replace config files; backup first
 - **Skill-Workflow-002** (90%): AI agents should run lint validation before commit
+- **Skill-Agent-WF-001** (90%): Multi-agent Epic workflow produces zero-rework PRDs and atomic task lists
 
 ## Skills by Atomicity Score
 

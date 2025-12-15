@@ -12,6 +12,13 @@ public static class ModuleInitializer
         @"(<dependency\s+id=""Qwiq\.[^""]+""[^>]*\s+version="")[^""]+("")",
         RegexOptions.Compiled);
 
+    // Regex to match repository branch attribute
+    // Matches: <repository ... branch="refs/heads/main" ... />
+    // Replaces branch value with asterisks to prevent churn across different branches
+    private static readonly Regex RepositoryBranchRegex = new(
+        @"(<repository[^>]*\s+branch="")[^""]+("")",
+        RegexOptions.Compiled);
+
     [ModuleInitializer]
     public static void Initialize()
     {
@@ -27,6 +34,20 @@ public static class ModuleInitializer
                 if (content.Contains("<dependency id=\"Qwiq."))
                 {
                     string scrubbed = QwiqDependencyVersionRegex.Replace(content, "$1*$2");
+                    builder.Clear();
+                    builder.Append(scrubbed);
+                }
+            });
+
+        // Add a global scrubber to normalize repository branch attribute
+        // This ensures tests don't fail when run from different branches
+        VerifierSettings.AddScrubber(
+            (builder, _) =>
+            {
+                string content = builder.ToString();
+                if (content.Contains("<repository") && content.Contains("branch="))
+                {
+                    string scrubbed = RepositoryBranchRegex.Replace(content, "$1****************************************$2");
                     builder.Clear();
                     builder.Append(scrubbed);
                 }
