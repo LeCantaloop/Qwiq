@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />
     <PackageReference Include="BenchmarkDotNet.Core" Version="0.10.11" />
-    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.10.11" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.8" />
     <PackageReference Include="BenchmarkDotNet.Toolchains.Roslyn" Version="0.10.11" />
     <PackageReference Include="GitVersionTask" Version="4.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="1.1.0" />
