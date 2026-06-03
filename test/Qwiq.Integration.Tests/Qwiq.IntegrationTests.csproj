@@ -40,7 +40,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
     <PackageReference Include="Should" Version="1.1.20" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="4.0.4.403061554" />
-    <PackageReference Include="WindowsAzure.ServiceBus" Version="3.3.2" />
+    <PackageReference Include="WindowsAzure.ServiceBus" Version="3.4.6" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
