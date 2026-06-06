@@ -20,7 +20,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GitVersionTask" Version="4.0.0" />
+    <PackageReference Include="GitVersionTask" Version="5.5.1" />
     <PackageReference Include="Microsoft.Net.Compilers" Version="2.10.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
