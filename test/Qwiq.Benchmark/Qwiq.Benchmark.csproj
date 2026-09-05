@@ -20,7 +20,7 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.10.11" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageReference Include="BenchmarkDotNet.Core" Version="0.10.11" />
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.10.11" />
     <PackageReference Include="BenchmarkDotNet.Toolchains.Roslyn" Version="0.10.11" />
